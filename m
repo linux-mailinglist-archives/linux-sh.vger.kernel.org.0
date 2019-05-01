@@ -2,106 +2,84 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7169C100C2
-	for <lists+linux-sh@lfdr.de>; Tue, 30 Apr 2019 22:26:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86A2110887
+	for <lists+linux-sh@lfdr.de>; Wed,  1 May 2019 15:56:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727024AbfD3U0N (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 30 Apr 2019 16:26:13 -0400
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:45766 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726028AbfD3U0N (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 30 Apr 2019 16:26:13 -0400
-Received: by mail-pf1-f194.google.com with SMTP id e24so7612197pfi.12
-        for <linux-sh@vger.kernel.org>; Tue, 30 Apr 2019 13:26:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=+QG7LUyac8Bk0JT7xv5jYSfFqXif4TjSSyRo6jcCpuw=;
-        b=nzo+Vhm73rkoNWUFmlVDo1zweAJCGmAR9ilVc9ahK9Wuq6QgGHOioiTeHHcR2sQyn0
-         7H/2ArTXJ5Y2CR0+clAyx7fmXbOyyNddeDBFcxBj9Qs6vhkDao2OtTKBlMr9wRl+X+4L
-         c5CBykbEjqxCY1a+eBZFPOQPPfR5PNbPykDcAZ/gv1blmYUApRUq+y8ZIbsGNLTb/upW
-         +qYC9nasI7fMP37fu7szb/nftT+5/UoK7MsaVskVzDU8KqsLwA0/+LD4LmvuJMcCeRiu
-         DOb2b0Q74qm2tQrV03ckh3Qtr4a3N5V0fFGkyZELOXLSRIDlIGkStOsxq0aUZa26b7gz
-         aT0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=+QG7LUyac8Bk0JT7xv5jYSfFqXif4TjSSyRo6jcCpuw=;
-        b=irdkxh9938XLfmgY+47gXBSfzMN4ResGs/3fUYTtXaHs6sx+PKHzgxuAgwzZBYoZMA
-         FJK75XWqU7kmXSZf3m/DpPdBO+yfZnXbL4Pje7pInmDkreAfmJtPkBb8TPSYFSf8sy55
-         ZtHDb+Xyg5jTHfVBQ8orQ6bxBdPEUcgNbikA1rEREd3VswakIYVhD7XPmfEhmuF0wy2P
-         WFyHbGXvJ3v5cJf/tSAJ/CsfpFumWQ6fgmYPSs1Sb1XB4r407f1eUwvzUmOg4yxWwb3b
-         3nU2fjrt7VGSvw/fejHZb7LMcK/n1YtbPCjKRkS9KrbPFA839RxEKiUO27+DIJg/ms2R
-         dO5g==
-X-Gm-Message-State: APjAAAXvTgpSmMNyWAQ7YOuvsoLBZhNRIjzccETgq/tFTq7N/juxC0mv
-        8BHsGqQJkrHyCA81gQwfEjpWNGSr2BY+cx37yRR4tQ==
-X-Google-Smtp-Source: APXvYqyJtPQTiEhwUKZhUtYuou5KRhD+Exc7BXDNdAdOazvRoiC6+bVuH4IuQx6RxOj/AdkmQO+Q+CNNlrJ/0ikXdnE=
-X-Received: by 2002:aa7:8096:: with SMTP id v22mr73372500pff.94.1556655971995;
- Tue, 30 Apr 2019 13:26:11 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAK7LNASLBQ=w9YFBD80s7dit1bd_Tr+ggVyRNms0jf1pR9k=ZA@mail.gmail.com>
- <20190424180223.253025-1-ndesaulniers@google.com>
-In-Reply-To: <20190424180223.253025-1-ndesaulniers@google.com>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Tue, 30 Apr 2019 13:26:00 -0700
-Message-ID: <CAKwvOd=5SVBFsfEgYc9Dpgr--h+pQgCwOnpAjg9B4HG2VY6kFg@mail.gmail.com>
-Subject: Re: [PATCH v2] sh: vsyscall: drop unnecessary cc-ldoption
-To:     Yoshinori Sato <ysato@users.sourceforge.jp>, dalias@libc.org
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        clang-built-linux <clang-built-linux@googlegroups.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        linux-sh@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        id S1726165AbfEAN4c (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 1 May 2019 09:56:32 -0400
+Received: from conuserg-09.nifty.com ([210.131.2.76]:64236 "EHLO
+        conuserg-09.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726382AbfEAN4c (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 1 May 2019 09:56:32 -0400
+X-Greylist: delayed 170526 seconds by postgrey-1.27 at vger.kernel.org; Wed, 01 May 2019 09:56:31 EDT
+Received: from grover.flets-west.jp (softbank126125154137.bbtec.net [126.125.154.137]) (authenticated)
+        by conuserg-09.nifty.com with ESMTP id x41Du4f1032765;
+        Wed, 1 May 2019 22:56:04 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-09.nifty.com x41Du4f1032765
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1556718965;
+        bh=ryhYQnIGLUAdlmkJ0CgmlDpVjLcz8vDYxbO0QCICOE0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=0e9eaGJD2hULewc4Q/JXTQyET5srmFT2jcjQmeXNBlnVDSwyJBojUPYsSCfmQwD4m
+         UgsTDCBEdVNIXl+we2Po+JzKny6iUhSxe4+lDShuLeE13Z1GU06ezVW74wtfsB3mCq
+         jFvnsakw++53+9eMCPaql8FFKpLwb9vACzPo9c059m9Uz125fvf3W+MKKNj6leIy2C
+         +5RUQI8SGRHLSkGRMxjH+8TReuWeJN7StuB2lp64GhvI1iIUZZ0KdWxhWKU4A1bgnX
+         YWUFgiYOlQr5YX0ZuSpHr4seaFWdJhXJ2Lu//ncu4sSOy5L0H9eVjcWM961YZhv0h+
+         A+pC6oTu/aK7A==
+X-Nifty-SrcIP: [126.125.154.137]
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org
+Cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2] sh: exclude vmlinux.scr from .gitignore pattern
+Date:   Wed,  1 May 2019 22:56:01 +0900
+Message-Id: <1556718961-4607-1-git-send-email-yamada.masahiro@socionext.com>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Wed, Apr 24, 2019 at 11:02 AM Nick Desaulniers
-<ndesaulniers@google.com> wrote:
->
-> Towards the goal of removing cc-ldoption, it seems that --hash-style=
-> was added to binutils 2.17.50.0.2 in 2006. The minimal required version
-> of binutils for the kernel according to
-> Documentation/process/changes.rst is 2.20.
->
-> Link: https://gcc.gnu.org/ml/gcc/2007-01/msg01141.html
-> Cc: clang-built-linux@googlegroups.com
-> Suggested-by: Masahiro Yamada <yamada.masahiro@socionext.com>
-> Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
-> ---
-> Changes V1 -> V2:
-> * update commit subject and message as per Masahiro/Geert.
->
-> To Geert's question about minimum binutils versions; no change needed to
-> binutils.
->
->
->  arch/sh/kernel/vsyscall/Makefile | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
->
-> diff --git a/arch/sh/kernel/vsyscall/Makefile b/arch/sh/kernel/vsyscall/Makefile
-> index 5db6579bc44c..6e8664448048 100644
-> --- a/arch/sh/kernel/vsyscall/Makefile
-> +++ b/arch/sh/kernel/vsyscall/Makefile
-> @@ -15,8 +15,7 @@ quiet_cmd_syscall = SYSCALL $@
->
->  export CPPFLAGS_vsyscall.lds += -P -C -Ush
->
-> -vsyscall-flags = -shared -s -Wl,-soname=linux-gate.so.1 \
-> -               $(call cc-ldoption, -Wl$(comma)--hash-style=sysv)
-> +vsyscall-flags = -shared -s -Wl,-soname=linux-gate.so.1 -Wl,--hash-style=sysv
->
->  SYSCFLAGS_vsyscall-trapa.so    = $(vsyscall-flags)
->
-> --
-> 2.21.0.593.g511ec345e18-goog
->
+arch/sh/boot/.gitignore has the pattern "vmlinux*"; this is effective
+not only for the current directory, but also for any sub-directories.
 
-bumping for review
+So, from the point of .gitignore grammar, the following check-in files
+are also considered to be ignored:
+
+  arch/sh/boot/compressed/vmlinux.scr
+  arch/sh/boot/romimage/vmlinux.scr
+
+As the manual gitignore(5) says "Files already tracked by Git are not
+affected", this is not a problem as far as Git is concerned.
+
+However, Git is not the only program that parses .gitignore because
+.gitignore is useful to distinguish build artifacts from source files.
+
+For example, tar(1) supports the --exclude-vcs-ignore option. As of
+writing, this option does not work perfectly, but it intends to create
+a tarball excluding files specified by .gitignore.
+
+So, I believe it is better to fix this issue.
+
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
+
+Changes in v2:
+  - Add more information to the commit log to clarify my main motivation
+
+ arch/sh/boot/.gitignore | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/sh/boot/.gitignore b/arch/sh/boot/.gitignore
+index 541087d..f50fdd9 100644
+--- a/arch/sh/boot/.gitignore
++++ b/arch/sh/boot/.gitignore
+@@ -1,3 +1,4 @@
+ zImage
+ vmlinux*
+ uImage*
++!vmlinux.scr
 -- 
-Thanks,
-~Nick Desaulniers
+2.7.4
+
