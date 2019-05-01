@@ -2,84 +2,52 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 86A2110887
-	for <lists+linux-sh@lfdr.de>; Wed,  1 May 2019 15:56:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D1B810C23
+	for <lists+linux-sh@lfdr.de>; Wed,  1 May 2019 19:40:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726165AbfEAN4c (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 1 May 2019 09:56:32 -0400
-Received: from conuserg-09.nifty.com ([210.131.2.76]:64236 "EHLO
-        conuserg-09.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726382AbfEAN4c (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 1 May 2019 09:56:32 -0400
-X-Greylist: delayed 170526 seconds by postgrey-1.27 at vger.kernel.org; Wed, 01 May 2019 09:56:31 EDT
-Received: from grover.flets-west.jp (softbank126125154137.bbtec.net [126.125.154.137]) (authenticated)
-        by conuserg-09.nifty.com with ESMTP id x41Du4f1032765;
-        Wed, 1 May 2019 22:56:04 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-09.nifty.com x41Du4f1032765
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1556718965;
-        bh=ryhYQnIGLUAdlmkJ0CgmlDpVjLcz8vDYxbO0QCICOE0=;
-        h=From:To:Cc:Subject:Date:From;
-        b=0e9eaGJD2hULewc4Q/JXTQyET5srmFT2jcjQmeXNBlnVDSwyJBojUPYsSCfmQwD4m
-         UgsTDCBEdVNIXl+we2Po+JzKny6iUhSxe4+lDShuLeE13Z1GU06ezVW74wtfsB3mCq
-         jFvnsakw++53+9eMCPaql8FFKpLwb9vACzPo9c059m9Uz125fvf3W+MKKNj6leIy2C
-         +5RUQI8SGRHLSkGRMxjH+8TReuWeJN7StuB2lp64GhvI1iIUZZ0KdWxhWKU4A1bgnX
-         YWUFgiYOlQr5YX0ZuSpHr4seaFWdJhXJ2Lu//ncu4sSOy5L0H9eVjcWM961YZhv0h+
-         A+pC6oTu/aK7A==
-X-Nifty-SrcIP: [126.125.154.137]
-From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org
-Cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
+        id S1726069AbfEARkX (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 1 May 2019 13:40:23 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:34818 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726019AbfEARkX (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 1 May 2019 13:40:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=QqltW55b8MUQJ4hT00KXOPTP8JAvi8T4BIhthG30Yx4=; b=Siqt2t2t4zEqN0iLnZ24k3d+G
+        m82DDcwqoZT5k50q5BTCcMKa9H/ZjhdrxxVMbvw0X84aALXe96hXoi+M8jXdAaMkLtfD35nXhwQ/j
+        j6v9Eqb9c5oEJHEWYzvOkaM3yRkKH/AOTh4DbKtkliloZyGQIToOHq3cjzZMuJTIG1lexvBOCqwV2
+        3JZvLH8Bcv0R/w5z0VAfKIQezaMIteokjtW3COC7nesut2A/fcsLFphoXc9+z38BaT7MkEB9u9i4y
+        g+IucfVsN5mxw4RRjt9zVQdSFpTp4DwV9+waGcdbovSiuEsdfpHbvAzIiThaSOoECuJM3rY2rDeAz
+        SZCd2toTA==;
+Received: from adsl-173-228-226-134.prtc.net ([173.228.226.134] helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1hLtDQ-0005te-Ro; Wed, 01 May 2019 17:40:21 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     Oleg Nesterov <oleg@redhat.com>, Arnd Bergmann <arnd@arndb.de>
+Cc:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-sh@vger.kernel.org, linux-arch@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v2] sh: exclude vmlinux.scr from .gitignore pattern
-Date:   Wed,  1 May 2019 22:56:01 +0900
-Message-Id: <1556718961-4607-1-git-send-email-yamada.masahiro@socionext.com>
-X-Mailer: git-send-email 2.7.4
+Subject: remove asm-generic/ptrace.h
+Date:   Wed,  1 May 2019 13:39:38 -0400
+Message-Id: <20190501173943.5688-1-hch@lst.de>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-arch/sh/boot/.gitignore has the pattern "vmlinux*"; this is effective
-not only for the current directory, but also for any sub-directories.
+Hi all,
 
-So, from the point of .gitignore grammar, the following check-in files
-are also considered to be ignored:
-
-  arch/sh/boot/compressed/vmlinux.scr
-  arch/sh/boot/romimage/vmlinux.scr
-
-As the manual gitignore(5) says "Files already tracked by Git are not
-affected", this is not a problem as far as Git is concerned.
-
-However, Git is not the only program that parses .gitignore because
-.gitignore is useful to distinguish build artifacts from source files.
-
-For example, tar(1) supports the --exclude-vcs-ignore option. As of
-writing, this option does not work perfectly, but it intends to create
-a tarball excluding files specified by .gitignore.
-
-So, I believe it is better to fix this issue.
-
-Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
----
-
-Changes in v2:
-  - Add more information to the commit log to clarify my main motivation
-
- arch/sh/boot/.gitignore | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/sh/boot/.gitignore b/arch/sh/boot/.gitignore
-index 541087d..f50fdd9 100644
---- a/arch/sh/boot/.gitignore
-+++ b/arch/sh/boot/.gitignore
-@@ -1,3 +1,4 @@
- zImage
- vmlinux*
- uImage*
-+!vmlinux.scr
--- 
-2.7.4
-
+asm-generic/ptrace.h is a little weird in that it doesn't actually
+implement any functionality, but it provided multiple layers of macros
+that just implement trivial inline functions.  We implement those
+directly in the few architectures and be off with a much simpler
+design.
