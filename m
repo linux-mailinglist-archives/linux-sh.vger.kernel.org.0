@@ -2,58 +2,75 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 16F8411AA1
-	for <lists+linux-sh@lfdr.de>; Thu,  2 May 2019 16:01:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE0C311DE6
+	for <lists+linux-sh@lfdr.de>; Thu,  2 May 2019 17:37:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726270AbfEBOBf (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 2 May 2019 10:01:35 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:44032 "EHLO mx1.redhat.com"
+        id S1728984AbfEBPff (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 2 May 2019 11:35:35 -0400
+Received: from ozlabs.org ([203.11.71.1]:53831 "EHLO ozlabs.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726197AbfEBOBf (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Thu, 2 May 2019 10:01:35 -0400
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S1728963AbfEBPbV (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Thu, 2 May 2019 11:31:21 -0400
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id CC2A9307EA9F;
-        Thu,  2 May 2019 14:01:28 +0000 (UTC)
-Received: from dhcp-27-174.brq.redhat.com (unknown [10.43.17.159])
-        by smtp.corp.redhat.com (Postfix) with SMTP id DE7E57D3E6;
-        Thu,  2 May 2019 14:01:24 +0000 (UTC)
-Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
-        oleg@redhat.com; Thu,  2 May 2019 16:01:27 +0200 (CEST)
-Date:   Thu, 2 May 2019 16:01:22 +0200
-From:   Oleg Nesterov <oleg@redhat.com>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: remove asm-generic/ptrace.h
-Message-ID: <20190502140122.GC7323@redhat.com>
-References: <20190501173943.5688-1-hch@lst.de>
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 44vzkR0Xvsz9sPk;
+        Fri,  3 May 2019 01:31:11 +1000 (AEST)
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Mike Rapoport <rppt@linux.ibm.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Ley Foon Tan <lftan@altera.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Eric Biederman <ebiederm@xmission.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        nios2-dev@lists.rocketboards.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-mm@kvack.org, kexec@lists.infradead.org,
+        Mike Rapoport <rppt@linux.ibm.com>
+Subject: Re: [PATCH] memblock: make keeping memblock memory opt-in rather than opt-out
+In-Reply-To: <1556102150-32517-1-git-send-email-rppt@linux.ibm.com>
+References: <1556102150-32517-1-git-send-email-rppt@linux.ibm.com>
+Date:   Fri, 03 May 2019 01:31:10 +1000
+Message-ID: <87h8acyitd.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190501173943.5688-1-hch@lst.de>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.44]); Thu, 02 May 2019 14:01:34 +0000 (UTC)
+Content-Type: text/plain
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 05/01, Christoph Hellwig wrote:
->
-> Hi all,
->
-> asm-generic/ptrace.h is a little weird in that it doesn't actually
-> implement any functionality, but it provided multiple layers of macros
-> that just implement trivial inline functions.  We implement those
-> directly in the few architectures and be off with a much simpler
-> design.
+Mike Rapoport <rppt@linux.ibm.com> writes:
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index 2d0be82..39877b9 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -143,6 +143,7 @@ config PPC
+>  	select ARCH_HAS_UBSAN_SANITIZE_ALL
+>  	select ARCH_HAS_ZONE_DEVICE		if PPC_BOOK3S_64
+>  	select ARCH_HAVE_NMI_SAFE_CMPXCHG
+> +	select ARCH_KEEP_MEMBLOCK
 
-Oh, thanks, I was always confused by these macros ;)
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
-Oleg.
-
+cheers
