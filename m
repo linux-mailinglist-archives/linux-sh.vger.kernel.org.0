@@ -2,47 +2,72 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 22B3B12082
-	for <lists+linux-sh@lfdr.de>; Thu,  2 May 2019 18:46:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA04F124F5
+	for <lists+linux-sh@lfdr.de>; Fri,  3 May 2019 01:15:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726510AbfEBQq2 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-sh@lfdr.de>); Thu, 2 May 2019 12:46:28 -0400
-Received: from static-189-206-130-57.alestra.net.mx ([189.206.130.57]:37971
-        "EHLO mail.lux.mx" rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org
-        with ESMTP id S1726203AbfEBQq2 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 2 May 2019 12:46:28 -0400
-X-Greylist: delayed 395 seconds by postgrey-1.27 at vger.kernel.org; Thu, 02 May 2019 12:46:28 EDT
-Received: from localhost (localhost [127.0.0.1])
-        by mail.lux.mx (Postfix) with ESMTP id 60993664D9;
-        Thu,  2 May 2019 11:34:10 -0500 (CDT)
-Received: from mail.lux.mx ([127.0.0.1])
-        by localhost (mail.lux.mx [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id DOf0LnDZd7k9; Thu,  2 May 2019 11:34:09 -0500 (CDT)
-Received: from mail.lux.mx (localhost [127.0.0.1])
-        by mail.lux.mx (Postfix) with ESMTPS id DE8A466AD5;
-        Thu,  2 May 2019 11:34:08 -0500 (CDT)
-Received: from [172.20.10.4] (unknown [223.225.70.146])
-        by mail.lux.mx (Postfix) with ESMTPSA id C68A46672B;
-        Thu,  2 May 2019 11:33:30 -0500 (CDT)
-Content-Type: text/plain; charset="iso-8859-1"
+        id S1726300AbfEBXPr (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 2 May 2019 19:15:47 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:50848 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726053AbfEBXPr (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 2 May 2019 19:15:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=x1JkGI4CQYrmvxuM8WIiLxnMqgmcALyQZwo7P71BME0=; b=aMGrAGbRVDdw1l/sw+gckS+sI
+        yDZRI+3C+9JVbYF5x2TNO2v6ZU46vYBCxSlqgSFAyRpfREdxjyopf5mVIOuO+jPgRBsXJd2WNYSnF
+        /I8A7c2f4ZPKJ2BAsrHVAa3XgZa1Qf5UknK5MzQ/VET/Ij0UeqKBGlYDO7wlzooU0qq4VGVtOuSH8
+        FfL6+e4qqO0V8zFTtborrXEeCSKP8gI1CQxx/4VKLrA/KtJTKs3viL4v8Jq+vuEbUwPtPTqSnacch
+        i7OH8Qeq65dZyi5x87J8wju+DihRuYLLXhCq55dy1ya/+objw3Kmmh7K6U5nQGlGqynqD2RbtFQiK
+        OqNefzOAw==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1hMKvW-0006KY-Ob; Thu, 02 May 2019 23:15:42 +0000
+Date:   Thu, 2 May 2019 16:15:42 -0700
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Christoph Hellwig <hch@infradead.org>,
+        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        linuxppc-dev@lists.ozlabs.org,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Hillf Danton <dhillf@gmail.com>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
+        Paul Mundt <lethal@linux-sh.org>, Stas Sergeev <stsp@list.ru>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Khalid Aziz <khalid.aziz@oracle.com>,
+        Nitin Gupta <nitin.m.gupta@oracle.com>,
+        sparclinux@vger.kernel.org
+Subject: Re: Linux 5.1-rc5
+Message-ID: <20190502231542.GA9336@infradead.org>
+References: <CAHk-=wjvcuyCQGnfOhooaL1H4H63qXO=xgo+9yncSOG=eK+kbA@mail.gmail.com>
+ <20190415051919.GA31481@infradead.org>
+ <CAHk-=wj7jgMOVFW0tiU-X+zhg6+Rn7mEBTej+f26rV3zXezOSA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: RE
-To:     Recipients <mv12836@masvision.mx>
-From:   "Ella Golan" <mv12836@masvision.mx>
-Date:   Thu, 02 May 2019 09:32:48 -0700
-Reply-To: 3173910591@qq.com
-Message-Id: <20190502163330.C68A46672B@mail.lux.mx>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wj7jgMOVFW0tiU-X+zhg6+Rn7mEBTej+f26rV3zXezOSA@mail.gmail.com>
+User-Agent: Mutt/1.9.2 (2017-12-15)
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-My name is Ms Ella Golan, I'm the Chief Executive Officer (C.P.A) of the First International Bank of Israel (FIBI).
-I'm getting in touch with you in regards to a very important and urgent matter.
-Kindly respond back at your earliest convenience so
-I can provide you the details.
+On Mon, Apr 15, 2019 at 09:17:10AM -0700, Linus Torvalds wrote:
+> I ruthlessly also entirely ignored MIPS, SH and sparc, since they seem
+> largely irrelevant, partly since even theoretically this whole issue
+> needs a _lot_ of memory.
 
-Faithfully,
-Ms Ella Golan
+Adding the relevant people - while the might be irrelevant, at least
+mips and sparc have some giant memory systems.  And I'd really like
+to see the arch-specific GUP implementations to go away for other
+reasons, as we have a few issues to sort out with GUP usage now
+(we just had discussions at LSF/MM), and the less implementations we
+have to deal with the better.
