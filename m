@@ -2,75 +2,47 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CE0C311DE6
-	for <lists+linux-sh@lfdr.de>; Thu,  2 May 2019 17:37:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22B3B12082
+	for <lists+linux-sh@lfdr.de>; Thu,  2 May 2019 18:46:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728984AbfEBPff (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 2 May 2019 11:35:35 -0400
-Received: from ozlabs.org ([203.11.71.1]:53831 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728963AbfEBPbV (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Thu, 2 May 2019 11:31:21 -0400
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 44vzkR0Xvsz9sPk;
-        Fri,  3 May 2019 01:31:11 +1000 (AEST)
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Mike Rapoport <rppt@linux.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Richard Kuo <rkuo@codeaurora.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Ley Foon Tan <lftan@altera.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Eric Biederman <ebiederm@xmission.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        nios2-dev@lists.rocketboards.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-mm@kvack.org, kexec@lists.infradead.org,
-        Mike Rapoport <rppt@linux.ibm.com>
-Subject: Re: [PATCH] memblock: make keeping memblock memory opt-in rather than opt-out
-In-Reply-To: <1556102150-32517-1-git-send-email-rppt@linux.ibm.com>
-References: <1556102150-32517-1-git-send-email-rppt@linux.ibm.com>
-Date:   Fri, 03 May 2019 01:31:10 +1000
-Message-ID: <87h8acyitd.fsf@concordia.ellerman.id.au>
+        id S1726510AbfEBQq2 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-sh@lfdr.de>); Thu, 2 May 2019 12:46:28 -0400
+Received: from static-189-206-130-57.alestra.net.mx ([189.206.130.57]:37971
+        "EHLO mail.lux.mx" rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org
+        with ESMTP id S1726203AbfEBQq2 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 2 May 2019 12:46:28 -0400
+X-Greylist: delayed 395 seconds by postgrey-1.27 at vger.kernel.org; Thu, 02 May 2019 12:46:28 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by mail.lux.mx (Postfix) with ESMTP id 60993664D9;
+        Thu,  2 May 2019 11:34:10 -0500 (CDT)
+Received: from mail.lux.mx ([127.0.0.1])
+        by localhost (mail.lux.mx [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id DOf0LnDZd7k9; Thu,  2 May 2019 11:34:09 -0500 (CDT)
+Received: from mail.lux.mx (localhost [127.0.0.1])
+        by mail.lux.mx (Postfix) with ESMTPS id DE8A466AD5;
+        Thu,  2 May 2019 11:34:08 -0500 (CDT)
+Received: from [172.20.10.4] (unknown [223.225.70.146])
+        by mail.lux.mx (Postfix) with ESMTPSA id C68A46672B;
+        Thu,  2 May 2019 11:33:30 -0500 (CDT)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: RE
+To:     Recipients <mv12836@masvision.mx>
+From:   "Ella Golan" <mv12836@masvision.mx>
+Date:   Thu, 02 May 2019 09:32:48 -0700
+Reply-To: 3173910591@qq.com
+Message-Id: <20190502163330.C68A46672B@mail.lux.mx>
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Mike Rapoport <rppt@linux.ibm.com> writes:
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 2d0be82..39877b9 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -143,6 +143,7 @@ config PPC
->  	select ARCH_HAS_UBSAN_SANITIZE_ALL
->  	select ARCH_HAS_ZONE_DEVICE		if PPC_BOOK3S_64
->  	select ARCH_HAVE_NMI_SAFE_CMPXCHG
-> +	select ARCH_KEEP_MEMBLOCK
+My name is Ms Ella Golan, I'm the Chief Executive Officer (C.P.A) of the First International Bank of Israel (FIBI).
+I'm getting in touch with you in regards to a very important and urgent matter.
+Kindly respond back at your earliest convenience so
+I can provide you the details.
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-
-cheers
+Faithfully,
+Ms Ella Golan
