@@ -2,72 +2,128 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CA04F124F5
-	for <lists+linux-sh@lfdr.de>; Fri,  3 May 2019 01:15:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27A2B12DC4
+	for <lists+linux-sh@lfdr.de>; Fri,  3 May 2019 14:38:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726300AbfEBXPr (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 2 May 2019 19:15:47 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:50848 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726053AbfEBXPr (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 2 May 2019 19:15:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=x1JkGI4CQYrmvxuM8WIiLxnMqgmcALyQZwo7P71BME0=; b=aMGrAGbRVDdw1l/sw+gckS+sI
-        yDZRI+3C+9JVbYF5x2TNO2v6ZU46vYBCxSlqgSFAyRpfREdxjyopf5mVIOuO+jPgRBsXJd2WNYSnF
-        /I8A7c2f4ZPKJ2BAsrHVAa3XgZa1Qf5UknK5MzQ/VET/Ij0UeqKBGlYDO7wlzooU0qq4VGVtOuSH8
-        FfL6+e4qqO0V8zFTtborrXEeCSKP8gI1CQxx/4VKLrA/KtJTKs3viL4v8Jq+vuEbUwPtPTqSnacch
-        i7OH8Qeq65dZyi5x87J8wju+DihRuYLLXhCq55dy1ya/+objw3Kmmh7K6U5nQGlGqynqD2RbtFQiK
-        OqNefzOAw==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1hMKvW-0006KY-Ob; Thu, 02 May 2019 23:15:42 +0000
-Date:   Thu, 2 May 2019 16:15:42 -0700
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Christoph Hellwig <hch@infradead.org>,
-        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        linuxppc-dev@lists.ozlabs.org,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Hillf Danton <dhillf@gmail.com>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
-        Paul Mundt <lethal@linux-sh.org>, Stas Sergeev <stsp@list.ru>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Khalid Aziz <khalid.aziz@oracle.com>,
-        Nitin Gupta <nitin.m.gupta@oracle.com>,
-        sparclinux@vger.kernel.org
-Subject: Re: Linux 5.1-rc5
-Message-ID: <20190502231542.GA9336@infradead.org>
-References: <CAHk-=wjvcuyCQGnfOhooaL1H4H63qXO=xgo+9yncSOG=eK+kbA@mail.gmail.com>
- <20190415051919.GA31481@infradead.org>
- <CAHk-=wj7jgMOVFW0tiU-X+zhg6+Rn7mEBTej+f26rV3zXezOSA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wj7jgMOVFW0tiU-X+zhg6+Rn7mEBTej+f26rV3zXezOSA@mail.gmail.com>
-User-Agent: Mutt/1.9.2 (2017-12-15)
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+        id S1727165AbfECMiV (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 3 May 2019 08:38:21 -0400
+Received: from conuserg-07.nifty.com ([210.131.2.74]:35957 "EHLO
+        conuserg-07.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726897AbfECMiV (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 3 May 2019 08:38:21 -0400
+Received: from grover.flets-west.jp (softbank126125154139.bbtec.net [126.125.154.139]) (authenticated)
+        by conuserg-07.nifty.com with ESMTP id x43CbuW9020722;
+        Fri, 3 May 2019 21:37:57 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-07.nifty.com x43CbuW9020722
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1556887077;
+        bh=N7oCkXQfepu6l+UAHVtt5vfxPNB5K7tbRYmyelOMNYM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=utdjWpxmGnVSZlPDbdmUSctuhbvdk/+xastR2qAA9SFYQC9pF8dDKTe07nQv3bnSK
+         n1IsL8kt+BBPcpKV/aAJcexyRpu0CLMhflaktEF8LVR2EvMfCV5VwBPILgeeNlOpPB
+         FoAtf3f1tLGfqy1tjdIohPQfR6JbVfEENM6gAUrmEBCwvP0dbte8eJGU+BfTIcCuzz
+         397zHtom+oyAWBXgbje71WSOWgaEm9YDrt/wQU9eShTtElu32YlQ1BvkXDd+98ik0f
+         gnBEede0sb/LLcyjg6eMdWYMh0IgHCv+GYNZjq/vS0LKZBRUG1mXHPeJ9bSxKA7mV6
+         b6qQX/b1d8ERA==
+X-Nifty-SrcIP: [126.125.154.139]
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     x86@kernel.org, linux-sh@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Masahiro Yamada <yamada.masahiro@socionext.com>
+Subject: [PATCH] x86,sh: use __builtin_constant_p() directly instead of IS_IMMEDIATE()
+Date:   Fri,  3 May 2019 21:37:44 +0900
+Message-Id: <1556887064-12882-1-git-send-email-yamada.masahiro@socionext.com>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Mon, Apr 15, 2019 at 09:17:10AM -0700, Linus Torvalds wrote:
-> I ruthlessly also entirely ignored MIPS, SH and sparc, since they seem
-> largely irrelevant, partly since even theoretically this whole issue
-> needs a _lot_ of memory.
+__builtin_constant_p(nr) is used everywhere now. It does not make
+much sense to define IS_IMMEDIATE() as its alias.
 
-Adding the relevant people - while the might be irrelevant, at least
-mips and sparc have some giant memory systems.  And I'd really like
-to see the arch-specific GUP implementations to go away for other
-reasons, as we have a few issues to sort out with GUP usage now
-(we just had discussions at LSF/MM), and the less implementations we
-have to deal with the better.
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
+
+ arch/sh/include/asm/bitops-op32.h | 8 +++-----
+ arch/x86/include/asm/bitops.h     | 7 +++----
+ 2 files changed, 6 insertions(+), 9 deletions(-)
+
+diff --git a/arch/sh/include/asm/bitops-op32.h b/arch/sh/include/asm/bitops-op32.h
+index 4668803..cfe5465 100644
+--- a/arch/sh/include/asm/bitops-op32.h
++++ b/arch/sh/include/asm/bitops-op32.h
+@@ -16,11 +16,9 @@
+ #define BYTE_OFFSET(nr)		((nr) % BITS_PER_BYTE)
+ #endif
+ 
+-#define IS_IMMEDIATE(nr)	(__builtin_constant_p(nr))
+-
+ static inline void __set_bit(int nr, volatile unsigned long *addr)
+ {
+-	if (IS_IMMEDIATE(nr)) {
++	if (__builtin_constant_p(nr)) {
+ 		__asm__ __volatile__ (
+ 			"bset.b %1, @(%O2,%0)		! __set_bit\n\t"
+ 			: "+r" (addr)
+@@ -37,7 +35,7 @@ static inline void __set_bit(int nr, volatile unsigned long *addr)
+ 
+ static inline void __clear_bit(int nr, volatile unsigned long *addr)
+ {
+-	if (IS_IMMEDIATE(nr)) {
++	if (__builtin_constant_p(nr)) {
+ 		__asm__ __volatile__ (
+ 			"bclr.b %1, @(%O2,%0)		! __clear_bit\n\t"
+ 			: "+r" (addr)
+@@ -64,7 +62,7 @@ static inline void __clear_bit(int nr, volatile unsigned long *addr)
+  */
+ static inline void __change_bit(int nr, volatile unsigned long *addr)
+ {
+-	if (IS_IMMEDIATE(nr)) {
++	if (__builtin_constant_p(nr)) {
+ 		__asm__ __volatile__ (
+ 			"bxor.b %1, @(%O2,%0)		! __change_bit\n\t"
+ 			: "+r" (addr)
+diff --git a/arch/x86/include/asm/bitops.h b/arch/x86/include/asm/bitops.h
+index 8e790ec..2621438 100644
+--- a/arch/x86/include/asm/bitops.h
++++ b/arch/x86/include/asm/bitops.h
+@@ -45,7 +45,6 @@
+  * We do the locked ops that don't return the old value as
+  * a mask operation on a byte.
+  */
+-#define IS_IMMEDIATE(nr)		(__builtin_constant_p(nr))
+ #define CONST_MASK_ADDR(nr, addr)	WBYTE_ADDR((void *)(addr) + ((nr)>>3))
+ #define CONST_MASK(nr)			(1 << ((nr) & 7))
+ 
+@@ -67,7 +66,7 @@
+ static __always_inline void
+ set_bit(long nr, volatile unsigned long *addr)
+ {
+-	if (IS_IMMEDIATE(nr)) {
++	if (__builtin_constant_p(nr)) {
+ 		asm volatile(LOCK_PREFIX "orb %1,%0"
+ 			: CONST_MASK_ADDR(nr, addr)
+ 			: "iq" ((u8)CONST_MASK(nr))
+@@ -105,7 +104,7 @@ static __always_inline void __set_bit(long nr, volatile unsigned long *addr)
+ static __always_inline void
+ clear_bit(long nr, volatile unsigned long *addr)
+ {
+-	if (IS_IMMEDIATE(nr)) {
++	if (__builtin_constant_p(nr)) {
+ 		asm volatile(LOCK_PREFIX "andb %1,%0"
+ 			: CONST_MASK_ADDR(nr, addr)
+ 			: "iq" ((u8)~CONST_MASK(nr)));
+@@ -186,7 +185,7 @@ static __always_inline void __change_bit(long nr, volatile unsigned long *addr)
+  */
+ static __always_inline void change_bit(long nr, volatile unsigned long *addr)
+ {
+-	if (IS_IMMEDIATE(nr)) {
++	if (__builtin_constant_p(nr)) {
+ 		asm volatile(LOCK_PREFIX "xorb %1,%0"
+ 			: CONST_MASK_ADDR(nr, addr)
+ 			: "iq" ((u8)CONST_MASK(nr)));
+-- 
+2.7.4
+
