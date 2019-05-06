@@ -2,59 +2,54 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CD9E12F27
-	for <lists+linux-sh@lfdr.de>; Fri,  3 May 2019 15:30:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BFF01483F
+	for <lists+linux-sh@lfdr.de>; Mon,  6 May 2019 12:15:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727555AbfECN3l (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 3 May 2019 09:29:41 -0400
-Received: from mail-qt1-f194.google.com ([209.85.160.194]:42571 "EHLO
-        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727571AbfECN3i (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 3 May 2019 09:29:38 -0400
-Received: by mail-qt1-f194.google.com with SMTP id p20so6618888qtc.9;
-        Fri, 03 May 2019 06:29:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Fk5GUwth5BvvK8Eer/x9OS3rdg8YnckRm3ge9ViV+sM=;
-        b=udjJ3UpUNLkicryui5X5J1mOb2WMgWCodfsJQGlDuMk/SooELJi7C7zXU4pDGfHq9w
-         fKG40sQH/oyLJwOXLn/3K11Tx4o5xEho+FyubzHZ140rPretgeKEAn7Dwjvc6ScyNyeV
-         PoDzekIap76f2Eum3l2RYNtVMIR5jLUcJ9prRgjPxtb69EetxOrE9Vu+kB0swWA2NEI1
-         ZxZGVkGfWe8CerJ96yBP8TFUwAciYqK964tge1T0WyvEx7efd6admiICezNPowUtBBvi
-         dGT+C3ORA92wo5Omp662NyaK9A43Cwi1c2EkazAp3d9SmU5y8WkndgaY6v8LBY4nT7S0
-         iQyw==
-X-Gm-Message-State: APjAAAULLxmAhup1nUJP2QhGqPLmUpgTOyY3KCznnGaSE/aRo3o7jbOI
-        iicC4R96ieY8d0iRU+7zpEoVz8/OmFjNvoY+IdE=
-X-Google-Smtp-Source: APXvYqw8ksabgFtpp8q3N/HfcPgRVYjc/VIhVGxEo5Nm6nyf24/EmnBpzo4QPweVmQKnq4DCKvnFaYM9qsG1Qqd+NVU=
-X-Received: by 2002:a0c:89c8:: with SMTP id 8mr8014801qvs.149.1556890176895;
- Fri, 03 May 2019 06:29:36 -0700 (PDT)
+        id S1726369AbfEFKPV (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 6 May 2019 06:15:21 -0400
+Received: from mail.subredsuroccidente.gov.co ([190.24.142.69]:56195 "EHLO
+        mail.subredsuroccidente.gov.co" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725886AbfEFKPV (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 6 May 2019 06:15:21 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by mail.subredsuroccidente.gov.co (Postfix) with ESMTP id CD1466003C314;
+        Mon,  6 May 2019 05:07:56 -0500 (-05)
+Received: from mail.subredsuroccidente.gov.co ([127.0.0.1])
+        by localhost (mail.subredsuroccidente.gov.co [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id lC4OLNuZG6E5; Mon,  6 May 2019 05:07:56 -0500 (-05)
+Received: from mail.subredsuroccidente.gov.co (localhost [127.0.0.1])
+        by mail.subredsuroccidente.gov.co (Postfix) with ESMTPS id 6A32F6003EC11;
+        Mon,  6 May 2019 05:07:56 -0500 (-05)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.subredsuroccidente.gov.co 6A32F6003EC11
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=subredsuroccidente.gov.co; s=2EEC3DBC-2260-11E9-B606-45ACDB70FA67;
+        t=1557137276; bh=h0qg4hTOtjeGGKNKpEc3cPt261oVjDlc4VR0Cn4oP9U=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=t3i2oQl6Mcqyy3wxuN5BQoKYvNHvbiAoUo0W7JjTbT6U1LBRgD3EaYy6XmMoJjbv0
+         zQlY/Cm6X1GRf03dTMadIAs4sOyfZZQzoOFatehLcB72NWURav65Fdi7N1GJC3Egs1
+         HrZ6PYD9Mxuh2HIPCW1woMXPgg56y+8LcLhBOHs+HCpgpmwp21a4LUDlQXfqGU+TtR
+         Cl4+TUqHAHB1uf6CEm9MEHbXxb2Tj3n3nfEUUWeP/s+8CpZD61+iVxFLvxkrVr7R7d
+         seSbqWA8QjnbVMbJBbhXpUVWYpJfhk5UlvmJk41aOWnBbRYhr6lCRoV6Dip/0uIcGT
+         C1OHAIpfc4gyg==
+Received: from [172.20.10.4] (unknown [110.225.89.76])
+        by mail.subredsuroccidente.gov.co (Postfix) with ESMTPSA id 4ECED6003C33E;
+        Mon,  6 May 2019 05:07:35 -0500 (-05)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-References: <20190501173943.5688-1-hch@lst.de> <20190501173943.5688-6-hch@lst.de>
-In-Reply-To: <20190501173943.5688-6-hch@lst.de>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Fri, 3 May 2019 09:29:20 -0400
-Message-ID: <CAK8P3a2-bFU=2Pmva9qj06JQ44MAW_D-Jaf_0fSExYm1yM8dtQ@mail.gmail.com>
-Subject: Re: [PATCH 5/5] asm-generic: remove ptrace.h
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Oleg Nesterov <oleg@redhat.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-mips@vger.kernel.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: ?
+To:     Recipients <seleccion.personal@subredsuroccidente.gov.co>
+From:   "Ms Ella Golan" <seleccion.personal@subredsuroccidente.gov.co>
+Date:   Mon, 06 May 2019 03:07:13 -0700
+Reply-To: 3173910591@qq.com
+Message-Id: <20190506100736.4ECED6003C33E@mail.subredsuroccidente.gov.co>
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Wed, May 1, 2019 at 1:40 PM Christoph Hellwig <hch@lst.de> wrote:
->
-> No one is using this helper anymore.
->
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+Did you receive my email?
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+Faithfully,
+Ms Ella Golan
