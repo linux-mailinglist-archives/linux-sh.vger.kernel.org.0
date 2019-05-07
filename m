@@ -2,54 +2,92 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BFF01483F
-	for <lists+linux-sh@lfdr.de>; Mon,  6 May 2019 12:15:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8560416A6C
+	for <lists+linux-sh@lfdr.de>; Tue,  7 May 2019 20:41:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726369AbfEFKPV (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 6 May 2019 06:15:21 -0400
-Received: from mail.subredsuroccidente.gov.co ([190.24.142.69]:56195 "EHLO
-        mail.subredsuroccidente.gov.co" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725886AbfEFKPV (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 6 May 2019 06:15:21 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by mail.subredsuroccidente.gov.co (Postfix) with ESMTP id CD1466003C314;
-        Mon,  6 May 2019 05:07:56 -0500 (-05)
-Received: from mail.subredsuroccidente.gov.co ([127.0.0.1])
-        by localhost (mail.subredsuroccidente.gov.co [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id lC4OLNuZG6E5; Mon,  6 May 2019 05:07:56 -0500 (-05)
-Received: from mail.subredsuroccidente.gov.co (localhost [127.0.0.1])
-        by mail.subredsuroccidente.gov.co (Postfix) with ESMTPS id 6A32F6003EC11;
-        Mon,  6 May 2019 05:07:56 -0500 (-05)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.subredsuroccidente.gov.co 6A32F6003EC11
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=subredsuroccidente.gov.co; s=2EEC3DBC-2260-11E9-B606-45ACDB70FA67;
-        t=1557137276; bh=h0qg4hTOtjeGGKNKpEc3cPt261oVjDlc4VR0Cn4oP9U=;
-        h=MIME-Version:To:From:Date:Message-Id;
-        b=t3i2oQl6Mcqyy3wxuN5BQoKYvNHvbiAoUo0W7JjTbT6U1LBRgD3EaYy6XmMoJjbv0
-         zQlY/Cm6X1GRf03dTMadIAs4sOyfZZQzoOFatehLcB72NWURav65Fdi7N1GJC3Egs1
-         HrZ6PYD9Mxuh2HIPCW1woMXPgg56y+8LcLhBOHs+HCpgpmwp21a4LUDlQXfqGU+TtR
-         Cl4+TUqHAHB1uf6CEm9MEHbXxb2Tj3n3nfEUUWeP/s+8CpZD61+iVxFLvxkrVr7R7d
-         seSbqWA8QjnbVMbJBbhXpUVWYpJfhk5UlvmJk41aOWnBbRYhr6lCRoV6Dip/0uIcGT
-         C1OHAIpfc4gyg==
-Received: from [172.20.10.4] (unknown [110.225.89.76])
-        by mail.subredsuroccidente.gov.co (Postfix) with ESMTPSA id 4ECED6003C33E;
-        Mon,  6 May 2019 05:07:35 -0500 (-05)
-Content-Type: text/plain; charset="iso-8859-1"
+        id S1727317AbfEGSiY (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 7 May 2019 14:38:24 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:43722 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726091AbfEGSiX (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Tue, 7 May 2019 14:38:23 -0400
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 5F73F83F3C;
+        Tue,  7 May 2019 18:38:23 +0000 (UTC)
+Received: from t460s.redhat.com (ovpn-116-95.ams2.redhat.com [10.36.116.95])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 5B9301778E;
+        Tue,  7 May 2019 18:38:20 +0000 (UTC)
+From:   David Hildenbrand <david@redhat.com>
+To:     linux-mm@kvack.org
+Cc:     linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, akpm@linux-foundation.org,
+        Dan Williams <dan.j.williams@intel.com>,
+        David Hildenbrand <david@redhat.com>,
+        Oscar Salvador <osalvador@suse.de>,
+        Michal Hocko <mhocko@suse.com>,
+        Pavel Tatashin <pasha.tatashin@soleen.com>,
+        Qian Cai <cai@lca.pw>, Wei Yang <richard.weiyang@gmail.com>,
+        Arun KS <arunks@codeaurora.org>,
+        Mathieu Malaterre <malat@debian.org>
+Subject: [PATCH v2 1/8] mm/memory_hotplug: Simplify and fix check_hotplug_memory_range()
+Date:   Tue,  7 May 2019 20:37:57 +0200
+Message-Id: <20190507183804.5512-2-david@redhat.com>
+In-Reply-To: <20190507183804.5512-1-david@redhat.com>
+References: <20190507183804.5512-1-david@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: ?
-To:     Recipients <seleccion.personal@subredsuroccidente.gov.co>
-From:   "Ms Ella Golan" <seleccion.personal@subredsuroccidente.gov.co>
-Date:   Mon, 06 May 2019 03:07:13 -0700
-Reply-To: 3173910591@qq.com
-Message-Id: <20190506100736.4ECED6003C33E@mail.subredsuroccidente.gov.co>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.27]); Tue, 07 May 2019 18:38:23 +0000 (UTC)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Did you receive my email?
+By converting start and size to page granularity, we actually ignore
+unaligned parts within a page instead of properly bailing out with an
+error.
 
-Faithfully,
-Ms Ella Golan
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
+Cc: Qian Cai <cai@lca.pw>
+Cc: Wei Yang <richard.weiyang@gmail.com>
+Cc: Arun KS <arunks@codeaurora.org>
+Cc: Mathieu Malaterre <malat@debian.org>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+---
+ mm/memory_hotplug.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
+
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index 328878b6799d..202febe88b58 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -1050,16 +1050,11 @@ int try_online_node(int nid)
+ 
+ static int check_hotplug_memory_range(u64 start, u64 size)
+ {
+-	unsigned long block_sz = memory_block_size_bytes();
+-	u64 block_nr_pages = block_sz >> PAGE_SHIFT;
+-	u64 nr_pages = size >> PAGE_SHIFT;
+-	u64 start_pfn = PFN_DOWN(start);
+-
+ 	/* memory range must be block size aligned */
+-	if (!nr_pages || !IS_ALIGNED(start_pfn, block_nr_pages) ||
+-	    !IS_ALIGNED(nr_pages, block_nr_pages)) {
++	if (!size || !IS_ALIGNED(start, memory_block_size_bytes()) ||
++	    !IS_ALIGNED(size, memory_block_size_bytes())) {
+ 		pr_err("Block size [%#lx] unaligned hotplug range: start %#llx, size %#llx",
+-		       block_sz, start, size);
++		       memory_block_size_bytes(), start, size);
+ 		return -EINVAL;
+ 	}
+ 
+-- 
+2.20.1
+
