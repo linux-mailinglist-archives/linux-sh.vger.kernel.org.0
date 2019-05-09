@@ -2,69 +2,132 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E096B1828A
-	for <lists+linux-sh@lfdr.de>; Thu,  9 May 2019 01:09:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FC52182E8
+	for <lists+linux-sh@lfdr.de>; Thu,  9 May 2019 02:45:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726891AbfEHXJd (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 8 May 2019 19:09:33 -0400
-Received: from smtp.nue.novell.com ([195.135.221.5]:41968 "EHLO
-        smtp.nue.novell.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725910AbfEHXJd (ORCPT
-        <rfc822;groupwise-linux-sh@vger.kernel.org:0:0>);
-        Wed, 8 May 2019 19:09:33 -0400
-Received: from emea4-mta.ukb.novell.com ([10.120.13.87])
-        by smtp.nue.novell.com with ESMTP (TLS encrypted); Thu, 09 May 2019 01:09:31 +0200
-Received: from [192.168.1.138] (nwb-a10-snat.microfocus.com [10.120.13.201])
-        by emea4-mta.ukb.novell.com with ESMTP (TLS encrypted); Thu, 09 May 2019 00:09:14 +0100
-Message-ID: <1557356938.3028.35.camel@suse.com>
-Subject: Re: [PATCH v2 5/8] mm/memory_hotplug: Drop MHP_MEMBLOCK_API
-From:   osalvador <osalvador@suse.com>
-To:     David Hildenbrand <david@redhat.com>,
-        Dan Williams <dan.j.williams@intel.com>
-Cc:     Linux MM <linux-mm@kvack.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-ia64@vger.kernel.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Linux-sh <linux-sh@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Michal Hocko <mhocko@suse.com>,
-        Pavel Tatashin <pasha.tatashin@soleen.com>,
-        Wei Yang <richard.weiyang@gmail.com>,
-        Joonsoo Kim <iamjoonsoo.kim@lge.com>, Qian Cai <cai@lca.pw>,
-        Arun KS <arunks@codeaurora.org>,
-        Mathieu Malaterre <malat@debian.org>
-Date:   Thu, 09 May 2019 01:08:58 +0200
-In-Reply-To: <edd762a1-c012-fe05-a72e-2505cd98188a@redhat.com>
-References: <20190507183804.5512-1-david@redhat.com>
-         <20190507183804.5512-6-david@redhat.com>
-         <CAPcyv4ge1pSOopfHof4USn=7Skc-UV4Xhd_s=h+M9VXSp_p1XQ@mail.gmail.com>
-         <d83fec16-ceff-2f6f-72e1-48996187d5ba@redhat.com>
-         <CAPcyv4iRQteuT9yESvbUyhp3KVVgTXDiGAo+TwPCM_4f0CzBgg@mail.gmail.com>
-         <edd762a1-c012-fe05-a72e-2505cd98188a@redhat.com>
+        id S1726406AbfEIApN (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 8 May 2019 20:45:13 -0400
+Received: from conssluserg-01.nifty.com ([210.131.2.80]:46571 "EHLO
+        conssluserg-01.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725778AbfEIApN (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 8 May 2019 20:45:13 -0400
+Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com [209.85.217.52]) (authenticated)
+        by conssluserg-01.nifty.com with ESMTP id x490infd010328;
+        Thu, 9 May 2019 09:44:50 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-01.nifty.com x490infd010328
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1557362690;
+        bh=0MJ5gBk9NRKE+Xi+tjUDFK3eCRm84EkfBQ9ymup5aDQ=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=JCmHD6FJ7iNgcYdHMB5zTIsTAP7bIjGlPPobtg1f2Q2FvhijqnOCXbOKna11KNeLQ
+         WpMTsaOPSZQnUp5eopUmN8nRhBrSrw33r962kOmH/U5zm0+XCV34Nhj+vLd+iv7LWT
+         0JS/gINTKHMBvZidFga5kouW0LBDrL9RaXG/IoGcBqrpVkV4yHqEuvApEwMTleFyk6
+         5YDjjRh1aJ24jAOx9F8OWGS5s+dZUQe8O5ByYECWS6tvFRKln/LLLllRSIRDZikxPY
+         7EC42+AlUaP+1POXNcl0TkcJq0Pwi2cJLTGk38Y7oyxttEHvA04tEwt0iV3eTabLE1
+         L8yZFxsPVC81w==
+X-Nifty-SrcIP: [209.85.217.52]
+Received: by mail-vs1-f52.google.com with SMTP id w13so318678vsc.4;
+        Wed, 08 May 2019 17:44:50 -0700 (PDT)
+X-Gm-Message-State: APjAAAWQnED/cgLloX4Wl10OdtYnTF/J24QxRMdZIG6xke6EBMbHdKrS
+        nMTqnLH5bQzITOborouoMopiYaD/teW1pNTRHOU=
+X-Google-Smtp-Source: APXvYqwujd8VQ7C7fjwmTWsVvb+gGV78HZwL+W/GhjjHb1n2rFF6hKbmLpl2sQdPvzBX0m4xAkUZgXoTgfMu6VgzPZE=
+X-Received: by 2002:a67:fc4:: with SMTP id 187mr702130vsp.215.1557362689436;
+ Wed, 08 May 2019 17:44:49 -0700 (PDT)
+MIME-Version: 1.0
+References: <CAK7LNASLBQ=w9YFBD80s7dit1bd_Tr+ggVyRNms0jf1pR9k=ZA@mail.gmail.com>
+ <20190424180223.253025-1-ndesaulniers@google.com> <CAKwvOd=5SVBFsfEgYc9Dpgr--h+pQgCwOnpAjg9B4HG2VY6kFg@mail.gmail.com>
+ <CAKwvOdkpjwgt3pP9rjZtm=rEK9MhEfQdc6PEr91Bnb9tMVDBEA@mail.gmail.com>
+In-Reply-To: <CAKwvOdkpjwgt3pP9rjZtm=rEK9MhEfQdc6PEr91Bnb9tMVDBEA@mail.gmail.com>
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+Date:   Thu, 9 May 2019 09:44:13 +0900
+X-Gmail-Original-Message-ID: <CAK7LNASL+oNNbZ4YaPtGnwka06sRr3Pz8HjjM7oxUC-JkvqF2Q@mail.gmail.com>
+Message-ID: <CAK7LNASL+oNNbZ4YaPtGnwka06sRr3Pz8HjjM7oxUC-JkvqF2Q@mail.gmail.com>
+Subject: Re: [PATCH v2] sh: vsyscall: drop unnecessary cc-ldoption
+To:     Nick Desaulniers <ndesaulniers@google.com>
+Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Wed, 2019-05-08 at 09:39 +0200, David Hildenbrand wrote:
-> However I haven't really thought it through yet, smalles like that
-> could
-> as well just be handled by the caller of
-> arch_add_memory()/arch_remove_memory() eventually, passing it via
-> something like the altmap parameter.
-> 
-> Let's leave it in place for now, we can talk about that once we have
-> new
-> patches from Oscar.
-Hi David,
+On Thu, May 9, 2019 at 5:13 AM Nick Desaulniers <ndesaulniers@google.com> wrote:
+>
+> bumping for review, as the merge window is now open.
 
-I plan to send a new patchset once this is and Dan's are merged,
-otherwise I will have a mayhem with the conflicts.
 
-I also plan/want to review this patchset, but time is tight this week.
+sh is not very active these days.
 
+I applied this to my kbuild tree.
+I will send PR for this in the current MW.
+
+Thanks.
+
+
+
+> On Tue, Apr 30, 2019 at 1:26 PM Nick Desaulniers
+> <ndesaulniers@google.com> wrote:
+> >
+> > On Wed, Apr 24, 2019 at 11:02 AM Nick Desaulniers
+> > <ndesaulniers@google.com> wrote:
+> > >
+> > > Towards the goal of removing cc-ldoption, it seems that --hash-style=
+> > > was added to binutils 2.17.50.0.2 in 2006. The minimal required version
+> > > of binutils for the kernel according to
+> > > Documentation/process/changes.rst is 2.20.
+> > >
+> > > Link: https://gcc.gnu.org/ml/gcc/2007-01/msg01141.html
+> > > Cc: clang-built-linux@googlegroups.com
+> > > Suggested-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+> > > Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+> > > ---
+> > > Changes V1 -> V2:
+> > > * update commit subject and message as per Masahiro/Geert.
+> > >
+> > > To Geert's question about minimum binutils versions; no change needed to
+> > > binutils.
+> > >
+> > >
+> > >  arch/sh/kernel/vsyscall/Makefile | 3 +--
+> > >  1 file changed, 1 insertion(+), 2 deletions(-)
+> > >
+> > > diff --git a/arch/sh/kernel/vsyscall/Makefile b/arch/sh/kernel/vsyscall/Makefile
+> > > index 5db6579bc44c..6e8664448048 100644
+> > > --- a/arch/sh/kernel/vsyscall/Makefile
+> > > +++ b/arch/sh/kernel/vsyscall/Makefile
+> > > @@ -15,8 +15,7 @@ quiet_cmd_syscall = SYSCALL $@
+> > >
+> > >  export CPPFLAGS_vsyscall.lds += -P -C -Ush
+> > >
+> > > -vsyscall-flags = -shared -s -Wl,-soname=linux-gate.so.1 \
+> > > -               $(call cc-ldoption, -Wl$(comma)--hash-style=sysv)
+> > > +vsyscall-flags = -shared -s -Wl,-soname=linux-gate.so.1 -Wl,--hash-style=sysv
+> > >
+> > >  SYSCFLAGS_vsyscall-trapa.so    = $(vsyscall-flags)
+> > >
+> > > --
+> > > 2.21.0.593.g511ec345e18-goog
+> > >
+> >
+> > bumping for review
+> > --
+> > Thanks,
+> > ~Nick Desaulniers
+>
+>
+>
+> --
+> Thanks,
+> ~Nick Desaulniers
+
+
+
+-- 
+Best Regards
+Masahiro Yamada
