@@ -2,129 +2,171 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CB23E20B3B
-	for <lists+linux-sh@lfdr.de>; Thu, 16 May 2019 17:29:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFD25222C5
+	for <lists+linux-sh@lfdr.de>; Sat, 18 May 2019 11:48:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727398AbfEPP30 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 16 May 2019 11:29:26 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:42378 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727754AbfEPP3V (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 16 May 2019 11:29:21 -0400
-Received: by mail-ed1-f66.google.com with SMTP id l25so5808398eda.9
-        for <linux-sh@vger.kernel.org>; Thu, 16 May 2019 08:29:20 -0700 (PDT)
+        id S1729821AbfERJsK (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sat, 18 May 2019 05:48:10 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:37871 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729375AbfERJsH (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sat, 18 May 2019 05:48:07 -0400
+Received: by mail-pg1-f193.google.com with SMTP id n27so1858444pgm.4
+        for <linux-sh@vger.kernel.org>; Sat, 18 May 2019 02:48:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brauner.io; s=google;
+        d=joelfernandes.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=ZqfBKUXmncS+f99++ptXSxdqupLw9zmhEoHFhOKQ3+w=;
-        b=TH4z/rM7ErguN84LC3AmRg3JM/hVu0pzNCfG54H90jzb63FEyWpgQxI/RMgxJKMw0P
-         YMcyNk31xsPD9o3Q8SwKVFbPkeg8kucRDIsE3yDY3iiXnyBwTwnYxeZvDW5/V+wBXU6a
-         4Whkmp9tF7azl07xuKt/fN1RfMwR7c1B7epJGJ4YizDr1inzgV4yUswyquIaazuD7NSA
-         +Y7PT7f4mQIjQrv4yQyYO9MGe0DD0FnBStZnFHo1gVuPfCi9qKCZU5pU6DsIxSnGA9Ik
-         9SEOtQn5L4G4624dzeKPE3TTelvggQSyZJ+x/s6KcHf9L4yAiTiSgxh1JqlUq122MXzB
-         4CVw==
+        bh=3iehYO9/3dGuR87aVQtHa+k708l2fZGn5LAWJUJw+bI=;
+        b=jbJ+akl1Oebe/G2zixKM7D3g8/7+hvJdUcG9NJHMi65TbSXZ/qBbCGH1hwdCWFXEia
+         v5u721IWYUqsCoQEJBSjN5yxaOqNgOIUlFkv4bfOYzMj0px06ZqOaLQiVXwSfSdOtkCb
+         eut+PHPZD1xgK0wVWmv7MP53RNVrElPU0eYIU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=ZqfBKUXmncS+f99++ptXSxdqupLw9zmhEoHFhOKQ3+w=;
-        b=fSNAOpEiuUJsadLAWkPlLX2xP/QWpftmNqjel7Lnuj1lhVZy8OYGoleC8WuU75f0WA
-         amWw6n6XLFPa+roFVTg0Sw7+bRSV3n4PmfdLhOOI3Q0fIKhlQNa0rTrMwXfyCmF1gzT8
-         PTE5qzR8RSW4WcDjhck2SxAY5Bu9OVsqpfo09IADuUAlJI8mTHMetBDrmP7JBcQ+tmUH
-         x9LKMa2X4X1EmZXzt222h/8jrE/sSTldOs2doGxYJkETkmcnt0sazrqUGndVu6bl/2Dt
-         tTEuhANq+AgWQt+dyWpl816Pft1Q/RfXLmz64mA7piCrOuU/dh0vaj3olZOUyk/NXyvY
-         MhMA==
-X-Gm-Message-State: APjAAAUaV2n3gjmmELNaf11zy7iP+RQ255pC2Ve13cdedSbdSMwrguir
-        z8Qxk+cTJVkLuIdHbruyCluUfw==
-X-Google-Smtp-Source: APXvYqzND3qJO+X7rGwmXjyWOGo7yuQQOnxCqVFCr+1kxGCEKNbb6bF5poI+TQvkmuF3C5Oy1BVzkw==
-X-Received: by 2002:a50:a886:: with SMTP id k6mr51048650edc.211.1558020559731;
-        Thu, 16 May 2019 08:29:19 -0700 (PDT)
-Received: from brauner.io ([193.96.224.243])
-        by smtp.gmail.com with ESMTPSA id b4sm1889513edf.7.2019.05.16.08.29.17
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Thu, 16 May 2019 08:29:19 -0700 (PDT)
-Date:   Thu, 16 May 2019 17:29:16 +0200
-From:   Christian Brauner <christian@brauner.io>
-To:     Oleg Nesterov <oleg@redhat.com>
-Cc:     Aleksa Sarai <cyphar@cyphar.com>, jannh@google.com,
-        viro@zeniv.linux.org.uk, torvalds@linux-foundation.org,
-        linux-kernel@vger.kernel.org, arnd@arndb.de,
-        akpm@linux-foundation.org, dhowells@redhat.com,
-        ebiederm@xmission.com, elena.reshetova@intel.com,
-        keescook@chromium.org, luto@amacapital.net, luto@kernel.org,
-        tglx@linutronix.de, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, joel@joelfernandes.org,
-        dancol@google.com, serge@hallyn.com,
+        bh=3iehYO9/3dGuR87aVQtHa+k708l2fZGn5LAWJUJw+bI=;
+        b=QjTlWiuXx59IPRx1a43ZskSlKHCUaTWj9fkSRYvklghzmVWVy+ITq3M3u76oc6de8I
+         1vEVQMFWmphbuc1eK3+4RoWX9Brb1un2Shvw8rBqENUqvo0B3/RCXRSit/N8QUtQA/Za
+         gUJB1AxmX9W8DsmydFIyE6MNVtjpumEFwfL++3lPaQMltqSDHKFoYEU4W/fw4IDZb7PM
+         7woMjjfLP57WVEpyMt+gkrhcxj+BhWNJMFErpMCjuO6RFqZMJxdNncM41otjZ80ocTwj
+         8lgCY4WM0SpA7+VgZfxYQt7iEYxNSxsr5vhJYdUbBvk8btzT+Syf+AlDJ4RejxDv+6Ht
+         kUcg==
+X-Gm-Message-State: APjAAAVE2TV2WIQ+zAuSeT3efTzO8BMTS+liMWKZLDke7qONyLBz2zSt
+        gvYoW9ZKPUYRU3+u6jHUI5px8Q==
+X-Google-Smtp-Source: APXvYqxxxsUFV7eN5OTaebnkzWDt0kd+NHIjUI5fT4y6JUXpDdAsQ8fqEFtPRx00MMYQQHacYxzw8Q==
+X-Received: by 2002:a63:f813:: with SMTP id n19mr60994204pgh.273.1558172886290;
+        Sat, 18 May 2019 02:48:06 -0700 (PDT)
+Received: from localhost ([2620:15c:6:12:9c46:e0da:efbf:69cc])
+        by smtp.gmail.com with ESMTPSA id q4sm14705283pgb.39.2019.05.18.02.48.04
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 18 May 2019 02:48:05 -0700 (PDT)
+Date:   Sat, 18 May 2019 05:48:03 -0400
+From:   Joel Fernandes <joel@joelfernandes.org>
+To:     Christian Brauner <christian@brauner.io>
+Cc:     jannh@google.com, oleg@redhat.com, viro@zeniv.linux.org.uk,
+        torvalds@linux-foundation.org, linux-kernel@vger.kernel.org,
+        arnd@arndb.de, akpm@linux-foundation.org, cyphar@cyphar.com,
+        dhowells@redhat.com, ebiederm@xmission.com,
+        elena.reshetova@intel.com, keescook@chromium.org,
+        luto@amacapital.net, luto@kernel.org, tglx@linutronix.de,
+        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.orgg, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, linux-api@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        dancol@google.com, serge@hallyn.com, surenb@google.com,
         Geert Uytterhoeven <geert@linux-m68k.org>
 Subject: Re: [PATCH v1 1/2] pid: add pidfd_open()
-Message-ID: <20190516152915.3t2wofeu3xsyhfbd@brauner.io>
+Message-ID: <20190516224949.GA15401@localhost>
 References: <20190516135944.7205-1-christian@brauner.io>
- <20190516142659.GB22564@redhat.com>
- <20190516145607.j43xyj26k6l5vmbd@yavin>
- <20190516150611.GC22564@redhat.com>
- <20190516151202.hrawrx7hxllmz2di@yavin>
- <20190516152252.GD22564@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190516152252.GD22564@redhat.com>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <20190516135944.7205-1-christian@brauner.io>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Thu, May 16, 2019 at 05:22:53PM +0200, Oleg Nesterov wrote:
-> On 05/17, Aleksa Sarai wrote:
-> >
-> > On 2019-05-16, Oleg Nesterov <oleg@redhat.com> wrote:
-> > > On 05/17, Aleksa Sarai wrote:
-> > > > On 2019-05-16, Oleg Nesterov <oleg@redhat.com> wrote:
-> > > > > On 05/16, Christian Brauner wrote:
-> > > > > > With the introduction of pidfds through CLONE_PIDFD it is possible to
-> > > > > > created pidfds at process creation time.
-> > > > >
-> > > > > Now I am wondering why do we need CLONE_PIDFD, you can just do
-> > > > >
-> > > > > 	pid = fork();
-> > > > > 	pidfd_open(pid);
-> > > >
-> > > > While the race window would be exceptionally short, there is the
-> > > > possibility that the child will die
-> > >
-> > > Yes,
-> > >
-> > > > and their pid will be recycled
-> > > > before you do pidfd_open().
-> > >
-> > > No.
-> > >
-> > > Unless the caller's sub-thread does wait() before pidfd_open(), of course.
-> > > Or unless you do signal(SIGCHILD, SIG_IGN).
-> >
-> > What about CLONE_PARENT?
-> 
-> I should have mentioned CLONE_PARENT ;)
-> 
-> Of course in this case the child can be reaped before pidfd_open(). But how often
-> do you or other people use clone(CLONE_PARENT) ? not to mention you can trivially
-> eliminate/detect this race if you really need this.
-> 
-> Don't get me wrong, I am not trying to say that CLONE_PIDFD is a bad idea.
-> 
-> But to me pidfd_open() is much more useful. Say, as a perl programmer I can easily
-> use pidfd_open(), but not CLONE_PIDFD.
+Hi Christian,
 
-Right, but for a libc, service- or container manager CLONE_PIDFD is much
-nicer when spawning processes quickly. :) I think both are very good to
-have.
+For next revision, could you also CC surenb@google.com as well? He is also
+working on the low memory killer. And also suggest CC to
+kernel-team@android.com. And mentioned some comments below, thanks.
 
-Thanks, Oleg. As always super helpful reviews. :)
-Christian
+On Thu, May 16, 2019 at 03:59:42PM +0200, Christian Brauner wrote:
+[snip]  
+> diff --git a/kernel/pid.c b/kernel/pid.c
+> index 20881598bdfa..4afca3d6dcb8 100644
+> --- a/kernel/pid.c
+> +++ b/kernel/pid.c
+> @@ -38,6 +38,7 @@
+>  #include <linux/syscalls.h>
+>  #include <linux/proc_ns.h>
+>  #include <linux/proc_fs.h>
+> +#include <linux/sched/signal.h>
+>  #include <linux/sched/task.h>
+>  #include <linux/idr.h>
+>  
+> @@ -451,6 +452,55 @@ struct pid *find_ge_pid(int nr, struct pid_namespace *ns)
+>  	return idr_get_next(&ns->idr, &nr);
+>  }
+>  
+> +/**
+> + * pidfd_open() - Open new pid file descriptor.
+> + *
+> + * @pid:   pid for which to retrieve a pidfd
+> + * @flags: flags to pass
+> + *
+> + * This creates a new pid file descriptor with the O_CLOEXEC flag set for
+> + * the process identified by @pid. Currently, the process identified by
+> + * @pid must be a thread-group leader. This restriction currently exists
+> + * for all aspects of pidfds including pidfd creation (CLONE_PIDFD cannot
+> + * be used with CLONE_THREAD) and pidfd polling (only supports thread group
+> + * leaders).
+> + *
+> + * Return: On success, a cloexec pidfd is returned.
+> + *         On error, a negative errno number will be returned.
+> + */
+> +SYSCALL_DEFINE2(pidfd_open, pid_t, pid, unsigned int, flags)
+> +{
+> +	int fd, ret;
+> +	struct pid *p;
+> +	struct task_struct *tsk;
+> +
+> +	if (flags)
+> +		return -EINVAL;
+> +
+> +	if (pid <= 0)
+> +		return -EINVAL;
+> +
+> +	p = find_get_pid(pid);
+> +	if (!p)
+> +		return -ESRCH;
+> +
+> +	ret = 0;
+> +	rcu_read_lock();
+> +	/*
+> +	 * If this returns non-NULL the pid was used as a thread-group
+> +	 * leader. Note, we race with exec here: If it changes the
+> +	 * thread-group leader we might return the old leader.
+> +	 */
+> +	tsk = pid_task(p, PIDTYPE_TGID);
+
+Just trying to understand the comment here. The issue is that we might either
+return the new leader, or the old leader depending on the overlap with
+concurrent de_thread right? In either case, we don't care though.
+
+I suggest to remove the "Note..." part of the comment since it doesn't seem the
+race is relevant here unless we are doing something else with tsk in the
+function, but if you want to keep it that's also fine. Comment text should
+probably should be 'return the new leader' though.
+
+> +	if (!tsk)
+> +		ret = -ESRCH;
+
+Perhaps -EINVAL?  AFAICS, this can only happen if a CLONE_THREAD pid was
+passed as argument to pidfd_open which is invalid. But let me know what you
+had in mind..
+
+thanks,
+
+ - Joel
+
+> +	rcu_read_unlock();
+> +
+> +	fd = ret ?: pidfd_create(p);
+> +	put_pid(p);
+> +	return fd;
+> +}
+> +
+>  void __init pid_idr_init(void)
+>  {
+>  	/* Verify no one has done anything silly: */
+> -- 
+> 2.21.0
+> 
