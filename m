@@ -2,99 +2,140 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E981D283C3
-	for <lists+linux-sh@lfdr.de>; Thu, 23 May 2019 18:34:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1FAD28F70
+	for <lists+linux-sh@lfdr.de>; Fri, 24 May 2019 05:11:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731116AbfEWQey (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 23 May 2019 12:34:54 -0400
-Received: from mail-io1-f67.google.com ([209.85.166.67]:44777 "EHLO
-        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731296AbfEWQey (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 23 May 2019 12:34:54 -0400
-Received: by mail-io1-f67.google.com with SMTP id f22so5348469iol.11
-        for <linux-sh@vger.kernel.org>; Thu, 23 May 2019 09:34:53 -0700 (PDT)
+        id S2388239AbfEXDL1 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 23 May 2019 23:11:27 -0400
+Received: from mail-it1-f194.google.com ([209.85.166.194]:39143 "EHLO
+        mail-it1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387559AbfEXDL1 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 23 May 2019 23:11:27 -0400
+Received: by mail-it1-f194.google.com with SMTP id 9so11694522itf.4;
+        Thu, 23 May 2019 20:11:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brauner.io; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=Iz31yxamDJ4SLEgYHA+H3kjkT5XCb4Zp6/gfezC2Qt0=;
-        b=br9pbADirR+994GWUgAiKh+WIakMAmwjJW/UntS6Vn0UL+m+lo1dO/FTn+atO0TVUF
-         WdA8FOmw4uGU2Bt+yb06vyTwDWlE5VoB/+44IeS//dPUmBtjE65Z0H9wy+5UAvWjM+bU
-         m+bJeRTuOymmNkxLknco9nJkzLY7TqLdw6esosEZQQvPH6sHVcKReo2wvVHJQn0pMBUf
-         OX51ptx8FqYA5dBO+dTICUUbyHUOH7QuXKfV6eA1u0UfOiAAh+Mf72MaHLSqmppeHekG
-         sh6nJDFdLtpjiUyCOrk9t/mGk5+b5qcprSS2UKQvflivDDj11xTdb5tgLHk7Hl+UCr+t
-         3OUA==
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=E7hznSwoqjG8X1odMBGc2satoFe87v1Y0P/9fKHS9SY=;
+        b=a7Sc0ZmlEG6jC7OpcrRVUkNXq0SBb3Dc/hNdk5Vi6ayUDLd0Dm8M0wWvJFgwttZZ4M
+         aninTKfSUZDRjfNGqPsMzWLja++EezX/hO4fX5nJBzfyFI6kNO7dvjypaoVQz4ys7+R5
+         9IVPBxW1C4i6BRZ4f3bqLocvJh1c9QUTPILj4gipCVXMgVTUpT9LBYkMiRDL2TaalXNe
+         rQ6wJugIty6JwVWYs5nF97JpvrTENcxT3PWNqVTqRhEna4JwxQokvn2SUzkeP09LHMDC
+         DgccA6RcG2CmDNt2DoIHjZymnDK30hw9WxWvnBoApiNxfRbL6LLAu65RJr1Ih71O/P5e
+         SodQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=Iz31yxamDJ4SLEgYHA+H3kjkT5XCb4Zp6/gfezC2Qt0=;
-        b=KD1ZQL5trLGiQ58kwm8PHK2OEWO4HpS4SidryGNBKoBNek4B9VP/AcKU1+9t/k79Hh
-         NQaZtitYD+PUWrdUXqszcnle3nmiypN8uTpO52SN6CH4rNRmBWPBIntWEDZ8r3QDjPRW
-         MXJ1D0kKCyC68/1+2jywZrx37sv/mPShtXVGrt5BWTEotKNBTpPe4S10V9Xvz9WhhWGG
-         vRzjfqxCxdEWay4rcMm5n7Qxw3ZjiKm8KIokCUDJrwPCNZjihKoRIXgsUk1LvJUpEIka
-         RrDQsLZKcB7wvmFsZ4fA/Bw2Ffhr9SQYhGPJ0zb5wkWcgfeeB9Z9ztfpsFtO6Kqt+z5R
-         t/Hw==
-X-Gm-Message-State: APjAAAVSuOn5J2j/SI4iVYC1ulKCsfQOmo1BQPPip32ornr31NCUv2ek
-        Vb+lkDWhlY8Rp1SPi6Ns3dEIzw==
-X-Google-Smtp-Source: APXvYqxbigL0wIoR0wevysC4IvW0XTy55FvFJYU3fuOueOdFBp/HEFetU0vD2YZ0NHaH83jARAO6OQ==
-X-Received: by 2002:a5e:8e4d:: with SMTP id r13mr57452598ioo.300.1558629293065;
-        Thu, 23 May 2019 09:34:53 -0700 (PDT)
-Received: from brauner.io ([172.56.12.187])
-        by smtp.gmail.com with ESMTPSA id i25sm8797750ioi.42.2019.05.23.09.34.43
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Thu, 23 May 2019 09:34:52 -0700 (PDT)
-Date:   Thu, 23 May 2019 18:34:41 +0200
-From:   Christian Brauner <christian@brauner.io>
-To:     Oleg Nesterov <oleg@redhat.com>
-Cc:     viro@zeniv.linux.org.uk, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
-        torvalds@linux-foundation.org, fweimer@redhat.com,
-        jannh@google.com, tglx@linutronix.de, arnd@arndb.de,
-        shuah@kernel.org, dhowells@redhat.com, tkjos@android.com,
-        ldv@altlinux.org, miklos@szeredi.hu, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-arch@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        x86@kernel.org
-Subject: Re: [PATCH v2 1/2] open: add close_range()
-Message-ID: <20190523163439.56ucetlt6duvnhdj@brauner.io>
-References: <20190523154747.15162-1-christian@brauner.io>
- <20190523154747.15162-2-christian@brauner.io>
- <20190523162004.GC23070@redhat.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=E7hznSwoqjG8X1odMBGc2satoFe87v1Y0P/9fKHS9SY=;
+        b=Ezz2Tgeoxjdv/gvVJ/MA5BphhJp0ROY7eGuEAPB34pjOfZ9Qhjq2ttOZI492SrJqID
+         oYb+trVWohcEsTTnuvrXvqhM9++ob+KDmqye9lu5WGczS9UEq2zlUGooX0bFUTQ7eDNO
+         73TpY8KHHy+M7pkUnZ7s50p4JClZ/FVH+/BnIUFnJHG2PFE26yzI5AaPHTyZc6iITSaB
+         nqFqf1RuwcGj8pV4vQ7v0OO0m5cntojFaB/EJT2diuKOwc2KO87DKUsVqyDu/xj3efNO
+         jRbywuuPXIY3ktLzuRoSCd49qjhz+CSclAPfHslijAnC/ldpKQ38cq/SakMisXgIe5f4
+         /CnQ==
+X-Gm-Message-State: APjAAAU/nXJChSYn3/OkCY5jM66bpCt/c1PazWN/OjkBlJQ/qjpoKeug
+        A1Ap6yIXeByCvDlPB2sRDwiDyk7343xDzT5OICXlSzV8sA==
+X-Google-Smtp-Source: APXvYqz4ssg3ircx9GKZ/bOQFSdzkDIVdQtquf3WB1GzGhZLWMOO7FDaVjBjQGy32wO2lRBtVYsHwdCKMGdQi1fBKFw=
+X-Received: by 2002:a24:1dce:: with SMTP id 197mr16766439itj.16.1558667486023;
+ Thu, 23 May 2019 20:11:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20190523162004.GC23070@redhat.com>
-User-Agent: NeoMutt/20180716
+References: <1556087581-14513-1-git-send-email-kernelfans@gmail.com>
+ <10dc5468-6cd9-85c7-ba66-1dfa5aa922b7@suse.com> <CAFgQCTstd667wP6g+maxYekz4u3iBR2R=FHUiS1V=XxTs6MKUw@mail.gmail.com>
+ <CAFgQCTtQm7SuBRfXik6B065Aa+uQ=Mx6i+Y1q+NJU1GEiUgH4g@mail.gmail.com>
+In-Reply-To: <CAFgQCTtQm7SuBRfXik6B065Aa+uQ=Mx6i+Y1q+NJU1GEiUgH4g@mail.gmail.com>
+From:   Pingfan Liu <kernelfans@gmail.com>
+Date:   Fri, 24 May 2019 11:11:13 +0800
+Message-ID: <CAFgQCTuAEbST8ZdSJmPDTPbqkL3uZ8j6U-vTWT879wARDhUwTw@mail.gmail.com>
+Subject: Re: [PATCHv2] kernel/crash: make parse_crashkernel()'s return value
+ more indicant
+To:     Matthias Brugger <mbrugger@suse.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>, Rich Felker <dalias@libc.org>,
+        linux-ia64@vger.kernel.org,
+        Julien Thierry <julien.thierry@arm.com>,
+        Yangtao Li <tiny.windzz@gmail.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Palmer Dabbelt <palmer@sifive.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>, x86@kernel.org,
+        linux-mips@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, linux-s390@vger.kernel.org,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        linux-sh@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
+        David Hildenbrand <david@redhat.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Ingo Molnar <mingo@redhat.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        James Hogan <jhogan@kernel.org>,
+        Dave Young <dyoung@redhat.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Will Deacon <will.deacon@arm.com>,
+        linuxppc-dev@lists.ozlabs.org,
+        Ananth N Mavinakayanahalli <ananth@linux.vnet.ibm.com>,
+        Borislav Petkov <bp@alien8.de>, Stefan Agner <stefan@agner.ch>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Hari Bathini <hbathini@linux.ibm.com>,
+        Jens Axboe <axboe@kernel.dk>, Tony Luck <tony.luck@intel.com>,
+        Baoquan He <bhe@redhat.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Thomas Bogendoerfer <tbogendoerfer@suse.de>,
+        Paul Burton <paul.burton@mips.com>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Greg Hackmann <ghackmann@android.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Thu, May 23, 2019 at 06:20:05PM +0200, Oleg Nesterov wrote:
-> On 05/23, Christian Brauner wrote:
+Matthias, ping? Any suggestions?
+
+Thanks,
+Pingfan
+
+
+On Thu, May 2, 2019 at 2:22 PM Pingfan Liu <kernelfans@gmail.com> wrote:
+>
+> On Thu, Apr 25, 2019 at 4:20 PM Pingfan Liu <kernelfans@gmail.com> wrote:
 > >
-> > +int __close_range(struct files_struct *files, unsigned fd, unsigned max_fd)
-> > +{
-> > +	unsigned int cur_max;
-> > +
-> > +	if (fd > max_fd)
-> > +		return -EINVAL;
-> > +
-> > +	rcu_read_lock();
-> > +	cur_max = files_fdtable(files)->max_fds;
-> > +	rcu_read_unlock();
-> > +
-> > +	/* cap to last valid index into fdtable */
-> > +	max_fd = max(max_fd, (cur_max - 1));
->                  ^^^
-> 
-> Hmm. min() ?
-
-Yes, thanks! Massive brainf*rt on my end, sorry.
-
-Christian
+> > On Wed, Apr 24, 2019 at 4:31 PM Matthias Brugger <mbrugger@suse.com> wrote:
+> > >
+> > >
+> > [...]
+> > > > @@ -139,6 +141,8 @@ static int __init parse_crashkernel_simple(char *cmdline,
+> > > >               pr_warn("crashkernel: unrecognized char: %c\n", *cur);
+> > > >               return -EINVAL;
+> > > >       }
+> > > > +     if (*crash_size == 0)
+> > > > +             return -EINVAL;
+> > >
+> > > This covers the case where I pass an argument like "crashkernel=0M" ?
+> > > Can't we fix that by using kstrtoull() in memparse and check if the return value
+> > > is < 0? In that case we could return without updating the retptr and we will be
+> > > fine.
+> After a series of work, I suddenly realized that it can not be done
+> like this way. "0M" causes kstrtoull() to return -EINVAL, but this is
+> caused by "M", not "0". If passing "0" to kstrtoull(), it will return
+> 0 on success.
+>
+> > >
+> > It seems that kstrtoull() treats 0M as invalid parameter, while
+> > simple_strtoull() does not.
+> >
+> My careless going through the code. And I tested with a valid value
+> "256M" using kstrtoull(), it also returned -EINVAL.
+>
+> So I think there is no way to distinguish 0 from a positive value
+> inside this basic math function.
+> Do I miss anything?
+>
+> Thanks and regards,
+> Pingfan
