@@ -2,99 +2,76 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0569C2B2F7
-	for <lists+linux-sh@lfdr.de>; Mon, 27 May 2019 13:13:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B21D2B4D8
+	for <lists+linux-sh@lfdr.de>; Mon, 27 May 2019 14:19:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725996AbfE0LNK (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 27 May 2019 07:13:10 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:39992 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725991AbfE0LNJ (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Mon, 27 May 2019 07:13:09 -0400
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 32F0F30833BF;
-        Mon, 27 May 2019 11:13:09 +0000 (UTC)
-Received: from t460s.redhat.com (ovpn-117-89.ams2.redhat.com [10.36.117.89])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id A50CC19C7F;
-        Mon, 27 May 2019 11:13:04 +0000 (UTC)
-From:   David Hildenbrand <david@redhat.com>
-To:     linux-mm@kvack.org
-Cc:     linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        akpm@linux-foundation.org, Dan Williams <dan.j.williams@intel.com>,
-        Wei Yang <richard.weiyang@gmail.com>,
-        Igor Mammedov <imammedo@redhat.com>,
-        David Hildenbrand <david@redhat.com>
-Subject: [PATCH v3 11/11] mm/memory_hotplug: Remove "zone" parameter from sparse_remove_one_section
-Date:   Mon, 27 May 2019 13:11:52 +0200
-Message-Id: <20190527111152.16324-12-david@redhat.com>
-In-Reply-To: <20190527111152.16324-1-david@redhat.com>
-References: <20190527111152.16324-1-david@redhat.com>
+        id S1726492AbfE0MTk (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 27 May 2019 08:19:40 -0400
+Received: from andre.telenet-ops.be ([195.130.132.53]:36448 "EHLO
+        andre.telenet-ops.be" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726312AbfE0MTk (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 27 May 2019 08:19:40 -0400
+Received: from ramsan ([84.194.111.163])
+        by andre.telenet-ops.be with bizsmtp
+        id HQKe2000B3XaVaC01QKenW; Mon, 27 May 2019 14:19:38 +0200
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan with esmtp (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1hVEbK-0001TJ-8Q; Mon, 27 May 2019 14:19:38 +0200
+Received: from geert by rox.of.borg with local (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1hVEbK-0001PM-7L; Mon, 27 May 2019 14:19:38 +0200
+From:   Geert Uytterhoeven <geert+renesas@glider.be>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH] spi: sh-msiof: Reduce delays in sh_msiof_modify_ctr_wait()
+Date:   Mon, 27 May 2019 14:19:35 +0200
+Message-Id: <20190527121935.5370-1-geert+renesas@glider.be>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.44]); Mon, 27 May 2019 11:13:09 +0000 (UTC)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-The parameter is unused, so let's drop it. Memory removal paths should
-never care about zones. This is the job of memory offlining and will
-require more refactorings.
+While the Hardware User Manual does not document the maximum time needed
+for modifying bits in the MSIOF Control Register, experiments on R-Car
+Gen2/Gen3 and SH-Mobile AG5 revealed the following typical modification
+times for the various bits:
+  - CTR.TXE and CTR.RXE: no delay,
+  - CTR.TSCKE: less than 10 ns,
+  - CTR.TFSE: up to a few hundred ns (depending on SPI transfer clock,
+    i.e. less for faster transfers).
+There are no reasons to believe these figures are different for
+SH-MobileR2 SoCs (SH7723/SH7724).
 
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
+Hence the minimum busy-looping delay of 10 µs is excessive.
+Reduce the delay per loop iteration from 10 to 1 us, and the maximum
+delay from 1000 to 100 µs.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- include/linux/memory_hotplug.h | 2 +-
- mm/memory_hotplug.c            | 2 +-
- mm/sparse.c                    | 4 ++--
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/spi/spi-sh-msiof.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-index 2f1f87e13baa..1a4257c5f74c 100644
---- a/include/linux/memory_hotplug.h
-+++ b/include/linux/memory_hotplug.h
-@@ -346,7 +346,7 @@ extern void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
- extern bool is_memblock_offlined(struct memory_block *mem);
- extern int sparse_add_one_section(int nid, unsigned long start_pfn,
- 				  struct vmem_altmap *altmap);
--extern void sparse_remove_one_section(struct zone *zone, struct mem_section *ms,
-+extern void sparse_remove_one_section(struct mem_section *ms,
- 		unsigned long map_offset, struct vmem_altmap *altmap);
- extern struct page *sparse_decode_mem_map(unsigned long coded_mem_map,
- 					  unsigned long pnum);
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 82136c5b4c5f..e48ec7b9dee2 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -524,7 +524,7 @@ static void __remove_section(struct zone *zone, struct mem_section *ms,
- 	start_pfn = section_nr_to_pfn((unsigned long)scn_nr);
- 	__remove_zone(zone, start_pfn);
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 6aab7b2136dbcadc..b50bdbc27e5899cc 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -229,7 +229,7 @@ static int sh_msiof_modify_ctr_wait(struct sh_msiof_spi_priv *p,
+ 	sh_msiof_write(p, CTR, data);
  
--	sparse_remove_one_section(zone, ms, map_offset, altmap);
-+	sparse_remove_one_section(ms, map_offset, altmap);
+ 	return readl_poll_timeout_atomic(p->mapbase + CTR, data,
+-					 (data & mask) == set, 10, 1000);
++					 (data & mask) == set, 1, 100);
  }
  
- /**
-diff --git a/mm/sparse.c b/mm/sparse.c
-index d1d5e05f5b8d..1552c855d62a 100644
---- a/mm/sparse.c
-+++ b/mm/sparse.c
-@@ -800,8 +800,8 @@ static void free_section_usemap(struct page *memmap, unsigned long *usemap,
- 		free_map_bootmem(memmap);
- }
- 
--void sparse_remove_one_section(struct zone *zone, struct mem_section *ms,
--		unsigned long map_offset, struct vmem_altmap *altmap)
-+void sparse_remove_one_section(struct mem_section *ms, unsigned long map_offset,
-+			       struct vmem_altmap *altmap)
- {
- 	struct page *memmap = NULL;
- 	unsigned long *usemap = NULL;
+ static irqreturn_t sh_msiof_spi_irq(int irq, void *data)
 -- 
-2.20.1
+2.17.1
 
