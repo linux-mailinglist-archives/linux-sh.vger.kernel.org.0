@@ -2,92 +2,96 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 58F2D2AC17
-	for <lists+linux-sh@lfdr.de>; Sun, 26 May 2019 22:27:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE22F2B2CF
+	for <lists+linux-sh@lfdr.de>; Mon, 27 May 2019 13:12:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726069AbfEZU1r (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sun, 26 May 2019 16:27:47 -0400
-Received: from port70.net ([81.7.13.123]:59088 "EHLO port70.net"
+        id S1726541AbfE0LMO (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 27 May 2019 07:12:14 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:35728 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725616AbfEZU1q (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Sun, 26 May 2019 16:27:46 -0400
-X-Greylist: delayed 420 seconds by postgrey-1.27 at vger.kernel.org; Sun, 26 May 2019 16:27:44 EDT
-Received: by port70.net (Postfix, from userid 1002)
-        id 64F7EABEC0BA; Sun, 26 May 2019 22:20:42 +0200 (CEST)
-Date:   Sun, 26 May 2019 22:20:42 +0200
-From:   Szabolcs Nagy <nsz@port70.net>
-To:     Christian Brauner <christian@brauner.io>
-Cc:     viro@zeniv.linux.org.uk, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
-        torvalds@linux-foundation.org, fweimer@redhat.com,
-        jannh@google.com, oleg@redhat.com, tglx@linutronix.de,
-        arnd@arndb.de, shuah@kernel.org, dhowells@redhat.com,
-        tkjos@android.com, ldv@altlinux.org, miklos@szeredi.hu,
-        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        id S1725996AbfE0LMO (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Mon, 27 May 2019 07:12:14 -0400
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id CD8CF330259;
+        Mon, 27 May 2019 11:12:13 +0000 (UTC)
+Received: from t460s.redhat.com (ovpn-117-89.ams2.redhat.com [10.36.117.89])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 54D6E19C7F;
+        Mon, 27 May 2019 11:12:10 +0000 (UTC)
+From:   David Hildenbrand <david@redhat.com>
+To:     linux-mm@kvack.org
+Cc:     linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org,
         linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, linux-arch@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH v2 1/2] open: add close_range()
-Message-ID: <20190526202041.GO16415@port70.net>
-References: <20190523154747.15162-1-christian@brauner.io>
- <20190523154747.15162-2-christian@brauner.io>
+        linux-sh@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        akpm@linux-foundation.org, Dan Williams <dan.j.williams@intel.com>,
+        Wei Yang <richard.weiyang@gmail.com>,
+        Igor Mammedov <imammedo@redhat.com>,
+        David Hildenbrand <david@redhat.com>,
+        Oscar Salvador <osalvador@suse.de>,
+        Michal Hocko <mhocko@suse.com>,
+        Pavel Tatashin <pasha.tatashin@soleen.com>,
+        Qian Cai <cai@lca.pw>, Arun KS <arunks@codeaurora.org>,
+        Mathieu Malaterre <malat@debian.org>,
+        Wei Yang <richardw.yang@linux.intel.com>
+Subject: [PATCH v3 01/11] mm/memory_hotplug: Simplify and fix check_hotplug_memory_range()
+Date:   Mon, 27 May 2019 13:11:42 +0200
+Message-Id: <20190527111152.16324-2-david@redhat.com>
+In-Reply-To: <20190527111152.16324-1-david@redhat.com>
+References: <20190527111152.16324-1-david@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190523154747.15162-2-christian@brauner.io>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.29]); Mon, 27 May 2019 11:12:14 +0000 (UTC)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-* Christian Brauner <christian@brauner.io> [2019-05-23 17:47:46 +0200]:
-> This adds the close_range() syscall. It allows to efficiently close a range
-> of file descriptors up to all file descriptors of a calling task.
-> 
-> The syscall came up in a recent discussion around the new mount API and
-> making new file descriptor types cloexec by default. During this
-> discussion, Al suggested the close_range() syscall (cf. [1]). Note, a
-> syscall in this manner has been requested by various people over time.
-> 
-> First, it helps to close all file descriptors of an exec()ing task. This
-> can be done safely via (quoting Al's example from [1] verbatim):
-> 
->         /* that exec is sensitive */
->         unshare(CLONE_FILES);
->         /* we don't want anything past stderr here */
->         close_range(3, ~0U);
->         execve(....);
+By converting start and size to page granularity, we actually ignore
+unaligned parts within a page instead of properly bailing out with an
+error.
 
-this does not work in a hosted c implementation unless the libc
-guarantees not to use libc internal fds (e.g. in execve).
-(the libc cannot easily abstract fds, so the syscall abi layer
-fd semantics is necessarily visible to user code.)
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
+Cc: Qian Cai <cai@lca.pw>
+Cc: Wei Yang <richard.weiyang@gmail.com>
+Cc: Arun KS <arunks@codeaurora.org>
+Cc: Mathieu Malaterre <malat@debian.org>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Wei Yang <richardw.yang@linux.intel.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+---
+ mm/memory_hotplug.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-i think this is a new constraint for userspace runtimes.
-(not entirely unreasonable though)
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index e096c987d261..762887b2358b 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -1051,16 +1051,11 @@ int try_online_node(int nid)
+ 
+ static int check_hotplug_memory_range(u64 start, u64 size)
+ {
+-	unsigned long block_sz = memory_block_size_bytes();
+-	u64 block_nr_pages = block_sz >> PAGE_SHIFT;
+-	u64 nr_pages = size >> PAGE_SHIFT;
+-	u64 start_pfn = PFN_DOWN(start);
+-
+ 	/* memory range must be block size aligned */
+-	if (!nr_pages || !IS_ALIGNED(start_pfn, block_nr_pages) ||
+-	    !IS_ALIGNED(nr_pages, block_nr_pages)) {
++	if (!size || !IS_ALIGNED(start, memory_block_size_bytes()) ||
++	    !IS_ALIGNED(size, memory_block_size_bytes())) {
+ 		pr_err("Block size [%#lx] unaligned hotplug range: start %#llx, size %#llx",
+-		       block_sz, start, size);
++		       memory_block_size_bytes(), start, size);
+ 		return -EINVAL;
+ 	}
+ 
+-- 
+2.20.1
 
-> The code snippet above is one way of working around the problem that file
-> descriptors are not cloexec by default. This is aggravated by the fact that
-> we can't just switch them over without massively regressing userspace. For
-> a whole class of programs having an in-kernel method of closing all file
-> descriptors is very helpful (e.g. demons, service managers, programming
-> language standard libraries, container managers etc.).
-
-was cloexec_range(a,b) considered?
-
-> (Please note, unshare(CLONE_FILES) should only be needed if the calling
->  task is multi-threaded and shares the file descriptor table with another
->  thread in which case two threads could race with one thread allocating
->  file descriptors and the other one closing them via close_range(). For the
->  general case close_range() before the execve() is sufficient.)
-
-assuming there is no unblocked signal handler that may open fds.
-
-a syscall that tramples on fds not owned by the caller is ugly
-(not generally safe to use and may break things if it gets used),
-i don't have a better solution for fd leaks or missing cloexec,
-but i think it needs more analysis how it can be used.
