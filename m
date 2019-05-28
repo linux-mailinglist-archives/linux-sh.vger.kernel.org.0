@@ -2,117 +2,152 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 55C742C9A0
-	for <lists+linux-sh@lfdr.de>; Tue, 28 May 2019 17:07:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 248AA2CAD0
+	for <lists+linux-sh@lfdr.de>; Tue, 28 May 2019 17:58:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727321AbfE1PHa (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 28 May 2019 11:07:30 -0400
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:43550 "EHLO
-        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727296AbfE1PH3 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 28 May 2019 11:07:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
-        Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
-        List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
-        List-Archive; bh=LoZEWGcak24f+2R8BSnDVZaJoSe5u7tIU54xxb61pjk=; b=lVMVifvy8qRU
-        HQ36W9DZRRRfMc6MRaTrRKwZKo++pYkdrUF7BX8C01jv7YIVGLalDRUwvpG7qnRNv9AuDDbRLbeHQ
-        iTUyVEbHQAQPXM48oOmiyLp8bBI/NYZJAck+xkpSofr45TfxAVjpLQS5SWTn3EUo9i1aWjmus4eVR
-        5UTxM=;
-Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net ([82.37.168.47] helo=finisterre.sirena.org.uk)
-        by heliosphere.sirena.org.uk with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1hVdhE-0002qV-3i; Tue, 28 May 2019 15:07:24 +0000
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-        id 46DD7440046; Tue, 28 May 2019 16:07:23 +0100 (BST)
-From:   Mark Brown <broonie@kernel.org>
-To:     Geert Uytterhoeven <geert+renesas@glider.be>
-Cc:     linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: Applied "spi: sh-msiof: Reduce delays in sh_msiof_modify_ctr_wait()" to the spi tree
-In-Reply-To: <20190527121935.5370-1-geert+renesas@glider.be>
-X-Patchwork-Hint: ignore
-Message-Id: <20190528150723.46DD7440046@finisterre.sirena.org.uk>
-Date:   Tue, 28 May 2019 16:07:23 +0100 (BST)
+        id S1726874AbfE1P6K (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 28 May 2019 11:58:10 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:32984 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726362AbfE1P6J (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 28 May 2019 11:58:09 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4SFrsgm131787;
+        Tue, 28 May 2019 15:57:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2018-07-02;
+ bh=TSW5Hn3kRTvgWzVOcFpKtrTx3K8uzf/zHhDE6UkJMhg=;
+ b=aE5o2XjlUHuEPSjWqMiGpohpUiDG56sKD1IP525DG6Rta4QOMnUMBqstZq6KiG0AviOJ
+ z3cSZigfuKuEBSdOdJrY4wH4/YduqxO8e84LYTrnjmh52FNL70GggsihlrLUW6e9zFR1
+ U5Qfsvf02huVroKIQgiArw5hG7xKzDZF7C5ZTmMq9NwEHKRFauk8nWrK67TKs167xUI/
+ SAULD82GlnTsfhP5VzlY9gJ4m4c+RYimxS8CyfO+Vs4/eFuSqTwUUqtB0SK6QcJcqc/o
+ kk1uWuu44vp/pj598ZqsUa4QDi7Xie95D3zzPOJ+tJ3Yf7yRuTzCC66Xemmkbug5zq0A fw== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 2spw4tc7pc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 28 May 2019 15:57:32 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4SFu00N056848;
+        Tue, 28 May 2019 15:57:32 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3020.oracle.com with ESMTP id 2sr31ur9xg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 28 May 2019 15:57:32 +0000
+Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x4SFvTsM023226;
+        Tue, 28 May 2019 15:57:29 GMT
+Received: from [192.168.1.16] (/24.9.64.241)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 28 May 2019 08:57:29 -0700
+Subject: Re: [PATCH 4/6] mm: add a gup_fixup_start_addr hook
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Christoph Hellwig <hch@lst.de>
+Cc:     Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        linux-mips@vger.kernel.org,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        sparclinux@vger.kernel.org, Linux-MM <linux-mm@kvack.org>,
+        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>
+References: <20190525133203.25853-1-hch@lst.de>
+ <20190525133203.25853-5-hch@lst.de>
+ <CAHk-=wg-KDU9Gp8NGTAffEO2Vh6F_xA4SE9=PCOMYamnEj0D4w@mail.gmail.com>
+From:   Khalid Aziz <khalid.aziz@oracle.com>
+Organization: Oracle Corp
+Message-ID: <2eecb673-cb18-990e-0a61-900ecd056152@oracle.com>
+Date:   Tue, 28 May 2019 09:57:25 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
+MIME-Version: 1.0
+In-Reply-To: <CAHk-=wg-KDU9Gp8NGTAffEO2Vh6F_xA4SE9=PCOMYamnEj0D4w@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9270 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=864
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1905280101
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9270 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=883 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1905280101
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-The patch
+On 5/25/19 11:05 AM, Linus Torvalds wrote:
+> [ Adding Khalid, who added the sparc64 code ]
+>=20
+> On Sat, May 25, 2019 at 6:32 AM Christoph Hellwig <hch@lst.de> wrote:
+>>
+>> This will allow sparc64 to override its ADI tags for
+>> get_user_pages and get_user_pages_fast.  I have no idea why this
+>> is not required for plain old get_user_pages, but it keeps the
+>> existing sparc64 behavior.
+>=20
+> This is actually generic. ARM64 has tagged pointers too. Right now the
+> system call interfaces are all supposed to mask off the tags, but
+> there's been noise about having the kernel understand them.
+>=20
+> That said:
+>=20
+>> +#ifndef gup_fixup_start_addr
+>> +#define gup_fixup_start_addr(start)    (start)
+>> +#endif
+>=20
+> I'd rather name this much more specifically (ie make it very much
+> about "clean up pointer tags") and I'm also not clear on why sparc64
+> actually wants this. I thought the sparc64 rules were the same as the
+> (current) arm64 rules: any addresses passed to the kernel have to be
+> the non-tagged ones.
+>=20
+> As you say, nothing *else* in the kernel does that address cleanup,
+> why should get_user_pages_fast() do it?
+>=20
+> David? Khalid? Why does sparc64 actually need this? It looks like the
+> generic get_user_pages() doesn't do it.
+>=20
 
-   spi: sh-msiof: Reduce delays in sh_msiof_modify_ctr_wait()
 
-has been applied to the spi tree at
+There is another discussion going on about tagged pointers on ARM64 and
+intersection with sparc64 code. I agree there is a generic need to mask
+off tags for kernel use now that ARM64 is also looking into supporting
+memory tagging. The need comes from sparc64 not storing tagged address
+in VMAs. It is not practical to store tagged addresses in VMAs because
+manipulation of address tags is done entirely in userspace on sparc64.
+Userspace is free to change tags on an address range at any time without
+involving kernel and constantly rotating tags is actually a security
+feature even. This makes it impractical for kernel to try to keep up
+with constantly changing tagged addresses in VMAs. Untagged addresses in
+VMAs means any find_vma() and brethren calls need to be passed an
+untagged address.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.3
+On sparc64, my intent was to support address tagging for dynamically
+allocated data buffers only (malloc, mmap and shm specifically) and not
+for any generic system calls which limited the scope and amount of
+untagging needed in the kernel. ARM64 is working to add transparent
+tagged address support at C library level. Adding tagged addresses to C
+library requires every possible call into kernel to either handle tagged
+addresses or untag address at some point. Andrey found out it is not as
+easy as untagging addresses in functions that search through vma.
+Callers of find_vma() and others tend to do address arithmetic on the
+address stored in vma that is returned. This requires a more complex
+solution than just stripping tags in vma lookup routines.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+Since untagging addresses is a generic need required for far more than
+gup, I prefer the way Andrey wrote it -
+<https://patchwork.kernel.org/patch/10923637/>
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+--
+Khalid
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
-From 635bdb7a3e1fe1531573ff87b92c2506adafe7f7 Mon Sep 17 00:00:00 2001
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-Date: Mon, 27 May 2019 14:19:35 +0200
-Subject: [PATCH] spi: sh-msiof: Reduce delays in sh_msiof_modify_ctr_wait()
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-While the Hardware User Manual does not document the maximum time needed
-for modifying bits in the MSIOF Control Register, experiments on R-Car
-Gen2/Gen3 and SH-Mobile AG5 revealed the following typical modification
-times for the various bits:
-  - CTR.TXE and CTR.RXE: no delay,
-  - CTR.TSCKE: less than 10 ns,
-  - CTR.TFSE: up to a few hundred ns (depending on SPI transfer clock,
-    i.e. less for faster transfers).
-There are no reasons to believe these figures are different for
-SH-MobileR2 SoCs (SH7723/SH7724).
-
-Hence the minimum busy-looping delay of 10 µs is excessive.
-Reduce the delay per loop iteration from 10 to 1 us, and the maximum
-delay from 1000 to 100 µs.
-
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-sh-msiof.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 6aab7b2136db..b50bdbc27e58 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -229,7 +229,7 @@ static int sh_msiof_modify_ctr_wait(struct sh_msiof_spi_priv *p,
- 	sh_msiof_write(p, CTR, data);
- 
- 	return readl_poll_timeout_atomic(p->mapbase + CTR, data,
--					 (data & mask) == set, 10, 1000);
-+					 (data & mask) == set, 1, 100);
- }
- 
- static irqreturn_t sh_msiof_spi_irq(int irq, void *data)
--- 
-2.20.1
 
