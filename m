@@ -2,80 +2,90 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BE062FC78
-	for <lists+linux-sh@lfdr.de>; Thu, 30 May 2019 15:40:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBCD32FE2D
+	for <lists+linux-sh@lfdr.de>; Thu, 30 May 2019 16:44:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726841AbfE3Nj6 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 30 May 2019 09:39:58 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:36316 "EHLO
+        id S1726418AbfE3OnQ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 30 May 2019 10:43:16 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:45830 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725919AbfE3Nj6 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 30 May 2019 09:39:58 -0400
+        with ESMTP id S1726106AbfE3OnP (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 30 May 2019 10:43:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
+        Subject:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=1z2R00tGmVK2jShz09WQ0aSl4fghOklhUmq3MkzmZGo=; b=cO8H1JSNfCwyIOlnTHicp8Zhy
-        tdZp1B1hNurTw3WgAzPBczTGKcSpIkF2nUeFXWFXbacSglBjt8yYhoxBpvJQd2bkSo8SPeHDMVlbk
-        AmGm77WpHy+tChpRqlM72RL0yDXaK+gT4W1Kljnz/VQ/KVDugsJZ0Tc/HFFB2pHCUi7WQ8dCXvAcZ
-        squPNwIZONWngjyh6R0Q/O1CiEId8WQLaglsMjfxroLiY82v0UZBHk7vWS3/3ejIRWejmUyHZlDM1
-        gPiCoTWkidUnsD2jvuDxMSsXlKB3TaOPHa9W0ihPAK8uyAmomCO3ELcq+JfaA9MCjatOQ5PlCd63o
-        jpySg/rQw==;
-Received: from willy by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1hWLHe-0001vX-Pd; Thu, 30 May 2019 13:39:54 +0000
-Date:   Thu, 30 May 2019 06:39:54 -0700
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Anshuman Khandual <anshuman.khandual@arm.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+         bh=rgEoTv+ob3nuU0s1PzvAuS7/7JlQcVGSqkG2dHU05po=; b=fwQIgc/fkWXGK3UVvCSHkPNJy
+        PDMw24C005vjS+rBEMLkWWHMb8/n5G5c4z7SOgvzYLDesczvTnSWIH9VMcmLmuhrOfaHFs19wJ5/r
+        ViAyGkDpWs6UUr5G0T30QH8zCjlQEgl3pzo+jfMOQcj2mRHFY0wNDAVYs/eOxWuvpfwrls+XTJvvh
+        F9onf0NqibALS9NgZYhCS9UvDz380yzI2zIVtEv144yfuymb+idvVL5HxXI25VIPhmMNe6tMI02Px
+        AMr74BHFPY9bFN/g5Uu4jBP5Ww+YlEcFrvUJ8t/WQAqe26NTYendgBCqJddsbQInxkaxUeRWL4akL
+        8K28/dX4w==;
+Received: from static-50-53-52-16.bvtn.or.frontiernet.net ([50.53.52.16] helo=midway.dunlab)
+        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1hWMGw-0007Cm-2t; Thu, 30 May 2019 14:43:14 +0000
+Subject: Re: [linux-stable-rc:linux-5.0.y 1434/2350]
+ arch/sh/kernel/cpu/sh2/clock-sh7619.o:undefined reference to
+ `followparent_recalc'
+To:     kbuild test robot <lkp@intel.com>
+Cc:     kbuild-all@01.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Andrew Morton <akpm@linux-foundation.org>,
-        Michal Hocko <mhocko@suse.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        "Sasha Levin (Microsoft)" <sashal@kernel.org>,
         Stephen Rothwell <sfr@canb.auug.org.au>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [RFC] mm: Generalize notify_page_fault()
-Message-ID: <20190530133954.GA2024@bombadil.infradead.org>
-References: <1559195713-6956-1-git-send-email-anshuman.khandual@arm.com>
- <20190530110639.GC23461@bombadil.infradead.org>
- <4f9a610d-e856-60f6-4467-09e9c3836771@arm.com>
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org
+References: <201905301509.9Hu4aGF1%lkp@intel.com>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <92c0e331-9910-82e9-86de-67f593ef4e5d@infradead.org>
+Date:   Thu, 30 May 2019 07:43:10 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4f9a610d-e856-60f6-4467-09e9c3836771@arm.com>
-User-Agent: Mutt/1.9.2 (2017-12-15)
+In-Reply-To: <201905301509.9Hu4aGF1%lkp@intel.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Thu, May 30, 2019 at 05:31:15PM +0530, Anshuman Khandual wrote:
-> On 05/30/2019 04:36 PM, Matthew Wilcox wrote:
-> > The two handle preemption differently.  Why is x86 wrong and this one
-> > correct?
+On 5/30/19 12:31 AM, kbuild test robot wrote:
+> Hi Randy,
 > 
-> Here it expects context to be already non-preemptible where as the proposed
-> generic function makes it non-preemptible with a preempt_[disable|enable]()
-> pair for the required code section, irrespective of it's present state. Is
-> not this better ?
+> It's probably a bug fix that unveils the link errors.
+> 
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.0.y
+> head:   8c963c3dcbdec7b2a1fd90044f23bc8124848381
+> commit: b174065805b55300d9d4e6ae6865c7b0838cc0f4 [1434/2350] sh: fix multiple function definition build errors
+> config: sh-allmodconfig (attached as .config)
+> compiler: sh4-linux-gcc (GCC) 7.4.0
+> reproduce:
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         git checkout b174065805b55300d9d4e6ae6865c7b0838cc0f4
+>         # save the attached .config to linux build tree
+>         GCC_VERSION=7.4.0 make.cross ARCH=sh 
+> 
+> If you fix the issue, kindly add following tag
+> Reported-by: kbuild test robot <lkp@intel.com>
+> 
+> All errors (new ones prefixed by >>):
+> 
+>>> arch/sh/kernel/cpu/sh2/clock-sh7619.o:(.data+0x1c): undefined reference to `followparent_recalc'
+> 
+> ---
+> 0-DAY kernel test infrastructure                Open Source Technology Center
+> https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
 
-git log -p arch/x86/mm/fault.c
 
-search for 'kprobes'.
+The maintainer posted a patch for this but AFAIK it is not merged anywhere.
 
-tell me what you think.
+https://marc.info/?l=linux-sh&m=155585522728632&w=2
+
+
+-- 
+~Randy
