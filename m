@@ -2,59 +2,61 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 397D72DA8A
-	for <lists+linux-sh@lfdr.de>; Wed, 29 May 2019 12:26:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B256F2EA75
+	for <lists+linux-sh@lfdr.de>; Thu, 30 May 2019 04:02:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726985AbfE2K0R (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 29 May 2019 06:26:17 -0400
-Received: from cmccmta1.chinamobile.com ([221.176.66.79]:2484 "EHLO
-        cmccmta1.chinamobile.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726439AbfE2K0R (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 29 May 2019 06:26:17 -0400
-X-Greylist: delayed 545 seconds by postgrey-1.27 at vger.kernel.org; Wed, 29 May 2019 06:26:16 EDT
-Received: from spf.mail.chinamobile.com (unknown[172.16.121.17]) by rmmx-syy-dmz-app01-12001 (RichMail) with SMTP id 2ee15cee5c1c5ec-e1cb0; Wed, 29 May 2019 18:17:01 +0800 (CST)
-X-RM-TRANSID: 2ee15cee5c1c5ec-e1cb0
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG: 00000000
-Received: from localhost.localdomain (unknown[223.105.0.243])
-        by rmsmtp-syy-appsvr09-12009 (RichMail) with SMTP id 2ee95cee5c1c2ed-2ea11;
-        Wed, 29 May 2019 18:17:01 +0800 (CST)
-X-RM-TRANSID: 2ee95cee5c1c2ed-2ea11
-From:   Ding Xiang <dingxiang@cmss.chinamobile.com>
-To:     ysato@users.sourceforge.jp, dalias@libc.org
-Cc:     linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] sh/intc: Fix obsolete function
-Date:   Wed, 29 May 2019 18:16:11 +0800
-Message-Id: <1559124971-13074-1-git-send-email-dingxiang@cmss.chinamobile.com>
-X-Mailer: git-send-email 1.9.1
+        id S1726538AbfE3CC3 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 29 May 2019 22:02:29 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:18046 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726535AbfE3CC2 (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Wed, 29 May 2019 22:02:28 -0400
+Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 491669DC652AB73E43F7;
+        Thu, 30 May 2019 10:02:26 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS412-HUB.china.huawei.com (10.3.19.212) with Microsoft SMTP Server id
+ 14.3.439.0; Thu, 30 May 2019 10:02:19 +0800
+From:   Kefeng Wang <wangkefeng.wang@huawei.com>
+To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, <linux-sh@vger.kernel.org>
+CC:     Andrew Morton <akpm@linux-foundation.org>,
+        <linux-kernel@vger.kernel.org>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>
+Subject: [PATCH] sh: configs: remove CONFIG_LOGFS from defconfig
+Date:   Thu, 30 May 2019 10:10:32 +0800
+Message-ID: <20190530021032.190639-1-wangkefeng.wang@huawei.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-simple_strtoul is obsolete, use kstrtoul instead.
+After commit 1d0fd57a50aa ("logfs: remove from tree"),
+logfs was removed, drop CONFIG_LOGFS from all defconfigs.
 
-Signed-off-by: Ding Xiang <dingxiang@cmss.chinamobile.com>
+Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 ---
- drivers/sh/intc/userimask.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/sh/configs/sdk7786_defconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/sh/intc/userimask.c b/drivers/sh/intc/userimask.c
-index 87d69e7..d1d8e9b 100644
---- a/drivers/sh/intc/userimask.c
-+++ b/drivers/sh/intc/userimask.c
-@@ -33,7 +33,8 @@
- {
- 	unsigned long level;
- 
--	level = simple_strtoul(buf, NULL, 10);
-+	if (kstrtoul(buf, 10, &level))
-+		return -EINVAL;
- 
- 	/*
- 	 * Minimal acceptable IRQ levels are in the 2 - 16 range, but
+diff --git a/arch/sh/configs/sdk7786_defconfig b/arch/sh/configs/sdk7786_defconfig
+index 5209889765ad..49a29338789b 100644
+--- a/arch/sh/configs/sdk7786_defconfig
++++ b/arch/sh/configs/sdk7786_defconfig
+@@ -191,7 +191,6 @@ CONFIG_CONFIGFS_FS=y
+ CONFIG_JFFS2_FS=m
+ CONFIG_JFFS2_FS_XATTR=y
+ CONFIG_UBIFS_FS=m
+-CONFIG_LOGFS=m
+ CONFIG_CRAMFS=m
+ CONFIG_SQUASHFS=m
+ CONFIG_ROMFS_FS=m
 -- 
-1.9.1
-
-
+2.20.1
 
