@@ -2,153 +2,113 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E6A8D2FA89
-	for <lists+linux-sh@lfdr.de>; Thu, 30 May 2019 12:51:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 582A52FAA6
+	for <lists+linux-sh@lfdr.de>; Thu, 30 May 2019 13:06:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726706AbfE3KvY (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 30 May 2019 06:51:24 -0400
-Received: from conssluserg-06.nifty.com ([210.131.2.91]:57319 "EHLO
-        conssluserg-06.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726198AbfE3KvY (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 30 May 2019 06:51:24 -0400
-Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com [209.85.217.54]) (authenticated)
-        by conssluserg-06.nifty.com with ESMTP id x4UApGno018683;
-        Thu, 30 May 2019 19:51:17 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-06.nifty.com x4UApGno018683
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1559213477;
-        bh=j5xMXtzlfJmtrDOpctpofJ+GhwQ4JC0Tahjh8T6hfJo=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=wDt2SGJoCbR8lZkqChfL+ohh3godb14CBnYHfsR842blEZ9HJtzhaG5JRuXHzPW0H
-         HuS/tqXXZRS0f6xuTiICGO4Jgu4+fjAcUYFpphsCf/aWsTLfQn/kelbj03rwpcFsow
-         E4zKd4JCdjdskMOMLi2GN+OY/XvYc5moE5pVZe6MlZVSE0mv/nxvdP/rGZ3ig05Ugx
-         tbgq7G/aziCXuWhXMDa+2IUFGlmEHdxS7nuGTmJf89G/ulL4KYhkSCSfExuJ/aDJeZ
-         3+Zp4a9GIm/MgIzg6BXdXxy7bRqJEDZRVn+Ov5re91eDUeQnJDBw2kprTbkkFaG75W
-         Ii/kpd8Xj+fgw==
-X-Nifty-SrcIP: [209.85.217.54]
-Received: by mail-vs1-f54.google.com with SMTP id q64so4094769vsd.1;
-        Thu, 30 May 2019 03:51:17 -0700 (PDT)
-X-Gm-Message-State: APjAAAWisKc3pbbkYoBUSlPMxQ6oX2uEbGJun76NCmSvcWhTWxj+TW8N
-        cFAryo/YUtJkEa6D1aW+qjzKpaT3w82eeJJvRTU=
-X-Google-Smtp-Source: APXvYqz1eQpgy1klSJRUBat0BPbDkemKQMZQlg44UME+WzfyPZ3ATsQu01dDSjF1W1pCCB66UyAzAWUE0x86MfG9NnE=
-X-Received: by 2002:a67:1783:: with SMTP id 125mr1567738vsx.54.1559213476461;
- Thu, 30 May 2019 03:51:16 -0700 (PDT)
+        id S1726359AbfE3LGn (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 30 May 2019 07:06:43 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:50480 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726198AbfE3LGn (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 30 May 2019 07:06:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=XWSZAD9Y6uBVo7L5n2t8Ehyy7C5gbqMnRx8yZh9FlDg=; b=KW9gnXpShROlZkddwXNzmFYlO
+        fmIqAbGM2SAjmXl9zY3TDwFtQnfiDLggLdshi5XIGPQxS3N2b9fI8eNDGA5CdBld4QgdGWer5Q9Ir
+        58plIdYsqK7CE2ULlzaf6e3ndrG50anFfSpiL1RUGymu0dFCqQYpDTA9rKtBgtDQFojobJPChdzfh
+        MzHtjhsFqDNt+GjziZ1c5QrQMMbip4vZ+Zfak6M+Hs4u1QJVcpRPLOPMswU88cCWHQw/XIU3x1t9u
+        QHvDrd9yzlNEjQ5Cs6u2sQB4QLtEFYrUHNmUW7XL7WXMfwfRqZkB5YqUhHS/1U//ulgnX74EIJ6o3
+        ZQ2g4WdDw==;
+Received: from willy by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1hWItL-0006m3-ND; Thu, 30 May 2019 11:06:39 +0000
+Date:   Thu, 30 May 2019 04:06:39 -0700
+From:   Matthew Wilcox <willy@infradead.org>
+To:     Anshuman Khandual <anshuman.khandual@arm.com>
+Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Michal Hocko <mhocko@suse.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: Re: [RFC] mm: Generalize notify_page_fault()
+Message-ID: <20190530110639.GC23461@bombadil.infradead.org>
+References: <1559195713-6956-1-git-send-email-anshuman.khandual@arm.com>
 MIME-Version: 1.0
-References: <1556887064-12882-1-git-send-email-yamada.masahiro@socionext.com>
-In-Reply-To: <1556887064-12882-1-git-send-email-yamada.masahiro@socionext.com>
-From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-Date:   Thu, 30 May 2019 19:50:40 +0900
-X-Gmail-Original-Message-ID: <CAK7LNATKCRqcDWg4X_e2N3TuxTmfr34ZYJOJU=SbubE-+S4eTQ@mail.gmail.com>
-Message-ID: <CAK7LNATKCRqcDWg4X_e2N3TuxTmfr34ZYJOJU=SbubE-+S4eTQ@mail.gmail.com>
-Subject: Re: [PATCH] x86,sh: use __builtin_constant_p() directly instead of IS_IMMEDIATE()
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     X86 ML <x86@kernel.org>, Linux-sh list <linux-sh@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1559195713-6956-1-git-send-email-anshuman.khandual@arm.com>
+User-Agent: Mutt/1.9.2 (2017-12-15)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Andrew,
+On Thu, May 30, 2019 at 11:25:13AM +0530, Anshuman Khandual wrote:
+> Similar notify_page_fault() definitions are being used by architectures
+> duplicating much of the same code. This attempts to unify them into a
+> single implementation, generalize it and then move it to a common place.
+> kprobes_built_in() can detect CONFIG_KPROBES, hence notify_page_fault()
+> must not be wrapped again within CONFIG_KPROBES. Trap number argument can
 
-On Fri, May 3, 2019 at 9:48 PM Masahiro Yamada
-<yamada.masahiro@socionext.com> wrote:
->
-> __builtin_constant_p(nr) is used everywhere now. It does not make
-> much sense to define IS_IMMEDIATE() as its alias.
->
-> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+This is a funny quirk of the English language.  "must not" means "is not
+allowed to be", not "does not have to be".
 
-Ping. Is this a good clean-up?
+> @@ -141,6 +142,19 @@ static int __init init_zero_pfn(void)
+>  core_initcall(init_zero_pfn);
+>  
+>  
+> +int __kprobes notify_page_fault(struct pt_regs *regs, unsigned int trap)
+> +{
+> +	int ret = 0;
+> +
+> +	if (kprobes_built_in() && !user_mode(regs)) {
+> +		preempt_disable();
+> +		if (kprobe_running() && kprobe_fault_handler(regs, trap))
+> +			ret = 1;
+> +		preempt_enable();
+> +	}
+> +	return ret;
+> +}
+> +
+>  #if defined(SPLIT_RSS_COUNTING)
 
-Thanks.
+Comparing this to the canonical implementation (ie x86), it looks similar.
 
-> ---
->
->  arch/sh/include/asm/bitops-op32.h | 8 +++-----
->  arch/x86/include/asm/bitops.h     | 7 +++----
->  2 files changed, 6 insertions(+), 9 deletions(-)
->
-> diff --git a/arch/sh/include/asm/bitops-op32.h b/arch/sh/include/asm/bitops-op32.h
-> index 4668803..cfe5465 100644
-> --- a/arch/sh/include/asm/bitops-op32.h
-> +++ b/arch/sh/include/asm/bitops-op32.h
-> @@ -16,11 +16,9 @@
->  #define BYTE_OFFSET(nr)                ((nr) % BITS_PER_BYTE)
->  #endif
->
-> -#define IS_IMMEDIATE(nr)       (__builtin_constant_p(nr))
-> -
->  static inline void __set_bit(int nr, volatile unsigned long *addr)
->  {
-> -       if (IS_IMMEDIATE(nr)) {
-> +       if (__builtin_constant_p(nr)) {
->                 __asm__ __volatile__ (
->                         "bset.b %1, @(%O2,%0)           ! __set_bit\n\t"
->                         : "+r" (addr)
-> @@ -37,7 +35,7 @@ static inline void __set_bit(int nr, volatile unsigned long *addr)
->
->  static inline void __clear_bit(int nr, volatile unsigned long *addr)
->  {
-> -       if (IS_IMMEDIATE(nr)) {
-> +       if (__builtin_constant_p(nr)) {
->                 __asm__ __volatile__ (
->                         "bclr.b %1, @(%O2,%0)           ! __clear_bit\n\t"
->                         : "+r" (addr)
-> @@ -64,7 +62,7 @@ static inline void __clear_bit(int nr, volatile unsigned long *addr)
->   */
->  static inline void __change_bit(int nr, volatile unsigned long *addr)
->  {
-> -       if (IS_IMMEDIATE(nr)) {
-> +       if (__builtin_constant_p(nr)) {
->                 __asm__ __volatile__ (
->                         "bxor.b %1, @(%O2,%0)           ! __change_bit\n\t"
->                         : "+r" (addr)
-> diff --git a/arch/x86/include/asm/bitops.h b/arch/x86/include/asm/bitops.h
-> index 8e790ec..2621438 100644
-> --- a/arch/x86/include/asm/bitops.h
-> +++ b/arch/x86/include/asm/bitops.h
-> @@ -45,7 +45,6 @@
->   * We do the locked ops that don't return the old value as
->   * a mask operation on a byte.
->   */
-> -#define IS_IMMEDIATE(nr)               (__builtin_constant_p(nr))
->  #define CONST_MASK_ADDR(nr, addr)      WBYTE_ADDR((void *)(addr) + ((nr)>>3))
->  #define CONST_MASK(nr)                 (1 << ((nr) & 7))
->
-> @@ -67,7 +66,7 @@
->  static __always_inline void
->  set_bit(long nr, volatile unsigned long *addr)
->  {
-> -       if (IS_IMMEDIATE(nr)) {
-> +       if (__builtin_constant_p(nr)) {
->                 asm volatile(LOCK_PREFIX "orb %1,%0"
->                         : CONST_MASK_ADDR(nr, addr)
->                         : "iq" ((u8)CONST_MASK(nr))
-> @@ -105,7 +104,7 @@ static __always_inline void __set_bit(long nr, volatile unsigned long *addr)
->  static __always_inline void
->  clear_bit(long nr, volatile unsigned long *addr)
->  {
-> -       if (IS_IMMEDIATE(nr)) {
-> +       if (__builtin_constant_p(nr)) {
->                 asm volatile(LOCK_PREFIX "andb %1,%0"
->                         : CONST_MASK_ADDR(nr, addr)
->                         : "iq" ((u8)~CONST_MASK(nr)));
-> @@ -186,7 +185,7 @@ static __always_inline void __change_bit(long nr, volatile unsigned long *addr)
->   */
->  static __always_inline void change_bit(long nr, volatile unsigned long *addr)
->  {
-> -       if (IS_IMMEDIATE(nr)) {
-> +       if (__builtin_constant_p(nr)) {
->                 asm volatile(LOCK_PREFIX "xorb %1,%0"
->                         : CONST_MASK_ADDR(nr, addr)
->                         : "iq" ((u8)CONST_MASK(nr)));
-> --
-> 2.7.4
->
+static nokprobe_inline int kprobes_fault(struct pt_regs *regs)
+{
+        if (!kprobes_built_in())
+                return 0;
+        if (user_mode(regs))
+                return 0;
+        /*
+         * To be potentially processing a kprobe fault and to be allowed to call
+         * kprobe_running(), we have to be non-preemptible.
+         */
+        if (preemptible())
+                return 0;
+        if (!kprobe_running())
+                return 0;
+        return kprobe_fault_handler(regs, X86_TRAP_PF);
+}
 
-
--- 
-Best Regards
-Masahiro Yamada
+The two handle preemption differently.  Why is x86 wrong and this one
+correct?
