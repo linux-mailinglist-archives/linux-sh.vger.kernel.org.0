@@ -2,129 +2,198 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DE505335E4
-	for <lists+linux-sh@lfdr.de>; Mon,  3 Jun 2019 19:02:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACB043377B
+	for <lists+linux-sh@lfdr.de>; Mon,  3 Jun 2019 20:06:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727182AbfFCRCd (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 3 Jun 2019 13:02:33 -0400
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:33729 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726842AbfFCRCc (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 3 Jun 2019 13:02:32 -0400
-Received: by mail-lf1-f68.google.com with SMTP id y17so14183512lfe.0
-        for <linux-sh@vger.kernel.org>; Mon, 03 Jun 2019 10:02:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=O+yPhSShogh4P3ENVap3W5oMkAXveVWtK8AHmfJ6K4g=;
-        b=WxopflXf16/Ij+BgtcycHtZ4Hmf9aaeOSPmXtzqGSQ8pDwEzPIMOBMYFkAoo4wEYeT
-         8VeRq+J0v+JDAfheb+586kInV+Sa1f85J5zB8gURyeRKoOLNnlPfX9pmOGSsXGwefMUi
-         0J3B6sJE1Hr8n5WVFsXQ5gn72CRPCxqM1IM0U=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=O+yPhSShogh4P3ENVap3W5oMkAXveVWtK8AHmfJ6K4g=;
-        b=kXh2vJ8L8D0eFdYd9VyrtGyDnmw4Z8IJDBk6uyHvqediT9WP71inrR0wqSiidCL6mH
-         JIF6xtd1S8tnACTzmmqx6w5tsnHeYv4Nzs6bnn77h9WZCwJu20wmfcjFCCtQXjjDS1N9
-         poYE+uZkhRLTLNjMYXQ5sBIGdYVsHlE3eOTJAX9yBTfUqsNKuf0oQLISlBNCweLkB6+g
-         Y6R/BxtyW2xbuXU6rQfPh+rLUUdbCwiSFBM/niduuoFHHZcunXc5tgcyljM8slsZcpO8
-         7QLJ9yozLWV3BUIc7kGnYn5wezbL43ynAdGq/mRlbJ/p02TAOqV87amYE+ZFQp9zG31q
-         49dg==
-X-Gm-Message-State: APjAAAXSbrmrrOY51sJ/t3qWQPMOCgGbYK6wU8jLmtnCnGnMqzBvPbNc
-        f/UUbSGkec4urIhNMPpKkt08ax4CETI=
-X-Google-Smtp-Source: APXvYqwOTE86X1NvHOb0Wazv6k1XK2GeNtHcFzH4pjao8zu6hQm8YNcreRJ3wBx+pQcvwaqae2S0YQ==
-X-Received: by 2002:ac2:44d3:: with SMTP id d19mr10926228lfm.30.1559581350236;
-        Mon, 03 Jun 2019 10:02:30 -0700 (PDT)
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com. [209.85.167.45])
-        by smtp.gmail.com with ESMTPSA id w25sm1946954lfk.70.2019.06.03.10.02.26
-        for <linux-sh@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 03 Jun 2019 10:02:26 -0700 (PDT)
-Received: by mail-lf1-f45.google.com with SMTP id p24so7715335lfo.6
-        for <linux-sh@vger.kernel.org>; Mon, 03 Jun 2019 10:02:26 -0700 (PDT)
-X-Received: by 2002:a19:2d41:: with SMTP id t1mr13904609lft.79.1559581346039;
- Mon, 03 Jun 2019 10:02:26 -0700 (PDT)
+        id S1726211AbfFCSGF (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 3 Jun 2019 14:06:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51756 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726190AbfFCSGE (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Mon, 3 Jun 2019 14:06:04 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C372126D1F;
+        Mon,  3 Jun 2019 18:06:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1559585163;
+        bh=DbxovbouKkrSmijo0WTy5O6+felIbT/I8BHz7jorD3s=;
+        h=Subject:To:From:Date:From;
+        b=bQKbQRjq4Sc1KaFvg/dleXdtQT3cvhP++Bx77kMBDUnBnZTr4/MADbrZqJ+NRhysO
+         aCj8Bp1X0EXbP8FEIEwHvDfvhTuRl4QvZpZJQVDEPmtp62AlPm86dL0dTt19QDQ0yu
+         BCpq2mcQfhXgaKFAHTe5kvGZ/XKQhVpV1hKrpKfI=
+Subject: patch "sh: no need to check return value of debugfs_create functions" added to driver-core-next
+To:     gregkh@linuxfoundation.org, dalias@libc.org,
+        linux-sh@vger.kernel.org, ysato@users.sourceforge.jp
+From:   <gregkh@linuxfoundation.org>
+Date:   Mon, 03 Jun 2019 20:05:50 +0200
+Message-ID: <155958515020779@kroah.com>
 MIME-Version: 1.0
-References: <20190601074959.14036-1-hch@lst.de> <20190601074959.14036-4-hch@lst.de>
- <CAHk-=whusWKhS=SYoC9f9HjVmPvR5uP51Mq=ZCtktqTBT2qiBw@mail.gmail.com>
- <20190603074121.GA22920@lst.de> <CAHk-=wg5mww3StP8HqPN4d5eij3KmEayM743v-nDKAMgRe2J6g@mail.gmail.com>
-In-Reply-To: <CAHk-=wg5mww3StP8HqPN4d5eij3KmEayM743v-nDKAMgRe2J6g@mail.gmail.com>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Mon, 3 Jun 2019 10:02:10 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjU3ycY2FvhKmYmOTi95L0qSi9Hj+yrzWTAWepW-zdBOA@mail.gmail.com>
-Message-ID: <CAHk-=wjU3ycY2FvhKmYmOTi95L0qSi9Hj+yrzWTAWepW-zdBOA@mail.gmail.com>
-Subject: Re: [PATCH 03/16] mm: simplify gup_fast_permitted
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Khalid Aziz <khalid.aziz@oracle.com>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        linux-mips@vger.kernel.org,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        Linux-MM <linux-mm@kvack.org>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Mon, Jun 3, 2019 at 9:08 AM Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
-> The new code has no test at all for "nr_pages == 0", afaik.
 
-Note that it really is important to check for that, because right now we do
+This is a note to let you know that I've just added the patch titled
 
-        if (gup_fast_permitted(start, nr_pages)) {
-                local_irq_save(flags);
-                gup_pgd_range(start, end, write ? FOLL_WRITE : 0, pages, &nr);
-                local_irq_restore(flags);
-        }
+    sh: no need to check return value of debugfs_create functions
 
-and that gup_pgd_range() function *depends* on the range being
-non-zero, and does
+to my driver-core git tree which can be found at
+    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core.git
+in the driver-core-next branch.
 
-        pgdp = pgd_offset(current->mm, addr);
-        do {
-                pgd_t pgd = READ_ONCE(*pgdp);
-...
-        } while (pgdp++, addr = next, addr != end);
+The patch will show up in the next release of the linux-next tree
+(usually sometime within the next 24 hours during the week.)
 
-Note how a zero range would turn into an infinite range here.
+The patch will also be merged in the next major kernel release
+during the merge window.
 
-And the only check for 0 was that
+If you have any questions about this process, please let me know.
 
-        if (nr_pages <= 0)
-                return 0;
 
-in get_user_pages_fast() that you removed.
+From 03eb2a08fccc49f93587666e4e1a14ce00df955a Mon Sep 17 00:00:00 2001
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Date: Tue, 22 Jan 2019 15:50:30 +0100
+Subject: sh: no need to check return value of debugfs_create functions
 
-(Admittedly, it would be much better to have that check in
-__get_user_pages_fast() itself, because we do have callers that call
-the double-underscore version)
+When calling debugfs functions, there is no need to ever check the
+return value.  The function can work or not, but the code logic should
+never do something different based on this.
 
-Now, I sincerely hope that we don't have anybody that passes in a zero
-nr_pages (or a negative one), but we do actually have a comment saying
-it's ok.
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Rich Felker <dalias@libc.org>
+Cc: <linux-sh@vger.kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ arch/sh/kernel/kdebugfs.c  |  3 ---
+ arch/sh/mm/asids-debugfs.c | 11 +++--------
+ arch/sh/mm/cache-debugfs.c | 20 ++++----------------
+ arch/sh/mm/pmb.c           |  9 ++-------
+ arch/sh/mm/tlb-debugfs.c   | 20 ++++----------------
+ 5 files changed, 13 insertions(+), 50 deletions(-)
 
-Note that the check for "if (end < start)" not only does not check for
-0, it also doesn't really check for negative. It checks for
-_overflow_. Admittedly most negative values would be expected to
-overflow, but it's still a very different issue.
+diff --git a/arch/sh/kernel/kdebugfs.c b/arch/sh/kernel/kdebugfs.c
+index 95428e05d212..8b505e1556a5 100644
+--- a/arch/sh/kernel/kdebugfs.c
++++ b/arch/sh/kernel/kdebugfs.c
+@@ -9,9 +9,6 @@ EXPORT_SYMBOL(arch_debugfs_dir);
+ static int __init arch_kdebugfs_init(void)
+ {
+ 	arch_debugfs_dir = debugfs_create_dir("sh", NULL);
+-	if (!arch_debugfs_dir)
+-		return -ENOMEM;
+-
+ 	return 0;
+ }
+ arch_initcall(arch_kdebugfs_init);
+diff --git a/arch/sh/mm/asids-debugfs.c b/arch/sh/mm/asids-debugfs.c
+index e5539e0f8e3b..4c1ca197e9c5 100644
+--- a/arch/sh/mm/asids-debugfs.c
++++ b/arch/sh/mm/asids-debugfs.c
+@@ -63,13 +63,8 @@ static const struct file_operations asids_debugfs_fops = {
+ 
+ static int __init asids_debugfs_init(void)
+ {
+-	struct dentry *asids_dentry;
+-
+-	asids_dentry = debugfs_create_file("asids", S_IRUSR, arch_debugfs_dir,
+-					   NULL, &asids_debugfs_fops);
+-	if (!asids_dentry)
+-		return -ENOMEM;
+-
+-	return PTR_ERR_OR_ZERO(asids_dentry);
++	debugfs_create_file("asids", S_IRUSR, arch_debugfs_dir, NULL,
++			    &asids_debugfs_fops);
++	return 0;
+ }
+ device_initcall(asids_debugfs_init);
+diff --git a/arch/sh/mm/cache-debugfs.c b/arch/sh/mm/cache-debugfs.c
+index 4eb9d43578b4..17d780794497 100644
+--- a/arch/sh/mm/cache-debugfs.c
++++ b/arch/sh/mm/cache-debugfs.c
+@@ -109,22 +109,10 @@ static const struct file_operations cache_debugfs_fops = {
+ 
+ static int __init cache_debugfs_init(void)
+ {
+-	struct dentry *dcache_dentry, *icache_dentry;
+-
+-	dcache_dentry = debugfs_create_file("dcache", S_IRUSR, arch_debugfs_dir,
+-					    (unsigned int *)CACHE_TYPE_DCACHE,
+-					    &cache_debugfs_fops);
+-	if (!dcache_dentry)
+-		return -ENOMEM;
+-
+-	icache_dentry = debugfs_create_file("icache", S_IRUSR, arch_debugfs_dir,
+-					    (unsigned int *)CACHE_TYPE_ICACHE,
+-					    &cache_debugfs_fops);
+-	if (!icache_dentry) {
+-		debugfs_remove(dcache_dentry);
+-		return -ENOMEM;
+-	}
+-
++	debugfs_create_file("dcache", S_IRUSR, arch_debugfs_dir,
++			    (void *)CACHE_TYPE_DCACHE, &cache_debugfs_fops);
++	debugfs_create_file("icache", S_IRUSR, arch_debugfs_dir,
++			    (void *)CACHE_TYPE_ICACHE, &cache_debugfs_fops);
+ 	return 0;
+ }
+ module_init(cache_debugfs_init);
+diff --git a/arch/sh/mm/pmb.c b/arch/sh/mm/pmb.c
+index a53a040d0054..b59bad86b31e 100644
+--- a/arch/sh/mm/pmb.c
++++ b/arch/sh/mm/pmb.c
+@@ -861,13 +861,8 @@ static const struct file_operations pmb_debugfs_fops = {
+ 
+ static int __init pmb_debugfs_init(void)
+ {
+-	struct dentry *dentry;
+-
+-	dentry = debugfs_create_file("pmb", S_IFREG | S_IRUGO,
+-				     arch_debugfs_dir, NULL, &pmb_debugfs_fops);
+-	if (!dentry)
+-		return -ENOMEM;
+-
++	debugfs_create_file("pmb", S_IFREG | S_IRUGO, arch_debugfs_dir, NULL,
++			    &pmb_debugfs_fops);
+ 	return 0;
+ }
+ subsys_initcall(pmb_debugfs_init);
+diff --git a/arch/sh/mm/tlb-debugfs.c b/arch/sh/mm/tlb-debugfs.c
+index dea637a09246..11c6148283f3 100644
+--- a/arch/sh/mm/tlb-debugfs.c
++++ b/arch/sh/mm/tlb-debugfs.c
+@@ -149,22 +149,10 @@ static const struct file_operations tlb_debugfs_fops = {
+ 
+ static int __init tlb_debugfs_init(void)
+ {
+-	struct dentry *itlb, *utlb;
+-
+-	itlb = debugfs_create_file("itlb", S_IRUSR, arch_debugfs_dir,
+-				   (unsigned int *)TLB_TYPE_ITLB,
+-				   &tlb_debugfs_fops);
+-	if (unlikely(!itlb))
+-		return -ENOMEM;
+-
+-	utlb = debugfs_create_file("utlb", S_IRUSR, arch_debugfs_dir,
+-				   (unsigned int *)TLB_TYPE_UTLB,
+-				   &tlb_debugfs_fops);
+-	if (unlikely(!utlb)) {
+-		debugfs_remove(itlb);
+-		return -ENOMEM;
+-	}
+-
++	debugfs_create_file("itlb", S_IRUSR, arch_debugfs_dir,
++			    (void *)TLB_TYPE_ITLB, &tlb_debugfs_fops);
++	debugfs_create_file("utlb", S_IRUSR, arch_debugfs_dir,
++			    (void *)TLB_TYPE_UTLB, &tlb_debugfs_fops);
+ 	return 0;
+ }
+ module_init(tlb_debugfs_init);
+-- 
+2.21.0
 
-Maybe you added the check for negative somewhere else (in another
-patch), but I don't see it.
 
-                Linus
