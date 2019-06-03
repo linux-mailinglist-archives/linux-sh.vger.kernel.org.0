@@ -2,118 +2,74 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CE27A327D5
-	for <lists+linux-sh@lfdr.de>; Mon,  3 Jun 2019 06:53:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BED2F329E2
+	for <lists+linux-sh@lfdr.de>; Mon,  3 Jun 2019 09:41:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726314AbfFCExU (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 3 Jun 2019 00:53:20 -0400
-Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:44420 "EHLO
-        foss.arm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726221AbfFCExT (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Mon, 3 Jun 2019 00:53:19 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A87D1341;
-        Sun,  2 Jun 2019 21:53:18 -0700 (PDT)
-Received: from [10.162.40.144] (p8cg001049571a15.blr.arm.com [10.162.40.144])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CC0BB3F5AF;
-        Sun,  2 Jun 2019 21:53:11 -0700 (PDT)
-Subject: Re: [RFC] mm: Generalize notify_page_fault()
-To:     Matthew Wilcox <willy@infradead.org>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Michal Hocko <mhocko@suse.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        id S1726694AbfFCHlu (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 3 Jun 2019 03:41:50 -0400
+Received: from verein.lst.de ([213.95.11.211]:55187 "EHLO newverein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726179AbfFCHlu (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Mon, 3 Jun 2019 03:41:50 -0400
+Received: by newverein.lst.de (Postfix, from userid 2407)
+        id B4E2E67358; Mon,  3 Jun 2019 09:41:21 +0200 (CEST)
+Date:   Mon, 3 Jun 2019 09:41:21 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Christoph Hellwig <hch@lst.de>, Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
-        "David S. Miller" <davem@davemloft.net>
-References: <1559195713-6956-1-git-send-email-anshuman.khandual@arm.com>
- <20190530110639.GC23461@bombadil.infradead.org>
- <4f9a610d-e856-60f6-4467-09e9c3836771@arm.com>
- <20190530133954.GA2024@bombadil.infradead.org>
- <f1995445-d5ab-f292-d26c-809581002184@arm.com>
- <20190531174854.GA31852@bombadil.infradead.org>
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <6338fef8-e097-a76e-5c07-455d0d9b6e24@arm.com>
-Date:   Mon, 3 Jun 2019 10:23:26 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Khalid Aziz <khalid.aziz@oracle.com>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        linux-mips@vger.kernel.org,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        Linux-MM <linux-mm@kvack.org>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 03/16] mm: simplify gup_fast_permitted
+Message-ID: <20190603074121.GA22920@lst.de>
+References: <20190601074959.14036-1-hch@lst.de> <20190601074959.14036-4-hch@lst.de> <CAHk-=whusWKhS=SYoC9f9HjVmPvR5uP51Mq=ZCtktqTBT2qiBw@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20190531174854.GA31852@bombadil.infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=whusWKhS=SYoC9f9HjVmPvR5uP51Mq=ZCtktqTBT2qiBw@mail.gmail.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-
-
-On 05/31/2019 11:18 PM, Matthew Wilcox wrote:
-> On Fri, May 31, 2019 at 02:17:43PM +0530, Anshuman Khandual wrote:
->> On 05/30/2019 07:09 PM, Matthew Wilcox wrote:
->>> On Thu, May 30, 2019 at 05:31:15PM +0530, Anshuman Khandual wrote:
->>>> On 05/30/2019 04:36 PM, Matthew Wilcox wrote:
->>>>> The two handle preemption differently.  Why is x86 wrong and this one
->>>>> correct?
->>>>
->>>> Here it expects context to be already non-preemptible where as the proposed
->>>> generic function makes it non-preemptible with a preempt_[disable|enable]()
->>>> pair for the required code section, irrespective of it's present state. Is
->>>> not this better ?
->>>
->>> git log -p arch/x86/mm/fault.c
->>>
->>> search for 'kprobes'.
->>>
->>> tell me what you think.
->>
->> Are you referring to these following commits
->>
->> a980c0ef9f6d ("x86/kprobes: Refactor kprobes_fault() like kprobe_exceptions_notify()")
->> b506a9d08bae ("x86: code clarification patch to Kprobes arch code")
->>
->> In particular the later one (b506a9d08bae). It explains how the invoking context
->> in itself should be non-preemptible for the kprobes processing context irrespective
->> of whether kprobe_running() or perhaps smp_processor_id() is safe or not. Hence it
->> does not make much sense to continue when original invoking context is preemptible.
->> Instead just bail out earlier. This seems to be making more sense than preempt
->> disable-enable pair. If there are no concerns about this change from other platforms,
->> I will change the preemption behavior in proposed generic function next time around.
+On Sat, Jun 01, 2019 at 09:14:17AM -0700, Linus Torvalds wrote:
+> On Sat, Jun 1, 2019 at 12:50 AM Christoph Hellwig <hch@lst.de> wrote:
+> >
+> > Pass in the already calculated end value instead of recomputing it, and
+> > leave the end > start check in the callers instead of duplicating them
+> > in the arch code.
 > 
-> Exactly.
+> Good cleanup, except it's wrong.
 > 
-> So, any of the arch maintainers know of a reason they behave differently
-> from x86 in this regard?  Or can Anshuman use the x86 implementation
-> for all the architectures supporting kprobes?
+> > -       if (nr_pages <= 0)
+> > +       if (end < start)
+> >                 return 0;
+> 
+> You moved the overflow test to generic code - good.
+> 
+> You removed the sign and zero test on nr_pages - bad.
 
-So the generic notify_page_fault() will be like this.
+I only removed a duplicate of it.  The full (old) code in
+get_user_pages_fast() looks like this:
 
-int __kprobes notify_page_fault(struct pt_regs *regs, unsigned int trap)
-{
-        int ret = 0;
+	if (nr_pages <= 0)
+		return 0;
 
-        /*
-         * To be potentially processing a kprobe fault and to be allowed
-         * to call kprobe_running(), we have to be non-preemptible.
-         */
-        if (kprobes_built_in() && !preemptible() && !user_mode(regs)) {
-                if (kprobe_running() && kprobe_fault_handler(regs, trap))
-                        ret = 1;
-        }
-        return ret;
-}
+	if (unlikely(!access_ok((void __user *)start, len)))
+		return -EFAULT;
+
+	if (gup_fast_permitted(start, nr_pages)) {
