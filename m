@@ -2,198 +2,77 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ACB043377B
-	for <lists+linux-sh@lfdr.de>; Mon,  3 Jun 2019 20:06:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9ED20338F8
+	for <lists+linux-sh@lfdr.de>; Mon,  3 Jun 2019 21:19:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726211AbfFCSGF (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 3 Jun 2019 14:06:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51756 "EHLO mail.kernel.org"
+        id S1726102AbfFCTTc (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 3 Jun 2019 15:19:32 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55274 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726190AbfFCSGE (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Mon, 3 Jun 2019 14:06:04 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1726049AbfFCTTc (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Mon, 3 Jun 2019 15:19:32 -0400
+Received: from localhost.localdomain (unknown [194.230.155.181])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C372126D1F;
-        Mon,  3 Jun 2019 18:06:02 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1999A27199;
+        Mon,  3 Jun 2019 19:19:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559585163;
-        bh=DbxovbouKkrSmijo0WTy5O6+felIbT/I8BHz7jorD3s=;
-        h=Subject:To:From:Date:From;
-        b=bQKbQRjq4Sc1KaFvg/dleXdtQT3cvhP++Bx77kMBDUnBnZTr4/MADbrZqJ+NRhysO
-         aCj8Bp1X0EXbP8FEIEwHvDfvhTuRl4QvZpZJQVDEPmtp62AlPm86dL0dTt19QDQ0yu
-         BCpq2mcQfhXgaKFAHTe5kvGZ/XKQhVpV1hKrpKfI=
-Subject: patch "sh: no need to check return value of debugfs_create functions" added to driver-core-next
-To:     gregkh@linuxfoundation.org, dalias@libc.org,
-        linux-sh@vger.kernel.org, ysato@users.sourceforge.jp
-From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 03 Jun 2019 20:05:50 +0200
-Message-ID: <155958515020779@kroah.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+        s=default; t=1559589571;
+        bh=XQ1OCD9q7CWGt1bcJE5keuNo+GEJGaz+/7Wb9Xj0j/s=;
+        h=From:To:Subject:Date:From;
+        b=WvyxZu0qk4A1lr+JbjV3V0NcW/ZquERVyl6mRApOw3Mz6JxN06wF9DLsWjrfp522I
+         Dw1THS1zWT1TGlPVcd8EFthbnm6El3/jKM+adf3a8wEhfxOVLTJjc8Kd+3ZGzqHbR7
+         hzMAVj/3H3GWA754c8OMInGYObKW9bvTTLNVnUWg=
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] sh: config: Remove left-over BACKLIGHT_LCD_SUPPORT
+Date:   Mon,  3 Jun 2019 21:19:25 +0200
+Message-Id: <20190603191925.20659-1-krzk@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
+The CONFIG_BACKLIGHT_LCD_SUPPORT was removed in commit 8c5dc8d9f19c
+("video: backlight: Remove useless BACKLIGHT_LCD_SUPPORT kernel
+symbol"). Options protected by CONFIG_BACKLIGHT_LCD_SUPPORT are now
+available directly.
 
-This is a note to let you know that I've just added the patch titled
-
-    sh: no need to check return value of debugfs_create functions
-
-to my driver-core git tree which can be found at
-    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core.git
-in the driver-core-next branch.
-
-The patch will show up in the next release of the linux-next tree
-(usually sometime within the next 24 hours during the week.)
-
-The patch will also be merged in the next major kernel release
-during the merge window.
-
-If you have any questions about this process, please let me know.
-
-
-From 03eb2a08fccc49f93587666e4e1a14ce00df955a Mon Sep 17 00:00:00 2001
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Date: Tue, 22 Jan 2019 15:50:30 +0100
-Subject: sh: no need to check return value of debugfs_create functions
-
-When calling debugfs functions, there is no need to ever check the
-return value.  The function can work or not, but the code logic should
-never do something different based on this.
-
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: <linux-sh@vger.kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- arch/sh/kernel/kdebugfs.c  |  3 ---
- arch/sh/mm/asids-debugfs.c | 11 +++--------
- arch/sh/mm/cache-debugfs.c | 20 ++++----------------
- arch/sh/mm/pmb.c           |  9 ++-------
- arch/sh/mm/tlb-debugfs.c   | 20 ++++----------------
- 5 files changed, 13 insertions(+), 50 deletions(-)
+ arch/sh/configs/hp6xx_defconfig  | 1 -
+ arch/sh/configs/sh2007_defconfig | 1 -
+ 2 files changed, 2 deletions(-)
 
-diff --git a/arch/sh/kernel/kdebugfs.c b/arch/sh/kernel/kdebugfs.c
-index 95428e05d212..8b505e1556a5 100644
---- a/arch/sh/kernel/kdebugfs.c
-+++ b/arch/sh/kernel/kdebugfs.c
-@@ -9,9 +9,6 @@ EXPORT_SYMBOL(arch_debugfs_dir);
- static int __init arch_kdebugfs_init(void)
- {
- 	arch_debugfs_dir = debugfs_create_dir("sh", NULL);
--	if (!arch_debugfs_dir)
--		return -ENOMEM;
--
- 	return 0;
- }
- arch_initcall(arch_kdebugfs_init);
-diff --git a/arch/sh/mm/asids-debugfs.c b/arch/sh/mm/asids-debugfs.c
-index e5539e0f8e3b..4c1ca197e9c5 100644
---- a/arch/sh/mm/asids-debugfs.c
-+++ b/arch/sh/mm/asids-debugfs.c
-@@ -63,13 +63,8 @@ static const struct file_operations asids_debugfs_fops = {
- 
- static int __init asids_debugfs_init(void)
- {
--	struct dentry *asids_dentry;
--
--	asids_dentry = debugfs_create_file("asids", S_IRUSR, arch_debugfs_dir,
--					   NULL, &asids_debugfs_fops);
--	if (!asids_dentry)
--		return -ENOMEM;
--
--	return PTR_ERR_OR_ZERO(asids_dentry);
-+	debugfs_create_file("asids", S_IRUSR, arch_debugfs_dir, NULL,
-+			    &asids_debugfs_fops);
-+	return 0;
- }
- device_initcall(asids_debugfs_init);
-diff --git a/arch/sh/mm/cache-debugfs.c b/arch/sh/mm/cache-debugfs.c
-index 4eb9d43578b4..17d780794497 100644
---- a/arch/sh/mm/cache-debugfs.c
-+++ b/arch/sh/mm/cache-debugfs.c
-@@ -109,22 +109,10 @@ static const struct file_operations cache_debugfs_fops = {
- 
- static int __init cache_debugfs_init(void)
- {
--	struct dentry *dcache_dentry, *icache_dentry;
--
--	dcache_dentry = debugfs_create_file("dcache", S_IRUSR, arch_debugfs_dir,
--					    (unsigned int *)CACHE_TYPE_DCACHE,
--					    &cache_debugfs_fops);
--	if (!dcache_dentry)
--		return -ENOMEM;
--
--	icache_dentry = debugfs_create_file("icache", S_IRUSR, arch_debugfs_dir,
--					    (unsigned int *)CACHE_TYPE_ICACHE,
--					    &cache_debugfs_fops);
--	if (!icache_dentry) {
--		debugfs_remove(dcache_dentry);
--		return -ENOMEM;
--	}
--
-+	debugfs_create_file("dcache", S_IRUSR, arch_debugfs_dir,
-+			    (void *)CACHE_TYPE_DCACHE, &cache_debugfs_fops);
-+	debugfs_create_file("icache", S_IRUSR, arch_debugfs_dir,
-+			    (void *)CACHE_TYPE_ICACHE, &cache_debugfs_fops);
- 	return 0;
- }
- module_init(cache_debugfs_init);
-diff --git a/arch/sh/mm/pmb.c b/arch/sh/mm/pmb.c
-index a53a040d0054..b59bad86b31e 100644
---- a/arch/sh/mm/pmb.c
-+++ b/arch/sh/mm/pmb.c
-@@ -861,13 +861,8 @@ static const struct file_operations pmb_debugfs_fops = {
- 
- static int __init pmb_debugfs_init(void)
- {
--	struct dentry *dentry;
--
--	dentry = debugfs_create_file("pmb", S_IFREG | S_IRUGO,
--				     arch_debugfs_dir, NULL, &pmb_debugfs_fops);
--	if (!dentry)
--		return -ENOMEM;
--
-+	debugfs_create_file("pmb", S_IFREG | S_IRUGO, arch_debugfs_dir, NULL,
-+			    &pmb_debugfs_fops);
- 	return 0;
- }
- subsys_initcall(pmb_debugfs_init);
-diff --git a/arch/sh/mm/tlb-debugfs.c b/arch/sh/mm/tlb-debugfs.c
-index dea637a09246..11c6148283f3 100644
---- a/arch/sh/mm/tlb-debugfs.c
-+++ b/arch/sh/mm/tlb-debugfs.c
-@@ -149,22 +149,10 @@ static const struct file_operations tlb_debugfs_fops = {
- 
- static int __init tlb_debugfs_init(void)
- {
--	struct dentry *itlb, *utlb;
--
--	itlb = debugfs_create_file("itlb", S_IRUSR, arch_debugfs_dir,
--				   (unsigned int *)TLB_TYPE_ITLB,
--				   &tlb_debugfs_fops);
--	if (unlikely(!itlb))
--		return -ENOMEM;
--
--	utlb = debugfs_create_file("utlb", S_IRUSR, arch_debugfs_dir,
--				   (unsigned int *)TLB_TYPE_UTLB,
--				   &tlb_debugfs_fops);
--	if (unlikely(!utlb)) {
--		debugfs_remove(itlb);
--		return -ENOMEM;
--	}
--
-+	debugfs_create_file("itlb", S_IRUSR, arch_debugfs_dir,
-+			    (void *)TLB_TYPE_ITLB, &tlb_debugfs_fops);
-+	debugfs_create_file("utlb", S_IRUSR, arch_debugfs_dir,
-+			    (void *)TLB_TYPE_UTLB, &tlb_debugfs_fops);
- 	return 0;
- }
- module_init(tlb_debugfs_init);
+diff --git a/arch/sh/configs/hp6xx_defconfig b/arch/sh/configs/hp6xx_defconfig
+index 4dcf7f552582..91d43e2bffea 100644
+--- a/arch/sh/configs/hp6xx_defconfig
++++ b/arch/sh/configs/hp6xx_defconfig
+@@ -40,7 +40,6 @@ CONFIG_FB=y
+ CONFIG_FIRMWARE_EDID=y
+ CONFIG_FB_HIT=y
+ CONFIG_FB_SH_MOBILE_LCDC=y
+-CONFIG_BACKLIGHT_LCD_SUPPORT=y
+ CONFIG_FRAMEBUFFER_CONSOLE=y
+ CONFIG_FONTS=y
+ CONFIG_FONT_PEARL_8x8=y
+diff --git a/arch/sh/configs/sh2007_defconfig b/arch/sh/configs/sh2007_defconfig
+index a1cf6447dbb1..cbd6742eb423 100644
+--- a/arch/sh/configs/sh2007_defconfig
++++ b/arch/sh/configs/sh2007_defconfig
+@@ -85,7 +85,6 @@ CONFIG_WATCHDOG=y
+ CONFIG_SH_WDT=y
+ CONFIG_SSB=y
+ CONFIG_FB=y
+-CONFIG_BACKLIGHT_LCD_SUPPORT=y
+ # CONFIG_LCD_CLASS_DEVICE is not set
+ CONFIG_FRAMEBUFFER_CONSOLE=y
+ CONFIG_FRAMEBUFFER_CONSOLE_DETECT_PRIMARY=y
 -- 
-2.21.0
-
+2.17.1
 
