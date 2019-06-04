@@ -2,216 +2,321 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 116BC34F53
-	for <lists+linux-sh@lfdr.de>; Tue,  4 Jun 2019 19:52:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 991B435207
+	for <lists+linux-sh@lfdr.de>; Tue,  4 Jun 2019 23:42:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726179AbfFDRwA (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 4 Jun 2019 13:52:00 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:36912 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725929AbfFDRwA (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Tue, 4 Jun 2019 13:52:00 -0400
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id DC01AC04FFF1;
-        Tue,  4 Jun 2019 17:51:59 +0000 (UTC)
-Received: from [10.36.116.79] (ovpn-116-79.ams2.redhat.com [10.36.116.79])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 735B9600CC;
-        Tue,  4 Jun 2019 17:51:53 +0000 (UTC)
-Subject: Re: [PATCH v3 04/11] arm64/mm: Add temporary arch_remove_memory()
- implementation
-To:     Robin Murphy <robin.murphy@arm.com>,
-        Wei Yang <richard.weiyang@gmail.com>
+        id S1726460AbfFDVmi (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 4 Jun 2019 17:42:38 -0400
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:45865 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726179AbfFDVmi (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 4 Jun 2019 17:42:38 -0400
+Received: by mail-ed1-f66.google.com with SMTP id f20so2537479edt.12;
+        Tue, 04 Jun 2019 14:42:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:reply-to:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=kGgg2cwccQhQ87BOLNQ19P0eOVj/IxJHAOcVaT8qQRo=;
+        b=MvGpvha5uoaqY64DB9m3OiEBHBCB0j/M3ygCmk9qYPQh0e62kI5YP56dl+XWkyPnPj
+         EG/cWmaZtCuz9hrmKDhu4vozWbJ9HCkn7M8Ttp4ZeNIEWR+kY0Xs1oHmqWMFnzgffAmo
+         aey94bU9w8nbfa6XiE5SwjNNvKvkfk8p0vKyNskG+C2prnMXAnSjjP70FTRoflsXkKBc
+         d4IfMDucbN7yQaPg6KW7aP3MSRkOfE5IhyOPp/ZbfuiWxjztb8ng2R3gwnFogtiBFUd5
+         uMSDMlELCgRY0FjQycMIniwNmizvH+zAX04W5t/NFF3kWUW3eih44Ay8/4cnCTikeQeY
+         whig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:reply-to
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=kGgg2cwccQhQ87BOLNQ19P0eOVj/IxJHAOcVaT8qQRo=;
+        b=TnMzZcF33omcmRUOhE6IKRyFV5ZVyt25ebdUX3B9vOtlcIVVIckLY1+sXIdZFOl6Vo
+         zSNwjfHIbJRnzX3Dyx3CQVbM4n3r9pBOQwmo7RKs2kND99iLLkNJeRV+SYnBAwkWBDoN
+         uE6Tbc83M0hGtJITc4wwxHdFtnqaImyJpP45UiGbKrjEWmqWOLr+uw28ru79z85E/8ip
+         jr35xPUtliFsRBGfcV8tUlKo4VIowYtT5YdgotrM/RmPlUdR2daBUAjMjKqeck5gqsOg
+         u+Lz6GTkGmZbJLT66HZrOK9v0HkXdwLh4QT4zcmCf6imG3s7lULzZ2BCR0tHODz1gftn
+         zQGQ==
+X-Gm-Message-State: APjAAAVqi5O/9xQnihne2i7vJw/ZejVvAM3EUx1tI01p6WmT5ycvWcEs
+        /UTxcvnra9LuzXbG8OI5A0o=
+X-Google-Smtp-Source: APXvYqxAJB613MXS5SsQSAVAhyXKrrpfkgYY86Logu8BWUaW7EUGho3leJeBoyNfYrNBhWO+qVCbjg==
+X-Received: by 2002:a17:906:1303:: with SMTP id w3mr32002043ejb.196.1559684555972;
+        Tue, 04 Jun 2019 14:42:35 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id r14sm3337551eja.77.2019.06.04.14.42.34
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 04 Jun 2019 14:42:34 -0700 (PDT)
+Date:   Tue, 4 Jun 2019 21:42:34 +0000
+From:   Wei Yang <richard.weiyang@gmail.com>
+To:     David Hildenbrand <david@redhat.com>
 Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
         linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, akpm@linux-foundation.org,
         Dan Williams <dan.j.williams@intel.com>,
+        Wei Yang <richard.weiyang@gmail.com>,
         Igor Mammedov <imammedo@redhat.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Chintan Pandya <cpandya@codeaurora.org>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Jun Yao <yaojun8558363@gmail.com>, Yu Zhao <yuzhao@google.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "mike.travis@hpe.com" <mike.travis@hpe.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Andrew Banman <andrew.banman@hpe.com>,
+        Oscar Salvador <osalvador@suse.de>,
+        Michal Hocko <mhocko@suse.com>,
+        Pavel Tatashin <pasha.tatashin@soleen.com>,
+        Qian Cai <cai@lca.pw>, Arun KS <arunks@codeaurora.org>,
+        Mathieu Malaterre <malat@debian.org>
+Subject: Re: [PATCH v3 07/11] mm/memory_hotplug: Create memory block devices
+ after arch_add_memory()
+Message-ID: <20190604214234.ltwtkcdoju2gxisx@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
 References: <20190527111152.16324-1-david@redhat.com>
- <20190527111152.16324-5-david@redhat.com>
- <20190603214139.mercn5hol2yyfl2s@master>
- <5059f68d-45d2-784e-0770-ee67060773c7@redhat.com>
- <7a5b8c8d-f1bb-9c7e-9809-405af374fecd@arm.com>
-From:   David Hildenbrand <david@redhat.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
- SE+xAvmumFBY
-Organization: Red Hat GmbH
-Message-ID: <4f2a87e9-7fd6-4b2b-892d-52482a330235@redhat.com>
-Date:   Tue, 4 Jun 2019 19:51:52 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+ <20190527111152.16324-8-david@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <7a5b8c8d-f1bb-9c7e-9809-405af374fecd@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.31]); Tue, 04 Jun 2019 17:52:00 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190527111152.16324-8-david@redhat.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 04.06.19 19:36, Robin Murphy wrote:
-> On 04/06/2019 07:56, David Hildenbrand wrote:
->> On 03.06.19 23:41, Wei Yang wrote:
->>> On Mon, May 27, 2019 at 01:11:45PM +0200, David Hildenbrand wrote:
->>>> A proper arch_remove_memory() implementation is on its way, which also
->>>> cleanly removes page tables in arch_add_memory() in case something goes
->>>> wrong.
->>>
->>> Would this be better to understand?
->>>
->>>      removes page tables created in arch_add_memory
->>
->> That's not what this sentence expresses. Have a look at
->> arch_add_memory(), in case  __add_pages() fails, the page tables are not
->> removed. This will also be fixed by Anshuman in the same shot.
->>
->>>
->>>>
->>>> As we want to use arch_remove_memory() in case something goes wrong
->>>> during memory hotplug after arch_add_memory() finished, let's add
->>>> a temporary hack that is sufficient enough until we get a proper
->>>> implementation that cleans up page table entries.
->>>>
->>>> We will remove CONFIG_MEMORY_HOTREMOVE around this code in follow up
->>>> patches.
->>>>
->>>> Cc: Catalin Marinas <catalin.marinas@arm.com>
->>>> Cc: Will Deacon <will.deacon@arm.com>
->>>> Cc: Mark Rutland <mark.rutland@arm.com>
->>>> Cc: Andrew Morton <akpm@linux-foundation.org>
->>>> Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
->>>> Cc: Chintan Pandya <cpandya@codeaurora.org>
->>>> Cc: Mike Rapoport <rppt@linux.ibm.com>
->>>> Cc: Jun Yao <yaojun8558363@gmail.com>
->>>> Cc: Yu Zhao <yuzhao@google.com>
->>>> Cc: Robin Murphy <robin.murphy@arm.com>
->>>> Cc: Anshuman Khandual <anshuman.khandual@arm.com>
->>>> Signed-off-by: David Hildenbrand <david@redhat.com>
->>>> ---
->>>> arch/arm64/mm/mmu.c | 19 +++++++++++++++++++
->>>> 1 file changed, 19 insertions(+)
->>>>
->>>> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
->>>> index a1bfc4413982..e569a543c384 100644
->>>> --- a/arch/arm64/mm/mmu.c
->>>> +++ b/arch/arm64/mm/mmu.c
->>>> @@ -1084,4 +1084,23 @@ int arch_add_memory(int nid, u64 start, u64 size,
->>>> 	return __add_pages(nid, start >> PAGE_SHIFT, size >> PAGE_SHIFT,
->>>> 			   restrictions);
->>>> }
->>>> +#ifdef CONFIG_MEMORY_HOTREMOVE
->>>> +void arch_remove_memory(int nid, u64 start, u64 size,
->>>> +			struct vmem_altmap *altmap)
->>>> +{
->>>> +	unsigned long start_pfn = start >> PAGE_SHIFT;
->>>> +	unsigned long nr_pages = size >> PAGE_SHIFT;
->>>> +	struct zone *zone;
->>>> +
->>>> +	/*
->>>> +	 * FIXME: Cleanup page tables (also in arch_add_memory() in case
->>>> +	 * adding fails). Until then, this function should only be used
->>>> +	 * during memory hotplug (adding memory), not for memory
->>>> +	 * unplug. ARCH_ENABLE_MEMORY_HOTREMOVE must not be
->>>> +	 * unlocked yet.
->>>> +	 */
->>>> +	zone = page_zone(pfn_to_page(start_pfn));
->>>
->>> Compared with arch_remove_memory in x86. If altmap is not NULL, zone will be
->>> retrieved from page related to altmap. Not sure why this is not the same?
->>
->> This is a minimal implementation, sufficient for this use case here. A
->> full implementation is in the works. For now, this function will not be
->> used with an altmap (ZONE_DEVICE is not esupported for arm64 yet).
+On Mon, May 27, 2019 at 01:11:48PM +0200, David Hildenbrand wrote:
+>Only memory to be added to the buddy and to be onlined/offlined by
+>user space using /sys/devices/system/memory/... needs (and should have!)
+>memory block devices.
+>
+>Factor out creation of memory block devices. Create all devices after
+>arch_add_memory() succeeded. We can later drop the want_memblock parameter,
+>because it is now effectively stale.
+>
+>Only after memory block devices have been added, memory can be onlined
+>by user space. This implies, that memory is not visible to user space at
+>all before arch_add_memory() succeeded.
+>
+>While at it
+>- use WARN_ON_ONCE instead of BUG_ON in moved unregister_memory()
+>- introduce find_memory_block_by_id() to search via block id
+>- Use find_memory_block_by_id() in init_memory_block() to catch
+>  duplicates
+
+Generally looks good to me besides two tiny comments.
+
+>
+>Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+>Cc: David Hildenbrand <david@redhat.com>
+>Cc: "mike.travis@hpe.com" <mike.travis@hpe.com>
+>Cc: Andrew Morton <akpm@linux-foundation.org>
+>Cc: Ingo Molnar <mingo@kernel.org>
+>Cc: Andrew Banman <andrew.banman@hpe.com>
+>Cc: Oscar Salvador <osalvador@suse.de>
+>Cc: Michal Hocko <mhocko@suse.com>
+>Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
+>Cc: Qian Cai <cai@lca.pw>
+>Cc: Wei Yang <richard.weiyang@gmail.com>
+>Cc: Arun KS <arunks@codeaurora.org>
+>Cc: Mathieu Malaterre <malat@debian.org>
+>Signed-off-by: David Hildenbrand <david@redhat.com>
+>---
+> drivers/base/memory.c  | 82 +++++++++++++++++++++++++++---------------
+> include/linux/memory.h |  2 +-
+> mm/memory_hotplug.c    | 15 ++++----
+> 3 files changed, 63 insertions(+), 36 deletions(-)
+>
+>diff --git a/drivers/base/memory.c b/drivers/base/memory.c
+>index ac17c95a5f28..5a0370f0c506 100644
+>--- a/drivers/base/memory.c
+>+++ b/drivers/base/memory.c
+>@@ -39,6 +39,11 @@ static inline int base_memory_block_id(int section_nr)
+> 	return section_nr / sections_per_block;
+> }
 > 
-> FWIW the other pieces of ZONE_DEVICE are now due to land in parallel, 
-> but as long as we don't throw the ARCH_ENABLE_MEMORY_HOTREMOVE switch 
-> then there should still be no issue. Besides, given that we should 
-> consistently ignore the altmap everywhere at the moment, it may even 
-> work out regardless.
-
-Thanks for the info.
-
+>+static inline int pfn_to_block_id(unsigned long pfn)
+>+{
+>+	return base_memory_block_id(pfn_to_section_nr(pfn));
+>+}
+>+
+> static int memory_subsys_online(struct device *dev);
+> static int memory_subsys_offline(struct device *dev);
 > 
-> One thing stands out about the failure path thing, though - if 
-> __add_pages() did fail, can it still be guaranteed to have initialised 
-> the memmap such that page_zone() won't return nonsense? Last time I 
-
-if __add_pages() fails, then arch_add_memory() fails and
-arch_remove_memory() will not be called in the context of this series.
-Only if it succeeded.
-
-> looked that was still a problem when removing memory which had been 
-> successfully added, but never onlined (although I do know that 
-> particular case was already being discussed at the time, and I've not 
-> been paying the greatest attention since).
-
-Yes, that part is next on my list. It works but is ugly. The memory
-removal process should not care about zones at all.
-
-Slowly moving into the right direction :)
-
+>@@ -582,10 +587,9 @@ int __weak arch_get_memory_phys_device(unsigned long start_pfn)
+>  * A reference for the returned object is held and the reference for the
+>  * hinted object is released.
+>  */
+>-struct memory_block *find_memory_block_hinted(struct mem_section *section,
+>-					      struct memory_block *hint)
+>+static struct memory_block *find_memory_block_by_id(int block_id,
+>+						    struct memory_block *hint)
+> {
+>-	int block_id = base_memory_block_id(__section_nr(section));
+> 	struct device *hintdev = hint ? &hint->dev : NULL;
+> 	struct device *dev;
 > 
-> Robin.
+>@@ -597,6 +601,14 @@ struct memory_block *find_memory_block_hinted(struct mem_section *section,
+> 	return to_memory_block(dev);
+> }
 > 
+>+struct memory_block *find_memory_block_hinted(struct mem_section *section,
+>+					      struct memory_block *hint)
+>+{
+>+	int block_id = base_memory_block_id(__section_nr(section));
+>+
+>+	return find_memory_block_by_id(block_id, hint);
+>+}
+>+
+> /*
+>  * For now, we have a linear search to go find the appropriate
+>  * memory_block corresponding to a particular phys_index. If
+>@@ -658,6 +670,11 @@ static int init_memory_block(struct memory_block **memory, int block_id,
+> 	unsigned long start_pfn;
+> 	int ret = 0;
+> 
+>+	mem = find_memory_block_by_id(block_id, NULL);
+>+	if (mem) {
+>+		put_device(&mem->dev);
+>+		return -EEXIST;
+>+	}
 
+find_memory_block_by_id() is not that close to the main idea in this patch.
+Would it be better to split this part?
+
+> 	mem = kzalloc(sizeof(*mem), GFP_KERNEL);
+> 	if (!mem)
+> 		return -ENOMEM;
+>@@ -699,44 +716,53 @@ static int add_memory_block(int base_section_nr)
+> 	return 0;
+> }
+> 
+>+static void unregister_memory(struct memory_block *memory)
+>+{
+>+	if (WARN_ON_ONCE(memory->dev.bus != &memory_subsys))
+>+		return;
+>+
+>+	/* drop the ref. we got via find_memory_block() */
+>+	put_device(&memory->dev);
+>+	device_unregister(&memory->dev);
+>+}
+>+
+> /*
+>- * need an interface for the VM to add new memory regions,
+>- * but without onlining it.
+>+ * Create memory block devices for the given memory area. Start and size
+>+ * have to be aligned to memory block granularity. Memory block devices
+>+ * will be initialized as offline.
+>  */
+>-int hotplug_memory_register(int nid, struct mem_section *section)
+>+int create_memory_block_devices(unsigned long start, unsigned long size)
+> {
+>-	int block_id = base_memory_block_id(__section_nr(section));
+>-	int ret = 0;
+>+	const int start_block_id = pfn_to_block_id(PFN_DOWN(start));
+>+	int end_block_id = pfn_to_block_id(PFN_DOWN(start + size));
+> 	struct memory_block *mem;
+>+	unsigned long block_id;
+>+	int ret = 0;
+> 
+>-	mutex_lock(&mem_sysfs_mutex);
+>+	if (WARN_ON_ONCE(!IS_ALIGNED(start, memory_block_size_bytes()) ||
+>+			 !IS_ALIGNED(size, memory_block_size_bytes())))
+>+		return -EINVAL;
+> 
+>-	mem = find_memory_block(section);
+>-	if (mem) {
+>-		mem->section_count++;
+>-		put_device(&mem->dev);
+>-	} else {
+>+	mutex_lock(&mem_sysfs_mutex);
+>+	for (block_id = start_block_id; block_id != end_block_id; block_id++) {
+> 		ret = init_memory_block(&mem, block_id, MEM_OFFLINE);
+> 		if (ret)
+>-			goto out;
+>-		mem->section_count++;
+>+			break;
+>+		mem->section_count = sections_per_block;
+>+	}
+>+	if (ret) {
+>+		end_block_id = block_id;
+>+		for (block_id = start_block_id; block_id != end_block_id;
+>+		     block_id++) {
+>+			mem = find_memory_block_by_id(block_id, NULL);
+>+			mem->section_count = 0;
+>+			unregister_memory(mem);
+>+		}
+> 	}
+
+Would it be better to do this in reverse order?
+
+And unregister_memory() would free mem, so it is still necessary to set
+section_count to 0?
+
+>-
+>-out:
+> 	mutex_unlock(&mem_sysfs_mutex);
+> 	return ret;
+> }
+> 
+>-static void
+>-unregister_memory(struct memory_block *memory)
+>-{
+>-	BUG_ON(memory->dev.bus != &memory_subsys);
+>-
+>-	/* drop the ref. we got via find_memory_block() */
+>-	put_device(&memory->dev);
+>-	device_unregister(&memory->dev);
+>-}
+>-
+> void unregister_memory_section(struct mem_section *section)
+> {
+> 	struct memory_block *mem;
+>diff --git a/include/linux/memory.h b/include/linux/memory.h
+>index 474c7c60c8f2..db3e8567f900 100644
+>--- a/include/linux/memory.h
+>+++ b/include/linux/memory.h
+>@@ -111,7 +111,7 @@ extern int register_memory_notifier(struct notifier_block *nb);
+> extern void unregister_memory_notifier(struct notifier_block *nb);
+> extern int register_memory_isolate_notifier(struct notifier_block *nb);
+> extern void unregister_memory_isolate_notifier(struct notifier_block *nb);
+>-int hotplug_memory_register(int nid, struct mem_section *section);
+>+int create_memory_block_devices(unsigned long start, unsigned long size);
+> extern void unregister_memory_section(struct mem_section *);
+> extern int memory_dev_init(void);
+> extern int memory_notify(unsigned long val, void *v);
+>diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+>index 4b9d2974f86c..b1fde90bbf19 100644
+>--- a/mm/memory_hotplug.c
+>+++ b/mm/memory_hotplug.c
+>@@ -259,13 +259,7 @@ static int __meminit __add_section(int nid, unsigned long phys_start_pfn,
+> 		return -EEXIST;
+> 
+> 	ret = sparse_add_one_section(nid, phys_start_pfn, altmap);
+>-	if (ret < 0)
+>-		return ret;
+>-
+>-	if (!want_memblock)
+>-		return 0;
+>-
+>-	return hotplug_memory_register(nid, __pfn_to_section(phys_start_pfn));
+>+	return ret < 0 ? ret : 0;
+> }
+> 
+> /*
+>@@ -1107,6 +1101,13 @@ int __ref add_memory_resource(int nid, struct resource *res)
+> 	if (ret < 0)
+> 		goto error;
+> 
+>+	/* create memory block devices after memory was added */
+>+	ret = create_memory_block_devices(start, size);
+>+	if (ret) {
+>+		arch_remove_memory(nid, start, size, NULL);
+>+		goto error;
+>+	}
+>+
+> 	if (new_node) {
+> 		/* If sysfs file of new node can't be created, cpu on the node
+> 		 * can't be hot-added. There is no rollback way now.
+>-- 
+>2.20.1
 
 -- 
-
-Thanks,
-
-David / dhildenb
+Wei Yang
+Help you, Help me
