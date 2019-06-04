@@ -2,74 +2,102 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EC064340F2
-	for <lists+linux-sh@lfdr.de>; Tue,  4 Jun 2019 09:59:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC91D3413E
+	for <lists+linux-sh@lfdr.de>; Tue,  4 Jun 2019 10:12:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726805AbfFDH7h (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 4 Jun 2019 03:59:37 -0400
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:40386 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726792AbfFDH7h (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 4 Jun 2019 03:59:37 -0400
-Received: by mail-lj1-f196.google.com with SMTP id a21so3526214ljh.7;
-        Tue, 04 Jun 2019 00:59:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=S0nzKAfA25Nd/B5b94/lEffHmOkj3bNdRwQPedDI7ZE=;
-        b=iYsPPhnsC0EJTsHqeeq0mjjcxm9WXPAI/rdF7X6cP16AjIIPs3VSFWSS27cmjrJW5n
-         jyWXeJtLvDVLeQDOR8FH7IBenyNSKMoO5vVfrVGJZhjieveJJ/AtZb/XV2F1uPZHn24B
-         6gGxSN7OgSD704Gy86J3kNRILn0Glf47KC2K2cQcAunGWMHd3eaJJBj4+j02lQe56jq/
-         /Q0HIVlhu7/QE1tHWX1X1eqe0NshnMGX+NkkWacdDCpgpEns6iPpgkpOJM1YkjRWPjiH
-         g2fcxv0xXDer1TcdSOfDadzFlKlVOF+Tl9o1gY1sPTa1XCLjWQe8fnrIZBzeHJJn137L
-         ekaQ==
-X-Gm-Message-State: APjAAAWOVHXXyaDM+A9eWxNBu+pa6+KiuEE92DmoFGkZgjf22PcvKw/x
-        UUV4dpXUk7oL3qC6NpeM/8Qhv7mTA5Plo+2JAFz4rg==
-X-Google-Smtp-Source: APXvYqzyrjK66udRCjVrFtHeJQc9LooEJGHnCm5cn7phdyFg8MU2Z7Z0IJKhJVKh9a9iL2ykJCk01AUjQnJwzYRKzgI=
-X-Received: by 2002:a2e:2b8d:: with SMTP id r13mr3487195ljr.145.1559635174859;
- Tue, 04 Jun 2019 00:59:34 -0700 (PDT)
+        id S1727123AbfFDIMH (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 4 Jun 2019 04:12:07 -0400
+Received: from foss.arm.com ([217.140.101.70]:37106 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726637AbfFDIMG (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Tue, 4 Jun 2019 04:12:06 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 22F87A78;
+        Tue,  4 Jun 2019 01:12:06 -0700 (PDT)
+Received: from [10.162.40.144] (p8cg001049571a15.blr.arm.com [10.162.40.144])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 82BA43F246;
+        Tue,  4 Jun 2019 01:11:55 -0700 (PDT)
+Subject: Re: [RFC V2] mm: Generalize notify_page_fault()
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        x86@kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+        Michal Hocko <mhocko@suse.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>
+References: <1559630046-12940-1-git-send-email-anshuman.khandual@arm.com>
+ <20190604065401.GE3402@hirez.programming.kicks-ass.net>
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <afe886e5-8420-0c33-ed2f-159cd3d55882@arm.com>
+Date:   Tue, 4 Jun 2019 13:42:10 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-References: <1559634980-20463-1-git-send-email-krzk@kernel.org>
-In-Reply-To: <1559634980-20463-1-git-send-email-krzk@kernel.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 4 Jun 2019 09:59:22 +0200
-Message-ID: <CAMuHMdU9hW1N_DDbFiBjWW0bnRnT46820bqvNg4iWvy2Ho35yg@mail.gmail.com>
-Subject: Re: [PATCH] sh: configs: Remove useless UEVENT_HELPER_PATH
-To:     Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20190604065401.GE3402@hirez.programming.kicks-ass.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Tue, Jun 4, 2019 at 9:56 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> Remove the CONFIG_UEVENT_HELPER_PATH because:
-> 1. It is disabled since commit 1be01d4a5714 ("driver: base: Disable
->    CONFIG_UEVENT_HELPER by default") as its dependency (UEVENT_HELPER) was
->    made default to 'n',
-> 2. It is not recommended (help message: "This should not be used today
->    [...] creates a high system load") and was kept only for ancient
->    userland,
-> 3. Certain userland specifically requests it to be disabled (systemd
->    README: "Legacy hotplug slows down the system and confuses udev").
->
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-Acked-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-Gr{oetje,eeting}s,
+On 06/04/2019 12:24 PM, Peter Zijlstra wrote:
+> On Tue, Jun 04, 2019 at 12:04:06PM +0530, Anshuman Khandual wrote:
+>> diff --git a/mm/memory.c b/mm/memory.c
+>> index ddf20bd..b6bae8f 100644
+>> --- a/mm/memory.c
+>> +++ b/mm/memory.c
+>> @@ -52,6 +52,7 @@
+>>  #include <linux/pagemap.h>
+>>  #include <linux/memremap.h>
+>>  #include <linux/ksm.h>
+>> +#include <linux/kprobes.h>
+>>  #include <linux/rmap.h>
+>>  #include <linux/export.h>
+>>  #include <linux/delayacct.h>
+>> @@ -141,6 +142,21 @@ static int __init init_zero_pfn(void)
+>>  core_initcall(init_zero_pfn);
+>>  
+>>  
+>> +int __kprobes notify_page_fault(struct pt_regs *regs, unsigned int trap)
+>> +{
+>> +	int ret = 0;
+>> +
+>> +	/*
+>> +	 * To be potentially processing a kprobe fault and to be allowed
+>> +	 * to call kprobe_running(), we have to be non-preemptible.
+>> +	 */
+>> +	if (kprobes_built_in() && !preemptible() && !user_mode(regs)) {
+>> +		if (kprobe_running() && kprobe_fault_handler(regs, trap))
+>> +			ret = 1;
+>> +	}
+>> +	return ret;
+>> +}
+> 
+> That thing should be called kprobe_page_fault() or something,
+> notify_page_fault() is a horribly crap name for this function.
 
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Agreed. kprobe_page_fault() sounds good.
