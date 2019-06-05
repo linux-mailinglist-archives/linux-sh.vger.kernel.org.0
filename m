@@ -2,95 +2,39 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DCD935B33
-	for <lists+linux-sh@lfdr.de>; Wed,  5 Jun 2019 13:23:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B21BE35E48
+	for <lists+linux-sh@lfdr.de>; Wed,  5 Jun 2019 15:49:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727423AbfFELXf (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 5 Jun 2019 07:23:35 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:41390 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726280AbfFELXf (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 5 Jun 2019 07:23:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=sVN3EHsvpO4JEKTL1zRRHRBKbHxUnSg7DWieN951vaQ=; b=ZxNl0qOQMb2nfXeNThDfWARnO
-        IjMcoH4MbKtQUU/nYGjzXO/SzWGoG4bwvM6cBsqxqnboCmwXwdmrZT6ztabNtnUgigfRmXDx8fQga
-        0rKqTEt4/6uc2AluHwNMT79+xCxIagqOb/We+wKGSyrnU5U0zj89HIUQ91CjDb3ocZFKE34NA73Xt
-        ht21jsc6XZzCEdyBsoxDu/s7ytcLxb6tZ+TqSKkA+jPRHteOcwa78zZTOL6egPiRNwQtvKPfLFnxB
-        43TAXA7rZyGVZ8LyRQz4qMmoOohTstIupqEoWtffXXODQJqZlI73n1KFz6tSlAtnVI5oGHg9JPstG
-        ajfQGCbTw==;
-Received: from willy by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1hYU0u-0005Bg-TM; Wed, 05 Jun 2019 11:23:28 +0000
-Date:   Wed, 5 Jun 2019 04:23:28 -0700
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Michael Ellerman <mpe@ellerman.id.au>
-Cc:     Anshuman Khandual <anshuman.khandual@arm.com>,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        x86@kernel.org, Andrew Morton <akpm@linux-foundation.org>,
-        Michal Hocko <mhocko@suse.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Paul Mackerras <paulus@samba.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>
-Subject: Re: [RFC V2] mm: Generalize notify_page_fault()
-Message-ID: <20190605112328.GB2025@bombadil.infradead.org>
-References: <1559630046-12940-1-git-send-email-anshuman.khandual@arm.com>
- <87sgsomg91.fsf@concordia.ellerman.id.au>
+        id S1728072AbfFENtN convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-sh@lfdr.de>); Wed, 5 Jun 2019 09:49:13 -0400
+Received: from [89.46.223.232] ([89.46.223.232]:47277 "EHLO slot0.marketex.ga"
+        rhost-flags-FAIL-FAIL-OK-OK) by vger.kernel.org with ESMTP
+        id S1726442AbfFENtN (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Wed, 5 Jun 2019 09:49:13 -0400
+X-Greylist: delayed 1806 seconds by postgrey-1.27 at vger.kernel.org; Wed, 05 Jun 2019 09:49:11 EDT
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87sgsomg91.fsf@concordia.ellerman.id.au>
-User-Agent: Mutt/1.9.2 (2017-12-15)
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Quation needed For June Inquiry
+To:     Recipients <purchase@greattrades.ga>
+From:   "Jpexcc Salesi" <purchase@greattrades.ga>
+Date:   Wed, 05 Jun 2019 16:18:56 +0300
+Reply-To: jpexcc@aol.com
+Message-ID: <0.0.0.EDD.1D51BA12867547E.0@slot0.marketex.ga>
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Wed, Jun 05, 2019 at 09:19:22PM +1000, Michael Ellerman wrote:
-> Anshuman Khandual <anshuman.khandual@arm.com> writes:
-> > Similar notify_page_fault() definitions are being used by architectures
-> > duplicating much of the same code. This attempts to unify them into a
-> > single implementation, generalize it and then move it to a common place.
-> > kprobes_built_in() can detect CONFIG_KPROBES, hence notify_page_fault()
-> > need not be wrapped again within CONFIG_KPROBES. Trap number argument can
-> > now contain upto an 'unsigned int' accommodating all possible platforms.
-> ...
-> 
-> You've changed several of the architectures from something like above,
-> where it disables preemption around the call into the below:
-> 
-> 
-> Which skips everything if we're preemptible. Is that an equivalent
-> change? If so can you please explain why in more detail.
-
-See the discussion in v1 of this patch, which you were cc'd on.
-
-I agree the description here completely fails to mention why the change.
-It should mention commit a980c0ef9f6d8c.
-
-> Also why not have it return bool?
-> 
-> cheers
-> 
+Hello dear,
+ 
+We are in the market for your products after meeting at your stand during last expo.
+ 
+Please kindly send us your latest catalog and price list so as to start a new project/order as promised during the exhibition. 
+ 
+I would appreciate your response about the above details required so we can revert back to you asap.
+ 
+Kind regards
+ 
+Rhema Zoeh
