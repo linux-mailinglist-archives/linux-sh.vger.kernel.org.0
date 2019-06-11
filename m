@@ -2,22 +2,22 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 99AE63C79D
-	for <lists+linux-sh@lfdr.de>; Tue, 11 Jun 2019 11:51:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DA8D3C7C2
+	for <lists+linux-sh@lfdr.de>; Tue, 11 Jun 2019 11:57:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405094AbfFKJvx (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 11 Jun 2019 05:51:53 -0400
-Received: from foss.arm.com ([217.140.110.172]:56856 "EHLO foss.arm.com"
+        id S2391392AbfFKJ5D (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 11 Jun 2019 05:57:03 -0400
+Received: from foss.arm.com ([217.140.110.172]:56976 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2405067AbfFKJvx (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Tue, 11 Jun 2019 05:51:53 -0400
+        id S1727726AbfFKJ5D (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Tue, 11 Jun 2019 05:57:03 -0400
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9E51C337;
-        Tue, 11 Jun 2019 02:51:52 -0700 (PDT)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 893EC337;
+        Tue, 11 Jun 2019 02:57:02 -0700 (PDT)
 Received: from [10.1.29.141] (e121487-lin.cambridge.arm.com [10.1.29.141])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 893B13F73C;
-        Tue, 11 Jun 2019 02:53:33 -0700 (PDT)
-Subject: Re: [PATCH 06/15] binfmt_flat: remove the uapi <linux/flat.h> header
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 796C63F73C;
+        Tue, 11 Jun 2019 02:58:43 -0700 (PDT)
+Subject: Re: [PATCH 07/15] binfmt_flat: use __be32 for the on-disk format
 To:     Christoph Hellwig <hch@lst.de>, Greg Ungerer <gerg@linux-m68k.org>
 Cc:     uclinux-h8-devel@lists.sourceforge.jp,
         linux-xtensa@linux-xtensa.org, Michal Simek <monstr@monstr.eu>,
@@ -26,14 +26,14 @@ Cc:     uclinux-h8-devel@lists.sourceforge.jp,
         linux-riscv@lists.infradead.org,
         linux-arm-kernel@lists.infradead.org
 References: <20190610212015.9157-1-hch@lst.de>
- <20190610212015.9157-7-hch@lst.de>
+ <20190610212015.9157-8-hch@lst.de>
 From:   Vladimir Murzin <vladimir.murzin@arm.com>
-Message-ID: <0971e6ed-524c-c9ee-b7d7-89126d742b8d@arm.com>
-Date:   Tue, 11 Jun 2019 10:51:49 +0100
+Message-ID: <462a7406-19df-7910-4499-8f0acd52bc82@arm.com>
+Date:   Tue, 11 Jun 2019 10:57:00 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <20190610212015.9157-7-hch@lst.de>
+In-Reply-To: <20190610212015.9157-8-hch@lst.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -43,137 +43,44 @@ List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
 On 6/10/19 10:20 PM, Christoph Hellwig wrote:
-> The split between the two flat.h files is completely arbitrary, and the
-> uapi version even contains CONFIG_ ifdefs that can't work in userspace.
-> The only userspace program known to use the header is elf2flt, and it
-> ships with its own version of the combined header.
+> So far binfmt_flat has onl been supported on 32-bit platforms, so the
+			^^^^
+			only
+> variable size of the fields didn't matter.  But the upcoming RISC-V
+> nommu port supports 64-bit CPUs, and we now have a conflict between
+> the elf2flt creation tool that always uses 32-bit fields and the kernel
+> that uses (unsigned) long field.  Switch to the userspace view as the
+> rest of the binfmt_flat format is completely architecture neutral,
+> and binfmt_flat isn't the right binary format for huge executables to
+> start with.
 > 
-> Use the chance to move the <asm/flat.h> inclusion out of this file, as it
-> is in no way needed for the format defintion, but just for the binfmt
-> implementation.
+> While we're at it also ensure these fields are using __be types as
+> they big endian and are byteswapped when loaded.
 > 
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  fs/binfmt_flat.c          |  1 +
->  include/linux/flat.h      | 45 ++++++++++++++++++++++++++---
->  include/uapi/linux/flat.h | 59 ---------------------------------------
->  3 files changed, 42 insertions(+), 63 deletions(-)
->  delete mode 100644 include/uapi/linux/flat.h
+> 
+> wip
+  ^^^
+Unintended?
 
-FWIW:
+> ---
+>  include/linux/flat.h | 48 ++++++++++++++++++++++----------------------
+>  1 file changed, 24 insertions(+), 24 deletions(-)
+
+
+With comment message fixed:
 
 Reviewed-by: Vladimir Murzin <vladimir.murzin@arm.com>
 
 > 
-> diff --git a/fs/binfmt_flat.c b/fs/binfmt_flat.c
-> index c09651087eda..6ae0f9af3fc9 100644
-> --- a/fs/binfmt_flat.c
-> +++ b/fs/binfmt_flat.c
-> @@ -42,6 +42,7 @@
->  #include <asm/unaligned.h>
->  #include <asm/cacheflush.h>
->  #include <asm/page.h>
-> +#include <asm/flat.h>
->  
->  #ifndef flat_get_relocate_addr
->  #define flat_get_relocate_addr(rel)	(rel)
 > diff --git a/include/linux/flat.h b/include/linux/flat.h
-> index 569b67d64d5c..21d901ba191b 100644
+> index 21d901ba191b..59e892d5fadb 100644
 > --- a/include/linux/flat.h
 > +++ b/include/linux/flat.h
-> @@ -10,8 +10,47 @@
->  #ifndef _LINUX_FLAT_H
->  #define _LINUX_FLAT_H
->  
-> -#include <uapi/linux/flat.h>
-> -#include <asm/flat.h>
-> +#define	FLAT_VERSION			0x00000004L
-> +
-> +#ifdef CONFIG_BINFMT_SHARED_FLAT
-> +#define	MAX_SHARED_LIBS			(4)
-> +#else
-> +#define	MAX_SHARED_LIBS			(1)
-> +#endif
-> +
-> +/*
-> + * To make everything easier to port and manage cross platform
-> + * development,  all fields are in network byte order.
-> + */
-> +
-> +struct flat_hdr {
-> +	char magic[4];
-> +	unsigned long rev;          /* version (as above) */
-> +	unsigned long entry;        /* Offset of first executable instruction
-> +	                               with text segment from beginning of file */
-> +	unsigned long data_start;   /* Offset of data segment from beginning of
-> +	                               file */
-> +	unsigned long data_end;     /* Offset of end of data segment
-> +	                               from beginning of file */
-> +	unsigned long bss_end;      /* Offset of end of bss segment from beginning
-> +	                               of file */
-> +
-> +	/* (It is assumed that data_end through bss_end forms the bss segment.) */
-> +
-> +	unsigned long stack_size;   /* Size of stack, in bytes */
-> +	unsigned long reloc_start;  /* Offset of relocation records from
-> +	                               beginning of file */
-> +	unsigned long reloc_count;  /* Number of relocation records */
-> +	unsigned long flags;
-> +	unsigned long build_date;   /* When the program/library was built */
-> +	unsigned long filler[5];    /* Reservered, set to zero */
-> +};
-> +
-> +#define FLAT_FLAG_RAM    0x0001 /* load program entirely into RAM */
-> +#define FLAT_FLAG_GOTPIC 0x0002 /* program is PIC with GOT */
-> +#define FLAT_FLAG_GZIP   0x0004 /* all but the header is compressed */
-> +#define FLAT_FLAG_GZDATA 0x0008 /* only data/relocs are compressed (for XIP) */
-> +#define FLAT_FLAG_KTRACE 0x0010 /* output useful kernel trace for debugging */
->  
->  /*
->   * While it would be nice to keep this header clean,  users of older
-> @@ -22,8 +61,6 @@
->   *        with the format above,  except to fix bugs with old format support.
+> @@ -24,26 +24,26 @@
 >   */
 >  
-> -#include <asm/byteorder.h>
-> -
->  #define	OLD_FLAT_VERSION			0x00000002L
->  #define OLD_FLAT_RELOC_TYPE_TEXT	0
->  #define OLD_FLAT_RELOC_TYPE_DATA	1
-> diff --git a/include/uapi/linux/flat.h b/include/uapi/linux/flat.h
-> deleted file mode 100644
-> index 27e595e44fb7..000000000000
-> --- a/include/uapi/linux/flat.h
-> +++ /dev/null
-> @@ -1,59 +0,0 @@
-> -/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-> -/*
-> - * Copyright (C) 2002-2003  David McCullough <davidm@snapgear.com>
-> - * Copyright (C) 1998       Kenneth Albanowski <kjahds@kjahds.com>
-> - *                          The Silver Hammer Group, Ltd.
-> - *
-> - * This file provides the definitions and structures needed to
-> - * support uClinux flat-format executables.
-> - */
-> -
-> -#ifndef _UAPI_LINUX_FLAT_H
-> -#define _UAPI_LINUX_FLAT_H
-> -
-> -
-> -#define	FLAT_VERSION			0x00000004L
-> -
-> -#ifdef CONFIG_BINFMT_SHARED_FLAT
-> -#define	MAX_SHARED_LIBS			(4)
-> -#else
-> -#define	MAX_SHARED_LIBS			(1)
-> -#endif
-> -
-> -/*
-> - * To make everything easier to port and manage cross platform
-> - * development,  all fields are in network byte order.
-> - */
-> -
-> -struct flat_hdr {
+>  struct flat_hdr {
 > -	char magic[4];
 > -	unsigned long rev;          /* version (as above) */
 > -	unsigned long entry;        /* Offset of first executable instruction
@@ -184,26 +91,62 @@ Reviewed-by: Vladimir Murzin <vladimir.murzin@arm.com>
 > -	                               from beginning of file */
 > -	unsigned long bss_end;      /* Offset of end of bss segment from beginning
 > -	                               of file */
-> -
-> -	/* (It is assumed that data_end through bss_end forms the bss segment.) */
-> -
+> +	char	magic[4];
+> +	__be32	rev;          /* version (as above) */
+> +	__be32	entry;        /* Offset of first executable instruction
+> +				 with text segment from beginning of file */
+> +	__be32	data_start;   /* Offset of data segment from beginning of
+> +				 file */
+> +	__be32	data_end;     /* Offset of end of data segment from beginning
+> +				 of file */
+> +	__be32	bss_end;      /* Offset of end of bss segment from beginning
+> +				 of file */
+>  
+>  	/* (It is assumed that data_end through bss_end forms the bss segment.) */
+>  
 > -	unsigned long stack_size;   /* Size of stack, in bytes */
 > -	unsigned long reloc_start;  /* Offset of relocation records from
 > -	                               beginning of file */
 > -	unsigned long reloc_count;  /* Number of relocation records */
-> -	unsigned long flags;       
+> -	unsigned long flags;
 > -	unsigned long build_date;   /* When the program/library was built */
 > -	unsigned long filler[5];    /* Reservered, set to zero */
-> -};
-> -
-> -#define FLAT_FLAG_RAM    0x0001 /* load program entirely into RAM */
-> -#define FLAT_FLAG_GOTPIC 0x0002 /* program is PIC with GOT */
-> -#define FLAT_FLAG_GZIP   0x0004 /* all but the header is compressed */
-> -#define FLAT_FLAG_GZDATA 0x0008 /* only data/relocs are compressed (for XIP) */
-> -#define FLAT_FLAG_KTRACE 0x0010 /* output useful kernel trace for debugging */
-> -
-> -
-> -
-> -#endif /* _UAPI_LINUX_FLAT_H */
+> +	__be32	stack_size;   /* Size of stack, in bytes */
+> +	__be32	reloc_start;  /* Offset of relocation records from beginning of
+> +				 file */
+> +	__be32	reloc_count;  /* Number of relocation records */
+> +	__be32	flags;
+> +	__be32	build_date;   /* When the program/library was built */
+> +	__u32	filler[5];    /* Reservered, set to zero */
+>  };
+>  
+>  #define FLAT_FLAG_RAM    0x0001 /* load program entirely into RAM */
+> @@ -67,19 +67,19 @@ struct flat_hdr {
+>  #define OLD_FLAT_RELOC_TYPE_BSS		2
+>  
+>  typedef union {
+> -	unsigned long	value;
+> +	u32		value;
+>  	struct {
+>  # if defined(mc68000) && !defined(CONFIG_COLDFIRE)
+> -		signed long offset : 30;
+> -		unsigned long type : 2;
+> +		s32	offset : 30;
+> +		u32	type : 2;
+>  #   	define OLD_FLAT_FLAG_RAM    0x1 /* load program entirely into RAM */
+>  # elif defined(__BIG_ENDIAN_BITFIELD)
+> -		unsigned long type : 2;
+> -		signed long offset : 30;
+> +		u32	type : 2;
+> +		s32	offset : 30;
+>  #   	define OLD_FLAT_FLAG_RAM    0x1 /* load program entirely into RAM */
+>  # elif defined(__LITTLE_ENDIAN_BITFIELD)
+> -		signed long offset : 30;
+> -		unsigned long type : 2;
+> +		s32	offset : 30;
+> +		u32	type : 2;
+>  #   	define OLD_FLAT_FLAG_RAM    0x1 /* load program entirely into RAM */
+>  # else
+>  #   	error "Unknown bitfield order for flat files."
 > 
 
