@@ -2,170 +2,88 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D5E973C7EE
-	for <lists+linux-sh@lfdr.de>; Tue, 11 Jun 2019 12:00:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4768D3C7F5
+	for <lists+linux-sh@lfdr.de>; Tue, 11 Jun 2019 12:00:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404084AbfFKJ7v (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 11 Jun 2019 05:59:51 -0400
-Received: from foss.arm.com ([217.140.110.172]:57148 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727641AbfFKJ7v (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Tue, 11 Jun 2019 05:59:51 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 25EB4337;
-        Tue, 11 Jun 2019 02:59:51 -0700 (PDT)
-Received: from [10.1.29.141] (e121487-lin.cambridge.arm.com [10.1.29.141])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 18C923F73C;
-        Tue, 11 Jun 2019 03:01:31 -0700 (PDT)
-Subject: Re: [PATCH 09/15] binfmt_flat: add a ARCH_HAS_BINFMT_FLAT option
-To:     Christoph Hellwig <hch@lst.de>, Greg Ungerer <gerg@linux-m68k.org>
-Cc:     uclinux-h8-devel@lists.sourceforge.jp,
-        linux-xtensa@linux-xtensa.org, Michal Simek <monstr@monstr.eu>,
-        linux-c6x-dev@linux-c6x.org, linux-sh@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-riscv@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org
-References: <20190610212015.9157-1-hch@lst.de>
- <20190610212015.9157-10-hch@lst.de>
-From:   Vladimir Murzin <vladimir.murzin@arm.com>
-Message-ID: <416fd8cc-6721-ff40-d90e-6755e490fd61@arm.com>
-Date:   Tue, 11 Jun 2019 10:59:48 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S2404576AbfFKKAw (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 11 Jun 2019 06:00:52 -0400
+Received: from mout.kundenserver.de ([212.227.126.135]:57153 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727726AbfFKKAw (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 11 Jun 2019 06:00:52 -0400
+Received: from 5HSWXM1 ([87.191.24.82]) by mrelayeu.kundenserver.de (mreue012
+ [212.227.15.167]) with ESMTPSA (Nemesis) id 1M3mHT-1hZoET2Vdb-000vOE; Tue, 11
+ Jun 2019 12:00:35 +0200
+Date:   Tue, 11 Jun 2019 12:00:25 +0200 (CEST)
+From:   Rolf Evers-Fischer <embedded24@evers-fischer.de>
+X-X-Sender: rolf@5HSWXM1
+To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+cc:     Rolf Evers-Fischer <embedded24@evers-fischer.de>,
+        ysato@users.sourceforge.jp, dalias@libc.org,
+        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] sh: dma: Add missing IS_ERR test
+In-Reply-To: <b731167e-6285-4fe0-e280-b2626b8efe44@cogentembedded.com>
+Message-ID: <alpine.LNX.2.21.99.1906111147340.3086@5HSWXM1>
+References: <20190607115404.4557-1-embedded24@evers-fischer.de> <b731167e-6285-4fe0-e280-b2626b8efe44@cogentembedded.com>
+User-Agent: Alpine 2.21.99 (LNX 239 2017-12-04)
 MIME-Version: 1.0
-In-Reply-To: <20190610212015.9157-10-hch@lst.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
+X-Provags-ID: V03:K1:SMRQfsP6ySGCjrUzxZeapgWewqu01yhxyR4JPwhyR9idNKE5J9g
+ gJsAq56PtLA/sIPERp+6BeYhC+Zg9XAoK+TDim3gMybBh1wWYgC3VUwYZWHGU2MWfVDOzv+
+ YWPY0dfo/TBl1ZBcvYVljABd8F3KqiBVwoypvMCqrnd6T00z5BWa741RzF1nilGPwY6t6lf
+ XDXPKeu5uUeX2UGixuS1Q==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:DNkZ+nYQJnM=:p3IBEqWC64tzRIcKnLqJBm
+ ulUHtj7Ag1DlBH6MOgVd6RF7YNC2LQaejC7T16mzDHqH1ZqpYoDrcdsYLZUwJltSCQtXEvtql
+ kVsHYtHFmg+NfnvnRvBFXOHYWKCGxd77cuf7QQ1maCQ3Yywu2M6JTKqJvUR4KXY9T6an9ySxD
+ Ehoj6x0wtzvQAXyGx2HAfBy9koKMHCAwbM0F0sCczEBxm0isIeryfDIqLugT+qJjiRAoh8sy8
+ cb99w8EMMuhz1bkzuSLrdSQElrtG1M8zVGRO6MGTdXTRH41OkRy+FOe2qVaKkIHWDXV2OTGqR
+ jNpN2z1xTD5R0sF2mMvDoKDAru+adYc41oyGGnp0/WvDWOcphabcsNuJlXJAs+HTlcVxjpQje
+ V5RAz4H4NcTDMh9jl0HNBWGc3HS5yCfdIxgWjS2xCwa4KcZ/Cef1OeBxUDvfSzeNYaJ4Z9Po3
+ sSEriUC+vONGViLSdU+LhZa62tVtfgKXwdhZIMKsVacITU4EcSW25YMPWnl9SxHV+1sRG1ffY
+ VbA7S3LN1ocwu2Vy6g38fy5NtTl1/9JBSFY8TzhbEsF/jzZWg+xlXVxh035VGNz1fOTQfO/Zm
+ VS3NV35KbNOF81r/CsurSlF35NnCdoeXNJVrj2gNZMyOgheZgaLCI1hmFJ4XTr7lZXIbKfgQP
+ 3wjGVMYREMDGIoBEG+A1Q2REJltlM5AKtjRLiC6jBSr5P0lYCRH9bdr6KdSfBjoZ2M5mNfGig
+ Fe4SrtLXcEnM/9TVO+Jn2o5afuoH+hl1m7fF8lgIwNShX2EJCbCMXGW/XXILHwLUeiL0mEj1v
+ TqfA7u6
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 6/10/19 10:20 PM, Christoph Hellwig wrote:
-> Allow architectures to opt into ARCH_HAS_BINFMT_FLAT support instead of
-> assuming that all nommu ports support the format.
+Hello Sergei,
+
+thanks for your feedback.
+
+On Sat, 8 Jun 2019, Sergei Shtylyov wrote:
+
+> Hello!
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  arch/arm/Kconfig        | 1 +
->  arch/c6x/Kconfig        | 1 +
->  arch/h8300/Kconfig      | 1 +
->  arch/m68k/Kconfig       | 1 +
->  arch/microblaze/Kconfig | 1 +
->  arch/sh/Kconfig         | 1 +
->  arch/xtensa/Kconfig     | 1 +
->  fs/Kconfig.binfmt       | 5 ++++-
->  8 files changed, 11 insertions(+), 1 deletion(-)
-
-
-For ARM bits:
-
-Reviewed-by: Vladimir Murzin <vladimir.murzin@arm.com>
-
-
+> On 07.06.2019 14:54, Rolf Evers-Fischer wrote:
 > 
-> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-> index b1b48c0bde76..695a26c68064 100644
-> --- a/arch/arm/Kconfig
-> +++ b/arch/arm/Kconfig
-> @@ -4,6 +4,7 @@ config ARM
->  	default y
->  	select ARCH_32BIT_OFF_T
->  	select ARCH_CLOCKSOURCE_DATA
-> +	select ARCH_HAS_BINFMT_FLAT
->  	select ARCH_HAS_DEBUG_VIRTUAL if MMU
->  	select ARCH_HAS_DEVMEM_IS_ALLOWED
->  	select ARCH_HAS_ELF_RANDOMIZE
-> diff --git a/arch/c6x/Kconfig b/arch/c6x/Kconfig
-> index eeb0471268a0..78dfe186d708 100644
-> --- a/arch/c6x/Kconfig
-> +++ b/arch/c6x/Kconfig
-> @@ -7,6 +7,7 @@
->  config C6X
->  	def_bool y
->  	select ARCH_32BIT_OFF_T
-> +	select ARCH_HAS_BINFMT_FLAT
->  	select ARCH_HAS_SYNC_DMA_FOR_CPU
->  	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
->  	select CLKDEV_LOOKUP
-> diff --git a/arch/h8300/Kconfig b/arch/h8300/Kconfig
-> index 7457f190caaa..ec800e9d5aad 100644
-> --- a/arch/h8300/Kconfig
-> +++ b/arch/h8300/Kconfig
-> @@ -2,6 +2,7 @@
->  config H8300
->          def_bool y
->  	select ARCH_32BIT_OFF_T
-> +	select ARCH_HAS_BINFMT_FLAT
->  	select BINFMT_FLAT_ARGVP_ENVP_ON_STACK
->  	select BINFMT_FLAT_OLD_ALWAYS_RAM
->  	select GENERIC_ATOMIC64
-> diff --git a/arch/m68k/Kconfig b/arch/m68k/Kconfig
-> index fd69ee5ad6ab..c0c43c624afa 100644
-> --- a/arch/m68k/Kconfig
-> +++ b/arch/m68k/Kconfig
-> @@ -3,6 +3,7 @@ config M68K
->  	bool
->  	default y
->  	select ARCH_32BIT_OFF_T
-> +	select ARCH_HAS_BINFMT_FLAT
->  	select ARCH_HAS_SYNC_DMA_FOR_DEVICE if HAS_DMA
->  	select ARCH_MIGHT_HAVE_PC_PARPORT if ISA
->  	select ARCH_NO_COHERENT_DMA_MMAP if !MMU
-> diff --git a/arch/microblaze/Kconfig b/arch/microblaze/Kconfig
-> index f11433daab4a..d411de05b628 100644
-> --- a/arch/microblaze/Kconfig
-> +++ b/arch/microblaze/Kconfig
-> @@ -3,6 +3,7 @@ config MICROBLAZE
->  	def_bool y
->  	select ARCH_32BIT_OFF_T
->  	select ARCH_NO_SWAP
-> +	select ARCH_HAS_BINFMT_FLAT if !MMU
->  	select ARCH_HAS_DMA_COHERENT_TO_PFN if MMU
->  	select ARCH_HAS_GCOV_PROFILE_ALL
->  	select ARCH_HAS_SYNC_DMA_FOR_CPU
-> diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
-> index b77f512bb176..df3e6215b78c 100644
-> --- a/arch/sh/Kconfig
-> +++ b/arch/sh/Kconfig
-> @@ -1,6 +1,7 @@
->  # SPDX-License-Identifier: GPL-2.0
->  config SUPERH
->  	def_bool y
-> +	select ARCH_HAS_BINFMT_FLAT if !MMU
->  	select ARCH_HAS_PTE_SPECIAL
->  	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
->  	select ARCH_MIGHT_HAVE_PC_PARPORT
-> diff --git a/arch/xtensa/Kconfig b/arch/xtensa/Kconfig
-> index 6ec1b75eabc5..ebc135bda921 100644
-> --- a/arch/xtensa/Kconfig
-> +++ b/arch/xtensa/Kconfig
-> @@ -2,6 +2,7 @@
->  config XTENSA
->  	def_bool y
->  	select ARCH_32BIT_OFF_T
-> +	select ARCH_HAS_BINFMT_FLAT if !MMU
->  	select ARCH_HAS_SYNC_DMA_FOR_CPU
->  	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
->  	select ARCH_NO_COHERENT_DMA_MMAP if !MMU
-> diff --git a/fs/Kconfig.binfmt b/fs/Kconfig.binfmt
-> index 82f7d7f234f3..286b425b30b9 100644
-> --- a/fs/Kconfig.binfmt
-> +++ b/fs/Kconfig.binfmt
-> @@ -91,9 +91,12 @@ config BINFMT_SCRIPT
->  
->  	  Most systems will not boot if you say M or N here.  If unsure, say Y.
->  
-> +config ARCH_HAS_BINFMT_FLAT
-> +	bool
-> +
->  config BINFMT_FLAT
->  	bool "Kernel support for flat binaries"
-> -	depends on !MMU || ARM || M68K
-> +	depends on ARCH_HAS_BINFMT_FLAT
->  	help
->  	  Support uClinux FLAT format binaries.
->  
+> > get_dma_channel may return ERR_PTR, so a check is added.
+> > 
+> > Signed-off-by: Rolf Evers-Fischer <embedded24@evers-fischer.de>
+> > ---
+> >   arch/sh/drivers/dma/dma-api.c   | 20 +++++++++++++++++++-
+> >   arch/sh/drivers/dma/dma-sysfs.c |  2 +-
+> >   2 files changed, 20 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/arch/sh/drivers/dma/dma-api.c b/arch/sh/drivers/dma/dma-api.c
+> > index ab9170494dcc..5d6f1a46cc5e 100644
+> > --- a/arch/sh/drivers/dma/dma-api.c
+> > +++ b/arch/sh/drivers/dma/dma-api.c
+> > @@ -94,7 +94,7 @@ int get_dma_residue(unsigned int chan)
+> >   	struct dma_info *info = get_dma_info(chan);
+> >   	struct dma_channel *channel = get_dma_channel(chan);
+> >   -	if (info->ops->get_residue)
+> > +	if (!IS_ERR(channel) && (info->ops->get_residue))
 > 
+>    Extra parens not needed here.
+> 
+> [...]
 
+I agree with you. They should better be removed.
+
+Kind regards,
+ Rolf
