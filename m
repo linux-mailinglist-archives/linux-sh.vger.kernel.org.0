@@ -2,52 +2,52 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A0EC3CC62
-	for <lists+linux-sh@lfdr.de>; Tue, 11 Jun 2019 15:02:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F5873CC90
+	for <lists+linux-sh@lfdr.de>; Tue, 11 Jun 2019 15:07:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388887AbfFKNCc (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 11 Jun 2019 09:02:32 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:35504 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388131AbfFKNCc (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 11 Jun 2019 09:02:32 -0400
-Received: by mail-pf1-f196.google.com with SMTP id d126so7412800pfd.2;
-        Tue, 11 Jun 2019 06:02:31 -0700 (PDT)
+        id S2389671AbfFKNHn (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 11 Jun 2019 09:07:43 -0400
+Received: from mail-pl1-f195.google.com ([209.85.214.195]:37762 "EHLO
+        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389744AbfFKNHm (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 11 Jun 2019 09:07:42 -0400
+Received: by mail-pl1-f195.google.com with SMTP id bh12so5107438plb.4;
+        Tue, 11 Jun 2019 06:07:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:subject:to:cc:references:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=RYF8jmWoohaknAxpNSmkAVScav4AJcUimkVoJQxY0o4=;
-        b=oPZoz7UpspmDSRDP60yFZFTmgXjX4FyOYwKa4q4wZ/w/lcxofJ1bYofPYAVnjMjzNh
-         T1xSeHPQy/NF+HMNDHLcJPkcfMkJfU/RcaklDAK3s35nWtAcVv7JDueu9P85a7aCBC9k
-         F3CR+tVrxGah0e7BcVAvYWM3XpxAbCrN4VuuVy7F67t47vLln8oJGRYE4p+j3WEXt/2R
-         OOVG5FbU6/2xbMmHufaBHnyBRQjhPukeuPpsEfZQHAlkRQI1k5tcOHGAW39ClmkE1eHg
-         bEdWHKDHWxNhu/b1WlJg4lO9w4GuFwNLl6L5onMIq0QEamzcETftvpTFD4FXEgeUXlMO
-         0XzQ==
+        bh=TR2jsLXLuKJzsRWAqZLBERMt4T32XKyN+tY7oRfNleI=;
+        b=nAt+Ugq6jGDQK0SymQwKd3xpbk2GdnlJurj19UoyEM0TmKUTrJ4JpE2LoBkYEnxlTB
+         YJNQXTvg6Evv9BBlKAk54NPras07mCWlJhU8Ghzd03qh2eLz3Cl3T9tvuy0q7ma1Cap1
+         pD0zep2s+9jF15F9BKXq/Dm1q/OflWRkGa1D21zFfJZJTu2C7g+DX3riFbcD1FChjFON
+         N9dGXcOni7cmh3OfdWDDNRGJKapyMgAKoLheqO/Inz8S+CUwy3Ia2spBSVcBllLFcKZw
+         hAZd0Ks8kSvs094FDW/MW4wUU7vcSj81k50PGF0GOBSIDSXqkuMHn/F6NGK8o1ohXqYZ
+         VTmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:subject:to:cc:references:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=RYF8jmWoohaknAxpNSmkAVScav4AJcUimkVoJQxY0o4=;
-        b=TR9YRnVOCX1CKABVA6j7LQHRzYvoyQC1GAS2XhTwlH32Pf/LI1E1pCwi5TRmIoiNDW
-         ocUsLiSeTZc0IS41VdSxBLzq2rHnXbAav9zyIYlvnmaVoRNfbPlkuc3R4/TUVcf8LXcM
-         K/wXuVDHoKKc87ALnblMy1Asc7RQ3YaX1jSlq809w3fm7A1u88SRj2ZgaD61j09B74ws
-         DxINvhjnO5qBGxfw81t7r4vAG0l36jagABdTwleK951L+0vVxmk/BpiBFjN/XBOl+JFu
-         pdzb06l79GUOktlSQDTvA2nHH0keZli4ozgeCVCLp5QJ8oUjFVFaNBDdp2t1qjG0MWti
-         4WDg==
-X-Gm-Message-State: APjAAAXrgpfxLVd0DMp0Ea48AJkfYNtuVF8QoONrpu1SdlyR7gIrxhFY
-        92BH8viccnZ2p8SVhjgSsGxGkkk8SVs=
-X-Google-Smtp-Source: APXvYqwOb0S95cl/7KsX0ESLaeUeaojcPDGOqXQQ0d6Vdvy+oGGi8WCHtt08DYRkCgQryg1VfwQ9MA==
-X-Received: by 2002:a63:c44f:: with SMTP id m15mr4501065pgg.34.1560258151007;
-        Tue, 11 Jun 2019 06:02:31 -0700 (PDT)
+        bh=TR2jsLXLuKJzsRWAqZLBERMt4T32XKyN+tY7oRfNleI=;
+        b=T1XXaGKQeRoUeOhLLgQsMQqZyo3OpUTso0ZJBMg9W29pCbzKkK4NlsaazP9Och26yW
+         zOcUjt/Hft/pEgi4chqnAYO8zx6273Stk0hOVf3pEf2m0XuXhiCZ9OQJ1oklalL+7CEQ
+         TqFWMTjkC/NmRLaqfQ3F/iPwI4qB+/nHjWXjefN2V0775fVqD5w9WbFjjBY2yY0Lpeyz
+         tV/yyqMS5O9a0ygXwQuV4EfPr3CzDW5fFVyjzwfy6qxV4wGAjNoK6ZBKuySDUoE+l9cO
+         TkAukvmcG6CYprzJ9v+Ln+Y8p/4n2lgjGiHQwQnyZRxJKm2Jq1UvAW5g7tS1BoylgD/w
+         jxBw==
+X-Gm-Message-State: APjAAAWWwmM8+V/rQE/pjVG+54ZH+fYDllnAehA1ihLs7IzxEB1if/1R
+        DQdwCyGVahcgOXmsHnDWAkLzRvu02QQ=
+X-Google-Smtp-Source: APXvYqzDvUanWKNQFEmP3JE3hL2wEFYJdTHSqZFrqEzStqOSHDdhJITgiUevhXhq35ik1yQ8pCASsQ==
+X-Received: by 2002:a17:902:9a42:: with SMTP id x2mr59510096plv.106.1560258462160;
+        Tue, 11 Jun 2019 06:07:42 -0700 (PDT)
 Received: from [10.44.0.192] ([103.48.210.53])
-        by smtp.gmail.com with ESMTPSA id g15sm27612945pfm.119.2019.06.11.06.02.26
+        by smtp.gmail.com with ESMTPSA id q36sm4347237pgl.23.2019.06.11.06.07.37
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 11 Jun 2019 06:02:30 -0700 (PDT)
+        Tue, 11 Jun 2019 06:07:41 -0700 (PDT)
 From:   Greg Ungerer <gregungerer00@gmail.com>
 X-Google-Original-From: Greg Ungerer <gerg@linux-m68k.org>
-Subject: Re: binfmt_flat cleanups and RISC-V support
+Subject: Re: [PATCH 04/15] binfmt_flat: remove flat_old_ram_flag
 To:     Christoph Hellwig <hch@lst.de>
 Cc:     Michal Simek <monstr@monstr.eu>,
         linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
@@ -56,14 +56,15 @@ Cc:     Michal Simek <monstr@monstr.eu>,
         linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
         linux-kernel@vger.kernel.org
 References: <20190610212015.9157-1-hch@lst.de>
- <6e5fb7db-1d6f-7d49-553c-edc18f14f641@linux-m68k.org>
- <20190611073802.GB21522@lst.de>
-Message-ID: <87039cee-925b-3f50-f29f-94e55ef6e985@linux-m68k.org>
-Date:   Tue, 11 Jun 2019 23:02:24 +1000
+ <20190610212015.9157-5-hch@lst.de>
+ <b1ce6fc6-343c-7686-b4f4-35a305dc2adb@linux-m68k.org>
+ <20190611073648.GA21522@lst.de>
+Message-ID: <1aaf5ce2-1e7a-e818-fbeb-42fbe551a108@linux-m68k.org>
+Date:   Tue, 11 Jun 2019 23:07:36 +1000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <20190611073802.GB21522@lst.de>
+In-Reply-To: <20190611073648.GA21522@lst.de>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -73,32 +74,52 @@ List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
 
-On 11/6/19 5:38 pm, Christoph Hellwig wrote:
-> On Tue, Jun 11, 2019 at 04:51:02PM +1000, Greg Ungerer wrote:
->> Hi Christoph,
->>
->> On 11/6/19 7:20 am, Christoph Hellwig wrote:
->>> below is a larger stash of cleanups for the binfmt_misc code,
->>> preparing for the last patch that now trivially adds RISC-V
->>> support, which will be used for the RISC-V nommu series I am
->>> about to post.
->>
->> Whole series looks pretty good. Just the one comment I made.
->>
->> I normally take these through the m68knommu git tree,
->> if you have no problem with that I'll push it in there.
->> It will hit linux-next from there.
-> 
-> Yes, that's fine.  We'll need it to bring up riscv nommu support,
-> but there is no actual dependency on the patches for it to compile,
-> just for it to actually be useful.
-> 
-> Btw, it seems like the uclinux-dev list is dead, is there a replacement
-> for it?
 
-No, unfortunately no replacement. Generally I think anything that comes
-up goes to the architecture list that issues come up on. Probably not
-ideal, especially for things like this that are across all arches.
+On 11/6/19 5:36 pm, Christoph Hellwig wrote:
+> On Tue, Jun 11, 2019 at 04:04:39PM +1000, Greg Ungerer wrote:
+>>> index c0e4535dc1ec..18d82fd5f57c 100644
+>>> --- a/fs/binfmt_flat.c
+>>> +++ b/fs/binfmt_flat.c
+>>> @@ -488,7 +488,8 @@ static int load_flat_file(struct linux_binprm *bprm,
+>>>    	 * fix up the flags for the older format,  there were all kinds
+>>>    	 * of endian hacks,  this only works for the simple cases
+>>>    	 */
+>>> -	if (rev == OLD_FLAT_VERSION && flat_old_ram_flag(flags))
+>>> +	if (IS_ENABLED(CONFIG_BINFMT_FLAT_OLD_ALWAYS_RAM) &&
+>>> +	    rev == OLD_FLAT_VERSION)
+>>
+>> The flags are from the binary file header here, so this is going to lose
+>> that check for most platforms (except h8300 where it would always have
+>> been true).
+> 
+> Indeed.  The old code is:
+> 
+> 	if (rev == OLD_FLAT_VERSION && flat_old_ram_flag(flags))
+> 		flags = FLAT_FLAG_RAM;
+> 
+> which for !h8300 evaluates to:
+> 
+> 	if (rev == OLD_FLAT_VERSION && flags)
+> 		flags = FLAT_FLAG_RAM;
+> 
+> so basically if any flag was set it was turned into FLAT_FLAG_RAM.
+> Was that really intentional?
+
+Probably not, looking at the flags. For the compressed flag it
+makes some sense. But I don't think many of the others need load
+to RAM behavior.
+
+
+>  I guess even if it wasn't the is no
+> point in changing this historic behavior now.
+> 
+> So I guess what we could do it something like:
+> 
+> 	if (rev == OLD_FLAT_VERSION &&
+> 	    (flags || IS_ENABLED(CONFIG_BINFMT_FLAT_OLD_ALWAYS_RAM)))
+> 		flags = FLAT_FLAG_RAM;
+
+Yeah, that to looks to preserve the old behavior.
 
 Regards
 Greg
