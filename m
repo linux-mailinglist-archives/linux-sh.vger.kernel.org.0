@@ -2,103 +2,104 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D68213C8B7
-	for <lists+linux-sh@lfdr.de>; Tue, 11 Jun 2019 12:20:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A0EC3CC62
+	for <lists+linux-sh@lfdr.de>; Tue, 11 Jun 2019 15:02:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405183AbfFKKUm (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 11 Jun 2019 06:20:42 -0400
-Received: from mout.kundenserver.de ([212.227.126.130]:39179 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404766AbfFKKUl (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 11 Jun 2019 06:20:41 -0400
-Received: from 5HSWXM1 ([87.191.24.82]) by mrelayeu.kundenserver.de (mreue012
- [212.227.15.167]) with ESMTPSA (Nemesis) id 1Mrwnt-1gmn4M05RN-00o00l; Tue, 11
- Jun 2019 12:20:23 +0200
-Date:   Tue, 11 Jun 2019 12:20:20 +0200 (CEST)
-From:   Rolf Evers-Fischer <embedded24@evers-fischer.de>
-X-X-Sender: rolf@5HSWXM1
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-cc:     Rolf Evers-Fischer <embedded24@evers-fischer.de>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] sh: dma: Add missing IS_ERR test
-In-Reply-To: <CAMuHMdVGhd3KfRq9F+-Qzc7q5kJyczG1RRQDpgs4FqJpPwK4QA@mail.gmail.com>
-Message-ID: <alpine.LNX.2.21.99.1906111200560.3086@5HSWXM1>
-References: <20190607115404.4557-1-embedded24@evers-fischer.de> <CAMuHMdVGhd3KfRq9F+-Qzc7q5kJyczG1RRQDpgs4FqJpPwK4QA@mail.gmail.com>
-User-Agent: Alpine 2.21.99 (LNX 239 2017-12-04)
+        id S2388887AbfFKNCc (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 11 Jun 2019 09:02:32 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:35504 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388131AbfFKNCc (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 11 Jun 2019 09:02:32 -0400
+Received: by mail-pf1-f196.google.com with SMTP id d126so7412800pfd.2;
+        Tue, 11 Jun 2019 06:02:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:subject:to:cc:references:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=RYF8jmWoohaknAxpNSmkAVScav4AJcUimkVoJQxY0o4=;
+        b=oPZoz7UpspmDSRDP60yFZFTmgXjX4FyOYwKa4q4wZ/w/lcxofJ1bYofPYAVnjMjzNh
+         T1xSeHPQy/NF+HMNDHLcJPkcfMkJfU/RcaklDAK3s35nWtAcVv7JDueu9P85a7aCBC9k
+         F3CR+tVrxGah0e7BcVAvYWM3XpxAbCrN4VuuVy7F67t47vLln8oJGRYE4p+j3WEXt/2R
+         OOVG5FbU6/2xbMmHufaBHnyBRQjhPukeuPpsEfZQHAlkRQI1k5tcOHGAW39ClmkE1eHg
+         bEdWHKDHWxNhu/b1WlJg4lO9w4GuFwNLl6L5onMIq0QEamzcETftvpTFD4FXEgeUXlMO
+         0XzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:subject:to:cc:references:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=RYF8jmWoohaknAxpNSmkAVScav4AJcUimkVoJQxY0o4=;
+        b=TR9YRnVOCX1CKABVA6j7LQHRzYvoyQC1GAS2XhTwlH32Pf/LI1E1pCwi5TRmIoiNDW
+         ocUsLiSeTZc0IS41VdSxBLzq2rHnXbAav9zyIYlvnmaVoRNfbPlkuc3R4/TUVcf8LXcM
+         K/wXuVDHoKKc87ALnblMy1Asc7RQ3YaX1jSlq809w3fm7A1u88SRj2ZgaD61j09B74ws
+         DxINvhjnO5qBGxfw81t7r4vAG0l36jagABdTwleK951L+0vVxmk/BpiBFjN/XBOl+JFu
+         pdzb06l79GUOktlSQDTvA2nHH0keZli4ozgeCVCLp5QJ8oUjFVFaNBDdp2t1qjG0MWti
+         4WDg==
+X-Gm-Message-State: APjAAAXrgpfxLVd0DMp0Ea48AJkfYNtuVF8QoONrpu1SdlyR7gIrxhFY
+        92BH8viccnZ2p8SVhjgSsGxGkkk8SVs=
+X-Google-Smtp-Source: APXvYqwOb0S95cl/7KsX0ESLaeUeaojcPDGOqXQQ0d6Vdvy+oGGi8WCHtt08DYRkCgQryg1VfwQ9MA==
+X-Received: by 2002:a63:c44f:: with SMTP id m15mr4501065pgg.34.1560258151007;
+        Tue, 11 Jun 2019 06:02:31 -0700 (PDT)
+Received: from [10.44.0.192] ([103.48.210.53])
+        by smtp.gmail.com with ESMTPSA id g15sm27612945pfm.119.2019.06.11.06.02.26
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 11 Jun 2019 06:02:30 -0700 (PDT)
+From:   Greg Ungerer <gregungerer00@gmail.com>
+X-Google-Original-From: Greg Ungerer <gerg@linux-m68k.org>
+Subject: Re: binfmt_flat cleanups and RISC-V support
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Michal Simek <monstr@monstr.eu>,
+        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        linux-m68k@lists.linux-m68k.org, linux-riscv@lists.infradead.org,
+        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-kernel@vger.kernel.org
+References: <20190610212015.9157-1-hch@lst.de>
+ <6e5fb7db-1d6f-7d49-553c-edc18f14f641@linux-m68k.org>
+ <20190611073802.GB21522@lst.de>
+Message-ID: <87039cee-925b-3f50-f29f-94e55ef6e985@linux-m68k.org>
+Date:   Tue, 11 Jun 2019 23:02:24 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Provags-ID: V03:K1:whDOo69V0O8WmU3uuTAKRyDoVquQvT54J4HeBg/Yr3HgYZ3CjzP
- C2j7QukDFdAH9n8RV7T2iR6znt2fcKol4IU5omSqeRGKt5ixZNBO2hnXW2Iit4oNAXYorcy
- REDkx57sOeTSURGpgWmf4+fsUtFklgcaZzYcdrZ06vlS2DFGB8/R4mw30Vh+eHLzakgyIdt
- Nx/vyWWpFhQcWMDkLMj2w==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:OGm9Xwwarbs=:TMek2VM/w38JcrExLRBLIp
- n1R5/VpcFsyhPxFjLjMKBBNVafoCaOcLYLBOFPgQTPdhqm6nASNpuIOB9X/6NjBIDsYDTUENK
- uadNwbKys6JjzXJUmUm1d3OJToEgd+IVLj7J90JqJpdi5o2nBAATIXiraDWetbtyj1YFy/Yn6
- IDZiIT+8AfgwIsm04wQaqAYzWmgh1yy792uxZ2w6EaI2yyMUl/9A9G8hqXiKmiTTO4sKwooO/
- PKA8l/C41eDaG/AT/fC6Mi8FOzA5Ffc9LSLu6hmAsKn0mRoqAw3uSOp+RsFCKrnxuCXsQxbZq
- Qsh094hFgF1KrRQnuOonlj7AvyJ7EOh8WNrrdBS+f2+T5dXYGVJz6+d5OPq/3bLPcTOY6j++l
- zXYfEoppNOepkKMm4QgBsQEvYzUCq6ByKigltSLxEmk0lTY4oZKyx23v8zxqTLKPMF4+TGd8i
- cxzBNDWIQOP16+1RViRIGGKCmZXJw52Jv7mbQFlqXaa8WBM3utngGHnDnXH/FxTEhmM8hEdyU
- yDvkZRjQDAZ1kDtzvXMOwZcKQbnV0t1q6SkD6MGLXbv0giGMw6xtdn0zHFT2eHuVteNKGO4K/
- b/d5hV9TBdcr7WGi84JNu0ZKX3y5Qz/HYQ0DfkFdHRfuVJNglW7q5yIZWNkLVIr+FEXL7vFdf
- 2k0OLWAK9jIWG86+omJ/JOnpRYAni40Q+YJLtV2ZWjCrOYmeruQ9sSAPVTfdcL6yyOAXVVnQh
- YvLB5VFqXJRYKdWfffEpq9sljfUBzKbGnTeTjTSOmr9f7mfIqLF37SWTcgcIvvlGncfW+IZQa
- gtmOIFj
+In-Reply-To: <20190611073802.GB21522@lst.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
 
-
-On Sat, 8 Jun 2019, Geert Uytterhoeven wrote:
-Hi Geert,
-
-thank you for your reply and your additional findings.
-
-> Hi Rolf,
+On 11/6/19 5:38 pm, Christoph Hellwig wrote:
+> On Tue, Jun 11, 2019 at 04:51:02PM +1000, Greg Ungerer wrote:
+>> Hi Christoph,
+>>
+>> On 11/6/19 7:20 am, Christoph Hellwig wrote:
+>>> below is a larger stash of cleanups for the binfmt_misc code,
+>>> preparing for the last patch that now trivially adds RISC-V
+>>> support, which will be used for the RISC-V nommu series I am
+>>> about to post.
+>>
+>> Whole series looks pretty good. Just the one comment I made.
+>>
+>> I normally take these through the m68knommu git tree,
+>> if you have no problem with that I'll push it in there.
+>> It will hit linux-next from there.
 > 
-> Thanks for your patch!
+> Yes, that's fine.  We'll need it to bring up riscv nommu support,
+> but there is no actual dependency on the patches for it to compile,
+> just for it to actually be useful.
 > 
-> On Fri, Jun 7, 2019 at 2:04 PM Rolf Evers-Fischer
-> <embedded24@evers-fischer.de> wrote:
-> > get_dma_channel may return ERR_PTR, so a check is added.
-> 
-> It may also return NULL...
+> Btw, it seems like the uclinux-dev list is dead, is there a replacement
+> for it?
 
-Good catch. I must have missed this.
+No, unfortunately no replacement. Generally I think anything that comes
+up goes to the architecture list that issues come up on. Probably not
+ideal, especially for things like this that are across all arches.
 
-> 
-> > --- a/arch/sh/drivers/dma/dma-api.c
-> > +++ b/arch/sh/drivers/dma/dma-api.c
-> > @@ -94,7 +94,7 @@ int get_dma_residue(unsigned int chan)
-> >         struct dma_info *info = get_dma_info(chan);
-> >         struct dma_channel *channel = get_dma_channel(chan);
-> >
-> > -       if (info->ops->get_residue)
-> > +       if (!IS_ERR(channel) && (info->ops->get_residue))
-> >                 return info->ops->get_residue(channel);
-> 
-> ... in which case .get_residue() may crash, as some implementations
-> dereference the passed channel pointer.
-> 
-> Hence !IS_ERR_OR_NULL()?
+Regards
+Greg
 
-Yes, in fact. IS_ERR_OR_NULL is the better choice here. 
-I will resend a reworked patch immediately.
-
-> 
-> I didn't check the other callers.
-
-Well, I did. And I found that none of the implementations checks the 
-passed pointer. However, no in-tree driver is using the .extend() op, but 
-as long as we don't know, if any out-of-tree drivers are using it without 
-any additional check, I would prefer to check for NULL or error in 
-dma_extend() as well.
-
-Kind regards,
- Rolf
