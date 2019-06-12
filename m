@@ -2,89 +2,99 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A3F3F419BE
-	for <lists+linux-sh@lfdr.de>; Wed, 12 Jun 2019 02:56:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D921419DA
+	for <lists+linux-sh@lfdr.de>; Wed, 12 Jun 2019 03:10:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406392AbfFLAzx (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 11 Jun 2019 20:55:53 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:43276 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2406117AbfFLAzx (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 11 Jun 2019 20:55:53 -0400
-Received: by mail-pf1-f195.google.com with SMTP id i189so8515090pfg.10;
-        Tue, 11 Jun 2019 17:55:52 -0700 (PDT)
+        id S2407559AbfFLBJn (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 11 Jun 2019 21:09:43 -0400
+Received: from mail-lf1-f68.google.com ([209.85.167.68]:33428 "EHLO
+        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2407541AbfFLBJn (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 11 Jun 2019 21:09:43 -0400
+Received: by mail-lf1-f68.google.com with SMTP id y17so10716920lfe.0
+        for <linux-sh@vger.kernel.org>; Tue, 11 Jun 2019 18:09:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:subject:to:cc:references:in-reply-to:mime-version
-         :user-agent:message-id:content-transfer-encoding;
-        bh=JNCR25wKoUF8GmXR1+h5Qxc2sputayqDi9OAgx3GkdA=;
-        b=NiAwzvuW1158vo7YqCqImrGi+gOspOS5ptLbXAIoG+Z9ze7uMdcN2eGWAsbNMH7+TG
-         3ZkAe/orroen/eLz2qm7eGvkJnmLfn0Ao/sWgWXpra1h3e97Fbq8GTUU6tsqNa0XX05a
-         hylXtqpcRAnnO0Mj6KHPmtmbR1ePDFiDX84pGRfqnwJNRN6N/PrW6Cr39MB8mYO7MJlz
-         5R3W6R2v9YZy+6iSs2yC/ugh7qMnOvJh1iKbpPuLSnT/ouMOHYhMPkWq+xopLIjw9uu9
-         yeTUr5c2xq1OasjqxvVRtr5VrtPFnBVEv4hsmatE9KIsBtR0qj+CcdswIM50TMbSCQvN
-         o6Dw==
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=SZXVeOYEeW/t6moRL6yl166/GZV1HqW8qo9aOqBVN+Q=;
+        b=gAjfSlHuLsIpxvb8lF0RyxQXzEhYSHQJnAZ4as99A8GBRPKGt8LtILDEijhajNv2fV
+         FXhIx40OUX4WPq1W1eQvis0UNqIoFt7tkihxVZ4QyREYOfVPuleZ/0Zq1i4TWCfQY/NA
+         AhmvmJi02EHwj98eCflp9T4F3Jku2HpzQgXkw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
-         :mime-version:user-agent:message-id:content-transfer-encoding;
-        bh=JNCR25wKoUF8GmXR1+h5Qxc2sputayqDi9OAgx3GkdA=;
-        b=R5HR+XjXj44+vHeimHoFKSAZgrjD2qTGGD+MQgsUPI4z7uXaCcWDYG3h+GayoOpzuG
-         nVaw5jp4rawhj5qcHlGwskh0y59Ema2P2UHD7Qh+FQs8lVS4SJ76ZawDq/bbHlKOIJYE
-         jEKaKbFYoYC8dWo+F6uNDkb3pTHWZYbZOogeedxhji7S5vMLYIegdanZlVrCvC2F9iAj
-         klPEufI0RO+ch8AEvfaDZBQh7tEc/PwrAFEUg5/9RKKbP1kU6K0uF1xSNIw/iupjO5Ic
-         H9f50qdaOvraM4bpQCXeQlzz9IOlwaxQE2P/KGfNsGI4NOjj6yl3EWPd4pdUpAq6EZAn
-         cHFQ==
-X-Gm-Message-State: APjAAAXHgo2fBKJZ/cJIY1QCDao4cP0bspsylNKZIwL5kEOJ8jueygfx
-        K/Kv4B/+WzgfPLrvS+5gr2U=
-X-Google-Smtp-Source: APXvYqwFJLADjuhoiaHTsjm93GY2KEIrK+4logzMa1qKh7V/rBYbqMu9MhPfYO/mkPAOmVvGgW7CCQ==
-X-Received: by 2002:a63:b07:: with SMTP id 7mr22723250pgl.21.1560300952204;
-        Tue, 11 Jun 2019 17:55:52 -0700 (PDT)
-Received: from localhost (242.60.168.202.static.comindico.com.au. [202.168.60.242])
-        by smtp.gmail.com with ESMTPSA id u2sm3765259pjv.9.2019.06.11.17.55.50
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Tue, 11 Jun 2019 17:55:51 -0700 (PDT)
-Date:   Wed, 12 Jun 2019 10:52:53 +1000
-From:   Nicholas Piggin <npiggin@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=SZXVeOYEeW/t6moRL6yl166/GZV1HqW8qo9aOqBVN+Q=;
+        b=ksLr04iJ5E51ZehTpOpa+KsqXdDyvFcrlp3gVMf34kiRfxf3LCPeSHT0suhlK9sUx9
+         GqGpFOi34B8PNwX681z7If7c25hkbmLGle7CMhfw9F3pVE7jxjRAejd55SvMbjiw+0tQ
+         u4G3qS/M+6cxqjikiZV0dSWo6ASz2T3uwm6d/vuHF/UrcZnf63YqmpYUfbUnhu6oQ5r9
+         cGGZp0SxYcnyum77KS3F+dd/4XM9UuggthzPWKPRuPUqRRqOzi4J8Jubvdp0aI9/y0+m
+         IJxTYfyZamCCoymB6b2wu0VzrQO1sa/FTiXajhiN0LEDIjLUMQbLvUQv71FBB+gKP6tr
+         +2Ew==
+X-Gm-Message-State: APjAAAVR6ZSb/+IuQKEYqZwqJ77FgnchSX3CX8QmT+iFagp0msGq81N5
+        rKWR0lSzaLL8YrEinqBOvyqqgYHCLPM=
+X-Google-Smtp-Source: APXvYqzh2IY9vt4wmyKf4xhzVlzAyNWuiIVdHbwrQwpE6WfEZ8BEhAyBKsl5GHAaG+xdLmWzc5whHw==
+X-Received: by 2002:a19:4bc5:: with SMTP id y188mr39608488lfa.113.1560301781487;
+        Tue, 11 Jun 2019 18:09:41 -0700 (PDT)
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com. [209.85.167.42])
+        by smtp.gmail.com with ESMTPSA id z17sm2934425ljc.37.2019.06.11.18.09.40
+        for <linux-sh@vger.kernel.org>
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Tue, 11 Jun 2019 18:09:41 -0700 (PDT)
+Received: by mail-lf1-f42.google.com with SMTP id p24so10707636lfo.6
+        for <linux-sh@vger.kernel.org>; Tue, 11 Jun 2019 18:09:40 -0700 (PDT)
+X-Received: by 2002:ac2:50c4:: with SMTP id h4mr26185312lfm.61.1560301780325;
+ Tue, 11 Jun 2019 18:09:40 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190611144102.8848-1-hch@lst.de> <20190611144102.8848-17-hch@lst.de>
+ <1560300464.nijubslu3h.astroid@bobo.none>
+In-Reply-To: <1560300464.nijubslu3h.astroid@bobo.none>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue, 11 Jun 2019 15:09:24 -1000
+X-Gmail-Original-Message-ID: <CAHk-=wjSo+TzkvYnAqrp=eFgzzc058DhSMTPr4-2quZTbGLfnw@mail.gmail.com>
+Message-ID: <CAHk-=wjSo+TzkvYnAqrp=eFgzzc058DhSMTPr4-2quZTbGLfnw@mail.gmail.com>
 Subject: Re: [PATCH 16/16] mm: pass get_user_pages_fast iterator arguments in
  a structure
-To:     Rich Felker <dalias@libc.org>,
+To:     Nicholas Piggin <npiggin@gmail.com>
+Cc:     Rich Felker <dalias@libc.org>,
         "David S. Miller" <davem@davemloft.net>,
         Christoph Hellwig <hch@lst.de>,
         James Hogan <jhogan@kernel.org>,
         Paul Burton <paul.burton@mips.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc:     Andrey Konovalov <andreyknvl@google.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Andrey Konovalov <andreyknvl@google.com>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Khalid Aziz <khalid.aziz@oracle.com>,
-        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
-        linux-sh@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
+        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
+        linux-mips@vger.kernel.org, Linux-MM <linux-mm@kvack.org>,
+        linuxppc-dev@lists.ozlabs.org,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
-        x86@kernel.org
-References: <20190611144102.8848-1-hch@lst.de>
-        <20190611144102.8848-17-hch@lst.de>
-In-Reply-To: <20190611144102.8848-17-hch@lst.de>
-MIME-Version: 1.0
-User-Agent: astroid/0.14.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1560300464.nijubslu3h.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+        "the arch/x86 maintainers" <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Christoph Hellwig's on June 12, 2019 12:41 am:
-> Instead of passing a set of always repeated arguments down the
-> get_user_pages_fast iterators, create a struct gup_args to hold them and
-> pass that by reference.  This leads to an over 100 byte .text size
-> reduction for x86-64.
+On Tue, Jun 11, 2019 at 2:55 PM Nicholas Piggin <npiggin@gmail.com> wrote:
+>
+> What does this do for performance? I've found this pattern can be
+> bad for store aliasing detection.
 
-What does this do for performance? I've found this pattern can be
-bad for store aliasing detection.
+I wouldn't expect it to be noticeable, and the lack of argument
+reloading etc should make up for it. Plus inlining makes it a
+non-issue when that happens.
 
-Thanks,
-Nick
-=
+But I guess we could also at least look at using "restrict", if that
+ends up helping. Unlike the completely bogus type-based aliasing rules
+(that we disable because I think the C people were on some bad bad
+drugs when they came up with them), restricted pointers are a real
+thing that makes sense.
+
+That said, we haven't traditionally used it, and I don't know how much
+it helps gcc. Maybe gcc ignores it entirely? S
+
+               Linus
