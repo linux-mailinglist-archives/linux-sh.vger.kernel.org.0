@@ -2,94 +2,148 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 22226419F6
-	for <lists+linux-sh@lfdr.de>; Wed, 12 Jun 2019 03:27:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71A4941F42
+	for <lists+linux-sh@lfdr.de>; Wed, 12 Jun 2019 10:35:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406629AbfFLB1M (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 11 Jun 2019 21:27:12 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:41418 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2406215AbfFLB1M (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 11 Jun 2019 21:27:12 -0400
-Received: by mail-pf1-f196.google.com with SMTP id m30so8052610pff.8;
-        Tue, 11 Jun 2019 18:27:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=CtAUnKccNVM3Ar1NimuBm5cYjQQHpUUV35G3NGl7I18=;
-        b=agp8LjxgsiKUNBRzMQ6B1lsikXTP9MXAxScOYcZnsKclD0N+jlNVoUl/hzW4poyT5e
-         3L5Kpn7BSqpfe4Vqr0OMLbW+npbpmydrSh4Nk6mj5SGyx5Jj6jf653H8VmcdoFa5nFlP
-         PVXiNmiBrwZEiKboElbWiL4LdjFKAAbWcoG28ZIwtcy8dPhR9hlh49PJ6xikrmMZLHzP
-         20qVkn6ttaCMzY1I08lsTIN5eoleBIFYn7aRuLf/OzGJBwoDwiiv7JFIo5WL8ooodEKt
-         b/SI9mnoX3vTwRgRrKm2an9+aTc8TPah2tNonQDJrq5z+DrzQV1yJmuEkhrXeIPbcuOQ
-         mhuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=CtAUnKccNVM3Ar1NimuBm5cYjQQHpUUV35G3NGl7I18=;
-        b=FzhAsGYxmBnN668L0avinUo4XrpGKzI143/f++HbbliQdoUWYL7rIB07JskNWd+DU7
-         9+jmbLvpyufPPU8eq2izcCQRPo6orwcxUzTS5OUq7UHKXLLbMSF/8DIg84j79oFaTWzH
-         E/Wf2FNiDzxa7xnKm9OoWDmikQTdDGdNnhVVBS6MJm6hrgiPmAba2fijUfhXxYpekJD5
-         un5jWa/UL28tWsTkCFge14d0BYjkEI442PL0hQcNImY80LK60XtCruQlHxXE12hXaNrD
-         TVcToHfg5GzGvJ2hFzaL1CPH0OrbIsZZwU7xYr0epJ4Xmv6eUpK9T9Zd/dtqzCSv62oS
-         Ovpw==
-X-Gm-Message-State: APjAAAW63NOZnX17illK661RcsXbWTv8zbb9LMRh6E+aeNPIC6DjZn8x
-        UlVnDtutcFL11xnw3IiiJkk=
-X-Google-Smtp-Source: APXvYqyJ4j/UPWrjvOrQasPCqbyNI8I79UTnDUErLKqAMrK1NLwjt0JJmzYLlyxhcupMkfrOP1908w==
-X-Received: by 2002:a17:90a:cb87:: with SMTP id a7mr10403544pju.130.1560302831475;
-        Tue, 11 Jun 2019 18:27:11 -0700 (PDT)
-Received: from [10.2.189.129] ([66.170.99.2])
-        by smtp.gmail.com with ESMTPSA id c10sm3547108pjq.14.2019.06.11.18.27.10
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 11 Jun 2019 18:27:10 -0700 (PDT)
-Content-Type: text/plain;
-        charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.11\))
-Subject: Re: [PATCH 16/16] mm: pass get_user_pages_fast iterator arguments in
- a structure
-From:   Nadav Amit <nadav.amit@gmail.com>
-In-Reply-To: <1560300464.nijubslu3h.astroid@bobo.none>
-Date:   Tue, 11 Jun 2019 18:27:09 -0700
-Cc:     Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Khalid Aziz <khalid.aziz@oracle.com>,
-        LKML <linux-kernel@vger.kernel.org>, linux-mips@vger.kernel.org,
-        Linux-MM <linux-mm@kvack.org>, linuxppc-dev@lists.ozlabs.org,
-        linux-sh@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
-        the arch/x86 maintainers <x86@kernel.org>
-Content-Transfer-Encoding: 7bit
-Message-Id: <0441EC80-B09F-4722-B186-E42EB6A83386@gmail.com>
-References: <20190611144102.8848-1-hch@lst.de>
- <20190611144102.8848-17-hch@lst.de> <1560300464.nijubslu3h.astroid@bobo.none>
-To:     Nicholas Piggin <npiggin@gmail.com>, Christoph Hellwig <hch@lst.de>
-X-Mailer: Apple Mail (2.3445.104.11)
+        id S1726286AbfFLIfB (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 12 Jun 2019 04:35:01 -0400
+Received: from mout.kundenserver.de ([212.227.126.131]:58243 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727695AbfFLIfB (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 12 Jun 2019 04:35:01 -0400
+Received: from 5HSWXM1.fritz.box ([87.191.24.82]) by mrelayeu.kundenserver.de
+ (mreue009 [212.227.15.167]) with ESMTPA (Nemesis) id
+ 1M2fDr-1hf6Fd0pHb-0048ig; Wed, 12 Jun 2019 10:34:47 +0200
+From:   Rolf Evers-Fischer <embedded24@evers-fischer.de>
+To:     ysato@users.sourceforge.jp, dalias@libc.org,
+        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Rolf Evers-Fischer <embedded24@evers-fischer.de>
+Subject: [PATCH v2] sh: dma: Add missing IS_ERR_OR_NULL test
+Date:   Wed, 12 Jun 2019 10:34:22 +0200
+Message-Id: <20190612083422.9843-1-embedded24@evers-fischer.de>
+X-Mailer: git-send-email 2.21.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:Jl32H1BfLq9Y/22OHrK2aMRkznc+2LMbUEpdRaS2GHNJPPABLD0
+ Y0FZmQvq1135O7mkZmR39+ckXm28iaqsTslyKhJFNPxwKiaSom6FqZluxEXIszXbTDBRNBE
+ AlfgZ+pHV6lXpbvf4qBxHTLt3wvgKUci/M78moSFSXpvbT7zmZSj0XgLRF8EJ0j8nwWi8xs
+ x/GddDngyWG1L1x36DoKw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:mMP0RALRnOw=:DU7Y0nAx02zYfpysYPncdO
+ 8NGnjxQ1zJiG9LNv99jTg5aV0bGJ9Rn7cTFnqLRKo9ybj2ogdFn+ZhWcBhFsAUcr00RS6dp8m
+ 6rthfkhIyvFow6IQ+eaXadvg1hh6kMXEMAJNEhsV1mAp+KFqtPo0BCXXMALAq4M7EY2RdtJCg
+ iNJ1jKXLgNbMfvY/IT15vaJZoyjHl776vHb2LTHvXI1I7W2HFjZfo7xlrv8q0y6ciMHoWSUqO
+ phG4MYrKbgQjB3O/tGCNPrYVSOgs2LzIwjpDm/tTHG3BixCch7yPLW6wXF420Z83XqBzd2kHe
+ vTd6VKoLgNfVJv9BwnZbX5oUdJIiw6baK8rKAhkaY+VN9G3slaMSVrw46weXutMtZhLOyphKm
+ Aayu1Xvd39B9fY2ylPNoeb4OkQzCmmkCnKpbR1Nn+MujtM8P10Zho7wlxaoz75IDmvWJn9CrX
+ 52MrDbM9/oTQO1+0+Tro6LQ7QVaPQfTzgO3+PJLhQ++Z9qgM7IsEuIWKSiXZAWO4TlbgVvK1w
+ sv3BW0EygAP7VSOd3fYcP2E6kLQR4v+wafIvlAkjbJkI74Y/mU6P9ODU0Jll/48CpkcMz7AMG
+ 7T5WyMn81PkwBXm2UnxeuCdhgdf9aJjezflc3j6DWjuQBnyyVTbbUoT+Wnb3oAAV+ew/uVYjG
+ IwMx6GqY2CzfttSL0tl8HigzrC0ZC+P0bolR5lP5kRPQiPwnMOU0GnpgcQHVRJ+TBg091O6SO
+ izJJos7bs0E+mnSZ2d9lrOgT/FiaLNz8d1WRETsr55g4rMQsC+ZTyLuNnQo=
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-> On Jun 11, 2019, at 5:52 PM, Nicholas Piggin <npiggin@gmail.com> wrote:
-> 
-> Christoph Hellwig's on June 12, 2019 12:41 am:
->> Instead of passing a set of always repeated arguments down the
->> get_user_pages_fast iterators, create a struct gup_args to hold them and
->> pass that by reference.  This leads to an over 100 byte .text size
->> reduction for x86-64.
-> 
-> What does this do for performance? I've found this pattern can be
-> bad for store aliasing detection.
+get_dma_channel may return ERR_PTR or NULL, so a check is added.
 
-Note that sometimes such an optimization can also have adverse effect due to
-stack protector code that gcc emits when you use such structs.
+Changes since v1:
+ - Removed unnecessary parentheses
+ - Replaced IS_ERR with IS_ERR_OR_NULL
 
-Matthew Wilcox encountered such a case:
-https://patchwork.kernel.org/patch/10702741/
+Signed-off-by: Rolf Evers-Fischer <embedded24@evers-fischer.de>
+---
+ arch/sh/drivers/dma/dma-api.c   | 20 +++++++++++++++++++-
+ arch/sh/drivers/dma/dma-sysfs.c |  2 +-
+ 2 files changed, 20 insertions(+), 2 deletions(-)
+
+diff --git a/arch/sh/drivers/dma/dma-api.c b/arch/sh/drivers/dma/dma-api.c
+index ab9170494dcc..aedce0b9ecc5 100644
+--- a/arch/sh/drivers/dma/dma-api.c
++++ b/arch/sh/drivers/dma/dma-api.c
+@@ -94,7 +94,7 @@ int get_dma_residue(unsigned int chan)
+ 	struct dma_info *info = get_dma_info(chan);
+ 	struct dma_channel *channel = get_dma_channel(chan);
+ 
+-	if (info->ops->get_residue)
++	if (!IS_ERR_OR_NULL(channel) && info->ops->get_residue)
+ 		return info->ops->get_residue(channel);
+ 
+ 	return 0;
+@@ -195,6 +195,9 @@ int request_dma(unsigned int chan, const char *dev_id)
+ 	int result;
+ 
+ 	channel = get_dma_channel(chan);
++	if (IS_ERR_OR_NULL(channel))
++		return PTR_ERR(channel);
++
+ 	if (atomic_xchg(&channel->busy, 1))
+ 		return -EBUSY;
+ 
+@@ -217,6 +220,9 @@ void free_dma(unsigned int chan)
+ 	struct dma_info *info = get_dma_info(chan);
+ 	struct dma_channel *channel = get_dma_channel(chan);
+ 
++	if (IS_ERR_OR_NULL(channel))
++		return;
++
+ 	if (info->ops->free)
+ 		info->ops->free(channel);
+ 
+@@ -229,6 +235,9 @@ void dma_wait_for_completion(unsigned int chan)
+ 	struct dma_info *info = get_dma_info(chan);
+ 	struct dma_channel *channel = get_dma_channel(chan);
+ 
++	if (IS_ERR_OR_NULL(channel))
++		return;
++
+ 	if (channel->flags & DMA_TEI_CAPABLE) {
+ 		wait_event(channel->wait_queue,
+ 			   (info->ops->get_residue(channel) == 0));
+@@ -274,6 +283,9 @@ void dma_configure_channel(unsigned int chan, unsigned long flags)
+ 	struct dma_info *info = get_dma_info(chan);
+ 	struct dma_channel *channel = get_dma_channel(chan);
+ 
++	if (IS_ERR_OR_NULL(channel))
++		return;
++
+ 	if (info->ops->configure)
+ 		info->ops->configure(channel, flags);
+ }
+@@ -285,6 +297,9 @@ int dma_xfer(unsigned int chan, unsigned long from,
+ 	struct dma_info *info = get_dma_info(chan);
+ 	struct dma_channel *channel = get_dma_channel(chan);
+ 
++	if (IS_ERR_OR_NULL(channel))
++		return PTR_ERR(channel);
++
+ 	channel->sar	= from;
+ 	channel->dar	= to;
+ 	channel->count	= size;
+@@ -299,6 +314,9 @@ int dma_extend(unsigned int chan, unsigned long op, void *param)
+ 	struct dma_info *info = get_dma_info(chan);
+ 	struct dma_channel *channel = get_dma_channel(chan);
+ 
++	if (IS_ERR_OR_NULL(channel))
++		return PTR_ERR(channel);
++
+ 	if (info->ops->extend)
+ 		return info->ops->extend(channel, op, param);
+ 
+diff --git a/arch/sh/drivers/dma/dma-sysfs.c b/arch/sh/drivers/dma/dma-sysfs.c
+index 8ef318150f84..6ba5b569d446 100644
+--- a/arch/sh/drivers/dma/dma-sysfs.c
++++ b/arch/sh/drivers/dma/dma-sysfs.c
+@@ -30,7 +30,7 @@ static ssize_t dma_show_devices(struct device *dev,
+ 		struct dma_info *info = get_dma_info(i);
+ 		struct dma_channel *channel = get_dma_channel(i);
+ 
+-		if (unlikely(!info) || !channel)
++		if (unlikely(!info) || IS_ERR_OR_NULL(channel))
+ 			continue;
+ 
+ 		len += sprintf(buf + len, "%2d: %14s    %s\n",
+-- 
+2.21.0
+
