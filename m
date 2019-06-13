@@ -2,110 +2,64 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1586B44CE8
-	for <lists+linux-sh@lfdr.de>; Thu, 13 Jun 2019 22:04:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BA804501E
+	for <lists+linux-sh@lfdr.de>; Fri, 14 Jun 2019 01:38:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728985AbfFMUEM (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 13 Jun 2019 16:04:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43706 "EHLO mail.kernel.org"
+        id S1726811AbfFMXiK (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 13 Jun 2019 19:38:10 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56696 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728752AbfFMUEM (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Thu, 13 Jun 2019 16:04:12 -0400
-Received: from akpm3.svl.corp.google.com (unknown [104.133.8.65])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1726177AbfFMXiK (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Thu, 13 Jun 2019 19:38:10 -0400
+Received: from [10.44.0.22] (unknown [103.48.210.53])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1E84021537;
-        Thu, 13 Jun 2019 20:04:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1560456250;
-        bh=STyJgmmKr944RjOkqQ8HWC3xeSyqe7HVqnGI2LWRsD8=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=N2gTptqwNshky9t39zHrhF/tFwNwxgbkrbTJor+tak1vLqX97uKewRk8bUnzrn4Ko
-         U5IaH0MfRPlK77bT7Yc/4PbSrlc3n6J8M0GsjcRBoXIwR5bmuZZez1tgkNHDFM277/
-         c+zGeW7mHjTeucDkGZEHLB7VbopRA5mQ7/vZdAH4=
-Date:   Thu, 13 Jun 2019 13:04:08 -0700
-From:   Andrew Morton <akpm@linux-foundation.org>
-To:     Anshuman Khandual <anshuman.khandual@arm.com>
-Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        x86@kernel.org, Michal Hocko <mhocko@suse.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH] mm: Generalize and rename notify_page_fault() as
- kprobe_page_fault()
-Message-Id: <20190613130408.3091869d8e50d0524157523f@linux-foundation.org>
-In-Reply-To: <1560420444-25737-1-git-send-email-anshuman.khandual@arm.com>
-References: <1560420444-25737-1-git-send-email-anshuman.khandual@arm.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+        by mail.kernel.org (Postfix) with ESMTPSA id 32C802133D;
+        Thu, 13 Jun 2019 23:38:08 +0000 (UTC)
+Subject: Re: binfmt_flat cleanups and RISC-V support v2
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Michal Simek <monstr@monstr.eu>,
+        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        linux-m68k@lists.linux-m68k.org, linux-riscv@lists.infradead.org,
+        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-kernel@vger.kernel.org
+References: <20190613070903.17214-1-hch@lst.de>
+From:   Greg Ungerer <gerg@linux-m68k.org>
+Message-ID: <9a7c0892-21f3-23fb-590d-011d66f97320@linux-m68k.org>
+Date:   Fri, 14 Jun 2019 09:38:06 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
+MIME-Version: 1.0
+In-Reply-To: <20190613070903.17214-1-hch@lst.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Thu, 13 Jun 2019 15:37:24 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+Hi Christoph,
 
-> Architectures which support kprobes have very similar boilerplate around
-> calling kprobe_fault_handler(). Use a helper function in kprobes.h to unify
-> them, based on the x86 code.
+On 13/6/19 5:08 pm, Christoph Hellwig wrote:
+> below is a larger stash of cleanups for the binfmt_misc code,
+> preparing for the last patch that now trivially adds RISC-V
+> support, which will be used for the RISC-V nommu series I am
+> about to post.
 > 
-> This changes the behaviour for other architectures when preemption is
-> enabled. Previously, they would have disabled preemption while calling the
-> kprobe handler. However, preemption would be disabled if this fault was
-> due to a kprobe, so we know the fault was not due to a kprobe handler and
-> can simply return failure.
-> 
-> This behaviour was introduced in the commit a980c0ef9f6d ("x86/kprobes:
-> Refactor kprobes_fault() like kprobe_exceptions_notify()")
-> 
-> ...
->
-> --- a/arch/arm/mm/fault.c
-> +++ b/arch/arm/mm/fault.c
-> @@ -30,28 +30,6 @@
->  
->  #ifdef CONFIG_MMU
->  
-> -#ifdef CONFIG_KPROBES
-> -static inline int notify_page_fault(struct pt_regs *regs, unsigned int fsr)
+> Changes since v2:
+>   - fix the handling of old format flags
+>   - don't pass arguments on stack for RISC-V
+>   - small cleanups for flat_v2_reloc_t
 
-Some architectures make this `static inline'.  Others make it
-`nokprobes_inline', others make it `static inline __kprobes'.  The
-latter seems weird - why try to put an inline function into
-.kprobes.text?
+Thanks for doing this work. Tested and works for me on
+m68k/Coldfire too.
 
-So..  what's the best thing to do here?  You chose `static
-nokprobe_inline' - is that the best approach, if so why?  Does
-kprobe_page_fault() actually need to be inlined?
+I have pushed these onto the for-next branch of the
+m68knommu git tree.
 
-Also, some architectures had notify_page_fault returning int, others
-bool.  You chose bool and that seems appropriate and all callers are OK
-with that.
+Regards
+Greg
+
+
