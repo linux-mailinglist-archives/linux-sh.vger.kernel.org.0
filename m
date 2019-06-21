@@ -2,52 +2,52 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D61E4E98A
-	for <lists+linux-sh@lfdr.de>; Fri, 21 Jun 2019 15:40:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B38E4E9C0
+	for <lists+linux-sh@lfdr.de>; Fri, 21 Jun 2019 15:45:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726192AbfFUNkX (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 21 Jun 2019 09:40:23 -0400
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:39435 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726118AbfFUNkX (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 21 Jun 2019 09:40:23 -0400
-Received: by mail-qt1-f195.google.com with SMTP id i34so6894651qta.6
-        for <linux-sh@vger.kernel.org>; Fri, 21 Jun 2019 06:40:23 -0700 (PDT)
+        id S1726205AbfFUNpd (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 21 Jun 2019 09:45:33 -0400
+Received: from mail-qk1-f194.google.com ([209.85.222.194]:43450 "EHLO
+        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726031AbfFUNpd (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 21 Jun 2019 09:45:33 -0400
+Received: by mail-qk1-f194.google.com with SMTP id m14so4413022qka.10
+        for <linux-sh@vger.kernel.org>; Fri, 21 Jun 2019 06:45:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=ziepe.ca; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=ZCrivaPmWHSHjQSdgEw4GI/j98fJxtxh9tp1DIhn9Pk=;
-        b=iFE5ScFSlA9eaFIsPJU8p0w1qOx41yW1vrAuYeo+l9Q0KwpkxwhaD346XR6CI3LuMu
-         FsUTSf6vE97JnP3EPZrFn46YHJ7vRTKevOvCMH1mna8IGtNFXf48ywkiIrsuxvMz1Lyo
-         73WFQX5rdb2D6muLva15ZoWDq9Kj/YcD/y2bpNGuMg6dRxVmYAap99xfHkj4krlsmpA9
-         WLzb7MYs8YrQkoW/Cq3RrCPIBJ2bvt0kiEleJq5K2k1LS5IcxoG3chSgmdVQLBLoizx0
-         yMC2TCuZc1Ce7lhLmgcinzihQvYINNi8qNCu1nQLWvdKkjW4U7948HBdCkUlKYsn6Uth
-         DaVw==
+        bh=5X0rmkRC95nceR2b+WbG0Q+b41qnJ7FNz5RDX36KkRU=;
+        b=IKvWFo0f0mTVaCe/ijJtv0mDxHgoNp8HulNuI0gdobye37WUW94nv8DO7J1ctBzM/s
+         y1U3xE4o3pFMYs/7BSYNHk45TVTdOg5ah1B/Ezb+sYysR+frntFucIE6z4FaKjp7+kPS
+         CWfRQXI0wAV8/s5+T6lJtOeXR69gDXp75nl/bDlVvB0CS61j1/DQcB5+JxxW8c8h8L/W
+         Do9nWLXeCDBlSBMAgLef2HJyHbQwTzNWgF989V9+FjYpu72cru6fLYnt32uoCsfDkKYD
+         8v1BgRCJXKFONlNlM8ZrySrf2ZWJIGMy+aVFl4b0JnDL684iSD+C68Fqbqka+ZNuPT7s
+         EMwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=ZCrivaPmWHSHjQSdgEw4GI/j98fJxtxh9tp1DIhn9Pk=;
-        b=g9TdeGrcmcX5HtS1swTbTVGzuyTMrn5kf6xW6sJv+Rc3KkcvYU71Xfx3Wt0T0tSLqf
-         8UIdYM2cdzbYF3Xaohgm0Jfn2jEGfW7LFC7aVbW34BxQxG8UGFrXP9jl0pc5KlIQByAX
-         9AHY/zu1+zV3EGKLMXC8aEPV+o02akJd6f3md/zKHl6fUBIfKfj4Jf9T1jJvjhViNomC
-         VwsNOUYg73xcWK240PEpxQmrFamhxjgp/7sjHBsj1hDN4t94kLyVfJFkL9nawDHztkNj
-         uqawb7vTB2dzrQASP+VrMRnuNNbQVuVNXlQciXDpy2RX5kA/3YSJ5dMzkKfTspNl5JZI
-         5S1Q==
-X-Gm-Message-State: APjAAAUkGZH3egMj9ZIu72J0LznadPC/2Gh4fCDQ8fnus4eInAarQy1N
-        xH66JPuxeh8xpFAXWV5zoYdamyRvhGllXw==
-X-Google-Smtp-Source: APXvYqzfk92nAm4v0PC/p+cfLaUPeFmmoTuTFE99jGSQ5m486NYHbLSajeoJYynPCh/suXX0ETWpgw==
-X-Received: by 2002:ac8:17c1:: with SMTP id r1mr115641302qtk.41.1561124422594;
-        Fri, 21 Jun 2019 06:40:22 -0700 (PDT)
+        bh=5X0rmkRC95nceR2b+WbG0Q+b41qnJ7FNz5RDX36KkRU=;
+        b=prXlButZgrZq/G+KSwsvaUjmoPzYDaDcpY/z5OIhJWynV5/emGNYYM45mYXnanXJKC
+         4qijO/+NLl3Mjdi2AT1Qxao9v06Dns2284/7GI7sG1sTnCBNQ9wteMgl9xT3qXMjxL1q
+         PPqO1l8N/8COC0IlVn7ICwG077Th8EC+8XbntyRvoMfxC8i/H2Poo7Olerbal6BkQel7
+         z7K5wgtbvEDJ3BhcaDl8mbQ91Pc+Ov/80Hemxoaf1jVtpI5q656TWt65QvOUoKWJPkRI
+         OGwoSwrLaR9ncp9dBegFLAZznQ3W7AbsvjHrrgg4whwHVYaX+JIiWbsIA5sS3icuRCzH
+         TD5w==
+X-Gm-Message-State: APjAAAWXC+g0pytGYMIqJfyFlM/6oGwio8cxPktcnganIVkxHn6zrg21
+        kDsm218MSpZRV4/TCrX18eaBViBLiQifBw==
+X-Google-Smtp-Source: APXvYqw6Aa1vtmaoAcmmWYgjcUlAuKLWmpTyuJq4yf3HeH8qCqVB5lh6+d5sgipawN8uf35W8F5eHQ==
+X-Received: by 2002:a37:6808:: with SMTP id d8mr5468961qkc.478.1561124732220;
+        Fri, 21 Jun 2019 06:45:32 -0700 (PDT)
 Received: from ziepe.ca (hlfxns017vw-156-34-55-100.dhcp-dynamic.fibreop.ns.bellaliant.net. [156.34.55.100])
-        by smtp.gmail.com with ESMTPSA id i22sm1837536qti.30.2019.06.21.06.40.22
+        by smtp.gmail.com with ESMTPSA id h4sm1369861qkk.39.2019.06.21.06.45.31
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 21 Jun 2019 06:40:22 -0700 (PDT)
+        Fri, 21 Jun 2019 06:45:31 -0700 (PDT)
 Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
         (envelope-from <jgg@ziepe.ca>)
-        id 1heJm9-000060-L5; Fri, 21 Jun 2019 10:40:21 -0300
-Date:   Fri, 21 Jun 2019 10:40:21 -0300
+        id 1heJr9-00008q-7e; Fri, 21 Jun 2019 10:45:31 -0300
+Date:   Fri, 21 Jun 2019 10:45:31 -0300
 From:   Jason Gunthorpe <jgg@ziepe.ca>
 To:     Christoph Hellwig <hch@lst.de>
 Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
@@ -65,34 +65,52 @@ Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         linux-mips@vger.kernel.org, linux-sh@vger.kernel.org,
         sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-mm@kvack.org, x86@kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 02/16] mm: simplify gup_fast_permitted
-Message-ID: <20190621134021.GM19891@ziepe.ca>
+Subject: Re: [PATCH 03/16] mm: lift the x86_32 PAE version of gup_get_pte to
+ common code
+Message-ID: <20190621134531.GN19891@ziepe.ca>
 References: <20190611144102.8848-1-hch@lst.de>
- <20190611144102.8848-3-hch@lst.de>
+ <20190611144102.8848-4-hch@lst.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190611144102.8848-3-hch@lst.de>
+In-Reply-To: <20190611144102.8848-4-hch@lst.de>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Tue, Jun 11, 2019 at 04:40:48PM +0200, Christoph Hellwig wrote:
-> Pass in the already calculated end value instead of recomputing it, and
-> leave the end > start check in the callers instead of duplicating them
-> in the arch code.
+On Tue, Jun 11, 2019 at 04:40:49PM +0200, Christoph Hellwig wrote:
+> The split low/high access is the only non-READ_ONCE version of
+> gup_get_pte that did show up in the various arch implemenations.
+> Lift it to common code and drop the ifdef based arch override.
 > 
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
 > ---
->  arch/s390/include/asm/pgtable.h   |  8 +-------
->  arch/x86/include/asm/pgtable_64.h |  8 +-------
->  mm/gup.c                          | 17 +++++++----------
->  3 files changed, 9 insertions(+), 24 deletions(-)
+>  arch/x86/Kconfig                      |  1 +
+>  arch/x86/include/asm/pgtable-3level.h | 47 ------------------------
+>  arch/x86/kvm/mmu.c                    |  2 +-
+>  mm/Kconfig                            |  3 ++
+>  mm/gup.c                              | 51 ++++++++++++++++++++++++---
+>  5 files changed, 52 insertions(+), 52 deletions(-)
 
-Much cleaner
+Yep, the sh and mips conversions look right too.
 
 Reviewed-by: Jason Gunthorpe <jgg@mellanox.com>
+ 
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index f0c76ba47695..fe51f104a9e0 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -762,6 +762,9 @@ config GUP_BENCHMARK
+>  
+>  	  See tools/testing/selftests/vm/gup_benchmark.c
+>
+> +config GUP_GET_PTE_LOW_HIGH
+> +	bool
+> +
+
+The config name seems a bit out of place though, should it be prefixed
+with GENERIC_ or ARCH_?
 
 Jason
