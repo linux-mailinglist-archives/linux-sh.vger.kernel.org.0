@@ -2,55 +2,54 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CEF564EA2E
-	for <lists+linux-sh@lfdr.de>; Fri, 21 Jun 2019 16:05:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAB4A4EA94
+	for <lists+linux-sh@lfdr.de>; Fri, 21 Jun 2019 16:28:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726104AbfFUOFo (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 21 Jun 2019 10:05:44 -0400
-Received: from mail-qt1-f193.google.com ([209.85.160.193]:37293 "EHLO
-        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726017AbfFUOFo (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 21 Jun 2019 10:05:44 -0400
-Received: by mail-qt1-f193.google.com with SMTP id y57so7032438qtk.4
-        for <linux-sh@vger.kernel.org>; Fri, 21 Jun 2019 07:05:43 -0700 (PDT)
+        id S1725975AbfFUO21 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 21 Jun 2019 10:28:27 -0400
+Received: from mail-qk1-f194.google.com ([209.85.222.194]:41406 "EHLO
+        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726058AbfFUO20 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 21 Jun 2019 10:28:26 -0400
+Received: by mail-qk1-f194.google.com with SMTP id c11so4536931qkk.8
+        for <linux-sh@vger.kernel.org>; Fri, 21 Jun 2019 07:28:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=ziepe.ca; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=DkOzjPryuxAAZ6jj5aW+vqBCJ/xdXKjWwEy6q7BhjEk=;
-        b=aWygfjPxOlEI1tnMPH+ZEg4lwdm35MlZ9FC2Sv9mNYz1TXYg7zMy65oynguhqHPLHD
-         5poTOWoehn2uMjooUllCl96WCJBItvfeaEybY0ihx7Fxw7kb42coN1wbRqEsylbfnfz5
-         poQ9cLzRruP/gaTS5r2ivimvPxFxF10jIh6a1t8bY1c5/8nfCSLTPHFwmVvqBcrvoeSR
-         IrRjd3ExmNKIoqdYb4sME5daBw+7RTgROqdSMT/mhe4d+vGey9AkE/rEcyeRljT6dNfy
-         FwbLskfpDrkSyt1xncxh/ARyaZyhUUMnPNBaOl1L9cqI8FBxyq6cZOpH+4o3AamW6xDj
-         GPoA==
+        bh=QN9JaLjC+aXpYQwYy0rUybeOk/75jD5iu87wcqgiv+A=;
+        b=gHewrOsGYjfruRd4d1g7uEoXFq0aPB7SLlglrbzK6BXTkmLdPbiazxpOboA2jm7wrI
+         b8d8+E6FX9OR7u+IFNEKrAnJnOqu/5F1VZLUMNCMCU+wgS6y2EkbpkHsbU8+r3JHZVql
+         PIegARKFvfPWOqpFRbR76bztPULQ83Vuao8w4HpYbgS5VaeHCUZ/9LZHChOTJFGspzyL
+         atunFnhPQ2nD+493uKquWuaHkbcR/Qbt9BLiGb7yOcsFbUDnB07oOdzvU9IpHgGWj6ES
+         glaSilKeeyF/aLMWsYWTQY3pAMonUdx/dUq0pDX6f1CXEmbwIgHnehnriMkvZWZLQO1T
+         0B5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=DkOzjPryuxAAZ6jj5aW+vqBCJ/xdXKjWwEy6q7BhjEk=;
-        b=TDYTqr5ilZRkrf57jl9bcoebYYnxd3xeIElEy6rWtRxGAal6YuXxi9l3V9tz+ot8SV
-         jHa5OB8Ev2kj7C/u5CEr+ObpGSJt9ZGpwHb6J/H8fAORVbeQGBkRBhqRKAQV0KDGYP6V
-         6OAivWwDf3ez1s2tnj5VPP7ZGXBwkwCEWuQkcOWdl9IrsyDgpMCPTUazVq3gCDlqZn5U
-         j3oQdeyIdmpVh3UOT690tzfED0Q42T0yw6MpMYntev1xzS72W2VcnQXQAN5/mfW5nmLs
-         f4YcvLBff5yG1iKr4ewsepeW8ClTKilYui8H499737UZ/BMtI3AVZ/pWpL0jagBjxV0m
-         xInw==
-X-Gm-Message-State: APjAAAWr0u5cKQGEu9za4VWA2sVyFlVsGqlwQkRfj0+aFRE/93rIUEGz
-        zzzcy+w26PC202EZwGm6OD5S3A==
-X-Google-Smtp-Source: APXvYqzN1Bctip/8rcU9u7A4vdGN+f0/Jibs65Z8bT+DlW7GOUgigVYUV0gNRYHBistcmEEvwVki5g==
-X-Received: by 2002:a0c:d610:: with SMTP id c16mr45427150qvj.22.1561125943463;
-        Fri, 21 Jun 2019 07:05:43 -0700 (PDT)
+        bh=QN9JaLjC+aXpYQwYy0rUybeOk/75jD5iu87wcqgiv+A=;
+        b=QGsDEphDgGxsm7z2TbEpOiJx+ohThRa+TpkXfF9Uv4g/YRhHBgcUodeeNNUcBZORHM
+         khsi9m03amH3WQXBzJyuzmd1eFqRqor8krzqm8TiaEwdxNZHuTzoyDwm+GnogfrB0ksM
+         qTDNR2uRzI8++guWVAsKXaKGl10sX6Tu1a92WfB0slkiv79Q3VkQ4xlhasyKLAfGksIx
+         nHw4xOn9exEV/SpRHw0ezB5l8ZCRlOyyqmz7YETSTQyKhFpFXZbPU0JdzDabQKAPnte3
+         /zbd0Caz38D47SCxKYNh9ULksY5H9/qQRCmCnO0mVcl6Nd0v7KrzZv3EwJ9FAIT+47PW
+         HQDA==
+X-Gm-Message-State: APjAAAX4dMoXVoS8H7++EEqcub55XDlxO5l2rPXJ30eo/fTHde+vBvLG
+        1r51ldbqVIIQXu1Ag8sFw3BZ0g==
+X-Google-Smtp-Source: APXvYqydWDme2tP2dVS/BqtEvh4YdCf0/vXc8OQrQ6NRAaTCyw2Eaq6p7IUxO9RX+s8DYAJPYZ5q+A==
+X-Received: by 2002:a05:620a:1107:: with SMTP id o7mr77780538qkk.324.1561127305462;
+        Fri, 21 Jun 2019 07:28:25 -0700 (PDT)
 Received: from ziepe.ca (hlfxns017vw-156-34-55-100.dhcp-dynamic.fibreop.ns.bellaliant.net. [156.34.55.100])
-        by smtp.gmail.com with ESMTPSA id i17sm1269594qkl.71.2019.06.21.07.05.42
+        by smtp.gmail.com with ESMTPSA id y14sm1370164qkb.109.2019.06.21.07.28.24
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 21 Jun 2019 07:05:42 -0700 (PDT)
+        Fri, 21 Jun 2019 07:28:24 -0700 (PDT)
 Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
         (envelope-from <jgg@ziepe.ca>)
-        id 1heKAg-0000Jr-7W; Fri, 21 Jun 2019 11:05:42 -0300
-Date:   Fri, 21 Jun 2019 11:05:42 -0300
+        id 1heKWe-0000lt-CN; Fri, 21 Jun 2019 11:28:24 -0300
+Date:   Fri, 21 Jun 2019 11:28:24 -0300
 From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     Christoph Hellwig <hch@lst.de>, Kamal Dasu <kdasu.kdev@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>
+To:     Christoph Hellwig <hch@lst.de>
 Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Paul Burton <paul.burton@mips.com>,
         James Hogan <jhogan@kernel.org>,
@@ -66,74 +65,130 @@ Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         linux-mips@vger.kernel.org, linux-sh@vger.kernel.org,
         sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-mm@kvack.org, x86@kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 04/16] MIPS: use the generic get_user_pages_fast code
-Message-ID: <20190621140542.GO19891@ziepe.ca>
+Subject: Re: [PATCH 10/16] mm: rename CONFIG_HAVE_GENERIC_GUP to
+ CONFIG_HAVE_FAST_GUP
+Message-ID: <20190621142824.GP19891@ziepe.ca>
 References: <20190611144102.8848-1-hch@lst.de>
- <20190611144102.8848-5-hch@lst.de>
+ <20190611144102.8848-11-hch@lst.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190611144102.8848-5-hch@lst.de>
+In-Reply-To: <20190611144102.8848-11-hch@lst.de>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Tue, Jun 11, 2019 at 04:40:50PM +0200, Christoph Hellwig wrote:
-> diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
-> index 4ccb465ef3f2..7d27194e3b45 100644
-> +++ b/arch/mips/include/asm/pgtable.h
-> @@ -20,6 +20,7 @@
->  #include <asm/cmpxchg.h>
->  #include <asm/io.h>
->  #include <asm/pgtable-bits.h>
-> +#include <asm/cpu-features.h>
->  
->  struct mm_struct;
->  struct vm_area_struct;
-> @@ -626,6 +627,8 @@ static inline pmd_t pmdp_huge_get_and_clear(struct mm_struct *mm,
->  
->  #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
->  
-> +#define gup_fast_permitted(start, end)	(!cpu_has_dc_aliases)
-> +
+On Tue, Jun 11, 2019 at 04:40:56PM +0200, Christoph Hellwig wrote:
+> We only support the generic GUP now, so rename the config option to
+> be more clear, and always use the mm/Kconfig definition of the
+> symbol and select it from the arch Kconfigs.
 
-Today this check is only being done on the get_user_pages_fast() -
-after this patch it is also done for __get_user_pages_fast().
-
-Which means __get_user_pages_fast is now non-functional on a range of
-MIPS CPUs, but that seems OK as far as I can tell, so:
+Looks OK to me
 
 Reviewed-by: Jason Gunthorpe <jgg@mellanox.com>
 
-However, looks to me like this patch is also a bug fix for this:
+But could you also roll something like this in to the series? There is
+no longer any reason for the special __weak stuff that I can see -
+just follow the normal pattern for stubbing config controlled
+functions through the header file.
 
-commit 5b167c123b3c3582f62cf1896465019bc40fe526
-Author: Kamal Dasu <kdasu.kdev@gmail.com>
-Date:   Fri Jun 14 17:10:03 2013 +0000
-
-    MIPS: Fix get_user_page_fast() for mips with cache alias
-    
-    get_user_pages_fast() is missing cache flushes for MIPS platforms with
-    cache aliases.  Filesystem failures observed with DirectIO operations due
-    to missing flush_anon_page() that use page coloring logic to work with
-    cache aliases. This fix falls through to take slow_irqon path that calls
-    get_user_pages() that has required logic for platforms where
-    cpu_has_dc_aliases is true.
-
-> -	pgdp = pgd_offset(mm, addr);
-> -	do {
-> -		pgd_t pgd = *pgdp;
-> -
-> -		next = pgd_addr_end(addr, end);
-> -		if (pgd_none(pgd))
-> -			goto slow;
-> -		if (!gup_pud_range(pgd, addr, next, gup_flags & FOLL_WRITE,
-> -				   pages, &nr))
-
-This is different too, the core code has a p4d layer, but I see that
-whole thing gets NOP'd by the compiler as mips uses pgtable-nop4d.h -
-right?
-
-Jason
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 0e8834ac32b76c..13b1cb573383d5 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -1561,8 +1561,17 @@ long get_user_pages_locked(unsigned long start, unsigned long nr_pages,
+ long get_user_pages_unlocked(unsigned long start, unsigned long nr_pages,
+ 		    struct page **pages, unsigned int gup_flags);
+ 
++#ifdef CONFIG_HAVE_FAST_GUP
+ int get_user_pages_fast(unsigned long start, int nr_pages,
+ 			unsigned int gup_flags, struct page **pages);
++#else
++static inline int get_user_pages_fast(unsigned long start, int nr_pages,
++				      unsigned int gup_flags,
++				      struct page **pages)
++{
++	return get_user_pages_unlocked(start, nr_pages, pages, gup_flags);
++}
++#endif
+ 
+ /* Container for pinned pfns / pages */
+ struct frame_vector {
+@@ -1668,8 +1677,17 @@ extern int mprotect_fixup(struct vm_area_struct *vma,
+ /*
+  * doesn't attempt to fault and will return short.
+  */
++#ifdef CONFIG_HAVE_FAST_GUP
+ int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
+ 			  struct page **pages);
++#else
++static inline int __get_user_pages_fast(unsigned long start, int nr_pages,
++					int write, struct page **pages)
++{
++	return 0;
++}
++#endif
++
+ /*
+  * per-process(per-mm_struct) statistics.
+  */
+diff --git a/mm/util.c b/mm/util.c
+index 9834c4ab7d8e86..68575a315dc5ad 100644
+--- a/mm/util.c
++++ b/mm/util.c
+@@ -300,53 +300,6 @@ void arch_pick_mmap_layout(struct mm_struct *mm, struct rlimit *rlim_stack)
+ }
+ #endif
+ 
+-/*
+- * Like get_user_pages_fast() except its IRQ-safe in that it won't fall
+- * back to the regular GUP.
+- * Note a difference with get_user_pages_fast: this always returns the
+- * number of pages pinned, 0 if no pages were pinned.
+- * If the architecture does not support this function, simply return with no
+- * pages pinned.
+- */
+-int __weak __get_user_pages_fast(unsigned long start,
+-				 int nr_pages, int write, struct page **pages)
+-{
+-	return 0;
+-}
+-EXPORT_SYMBOL_GPL(__get_user_pages_fast);
+-
+-/**
+- * get_user_pages_fast() - pin user pages in memory
+- * @start:	starting user address
+- * @nr_pages:	number of pages from start to pin
+- * @gup_flags:	flags modifying pin behaviour
+- * @pages:	array that receives pointers to the pages pinned.
+- *		Should be at least nr_pages long.
+- *
+- * get_user_pages_fast provides equivalent functionality to get_user_pages,
+- * operating on current and current->mm, with force=0 and vma=NULL. However
+- * unlike get_user_pages, it must be called without mmap_sem held.
+- *
+- * get_user_pages_fast may take mmap_sem and page table locks, so no
+- * assumptions can be made about lack of locking. get_user_pages_fast is to be
+- * implemented in a way that is advantageous (vs get_user_pages()) when the
+- * user memory area is already faulted in and present in ptes. However if the
+- * pages have to be faulted in, it may turn out to be slightly slower so
+- * callers need to carefully consider what to use. On many architectures,
+- * get_user_pages_fast simply falls back to get_user_pages.
+- *
+- * Return: number of pages pinned. This may be fewer than the number
+- * requested. If nr_pages is 0 or negative, returns 0. If no pages
+- * were pinned, returns -errno.
+- */
+-int __weak get_user_pages_fast(unsigned long start,
+-				int nr_pages, unsigned int gup_flags,
+-				struct page **pages)
+-{
+-	return get_user_pages_unlocked(start, nr_pages, pages, gup_flags);
+-}
+-EXPORT_SYMBOL_GPL(get_user_pages_fast);
+-
+ unsigned long vm_mmap_pgoff(struct file *file, unsigned long addr,
+ 	unsigned long len, unsigned long prot,
+ 	unsigned long flag, unsigned long pgoff)
