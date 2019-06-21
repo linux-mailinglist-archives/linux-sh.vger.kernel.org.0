@@ -2,133 +2,91 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B9C804E1E8
-	for <lists+linux-sh@lfdr.de>; Fri, 21 Jun 2019 10:29:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1F314E8B4
+	for <lists+linux-sh@lfdr.de>; Fri, 21 Jun 2019 15:16:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726229AbfFUI3j (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 21 Jun 2019 04:29:39 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:41868 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726210AbfFUI3i (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 21 Jun 2019 04:29:38 -0400
-Received: by mail-pf1-f195.google.com with SMTP id m30so3204761pff.8;
-        Fri, 21 Jun 2019 01:29:38 -0700 (PDT)
+        id S1726542AbfFUNQN (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 21 Jun 2019 09:16:13 -0400
+Received: from mail-qk1-f196.google.com ([209.85.222.196]:37925 "EHLO
+        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726414AbfFUNQM (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 21 Jun 2019 09:16:12 -0400
+Received: by mail-qk1-f196.google.com with SMTP id a27so4347888qkk.5
+        for <linux-sh@vger.kernel.org>; Fri, 21 Jun 2019 06:16:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:subject:to:cc:references:in-reply-to:mime-version
-         :user-agent:message-id:content-transfer-encoding;
-        bh=yxfaAKL36iRBk7i3lJUt2q8lAl7GH2S2sjM2Bw2uPJs=;
-        b=fbj3ryUASSI5WTeqBy+Hc5OEHWiPYdV7sIZyNqgV+qzFiANsZYBHP3eTFrdbgDPMqz
-         +NZAYlBR+Dfy7yY9SJaByfth0oz38I9M0oFx0/PjpOVh4PwNfZ6TM2OYoTtOR9SENi8J
-         c4JwUKiwqGhPWDDJTo19f+iyU8hDWG4ED1a79bBPnMbmzbrs+wX6NcAW3qliBAqn2Cz9
-         cNxxEV7yL4Cgwr2k23ZRaqddTXmW7jlpNEyLek6w+pt1gX1BPnCgoRUSFo9HYLeo65pM
-         jcwVL8KYaA8GxmgazJGRjU9ifPR/K7V+tvyC4gxu12oOVP2g9/tx3yANOSmbk/9lW3n7
-         hoKQ==
+        d=ziepe.ca; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=IQElyJy7GWkNBjpDGeWXQk4uiZdHF4DIvT5Nq6LmxE8=;
+        b=dAlun1HgnUe7022YkQS6GWMYxR1o5c8vpg7JqEcJa5EPCdLDLVoVyNKQvqmZhtNBLF
+         WpB9JM8/T8dBcxbgb0A781lKzoM1O/pMV5gbPgxu5rSpwSDOdrQZP84Rnb3SOamIN0Wr
+         zqwvpJy81nkQ5T+CDcckayqmm3eCo60vgpfs1x9K8ufP7D9ZXElAHaqtpaYy7p5iJE/y
+         l4SUnUVsNsnn39sHqAifpgiGxKut8u7nW0gFTVC/+FCOE5qrTg5md8qyqRNjEUqfK8fM
+         2IShZOwM3jYukwEVdkuYU+31+Rw+P2EKrT1nUVgmbwp7XxSFSraMeiH+ei/K/LHG/DXJ
+         LUbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
-         :mime-version:user-agent:message-id:content-transfer-encoding;
-        bh=yxfaAKL36iRBk7i3lJUt2q8lAl7GH2S2sjM2Bw2uPJs=;
-        b=Uo5FWFl6d27L/KKJjFoSEGyYN9YEHSsXrrHIqtIjPRFShcujK9ZxGISRMK70fetFV+
-         2EICV2rp8ce7UHnd5OGFDoR5x3H38oa6txrDiuU8eJRX0kJ2fBLOUrMO0cMgGEyzgaLa
-         koRjBdWYo2cIion2cUXd4V0WoohJbahmrHRiyqyHMUgs9LH2x+trzLlpvetgRZaV7FJD
-         LS4R2l3CCRx9hIMxKU2/n6rtW8myrmgHsG142CxfiwX9fL54AmG0z2L6XSS7sBwp5fme
-         EMaAdCikfAE6via71atFS9Kg3BtpvWmknrxKqVQAFyyfkzRzBDzZs16CVJs2qLn8Ptth
-         v97w==
-X-Gm-Message-State: APjAAAWcVG1KAc5XJv4nWrF4ndq1DdZZGujF01VtChFPU/14zfCXX8Qq
-        LDVQCcvc914/MuUdcBWwsag=
-X-Google-Smtp-Source: APXvYqw0+FZM5x3iJhEGb07mnJPrmGs4w362V6gxLaKrkfdj/o0PM7u+3QQXzswzUEdHsggmQOj3Bw==
-X-Received: by 2002:a17:90a:cb15:: with SMTP id z21mr5012050pjt.87.1561105777693;
-        Fri, 21 Jun 2019 01:29:37 -0700 (PDT)
-Received: from localhost ([1.144.138.41])
-        by smtp.gmail.com with ESMTPSA id v185sm2443015pfb.14.2019.06.21.01.29.36
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Fri, 21 Jun 2019 01:29:36 -0700 (PDT)
-Date:   Fri, 21 Jun 2019 18:29:27 +1000
-From:   Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 16/16] mm: pass get_user_pages_fast iterator arguments in
- a structure
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Andrey Konovalov <andreyknvl@google.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=IQElyJy7GWkNBjpDGeWXQk4uiZdHF4DIvT5Nq6LmxE8=;
+        b=ofN6In3NeqzrdbdSqDjeCWUf6vc1X25pmWD6Nc2TlsVzYMpOCg8IoQ/yI8OSdaY4zE
+         aTlEpT0EsulPTfRF+9JPEODuxGbkkiDeexFXz6p+H5OInNvJT1zIC2VP+H9HlGta8gIO
+         M6nJE+AnCZrRtI510dw/yOFPagPSwohcS2Mg7/rg/v34XC8OjvSord7MFBBA2e48k1iH
+         rF+cV25cQohnRqOTjGf2mDOG3h30FsTSTvWMDI5UrBaOKAmVh+ZLb/WcB10RRmnovFoH
+         vDdnESQQJ7eCIPaA/bCpSwQjCVipcaS57OwCFyAC9DeFOBJnxVbuWmJOG5C7zWNYYCyN
+         OCJg==
+X-Gm-Message-State: APjAAAXH/lfSrFV9W9fjoGJqehMfyAcmGNDTT09YfX8J7W7RwrnA4dD+
+        3NkCs+1ayxox1HiZhOZ5Sst2vw==
+X-Google-Smtp-Source: APXvYqzJ0dyt2+hyzdXxi/NcBy96mwSHUO+pPyyWhj5oMJpKDFijtNxh/f3duoRgranP7T7lVqZ1hA==
+X-Received: by 2002:a37:a093:: with SMTP id j141mr90247251qke.244.1561122971647;
+        Fri, 21 Jun 2019 06:16:11 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-156-34-55-100.dhcp-dynamic.fibreop.ns.bellaliant.net. [156.34.55.100])
+        by smtp.gmail.com with ESMTPSA id s23sm1691094qtk.31.2019.06.21.06.16.10
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 21 Jun 2019 06:16:10 -0700 (PDT)
+Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1heJOk-0008Dq-Dw; Fri, 21 Jun 2019 10:16:10 -0300
+Date:   Fri, 21 Jun 2019 10:16:10 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>,
         "David S. Miller" <davem@davemloft.net>,
-        Christoph Hellwig <hch@lst.de>,
-        James Hogan <jhogan@kernel.org>,
+        Nicholas Piggin <npiggin@gmail.com>,
         Khalid Aziz <khalid.aziz@oracle.com>,
-        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
-        linux-mips@vger.kernel.org, Linux-MM <linux-mm@kvack.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        Linux-sh list <linux-sh@vger.kernel.org>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
         Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Burton <paul.burton@mips.com>,
-        Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
-        the arch/x86 maintainers <x86@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>
+        linux-mips@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-mm@kvack.org, x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 01/16] mm: use untagged_addr() for get_user_pages_fast
+ addresses
+Message-ID: <20190621131610.GK19891@ziepe.ca>
 References: <20190611144102.8848-1-hch@lst.de>
-        <20190611144102.8848-17-hch@lst.de>
-        <1560300464.nijubslu3h.astroid@bobo.none>
-        <CAHk-=wjSo+TzkvYnAqrp=eFgzzc058DhSMTPr4-2quZTbGLfnw@mail.gmail.com>
-        <1561032202.0qfct43s2c.astroid@bobo.none>
-        <CAHk-=wh46y3x5O0HkR=R4ETh6e5pDCrEsJ94CtC0fyQiYYAf6A@mail.gmail.com>
-In-Reply-To: <CAHk-=wh46y3x5O0HkR=R4ETh6e5pDCrEsJ94CtC0fyQiYYAf6A@mail.gmail.com>
+ <20190611144102.8848-2-hch@lst.de>
 MIME-Version: 1.0
-User-Agent: astroid/0.14.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1561104674.cxm7sn77rx.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190611144102.8848-2-hch@lst.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Linus Torvalds's on June 21, 2019 3:21 am:
-> On Thu, Jun 20, 2019 at 5:19 AM Nicholas Piggin <npiggin@gmail.com> wrote=
-:
->>
->> The processor aliasing problem happens because the struct will
->> be initialised with stores using one base register (e.g., stack
->> register), and then same memory is loaded using a different
->> register (e.g., parameter register).
->=20
-> Hmm. Honestly, I've never seen anything like that in any kernel profiles.
->=20
-> Compared to the problems I _do_ see (which is usually the obvious
-> cache misses, and locking), it must either be in the noise or it's
-> some problem specific to whatever CPU you are doing performance work
-> on?
+On Tue, Jun 11, 2019 at 04:40:47PM +0200, Christoph Hellwig wrote:
+> This will allow sparc64 to override its ADI tags for
+> get_user_pages and get_user_pages_fast.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  mm/gup.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-No you're right, the performance hit from these flushes is not a
-big hit that stands out in cycle counts. I just look at kernel code
-for various flushes. Branches not surprisingly are usually the main
-culprit, but they're normally not so interesting.
-
-Static alias prediction seems to work well outside this case. It's
-interesting, you need both a store ; load sequence that does not
-predict well (e.g., using a different base register), and you also
-need that load to be executed ahead of the store.
-
-The small stack structure for arguments is the perfect case. Bad
-pattern, and load executed right after store. Even then you also need
-a reason to delay the store (e.g., source not ready or store queue
-full), but those hazards do show up.
-
-Now, even when all that goes wrong, there are dynamic heuristics that
-can take over. So if you run a repetitive microbenchmark you won't
-see it.
-
-Some CPUs seem to be quite aggressive about giving up and turning off
-the alias prediction globally if you take misses (Intel x86 used to do
-that IIRC, not sure if they still do). So in that case you wouldn't
-even see it show up in one place, everything will just run slightly
-slower.
-
-What I worry about is high rate direct IO workloads that see single
-flushes in these paths as significant. Or if this thing creeps in to
-the kernel too much and just slightly raises global misses enough,
-then it will cause disambiguation to be significantly shut down.
-
-Thanks,
-Nick
-
-=
+Reviewed-by: Jason Gunthorpe <jgg@mellanox.com>
