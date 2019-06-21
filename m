@@ -2,52 +2,52 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E1F314E8B4
-	for <lists+linux-sh@lfdr.de>; Fri, 21 Jun 2019 15:16:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4406F4E978
+	for <lists+linux-sh@lfdr.de>; Fri, 21 Jun 2019 15:39:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726542AbfFUNQN (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 21 Jun 2019 09:16:13 -0400
-Received: from mail-qk1-f196.google.com ([209.85.222.196]:37925 "EHLO
-        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726414AbfFUNQM (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 21 Jun 2019 09:16:12 -0400
-Received: by mail-qk1-f196.google.com with SMTP id a27so4347888qkk.5
-        for <linux-sh@vger.kernel.org>; Fri, 21 Jun 2019 06:16:12 -0700 (PDT)
+        id S1726206AbfFUNjN (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 21 Jun 2019 09:39:13 -0400
+Received: from mail-qk1-f194.google.com ([209.85.222.194]:45937 "EHLO
+        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726168AbfFUNjN (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 21 Jun 2019 09:39:13 -0400
+Received: by mail-qk1-f194.google.com with SMTP id s22so4380081qkj.12
+        for <linux-sh@vger.kernel.org>; Fri, 21 Jun 2019 06:39:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=ziepe.ca; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=IQElyJy7GWkNBjpDGeWXQk4uiZdHF4DIvT5Nq6LmxE8=;
-        b=dAlun1HgnUe7022YkQS6GWMYxR1o5c8vpg7JqEcJa5EPCdLDLVoVyNKQvqmZhtNBLF
-         WpB9JM8/T8dBcxbgb0A781lKzoM1O/pMV5gbPgxu5rSpwSDOdrQZP84Rnb3SOamIN0Wr
-         zqwvpJy81nkQ5T+CDcckayqmm3eCo60vgpfs1x9K8ufP7D9ZXElAHaqtpaYy7p5iJE/y
-         l4SUnUVsNsnn39sHqAifpgiGxKut8u7nW0gFTVC/+FCOE5qrTg5md8qyqRNjEUqfK8fM
-         2IShZOwM3jYukwEVdkuYU+31+Rw+P2EKrT1nUVgmbwp7XxSFSraMeiH+ei/K/LHG/DXJ
-         LUbA==
+        bh=W1v9REbUjdM2ZPgzn5WvSncnmCktMY/9EZgX6QI0HOA=;
+        b=LOaqH/DlAyTiaVsb+/cJ5fNqCKK9dcYheZzqBkbU8/dJCNcbdbTdvycRRW6WsdWNrq
+         s1KlIlJ8pqtzQuZr4K+pscDPf+VAoNvvbLh7zGps691WEcEWVHVgG/y+SfGLilLH8xno
+         0bDlX2xF7lyCGAB4ZXKagYnPnFu5m/m8VbNEpdAbBtffvGdOG5+2xjfKlD1S7GX/sCJ8
+         Tki+kAZuPALbN16uIeo3/RJOzrwHbwCpqBWSiMTS52KfM4E4JV89wOogvhl4vLh60o2b
+         9hG2keijKi4DWyDadCzOTDOZpyKgf7ZyhWBT1TsI17RSZcSyUl57cSd5RfTlT2NIe0b0
+         X9Vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=IQElyJy7GWkNBjpDGeWXQk4uiZdHF4DIvT5Nq6LmxE8=;
-        b=ofN6In3NeqzrdbdSqDjeCWUf6vc1X25pmWD6Nc2TlsVzYMpOCg8IoQ/yI8OSdaY4zE
-         aTlEpT0EsulPTfRF+9JPEODuxGbkkiDeexFXz6p+H5OInNvJT1zIC2VP+H9HlGta8gIO
-         M6nJE+AnCZrRtI510dw/yOFPagPSwohcS2Mg7/rg/v34XC8OjvSord7MFBBA2e48k1iH
-         rF+cV25cQohnRqOTjGf2mDOG3h30FsTSTvWMDI5UrBaOKAmVh+ZLb/WcB10RRmnovFoH
-         vDdnESQQJ7eCIPaA/bCpSwQjCVipcaS57OwCFyAC9DeFOBJnxVbuWmJOG5C7zWNYYCyN
-         OCJg==
-X-Gm-Message-State: APjAAAXH/lfSrFV9W9fjoGJqehMfyAcmGNDTT09YfX8J7W7RwrnA4dD+
-        3NkCs+1ayxox1HiZhOZ5Sst2vw==
-X-Google-Smtp-Source: APXvYqzJ0dyt2+hyzdXxi/NcBy96mwSHUO+pPyyWhj5oMJpKDFijtNxh/f3duoRgranP7T7lVqZ1hA==
-X-Received: by 2002:a37:a093:: with SMTP id j141mr90247251qke.244.1561122971647;
-        Fri, 21 Jun 2019 06:16:11 -0700 (PDT)
+        bh=W1v9REbUjdM2ZPgzn5WvSncnmCktMY/9EZgX6QI0HOA=;
+        b=kqu1m/G1e01s2rToSksmTWAUTtv1tnPlc9PHbHY7/g91RqBDOfg4eoS0mUq0vaNNjg
+         sO8tS65elraMXwSvC3UUMIV0BbgwDUYT9c7W+QXrWDBSmUyG/zN8gljZe4yVqsOgWmJd
+         7JsAzWBqlJh/l66Qjr0SsQk3Z+9Ohv3wLyApiL6la643HFcTm8DLxPKCskizOCSVfUCp
+         3YQ4cS+XZCGTzaJOytpYBMr0ldJuCEEdEPiyn5Kp098TO/jEGAYE1fAI33Ua6d2gwy9Z
+         rwQ/NmUrrm2B4FxzVN+jNH0AI58TxUjCKZgzvFShv0UNVK+ZQ74EgTB31CDKBI9045y9
+         BTpQ==
+X-Gm-Message-State: APjAAAW4fz6CvMNjKAvDoY74pjan52oD5uO8ZiWmohfRhylLSrmIeoUM
+        ZygcWFgyw4aqRpeBar6dSFlx2g==
+X-Google-Smtp-Source: APXvYqwDjXm2EEI8RDeCs7A5M5DgZpv1lwL8EVk5ylfRpHYYLvhclwPmRsPezAJyTvAyxaG7iZQC7A==
+X-Received: by 2002:a37:ef01:: with SMTP id j1mr40587433qkk.163.1561124352349;
+        Fri, 21 Jun 2019 06:39:12 -0700 (PDT)
 Received: from ziepe.ca (hlfxns017vw-156-34-55-100.dhcp-dynamic.fibreop.ns.bellaliant.net. [156.34.55.100])
-        by smtp.gmail.com with ESMTPSA id s23sm1691094qtk.31.2019.06.21.06.16.10
+        by smtp.gmail.com with ESMTPSA id a6sm1525606qth.76.2019.06.21.06.39.11
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 21 Jun 2019 06:16:10 -0700 (PDT)
+        Fri, 21 Jun 2019 06:39:11 -0700 (PDT)
 Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
         (envelope-from <jgg@ziepe.ca>)
-        id 1heJOk-0008Dq-Dw; Fri, 21 Jun 2019 10:16:10 -0300
-Date:   Fri, 21 Jun 2019 10:16:10 -0300
+        id 1heJl1-00005R-4p; Fri, 21 Jun 2019 10:39:11 -0300
+Date:   Fri, 21 Jun 2019 10:39:11 -0300
 From:   Jason Gunthorpe <jgg@ziepe.ca>
 To:     Christoph Hellwig <hch@lst.de>
 Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
@@ -67,7 +67,7 @@ Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         linux-mm@kvack.org, x86@kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH 01/16] mm: use untagged_addr() for get_user_pages_fast
  addresses
-Message-ID: <20190621131610.GK19891@ziepe.ca>
+Message-ID: <20190621133911.GL19891@ziepe.ca>
 References: <20190611144102.8848-1-hch@lst.de>
  <20190611144102.8848-2-hch@lst.de>
 MIME-Version: 1.0
@@ -85,8 +85,46 @@ On Tue, Jun 11, 2019 at 04:40:47PM +0200, Christoph Hellwig wrote:
 > get_user_pages and get_user_pages_fast.
 > 
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
 >  mm/gup.c | 4 ++--
 >  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/gup.c b/mm/gup.c
+> index ddde097cf9e4..6bb521db67ec 100644
+> +++ b/mm/gup.c
+> @@ -2146,7 +2146,7 @@ int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
+>  	unsigned long flags;
+>  	int nr = 0;
+>  
+> -	start &= PAGE_MASK;
+> +	start = untagged_addr(start) & PAGE_MASK;
+>  	len = (unsigned long) nr_pages << PAGE_SHIFT;
+>  	end = start + len;
 
-Reviewed-by: Jason Gunthorpe <jgg@mellanox.com>
+Hmm, this function, and the other, goes on to do:
+
+        if (unlikely(!access_ok((void __user *)start, len)))
+                return 0;
+
+and I thought that access_ok takes in the tagged pointer?
+
+How about re-order it a bit?
+
+diff --git a/mm/gup.c b/mm/gup.c
+index ddde097cf9e410..f48747ced4723b 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -2148,11 +2148,12 @@ int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
+ 
+ 	start &= PAGE_MASK;
+ 	len = (unsigned long) nr_pages << PAGE_SHIFT;
+-	end = start + len;
+-
+ 	if (unlikely(!access_ok((void __user *)start, len)))
+ 		return 0;
+ 
++	start = untagged_ptr(start);
++	end = start + len;
++
+ 	/*
+ 	 * Disable interrupts.  We use the nested form as we can already have
+ 	 * interrupts disabled by get_futex_key.
