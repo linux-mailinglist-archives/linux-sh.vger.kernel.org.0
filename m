@@ -2,120 +2,64 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A407A4F584
-	for <lists+linux-sh@lfdr.de>; Sat, 22 Jun 2019 13:42:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F5584F6FD
+	for <lists+linux-sh@lfdr.de>; Sat, 22 Jun 2019 18:29:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726274AbfFVLmm (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sat, 22 Jun 2019 07:42:42 -0400
-Received: from mail-lf1-f67.google.com ([209.85.167.67]:43467 "EHLO
-        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726130AbfFVLml (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sat, 22 Jun 2019 07:42:41 -0400
-Received: by mail-lf1-f67.google.com with SMTP id j29so6822335lfk.10;
-        Sat, 22 Jun 2019 04:42:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=KSGerT8TNFuf7M5p6FI10I27Q482DnxM3bVeQHA30Lo=;
-        b=pxzM68tlLN5wQnJrAl75Ohda82kf82A2q0do/bEHnGkFDhatFhTwxctwBeKdSaXTA6
-         OedjKbGghTaRJqC48RQwS5BQSwt+OUzWvm8YebC3brkO9XvrzShj8JF3U0VJoyOd2MuG
-         9OqI+z8iVY0m/PyIyfx3BuAEOe7JAzcGmBMzaT62DYQJO5VfSTUdUxz/tPIVqzf0a+7V
-         PHdQN0E5m2vXT82hS918xXDqAlsB8OF0LGXudStzWOK4isw7PYqPEmdIWpYkGsZfMYe2
-         ppVlQCNYPUxYoJkSn+ekkLpfcULuJu14kOGEUsOVrpPllf0v1JAiri0BVGEPlovxsYNg
-         uu0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
-         :mime-version:content-transfer-encoding;
-        bh=KSGerT8TNFuf7M5p6FI10I27Q482DnxM3bVeQHA30Lo=;
-        b=oz26djtGorixhKUJKbbWgc/2g8YWKpotifqXO95txaGTnJy7AXDb+1AR/3odzInl/3
-         DMmpz05/J7G9F9sdts/MWdAfyL6K1DQUNCRCiA2/R5Weil591YzvwWYoc2zJRBrj904s
-         uPcen38K9fTmtCt9AUiL/SVbIrHnvqV5UElWHgFteJNatvONsYy8ioHZOLy0hkS7QWWk
-         7mx6eNEbDQr39cNifIJOADyS9dUj9OCynXH6nIbmLjkEClqj4jB4gcjKFsmbx+3HwTVl
-         RSqTAtVvtHPZdTZ4r3UH9tQNULiWQUTEthVAsNzPWtUAnSKzvKkTYS3VFeFn0mVrS81B
-         He2w==
-X-Gm-Message-State: APjAAAUZVa6Ks5M58bEmC1tXVGXMxt+VNbQUW7o/vvpMefcaqhHkgeSD
-        O69Lt+NMFMsfR5yhmCmNDUt+zcuXjZxpWw==
-X-Google-Smtp-Source: APXvYqwh7/l0brpnzOZ090BYqnhHQGGq5+SdHl8f91QysV7t+/7oTe8ufCVK4ESqOJelaU0qqpiFhQ==
-X-Received: by 2002:ac2:5dc3:: with SMTP id x3mr11841450lfq.168.1561203759138;
-        Sat, 22 Jun 2019 04:42:39 -0700 (PDT)
-Received: from saturn.lan (18.158-248-194.customer.lyse.net. [158.248.194.18])
-        by smtp.gmail.com with ESMTPSA id y62sm801672lje.100.2019.06.22.04.42.37
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Sat, 22 Jun 2019 04:42:38 -0700 (PDT)
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     linux-kernel@vger.kernel.org, linux-sh@vger.kernel.org
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Will Deacon <will.deacon@arm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Mark Brown <broonie@kernel.org>,
-        Inki Dae <inki.dae@samsung.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Sam Ravnborg <sam@ravnborg.org>
-Subject: [PATCH] sh: prevent warnings when using iounmap
-Date:   Sat, 22 Jun 2019 13:42:08 +0200
-Message-Id: <20190622114208.24427-1-sam@ravnborg.org>
-X-Mailer: git-send-email 2.20.1
+        id S1726334AbfFVQ3M (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sat, 22 Jun 2019 12:29:12 -0400
+Received: from sonic316-11.consmr.mail.bf2.yahoo.com ([74.6.130.121]:37205
+        "EHLO sonic316-11.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726489AbfFVQ3J (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sat, 22 Jun 2019 12:29:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1561220948; bh=3fXYToOZXvh5MOJ1JSawYDThjnynC/Ekt2gucIg6zZg=; h=Date:From:Reply-To:Subject:From:Subject; b=Sqmma7rQCC9csXbuiUU3W2/3JNoNH7S8264Vtax3p6vjP/GOy3xpD3wbU2PRR9kt9Hpkf+FIWW9PMCnOCaw1O79buHof/+e4XCSgtAjG8InDhCml6NU6QqPjKJ3zDc6ntgnpVqWtJnbhtjoUqIbv1W6GU8NTi8qVdCcmhrTc1IZ6aiOxpvBar7FQmN3jAwZcqruMWVYBgbk1LAoNqGvQ8jjOiTjNhCDJjpcLi94EE60gk+qIfYgu1AQDdd9wVo7X6i3XlVR9KCYw0l7ikZmlDSVkcSrrmJBlognD3+QlW4wko0RiyOGAXy+sEMAa8UXhFfxEEhf+A0WfqKBKwkVQbg==
+X-YMail-OSG: 3TA6aNEVM1mHk4tfSNROwYxIcekGBuzt5YSl8uAf.0_HHQ2LGDBhX2FGT2.Do_z
+ _0DV280q.YGRxDLoRDSJM82e2d5hsgoPZVcKxWsle6Z3oHX8Omo6hY9bu5QjJLY68zQNKFXygJQb
+ l1z62dHRy69xOFvl6tq.81EbMsOh1_cirrcCk2fMX_Jmwx0sebG__1rhE6wzzo_NDP9VbvIqZ9bR
+ 2icQk1E4jS_eT.9i5S8Sf0xsdShl9dMibpAXRU93yOYuHTQIa_P77tZTcStgCsIVxKiDvC3a0NxY
+ 8gZtRhwFdS641nFzLb368UTov.mB4xMHIDhTJv9NazaTg1j8sw18ET29s.TqlBmXHg8vLU94qBpd
+ 5PlUttniCcoNFEJpnLF3UUydECDiL8Z11cc18YJXwsIeDfFkYqHGX5XdA4jNj054mfKUIhoNEakn
+ WUKps59xvPMOhDCVBujS9v_vJClG4fXrBtjl.W_LQqwsSCutxIcdvaqHEtURhc6MkAEPdp4bTGI.
+ srA9smb.rYGHYAQmfGBYSrMpzCORaFwD3sLBOdwCdBjEVVdu.sBEOGddWsx2T8AZRYYy5nvR9Foz
+ bPsz41tE4__SqGjxrktEJ2_s2wIQAUza2deZFDGXc6T62eXwgZpA4Pp2nGTmGbFQ6h4nAMd51HJh
+ T3GzQn8s4GOn.0BKRwZDpwf7w10rv6JPk5nAgLZOaX7LfFs2yeq7fnFrg4OCOiG9MCMxrUNq6gf7
+ VomHdE0MTMCDmL3Ebk4K0YUhXaCTht27MRDaoJusaRVRGavzgn0vj3Z4n7xxu27l7AAqrNZTRmUI
+ n_b8fWLMzkIFoI7ZcmL_O5d2bYctv7x0WqIS4U6onMjRr4HtPSPFTejqwRtmzChG01EgeDt1Xu9J
+ 3fp8ciCxthupmhAtFqCrukMze7VttucN.DpeM8bKmVw1EDgn.s_L.L9fVdDwg2umGkLNazDxoP0_
+ dzbgtjASRdO1.JaxkowN5gRT6rna4oVoAmbHsjQ4rLTjBWSWz8ZqQDlV43apY.buigbJvn4Qmvf1
+ GxhsPAlHlnnGfjZ9pr3BSAVXKd_Qs83vYaBOYxWdXDlwxBl9.1.bnCTqFBLXCTND1BZASE2pli5W
+ fu842ttK3BMCdw5COU_fvmE4HTFnTUQ5tN2a6KHryWZiInkZpWdo8I9xFucw8IlPI3qY2rDSegZk
+ LLEiGCawsrUj04Yg3uv6LVIzJaVvTytAzboyOeQVTgoj.0EfkvEtgpXm3
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic316.consmr.mail.bf2.yahoo.com with HTTP; Sat, 22 Jun 2019 16:29:08 +0000
+Date:   Sat, 22 Jun 2019 16:29:03 +0000 (UTC)
+From:   "Miss.Fatima Yusuf" <fatimayusuf5@outlook.fr>
+Reply-To: miss.fmayusuf11@gmail.com
+Message-ID: <1743094696.311303.1561220943310@mail.yahoo.com>
+Subject: From:Miss: Fatima Yusuf.
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-When building drm/exynos for sh, as part of an allmodconfig build,
-the following warning triggered:
 
-  exynos7_drm_decon.c: In function ‘decon_remove’:
-  exynos7_drm_decon.c:769:24: warning: unused variable ‘ctx’
-    struct decon_context *ctx = dev_get_drvdata(&pdev->dev);
 
-The ctx variable is only used as argument to iounmap().
+From:Miss: Fatima Yusuf.
 
-In sh - allmodconfig CONFIG_MMU is not defined
-so it ended up in:
+For sure this mail would definitely come to you as a surprise, but do take your good time to go through it, My name is Ms. Fatima Yusuf,i am from Ivory Coast.
 
-\#define __iounmap(addr)	do { } while (0)
-\#define iounmap		__iounmap
+I lost my parents a year and couple of months ago. My father was a serving director of the Agro-exporting board until his death. He was assassinated by his business partners.Before his death, he made a deposit of US$9.7 Million Dollars here in Cote d'ivoire which was for the purchase of cocoa processing machine and development of another factory before his untimely death.
 
-Fix the warning by introducing a static inline
-function for iounmap.
-This is similar to several other architectures.
+Being that this part of the world experiences political and crises time without number, there is no guarantee of lives and properties. I cannot invest this money here any long, despite the fact it had been my late father's industrial plans.
 
-Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: Will Deacon <will.deacon@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Inki Dae <inki.dae@samsung.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: linux-sh@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
----
- arch/sh/include/asm/io.h | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+I want you to do me a favor to receive this funds into your country or any safer place as the beneficiary, I have plans to invest this money in continuation with the investment vision of my late father, but not in this place again rather in your country. I have the vision of going into real estate and industrial production or any profitable business venture.
 
-diff --git a/arch/sh/include/asm/io.h b/arch/sh/include/asm/io.h
-index c28e37a344ad..ac0561960c52 100644
---- a/arch/sh/include/asm/io.h
-+++ b/arch/sh/include/asm/io.h
-@@ -369,7 +369,11 @@ static inline int iounmap_fixed(void __iomem *addr) { return -EINVAL; }
- 
- #define ioremap_nocache	ioremap
- #define ioremap_uc	ioremap
--#define iounmap		__iounmap
-+
-+static inline void iounmap(void __iomem *addr)
-+{
-+	__iounmap(addr);
-+}
- 
- /*
-  * Convert a physical pointer to a virtual kernel pointer for /dev/mem
--- 
-2.20.1
+I will be ready to compensate you with 20% of the total Amount, now all my hope is banked on you and i really wants to invest this money in your country, where there is stability of Government, political and economic welfare.
 
+My greatest worry now is how to move out of this country because my uncle is threatening to kill me as he killed my father,Please do not let anybody hear about this, it is between me and you alone because of my security reason.
+
+I am waiting to hear from you.
+Yours Sincerely,
+Miss.Fatima Yusuf.
