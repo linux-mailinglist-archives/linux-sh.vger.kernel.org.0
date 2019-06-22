@@ -2,28 +2,120 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EC8F4F54F
-	for <lists+linux-sh@lfdr.de>; Sat, 22 Jun 2019 12:43:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A407A4F584
+	for <lists+linux-sh@lfdr.de>; Sat, 22 Jun 2019 13:42:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726285AbfFVKnf (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sat, 22 Jun 2019 06:43:35 -0400
-Received: from [112.85.128.246] ([112.85.128.246]:36502 "EHLO
-        localhost.localdomain" rhost-flags-FAIL-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726281AbfFVKnf (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sat, 22 Jun 2019 06:43:35 -0400
-X-Greylist: delayed 8404 seconds by postgrey-1.27 at vger.kernel.org; Sat, 22 Jun 2019 06:43:35 EDT
-Received: from localhost (localhost [IPv6:::1])
-        by localhost.localdomain (Postfix) with SMTP id 347FB11EF2B6
-        for <linux-sh@vger.kernel.org>; Sat, 22 Jun 2019 08:38:26 +0800 (CST)
-From:   linux-sh@vger.kernel.org
-To:     uigPhuwllinux-sh@vger.kernel.org
-Reply-To: prodawez@armyspy.com
-Subject: Klientskie bazy. Email: prodawez@armyspy.com Uznajte podrobnee.
-Message-Id: <20190622003826.347FB11EF2B6@localhost.localdomain>
-Date:   Sat, 22 Jun 2019 08:38:26 +0800 (CST)
+        id S1726274AbfFVLmm (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sat, 22 Jun 2019 07:42:42 -0400
+Received: from mail-lf1-f67.google.com ([209.85.167.67]:43467 "EHLO
+        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726130AbfFVLml (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sat, 22 Jun 2019 07:42:41 -0400
+Received: by mail-lf1-f67.google.com with SMTP id j29so6822335lfk.10;
+        Sat, 22 Jun 2019 04:42:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=KSGerT8TNFuf7M5p6FI10I27Q482DnxM3bVeQHA30Lo=;
+        b=pxzM68tlLN5wQnJrAl75Ohda82kf82A2q0do/bEHnGkFDhatFhTwxctwBeKdSaXTA6
+         OedjKbGghTaRJqC48RQwS5BQSwt+OUzWvm8YebC3brkO9XvrzShj8JF3U0VJoyOd2MuG
+         9OqI+z8iVY0m/PyIyfx3BuAEOe7JAzcGmBMzaT62DYQJO5VfSTUdUxz/tPIVqzf0a+7V
+         PHdQN0E5m2vXT82hS918xXDqAlsB8OF0LGXudStzWOK4isw7PYqPEmdIWpYkGsZfMYe2
+         ppVlQCNYPUxYoJkSn+ekkLpfcULuJu14kOGEUsOVrpPllf0v1JAiri0BVGEPlovxsYNg
+         uu0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=KSGerT8TNFuf7M5p6FI10I27Q482DnxM3bVeQHA30Lo=;
+        b=oz26djtGorixhKUJKbbWgc/2g8YWKpotifqXO95txaGTnJy7AXDb+1AR/3odzInl/3
+         DMmpz05/J7G9F9sdts/MWdAfyL6K1DQUNCRCiA2/R5Weil591YzvwWYoc2zJRBrj904s
+         uPcen38K9fTmtCt9AUiL/SVbIrHnvqV5UElWHgFteJNatvONsYy8ioHZOLy0hkS7QWWk
+         7mx6eNEbDQr39cNifIJOADyS9dUj9OCynXH6nIbmLjkEClqj4jB4gcjKFsmbx+3HwTVl
+         RSqTAtVvtHPZdTZ4r3UH9tQNULiWQUTEthVAsNzPWtUAnSKzvKkTYS3VFeFn0mVrS81B
+         He2w==
+X-Gm-Message-State: APjAAAUZVa6Ks5M58bEmC1tXVGXMxt+VNbQUW7o/vvpMefcaqhHkgeSD
+        O69Lt+NMFMsfR5yhmCmNDUt+zcuXjZxpWw==
+X-Google-Smtp-Source: APXvYqwh7/l0brpnzOZ090BYqnhHQGGq5+SdHl8f91QysV7t+/7oTe8ufCVK4ESqOJelaU0qqpiFhQ==
+X-Received: by 2002:ac2:5dc3:: with SMTP id x3mr11841450lfq.168.1561203759138;
+        Sat, 22 Jun 2019 04:42:39 -0700 (PDT)
+Received: from saturn.lan (18.158-248-194.customer.lyse.net. [158.248.194.18])
+        by smtp.gmail.com with ESMTPSA id y62sm801672lje.100.2019.06.22.04.42.37
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Sat, 22 Jun 2019 04:42:38 -0700 (PDT)
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     linux-kernel@vger.kernel.org, linux-sh@vger.kernel.org
+Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Will Deacon <will.deacon@arm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Mark Brown <broonie@kernel.org>,
+        Inki Dae <inki.dae@samsung.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Sam Ravnborg <sam@ravnborg.org>
+Subject: [PATCH] sh: prevent warnings when using iounmap
+Date:   Sat, 22 Jun 2019 13:42:08 +0200
+Message-Id: <20190622114208.24427-1-sam@ravnborg.org>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Klientskie bazy. Email: prodawez@armyspy.com Uznajte podrobnee.
+When building drm/exynos for sh, as part of an allmodconfig build,
+the following warning triggered:
+
+  exynos7_drm_decon.c: In function ‘decon_remove’:
+  exynos7_drm_decon.c:769:24: warning: unused variable ‘ctx’
+    struct decon_context *ctx = dev_get_drvdata(&pdev->dev);
+
+The ctx variable is only used as argument to iounmap().
+
+In sh - allmodconfig CONFIG_MMU is not defined
+so it ended up in:
+
+\#define __iounmap(addr)	do { } while (0)
+\#define iounmap		__iounmap
+
+Fix the warning by introducing a static inline
+function for iounmap.
+This is similar to several other architectures.
+
+Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Rich Felker <dalias@libc.org>
+Cc: Will Deacon <will.deacon@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Inki Dae <inki.dae@samsung.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: linux-sh@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+---
+ arch/sh/include/asm/io.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/arch/sh/include/asm/io.h b/arch/sh/include/asm/io.h
+index c28e37a344ad..ac0561960c52 100644
+--- a/arch/sh/include/asm/io.h
++++ b/arch/sh/include/asm/io.h
+@@ -369,7 +369,11 @@ static inline int iounmap_fixed(void __iomem *addr) { return -EINVAL; }
+ 
+ #define ioremap_nocache	ioremap
+ #define ioremap_uc	ioremap
+-#define iounmap		__iounmap
++
++static inline void iounmap(void __iomem *addr)
++{
++	__iounmap(addr);
++}
+ 
+ /*
+  * Convert a physical pointer to a virtual kernel pointer for /dev/mem
+-- 
+2.20.1
+
