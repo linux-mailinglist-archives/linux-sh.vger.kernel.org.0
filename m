@@ -2,95 +2,68 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 637EC553B9
-	for <lists+linux-sh@lfdr.de>; Tue, 25 Jun 2019 17:48:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5627A557E4
+	for <lists+linux-sh@lfdr.de>; Tue, 25 Jun 2019 21:38:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732477AbfFYPs1 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 25 Jun 2019 11:48:27 -0400
-Received: from mail-qt1-f194.google.com ([209.85.160.194]:44752 "EHLO
-        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726443AbfFYPs1 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 25 Jun 2019 11:48:27 -0400
-Received: by mail-qt1-f194.google.com with SMTP id x47so18886795qtk.11;
-        Tue, 25 Jun 2019 08:48:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=UM0dIusS/gwdu4c8O9SbMLiBQ6AfaMuOD/f2wf1DSM0=;
-        b=RfVP/YSHIeq6OEIFwBiAi3EiWtLzh9Q9AUz7CnT13RbOYKxIDrn5+A5hsG0/3bx2Z+
-         u5lw0fc7jf4GnUGz5vRuuyiT4iqcKkc8MJMyZuzFLPEF5bTgEfYkmvpbibXMYYB/Ut5D
-         2qfEHOAeH+kyx03C+vOwBM2J83NxNL2P1uRV/WtEtF5ILcEPYNTUxPGe5H/oubIaHA+G
-         q2LSJEdxsd5XAdc1npGXjboFoVmsb+7nup3Gk9CTKWL0KBOR2dMVgUtj5PHdwp8QHfwM
-         eSTvVz4xttnNx/d3Dasj7rP7vLgQ0ZtY1usPCd+k0xTJ6prXHYBZOQW0eDxFVKjcXXYq
-         WkfA==
-X-Gm-Message-State: APjAAAXnowdIA7qKtMgsJbv7q+AoVFoKX2PdZE9sd5OrOamRHYtndDT/
-        qYm+DcnBYGOO9NxjsGuI0ny5hziib4v6Fuh+15A5p+Rs
-X-Google-Smtp-Source: APXvYqyVchxTXULX5RiBGFf7pkDLgru/QLMdrSx0lNX8fcNNL8F7yHW1If4rQ0zSKCfUNzX8+NHSiNHEywkw8pWsVxw=
-X-Received: by 2002:a0c:9595:: with SMTP id s21mr32470026qvs.63.1561477705897;
- Tue, 25 Jun 2019 08:48:25 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190625085616.GA32399@lst.de> <ccfa78f3-35c2-1d26-98b5-b21a76b90e1e@physik.fu-berlin.de>
- <20190625112146.GA9580@angband.pl> <401b12c0-d175-2720-d26c-b96ce3b28c71@physik.fu-berlin.de>
- <CAK8P3a3irwwwCQ_kPh5BTg-jGGbJOj=3fhVrTDBUZgH1V7bpFQ@mail.gmail.com> <20190625142832.GD1506@brightrain.aerifal.cx>
-In-Reply-To: <20190625142832.GD1506@brightrain.aerifal.cx>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Tue, 25 Jun 2019 17:48:09 +0200
-Message-ID: <CAK8P3a0j_9fzZxhxqCMHfoJ5DdZpHFvANEPqs1pbP23TCei6ng@mail.gmail.com>
-Subject: Re: [RFC] remove arch/sh?
-To:     Rich Felker <dalias@libc.org>
-Cc:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Adam Borowski <kilobyte@angband.pl>,
-        Christoph Hellwig <hch@lst.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+        id S1727213AbfFYTh7 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 25 Jun 2019 15:37:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46580 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726653AbfFYTh6 (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Tue, 25 Jun 2019 15:37:58 -0400
+Received: from akpm3.svl.corp.google.com (unknown [104.133.8.65])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C012D2085A;
+        Tue, 25 Jun 2019 19:37:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1561491478;
+        bh=tJdGNjp4NLA7f2CJGKITTf6uA4kMX96bLEi69D1RpFc=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=ShVOA7PYXmmz24tjLGDu1PYm64KCDa4yjeLXa3l6FjdwwPWxrgsVBDxgsovdp7feN
+         blu+puyvqldhGC0Wxv3kVwuVBCy18spQuzJMsEad+C5F0wrxmqqgxgvTR3f1e5CyBT
+         eX6OYwNFOGaN5Cpc8zEu5AANzUORLi6PZJBbAynU=
+Date:   Tue, 25 Jun 2019 12:37:57 -0700
+From:   Andrew Morton <akpm@linux-foundation.org>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Khalid Aziz <khalid.aziz@oracle.com>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        linux-mips@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-mm@kvack.org, x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 14/16] mm: move the powerpc hugepd code to mm/gup.c
+Message-Id: <20190625123757.ec7e886747bb5a9bc364107d@linux-foundation.org>
+In-Reply-To: <20190625143715.1689-15-hch@lst.de>
+References: <20190625143715.1689-1-hch@lst.de>
+        <20190625143715.1689-15-hch@lst.de>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Tue, Jun 25, 2019 at 4:28 PM Rich Felker <dalias@libc.org> wrote:
-> On Tue, Jun 25, 2019 at 02:50:01PM +0200, Arnd Bergmann wrote:
-> > don't build, or are incomplete and not worked on for a long
-> > time, compared to the bits that are known to work and that someone
-> > is still using or at least playing with.
-> > I guess a lot of the SoCs that have no board support other than
-> > the Hitachi/Renesas reference platform can go away too, as any products
-> > based on those boards have long stopped updating their kernels.
->
-> My intent here was always, after getting device tree theoretically
-> working for some reasonable subset of socs/boards, drop the rest and
-> add them back as dts files (possibly plus some small drivers) only if
-> there's demand/complaint about regression.
+On Tue, 25 Jun 2019 16:37:13 +0200 Christoph Hellwig <hch@lst.de> wrote:
 
-Do you still think that this is a likely scenario for the future though?
+> +static int gup_huge_pd(hugepd_t hugepd
 
-If nobody's actively working on the DT support for the old chips and
-this is unlikely to change soon, removing the known-broken bits earlier
-should at least make it easier to keep maintaining the working bits
-afterwards.
+Naming nitlet: we have hugepd and we also have huge_pd.  We have
+hugepte and we also have huge_pte.  It make things a bit hard to
+remember and it would be nice to make it all consistent sometime.
 
-FWIW, I went through the SH2, SH2A and SH3 based boards that
-are supported in the kernel and found almost all of them to
-be just reference platforms, with no actual product ever merged.
-IIRC the idea back then was that users would supply their
-own board files as an add-on patch, but I would consider all the
-ones that did to be obsolete now.
+We're consistent with huge_pud and almost consistent with huge_pmd.
 
-HP Jornada 6xx is the main machine that was once supported, but
-given that according to the defconfig file it only comes with 4MB
-of RAM, it is unlikely to still boot any 5.x kernel, let alone user
-space (wikipedia claims there were models with 16MB of RAM,
-but that is still not a lot these days).
-
-"Magicpanel" was another product that is supported in theory, but
-the google search showed the 2007 patch for the required
-flash storage driver that was never merged.
-
-Maybe everything but J2 and SH4(a) can just get retired?
-
-     Arnd
+To be fully consistent I guess we should make all of them have the
+underscore.  Or not have it.  
