@@ -2,94 +2,117 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F23D55B1B
-	for <lists+linux-sh@lfdr.de>; Wed, 26 Jun 2019 00:29:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6C4D561AC
+	for <lists+linux-sh@lfdr.de>; Wed, 26 Jun 2019 07:21:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726373AbfFYW3y (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 25 Jun 2019 18:29:54 -0400
-Received: from zeniv.linux.org.uk ([195.92.253.2]:40222 "EHLO
-        ZenIV.linux.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726077AbfFYW3y (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 25 Jun 2019 18:29:54 -0400
-Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92 #3 (Red Hat Linux))
-        id 1hftwb-0001ZR-4N; Tue, 25 Jun 2019 22:29:41 +0000
-Date:   Tue, 25 Jun 2019 23:29:41 +0100
-From:   Al Viro <viro@zeniv.linux.org.uk>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Greg Ungerer <gerg@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
-        uclinux-h8-devel@lists.sourceforge.jp,
-        linux-m68k@lists.linux-m68k.org, linux-riscv@lists.infradead.org,
-        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 08/17] binfmt_flat: consolidate two version of
- flat_v2_reloc_t
-Message-ID: <20190625222941.GA1343@ZenIV.linux.org.uk>
-References: <20190613070903.17214-1-hch@lst.de>
- <20190613070903.17214-9-hch@lst.de>
+        id S1726006AbfFZFVJ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 26 Jun 2019 01:21:09 -0400
+Received: from relay6-d.mail.gandi.net ([217.70.183.198]:47667 "EHLO
+        relay6-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725308AbfFZFVJ (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 26 Jun 2019 01:21:09 -0400
+X-Originating-IP: 79.86.19.127
+Received: from [192.168.0.12] (127.19.86.79.rev.sfr.net [79.86.19.127])
+        (Authenticated sender: alex@ghiti.fr)
+        by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id BAAC4C0003;
+        Wed, 26 Jun 2019 05:20:51 +0000 (UTC)
+From:   Alex Ghiti <alex@ghiti.fr>
+To:     Helge Deller <deller@gmx.de>
+Cc:     "James E . J . Bottomley" <james.bottomley@hansenpartnership.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-mm@kvack.org,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH RESEND 6/8] parisc: Use mmap_base, not mmap_legacy_base,
+ as low_limit for bottom-up mmap
+References: <20190620050328.8942-1-alex@ghiti.fr>
+ <20190620050328.8942-7-alex@ghiti.fr>
+ <438124ff-6838-7ced-044c-ca57a6b9cc91@gmx.de>
+Message-ID: <7fb32983-3444-0747-4e5f-812d1b4d84c2@ghiti.fr>
+Date:   Wed, 26 Jun 2019 01:20:51 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190613070903.17214-9-hch@lst.de>
-User-Agent: Mutt/1.11.3 (2019-02-01)
+In-Reply-To: <438124ff-6838-7ced-044c-ca57a6b9cc91@gmx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Thu, Jun 13, 2019 at 09:08:54AM +0200, Christoph Hellwig wrote:
-> Two branches of the ifdef maze actually have the same content, so merge
-> them.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  include/linux/flat.h | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/include/linux/flat.h b/include/linux/flat.h
-> index 2b7cda6e9c1b..19c586b74b99 100644
-> --- a/include/linux/flat.h
-> +++ b/include/linux/flat.h
-> @@ -69,15 +69,13 @@ struct flat_hdr {
->  typedef union {
->  	unsigned long	value;
->  	struct {
-> -# if defined(mc68000) && !defined(CONFIG_COLDFIRE)
-> +#if defined(__LITTLE_ENDIAN_BITFIELD) || \
-> +    (defined(mc68000) && !defined(CONFIG_COLDFIRE))
->  		signed long offset : 30;
->  		unsigned long type : 2;
->  # elif defined(__BIG_ENDIAN_BITFIELD)
->  		unsigned long type : 2;
->  		signed long offset : 30;
-> -# elif defined(__LITTLE_ENDIAN_BITFIELD)
-> -		signed long offset : 30;
-> -		unsigned long type : 2;
->  # else
->  #   	error "Unknown bitfield order for flat files."
->  # endif
-> -- 
-> 2.20.1
-> 
+On 6/25/19 10:09 AM, Helge Deller wrote:
+> On 20.06.19 07:03, Alexandre Ghiti wrote:
+>> Bottom-up mmap scheme is used twice:
+>>
+>> - for legacy mode, in which mmap_legacy_base and mmap_base are equal.
+>>
+>> - in case of mmap failure in top-down mode, where there is no need to go
+>> through the whole address space again for the bottom-up fallback: the goal
+>> of this fallback is to find, as a last resort, space between the top-down
+>> mmap base and the stack, which is the only place not covered by the
+>> top-down mmap.
+>>
+>> Then this commit removes the usage of mmap_legacy_base field from parisc
+>> code.
+>>
+>> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+> Boot-tested on parisc and seems to work nicely, thus:
+>
+> Acked-by: Helge Deller <deller@gmx.de>
 
-FWIW, I wonder if keeping that type is worth bothering.
-Something like
-old_reloc(__be32 reloc)
-{
-	u32 v = be32_to_cpu(reloc);
-	int offset, type;
+Thanks Helge,
 
-#if (defined(mc68000) && !defined(CONFIG_COLDFIRE))
-	/* old m68k uses unusual format - type is in lower bits of octet 3 */
-	type = v % 4;
-	offset = (int)v / 4;
-#else
-	/* everything else (including coldfire) has it in upper bits of octet 0 */
-	type = v >> 30;
-	offset = (int)(v << 2) >> 2; /* or (v & 0x1fffffff) - (v & 0x20000000) * 4 */
-#endif
-	...
+Alex
 
-and to hell with bitfields, aliasing unions, etc.  Unless I'm misreading
-the whole thing, that is...  Greg?
+>
+> Helge
+>
+>
+>
+>> ---
+>>   arch/parisc/kernel/sys_parisc.c | 8 +++-----
+>>   1 file changed, 3 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/arch/parisc/kernel/sys_parisc.c b/arch/parisc/kernel/sys_parisc.c
+>> index 5d458a44b09c..e987f3a8eb0b 100644
+>> --- a/arch/parisc/kernel/sys_parisc.c
+>> +++ b/arch/parisc/kernel/sys_parisc.c
+>> @@ -119,7 +119,7 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
+>>
+>>   	info.flags = 0;
+>>   	info.length = len;
+>> -	info.low_limit = mm->mmap_legacy_base;
+>> +	info.low_limit = mm->mmap_base;
+>>   	info.high_limit = mmap_upper_limit(NULL);
+>>   	info.align_mask = last_mmap ? (PAGE_MASK & (SHM_COLOUR - 1)) : 0;
+>>   	info.align_offset = shared_align_offset(last_mmap, pgoff);
+>> @@ -240,13 +240,11 @@ static unsigned long mmap_legacy_base(void)
+>>    */
+>>   void arch_pick_mmap_layout(struct mm_struct *mm, struct rlimit *rlim_stack)
+>>   {
+>> -	mm->mmap_legacy_base = mmap_legacy_base();
+>> -	mm->mmap_base = mmap_upper_limit(rlim_stack);
+>> -
+>>   	if (mmap_is_legacy()) {
+>> -		mm->mmap_base = mm->mmap_legacy_base;
+>> +		mm->mmap_base = mmap_legacy_base();
+>>   		mm->get_unmapped_area = arch_get_unmapped_area;
+>>   	} else {
+>> +		mm->mmap_base = mmap_upper_limit(rlim_stack);
+>>   		mm->get_unmapped_area = arch_get_unmapped_area_topdown;
+>>   	}
+>>   }
+>>
