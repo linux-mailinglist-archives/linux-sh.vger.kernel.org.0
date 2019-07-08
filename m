@@ -2,34 +2,100 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D017761495
-	for <lists+linux-sh@lfdr.de>; Sun,  7 Jul 2019 11:46:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE16B618B2
+	for <lists+linux-sh@lfdr.de>; Mon,  8 Jul 2019 03:15:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727239AbfGGJqJ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sun, 7 Jul 2019 05:46:09 -0400
-Received: from [185.130.227.4] ([185.130.227.4]:38422 "EHLO 36981.example.com"
-        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727235AbfGGJqJ (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Sun, 7 Jul 2019 05:46:09 -0400
-X-Greylist: delayed 12625 seconds by postgrey-1.27 at vger.kernel.org; Sun, 07 Jul 2019 05:46:08 EDT
-Received: from localhost (localhost [IPv6:::1])
-        by 36981.example.com (Postfix) with SMTP id BF17C2D5828E
-        for <linux-sh@vger.kernel.org>; Sun,  7 Jul 2019 13:59:47 +0800 (+08)
-From:   linux-sh@vger.kernel.org
-Reply-To: prodawez@armyspy.com
-To:     k9WJhxID9Qlinux-sh@vger.kernel.org
-Subject: =?utf-8?B?0JfQtNGA0LDQstGB0YLQstGD0LnRgtC1ISDQktCw0YEg?=
-        =?utf-8?B?0LjQvdGC0LXRgNC10YHRg9GO0YIg0LrQu9C40LXQvdGC?=
-        =?utf-8?B?0YHQutC40LUg0LHQsNC30Ysg0LTQsNC90L3Ri9GFPw==?=
+        id S1727977AbfGHBPo (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sun, 7 Jul 2019 21:15:44 -0400
+Received: from ozlabs.org ([203.11.71.1]:46577 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727949AbfGHBPn (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Sun, 7 Jul 2019 21:15:43 -0400
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 45hnZJ0R8Jz9sN4;
+        Mon,  8 Jul 2019 11:15:35 +1000 (AEST)
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Aleksa Sarai <cyphar@cyphar.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Jeff Layton <jlayton@kernel.org>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Shuah Khan <skhan@linuxfoundation.org>
+Cc:     Aleksa Sarai <cyphar@cyphar.com>,
+        Eric Biederman <ebiederm@xmission.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Jann Horn <jannh@google.com>,
+        Christian Brauner <christian@brauner.io>,
+        Tycho Andersen <tycho@tycho.ws>,
+        David Drysdale <drysdale@google.com>,
+        Chanho Min <chanho.min@lge.com>,
+        Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <asarai@suse.de>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        containers@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
+        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
+Subject: Re: [PATCH v9 10/10] selftests: add openat2(2) selftests
+In-Reply-To: <20190706145737.5299-11-cyphar@cyphar.com>
+References: <20190706145737.5299-1-cyphar@cyphar.com> <20190706145737.5299-11-cyphar@cyphar.com>
+Date:   Mon, 08 Jul 2019 11:15:35 +1000
+Message-ID: <878st9iax4.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8";
-Content-Transfer-Encoding: base64
-Message-Id: <20190707055947.BF17C2D5828E@36981.example.com>
-Date:   Sun,  7 Jul 2019 13:59:47 +0800 (+08)
+Content-Type: text/plain
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-0JfQtNGA0LDQstGB0YLQstGD0LnRgtC1ISDQktCw0YEg0LjQvdGC0LXRgNC10YHRg9GO0YIg0LrQ
-u9C40LXQvdGC0YHQutC40LUg0LHQsNC30Ysg0LTQsNC90L3Ri9GFPw0K
+Hi Aleksa,
+
+A few minor comments below.
+
+Aleksa Sarai <cyphar@cyphar.com> writes:
+> diff --git a/tools/testing/selftests/openat2/Makefile b/tools/testing/selftests/openat2/Makefile
+> new file mode 100644
+> index 000000000000..8235a49928f6
+> --- /dev/null
+> +++ b/tools/testing/selftests/openat2/Makefile
+> @@ -0,0 +1,12 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +
+> +CFLAGS += -Wall -O2 -g
+> +TEST_GEN_PROGS := linkmode_test resolve_test rename_attack_test
+> +
+> +include ../lib.mk
+> +
+> +$(OUTPUT)/linkmode_test: linkmode_test.c helpers.o
+> +$(OUTPUT)/rename_attack_test: rename_attack_test.c helpers.o
+> +$(OUTPUT)/resolve_test: resolve_test.c helpers.o
+
+You don't need to tell make that foo depends on foo.c.
+
+Also if you make the dependency be on helpers.c then you won't get an
+intermediate helpers.o, and then you don't need to clean it.
+
+So the above three lines could just be:
+
+$(TEST_GEN_PROGS): helpers.c
+
+> +EXTRA_CLEAN = helpers.o $(wildcard /tmp/ksft-openat2-*)
+
+If you follow my advice above you don't need helpers.o in there.
+
+Deleting things from /tmp is also a bit fishy on shared machines, ie. it
+will error if those files happen to be owned by another user.
+
+cheers
