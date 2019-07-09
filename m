@@ -2,135 +2,352 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 42EB761A68
-	for <lists+linux-sh@lfdr.de>; Mon,  8 Jul 2019 07:48:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7889639CB
+	for <lists+linux-sh@lfdr.de>; Tue,  9 Jul 2019 19:02:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728726AbfGHFsH (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 8 Jul 2019 01:48:07 -0400
-Received: from mx1.mailbox.org ([80.241.60.212]:41686 "EHLO mx1.mailbox.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728654AbfGHFsG (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Mon, 8 Jul 2019 01:48:06 -0400
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
-        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
-        (No client certificate requested)
-        by mx1.mailbox.org (Postfix) with ESMTPS id D5ED350844;
-        Mon,  8 Jul 2019 07:47:59 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp2.mailbox.org ([80.241.60.241])
-        by spamfilter05.heinlein-hosting.de (spamfilter05.heinlein-hosting.de [80.241.56.123]) (amavisd-new, port 10030)
-        with ESMTP id 6HYUzmgqQjbZ; Mon,  8 Jul 2019 07:47:45 +0200 (CEST)
-Date:   Mon, 8 Jul 2019 15:47:35 +1000
-From:   Aleksa Sarai <cyphar@cyphar.com>
-To:     Michael Ellerman <mpe@ellerman.id.au>
-Cc:     Al Viro <viro@zeniv.linux.org.uk>,
-        Jeff Layton <jlayton@kernel.org>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Jann Horn <jannh@google.com>,
-        Christian Brauner <christian@brauner.io>,
-        Tycho Andersen <tycho@tycho.ws>,
-        David Drysdale <drysdale@google.com>,
-        Chanho Min <chanho.min@lge.com>,
-        Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <asarai@suse.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        containers@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
-        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+        id S1726569AbfGIRCv (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 9 Jul 2019 13:02:51 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:36489 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725816AbfGIRCu (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 9 Jul 2019 13:02:50 -0400
+Received: by mail-io1-f66.google.com with SMTP id o9so29129757iom.3;
+        Tue, 09 Jul 2019 10:02:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=OG0t8j7U3Eq0BS7c24XaaHRiFgFvKq1Zb+tb4UzVdso=;
+        b=YdjInzRcSwzl2YZ545xDpoq99PdfqlkG9T+PkwcqdxG5BHykZPkg6cA2H0wCtXGUkf
+         +OhKWZ4xjWpwQzrfAEq3YYrQHKP5C38O88ugi2lng6yByXQJ+Hx11uqgN3pwEhZ0TNqA
+         o5Vx52RzrzJxsMAwsSeTey+Fw6bDIY7C1i22DU0mSEIppWgsK45eAHH5rvNRh8mjTVXV
+         3K2eHqdZW1G19eGvNxNdtOjB3T1dbrRX6387sN3RB3wbzV/4XigzNJTUy789iQeRCEXS
+         /5p0ejfWoy+9YDk34FlUJXo4PBsGk7kt+7SKX9lxh6PFgBSm7LFbsiXlPU5Hh0SVOVL0
+         4Y/Q==
+X-Gm-Message-State: APjAAAUeQNEBkA6CucmYvFdldlWLNvRSj/zqYiuGvTamykBMpO/AYVZI
+        fAAm+dyoE2aMBnEb0hsQGA==
+X-Google-Smtp-Source: APXvYqxJonQLmorme2uaSZLZbCgdw4oO4EUuXZyb4aVUwA9TC/IuDaOHugEWxw1GvkVrOdtJboLiAg==
+X-Received: by 2002:a5d:80c3:: with SMTP id h3mr2239379ior.167.1562691767891;
+        Tue, 09 Jul 2019 10:02:47 -0700 (PDT)
+Received: from localhost ([64.188.179.251])
+        by smtp.gmail.com with ESMTPSA id e84sm21742728iof.39.2019.07.09.10.02.46
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Tue, 09 Jul 2019 10:02:46 -0700 (PDT)
+Date:   Tue, 9 Jul 2019 11:02:45 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        linux-fbdev@vger.kernel.org, linux-ia64@vger.kernel.org,
+        kvm@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-pci@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        platform-driver-x86@vger.kernel.org,
+        kernel-hardening@lists.openwall.com, sparclinux@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+        Jonathan Corbet <corbet@lwn.net>, x86@kernel.org,
+        linux-security-module@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-watchdog@vger.kernel.org,
+        Mauro Carvalho Chehab <mchehab@infradead.org>,
+        linux-block@vger.kernel.org, linux-gpio@vger.kernel.org,
+        openipmi-developer@lists.sourceforge.net,
         linux-arm-kernel@lists.infradead.org,
-        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v9 10/10] selftests: add openat2(2) selftests
-Message-ID: <20190708054735.3fepxxtolqaqwmrp@yavin>
-References: <20190706145737.5299-1-cyphar@cyphar.com>
- <20190706145737.5299-11-cyphar@cyphar.com>
- <878st9iax4.fsf@concordia.ellerman.id.au>
+        linaro-mm-sig@lists.linaro.org, linux-parisc@vger.kernel.org,
+        linux-mm@kvack.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        iommu@lists.linux-foundation.org, linux-crypto@vger.kernel.org
+Subject: Re: [PATCH v1 01/22] docs: Documentation/*.txt: rename all ReST
+ files to *.rst
+Message-ID: <20190709170245.GA7073@bogus>
+References: <cover.1560891322.git.mchehab+samsung@kernel.org>
+ <6b6b6db8d6de9b66223dd6d4b43eb60ead4c71d7.1560891322.git.mchehab+samsung@kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="fv76k6im74ofqhz7"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <878st9iax4.fsf@concordia.ellerman.id.au>
+In-Reply-To: <6b6b6db8d6de9b66223dd6d4b43eb60ead4c71d7.1560891322.git.mchehab+samsung@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
+On Tue, Jun 18, 2019 at 06:05:25PM -0300, Mauro Carvalho Chehab wrote:
+> Those files are actually at ReST format. Ok, currently, they
+> don't belong to any place yet at the organized book series,
+> but we don't want patches to break them as ReST files. So,
+> rename them and add a :orphan: in order to shut up warning
+> messages like those:
+> 
+> ...
+>     Documentation/svga.rst: WARNING: document isn't included in any toctree
+>     Documentation/switchtec.rst: WARNING: document isn't included in any toctree
+> ...
+> 
+> Later patches will move them to a better place and remove the
+> :orphan: markup.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+> ---
+> 
+> I had to remove the long list of maintainers got by
+> getpatch.pl, as it was too long. I opted to keep only the
+> mailing lists.
+> 
+>  Documentation/ABI/removed/sysfs-class-rfkill  |  2 +-
+>  Documentation/ABI/stable/sysfs-class-rfkill   |  2 +-
+>  Documentation/ABI/stable/sysfs-devices-node   |  2 +-
+>  Documentation/ABI/testing/procfs-diskstats    |  2 +-
+>  Documentation/ABI/testing/sysfs-block         |  2 +-
+>  .../ABI/testing/sysfs-class-switchtec         |  2 +-
+>  .../ABI/testing/sysfs-devices-system-cpu      |  4 +-
+>  .../{DMA-API-HOWTO.txt => DMA-API-HOWTO.rst}  |  2 +
+>  Documentation/{DMA-API.txt => DMA-API.rst}    |  8 ++-
+>  .../{DMA-ISA-LPC.txt => DMA-ISA-LPC.rst}      |  4 +-
+>  ...{DMA-attributes.txt => DMA-attributes.rst} |  2 +
+>  Documentation/{IPMI.txt => IPMI.rst}          |  2 +
+>  .../{IRQ-affinity.txt => IRQ-affinity.rst}    |  2 +
+>  .../{IRQ-domain.txt => IRQ-domain.rst}        |  2 +
+>  Documentation/{IRQ.txt => IRQ.rst}            |  2 +
+>  .../{Intel-IOMMU.txt => Intel-IOMMU.rst}      |  2 +
+>  Documentation/PCI/pci.rst                     |  8 +--
+>  Documentation/{SAK.txt => SAK.rst}            |  3 +-
+>  Documentation/{SM501.txt => SM501.rst}        |  2 +
+>  Documentation/admin-guide/hw-vuln/l1tf.rst    |  2 +-
+>  .../admin-guide/kernel-parameters.txt         |  4 +-
+>  .../{atomic_bitops.txt => atomic_bitops.rst}  |  3 +-
+>  Documentation/block/biodoc.txt                |  2 +-
+>  .../{bt8xxgpio.txt => bt8xxgpio.rst}          |  3 +-
+>  Documentation/{btmrvl.txt => btmrvl.rst}      |  2 +
+>  ...-mapping.txt => bus-virt-phys-mapping.rst} | 54 +++++++++---------
+>  ...g-warn-once.txt => clearing-warn-once.rst} |  2 +
+>  Documentation/{cpu-load.txt => cpu-load.rst}  |  2 +
+>  .../{cputopology.txt => cputopology.rst}      |  2 +
+>  Documentation/{crc32.txt => crc32.rst}        |  2 +
+>  Documentation/{dcdbas.txt => dcdbas.rst}      |  2 +
+>  ...ging-modules.txt => debugging-modules.rst} |  2 +
+>  ...hci1394.txt => debugging-via-ohci1394.rst} |  2 +
+>  Documentation/{dell_rbu.txt => dell_rbu.rst}  |  3 +-
+>  Documentation/device-mapper/statistics.rst    |  4 +-
+>  .../devicetree/bindings/phy/phy-bindings.txt  |  2 +-
 
---fv76k6im74ofqhz7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Acked-by: Rob Herring <robh@kernel.org>
 
-On 2019-07-08, Michael Ellerman <mpe@ellerman.id.au> wrote:
-> Aleksa Sarai <cyphar@cyphar.com> writes:
-> > diff --git a/tools/testing/selftests/openat2/Makefile b/tools/testing/s=
-elftests/openat2/Makefile
-> > new file mode 100644
-> > index 000000000000..8235a49928f6
-> > --- /dev/null
-> > +++ b/tools/testing/selftests/openat2/Makefile
-> > @@ -0,0 +1,12 @@
-> > +# SPDX-License-Identifier: GPL-2.0
-> > +
-> > +CFLAGS +=3D -Wall -O2 -g
-> > +TEST_GEN_PROGS :=3D linkmode_test resolve_test rename_attack_test
-> > +
-> > +include ../lib.mk
-> > +
-> > +$(OUTPUT)/linkmode_test: linkmode_test.c helpers.o
-> > +$(OUTPUT)/rename_attack_test: rename_attack_test.c helpers.o
-> > +$(OUTPUT)/resolve_test: resolve_test.c helpers.o
->=20
-> You don't need to tell make that foo depends on foo.c.
->=20
-> Also if you make the dependency be on helpers.c then you won't get an
-> intermediate helpers.o, and then you don't need to clean it.
->=20
-> So the above three lines could just be:
->=20
-> $(TEST_GEN_PROGS): helpers.c
-
-I had some trouble getting this to work (hence why I went with the
-version in the patch), but it looks like this works. I'll include it in
-the next set.
-
-> > +EXTRA_CLEAN =3D helpers.o $(wildcard /tmp/ksft-openat2-*)
->=20
-> If you follow my advice above you don't need helpers.o in there.
->=20
-> Deleting things from /tmp is also a bit fishy on shared machines, ie. it
-> will error if those files happen to be owned by another user.
-
-Good point. I'll drop that hunk in the next set.
-
-Thanks!
-
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
-
---fv76k6im74ofqhz7
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXSLY8wAKCRCdlLljIbnQ
-Enn2AQC9g0o7YHWuxFtQCLt+aHIE39RQMQDzB5QWrvZA8DdIUQEA69BwekXhnh8X
-m2czJJrJISBz5Nz1y3qJzwUUGBvxEgY=
-=RdsA
------END PGP SIGNATURE-----
-
---fv76k6im74ofqhz7--
+>  Documentation/{digsig.txt => digsig.rst}      |  2 +
+>  Documentation/driver-api/usb/dma.rst          |  6 +-
+>  Documentation/driver-model/device.rst         |  2 +-
+>  Documentation/{efi-stub.txt => efi-stub.rst}  |  2 +
+>  Documentation/{eisa.txt => eisa.rst}          |  2 +
+>  Documentation/fb/vesafb.rst                   |  2 +-
+>  Documentation/filesystems/sysfs.txt           |  2 +-
+>  ...ex-requeue-pi.txt => futex-requeue-pi.rst} |  2 +
+>  .../{gcc-plugins.txt => gcc-plugins.rst}      |  2 +
+>  Documentation/gpu/drm-mm.rst                  |  2 +-
+>  Documentation/{highuid.txt => highuid.rst}    |  4 +-
+>  .../{hw_random.txt => hw_random.rst}          |  2 +
+>  .../{hwspinlock.txt => hwspinlock.rst}        |  2 +
+>  Documentation/ia64/irq-redir.rst              |  2 +-
+>  .../{intel_txt.txt => intel_txt.rst}          |  2 +
+>  .../{io-mapping.txt => io-mapping.rst}        |  2 +
+>  .../{io_ordering.txt => io_ordering.rst}      |  2 +
+>  Documentation/{iostats.txt => iostats.rst}    |  2 +
+>  ...flags-tracing.txt => irqflags-tracing.rst} |  3 +-
+>  Documentation/{isa.txt => isa.rst}            |  2 +
+>  Documentation/{isapnp.txt => isapnp.rst}      |  2 +
+>  ...hreads.txt => kernel-per-CPU-kthreads.rst} |  4 +-
+>  Documentation/{kobject.txt => kobject.rst}    |  6 +-
+>  Documentation/{kprobes.txt => kprobes.rst}    |  3 +-
+>  Documentation/{kref.txt => kref.rst}          |  2 +
+>  Documentation/laptops/thinkpad-acpi.rst       |  6 +-
+>  Documentation/{ldm.txt => ldm.rst}            |  5 +-
+>  Documentation/locking/rt-mutex.rst            |  2 +-
+>  ...kup-watchdogs.txt => lockup-watchdogs.rst} |  2 +
+>  Documentation/{lsm.txt => lsm.rst}            |  2 +
+>  Documentation/{lzo.txt => lzo.rst}            |  2 +
+>  Documentation/{mailbox.txt => mailbox.rst}    |  2 +
+>  Documentation/memory-barriers.txt             |  6 +-
+>  ...hameleon-bus.txt => men-chameleon-bus.rst} |  2 +
+>  Documentation/networking/scaling.rst          |  4 +-
+>  .../{nommu-mmap.txt => nommu-mmap.rst}        |  2 +
+>  Documentation/{ntb.txt => ntb.rst}            |  2 +
+>  Documentation/{numastat.txt => numastat.rst}  |  3 +-
+>  Documentation/{padata.txt => padata.rst}      |  2 +
+>  ...port-lowlevel.txt => parport-lowlevel.rst} |  2 +
+>  ...-semaphore.txt => percpu-rw-semaphore.rst} |  2 +
+>  Documentation/{phy.txt => phy.rst}            |  2 +
+>  Documentation/{pi-futex.txt => pi-futex.rst}  |  2 +
+>  Documentation/{pnp.txt => pnp.rst}            | 13 +++--
+>  ...reempt-locking.txt => preempt-locking.rst} |  4 +-
+>  Documentation/{pwm.txt => pwm.rst}            |  2 +
+>  Documentation/{rbtree.txt => rbtree.rst}      | 54 +++++++++---------
+>  .../{remoteproc.txt => remoteproc.rst}        |  4 +-
+>  Documentation/{rfkill.txt => rfkill.rst}      |  2 +
+>  ...ust-futex-ABI.txt => robust-futex-ABI.rst} |  2 +
+>  ...{robust-futexes.txt => robust-futexes.rst} |  2 +
+>  Documentation/{rpmsg.txt => rpmsg.rst}        |  2 +
+>  Documentation/{rtc.txt => rtc.rst}            |  8 ++-
+>  Documentation/s390/vfio-ccw.rst               |  6 +-
+>  Documentation/{sgi-ioc4.txt => sgi-ioc4.rst}  |  2 +
+>  Documentation/{siphash.txt => siphash.rst}    |  2 +
+>  .../{smsc_ece1099.txt => smsc_ece1099.rst}    |  2 +
+>  .../{speculation.txt => speculation.rst}      |  2 +
+>  .../{static-keys.txt => static-keys.rst}      |  2 +
+>  Documentation/{svga.txt => svga.rst}          |  2 +
+>  .../{switchtec.txt => switchtec.rst}          |  4 +-
+>  .../{sync_file.txt => sync_file.rst}          |  2 +
+>  Documentation/sysctl/kernel.txt               |  4 +-
+>  Documentation/sysctl/vm.txt                   |  2 +-
+>  Documentation/{tee.txt => tee.rst}            |  2 +
+>  .../{this_cpu_ops.txt => this_cpu_ops.rst}    |  2 +
+>  Documentation/trace/kprobetrace.rst           |  2 +-
+>  .../translations/ko_KR/memory-barriers.txt    |  6 +-
+>  Documentation/translations/zh_CN/IRQ.txt      |  4 +-
+>  .../translations/zh_CN/filesystems/sysfs.txt  |  2 +-
+>  .../translations/zh_CN/io_ordering.txt        |  4 +-
+>  ...access.txt => unaligned-memory-access.rst} |  2 +
+>  ...ed-device.txt => vfio-mediated-device.rst} |  4 +-
+>  Documentation/{vfio.txt => vfio.rst}          |  2 +
+>  .../{video-output.txt => video-output.rst}    |  3 +-
+>  Documentation/watchdog/hpwdt.rst              |  2 +-
+>  Documentation/x86/topology.rst                |  2 +-
+>  Documentation/{xillybus.txt => xillybus.rst}  |  2 +
+>  Documentation/{xz.txt => xz.rst}              |  2 +
+>  Documentation/{zorro.txt => zorro.rst}        |  7 ++-
+>  MAINTAINERS                                   | 56 +++++++++----------
+>  arch/Kconfig                                  |  4 +-
+>  arch/arm/Kconfig                              |  2 +-
+>  arch/ia64/hp/common/sba_iommu.c               | 12 ++--
+>  arch/ia64/sn/pci/pci_dma.c                    |  4 +-
+>  arch/parisc/Kconfig                           |  2 +-
+>  arch/parisc/kernel/pci-dma.c                  |  2 +-
+>  arch/sh/Kconfig                               |  2 +-
+>  arch/sparc/Kconfig                            |  2 +-
+>  arch/unicore32/include/asm/io.h               |  2 +-
+>  arch/x86/Kconfig                              |  4 +-
+>  arch/x86/include/asm/dma-mapping.h            |  4 +-
+>  arch/x86/kernel/amd_gart_64.c                 |  2 +-
+>  block/partitions/Kconfig                      |  2 +-
+>  drivers/base/core.c                           |  2 +-
+>  drivers/char/Kconfig                          |  4 +-
+>  drivers/char/hw_random/core.c                 |  2 +-
+>  drivers/char/ipmi/Kconfig                     |  2 +-
+>  drivers/char/ipmi/ipmi_si_hotmod.c            |  2 +-
+>  drivers/char/ipmi/ipmi_si_intf.c              |  2 +-
+>  drivers/dma-buf/Kconfig                       |  2 +-
+>  drivers/gpio/Kconfig                          |  2 +-
+>  drivers/parisc/sba_iommu.c                    | 16 +++---
+>  drivers/pci/switch/Kconfig                    |  2 +-
+>  drivers/platform/x86/Kconfig                  |  4 +-
+>  drivers/platform/x86/dcdbas.c                 |  2 +-
+>  drivers/platform/x86/dell_rbu.c               |  2 +-
+>  drivers/pnp/isapnp/Kconfig                    |  2 +-
+>  drivers/vfio/Kconfig                          |  2 +-
+>  drivers/vfio/mdev/Kconfig                     |  2 +-
+>  include/asm-generic/bitops/atomic.h           |  2 +-
+>  include/linux/dma-mapping.h                   |  2 +-
+>  include/linux/hw_random.h                     |  2 +-
+>  include/linux/io-mapping.h                    |  2 +-
+>  include/linux/jump_label.h                    |  2 +-
+>  include/linux/kobject.h                       |  2 +-
+>  include/linux/kobject_ns.h                    |  2 +-
+>  include/linux/rbtree.h                        |  2 +-
+>  include/linux/rbtree_augmented.h              |  2 +-
+>  include/media/videobuf-dma-sg.h               |  2 +-
+>  init/Kconfig                                  |  2 +-
+>  kernel/dma/debug.c                            |  2 +-
+>  kernel/padata.c                               |  2 +-
+>  lib/Kconfig                                   |  2 +-
+>  lib/Kconfig.debug                             |  2 +-
+>  lib/crc32.c                                   |  2 +-
+>  lib/kobject.c                                 |  4 +-
+>  lib/lzo/lzo1x_decompress_safe.c               |  2 +-
+>  lib/xz/Kconfig                                |  2 +-
+>  mm/Kconfig                                    |  2 +-
+>  mm/nommu.c                                    |  2 +-
+>  samples/kprobes/kprobe_example.c              |  2 +-
+>  samples/kprobes/kretprobe_example.c           |  2 +-
+>  scripts/gcc-plugins/Kconfig                   |  2 +-
+>  security/Kconfig                              |  2 +-
+>  tools/include/linux/rbtree.h                  |  2 +-
+>  tools/include/linux/rbtree_augmented.h        |  2 +-
+>  173 files changed, 397 insertions(+), 242 deletions(-)
+>  rename Documentation/{DMA-API-HOWTO.txt => DMA-API-HOWTO.rst} (99%)
+>  rename Documentation/{DMA-API.txt => DMA-API.rst} (99%)
+>  rename Documentation/{DMA-ISA-LPC.txt => DMA-ISA-LPC.rst} (98%)
+>  rename Documentation/{DMA-attributes.txt => DMA-attributes.rst} (99%)
+>  rename Documentation/{IPMI.txt => IPMI.rst} (99%)
+>  rename Documentation/{IRQ-affinity.txt => IRQ-affinity.rst} (99%)
+>  rename Documentation/{IRQ-domain.txt => IRQ-domain.rst} (99%)
+>  rename Documentation/{IRQ.txt => IRQ.rst} (99%)
+>  rename Documentation/{Intel-IOMMU.txt => Intel-IOMMU.rst} (99%)
+>  rename Documentation/{SAK.txt => SAK.rst} (99%)
+>  rename Documentation/{SM501.txt => SM501.rst} (99%)
+>  rename Documentation/{atomic_bitops.txt => atomic_bitops.rst} (99%)
+>  rename Documentation/{bt8xxgpio.txt => bt8xxgpio.rst} (99%)
+>  rename Documentation/{btmrvl.txt => btmrvl.rst} (99%)
+>  rename Documentation/{bus-virt-phys-mapping.txt => bus-virt-phys-mapping.rst} (93%)
+>  rename Documentation/{clearing-warn-once.txt => clearing-warn-once.rst} (96%)
+>  rename Documentation/{cpu-load.txt => cpu-load.rst} (99%)
+>  rename Documentation/{cputopology.txt => cputopology.rst} (99%)
+>  rename Documentation/{crc32.txt => crc32.rst} (99%)
+>  rename Documentation/{dcdbas.txt => dcdbas.rst} (99%)
+>  rename Documentation/{debugging-modules.txt => debugging-modules.rst} (98%)
+>  rename Documentation/{debugging-via-ohci1394.txt => debugging-via-ohci1394.rst} (99%)
+>  rename Documentation/{dell_rbu.txt => dell_rbu.rst} (99%)
+>  rename Documentation/{digsig.txt => digsig.rst} (99%)
+>  rename Documentation/{efi-stub.txt => efi-stub.rst} (99%)
+>  rename Documentation/{eisa.txt => eisa.rst} (99%)
+>  rename Documentation/{futex-requeue-pi.txt => futex-requeue-pi.rst} (99%)
+>  rename Documentation/{gcc-plugins.txt => gcc-plugins.rst} (99%)
+>  rename Documentation/{highuid.txt => highuid.rst} (99%)
+>  rename Documentation/{hw_random.txt => hw_random.rst} (99%)
+>  rename Documentation/{hwspinlock.txt => hwspinlock.rst} (99%)
+>  rename Documentation/{intel_txt.txt => intel_txt.rst} (99%)
+>  rename Documentation/{io-mapping.txt => io-mapping.rst} (99%)
+>  rename Documentation/{io_ordering.txt => io_ordering.rst} (99%)
+>  rename Documentation/{iostats.txt => iostats.rst} (99%)
+>  rename Documentation/{irqflags-tracing.txt => irqflags-tracing.rst} (99%)
+>  rename Documentation/{isa.txt => isa.rst} (99%)
+>  rename Documentation/{isapnp.txt => isapnp.rst} (98%)
+>  rename Documentation/{kernel-per-CPU-kthreads.txt => kernel-per-CPU-kthreads.rst} (99%)
+>  rename Documentation/{kobject.txt => kobject.rst} (99%)
+>  rename Documentation/{kprobes.txt => kprobes.rst} (99%)
+>  rename Documentation/{kref.txt => kref.rst} (99%)
+>  rename Documentation/{ldm.txt => ldm.rst} (98%)
+>  rename Documentation/{lockup-watchdogs.txt => lockup-watchdogs.rst} (99%)
+>  rename Documentation/{lsm.txt => lsm.rst} (99%)
+>  rename Documentation/{lzo.txt => lzo.rst} (99%)
+>  rename Documentation/{mailbox.txt => mailbox.rst} (99%)
+>  rename Documentation/{men-chameleon-bus.txt => men-chameleon-bus.rst} (99%)
+>  rename Documentation/{nommu-mmap.txt => nommu-mmap.rst} (99%)
+>  rename Documentation/{ntb.txt => ntb.rst} (99%)
+>  rename Documentation/{numastat.txt => numastat.rst} (99%)
+>  rename Documentation/{padata.txt => padata.rst} (99%)
+>  rename Documentation/{parport-lowlevel.txt => parport-lowlevel.rst} (99%)
+>  rename Documentation/{percpu-rw-semaphore.txt => percpu-rw-semaphore.rst} (99%)
+>  rename Documentation/{phy.txt => phy.rst} (99%)
+>  rename Documentation/{pi-futex.txt => pi-futex.rst} (99%)
+>  rename Documentation/{pnp.txt => pnp.rst} (98%)
+>  rename Documentation/{preempt-locking.txt => preempt-locking.rst} (99%)
+>  rename Documentation/{pwm.txt => pwm.rst} (99%)
+>  rename Documentation/{rbtree.txt => rbtree.rst} (94%)
+>  rename Documentation/{remoteproc.txt => remoteproc.rst} (99%)
+>  rename Documentation/{rfkill.txt => rfkill.rst} (99%)
+>  rename Documentation/{robust-futex-ABI.txt => robust-futex-ABI.rst} (99%)
+>  rename Documentation/{robust-futexes.txt => robust-futexes.rst} (99%)
+>  rename Documentation/{rpmsg.txt => rpmsg.rst} (99%)
+>  rename Documentation/{rtc.txt => rtc.rst} (99%)
+>  rename Documentation/{sgi-ioc4.txt => sgi-ioc4.rst} (99%)
+>  rename Documentation/{siphash.txt => siphash.rst} (99%)
+>  rename Documentation/{smsc_ece1099.txt => smsc_ece1099.rst} (99%)
+>  rename Documentation/{speculation.txt => speculation.rst} (99%)
+>  rename Documentation/{static-keys.txt => static-keys.rst} (99%)
+>  rename Documentation/{svga.txt => svga.rst} (99%)
+>  rename Documentation/{switchtec.txt => switchtec.rst} (98%)
+>  rename Documentation/{sync_file.txt => sync_file.rst} (99%)
+>  rename Documentation/{tee.txt => tee.rst} (99%)
+>  rename Documentation/{this_cpu_ops.txt => this_cpu_ops.rst} (99%)
+>  rename Documentation/{unaligned-memory-access.txt => unaligned-memory-access.rst} (99%)
+>  rename Documentation/{vfio-mediated-device.txt => vfio-mediated-device.rst} (99%)
+>  rename Documentation/{vfio.txt => vfio.rst} (99%)
+>  rename Documentation/{video-output.txt => video-output.rst} (99%)
+>  rename Documentation/{xillybus.txt => xillybus.rst} (99%)
+>  rename Documentation/{xz.txt => xz.rst} (99%)
+>  rename Documentation/{zorro.txt => zorro.rst} (99%)
