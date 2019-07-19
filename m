@@ -2,27 +2,27 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E85E6DE51
-	for <lists+linux-sh@lfdr.de>; Fri, 19 Jul 2019 06:28:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EDB56DD7B
+	for <lists+linux-sh@lfdr.de>; Fri, 19 Jul 2019 06:23:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727318AbfGSE1x (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 19 Jul 2019 00:27:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39910 "EHLO mail.kernel.org"
+        id S1731490AbfGSEK2 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 19 Jul 2019 00:10:28 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45154 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732317AbfGSEGn (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Fri, 19 Jul 2019 00:06:43 -0400
+        id S1732510AbfGSEK1 (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Fri, 19 Jul 2019 00:10:27 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0973521873;
-        Fri, 19 Jul 2019 04:06:40 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id CCE6221873;
+        Fri, 19 Jul 2019 04:10:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1563509202;
-        bh=U/GBf7j/Uede6weueNuWmo6ChEUdacNxhr9e3KCVK38=;
+        s=default; t=1563509427;
+        bh=uDexvjbjNcUsM9NywNHmASlS28zuNCaffm46xWjs7TI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NVyp2EBx2a0my6SL1ma8u9hQcW9YzRBEwtgqpDikRrtYbCbMJR+RL1YYEZZ/eq8eT
-         3GrTT+Qb0JefrrQk0w/KvNZIhzhfVKMMvwgAKKIX6kEYCseNucY7YLfADn3QaxcRp6
-         SlcuYwzMCLdOgUJdN8ctjgy9AIRpejUQSsAl1V8Y=
+        b=G8hdT39j77tKgAE4qbRg6nxluEDz5WmlaDFFfL9YU9D/9WM7A9dZcWx40j5EIiR7t
+         rhvkN19VM8PO90O3y7et5PU6YgOFye8iNG6m1LFuF7mkwyw+pZdDRg6LMC8+s+d9zt
+         5h7zHs6fI1BRDOgMcSsrd+RkIM34SFuaQa/mFUx4=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Sam Ravnborg <sam@ravnborg.org>,
@@ -36,12 +36,12 @@ Cc:     Sam Ravnborg <sam@ravnborg.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Sasha Levin <sashal@kernel.org>, linux-sh@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.1 125/141] sh: prevent warnings when using iounmap
-Date:   Fri, 19 Jul 2019 00:02:30 -0400
-Message-Id: <20190719040246.15945-125-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 087/101] sh: prevent warnings when using iounmap
+Date:   Fri, 19 Jul 2019 00:07:18 -0400
+Message-Id: <20190719040732.17285-87-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190719040246.15945-1-sashal@kernel.org>
-References: <20190719040246.15945-1-sashal@kernel.org>
+In-Reply-To: <20190719040732.17285-1-sashal@kernel.org>
+References: <20190719040732.17285-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -91,10 +91,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/arch/sh/include/asm/io.h b/arch/sh/include/asm/io.h
-index 4f7f235f15f8..e01fbfdbc78c 100644
+index 98cb8c802b1a..0ae60d680000 100644
 --- a/arch/sh/include/asm/io.h
 +++ b/arch/sh/include/asm/io.h
-@@ -372,7 +372,11 @@ static inline int iounmap_fixed(void __iomem *addr) { return -EINVAL; }
+@@ -371,7 +371,11 @@ static inline int iounmap_fixed(void __iomem *addr) { return -EINVAL; }
  
  #define ioremap_nocache	ioremap
  #define ioremap_uc	ioremap
