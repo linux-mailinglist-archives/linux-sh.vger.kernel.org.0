@@ -2,111 +2,81 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EDB56DD7B
-	for <lists+linux-sh@lfdr.de>; Fri, 19 Jul 2019 06:23:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE2836E0D6
+	for <lists+linux-sh@lfdr.de>; Fri, 19 Jul 2019 08:05:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731490AbfGSEK2 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 19 Jul 2019 00:10:28 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45154 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732510AbfGSEK1 (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Fri, 19 Jul 2019 00:10:27 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CCE6221873;
-        Fri, 19 Jul 2019 04:10:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1563509427;
-        bh=uDexvjbjNcUsM9NywNHmASlS28zuNCaffm46xWjs7TI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=G8hdT39j77tKgAE4qbRg6nxluEDz5WmlaDFFfL9YU9D/9WM7A9dZcWx40j5EIiR7t
-         rhvkN19VM8PO90O3y7et5PU6YgOFye8iNG6m1LFuF7mkwyw+pZdDRg6LMC8+s+d9zt
-         5h7zHs6fI1BRDOgMcSsrd+RkIM34SFuaQa/mFUx4=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Sam Ravnborg <sam@ravnborg.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Will Deacon <will.deacon@arm.com>,
+        id S1726373AbfGSGFG (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 19 Jul 2019 02:05:06 -0400
+Received: from mx2.suse.de ([195.135.220.15]:59594 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726072AbfGSGFG (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Fri, 19 Jul 2019 02:05:06 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 6FB6CB0B3;
+        Fri, 19 Jul 2019 06:05:04 +0000 (UTC)
+Date:   Fri, 19 Jul 2019 08:05:02 +0200
+From:   Michal Hocko <mhocko@kernel.org>
+To:     David Hildenbrand <david@redhat.com>
+Cc:     Oscar Salvador <osalvador@suse.de>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        akpm@linux-foundation.org, Dan Williams <dan.j.williams@intel.com>,
+        Wei Yang <richard.weiyang@gmail.com>,
+        Igor Mammedov <imammedo@redhat.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Mark Brown <broonie@kernel.org>,
-        Inki Dae <inki.dae@samsung.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Sasha Levin <sashal@kernel.org>, linux-sh@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 087/101] sh: prevent warnings when using iounmap
-Date:   Fri, 19 Jul 2019 00:07:18 -0400
-Message-Id: <20190719040732.17285-87-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190719040732.17285-1-sashal@kernel.org>
-References: <20190719040732.17285-1-sashal@kernel.org>
+        Chris Wilson <chris@chris-wilson.co.uk>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v3 10/11] mm/memory_hotplug: Make
+ unregister_memory_block_under_nodes() never fail
+Message-ID: <20190719060502.GG30461@dhcp22.suse.cz>
+References: <20190527111152.16324-1-david@redhat.com>
+ <20190527111152.16324-11-david@redhat.com>
+ <20190701085144.GJ6376@dhcp22.suse.cz>
+ <20190701093640.GA17349@linux>
+ <20190701102756.GO6376@dhcp22.suse.cz>
+ <d450488d-7a82-f7a9-c8d3-b69a0bca48c6@redhat.com>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d450488d-7a82-f7a9-c8d3-b69a0bca48c6@redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-From: Sam Ravnborg <sam@ravnborg.org>
+On Mon 15-07-19 13:10:33, David Hildenbrand wrote:
+> On 01.07.19 12:27, Michal Hocko wrote:
+> > On Mon 01-07-19 11:36:44, Oscar Salvador wrote:
+> >> On Mon, Jul 01, 2019 at 10:51:44AM +0200, Michal Hocko wrote:
+> >>> Yeah, we do not allow to offline multi zone (node) ranges so the current
+> >>> code seems to be over engineered.
+> >>>
+> >>> Anyway, I am wondering why do we have to strictly check for already
+> >>> removed nodes links. Is the sysfs code going to complain we we try to
+> >>> remove again?
+> >>
+> >> No, sysfs will silently "fail" if the symlink has already been removed.
+> >> At least that is what I saw last time I played with it.
+> >>
+> >> I guess the question is what if sysfs handling changes in the future
+> >> and starts dropping warnings when trying to remove a symlink is not there.
+> >> Maybe that is unlikely to happen?
+> > 
+> > And maybe we handle it then rather than have a static allocation that
+> > everybody with hotremove configured has to pay for.
+> > 
+> 
+> So what's the suggestion? Dropping the nodemask_t completely and calling
+> sysfs_remove_link() on already potentially removed links?
 
-[ Upstream commit 733f0025f0fb43e382b84db0930ae502099b7e62 ]
-
-When building drm/exynos for sh, as part of an allmodconfig build, the
-following warning triggered:
-
-  exynos7_drm_decon.c: In function `decon_remove':
-  exynos7_drm_decon.c:769:24: warning: unused variable `ctx'
-    struct decon_context *ctx = dev_get_drvdata(&pdev->dev);
-
-The ctx variable is only used as argument to iounmap().
-
-In sh - allmodconfig CONFIG_MMU is not defined
-so it ended up in:
-
-\#define __iounmap(addr)	do { } while (0)
-\#define iounmap		__iounmap
-
-Fix the warning by introducing a static inline function for iounmap.
-
-This is similar to several other architectures.
-
-Link: http://lkml.kernel.org/r/20190622114208.24427-1-sam@ravnborg.org
-Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: Will Deacon <will.deacon@arm.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Inki Dae <inki.dae@samsung.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/sh/include/asm/io.h | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/arch/sh/include/asm/io.h b/arch/sh/include/asm/io.h
-index 98cb8c802b1a..0ae60d680000 100644
---- a/arch/sh/include/asm/io.h
-+++ b/arch/sh/include/asm/io.h
-@@ -371,7 +371,11 @@ static inline int iounmap_fixed(void __iomem *addr) { return -EINVAL; }
- 
- #define ioremap_nocache	ioremap
- #define ioremap_uc	ioremap
--#define iounmap		__iounmap
-+
-+static inline void iounmap(void __iomem *addr)
-+{
-+	__iounmap(addr);
-+}
- 
- /*
-  * Convert a physical pointer to a virtual kernel pointer for /dev/mem
+Yes. In a follow up patch.
 -- 
-2.20.1
-
+Michal Hocko
+SUSE Labs
