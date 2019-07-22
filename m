@@ -2,110 +2,107 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CAD36ECEC
-	for <lists+linux-sh@lfdr.de>; Sat, 20 Jul 2019 02:10:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9316070311
+	for <lists+linux-sh@lfdr.de>; Mon, 22 Jul 2019 17:04:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388354AbfGTAK2 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 19 Jul 2019 20:10:28 -0400
-Received: from mx1.mailbox.org ([80.241.60.212]:35184 "EHLO mx1.mailbox.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730015AbfGTAK2 (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Fri, 19 Jul 2019 20:10:28 -0400
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
-        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
-        (No client certificate requested)
-        by mx1.mailbox.org (Postfix) with ESMTPS id 503C9501CC;
-        Sat, 20 Jul 2019 02:10:21 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp2.mailbox.org ([80.241.60.241])
-        by spamfilter05.heinlein-hosting.de (spamfilter05.heinlein-hosting.de [80.241.56.123]) (amavisd-new, port 10030)
-        with ESMTP id wYoKm814sQqS; Sat, 20 Jul 2019 02:10:12 +0200 (CEST)
-Date:   Sat, 20 Jul 2019 10:09:30 +1000
-From:   Aleksa Sarai <cyphar@cyphar.com>
-To:     shuah <shuah@kernel.org>
-Cc:     Al Viro <viro@zeniv.linux.org.uk>,
-        Jeff Layton <jlayton@kernel.org>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Jann Horn <jannh@google.com>,
-        Christian Brauner <christian@brauner.io>,
-        Tycho Andersen <tycho@tycho.ws>,
-        David Drysdale <drysdale@google.com>,
-        Chanho Min <chanho.min@lge.com>,
-        Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <asarai@suse.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        containers@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
-        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v10 8/9] kselftest: save-and-restore errno to allow for
- %m formatting
-Message-ID: <20190720000930.g3jyjupgimptuubl@yavin>
-References: <20190719164225.27083-1-cyphar@cyphar.com>
- <20190719164225.27083-9-cyphar@cyphar.com>
- <b32d95a1-8a49-65ef-4ddd-fe86a7ca01d5@kernel.org>
+        id S1727090AbfGVPDv (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 22 Jul 2019 11:03:51 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:35686 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726713AbfGVPDS (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 22 Jul 2019 11:03:18 -0400
+Received: by mail-wr1-f65.google.com with SMTP id y4so39813581wrm.2
+        for <linux-sh@vger.kernel.org>; Mon, 22 Jul 2019 08:03:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=DdufiTePFKOcw3PXCBBvJkARSPrI+OCusBaTYJELEjQ=;
+        b=TsqapSCFfaQBoVbpHKI/m+obmflr41GlOM1rPFV007j2Zv7OerhmRuJG21pozO+P1A
+         jTOHiU/zOVdxrV2v/bG8njldvSpnDW/pU1d6WXmgBNL+ZAnPJupgIR2OUZFCHmVY5JRO
+         NC6gJyFpSSdFodmwdDchaBFsttM8pha0dZkeDgf/TnHgkD16mDRERvJpAH/bTYE0OjoE
+         VlXyqbWGtjvdZfwHscynD/iZnEqcFwQZhNU5rNIDzLMje3EkV/XxY8ZMvwv/X28jazwS
+         NBASzJ6jmaUrYhaiWMIHR1bEPDSX8z4JsW9XGg0EN2DqxVK3oKAYiXwjq+EHr1zxllVK
+         pNCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=DdufiTePFKOcw3PXCBBvJkARSPrI+OCusBaTYJELEjQ=;
+        b=P9Hlthu+Mu5ND9EhOnx2S9Xm4TQi7j82VPCSb4jzCdJBZhb25jtCquZ8wiBg6S45S2
+         vY1zpk8W6gAgtIZusqgFD3lfOvE7G2XQtaO65dYZu9cDr0zrEvxnkGBi2Yzo3GqJUjEj
+         Aleef1mwbDDfs/bDzoApXHZCSpGN+upavcmSrM8N2VECuPCVRvqYJQOOeROTIew1IWHi
+         QjWcl35tz3fpEmxOXKZcPdONZn44ctw9QPe97ctwO63+AnT+EzealGrECWrYcKbe27rV
+         Nwwp2SCWkhhKTPo7K3oCp9RlqL7ObAihcgSR7WmhMgiP3U26lUBbFJU/G4ujNzDicAys
+         r+gA==
+X-Gm-Message-State: APjAAAWrUPtKVkDHIeFo3mOOkIlPpfh6oDaUOPa1HqxHgqiHKGym2wtG
+        RjmO+GeRkmittLZsePE0uXE=
+X-Google-Smtp-Source: APXvYqwoKpD/MpcmzIu1lOX2+THt1HzZrurirW2Y9G174HfbVtdYjcEwBdY78NR/Z3UWvwPmL5JvNA==
+X-Received: by 2002:a5d:5303:: with SMTP id e3mr60089734wrv.239.1563807795684;
+        Mon, 22 Jul 2019 08:03:15 -0700 (PDT)
+Received: from localhost.localdomain (amontpellier-652-1-281-69.w109-210.abo.wanadoo.fr. [109.210.96.69])
+        by smtp.gmail.com with ESMTPSA id v23sm36310460wmj.32.2019.07.22.08.03.14
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Mon, 22 Jul 2019 08:03:15 -0700 (PDT)
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Subject: [PATCH v2 0/7] backlight: gpio: simplify the driver
+Date:   Mon, 22 Jul 2019 17:02:55 +0200
+Message-Id: <20190722150302.29526-1-brgl@bgdev.pl>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="636rtrosv3xeor7c"
-Content-Disposition: inline
-In-Reply-To: <b32d95a1-8a49-65ef-4ddd-fe86a7ca01d5@kernel.org>
+Content-Transfer-Encoding: 8bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
+From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 
---636rtrosv3xeor7c
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+While working on my other series related to gpio-backlight[1] I noticed
+that we could simplify the driver if we made the only user of platform
+data use GPIO lookups and device properties. This series tries to do
+that.
 
-On 2019-07-19, shuah <shuah@kernel.org> wrote:
-> On 7/19/19 10:42 AM, Aleksa Sarai wrote:
-> > Previously, using "%m" in a ksft_* format string can result in strange
-> > output because the errno value wasn't saved before calling other libc
-> > functions. The solution is to simply save and restore the errno before
-> > we format the user-supplied format string.
-> >=20
-> > Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
-> [...]
-> Hi Aleksa,
->=20
-> Can you send this patch separate from the patch series. I will apply
-> this as bug fix to 5.3-rc2 or rc3.
->=20
-> This isn't part of this series anyway and I would like to get this in
-> right away.
+The first patch adds all necessary data structures to ecovec24. Patch
+2/7 unifies much of the code for both pdata and non-pdata cases. Patches
+3-4/7 remove unused platform data fields. Last three patches contain
+additional improvements for the GPIO backlight driver while we're already
+modifying it.
 
-Done, and I'll drop it in v11 after the rest gets reviewed.
+I don't have access to this HW but hopefully this works. Only compile
+tested.
 
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
+[1] https://lkml.org/lkml/2019/6/25/900
 
---636rtrosv3xeor7c
-Content-Type: application/pgp-signature; name="signature.asc"
+v1 -> v2:
+- rebased on top of v5.3-rc1 and adjusted to the recent changes from Andy
+- added additional two patches with minor improvements
 
------BEGIN PGP SIGNATURE-----
+Bartosz Golaszewski (7):
+  sh: ecovec24: add additional properties to the backlight device
+  backlight: gpio: simplify the platform data handling
+  sh: ecovec24: don't set unused fields in platform data
+  backlight: gpio: remove unused fields from platform data
+  backlight: gpio: remove dev from struct gpio_backlight
+  backlight: gpio: remove def_value from struct gpio_backlight
+  backlight: gpio: use a helper variable for &pdev->dev
 
-iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXTJbtgAKCRCdlLljIbnQ
-ErjeAQDm5ltY062NGtOMR1eaop8IvTWe5GYu7R+vym5BewUWYgD9HGmujOKl8CQ5
-rJXhxSxnaze1/BDj2gUmfSjSP3IJNwo=
-=CHUB
------END PGP SIGNATURE-----
+ arch/sh/boards/mach-ecovec24/setup.c         | 33 ++++++--
+ drivers/video/backlight/gpio_backlight.c     | 87 ++++++--------------
+ include/linux/platform_data/gpio_backlight.h |  3 -
+ 3 files changed, 48 insertions(+), 75 deletions(-)
 
---636rtrosv3xeor7c--
+-- 
+2.21.0
+
