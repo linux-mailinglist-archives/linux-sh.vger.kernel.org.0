@@ -2,30 +2,53 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 88FE970519
-	for <lists+linux-sh@lfdr.de>; Mon, 22 Jul 2019 18:10:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 428B2711E3
+	for <lists+linux-sh@lfdr.de>; Tue, 23 Jul 2019 08:28:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727088AbfGVQJ4 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 22 Jul 2019 12:09:56 -0400
-Received: from mga09.intel.com ([134.134.136.24]:17126 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726236AbfGVQJ4 (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Mon, 22 Jul 2019 12:09:56 -0400
-X-Amp-Result: UNSCANNABLE
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 22 Jul 2019 09:09:55 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,295,1559545200"; 
-   d="scan'208";a="252950881"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.145])
-  by orsmga001.jf.intel.com with ESMTP; 22 Jul 2019 09:09:52 -0700
-Received: from andy by smile with local (Exim 4.92)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1hpaso-00075z-Qx; Mon, 22 Jul 2019 19:09:50 +0300
-Date:   Mon, 22 Jul 2019 19:09:50 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
+        id S1730042AbfGWG2M (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 23 Jul 2019 02:28:12 -0400
+Received: from mail-io1-f68.google.com ([209.85.166.68]:47024 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730010AbfGWG2M (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 23 Jul 2019 02:28:12 -0400
+Received: by mail-io1-f68.google.com with SMTP id i10so79377282iol.13
+        for <linux-sh@vger.kernel.org>; Mon, 22 Jul 2019 23:28:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=0GXgbin1wM5tD9QHab0bjxqBxoyIQnKJbxMwrdj3eAo=;
+        b=AkGT7f1yp79PR71yxcX0rmm7mn9Z79r5K4cPrbEDACL9FDwSVMGs0ASUkteU8pEZyU
+         V2uPiHHOlPEy05sWQhcen9i60a5WApuQkPTvMdbhNfXCScSJlWK5Ftvpo+KwtQ+IvVMx
+         EH6BFUQyBsKwbnYnkRjGakuqODnMf9YNpP9paDvwbtk5bL8j0ruMNJygjLDmdLea83BR
+         +vt0S97OasXyEI0jhBs81RbiaJWlYLS70TSoZyzpaN5TF0VnDN5dCgHJtsnshqKIYXcn
+         YUeR6wczHn3AYJNWm3IeS7Uv/hmywYMSI4GjP5nHCeDNmaSAaymEU2cLJUBNAEpfmavs
+         lvjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=0GXgbin1wM5tD9QHab0bjxqBxoyIQnKJbxMwrdj3eAo=;
+        b=aJZ51PV8tN86Il/AO2WNTUp11vhJ3Ev+VOikF+LNR5vLId2v7JOeCOHjEdQCFo/7RJ
+         bDM+c3J1bUlDfq8iJ28xuKR2k8szesJAuZksk+p+HEOSQ2DZZCPa7gMIhbi8/rAJV4Ke
+         jLG0zzS2U0kwF3yKlkSgTgym0FbhQwtR63N7Lqd//UOt0jWboA4mEvCsuu/cUHFsHeCF
+         uA5B5QeONKLcNOl5ldHsmo+KuV5o6YmsEzAPEaFuLwHReyJg541YTRusG0faj0XzTtgi
+         RpaxfgtUGHz47qmpekMRgYDgdFTatObMXlH7nFtgO2U7KIrkNsFmxDokgz+LR1bIKalw
+         G+uQ==
+X-Gm-Message-State: APjAAAUU2U29f05EBNxBfAhsfJiiwCK1ZlJMn/JuaVyhHz0iTnJnaeon
+        ycEV8enUvp0Lz97f5Mmf6bGVfcfvDrrC78GS+KI=
+X-Google-Smtp-Source: APXvYqz6WM6llZIcZ4uWt1BEXw5VYzdaK/anRXzoGyvRQ8j3uF6YDTFTrHInVfg3NOC4vy7BIyJLo2b2xJVTaI/v58A=
+X-Received: by 2002:a5d:9c46:: with SMTP id 6mr9784584iof.6.1563863291632;
+ Mon, 22 Jul 2019 23:28:11 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190722150302.29526-1-brgl@bgdev.pl> <20190722150302.29526-3-brgl@bgdev.pl>
+ <20190722160603.GY9224@smile.fi.intel.com>
+In-Reply-To: <20190722160603.GY9224@smile.fi.intel.com>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Tue, 23 Jul 2019 08:28:00 +0200
+Message-ID: <CAMRc=Mfuvh6byfPhPdB51dy_YbAS5scJQT3n3pL_5VZLCjB3Hw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/7] backlight: gpio: simplify the platform data handling
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>,
         Lee Jones <lee.jones@linaro.org>,
@@ -33,70 +56,64 @@ Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
         Jingoo Han <jingoohan1@gmail.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Linus Walleij <linus.walleij@linaro.org>,
-        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-sh@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: Re: [PATCH v2 0/7] backlight: gpio: simplify the driver
-Message-ID: <20190722160950.GA9224@smile.fi.intel.com>
-References: <20190722150302.29526-1-brgl@bgdev.pl>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190722150302.29526-1-brgl@bgdev.pl>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Mon, Jul 22, 2019 at 05:02:55PM +0200, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> 
-> While working on my other series related to gpio-backlight[1] I noticed
-> that we could simplify the driver if we made the only user of platform
-> data use GPIO lookups and device properties. This series tries to do
-> that.
-> 
-> The first patch adds all necessary data structures to ecovec24. Patch
-> 2/7 unifies much of the code for both pdata and non-pdata cases. Patches
-> 3-4/7 remove unused platform data fields. Last three patches contain
-> additional improvements for the GPIO backlight driver while we're already
-> modifying it.
-> 
-> I don't have access to this HW but hopefully this works. Only compile
-> tested.
-> 
-> [1] https://lkml.org/lkml/2019/6/25/900
+pon., 22 lip 2019 o 18:06 Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> napisa=C5=82(a):
+>
+> On Mon, Jul 22, 2019 at 05:02:57PM +0200, Bartosz Golaszewski wrote:
+> > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+> >
+> > Now that the last user of platform data (sh ecovec24) defines a proper
+> > GPIO lookup and sets the 'default-on' device property, we can drop the
+> > platform_data-specific GPIO handling and unify a big chunk of code.
+> >
+> > The only field used from the platform data is now the fbdev pointer.
+>
+> > -static int gpio_backlight_probe_dt(struct platform_device *pdev,
+> > -                                struct gpio_backlight *gbl)
+> > -{
+> > -     struct device *dev =3D &pdev->dev;
+> > -     enum gpiod_flags flags;
+> > -     int ret;
+> > -
+> > -     gbl->def_value =3D device_property_read_bool(dev, "default-on");
+> > -     flags =3D gbl->def_value ? GPIOD_OUT_HIGH : GPIOD_OUT_LOW;
+> > -
+> > -     gbl->gpiod =3D devm_gpiod_get(dev, NULL, flags);
+> > -     if (IS_ERR(gbl->gpiod)) {
+> > -             ret =3D PTR_ERR(gbl->gpiod);
+> > -
+> > -             if (ret !=3D -EPROBE_DEFER) {
+> > -                     dev_err(dev,
+> > -                             "Error: The gpios parameter is missing or=
+ invalid.\n");
+> > -             }
+> > -             return ret;
+> > -     }
+> > -
+> > -     return 0;
+> > -}
+>
+> Why not leave this function (perhaps with different name)?
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
+>
+>
 
-For uncommented ones
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Why would we do that if the entire probe() function is now less than
+50 lines long? Also: it gets inlined by the compiler anyway. It
+doesn't make sense IMO.
 
-> 
-> v1 -> v2:
-> - rebased on top of v5.3-rc1 and adjusted to the recent changes from Andy
-> - added additional two patches with minor improvements
-> 
-> Bartosz Golaszewski (7):
->   sh: ecovec24: add additional properties to the backlight device
->   backlight: gpio: simplify the platform data handling
->   sh: ecovec24: don't set unused fields in platform data
->   backlight: gpio: remove unused fields from platform data
->   backlight: gpio: remove dev from struct gpio_backlight
->   backlight: gpio: remove def_value from struct gpio_backlight
->   backlight: gpio: use a helper variable for &pdev->dev
-> 
->  arch/sh/boards/mach-ecovec24/setup.c         | 33 ++++++--
->  drivers/video/backlight/gpio_backlight.c     | 87 ++++++--------------
->  include/linux/platform_data/gpio_backlight.h |  3 -
->  3 files changed, 48 insertions(+), 75 deletions(-)
-> 
-> -- 
-> 2.21.0
-> 
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Bart
