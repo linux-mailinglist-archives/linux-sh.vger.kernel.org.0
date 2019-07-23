@@ -2,100 +2,90 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C0CB7711E6
-	for <lists+linux-sh@lfdr.de>; Tue, 23 Jul 2019 08:30:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E5AA71349
+	for <lists+linux-sh@lfdr.de>; Tue, 23 Jul 2019 09:53:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732185AbfGWGaE (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 23 Jul 2019 02:30:04 -0400
-Received: from mail-io1-f65.google.com ([209.85.166.65]:38795 "EHLO
-        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729902AbfGWGaD (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 23 Jul 2019 02:30:03 -0400
-Received: by mail-io1-f65.google.com with SMTP id j6so4315100ioa.5
-        for <linux-sh@vger.kernel.org>; Mon, 22 Jul 2019 23:30:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=j31K/zZs/r0C+pUWsqptIpZI42gK74CrCWxKrCU84XI=;
-        b=N8Pla93TcEziqi3X9Xjj4jVFB6FXqFhyq+3mUxlpciUlrARDlvGyjeKc8SeQnuargV
-         FN6ErDmNUCoDrH38zU3JHuoPpuMAZNLdPp31tlj7ewshoZqqtBcK4IcRQdbsI1CnMMnf
-         5hA4bFDG/lArM1NQncuEu6rCSt6B3ndlw72yX0NSAbnaljYkk7CEAllPFu0SIId5I1sR
-         U4Gz0rRgvvvgcQ0Z2hH1/E5sC3rwRaUiZNNJSe6iPAruMUZ1eoSTZcqyBloG9heNAprb
-         mq31Yh74BQ+6PWAPc/rKE5g3B2XGRnySLEyQi2Wwan8kv19qIdLhvRoPKkKlTaKDka6Z
-         z+Ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=j31K/zZs/r0C+pUWsqptIpZI42gK74CrCWxKrCU84XI=;
-        b=FQCBIQqMUWBb+XGYV8omsRS2xIi0Z84/yMOKkh45L/HkSv6FEGC+zt5WqxDN0EuqQu
-         qfxRqkSom6hmM7Kz1mHNHCY/t5hTYFZnCwqUSJ3eJv5CBZBwSRvGGZw+Bi1bIa+sdlhr
-         D4tqpgqdouyaJI8tXFMambTjzb4Iz8dCUXNqki0Tw7YFqwJ82t2aaBLsO5LFyFn9VohY
-         ZDDu0L/RD6vpTyRDgsrbTmtPWZeHDnMZOPBMdyl+xbOIf6CNEBc+tXUOYzUZN4QNsX0Q
-         VR+QPjh9fI2mZH1wXo269oLqX6mBEbMVtKddHMb3i+Ac2kx74M284VwgtQeLkD9N2FEk
-         PrSQ==
-X-Gm-Message-State: APjAAAWctYvbjgw4+DYMutkzUxSIgc6pMu4vjNIMYwTlsMAtD1Al83Ki
-        jASWX3p5WP7TpAjm4flrpkv0xmxVl6jb2xdgljPGJBrR
-X-Google-Smtp-Source: APXvYqyvfBNIqjWIKreeMWxm6LxZ+e3NprufUy8Guv6wiY3P0Y5Y92XxFkqxlQycu+lO//vYesMKWVBa1nEhSzksv28=
-X-Received: by 2002:a02:c916:: with SMTP id t22mr21391578jao.24.1563863403112;
- Mon, 22 Jul 2019 23:30:03 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190722150302.29526-1-brgl@bgdev.pl> <20190722150302.29526-8-brgl@bgdev.pl>
- <20190722160908.GZ9224@smile.fi.intel.com>
-In-Reply-To: <20190722160908.GZ9224@smile.fi.intel.com>
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Tue, 23 Jul 2019 08:29:52 +0200
-Message-ID: <CAMRc=McGTk+i0SzWN7AvGu3deYbXX_rJX=7+dKRpKFPKM_qxDA@mail.gmail.com>
-Subject: Re: [PATCH v2 7/7] backlight: gpio: use a helper variable for &pdev->dev
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-sh@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        id S2388421AbfGWHxN (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 23 Jul 2019 03:53:13 -0400
+Received: from condef-08.nifty.com ([202.248.20.73]:46839 "EHLO
+        condef-08.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727170AbfGWHxN (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 23 Jul 2019 03:53:13 -0400
+Received: from conuserg-07.nifty.com ([10.126.8.70])by condef-08.nifty.com with ESMTP id x6N7oI4f011934
+        for <linux-sh@vger.kernel.org>; Tue, 23 Jul 2019 16:50:18 +0900
+Received: from localhost.localdomain (p14092-ipngnfx01kyoto.kyoto.ocn.ne.jp [153.142.97.92]) (authenticated)
+        by conuserg-07.nifty.com with ESMTP id x6N7nlBd002370;
+        Tue, 23 Jul 2019 16:49:47 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-07.nifty.com x6N7nlBd002370
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1563868187;
+        bh=/ZG3CdOtI33rMeokPxToXGxnzYvk2W+J+Ed/VTmXJgQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=FWn4FdN8vgdvI+ITeXpzuYYA2oYpl78IRJ4p0xGrmx5Qs/sTQMfkrBwK+g1OjC2Sf
+         HRxEAngWoNxEVkDDIsxSvSZC4g0017ceC3kVfjUmLKrAhsr5s1+OWPFfWoPZt8tGcD
+         T7D+AQL0izjln7ltNs4GOyGKZv0z9aCpUemW6A6a0WjkvWXoW2eyzG5ibb+cTRJasv
+         IQEv7j0VZEQCCfIWSFp41UkXu4PbMsDKgENy/+OM4Ciyta9aGddYVz0fweXDjQg1iZ
+         unvnnhaSqRNLDISOPcKjSpsE/z6kLklewyyvPO/CqLsAbWJv4q1g0IBRxFaUJVQvUP
+         Dl/sjG7prNuAQ==
+X-Nifty-SrcIP: [153.142.97.92]
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org
+Cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] sh: use __builtin_constant_p() directly instead of IS_IMMEDIATE()
+Date:   Tue, 23 Jul 2019 16:49:43 +0900
+Message-Id: <20190723074943.17093-1-yamada.masahiro@socionext.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-pon., 22 lip 2019 o 18:09 Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> napisa=C5=82(a):
->
-> On Mon, Jul 22, 2019 at 05:03:02PM +0200, Bartosz Golaszewski wrote:
-> > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> >
-> > Instead of dereferencing pdev each time, use a helper variable for
-> > the associated device pointer.
->
-> >  static int gpio_backlight_probe(struct platform_device *pdev)
-> >  {
-> > -     struct gpio_backlight_platform_data *pdata =3D
-> > -             dev_get_platdata(&pdev->dev);
-> > +     struct gpio_backlight_platform_data *pdata;
-> >       struct backlight_properties props;
-> >       struct backlight_device *bl;
-> >       struct gpio_backlight *gbl;
-> >       enum gpiod_flags flags;
-> > +     struct device *dev;
->
-> Can't we do
->
->         struct device dev =3D &pdev->dev;
->         struct gpio_backlight_platform_data *pdata =3D dev_get_platdata(d=
-ev);
->
-> ? It fits 80 nicely.
->
+__builtin_constant_p(nr) is used everywhere now. It does not make
+much sense to define IS_IMMEDIATE() as its alias.
 
-IMO it's more readable like that with the reverse christmas tree layout.
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
 
-Bart
+ arch/sh/include/asm/bitops-op32.h | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/arch/sh/include/asm/bitops-op32.h b/arch/sh/include/asm/bitops-op32.h
+index 466880362ad1..cfe5465acce7 100644
+--- a/arch/sh/include/asm/bitops-op32.h
++++ b/arch/sh/include/asm/bitops-op32.h
+@@ -16,11 +16,9 @@
+ #define BYTE_OFFSET(nr)		((nr) % BITS_PER_BYTE)
+ #endif
+ 
+-#define IS_IMMEDIATE(nr)	(__builtin_constant_p(nr))
+-
+ static inline void __set_bit(int nr, volatile unsigned long *addr)
+ {
+-	if (IS_IMMEDIATE(nr)) {
++	if (__builtin_constant_p(nr)) {
+ 		__asm__ __volatile__ (
+ 			"bset.b %1, @(%O2,%0)		! __set_bit\n\t"
+ 			: "+r" (addr)
+@@ -37,7 +35,7 @@ static inline void __set_bit(int nr, volatile unsigned long *addr)
+ 
+ static inline void __clear_bit(int nr, volatile unsigned long *addr)
+ {
+-	if (IS_IMMEDIATE(nr)) {
++	if (__builtin_constant_p(nr)) {
+ 		__asm__ __volatile__ (
+ 			"bclr.b %1, @(%O2,%0)		! __clear_bit\n\t"
+ 			: "+r" (addr)
+@@ -64,7 +62,7 @@ static inline void __clear_bit(int nr, volatile unsigned long *addr)
+  */
+ static inline void __change_bit(int nr, volatile unsigned long *addr)
+ {
+-	if (IS_IMMEDIATE(nr)) {
++	if (__builtin_constant_p(nr)) {
+ 		__asm__ __volatile__ (
+ 			"bxor.b %1, @(%O2,%0)		! __change_bit\n\t"
+ 			: "+r" (addr)
+-- 
+2.17.1
+
