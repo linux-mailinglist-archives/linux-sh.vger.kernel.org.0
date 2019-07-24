@@ -2,97 +2,110 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2066371BB7
-	for <lists+linux-sh@lfdr.de>; Tue, 23 Jul 2019 17:34:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 295DC729FF
+	for <lists+linux-sh@lfdr.de>; Wed, 24 Jul 2019 10:25:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387493AbfGWPec (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 23 Jul 2019 11:34:32 -0400
-Received: from mga11.intel.com ([192.55.52.93]:23892 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726467AbfGWPec (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Tue, 23 Jul 2019 11:34:32 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 23 Jul 2019 08:34:31 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,299,1559545200"; 
-   d="scan'208";a="174578077"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.145])
-  by orsmga006.jf.intel.com with ESMTP; 23 Jul 2019 08:34:28 -0700
-Received: from andy by smile with local (Exim 4.92)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1hpwo6-0004It-9g; Tue, 23 Jul 2019 18:34:26 +0300
-Date:   Tue, 23 Jul 2019 18:34:26 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        id S1726267AbfGXIZP (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 24 Jul 2019 04:25:15 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:43624 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726248AbfGXIZO (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 24 Jul 2019 04:25:14 -0400
+Received: by mail-wr1-f65.google.com with SMTP id p13so45895271wru.10
+        for <linux-sh@vger.kernel.org>; Wed, 24 Jul 2019 01:25:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XtfVe2y0PV6JCnkWUgt29BFtDKrtsJ9asmKj1fX6iHM=;
+        b=yS/fpv0lDg7cmmGiJlJuxWZDC7FTLbDacrHOf0iRdHeUNwswrCSddeVLBE4fTzDSh7
+         Crlc8kCfIK9TKMmhBMLM1skpv9wTY7ZUenyFTibdYFbmNnH8OgZrxnSyIr+LnOLjf5GK
+         iXdZ3gpPL2+YgwVWFQdaV3jQ7WP+5WionDivvwBsxj0D6JBVtrl8nolAO6STna0u8qXS
+         XWm2eCsu8ikm2EnIFJSbRkXkIiWr1WSUG+j8I839mzmKDW9ZrJZYzrKh9efeK2HUtUSR
+         6e5GIkzyc17iGtczLzfFbKCqD8HeRDPzb6a8BUuQOYcjOq/wKTn9VuuyZnWMBhrnvetc
+         +hpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XtfVe2y0PV6JCnkWUgt29BFtDKrtsJ9asmKj1fX6iHM=;
+        b=jOyjslRkefC3cmbJkkEhjEcG/YXy4a9OMIJusglSi0n7S38CX5J6aJGhIGfGE4Iz2S
+         UvCVlBBtvpuExxKgF5cp0eU5cSX48nsMVtQNB6AYFabPPUEpmSqO+qpR8MP3eSjPeflO
+         cjvYOt79/Y5QZOSgyYUDEHvXiTM22FV+2ZQuhN/hJ4h+EWzk6kvQYSZY8foGRChlHdYv
+         RiMDa//tYkHuYD8SFLA8+GyD8kN84wc9Oqj9d/PAEDhiZHKkd+kcyTTpvu/NfPB4jmh2
+         iD4FxwqERyixvNCwTUOAqJ0Ur8v56kP5O2bAnNav1OOJ86SDMRw0vPq0pJIIThG+Z7IA
+         ho7w==
+X-Gm-Message-State: APjAAAXX5nMA/GXATdnKK62e4RO+BERx+nRrzR6UPQe5sRrae1EJdI3w
+        TG9XiHfJmP0yxEG6Fzea0xA=
+X-Google-Smtp-Source: APXvYqwpDOFg0SMrkMrSkLYjQMLQnQYz0BaTUXKeEAnLvEP5ghElBAxYipQ0U+HL2Q/1CRGgVkParw==
+X-Received: by 2002:a5d:42c5:: with SMTP id t5mr47444184wrr.5.1563956712658;
+        Wed, 24 Jul 2019 01:25:12 -0700 (PDT)
+Received: from localhost.localdomain (amontpellier-652-1-281-69.w109-210.abo.wanadoo.fr. [109.210.96.69])
+        by smtp.gmail.com with ESMTPSA id z7sm42393880wrh.67.2019.07.24.01.25.11
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Wed, 24 Jul 2019 01:25:12 -0700 (PDT)
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>,
         Lee Jones <lee.jones@linaro.org>,
         Daniel Thompson <daniel.thompson@linaro.org>,
         Jingoo Han <jingoohan1@gmail.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Linus Walleij <linus.walleij@linaro.org>,
-        linux-sh@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: Re: [PATCH v2 7/7] backlight: gpio: use a helper variable for
- &pdev->dev
-Message-ID: <20190723153426.GL9224@smile.fi.intel.com>
-References: <20190722150302.29526-1-brgl@bgdev.pl>
- <20190722150302.29526-8-brgl@bgdev.pl>
- <20190722160908.GZ9224@smile.fi.intel.com>
- <CAMRc=McGTk+i0SzWN7AvGu3deYbXX_rJX=7+dKRpKFPKM_qxDA@mail.gmail.com>
+Subject: [PATCH v3 0/7] backlight: gpio: simplify the driver
+Date:   Wed, 24 Jul 2019 10:25:01 +0200
+Message-Id: <20190724082508.27617-1-brgl@bgdev.pl>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMRc=McGTk+i0SzWN7AvGu3deYbXX_rJX=7+dKRpKFPKM_qxDA@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Tue, Jul 23, 2019 at 08:29:52AM +0200, Bartosz Golaszewski wrote:
-> pon., 22 lip 2019 o 18:09 Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> napisał(a):
-> >
-> > On Mon, Jul 22, 2019 at 05:03:02PM +0200, Bartosz Golaszewski wrote:
-> > > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> > >
-> > > Instead of dereferencing pdev each time, use a helper variable for
-> > > the associated device pointer.
-> >
-> > >  static int gpio_backlight_probe(struct platform_device *pdev)
-> > >  {
-> > > -     struct gpio_backlight_platform_data *pdata =
-> > > -             dev_get_platdata(&pdev->dev);
-> > > +     struct gpio_backlight_platform_data *pdata;
-> > >       struct backlight_properties props;
-> > >       struct backlight_device *bl;
-> > >       struct gpio_backlight *gbl;
-> > >       enum gpiod_flags flags;
-> > > +     struct device *dev;
-> >
-> > Can't we do
-> >
-> >         struct device dev = &pdev->dev;
-> >         struct gpio_backlight_platform_data *pdata = dev_get_platdata(dev);
-> >
-> > ? It fits 80 nicely.
-> >
-> 
-> IMO it's more readable like that with the reverse christmas tree layout.
+From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 
-It makes more churn in the original code and for initializers the order is
-defined by its nature.
+While working on my other series related to gpio-backlight[1] I noticed
+that we could simplify the driver if we made the only user of platform
+data use GPIO lookups and device properties. This series tries to do
+that.
+
+The first patch adds all necessary data structures to ecovec24. Patch
+2/7 unifies much of the code for both pdata and non-pdata cases. Patches
+3-4/7 remove unused platform data fields. Last three patches contain
+additional improvements for the GPIO backlight driver while we're already
+modifying it.
+
+I don't have access to this HW but hopefully this works. Only compile
+tested.
+
+[1] https://lkml.org/lkml/2019/6/25/900
+
+v1 -> v2:
+- rebased on top of v5.3-rc1 and adjusted to the recent changes from Andy
+- added additional two patches with minor improvements
+
+v2 -> v3:
+- in patch 7/7: used initializers to set values for pdata and dev local vars
+
+Bartosz Golaszewski (7):
+  sh: ecovec24: add additional properties to the backlight device
+  backlight: gpio: simplify the platform data handling
+  sh: ecovec24: don't set unused fields in platform data
+  backlight: gpio: remove unused fields from platform data
+  backlight: gpio: remove dev from struct gpio_backlight
+  backlight: gpio: remove def_value from struct gpio_backlight
+  backlight: gpio: use a helper variable for &pdev->dev
+
+ arch/sh/boards/mach-ecovec24/setup.c         | 33 ++++++--
+ drivers/video/backlight/gpio_backlight.c     | 82 +++++---------------
+ include/linux/platform_data/gpio_backlight.h |  3 -
+ 3 files changed, 44 insertions(+), 74 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.21.0
 
