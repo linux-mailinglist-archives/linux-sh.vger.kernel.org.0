@@ -2,48 +2,48 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 88EE3729F9
-	for <lists+linux-sh@lfdr.de>; Wed, 24 Jul 2019 10:25:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7567C729F1
+	for <lists+linux-sh@lfdr.de>; Wed, 24 Jul 2019 10:25:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726595AbfGXIZl (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 24 Jul 2019 04:25:41 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:41471 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726400AbfGXIZT (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 24 Jul 2019 04:25:19 -0400
-Received: by mail-wr1-f65.google.com with SMTP id c2so42716779wrm.8
-        for <linux-sh@vger.kernel.org>; Wed, 24 Jul 2019 01:25:18 -0700 (PDT)
+        id S1726086AbfGXIZd (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 24 Jul 2019 04:25:33 -0400
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:55564 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726444AbfGXIZV (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 24 Jul 2019 04:25:21 -0400
+Received: by mail-wm1-f67.google.com with SMTP id a15so40928377wmj.5
+        for <linux-sh@vger.kernel.org>; Wed, 24 Jul 2019 01:25:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=MWh9VGd2JwifXWatter5gVNCFGQvFvQYl1wPUfmq6BA=;
-        b=Ru8/V2KuUXMTU8q4g8iglT+1D551XJ1jRu1e/mkMhxZ41/k+vNUX9+CBHpMMATMLcL
-         qA7G90MOkXL0es1XDru84jIee/hoFp5YxCFwfo0CgWKkTkJSlHOqCEr1iMF31PkLvpAm
-         vxWfi3/v9hnpL85NJbcn84NuLHK8ZwfNr8R1aicwnOSGGBohMr4+VtbWERpElGqBQvj4
-         J7dN+52l7aCDWASYucxYNDxixUcCvgVIwkPoWyDWNVcMPfl8K9m6vSmglYR+bwChB6TE
-         SabhVALFMspdy8q97T4skJ5NHKGlkr5mA0aqOWlMKI4cH00E1sSr0uZYF75qmVgmJd/s
-         Tr9A==
+        bh=ARbd1V2PTR/7B70DXuDpAAyS9eCMhAVKqqbb1qk0e7w=;
+        b=wyVGQpD+T3uiZkn3LiRgv0LYR+71l0MHfD4iNRDIwOQSK1f0Vsijy1ZdZwYSok7pGz
+         z6LQ/p4UKx3DYKA1xd/DhH3xxwduColASNq35D+f1bZwGtV1216ArwUnZkLSVo0OtHQT
+         v37sruntHU3mWDOLAWr7Rdt/I5/oCDYSICOp/dVFtoGCsJBP+j6iLKLMDQWiklPMQGRj
+         /MD5+fKLNv8D2Y26FgKUwdHv/cC7IUtLWGtnucaCJ8jkJKrcEF5Z4bcCeTM3atrAeCXh
+         qHm6EZZVaObTXL7NmmkRvgeBJ7fNCV1kZMYsReZIJ7ScJgSUHLEuRxbDDoy2a9VXOHJm
+         N2Cg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=MWh9VGd2JwifXWatter5gVNCFGQvFvQYl1wPUfmq6BA=;
-        b=Iqv2WZLMk0P0X4QCSn9OVX+M8tpL0L8KqCs6Cnmo155CUv8azIy/M5Ep5cIkJ1kHTu
-         7jVeedBpQTmgdg8G8QiV9xnnyJLQnKfWLF9tIH0gs48ZM00uvNA6MybtuVS7x71QGuW1
-         jeETH0qVTqSrV7i6Hl92UjIS3LMmPO1Nal3Yy4VnQvspSXt8hKJbSMvJTe7eNyojALvC
-         5JiqF5Bj3ISEwisn6BnbbdTJjX8rkf1TEERQjlI8UalPKEEoXbP4Op0fH58ubggYIqbr
-         lnZ6z4ugTl17dNHsFkkCmyCZ/+1ekuNTwjirt17lVx8SVfP9S53pxk1eSLChyAIJBlpf
-         Usjg==
-X-Gm-Message-State: APjAAAU0HiySee1s+TBOAIBirBcIRsUgbLZUisvZcFdppr/Cp6ye6d6o
-        2vBwy7L7qhoQAm0zt62z2Y8=
-X-Google-Smtp-Source: APXvYqzovu25Xh93eS5i9WI728LZP4TFmEiOkc764Y7T62dKsCFZMLaetBHEt9+L/8KfHBSTKqd9ZA==
-X-Received: by 2002:a5d:518d:: with SMTP id k13mr29586503wrv.40.1563956718056;
-        Wed, 24 Jul 2019 01:25:18 -0700 (PDT)
+        bh=ARbd1V2PTR/7B70DXuDpAAyS9eCMhAVKqqbb1qk0e7w=;
+        b=DnSKpVt4lv9Z6c+8kzf1t2ODfBJzZPCWSeQw5Szh0cOwE0J9eRNuBnoiNWbljjlCmm
+         LwzWTwaamSBQVG0F1JmVGps+DXyQ5SDTm+AhudFMkFz51PkFNsjK6YcGKQwnj4waTgab
+         aYPkILHP8zN04rmnb1TWGDb8gu4s7rdIVnonh1gVjFjj3hgMWIeRyq6vHElzQzH4OS2v
+         g3NuYWpD1tO0WZ/aLkesIzMv0W4bGnBRgnvlxksSwH/SAWH5uIj5BEcnnZu53fJrV+EO
+         exEZX7d6j2R9qLNcuiGPcjRvJouQliBo9ZZUgWyzG3Lq1d0XW53RvzVR/FwLWGApvBwm
+         DrvA==
+X-Gm-Message-State: APjAAAXPKAtsek6qTNzyI2DMfzVW53zxteej5AdqQgdTjVW9ROegw6w4
+        lmUxO90/XnGLffAdcXTKeUs=
+X-Google-Smtp-Source: APXvYqzkgEv3bgw2h6q7V26EkyUVPqeJGTwwUSYmcdpXaPZAm+K0dgiQU1XSSJC6xbDuOYYXG2bWGg==
+X-Received: by 2002:a1c:f018:: with SMTP id a24mr71172006wmb.66.1563956719095;
+        Wed, 24 Jul 2019 01:25:19 -0700 (PDT)
 Received: from localhost.localdomain (amontpellier-652-1-281-69.w109-210.abo.wanadoo.fr. [109.210.96.69])
-        by smtp.gmail.com with ESMTPSA id z7sm42393880wrh.67.2019.07.24.01.25.17
+        by smtp.gmail.com with ESMTPSA id z7sm42393880wrh.67.2019.07.24.01.25.18
         (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Wed, 24 Jul 2019 01:25:17 -0700 (PDT)
+        Wed, 24 Jul 2019 01:25:18 -0700 (PDT)
 From:   Bartosz Golaszewski <brgl@bgdev.pl>
 To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>,
@@ -56,9 +56,9 @@ To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
 Cc:     linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: [PATCH v3 5/7] backlight: gpio: remove dev from struct gpio_backlight
-Date:   Wed, 24 Jul 2019 10:25:06 +0200
-Message-Id: <20190724082508.27617-6-brgl@bgdev.pl>
+Subject: [PATCH v3 6/7] backlight: gpio: remove def_value from struct gpio_backlight
+Date:   Wed, 24 Jul 2019 10:25:07 +0200
+Message-Id: <20190724082508.27617-7-brgl@bgdev.pl>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190724082508.27617-1-brgl@bgdev.pl>
 References: <20190724082508.27617-1-brgl@bgdev.pl>
@@ -71,37 +71,56 @@ X-Mailing-List: linux-sh@vger.kernel.org
 
 From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 
-This field is unused. Remove it.
+This field is unused outside of probe(). There's no need to store it.
+We can make it into a local variable.
 
 Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/video/backlight/gpio_backlight.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/video/backlight/gpio_backlight.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/video/backlight/gpio_backlight.c b/drivers/video/backlight/gpio_backlight.c
-index 01262186fa1e..70882556f047 100644
+index 70882556f047..cd6a75bca9cc 100644
 --- a/drivers/video/backlight/gpio_backlight.c
 +++ b/drivers/video/backlight/gpio_backlight.c
-@@ -19,9 +19,7 @@
- #include <linux/slab.h>
- 
+@@ -21,7 +21,6 @@
  struct gpio_backlight {
--	struct device *dev;
  	struct device *fbdev;
--
  	struct gpio_desc *gpiod;
- 	int def_value;
+-	int def_value;
  };
-@@ -69,8 +67,6 @@ static int gpio_backlight_probe(struct platform_device *pdev)
- 	if (gbl == NULL)
- 		return -ENOMEM;
  
--	gbl->dev = &pdev->dev;
--
+ static int gpio_backlight_update_status(struct backlight_device *bl)
+@@ -61,7 +60,7 @@ static int gpio_backlight_probe(struct platform_device *pdev)
+ 	struct backlight_device *bl;
+ 	struct gpio_backlight *gbl;
+ 	enum gpiod_flags flags;
+-	int ret;
++	int ret, def_value;
+ 
+ 	gbl = devm_kzalloc(&pdev->dev, sizeof(*gbl), GFP_KERNEL);
+ 	if (gbl == NULL)
+@@ -70,8 +69,8 @@ static int gpio_backlight_probe(struct platform_device *pdev)
  	if (pdata)
  		gbl->fbdev = pdata->fbdev;
  
+-	gbl->def_value = device_property_read_bool(&pdev->dev, "default-on");
+-	flags = gbl->def_value ? GPIOD_OUT_HIGH : GPIOD_OUT_LOW;
++	def_value = device_property_read_bool(&pdev->dev, "default-on");
++	flags = def_value ? GPIOD_OUT_HIGH : GPIOD_OUT_LOW;
+ 
+ 	gbl->gpiod = devm_gpiod_get(&pdev->dev, NULL, flags);
+ 	if (IS_ERR(gbl->gpiod)) {
+@@ -94,7 +93,7 @@ static int gpio_backlight_probe(struct platform_device *pdev)
+ 		return PTR_ERR(bl);
+ 	}
+ 
+-	bl->props.brightness = gbl->def_value;
++	bl->props.brightness = def_value;
+ 	backlight_update_status(bl);
+ 
+ 	platform_set_drvdata(pdev, bl);
 -- 
 2.21.0
 
