@@ -2,53 +2,53 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DCC7872A08
-	for <lists+linux-sh@lfdr.de>; Wed, 24 Jul 2019 10:26:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0261572A0D
+	for <lists+linux-sh@lfdr.de>; Wed, 24 Jul 2019 10:26:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726651AbfGXI0W (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 24 Jul 2019 04:26:22 -0400
-Received: from mail-io1-f67.google.com ([209.85.166.67]:45036 "EHLO
+        id S1726267AbfGXI05 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 24 Jul 2019 04:26:57 -0400
+Received: from mail-io1-f67.google.com ([209.85.166.67]:40891 "EHLO
         mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725990AbfGXI0V (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 24 Jul 2019 04:26:21 -0400
-Received: by mail-io1-f67.google.com with SMTP id s7so87669330iob.11
-        for <linux-sh@vger.kernel.org>; Wed, 24 Jul 2019 01:26:21 -0700 (PDT)
+        with ESMTP id S1726193AbfGXI05 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 24 Jul 2019 04:26:57 -0400
+Received: by mail-io1-f67.google.com with SMTP id h6so1233014iom.7
+        for <linux-sh@vger.kernel.org>; Wed, 24 Jul 2019 01:26:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=0rTt0PWs8SlpFEmIlcfrWeoOuNH1aWKTFUUCUoidq3I=;
-        b=deaX2weZdsR6CofrHgiWHgzvTlM6h0FNL2PCIdFa3ZeR+qEBKz/x2vejPlXRHVbmMl
-         JcIU64QqYqXdMxbvfzRnMtxCpqigpmmONPmag0B3S94ydkRIBrNpe+pn6g1aMLWZubZ6
-         UTzvInvq4w6iEOuIXPRd561yuPuJSvUrs266ftIc1nWLg3ThVkDpL/f+JQCyW061otPx
-         iMDnLvksu7iT66jS8dBgADOsTBJhFtV7c5959cGfsIwCrCTAUGbyH+sqfbEEaX/g7W9P
-         LzHLbNF3ottZFcV9EwyxFemoIAjtlIYkP3wQJVnx/oskfEntjJZYTsB3vBBLbKrJ4T5I
-         5YeQ==
+        bh=CBhO//b1Mv8t3fldT3hg9NFY3tt50vLM1dbfXQdhvjw=;
+        b=D0p3Mc071pUEefJy2mzeuN0fKTpYKSow5oJhq50h2fxfnYdBwxnbUByQp3g8PS83e6
+         At7iFoflnUuJh+x4blgGMFTDiVc0kOXTzjnwcF+UCwUbiShrIpTOhE2XIL+BqznqbY5t
+         +UAaGLNmoaxWHHuN17Y2UBuy+pjgtYRocCvE6Pfbw2iZq2+TEm2nP9ucMiKLMGc2qfTj
+         ApBqGrOuZB7kDqflOss8X2lqwBRr/6pPdg0uYWFVB6uU0l/UtHPv4aQgbs82rjmWgZgl
+         c/Jb3D2O/z3w7jJXdLE43+asiU+OaAbLv/vy1SFRD6SfPJtk52VMMqvVHF7Yusk1djdr
+         hCXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=0rTt0PWs8SlpFEmIlcfrWeoOuNH1aWKTFUUCUoidq3I=;
-        b=Dq2aDh84XJwUQmngTYzdpEDdAS5DRgg8LfAD+kfPORs7i97hLykJgrx10vjs3oEvAb
-         VmZMlb3nhnpLn3u7uvEA5E2PaqwoJc82eM8XyLsal8aRmLBMxt07+kL47slDzHX8VDiQ
-         /Gi55f78dIGUHbAZm54Tn+BL24IVJZagtYdnQS5KIzRMzL3sXRF5VfnIuG9xx3D22kWv
-         NQR9sVteJ1rCWiBULVNYjwMb5u5Bb9Mn/6OK4PLk8H/S7XVkGJ1CC3AAtm6DWUYjKpEm
-         iBU8fwulSvSl+N1m19cqQE7gBhQvqB7xryOlLwbdk7B5JSjXLSdrH4AUa6Xtx7nr80cd
-         Rq/g==
-X-Gm-Message-State: APjAAAXWBOnuhYWGmKJq9a4r4f3vYkrc+2VUs824WOSEtHo3QOVghLoU
-        YEddCcAPqNNXmL/Ry4rvwnPPjbeuqGDiUnLrad0=
-X-Google-Smtp-Source: APXvYqzLUytR+h+JqxzA0jh/OfN1pkCtT3uoRs01qtgiGnfU4aT24rqrogERbdvlD5vcFQubZ9LAL7ZCQLkdsMP8f5A=
-X-Received: by 2002:a5d:80c3:: with SMTP id h3mr67287206ior.167.1563956780894;
- Wed, 24 Jul 2019 01:26:20 -0700 (PDT)
+        bh=CBhO//b1Mv8t3fldT3hg9NFY3tt50vLM1dbfXQdhvjw=;
+        b=ocujmrcSTLJdh7LZ/Yc+X+DnTzmBT+8ODCZ6o8hDYY+uSF+WbAmvnUpus38J+acq7z
+         qczhzpvxjE6tizo6ttItKGBD57yJaEYfycnNRfQVfPDf7q2i3+pCfP3gBEZiBALim/IG
+         qGPm/EOSUv17lw7NIQeCuPITx7J7BL/uwpbRhsoRVU7kJoNjNCCfr/6opZXReGJ0CyEX
+         sGcJr6EpID5FLEQFZW+b3wrvoTzfKvtur4Xq2PrarBCdvB+ODoSHIoIUh/PPIjhq+dR8
+         VQZZoYvrIuMT2hpA8ez3WO7mErmk+y09eW3jgK3AF5Z86P3MvwaDQvAvhgH34zlNlmH5
+         f6YA==
+X-Gm-Message-State: APjAAAWCXhPvjrdkgKp/bDEPUtfGnVX+VDeYT5PL+VrCxFlXHrvSM5S/
+        Tp8WwIPrtwYQS+Wc0jK+ZoU7EkYMDXGrshfhZPs=
+X-Google-Smtp-Source: APXvYqzlFH3wxV7Lz03vd2PrLc6bLm/+Ylj+di1LyWBQl8Ph0JepWk9jenk2cbZdUGaXiz8cH9/q3mMFct7ATpMadlg=
+X-Received: by 2002:a05:6638:cf:: with SMTP id w15mr5664293jao.136.1563956816689;
+ Wed, 24 Jul 2019 01:26:56 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190722150302.29526-1-brgl@bgdev.pl> <20190722150302.29526-8-brgl@bgdev.pl>
- <20190722160908.GZ9224@smile.fi.intel.com> <CAMRc=McGTk+i0SzWN7AvGu3deYbXX_rJX=7+dKRpKFPKM_qxDA@mail.gmail.com>
- <20190723153426.GL9224@smile.fi.intel.com>
-In-Reply-To: <20190723153426.GL9224@smile.fi.intel.com>
+References: <20190722150302.29526-1-brgl@bgdev.pl> <20190722150302.29526-3-brgl@bgdev.pl>
+ <20190722160603.GY9224@smile.fi.intel.com> <CAMRc=Mfuvh6byfPhPdB51dy_YbAS5scJQT3n3pL_5VZLCjB3Hw@mail.gmail.com>
+ <20190723153250.GK9224@smile.fi.intel.com>
+In-Reply-To: <20190723153250.GK9224@smile.fi.intel.com>
 From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Wed, 24 Jul 2019 10:26:10 +0200
-Message-ID: <CAMRc=MfbSUAoEeD-KhmiV57dT2mcQTftLjNbdnFYJ59e6X5QDQ@mail.gmail.com>
-Subject: Re: [PATCH v2 7/7] backlight: gpio: use a helper variable for &pdev->dev
+Date:   Wed, 24 Jul 2019 10:26:45 +0200
+Message-ID: <CAMRc=Mf9MZRkvK5bvqsQuqwcUe5Wmsk+D7jwg2wMEK_cYVfe+Q@mail.gmail.com>
+Subject: Re: [PATCH v2 2/7] backlight: gpio: simplify the platform data handling
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>,
@@ -68,52 +68,61 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-wt., 23 lip 2019 o 17:34 Andy Shevchenko
+wt., 23 lip 2019 o 17:32 Andy Shevchenko
 <andriy.shevchenko@linux.intel.com> napisa=C5=82(a):
 >
-> On Tue, Jul 23, 2019 at 08:29:52AM +0200, Bartosz Golaszewski wrote:
-> > pon., 22 lip 2019 o 18:09 Andy Shevchenko
+> On Tue, Jul 23, 2019 at 08:28:00AM +0200, Bartosz Golaszewski wrote:
+> > pon., 22 lip 2019 o 18:06 Andy Shevchenko
 > > <andriy.shevchenko@linux.intel.com> napisa=C5=82(a):
 > > >
-> > > On Mon, Jul 22, 2019 at 05:03:02PM +0200, Bartosz Golaszewski wrote:
+> > > On Mon, Jul 22, 2019 at 05:02:57PM +0200, Bartosz Golaszewski wrote:
 > > > > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 > > > >
-> > > > Instead of dereferencing pdev each time, use a helper variable for
-> > > > the associated device pointer.
-> > >
-> > > >  static int gpio_backlight_probe(struct platform_device *pdev)
-> > > >  {
-> > > > -     struct gpio_backlight_platform_data *pdata =3D
-> > > > -             dev_get_platdata(&pdev->dev);
-> > > > +     struct gpio_backlight_platform_data *pdata;
-> > > >       struct backlight_properties props;
-> > > >       struct backlight_device *bl;
-> > > >       struct gpio_backlight *gbl;
-> > > >       enum gpiod_flags flags;
-> > > > +     struct device *dev;
-> > >
-> > > Can't we do
-> > >
-> > >         struct device dev =3D &pdev->dev;
-> > >         struct gpio_backlight_platform_data *pdata =3D dev_get_platda=
-ta(dev);
-> > >
-> > > ? It fits 80 nicely.
-> > >
-> >
-> > IMO it's more readable like that with the reverse christmas tree layout=
+> > > > Now that the last user of platform data (sh ecovec24) defines a pro=
+per
+> > > > GPIO lookup and sets the 'default-on' device property, we can drop =
+the
+> > > > platform_data-specific GPIO handling and unify a big chunk of code.
+> > > >
+> > > > The only field used from the platform data is now the fbdev pointer=
 .
+> > >
+> > > > -static int gpio_backlight_probe_dt(struct platform_device *pdev,
+> > > > -                                struct gpio_backlight *gbl)
+> > > > -{
+> > > > -     struct device *dev =3D &pdev->dev;
+> > > > -     enum gpiod_flags flags;
+> > > > -     int ret;
+> > > > -
+> > > > -     gbl->def_value =3D device_property_read_bool(dev, "default-on=
+");
+> > > > -     flags =3D gbl->def_value ? GPIOD_OUT_HIGH : GPIOD_OUT_LOW;
+> > > > -
+> > > > -     gbl->gpiod =3D devm_gpiod_get(dev, NULL, flags);
+> > > > -     if (IS_ERR(gbl->gpiod)) {
+> > > > -             ret =3D PTR_ERR(gbl->gpiod);
+> > > > -
+> > > > -             if (ret !=3D -EPROBE_DEFER) {
+> > > > -                     dev_err(dev,
+> > > > -                             "Error: The gpios parameter is missin=
+g or invalid.\n");
+> > > > -             }
+> > > > -             return ret;
+> > > > -     }
+> > > > -
+> > > > -     return 0;
+> > > > -}
+> > >
+> > > Why not leave this function (perhaps with different name)?
+> >
+> > Why would we do that if the entire probe() function is now less than
+> > 50 lines long? Also: it gets inlined by the compiler anyway. It
+> > doesn't make sense IMO.
 >
-> It makes more churn in the original code and for initializers the order i=
-s
-> defined by its nature.
->
-> --
-> With Best Regards,
-> Andy Shevchenko
->
+> I'm not against this, perhaps, dropping and moving can be split to two ch=
+anges.
 >
 
-Fair enough, I changed it in v3.
+This really is unnecessary - we can do it in a single patch alright.
 
 Bart
