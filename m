@@ -2,86 +2,65 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DB0E8103A
-	for <lists+linux-sh@lfdr.de>; Mon,  5 Aug 2019 04:14:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BE9481087
+	for <lists+linux-sh@lfdr.de>; Mon,  5 Aug 2019 05:25:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726765AbfHECO2 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sun, 4 Aug 2019 22:14:28 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:35442 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726666AbfHECO2 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sun, 4 Aug 2019 22:14:28 -0400
-Received: by mail-pg1-f196.google.com with SMTP id n4so3582170pgv.2;
-        Sun, 04 Aug 2019 19:14:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=mXck+7yixSQbGeYYGZ+JiOZc4vrwYTsXa1d6rhW0au0=;
-        b=gFVQKv/z4hkyO8ZnZlCGUK+FIPH3aqtCeDyUzEgYYsBEWinPU90nKiSb05CUBG01M1
-         oxEgMeb9nQJKz8Rb+HQHx6kRjoJLP1S14blrbtciru0z2KimZ45bVOpsebMYLUALwrrR
-         rf7dJmzlnaA1k61gjjVygTYmZs9B6RvBwQTZlWq3lMLSqVu7UJP/houJiz8wHY29TjxQ
-         WrZ9fD5NqIyt3QvcboZq/UIhWAyZdzO9+/b3WHRpCgsYEL2fxT728QR1WCetpsMPWEzf
-         JzOBdEXS5aEz17iQmyjAZnvp/fj2omrn+uaM+kT71QYo1NZrhrBt1LGoKYGDZi7LNTWP
-         EgGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
-        bh=mXck+7yixSQbGeYYGZ+JiOZc4vrwYTsXa1d6rhW0au0=;
-        b=jZiLHRkbLWPNS6jf8X6B1vor+y6fzJ8Osjmyo1K9bFxrgEXMfhEXfw32uOFWaBQ1pS
-         Pz52hyr1kYhh23qkGcXlO93sF7DAUvDrHAT5VAO0UchKoRajnRXIf171avLgvEUnK4lW
-         SELznKNmzmXXGkAHItqAD9Gmr2/SBO33ZKvbcT/ttmTalWt+/1SHiWyLD5Y0hXmyqMlK
-         T8gIWbNg1rdNFGKtJNi8p8aqIBuzUKuvwz/GF79BbHuKuCT0eB3ErLjeXOr4SFZ7/y7v
-         YjguDsc1A2g3okzLpZ4G1orP/r8dK0UWzlDkfbyS25QPim6Dx/fPUjCnfdWm8jtehFej
-         zKYg==
-X-Gm-Message-State: APjAAAWu6Pq+y1Hwecms1qWk9Qh6TF+12RvBP8a+/8RSfA///+PXWXx6
-        BUmxqPewr9zahRcyVR/PTZc=
-X-Google-Smtp-Source: APXvYqxadHWrRXOwCfVTIVVI7+IRK+OOgL1y3k1/uMmWy9vfvOPgbD29sDXeI3YFCqubPAgaJjVW2A==
-X-Received: by 2002:a65:4948:: with SMTP id q8mr3418751pgs.214.1564971267607;
-        Sun, 04 Aug 2019 19:14:27 -0700 (PDT)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id b14sm16640636pga.20.2019.08.04.19.14.25
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 04 Aug 2019 19:14:26 -0700 (PDT)
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc:     Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
+        id S1726805AbfHEDZP (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sun, 4 Aug 2019 23:25:15 -0400
+Received: from 216-12-86-13.cv.mvl.ntelos.net ([216.12.86.13]:39856 "EHLO
+        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726767AbfHEDZP (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sun, 4 Aug 2019 23:25:15 -0400
+Received: from dalias by brightrain.aerifal.cx with local (Exim 3.15 #2)
+        id 1huTc1-00022l-00; Mon, 05 Aug 2019 03:24:41 +0000
+Date:   Sun, 4 Aug 2019 23:24:41 -0400
+From:   Rich Felker <dalias@libc.org>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
         "Gustavo A . R . Silva" <gustavo@embeddedor.com>
-Subject: [PATCH] sh: Drop -Werror from kernel Makefile
-Date:   Sun,  4 Aug 2019 19:14:23 -0700
-Message-Id: <1564971263-21562-1-git-send-email-linux@roeck-us.net>
-X-Mailer: git-send-email 2.7.4
+Subject: Re: [PATCH] sh: Drop -Werror from kernel Makefile
+Message-ID: <20190805032441.GO9017@brightrain.aerifal.cx>
+References: <1564971263-21562-1-git-send-email-linux@roeck-us.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1564971263-21562-1-git-send-email-linux@roeck-us.net>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Since commit a035d552a93b ("Makefile: Globally enable fall-through
-warning"), all sh builds fail with errors such as
+On Sun, Aug 04, 2019 at 07:14:23PM -0700, Guenter Roeck wrote:
+> Since commit a035d552a93b ("Makefile: Globally enable fall-through
+> warning"), all sh builds fail with errors such as
+> 
+> arch/sh/kernel/disassemble.c: In function 'print_sh_insn':
+> arch/sh/kernel/disassemble.c:478:8: error: this statement may fall through
+> 
+> Since this effectively disables all build and boot tests for the
+> architecture, let's drop -Werror from the sh kernel Makefile until
+> the problems are fixed.
+> 
+> Cc: Gustavo A. R. Silva <gustavo@embeddedor.com>
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 
-arch/sh/kernel/disassemble.c: In function 'print_sh_insn':
-arch/sh/kernel/disassemble.c:478:8: error: this statement may fall through
+Acked-by: Rich Felker <dalias@libc.org>
 
-Since this effectively disables all build and boot tests for the
-architecture, let's drop -Werror from the sh kernel Makefile until
-the problems are fixed.
-
-Cc: Gustavo A. R. Silva <gustavo@embeddedor.com>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
----
- arch/sh/kernel/Makefile | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/arch/sh/kernel/Makefile b/arch/sh/kernel/Makefile
-index 59673f8a3379..ef65f0625c6c 100644
---- a/arch/sh/kernel/Makefile
-+++ b/arch/sh/kernel/Makefile
-@@ -47,5 +47,3 @@ obj-$(CONFIG_DWARF_UNWINDER)	+= dwarf.o
- obj-$(CONFIG_PERF_EVENTS)	+= perf_event.o perf_callchain.o
- obj-$(CONFIG_DMA_NONCOHERENT)	+= dma-coherent.o
- obj-$(CONFIG_HAVE_HW_BREAKPOINT)		+= hw_breakpoint.o
--
--ccflags-y := -Werror
--- 
-2.7.4
-
+> ---
+>  arch/sh/kernel/Makefile | 2 --
+>  1 file changed, 2 deletions(-)
+> 
+> diff --git a/arch/sh/kernel/Makefile b/arch/sh/kernel/Makefile
+> index 59673f8a3379..ef65f0625c6c 100644
+> --- a/arch/sh/kernel/Makefile
+> +++ b/arch/sh/kernel/Makefile
+> @@ -47,5 +47,3 @@ obj-$(CONFIG_DWARF_UNWINDER)	+= dwarf.o
+>  obj-$(CONFIG_PERF_EVENTS)	+= perf_event.o perf_callchain.o
+>  obj-$(CONFIG_DMA_NONCOHERENT)	+= dma-coherent.o
+>  obj-$(CONFIG_HAVE_HW_BREAKPOINT)		+= hw_breakpoint.o
+> -
+> -ccflags-y := -Werror
+> -- 
+> 2.7.4
