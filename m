@@ -2,52 +2,51 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 46771815EA
-	for <lists+linux-sh@lfdr.de>; Mon,  5 Aug 2019 11:53:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABF9B8269C
+	for <lists+linux-sh@lfdr.de>; Mon,  5 Aug 2019 23:12:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728087AbfHEJxS (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 5 Aug 2019 05:53:18 -0400
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:35880 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728086AbfHEJxS (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 5 Aug 2019 05:53:18 -0400
-Received: by mail-lf1-f66.google.com with SMTP id j17so3400773lfp.3
-        for <linux-sh@vger.kernel.org>; Mon, 05 Aug 2019 02:53:17 -0700 (PDT)
+        id S1730704AbfHEVMZ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 5 Aug 2019 17:12:25 -0400
+Received: from mail-lf1-f65.google.com ([209.85.167.65]:46537 "EHLO
+        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730696AbfHEVMY (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 5 Aug 2019 17:12:24 -0400
+Received: by mail-lf1-f65.google.com with SMTP id z15so54880468lfh.13
+        for <linux-sh@vger.kernel.org>; Mon, 05 Aug 2019 14:12:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=yhFhmYD1XCmoTjeTnvzGsODetc1XqqaQE8oBpm4W4vQ=;
-        b=K0B7/O1SMz4RHGXSXodAVa9L8sFoa6UoXKns2dJR1JyKOU2c6furolEA7Q5allCkl0
-         hz3utRt5xZzsleYc5j96GSG5SHJEN9qRmcnlBwZ5Hbwn+fft/iuWyPYdhkJXD/m3jjk7
-         jrqz4dcI6wnABAMB/2cejuK/mx5zUZuzGuS867Iji3hw8OpOMM0EX1haB0kh4NotBmOv
-         TnrXt+nPzDsghutAkYvsNt/760Kmcu8ed+WXy1lumUgqOtf+HKx+P7IjgQ1X5X3F7qkT
-         B41DImoEkIRtZUYYGgcCoKd1jS/rYluUTw2JPsGDWnr8wMsUgYyBHWgFNW3+ViFzuyiM
-         iwUg==
+        bh=52Df7UYy5EhBLL4bv/P+/OnUf70c8jTeH6mJgj5Nc6s=;
+        b=HvwClAPwJG3Pi3R4ysSHdSnZra19G+8lxf4u1AX3bm8UTIL32r5/3r4AQDUUnJ/o3L
+         dpaHikb4ucEdmircjNP99G70agmxOPDPQMJwswRiDJ0anTMpviFli3+46wzjbxWNr1qH
+         dghsq9SmMx3LQM+G8BVjUzYIiqSKOMRrvkiKT79W6AoIWk+5Pip47CWTOVU0kk2YNmU+
+         0Izo3RTcKcBjeZveVRbI9DDa6X/mc1vAauC8y3m2avmDY+FIHe/0IazV0HkXFcr81ler
+         t8S7rjmV2wXa1V+9Jsr6Shx95cI1Kl0lZoh/K5dH9RDgTkaryuZnjn+7/Z/NwST+Y+HQ
+         WbKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=yhFhmYD1XCmoTjeTnvzGsODetc1XqqaQE8oBpm4W4vQ=;
-        b=uoKdj8dO452VnnGmsZOZJC8SPbb58xRmiPx8a9hVIbvt9aIfSWU/Y9tRV9wbYt7zb/
-         aNrj6T2vNysmP1u7kw3IpLBsQh1F5+DBFkNK2Wa6JDrBEQ+G6JV4AOD7HyfGIZsNov+N
-         UZAbyur9xSu8deCRxywQqbluSOOHM8VzXLVdy/ECqxnDphlrXsccoy7rSZdEZzg9/2Sj
-         7jCgtpPMfuDznO8gHNPBDVo85QpTpjkC0GrFp1wBD7XzdFsTj/4GEWVOgysSVeOFweEx
-         RR05Oyr16XZwNh+zDaOykDkF+LPVSZJxDxGhh4yKBJP9wKhVVDQKAlq2Jsu/QjThMtZ1
-         BKpA==
-X-Gm-Message-State: APjAAAXOT8FuYCTNROj+C7U1BAI377eqUPPE78d9UkacFAaEo034qnXQ
-        RVHNaazwGl8L03IwJiU66xZXyfEzogzc0FPs24d6Pg==
-X-Google-Smtp-Source: APXvYqznj+OyBQxOK0qX1ZGixNtwr50nmLElXsC7qnFS3oH2+cAja/iMhd5ozIzmb9vouUkDfKjemRMc1Gv/14GZ9L0=
-X-Received: by 2002:ac2:4c07:: with SMTP id t7mr1288145lfq.152.1564998796491;
- Mon, 05 Aug 2019 02:53:16 -0700 (PDT)
+        bh=52Df7UYy5EhBLL4bv/P+/OnUf70c8jTeH6mJgj5Nc6s=;
+        b=WRVoI62/gziqzXwdq52OZ8Qv/JRxmNL4BFhX/NGR8ebtaW7idv/XubP3KTW7CLzcZt
+         0U+t4W6TaBfnja0PWDTOkmssQtB42e9dQ2CcTNA/WhfvCFHvSIKt+otgiISUbnofGL1y
+         48v3TlrhssRF9Ho2CIgVtN9WHDub1ZOYw87l08lH3tbxx0aEZeHVqTcZP0VmAFZl+kAS
+         hvtdcKYiAt4fwOq0g+hndE0Dgr/zKYb6aCqRdFq7kmrS2e46n+MPIOVjWA3fDuXSEnP2
+         9Rjp4mzzcVmE7BmVSSq3CCooKmrSc/w8wCZgpb+hg7+qKQT0H/nGWAGK1txsyFlRnPK4
+         QiAQ==
+X-Gm-Message-State: APjAAAXwBaSFs0DodFfVcrbJwqyEv8M2AjHooDWtkF4DOF426Lp+Q/S0
+        M/z0V/7w8ncxVhmvNXtSKwL0sTv3Nn05kPQ5RDoa7g==
+X-Google-Smtp-Source: APXvYqyKCE9i41W7XXqJZ+YQ19WTxKlx1r3Tj3XoIOE9+3G2LGoa7zZV9WsUtd9BV0if5aOUW/6qAi6Sf9CuvXhzjNg=
+X-Received: by 2002:a19:e006:: with SMTP id x6mr71138714lfg.165.1565039542766;
+ Mon, 05 Aug 2019 14:12:22 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190722150302.29526-1-brgl@bgdev.pl> <20190722150302.29526-2-brgl@bgdev.pl>
-In-Reply-To: <20190722150302.29526-2-brgl@bgdev.pl>
+References: <20190724082508.27617-1-brgl@bgdev.pl>
+In-Reply-To: <20190724082508.27617-1-brgl@bgdev.pl>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 5 Aug 2019 11:53:04 +0200
-Message-ID: <CACRpkdYexsXR=n+t1iVb1QMZc9U1FeKdyHy3w4VnfPy4B=xeiA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/7] sh: ecovec24: add additional properties to the
- backlight device
+Date:   Mon, 5 Aug 2019 23:12:10 +0200
+Message-ID: <CACRpkdZBqxBKrLi+QskNpC8LPxY9OFOVL0K0pVBOkc61+ZXzGg@mail.gmail.com>
+Subject: Re: [PATCH v3 0/7] backlight: gpio: simplify the driver
 To:     Bartosz Golaszewski <brgl@bgdev.pl>
 Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>,
@@ -67,20 +66,34 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Mon, Jul 22, 2019 at 5:03 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
+On Wed, Jul 24, 2019 at 10:25 AM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
 
 > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 >
-> Add a GPIO lookup entry and a device property for GPIO backlight to the
-> board file. Tie them to the platform device which is now registered using
-> platform_device_register_full() because of the properties. These changes
-> are inactive now but will be used once the gpio backlight driver is
-> modified.
+> While working on my other series related to gpio-backlight[1] I noticed
+> that we could simplify the driver if we made the only user of platform
+> data use GPIO lookups and device properties. This series tries to do
+> that.
 >
-> Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+> The first patch adds all necessary data structures to ecovec24. Patch
+> 2/7 unifies much of the code for both pdata and non-pdata cases. Patches
+> 3-4/7 remove unused platform data fields. Last three patches contain
+> additional improvements for the GPIO backlight driver while we're already
+> modifying it.
+>
+> I don't have access to this HW but hopefully this works. Only compile
+> tested.
+>
+> [1] https://lkml.org/lkml/2019/6/25/900
+>
+> v1 -> v2:
+> - rebased on top of v5.3-rc1 and adjusted to the recent changes from Andy
+> - added additional two patches with minor improvements
+>
+> v2 -> v3:
+> - in patch 7/7: used initializers to set values for pdata and dev local vars
 
-Clever! I must also use these dynamic properties now.
-
+The series:
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
 Yours,
