@@ -2,137 +2,119 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 98B2085C1A
-	for <lists+linux-sh@lfdr.de>; Thu,  8 Aug 2019 09:52:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84F0F85CA0
+	for <lists+linux-sh@lfdr.de>; Thu,  8 Aug 2019 10:17:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731592AbfHHHwi (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 8 Aug 2019 03:52:38 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:31504 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1731699AbfHHHwg (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 8 Aug 2019 03:52:36 -0400
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x787qXGw022348
-        for <linux-sh@vger.kernel.org>; Thu, 8 Aug 2019 03:52:35 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2u8dvfvf3k-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-sh@vger.kernel.org>; Thu, 08 Aug 2019 03:52:34 -0400
-Received: from localhost
-        by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-sh@vger.kernel.org> from <rppt@linux.ibm.com>;
-        Thu, 8 Aug 2019 08:52:23 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
-        by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Thu, 8 Aug 2019 08:52:19 +0100
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x787qIqi31785064
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 8 Aug 2019 07:52:18 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 94EC7A404D;
-        Thu,  8 Aug 2019 07:52:18 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id CD1F9A4040;
-        Thu,  8 Aug 2019 07:52:16 +0000 (GMT)
-Received: from rapoport-lnx (unknown [9.148.8.168])
-        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-        Thu,  8 Aug 2019 07:52:16 +0000 (GMT)
-Received: by rapoport-lnx (sSMTP sendmail emulation); Thu, 08 Aug 2019 10:52:16 +0300
-From:   Mike Rapoport <rppt@linux.ibm.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Nicholas Piggin <npiggin@gmail.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>
-Subject: [PATCH 3/3] sh: switch to generic version of pte allocation
-Date:   Thu,  8 Aug 2019 10:52:08 +0300
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1565250728-21721-1-git-send-email-rppt@linux.ibm.com>
-References: <1565250728-21721-1-git-send-email-rppt@linux.ibm.com>
-X-TM-AS-GCONF: 00
-x-cbid: 19080807-0016-0000-0000-0000029C2B8E
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19080807-0017-0000-0000-000032FC2D77
-Message-Id: <1565250728-21721-4-git-send-email-rppt@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-08-08_04:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=923 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908080090
+        id S1731886AbfHHIRM (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 8 Aug 2019 04:17:12 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:40954 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731782AbfHHIRM (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 8 Aug 2019 04:17:12 -0400
+Received: by mail-ot1-f65.google.com with SMTP id l15so58019293oth.7
+        for <linux-sh@vger.kernel.org>; Thu, 08 Aug 2019 01:17:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=dNM5N57Ioc8DGeTZqQ0rAIXdhWsFh5H0j1dVFwmVmb4=;
+        b=gtTvn2IndIxQCjjyBbjHq+P0txQocLhuW0xeMXqj5eVcDPoq6BuVqI7IpQwk2ignJU
+         8DyRLC//uN/6s4e1rWXVDWevrneTBo4+Q9LtC2vL7AMkKhAOJx/zCw92RkkPUkwDWzSg
+         Z6NT0FKxGa9xWPFOpGlnTaPTBu2ViA8/jlzJ2yIIPPoicWJH3Z0vbjMwPgB7EacgrSfH
+         bY5qy+QwCAe8+Cb4SG0+Ennjuw3jVUeJKC/t8B+QMcMwMz8hVDhbiATUYO+l5pkzllhX
+         iA98x/+0bobd6W0fdIaTCHrNOytdTCvT5jvTWdGy1E0GmN3OM+5b5NAV4IwZjrFZhUek
+         SK6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=dNM5N57Ioc8DGeTZqQ0rAIXdhWsFh5H0j1dVFwmVmb4=;
+        b=IOkgz2jmznjMJ9dHCm1gVCGMxpwu73eewpWJxJ7AmoK9pnpudmXQWie/ezyxWyNGAc
+         5RFThxeu/gNRjYfPhtV6AKVw1vRRckEeYud0DhpWmHY2dWrP+rPGZPBDiLatbl/sIPON
+         2b97Kkr+p6phHvJmIPNIkOAuMsRkRA85fGV1ivBULJvWjEr6XMpb4QtMZ1Vewhwlaai9
+         CHfrVLG589kE+2RYUHZqaL3Q1e8psTsbrpXeQW7NkD+6okbHaIPffUE2AVKHbms2Dur4
+         h/3S6rTOWXPGeO+LYv9c7oMR7n5m8izUEvpvpRjsYsZ3Qt81XTs9dCUt7a1jzlFdmmrr
+         hTqg==
+X-Gm-Message-State: APjAAAUvwRf/02OQTQT0Qo1KF/pkRzqEtaIfYe311sfefEcPF2iTE/Ev
+        kgGn9XEAIet/70TQWbSUnGVKp9p7VwlRGUwvqRU1Nw==
+X-Google-Smtp-Source: APXvYqwRT6RNZjkYIS7Txd9d/bJwV7lSsUOLdoji98fPLPn7Ri1bmULRrvDu/Ajv9YIyI8JGyUg6MQO3Oo7ThI1tBJc=
+X-Received: by 2002:a6b:f80b:: with SMTP id o11mr13530588ioh.40.1565252231701;
+ Thu, 08 Aug 2019 01:17:11 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190724082508.27617-1-brgl@bgdev.pl>
+In-Reply-To: <20190724082508.27617-1-brgl@bgdev.pl>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Thu, 8 Aug 2019 10:17:00 +0200
+Message-ID: <CAMRc=Mex_Ricd+C4F7nGLmpBggO-hWwJDB6duX8kFpPEeaTDjQ@mail.gmail.com>
+Subject: Re: [PATCH v3 0/7] backlight: gpio: simplify the driver
+To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>
+Cc:     linux-sh@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-The sh implementation pte_alloc_one(), pte_alloc_one_kernel(),
-pte_free_kernel() and pte_free() is identical to the generic except of lack
-of __GFP_ACCOUNT for the user PTEs allocation.
+=C5=9Br., 24 lip 2019 o 10:25 Bartosz Golaszewski <brgl@bgdev.pl> napisa=C5=
+=82(a):
+>
+> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+>
+> While working on my other series related to gpio-backlight[1] I noticed
+> that we could simplify the driver if we made the only user of platform
+> data use GPIO lookups and device properties. This series tries to do
+> that.
+>
+> The first patch adds all necessary data structures to ecovec24. Patch
+> 2/7 unifies much of the code for both pdata and non-pdata cases. Patches
+> 3-4/7 remove unused platform data fields. Last three patches contain
+> additional improvements for the GPIO backlight driver while we're already
+> modifying it.
+>
+> I don't have access to this HW but hopefully this works. Only compile
+> tested.
+>
+> [1] https://lkml.org/lkml/2019/6/25/900
+>
+> v1 -> v2:
+> - rebased on top of v5.3-rc1 and adjusted to the recent changes from Andy
+> - added additional two patches with minor improvements
+>
+> v2 -> v3:
+> - in patch 7/7: used initializers to set values for pdata and dev local v=
+ars
+>
+> Bartosz Golaszewski (7):
+>   sh: ecovec24: add additional properties to the backlight device
+>   backlight: gpio: simplify the platform data handling
+>   sh: ecovec24: don't set unused fields in platform data
+>   backlight: gpio: remove unused fields from platform data
+>   backlight: gpio: remove dev from struct gpio_backlight
+>   backlight: gpio: remove def_value from struct gpio_backlight
+>   backlight: gpio: use a helper variable for &pdev->dev
+>
+>  arch/sh/boards/mach-ecovec24/setup.c         | 33 ++++++--
+>  drivers/video/backlight/gpio_backlight.c     | 82 +++++---------------
+>  include/linux/platform_data/gpio_backlight.h |  3 -
+>  3 files changed, 44 insertions(+), 74 deletions(-)
+>
+> --
+> 2.21.0
+>
 
-Switch sh to use generic version of these functions.
+Hi Rich, Yoshinori,
 
-Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
----
- arch/sh/include/asm/pgalloc.h | 34 +---------------------------------
- 1 file changed, 1 insertion(+), 33 deletions(-)
+can you ack the sh patches in this series?
 
-diff --git a/arch/sh/include/asm/pgalloc.h b/arch/sh/include/asm/pgalloc.h
-index 9e15054..8c6341a 100644
---- a/arch/sh/include/asm/pgalloc.h
-+++ b/arch/sh/include/asm/pgalloc.h
-@@ -3,6 +3,7 @@
- #define __ASM_SH_PGALLOC_H
- 
- #include <asm/page.h>
-+#include <asm-generic/pgalloc.h>
- 
- extern pgd_t *pgd_alloc(struct mm_struct *);
- extern void pgd_free(struct mm_struct *mm, pgd_t *pgd);
-@@ -26,39 +27,6 @@ static inline void pmd_populate(struct mm_struct *mm, pmd_t *pmd,
- }
- #define pmd_pgtable(pmd) pmd_page(pmd)
- 
--/*
-- * Allocate and free page tables.
-- */
--static inline pte_t *pte_alloc_one_kernel(struct mm_struct *mm)
--{
--	return (pte_t *)__get_free_page(GFP_KERNEL | __GFP_ZERO);
--}
--
--static inline pgtable_t pte_alloc_one(struct mm_struct *mm)
--{
--	struct page *page;
--
--	page = alloc_page(GFP_KERNEL | __GFP_ZERO);
--	if (!page)
--		return NULL;
--	if (!pgtable_page_ctor(page)) {
--		__free_page(page);
--		return NULL;
--	}
--	return page;
--}
--
--static inline void pte_free_kernel(struct mm_struct *mm, pte_t *pte)
--{
--	free_page((unsigned long)pte);
--}
--
--static inline void pte_free(struct mm_struct *mm, pgtable_t pte)
--{
--	pgtable_page_dtor(pte);
--	__free_page(pte);
--}
--
- #define __pte_free_tlb(tlb,pte,addr)			\
- do {							\
- 	pgtable_page_dtor(pte);				\
--- 
-2.7.4
-
+Bart
