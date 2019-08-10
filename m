@@ -2,130 +2,175 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DEA788553
-	for <lists+linux-sh@lfdr.de>; Fri,  9 Aug 2019 23:56:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF018887B1
+	for <lists+linux-sh@lfdr.de>; Sat, 10 Aug 2019 05:11:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726475AbfHIV4M (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 9 Aug 2019 17:56:12 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:41911 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726140AbfHIV4L (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 9 Aug 2019 17:56:11 -0400
-Received: by mail-pg1-f196.google.com with SMTP id x15so36133869pgg.8;
-        Fri, 09 Aug 2019 14:56:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=iF8XDfjf7OAYK6LGbHjkXf1kEPXCCuRVGlqPI2lfvf4=;
-        b=kQdIpVEb36HQzmYc1mG+FFRNAWSm8ZMY2r71qKqpR3j0RDWHumGqsKzVButPqdcaKA
-         wqOSy6HXElsFnQczjlnC6J8KVJkGCE73DDJ00ftNfhmSxIJbpl77wor6QvXqpXZoFTKN
-         HAytglT+YJniUV5hSreLG2wh4Jhc4ydruLXQ/l6MFLAfLNpz6fbQoBf+0AEO/NBBEO5Q
-         paAR4GhyUDlAYhi+40b3KjBnZ7tOdiS8ZfEnf6iml/8PAr27aOWDagw/6lRVuMudoIf5
-         LKqPpalwAtbdG/R1KtXdYGyx2vQxw4FRzhBjx+2zRwcXVKuSTNJ6HkJVGNz9xmp7KIz1
-         2u2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=iF8XDfjf7OAYK6LGbHjkXf1kEPXCCuRVGlqPI2lfvf4=;
-        b=rcyYMo3+05SqvukoP6uvONqOxNcCbqKGCJwBcKLB0iGUctOPwwP2FVx+Pg+jQ8tWtk
-         gbmgiQkRbzgJ7J9v2Zkvc5xYy2hVIOraJsyxCkQkrTCEOO6KkxoLNZCKIIp3kTBQAH1c
-         h2+55VQ0zZetPIzjki9+Iiho7w1cLK3bU0IRLVY5d/dTXgH0mfBJF6NL5ekYWcVQXQiv
-         AaoSLzbTzSIPwQjd61qprL8QOvwZPj7bMvbdJ0BHOnn8RaLMpxtsxAO8B/kz1C7aJpNz
-         Z0vUpwL/yASJ5RiURwGXvfCfJNK5NrCzkgbwEmMxVu4o43FLKX/V2XTf7lLqoq9rNmg6
-         q4Kw==
-X-Gm-Message-State: APjAAAWxGl5tZwbSelZvqMoNpQpZBXDKcnxdGabtbYc86UTyDrCFngDl
-        LN9SuClqAQtt0kUvds4Edb/Fg7LI
-X-Google-Smtp-Source: APXvYqyfsm+jqRUZiXsW83kcSpTAuQb8JUXdteAu+1jKe417GHvittc8WO+BS+ESv4GBJPQ+5BD5vw==
-X-Received: by 2002:a65:4341:: with SMTP id k1mr19356600pgq.153.1565387770900;
-        Fri, 09 Aug 2019 14:56:10 -0700 (PDT)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id 185sm99336215pfd.125.2019.08.09.14.56.09
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 09 Aug 2019 14:56:09 -0700 (PDT)
-Date:   Fri, 9 Aug 2019 14:56:08 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+        id S1725858AbfHJDLI (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 9 Aug 2019 23:11:08 -0400
+Received: from gateway21.websitewelcome.com ([192.185.45.210]:38322 "EHLO
+        gateway21.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725845AbfHJDLH (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 9 Aug 2019 23:11:07 -0400
+X-Greylist: delayed 1422 seconds by postgrey-1.27 at vger.kernel.org; Fri, 09 Aug 2019 23:11:07 EDT
+Received: from cm11.websitewelcome.com (cm11.websitewelcome.com [100.42.49.5])
+        by gateway21.websitewelcome.com (Postfix) with ESMTP id 4B30B400C36B5
+        for <linux-sh@vger.kernel.org>; Fri,  9 Aug 2019 21:47:25 -0500 (CDT)
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with SMTP
+        id wHPhhT7MUdnCewHPhhuKsl; Fri, 09 Aug 2019 21:47:25 -0500
+X-Authority-Reason: nr=8
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:Subject:From:References:Cc:To:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=FLFdeAKzGRXDIPNzhc+h/WVNgNfBJFq2yFAvCNbGFIY=; b=uMcSRGYuAG+L2KW+D/9an+Aj6s
+        nmHEQrwaM0rhWBFcRGmZTgcnmzfpdmBMMaBvUxLxcHb8cjZdMYzDVGlSmCAkxPG+D6RFVoDlnofq6
+        ysA9RIuHBTVBtQFnxiNSVSCQt8BmclvwB3TlkgyWI8O2p6ZAqcTSTeR4z6FNMAprtfAsLLPcCPd1C
+        JzRV06tZr/MZpPrtta5CMy1A5Z8Pd1J5+7pepTgLZvIbVheBTedELpA01MU+2+GS1x053Vqq4dYhS
+        MOMpoUiv3sUE39BMr26zJUBCpOjLc1xvYr/m9s4lWgi2vIdSC4INKYthAwo0f/01UhQgYH3IcXDcU
+        W1elK7iw==;
+Received: from [187.192.11.120] (port=35624 helo=[192.168.43.131])
+        by gator4166.hostgator.com with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
+        (Exim 4.92)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1hwHPg-003y1H-Tt; Fri, 09 Aug 2019 21:47:25 -0500
+To:     Guenter Roeck <linux@roeck-us.net>
 Cc:     Rich Felker <dalias@libc.org>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
         linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] sh: Drop -Werror from kernel Makefile
-Message-ID: <20190809215608.GA11065@roeck-us.net>
 References: <1564971263-21562-1-git-send-email-linux@roeck-us.net>
  <20190805032441.GO9017@brightrain.aerifal.cx>
  <20190809195630.GA15606@roeck-us.net>
  <5f26547f-b48e-4b9f-b8ef-858283915e3d@embeddedor.com>
+ <20190809215608.GA11065@roeck-us.net>
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=gustavo@embeddedor.com; keydata=
+ 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
+ VtSixD1uOgytAP7RWS474w==
+Subject: Re: [PATCH] sh: Drop -Werror from kernel Makefile
+Message-ID: <6a06245f-33f2-1d92-0d0e-c8b270dc24af@embeddedor.com>
+Date:   Fri, 9 Aug 2019 21:47:23 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5f26547f-b48e-4b9f-b8ef-858283915e3d@embeddedor.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+In-Reply-To: <20190809215608.GA11065@roeck-us.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 187.192.11.120
+X-Source-L: No
+X-Exim-ID: 1hwHPg-003y1H-Tt
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: ([192.168.43.131]) [187.192.11.120]:35624
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 4
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Fri, Aug 09, 2019 at 04:36:01PM -0500, Gustavo A. R. Silva wrote:
-> Hi Guenter,
+Guenter,
+
+On 8/9/19 4:56 PM, Guenter Roeck wrote:
+> On Fri, Aug 09, 2019 at 04:36:01PM -0500, Gustavo A. R. Silva wrote:
+>> Hi Guenter,
+>>
+>> On 8/9/19 2:56 PM, Guenter Roeck wrote:
+>>> On Sun, Aug 04, 2019 at 11:24:41PM -0400, Rich Felker wrote:
+>>>> On Sun, Aug 04, 2019 at 07:14:23PM -0700, Guenter Roeck wrote:
+>>>>> Since commit a035d552a93b ("Makefile: Globally enable fall-through
+>>>>> warning"), all sh builds fail with errors such as
+>>>>>
+>>>>> arch/sh/kernel/disassemble.c: In function 'print_sh_insn':
+>>>>> arch/sh/kernel/disassemble.c:478:8: error: this statement may fall through
+>>>>>
+>>>>> Since this effectively disables all build and boot tests for the
+>>>>> architecture, let's drop -Werror from the sh kernel Makefile until
+>>>>> the problems are fixed.
+>>>>>
+>>>>> Cc: Gustavo A. R. Silva <gustavo@embeddedor.com>
+>>>>> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+>>>>
+>>>> Acked-by: Rich Felker <dalias@libc.org>
+>>>>
+>>> Any chance to get this or a similar patch applied soon ? All sh builds
+>>> in mainline and -next are still broken.
+>>>
+>>
+>> If no one cares, I can add it to my tree and include it in my pull-request
+>> for 5.3-rc4.
+>>
+>> I would just need your Tested-by.
+>>
 > 
-> On 8/9/19 2:56 PM, Guenter Roeck wrote:
-> > On Sun, Aug 04, 2019 at 11:24:41PM -0400, Rich Felker wrote:
-> >> On Sun, Aug 04, 2019 at 07:14:23PM -0700, Guenter Roeck wrote:
-> >>> Since commit a035d552a93b ("Makefile: Globally enable fall-through
-> >>> warning"), all sh builds fail with errors such as
-> >>>
-> >>> arch/sh/kernel/disassemble.c: In function 'print_sh_insn':
-> >>> arch/sh/kernel/disassemble.c:478:8: error: this statement may fall through
-> >>>
-> >>> Since this effectively disables all build and boot tests for the
-> >>> architecture, let's drop -Werror from the sh kernel Makefile until
-> >>> the problems are fixed.
-> >>>
-> >>> Cc: Gustavo A. R. Silva <gustavo@embeddedor.com>
-> >>> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-> >>
-> >> Acked-by: Rich Felker <dalias@libc.org>
-> >>
-> > Any chance to get this or a similar patch applied soon ? All sh builds
-> > in mainline and -next are still broken.
-> > 
+> Sure:
 > 
-> If no one cares, I can add it to my tree and include it in my pull-request
-> for 5.3-rc4.
+> Tested-by: Guenter Roeck <linux@roeck-us.net>
 > 
-> I would just need your Tested-by.
+> [ Applied to ToT and built sh:{defconfig,allnoconfig,tinyconfig} ]
 > 
 
-Sure:
+On second thought it seems to me that this is not a good idea, at least
+for mainline. For the time being I'll take this patch for linux-next only.
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+Who is the maintainer of sh?
 
-[ Applied to ToT and built sh:{defconfig,allnoconfig,tinyconfig} ]
+The best solution is to fix those fall-through warnings you see. Could you
+please send me all the warnings you see? I can try to fix them.
 
-Thanks,
-Guenter
-
-> Thanks
-> --
-> Gustavo
-> 
-> > Thanks,
-> > Guenter
-> > 
-> >>> ---
-> >>>  arch/sh/kernel/Makefile | 2 --
-> >>>  1 file changed, 2 deletions(-)
-> >>>
-> >>> diff --git a/arch/sh/kernel/Makefile b/arch/sh/kernel/Makefile
-> >>> index 59673f8a3379..ef65f0625c6c 100644
-> >>> --- a/arch/sh/kernel/Makefile
-> >>> +++ b/arch/sh/kernel/Makefile
-> >>> @@ -47,5 +47,3 @@ obj-$(CONFIG_DWARF_UNWINDER)	+= dwarf.o
-> >>>  obj-$(CONFIG_PERF_EVENTS)	+= perf_event.o perf_callchain.o
-> >>>  obj-$(CONFIG_DMA_NONCOHERENT)	+= dma-coherent.o
-> >>>  obj-$(CONFIG_HAVE_HW_BREAKPOINT)		+= hw_breakpoint.o
-> >>> -
-> >>> -ccflags-y := -Werror
-> >>> -- 
-> >>> 2.7.4
+Thanks!
+--
+Gustavo
