@@ -2,126 +2,91 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3356E88B74
-	for <lists+linux-sh@lfdr.de>; Sat, 10 Aug 2019 14:54:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F21978A9D0
+	for <lists+linux-sh@lfdr.de>; Mon, 12 Aug 2019 23:52:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726395AbfHJMyS (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sat, 10 Aug 2019 08:54:18 -0400
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:38341 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725862AbfHJMyS (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sat, 10 Aug 2019 08:54:18 -0400
-Received: by mail-pl1-f193.google.com with SMTP id m12so7432342plt.5;
-        Sat, 10 Aug 2019 05:54:17 -0700 (PDT)
+        id S1727008AbfHLVvv (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 12 Aug 2019 17:51:51 -0400
+Received: from mail-qk1-f202.google.com ([209.85.222.202]:43092 "EHLO
+        mail-qk1-f202.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727767AbfHLVvu (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 12 Aug 2019 17:51:50 -0400
+Received: by mail-qk1-f202.google.com with SMTP id m2so6236370qkk.10
+        for <linux-sh@vger.kernel.org>; Mon, 12 Aug 2019 14:51:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=xGOG7CIt4Bldag/tVJzgtpFcyqFmnN0FNJ0/M8Kuw3I=;
-        b=trJX+/kdGJheAbsSuKEUv9xcYOXQJVboGWLdxBays/B5EMU75ntxUavFHJJtmqdJPe
-         ZOW3VSHpCRGLGGrugDTX4hUU9VkV5TE7XAdwBUfpO9hawsey6xsApnK4FYjYjCztEQNj
-         DBvi/VaZvWcWIIoJ6nkfSvi8uX+A/jqeLxe8jk1NiHLrd3aKmU3QqNQD5vCL/lpk6iU6
-         53+H1A1VyT+0HtWI3BkBdiM5/5JnE4e3tqqcDIpS6eYHpo4TQriMAjuizh3gwYbUQHX8
-         FvBFH/jsqB2H22LRT84UH0bDjW6ldfUqQjUdwVbA8t3xhRFGlZa9GXwajJVmw6fSwLoY
-         tE6w==
+        d=google.com; s=20161025;
+        h=date:in-reply-to:message-id:mime-version:references:subject:from:to
+         :cc;
+        bh=dkl7/UCGpL+NlP2/x1g4PAFoM8egHhu+Vinm7RBGZqk=;
+        b=J+mGdp7Xm+87VwfjayUFTm4z6KIjoLKr3G5/6jbsKjKiWWIavprKB+X7dmk0l9Bx8F
+         onSRT1QJl9t/AsSUb7lT5itZEaf1B4LthCvRbfAWbm/I4HV9vsfjoxoUO6mofTuRYqBk
+         QTMiE2dznF57pZEAp4uQD5dk+pVLIclEK1thrPGBYjJh5Sxq9A2Qq/K1ErbvAnsf/NbL
+         H0siglRdh1L/K6vWMFosRpOdO6OhF8/2McAILUeNkj8aeoy+x9pm/NMyc5ueAlhUBX7q
+         7F81YB86R3OsMbHXv+SUQCqqSSDQh7B55g3uz+4czgFjrQGi1eUJ/VLLgzCmLQxj34Bi
+         PjzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=xGOG7CIt4Bldag/tVJzgtpFcyqFmnN0FNJ0/M8Kuw3I=;
-        b=iuPeCmpO5kYufbq6s9jvxl5wztZYCIrBvf3TsQAZwMYjC5JrnmvCCciZFdFHqXKM30
-         abefGiX5IuYd1tC2BCKMEqhxUPaDjdwsaajaz3rDU99+0QZrrcaDOwn1nvn2xS6aSkKv
-         jU6MbWUzqe6n9urVnZMt63OIDhaCMQ4khmQnWKLEXitHBHIMlJXqh358WwAFSLQv/UcZ
-         Ogs1fUXctxuoAcUa/pxBvvBj3JUR1zWxTwh+o6v+zdG8oTQAc5RU+HMQFLGDMZCh82cJ
-         784qviR6QRLsy7lqhlo6PeqDdP+GZrroZVpwHSYrn/u2OcO5bAyvsQVtUnWV95wgSstQ
-         XHnA==
-X-Gm-Message-State: APjAAAVcAA6JUl5J+jj6+HSgHHEUqd+NMyx+ljqkdc4frtWtTx+EQOOX
-        VmWIRwqbNcZC0Z4f37GX8xTswf9Z
-X-Google-Smtp-Source: APXvYqyOaKlZmVKKyXoUgChncyuwNfKOOdKlkBcfSRZxMyMhTFtwbfbTET10LfEa0L7wWmirdGHYuw==
-X-Received: by 2002:a17:902:be15:: with SMTP id r21mr23253252pls.293.1565441657662;
-        Sat, 10 Aug 2019 05:54:17 -0700 (PDT)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id s11sm106867672pgv.13.2019.08.10.05.54.16
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 10 Aug 2019 05:54:17 -0700 (PDT)
-Date:   Sat, 10 Aug 2019 05:54:16 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Joe Perches <joe@perches.com>
-Subject: Re: [PATCH v2] sh: kernel: disassemble: Mark expected switch
- fall-throughs
-Message-ID: <20190810125416.GB19990@roeck-us.net>
-References: <20190810052442.GA21354@embeddedor>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190810052442.GA21354@embeddedor>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+        h=x-gm-message-state:date:in-reply-to:message-id:mime-version
+         :references:subject:from:to:cc;
+        bh=dkl7/UCGpL+NlP2/x1g4PAFoM8egHhu+Vinm7RBGZqk=;
+        b=jLf1PuOT9V/Q+sOzGc2CfU272FxCuP+GNZEnSnVHinGKSbUaF91iKTiqypIxBn5RMP
+         VrRDDcPLRyOnZpxspq198CPWasOSsHc/OLo8K5fF/qBAEQw6E9pmOchIfj1cn35Z2J1A
+         rtQdOE7UA/w3hyULHRVLSiMtMIu+Wc9FC8lLww9czBwzrloimdIKI/CXmUu+6XXVWWT7
+         V0odBcmeyaOmIlEJrjTGSz9m0NK0Cg5B6XLHaxBbSmjFZf6w0h0VM+5spyze0G+/H/PE
+         d5EGSCTL+Vk1jhuXsFAXmwrRcDzjtHbgqFMyJamGBArsnVwrx7aD3gNw+8lbA1YqvfLI
+         pVpg==
+X-Gm-Message-State: APjAAAUjnaL7QUnm1EInZkQVFYlDkGE4i2Mgk2d4Ntad5JDQHSv6xRdF
+        6NEqNsN0WQYoTh6iWmksGCgaWFsTa44ppe+ltvM=
+X-Google-Smtp-Source: APXvYqyIVNZp/lKbPY7G8paK5xKsgjgvn231PYi/oi7bEXYUfhmPaZX/hLJikIpebz1OJaGj/71NLcX6GrZgVy6zIas=
+X-Received: by 2002:a05:6214:1086:: with SMTP id o6mr17437802qvr.107.1565646709559;
+ Mon, 12 Aug 2019 14:51:49 -0700 (PDT)
+Date:   Mon, 12 Aug 2019 14:50:38 -0700
+In-Reply-To: <20190812215052.71840-1-ndesaulniers@google.com>
+Message-Id: <20190812215052.71840-5-ndesaulniers@google.com>
+Mime-Version: 1.0
+References: <20190812215052.71840-1-ndesaulniers@google.com>
+X-Mailer: git-send-email 2.23.0.rc1.153.gdeed80330f-goog
+Subject: [PATCH 05/16] sh: prefer __section from compiler_attributes.h
+From:   Nick Desaulniers <ndesaulniers@google.com>
+To:     akpm@linux-foundation.org
+Cc:     sedat.dilek@gmail.com, jpoimboe@redhat.com, yhs@fb.com,
+        miguel.ojeda.sandonis@gmail.com,
+        clang-built-linux@googlegroups.com,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, linux-sh@vger.kernel.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        bpf@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Sat, Aug 10, 2019 at 12:24:42AM -0500, Gustavo A. R. Silva wrote:
-> Remove logically dead code and mark switch cases where we are expecting
-> to fall through.
-> 
-> Fix the following warnings (Building: defconfig sh):
-> 
-> arch/sh/kernel/disassemble.c:478:8: warning: this statement may fall
-> through [-Wimplicit-fallthrough=]
-> arch/sh/kernel/disassemble.c:487:8: warning: this statement may fall
-> through [-Wimplicit-fallthrough=]
-> arch/sh/kernel/disassemble.c:496:8: warning: this statement may fall
-> through [-Wimplicit-fallthrough=]
-> 
-> Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+Reported-by: Sedat Dilek <sedat.dilek@gmail.com>
+Suggested-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+---
+ arch/sh/include/asm/cache.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+diff --git a/arch/sh/include/asm/cache.h b/arch/sh/include/asm/cache.h
+index 2408ac4873aa..07ddf31124a3 100644
+--- a/arch/sh/include/asm/cache.h
++++ b/arch/sh/include/asm/cache.h
+@@ -15,7 +15,7 @@
+ 
+ #define L1_CACHE_BYTES		(1 << L1_CACHE_SHIFT)
+ 
+-#define __read_mostly __attribute__((__section__(".data..read_mostly")))
++#define __read_mostly __section(.data..read_mostly)
+ 
+ #ifndef __ASSEMBLY__
+ struct cache_info {
+-- 
+2.23.0.rc1.153.gdeed80330f-goog
 
-> ---
-> Changes in v2:
->  - Remove logically dead code. Pointed out by Joe Perches.
-> 
-> NOTE: If no one cares, I'll apply this to my tree and queue it up
->       for 5.3-rc4.
-> 
->  arch/sh/kernel/disassemble.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/sh/kernel/disassemble.c b/arch/sh/kernel/disassemble.c
-> index defebf1a9c8a..845543780cc5 100644
-> --- a/arch/sh/kernel/disassemble.c
-> +++ b/arch/sh/kernel/disassemble.c
-> @@ -475,8 +475,6 @@ static void print_sh_insn(u32 memaddr, u16 insn)
->  				printk("dbr");
->  				break;
->  			case FD_REG_N:
-> -				if (0)
-> -					goto d_reg_n;
->  			case F_REG_N:
->  				printk("fr%d", rn);
->  				break;
-> @@ -488,7 +486,7 @@ static void print_sh_insn(u32 memaddr, u16 insn)
->  					printk("xd%d", rn & ~1);
->  					break;
->  				}
-> -			d_reg_n:
-> +				/* else, fall through */
->  			case D_REG_N:
->  				printk("dr%d", rn);
->  				break;
-> @@ -497,6 +495,7 @@ static void print_sh_insn(u32 memaddr, u16 insn)
->  					printk("xd%d", rm & ~1);
->  					break;
->  				}
-> +				/* else, fall through */
->  			case D_REG_M:
->  				printk("dr%d", rm);
->  				break;
-> -- 
-> 2.22.0
-> 
