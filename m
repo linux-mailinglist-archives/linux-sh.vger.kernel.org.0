@@ -2,32 +2,39 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B7308B2E5
-	for <lists+linux-sh@lfdr.de>; Tue, 13 Aug 2019 10:50:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93ACF8B2EC
+	for <lists+linux-sh@lfdr.de>; Tue, 13 Aug 2019 10:51:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727307AbfHMIua (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 13 Aug 2019 04:50:30 -0400
-Received: from mail03.asahi-net.or.jp ([202.224.55.15]:44746 "EHLO
-        mail03.asahi-net.or.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726935AbfHMIua (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 13 Aug 2019 04:50:30 -0400
+        id S1726769AbfHMIva (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 13 Aug 2019 04:51:30 -0400
+Received: from mail01.asahi-net.or.jp ([202.224.55.13]:33696 "EHLO
+        mail01.asahi-net.or.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726705AbfHMIva (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 13 Aug 2019 04:51:30 -0400
 Received: from h61-195-96-97.vps.ablenet.jp (h61-195-96-97.ablenetvps.ne.jp [61.195.96.97])
         (Authenticated sender: PQ4Y-STU)
-        by mail03.asahi-net.or.jp (Postfix) with ESMTPA id 35B4F56351;
-        Tue, 13 Aug 2019 17:50:29 +0900 (JST)
+        by mail01.asahi-net.or.jp (Postfix) with ESMTPA id B8D031321BA;
+        Tue, 13 Aug 2019 17:51:27 +0900 (JST)
 Received: from yo-satoh-debian.ysato.ml (ZM005235.ppp.dion.ne.jp [222.8.5.235])
-        by h61-195-96-97.vps.ablenet.jp (Postfix) with ESMTPSA id 4887D240085;
-        Tue, 13 Aug 2019 17:50:28 +0900 (JST)
-Date:   Tue, 13 Aug 2019 17:50:27 +0900
-Message-ID: <877e7hphyk.wl-ysato@users.sourceforge.jp>
+        by h61-195-96-97.vps.ablenet.jp (Postfix) with ESMTPSA id 13510240085;
+        Tue, 13 Aug 2019 17:51:27 +0900 (JST)
+Date:   Tue, 13 Aug 2019 17:51:26 +0900
+Message-ID: <875zn1phwx.wl-ysato@users.sourceforge.jp>
 From:   Yoshinori Sato <ysato@users.sourceforge.jp>
-To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Cc:     Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
-        Joe Perches <joe@perches.com>
-Subject: Re: [PATCH v2] sh: kernel: disassemble: Mark expected switch fall-throughs
-In-Reply-To: <20190810052442.GA21354@embeddedor>
-References: <20190810052442.GA21354@embeddedor>
+To:     Nick Desaulniers <ndesaulniers@google.com>
+Cc:     akpm@linux-foundation.org, sedat.dilek@gmail.com,
+        jpoimboe@redhat.com, yhs@fb.com, miguel.ojeda.sandonis@gmail.com,
+        clang-built-linux@googlegroups.com, Rich Felker <dalias@libc.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, linux-sh@vger.kernel.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        bpf@vger.kernel.org
+Subject: Re: [PATCH 05/16] sh: prefer __section from compiler_attributes.h
+In-Reply-To: <20190812215052.71840-5-ndesaulniers@google.com>
+References: <20190812215052.71840-1-ndesaulniers@google.com>
+        <20190812215052.71840-5-ndesaulniers@google.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL/10.8 EasyPG/1.0.0 Emacs/25.1
  (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -38,64 +45,31 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Sat, 10 Aug 2019 14:24:42 +0900,
-Gustavo A. R. Silva wrote:
+On Tue, 13 Aug 2019 06:50:38 +0900,
+Nick Desaulniers wrote:
 > 
-> Remove logically dead code and mark switch cases where we are expecting
-> to fall through.
-> 
-> Fix the following warnings (Building: defconfig sh):
-> 
-> arch/sh/kernel/disassemble.c:478:8: warning: this statement may fall
-> through [-Wimplicit-fallthrough=]
-> arch/sh/kernel/disassemble.c:487:8: warning: this statement may fall
-> through [-Wimplicit-fallthrough=]
-> arch/sh/kernel/disassemble.c:496:8: warning: this statement may fall
-> through [-Wimplicit-fallthrough=]
-> 
-> Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+> Reported-by: Sedat Dilek <sedat.dilek@gmail.com>
+> Suggested-by: Josh Poimboeuf <jpoimboe@redhat.com>
+> Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
 > ---
-> Changes in v2:
->  - Remove logically dead code. Pointed out by Joe Perches.
+>  arch/sh/include/asm/cache.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> NOTE: If no one cares, I'll apply this to my tree and queue it up
->       for 5.3-rc4.
-> 
->  arch/sh/kernel/disassemble.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/sh/kernel/disassemble.c b/arch/sh/kernel/disassemble.c
-> index defebf1a9c8a..845543780cc5 100644
-> --- a/arch/sh/kernel/disassemble.c
-> +++ b/arch/sh/kernel/disassemble.c
-> @@ -475,8 +475,6 @@ static void print_sh_insn(u32 memaddr, u16 insn)
->  				printk("dbr");
->  				break;
->  			case FD_REG_N:
-> -				if (0)
-> -					goto d_reg_n;
->  			case F_REG_N:
->  				printk("fr%d", rn);
->  				break;
-> @@ -488,7 +486,7 @@ static void print_sh_insn(u32 memaddr, u16 insn)
->  					printk("xd%d", rn & ~1);
->  					break;
->  				}
-> -			d_reg_n:
-> +				/* else, fall through */
->  			case D_REG_N:
->  				printk("dr%d", rn);
->  				break;
-> @@ -497,6 +495,7 @@ static void print_sh_insn(u32 memaddr, u16 insn)
->  					printk("xd%d", rm & ~1);
->  					break;
->  				}
-> +				/* else, fall through */
->  			case D_REG_M:
->  				printk("dr%d", rm);
->  				break;
+> diff --git a/arch/sh/include/asm/cache.h b/arch/sh/include/asm/cache.h
+> index 2408ac4873aa..07ddf31124a3 100644
+> --- a/arch/sh/include/asm/cache.h
+> +++ b/arch/sh/include/asm/cache.h
+> @@ -15,7 +15,7 @@
+>  
+>  #define L1_CACHE_BYTES		(1 << L1_CACHE_SHIFT)
+>  
+> -#define __read_mostly __attribute__((__section__(".data..read_mostly")))
+> +#define __read_mostly __section(.data..read_mostly)
+>  
+>  #ifndef __ASSEMBLY__
+>  struct cache_info {
 > -- 
-> 2.22.0
+> 2.23.0.rc1.153.gdeed80330f-goog
 > 
 
 Applied sh-next.
