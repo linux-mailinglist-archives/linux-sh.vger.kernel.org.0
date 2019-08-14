@@ -2,158 +2,86 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 641388D543
-	for <lists+linux-sh@lfdr.de>; Wed, 14 Aug 2019 15:46:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EC938E079
+	for <lists+linux-sh@lfdr.de>; Thu, 15 Aug 2019 00:14:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727965AbfHNNq1 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 14 Aug 2019 09:46:27 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:45026 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727755AbfHNNqZ (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 14 Aug 2019 09:46:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
-        :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
-        :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=lfey4WDBhuksYHGZdkucZywx82anwHHWoHAXRD/jeH4=; b=mWdzdk2yMkgSgWmtHgVV6JwBvT
-        AFOk0ztsmUH5XKuBBN7ynZOtnhyAz+pvhhP6SE1KBCHEqqD/XB4f06rTVg1mvd4/OU363mIAVsiH6
-        SbSWnSz2o3pTH6msMkFyw6y4dFkcFcrNP25YVGHAeIL9ADD6l2b/TB3UmnjBFTXbNp5ITn8+gvmI1
-        DfyckNu7zZBAKUS9CT+jbUbBAaXFWu83En1AIOhDvf+nCCmIiQQE9MUDCkXTGni11GqFGQ94mFXDn
-        2bCZv9yDG2HiJhPWvxYjKH3K7G2/XfFz6KqXyNFQD0ydIo5bEHVWop5UY0TnhJjwPq2LZoFUjMgbY
-        1FIz8tqw==;
-Received: from [2001:4bb8:180:1ec3:c70:4a89:bc61:2] (helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hxtbZ-0003ZG-32; Wed, 14 Aug 2019 13:46:21 +0000
-From:   Christoph Hellwig <hch@lst.de>
-To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>
-Cc:     Jacopo Mondi <jacopo+renesas@jmondi.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        iommu@lists.linux-foundation.org, linux-sh@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] sh: use the generic dma coherent remap allocator
-Date:   Wed, 14 Aug 2019 15:46:15 +0200
-Message-Id: <20190814134615.29442-2-hch@lst.de>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190814134615.29442-1-hch@lst.de>
-References: <20190814134615.29442-1-hch@lst.de>
+        id S1729901AbfHNWO0 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 14 Aug 2019 18:14:26 -0400
+Received: from mail-qt1-f194.google.com ([209.85.160.194]:42833 "EHLO
+        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729907AbfHNWOV (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 14 Aug 2019 18:14:21 -0400
+Received: by mail-qt1-f194.google.com with SMTP id t12so346635qtp.9
+        for <linux-sh@vger.kernel.org>; Wed, 14 Aug 2019 15:14:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=p6m83mGjllDiHyeRTSS1oVMHX5M/xE6ILn6PPhzsgs4=;
+        b=l5PC+4msT+R1VOq1FIInu61dIh2STHPN9aSBt/Y5M3n644FfA169IT6wzP+sfbruwG
+         5vHd8QNfmmF7FOlV1OW4+1ls9+argQAW0MZ9696kjqRFjMtNiRxkPVvom8CpuMz6+P3J
+         lvnykAE+N5ClLjt8+21Oenlj55mmWn47h6bOufTUj3iAyACG+cL0ImoQgj5m6u3w1/lr
+         fVPm9fs++0X3Li7mpOQ13No26+jYpH9OobXYps5GGnrfpp0Xq6qTsPtsJRMHzlRsuSi2
+         Q5RuPSHMeFGhG1MzboDTj+tp2IBpQDy9TN5wUYjWC528WeGARQxpLHz2F9meUvIkEvkQ
+         sSPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=p6m83mGjllDiHyeRTSS1oVMHX5M/xE6ILn6PPhzsgs4=;
+        b=rmwTCHZ+utbUfUT+W5i0tRv1eFTDl9Pk9x39saubsdo6/cF6sBuEGmr+botiyj/mvL
+         u8dQYdjJCRXh67p0KxYIFqGBdSIjGhKRiLLb4JCdADZYBnllrfRdB/SCBxNjk2WAQlEd
+         ahBaACYxghNgKVszqqbKLFAKWxf76RXDuCRGRLRBuN6ygHR16Enxb3mXbDihRlSjbsfE
+         MrHZ773V2TLyTFdCQo8QKg6kt7we2g45KpgD0S7munZxg4lN5Hk1C+F1b14JrgEHhB5l
+         AaYjIcavL95HQHco/ScuoXYbZVYQQa0qTavDfgXWstyiJdUtpUp4X4WRkp7lDZE7ZA9a
+         SKgg==
+X-Gm-Message-State: APjAAAWg/eXhpOzMOHUwjYBB1/PVLVlsN98Ey+6PUM72FimLzpnDQbDX
+        d49RN3dRlj9CREK6uXuO0T/jpDBul/AerC4aA0g=
+X-Google-Smtp-Source: APXvYqwvEwq36YC/YcFdGthiFQqEswOUmu8y33AXL4ty34gsygcaTEjmhvj04/dFUfa1vFoE719aJcDSjuFoUwkSVes=
+X-Received: by 2002:aed:3826:: with SMTP id j35mr1333309qte.54.1565820860049;
+ Wed, 14 Aug 2019 15:14:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Received: by 2002:aed:3544:0:0:0:0:0 with HTTP; Wed, 14 Aug 2019 15:14:19
+ -0700 (PDT)
+Reply-To: Katerinejones19@gmail.com
+From:   "MS. MARYANNA B. THOMASON" <westernunion.benin982@gmail.com>
+Date:   Wed, 14 Aug 2019 23:14:19 +0100
+Message-ID: <CAP=nHB+U+By16HzeUHiDfPT5KNtemGam6gniZhL2s7_itZ3F8w@mail.gmail.com>
+Subject: TODAY, Wed, Aug 14, 2019 I AM READY FOR COMING TO YOUR ADDRESS WITH
+ THIS ATM CARD
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-This switches to using common code for the DMA allocations, including
-potential use of the CMA allocator if configured.
+ATTN DEAR PARCEL BENEFICIARY.
 
-Switching to the generic code enables DMA allocations from atomic
-context, which is required by the DMA API documentation, and also
-adds various other minor features drivers start relying upon.  It
-also makes sure we have on tested code base for all architectures
-that require uncached pte bits for coherent DMA allocations.
+I AM CATHY JONES,DIPLOMATIC AGENT ASIGNED ON THE DELIVERY OF YOUR ATM
+CARD THROUGH MS. MARYANNA B. THOMASON, DHL MANAGEMENT DIRECTOR NEW
+YORK.
+TODAY, Wed, Aug 14, 2019 I AM READY FOR COMING TO YOUR ADDRESS WITH
+THIS ATM CARD, So before i deliver I want you to send me.
+official diplomatic agent delivery fee sum of $150.00 us
+ only. I am here at JFK Airport,Florida. USA
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- arch/sh/Kconfig               |  2 ++
- arch/sh/kernel/dma-coherent.c | 57 +++++------------------------------
- 2 files changed, 10 insertions(+), 49 deletions(-)
+SEND THIS FEE BY WESTERN UNION OR MONEY WITH RECEIVER'S NAME AND ADDRESS BELOW.
 
-diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
-index 6b1b5941b618..21eefe7c4ba6 100644
---- a/arch/sh/Kconfig
-+++ b/arch/sh/Kconfig
-@@ -158,7 +158,9 @@ config DMA_COHERENT
- 
- config DMA_NONCOHERENT
- 	def_bool !DMA_COHERENT
-+	select ARCH_HAS_DMA_PREP_COHERENT
- 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
-+	select DMA_DIRECT_REMAP
- 
- config PGTABLE_LEVELS
- 	default 3 if X2TLB
-diff --git a/arch/sh/kernel/dma-coherent.c b/arch/sh/kernel/dma-coherent.c
-index b17514619b7e..2f0e2f2d1f9c 100644
---- a/arch/sh/kernel/dma-coherent.c
-+++ b/arch/sh/kernel/dma-coherent.c
-@@ -3,60 +3,13 @@
-  * Copyright (C) 2004 - 2007  Paul Mundt
-  */
- #include <linux/mm.h>
--#include <linux/init.h>
- #include <linux/dma-noncoherent.h>
--#include <linux/module.h>
- #include <asm/cacheflush.h>
- #include <asm/addrspace.h>
- 
--void *arch_dma_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle,
--		gfp_t gfp, unsigned long attrs)
-+void arch_dma_prep_coherent(struct page *page, size_t size)
- {
--	void *ret, *ret_nocache;
--	int order = get_order(size);
--
--	gfp |= __GFP_ZERO;
--
--	ret = (void *)__get_free_pages(gfp, order);
--	if (!ret)
--		return NULL;
--
--	/*
--	 * Pages from the page allocator may have data present in
--	 * cache. So flush the cache before using uncached memory.
--	 */
--	arch_sync_dma_for_device(dev, virt_to_phys(ret), size,
--			DMA_BIDIRECTIONAL);
--
--	ret_nocache = (void __force *)ioremap_nocache(virt_to_phys(ret), size);
--	if (!ret_nocache) {
--		free_pages((unsigned long)ret, order);
--		return NULL;
--	}
--
--	split_page(pfn_to_page(virt_to_phys(ret) >> PAGE_SHIFT), order);
--
--	*dma_handle = virt_to_phys(ret);
--	if (!WARN_ON(!dev))
--		*dma_handle -= PFN_PHYS(dev->dma_pfn_offset);
--
--	return ret_nocache;
--}
--
--void arch_dma_free(struct device *dev, size_t size, void *vaddr,
--		dma_addr_t dma_handle, unsigned long attrs)
--{
--	int order = get_order(size);
--	unsigned long pfn = (dma_handle >> PAGE_SHIFT);
--	int k;
--
--	if (!WARN_ON(!dev))
--		pfn += dev->dma_pfn_offset;
--
--	for (k = 0; k < (1 << order); k++)
--		__free_pages(pfn_to_page(pfn + k), 0);
--
--	iounmap(vaddr);
-+	__flush_purge_region(page_address(page), size);
- }
- 
- void arch_sync_dma_for_device(struct device *dev, phys_addr_t paddr,
-@@ -78,3 +31,9 @@ void arch_sync_dma_for_device(struct device *dev, phys_addr_t paddr,
- 		BUG();
- 	}
- }
-+
-+static int __init atomic_pool_init(void)
-+{
-+	return dma_atomic_pool_init(GFP_KERNEL, pgprot_noncached(PAGE_KERNEL));
-+}
-+postcore_initcall(atomic_pool_init);
--- 
-2.20.1
-
+RECEIVER'S NAME-----------------ERROL PRINGLE
+ADDRESS----------------3500 OLD DENTON RD APT 208; CARROLLTON, TEXAS 75007
+COUNTRY----------------USA
+AMOUNT--------------------$150.00 ONLY
+TEST QUESTION----------------WHO IS THE CREATOR
+ANSWER------------------GOD
+ meanwhile this $150.00 is required by the Custom Service,USA Homeland
+Security,for protection of your delivery, it will make the ATM CARD
+and funds worth $15.8MILLION US DOLLARS secure, Beleiev me, this is my
+word, remark my word,you will receive your delivery from me, Mrs.
+Cathy Jones once you send this only $150.00 today.
+I WAIT ON YOUR PAYMENT CONFIRMATION, ONCE I GOT YOUR PAYMENT, I WILL
+FINALLY ARRIVE TO YOUR NEAREST ADDRESS. today
+THANKS AND MAY GOD BLESS  YOU
+CATHY JONES,DIPLOMATIC AGENT
+EMAIL; katerinejones19@gmail.com
+CALL OR TEXT ME, DIPLOMATIC AGENT MS. CATHY JONES
+Phone Number; (408) 650-6103,
