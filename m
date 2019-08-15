@@ -2,89 +2,41 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B51448E314
-	for <lists+linux-sh@lfdr.de>; Thu, 15 Aug 2019 05:14:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 875878E596
+	for <lists+linux-sh@lfdr.de>; Thu, 15 Aug 2019 09:36:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727814AbfHODOG (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 14 Aug 2019 23:14:06 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:45995 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727217AbfHODOG (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 14 Aug 2019 23:14:06 -0400
-Received: by mail-pg1-f196.google.com with SMTP id o13so655332pgp.12;
-        Wed, 14 Aug 2019 20:14:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=RTx+dQdBrh00Kn9mHjwvPfU+NaiUOj18Vh2dAGiUWPc=;
-        b=Eb0fvx1Eg6BZFhSsKdV62SSGQo19TR7Voq+Ph8h7/AzeS2hsafMg51LallcPXDoqb/
-         HA0CNrZkIkCmazMYs24n9ri1VO3DUqmPgGYrDNlpk0S+eaFYjDbkRBIfhnqwlMqPiiit
-         uf1vt5LnrR4Genams95bpkhXZd3K3ZPlHxg4aTWCnMNDiCORDji18akynMCU8ofBXzwo
-         7jn5rgqb5rEwAH1qfMnRfLErzlTi6Zzc6h047D78Z/jjK7vdI82b+2yWrd1GwrZ6mAhF
-         Lhn2RE0MqnGJ0XIAWyqFcFz8Mzcq5582VqIKnfhjdNEh466i0TQ3BdPFED75r0SnlzqQ
-         wSxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=RTx+dQdBrh00Kn9mHjwvPfU+NaiUOj18Vh2dAGiUWPc=;
-        b=HSrTluH02lk5etiG4k9wrWcHMQejEX5clTa+dA4yeRKe7tcCBf3aUEPP4MJGOIzT3f
-         h8MnX02x/Naiw45N0GYxctSDJ5Q5PXUgpCQLcHYG3VMGlxbourzfea3C2VEXORKadYez
-         jV/maDlOKYpiz9BdiC0WWV0B9J05vNrCdjns/D7d7URHgpG112T6KTlupW/wvEMJoix4
-         cYWKY/cPmTyTxvyvmUSTgGH8SOIDPOfMHyblQJf4TZiKloWUOgzjOhnL2ZJxafwUdmDL
-         QIVY0wMAzt7pwTiB09Vihf+aIyeV6DOc5PU62WBScv2e6WJ8Z8uCTmO6kYv3WYFANhKR
-         WqeA==
-X-Gm-Message-State: APjAAAVMG6ndX0c+Hw+IHpMVdOo/oUkgwHTHTGnZJ58+ol2WkekNZ0cE
-        9KknIiyrYNmHpt09mLUrj39iNEGq
-X-Google-Smtp-Source: APXvYqz8p5NvUaO1d/1NGQNhozFZSzg90YWYYqpmKrL5wtTFHmpLULND1kxxwaWE+qgK8YFBKSj96w==
-X-Received: by 2002:a17:90a:ba93:: with SMTP id t19mr304997pjr.139.1565838845337;
-        Wed, 14 Aug 2019 20:14:05 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id g11sm1500550pfk.187.2019.08.14.20.14.03
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 14 Aug 2019 20:14:04 -0700 (PDT)
-Subject: Re: [PATCH] sh: Drop -Werror from kernel Makefile
-To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc:     Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <1564971263-21562-1-git-send-email-linux@roeck-us.net>
- <87a7cdpi06.wl-ysato@users.sourceforge.jp>
- <ee8b2e37-643d-9b29-b7de-d83c7739c3a0@roeck-us.net>
- <ea8c7d68-d799-6a7e-9606-e011951bf22e@embeddedor.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-Message-ID: <f07114e2-0b25-9f0e-0c05-b8e61ba673ca@roeck-us.net>
-Date:   Wed, 14 Aug 2019 20:14:02 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1729988AbfHOHgJ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 15 Aug 2019 03:36:09 -0400
+Received: from verein.lst.de ([213.95.11.211]:44393 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729907AbfHOHgJ (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Thu, 15 Aug 2019 03:36:09 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id B09A868AFE; Thu, 15 Aug 2019 09:36:04 +0200 (CEST)
+Date:   Thu, 15 Aug 2019 09:36:04 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Helge Deller <deller@gmx.de>
+Cc:     x86@kernel.org, iommu@lists.linux-foundation.org,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        linux-xtensa@linux-xtensa.org, Michal Simek <monstr@monstr.eu>,
+        Vladimir Murzin <vladimir.murzin@arm.com>,
+        linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org,
+        Takashi Iwai <tiwai@suse.de>, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        Robin Murphy <robin.murphy@arm.com>,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 7/8] parisc: don't set ARCH_NO_COHERENT_DMA_MMAP
+Message-ID: <20190815073604.GA24511@lst.de>
+References: <20190808160005.10325-1-hch@lst.de> <20190808160005.10325-8-hch@lst.de>
 MIME-Version: 1.0
-In-Reply-To: <ea8c7d68-d799-6a7e-9606-e011951bf22e@embeddedor.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190808160005.10325-8-hch@lst.de>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 8/14/19 5:59 PM, Gustavo A. R. Silva wrote:
-> Guenter,
-> 
-> On 8/13/19 8:18 AM, Guenter Roeck wrote:
->>
->> Please note that _mainline_ builds are currently broken.
->>
-> 
-> This should be fixed now:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=41de59634046b19cd53a1983594a95135c656997
-> 
-
-Yes, it is.
-
-Thanks!
-
-Guenter
-
+Helger, or other parisc folks: can you take a look at this patch
+in particular and the series in general?  Thanks!
