@@ -2,91 +2,93 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D424993B8
-	for <lists+linux-sh@lfdr.de>; Thu, 22 Aug 2019 14:33:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB45F9B16E
+	for <lists+linux-sh@lfdr.de>; Fri, 23 Aug 2019 15:55:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388626AbfHVMdd (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 22 Aug 2019 08:33:33 -0400
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:40852 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388615AbfHVMdd (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 22 Aug 2019 08:33:33 -0400
-Received: by mail-lj1-f196.google.com with SMTP id e27so5373569ljb.7
-        for <linux-sh@vger.kernel.org>; Thu, 22 Aug 2019 05:33:32 -0700 (PDT)
+        id S2405749AbfHWNzn (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 23 Aug 2019 09:55:43 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:41098 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2405737AbfHWNzm (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 23 Aug 2019 09:55:42 -0400
+Received: by mail-pg1-f194.google.com with SMTP id x15so5833674pgg.8;
+        Fri, 23 Aug 2019 06:55:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=aWwEGZ7IKPwlD1SyN53LweuoS+rG8j2WBRgPDxMagPA=;
-        b=mSN3t/PDXoNAianC4YL28AuxFWbqe/p3ZmEq/9RzkMaS9VcrYbP+hNVrd+L2n1hpnq
-         RJHy01TvfnFh6vVzxr777SV6tHpVIe2MplhJXBUo75HYFr3TyzB1b+9+R1pfuMpVJXe6
-         X9N8MQSI1oAvnebcBPmdguV3wO6V3jMS/IHtBtwQcQDcm4AVpazizMrIy/G7YFrVZaui
-         uPwV1P4m0mItkNXNvDD0eU/I3LQ1JDCcQ5amyYSn7OxLWCwRlAWbdVrKZJ88Rk2RW5v6
-         jzZAWjWwq6vztVT9V8tArNGJf5LyKwPzHctCXVRt1UZ+gWt2XCAoQp7RS6swmCDXCHvo
-         EXTA==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=BUAiw1OCmJxcFhDfFwk6vJ4atOusYa0enlexPK5RdcM=;
+        b=p1kpl17yQ70OZJjj0Ex1dhmfo2/01ZSY1fOdxj+J/0LKK1tvqbyWGApNp+RopSCBU9
+         F4JDgPHlcLiS1iW8iLa6+Oz3hvJ93YLeeZOw8VI/PWR7yXZkQ2Y3BWj/9xw0zvYm8PgM
+         xCORxywfStYr2iObddDIvw4uxyyFDzJ4nH8mOJxihZGgGGvOFtqX5rLKfVLumbHnUiDf
+         cp+XG0kMNbLUq5HT5W+hUh/PxuwaBDz2hVRJ6ISjeckQ/denHk7F5JHtEBhHBSkgw5OY
+         5pVQ0XdibEupNYaM8DhPTT4HkPLbYUHv2fszhaDZIjemQ/II2oo6OpoSBdKla1hplbzS
+         Zchg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=aWwEGZ7IKPwlD1SyN53LweuoS+rG8j2WBRgPDxMagPA=;
-        b=bpOTSka9uDGSizJnUDpHB4NZj0ivojbDd2jkZtewZRiL++oxJKGJZjsIZD7iMMVQ0L
-         pAmfTGyKucMJM8i/PhwGufIxZSTUEBZ0zhTzqUc2tvOuVqth9mlQ3uCLN0xqhQcL5ldC
-         kPSwyfoyPI5C8V71VDOjGAjHc4lom61qmaPaYSHb/s5oe4iD8RUJNtdxpoGcS3dVaHj5
-         8aWYZ+iJLrsNjo4e8YWCwjrXrWIEaWk/4icnafCS+0F4npuhB4P0LYZSg0nxKVfPpNoe
-         uBdQAhYN8LBxBnRIvp9A6ldcEvdaW9QF63QC+DSksmERgM4UiGs3C7cJa74ogr+O5Bsk
-         z8Mw==
-X-Gm-Message-State: APjAAAWi1nQqXvJ5wm1Tsiu9kI0RzQKJl6jKNhk2WJPZUOAu2unhI+wX
-        uZvupqgf6rLWRDT4ZLgbgec1RflvX6IOxWoDzFI=
-X-Google-Smtp-Source: APXvYqzQsRoRn2wIpG3lSqYHuPzxhm3vD2oGq7cmc+rIuoyQi/uYwPKhKv5lsx49cFSP36sNdCD1mP/ADjI7spIEQ08=
-X-Received: by 2002:a2e:3a05:: with SMTP id h5mr22406569lja.135.1566477211782;
- Thu, 22 Aug 2019 05:33:31 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=BUAiw1OCmJxcFhDfFwk6vJ4atOusYa0enlexPK5RdcM=;
+        b=kyI8hKE6xwD1miMcxQhJ+N6et5/it34fgxP+jY87dG79FVgNdi8fLjDi8QmZ4nkgoB
+         nTlFliEP5SQru9OKHzP1546LxcoHXp4i/4N/teJS+UaIrQWg3WPH3Ha/FUWe7iVAm3v0
+         6yjysqqcNmD0HLU2M1fPUPVt9/qjZOR+K52iE5AxC8IC8OOXMIiRVWfd4GiIamKRXl6I
+         aRxY7WXrurlWubMc2/CPVtGv3kNKf6uTUmZnrY9G+Ovu+Bgdp6+7q1tiUunPwfdOlq2m
+         Bd0wESKEBDk7kKmgmAsIFO97Bo2oCy2tD+MIrL0Kmd9y3+ZdTDvvxRV49T61ScieMkM6
+         DgRg==
+X-Gm-Message-State: APjAAAWm7fM6AeWfFuDb7obirUbcPCSNWq4rH4Ahk3rv3VD6ytxpY1Za
+        6f//agm1SwXBtjp37K7cDJST23+sS8w=
+X-Google-Smtp-Source: APXvYqzeZA+QEa5Xq4+pVCPW2H7vItZxat4J0/SQ1XBxiBF3Po4TqLpUuSgHOh67wlOMVyJ/4CHLaQ==
+X-Received: by 2002:a17:90a:aa90:: with SMTP id l16mr5454982pjq.73.1566568541762;
+        Fri, 23 Aug 2019 06:55:41 -0700 (PDT)
+Received: from localhost (g75.222-224-160.ppp.wakwak.ne.jp. [222.224.160.75])
+        by smtp.gmail.com with ESMTPSA id z13sm2477619pjn.32.2019.08.23.06.55.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Aug 2019 06:55:41 -0700 (PDT)
+Date:   Fri, 23 Aug 2019 22:55:39 +0900
+From:   Stafford Horne <shorne@gmail.com>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Guo Ren <guoren@kernel.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Guan Xuetao <gxt@pku.edu.cn>, x86@kernel.org,
+        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-mtd@lists.infradead.org, linux-arch@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 05/26] openrisc: map as uncached in ioremap
+Message-ID: <20190823135539.GC24874@lianli.shorne-pla.net>
+References: <20190817073253.27819-1-hch@lst.de>
+ <20190817073253.27819-6-hch@lst.de>
 MIME-Version: 1.0
-Received: by 2002:ab3:6a0f:0:0:0:0:0 with HTTP; Thu, 22 Aug 2019 05:33:31
- -0700 (PDT)
-Reply-To: eku.lawfirm@gmail.com
-From:   "Law firm(Eku and Associates)" <ezeobodo1@gmail.com>
-Date:   Thu, 22 Aug 2019 12:33:31 +0000
-Message-ID: <CAN-_bTYioKgQ_KnVX-hd5T0VzTOPkF=KFBVPT36HW7Ho9orbHQ@mail.gmail.com>
-Subject: MY $25,000,000.00 INVESTMENT PROPOSAL WITH YOU AND IN YOUR COUNTRY.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190817073253.27819-6-hch@lst.de>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
---=20
-Dear,
-With due respect this is not spam or Scam mail, because I have
-contacted you before and there was no response from you,I apologise if
-the contents of this mail are contrary to your moral ethics, which I
-feel may be of great disturbance to your person, but please treat this
-with absolute confidentiality, believing that this email reaches you
-in good faith. My contacting you is not a mistake or a coincidence
-because God can use any person known or unknown to accomplish great
-things.
-I am a lawyer and I have an investment business proposal to offer you.
-It is not official but should be considered as legal and confidential
-business. I have a customer's deposit of $US25 million dollars ready
-to be moved for investment if you can partner with us. We are ready to
-offer you 10% of this total amount as your compensation for supporting
-the transaction to completion. If you are interested to help me please
-reply me with your full details as stated below:
-(1) Your full names:
-(2) Your address:
-(3) Your occupation:
-(4) Your mobile telephone number:
-(5) Your nationality:
-(6) Your present location:
-(7) Your age:
-So that I will provide you more details on what to do and what is
-required for successful completion.
-Note: DO NOT REPLY ME IF YOU ARE NOT INTERESTED AND WITHOUT THE ABOVE
-MENTIONED DETAILS
+On Sat, Aug 17, 2019 at 09:32:32AM +0200, Christoph Hellwig wrote:
+> Openrisc is the only architecture not mapping ioremap as uncached,
+> which has been the default since the Linux 2.6.x days.  Switch it
+> over to implement uncached semantics by default.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  arch/openrisc/include/asm/io.h      | 20 +++-----------------
+>  arch/openrisc/include/asm/pgtable.h |  2 +-
+>  arch/openrisc/mm/ioremap.c          |  8 ++++----
+>  3 files changed, 8 insertions(+), 22 deletions(-)
 
-Sinc=C3=A8rement v=C3=B4tre,
-Avocat Etienne Eku Esq.(Lawfirm)
-Procureur principal. De Cabinet d=E2=80=99avocats de l=E2=80=99Afrique de l=
-=E2=80=99ouest.
-Skype:westafricalawfirm
+Acked-by: Stafford Horne <shorne@gmail.com>
+
+Thanks,
+ -Stafford 
