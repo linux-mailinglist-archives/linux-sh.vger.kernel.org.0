@@ -2,105 +2,106 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 93ED29C74A
-	for <lists+linux-sh@lfdr.de>; Mon, 26 Aug 2019 04:37:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C84A9CAA2
+	for <lists+linux-sh@lfdr.de>; Mon, 26 Aug 2019 09:34:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728986AbfHZChV (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sun, 25 Aug 2019 22:37:21 -0400
-Received: from foss.arm.com ([217.140.110.172]:52498 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728460AbfHZChV (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Sun, 25 Aug 2019 22:37:21 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 19249344;
-        Sun, 25 Aug 2019 19:37:20 -0700 (PDT)
-Received: from [10.162.43.136] (p8cg001049571a15.blr.arm.com [10.162.43.136])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E19513F718;
-        Sun, 25 Aug 2019 19:37:09 -0700 (PDT)
-Subject: Re: [RFC V2 0/1] mm/debug: Add tests for architecture exported page
- table helpers
-To:     Matthew Wilcox <willy@infradead.org>
-Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mike Rapoport <rppt@linux.vnet.ibm.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Michal Hocko <mhocko@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Mark Brown <broonie@kernel.org>,
-        Steven Price <Steven.Price@arm.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Kees Cook <keescook@chromium.org>,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        Sri Krishna chowdary <schowdary@nvidia.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        id S1728220AbfHZHeT (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 26 Aug 2019 03:34:19 -0400
+Received: from relay3-d.mail.gandi.net ([217.70.183.195]:42827 "EHLO
+        relay3-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728168AbfHZHeT (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 26 Aug 2019 03:34:19 -0400
+X-Originating-IP: 81.250.144.103
+Received: from [10.30.1.20] (lneuilly-657-1-5-103.w81-250.abo.wanadoo.fr [81.250.144.103])
+        (Authenticated sender: alex@ghiti.fr)
+        by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id 49BD560003;
+        Mon, 26 Aug 2019 07:34:12 +0000 (UTC)
+Subject: Re: [PATCH RESEND 0/8] Fix mmap base in bottom-up mmap
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
         Heiko Carstens <heiko.carstens@de.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-References: <1565335998-22553-1-git-send-email-anshuman.khandual@arm.com>
- <20190809101632.GM5482@bombadil.infradead.org>
- <a5aab7ff-f7fd-9cc1-6e37-e4185eee65ac@arm.com>
- <20190809135202.GN5482@bombadil.infradead.org>
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <7a88f6bb-e8c7-3ac7-2f92-1de752a01f33@arm.com>
-Date:   Mon, 26 Aug 2019 08:07:13 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-mm@kvack.org
+References: <20190620050328.8942-1-alex@ghiti.fr>
+From:   Alexandre Ghiti <alex@ghiti.fr>
+Message-ID: <abc7ed75-0f51-7f21-5a74-d389f968ee55@ghiti.fr>
+Date:   Mon, 26 Aug 2019 09:34:11 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190809135202.GN5482@bombadil.infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+In-Reply-To: <20190620050328.8942-1-alex@ghiti.fr>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
+Content-Language: fr
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
+On 6/20/19 7:03 AM, Alexandre Ghiti wrote:
+> This series fixes the fallback of the top-down mmap: in case of
+> failure, a bottom-up scheme can be tried as a last resort between
+> the top-down mmap base and the stack, hoping for a large unused stack
+> limit.
+>
+> Lots of architectures and even mm code start this fallback
+> at TASK_UNMAPPED_BASE, which is useless since the top-down scheme
+> already failed on the whole address space: instead, simply use
+> mmap_base.
+>
+> Along the way, it allows to get rid of of mmap_legacy_base and
+> mmap_compat_legacy_base from mm_struct.
+>
+> Note that arm and mips already implement this behaviour.
+>
+> Alexandre Ghiti (8):
+>    s390: Start fallback of top-down mmap at mm->mmap_base
+>    sh: Start fallback of top-down mmap at mm->mmap_base
+>    sparc: Start fallback of top-down mmap at mm->mmap_base
+>    x86, hugetlbpage: Start fallback of top-down mmap at mm->mmap_base
+>    mm: Start fallback top-down mmap at mm->mmap_base
+>    parisc: Use mmap_base, not mmap_legacy_base, as low_limit for
+>      bottom-up mmap
+>    x86: Use mmap_*base, not mmap_*legacy_base, as low_limit for bottom-up
+>      mmap
+>    mm: Remove mmap_legacy_base and mmap_compat_legacy_code fields from
+>      mm_struct
+>
+>   arch/parisc/kernel/sys_parisc.c  |  8 +++-----
+>   arch/s390/mm/mmap.c              |  2 +-
+>   arch/sh/mm/mmap.c                |  2 +-
+>   arch/sparc/kernel/sys_sparc_64.c |  2 +-
+>   arch/sparc/mm/hugetlbpage.c      |  2 +-
+>   arch/x86/include/asm/elf.h       |  2 +-
+>   arch/x86/kernel/sys_x86_64.c     |  4 ++--
+>   arch/x86/mm/hugetlbpage.c        |  7 ++++---
+>   arch/x86/mm/mmap.c               | 20 +++++++++-----------
+>   include/linux/mm_types.h         |  2 --
+>   mm/debug.c                       |  4 ++--
+>   mm/mmap.c                        |  2 +-
+>   12 files changed, 26 insertions(+), 31 deletions(-)
+>
 
+Hi everyone,
 
-On 08/09/2019 07:22 PM, Matthew Wilcox wrote:
-> On Fri, Aug 09, 2019 at 04:05:07PM +0530, Anshuman Khandual wrote:
->> On 08/09/2019 03:46 PM, Matthew Wilcox wrote:
->>> On Fri, Aug 09, 2019 at 01:03:17PM +0530, Anshuman Khandual wrote:
->>>> Should alloc_gigantic_page() be made available as an interface for general
->>>> use in the kernel. The test module here uses very similar implementation from
->>>> HugeTLB to allocate a PUD aligned memory block. Similar for mm_alloc() which
->>>> needs to be exported through a header.
->>>
->>> Why are you allocating memory at all instead of just using some
->>> known-to-exist PFNs like I suggested?
->>
->> We needed PFN to be PUD aligned for pfn_pud() and PMD aligned for mk_pmd().
->> Now walking the kernel page table for a known symbol like kernel_init()
-> 
-> I didn't say to walk the kernel page table.  I said to call virt_to_pfn()
-> for a known symbol like kernel_init().
-> 
->> as you had suggested earlier we might encounter page table page entries at PMD
->> and PUD which might not be PMD or PUD aligned respectively. It seemed to me
->> that alignment requirement is applicable only for mk_pmd() and pfn_pud()
->> which create large mappings at those levels but that requirement does not
->> exist for page table pages pointing to next level. Is not that correct ? Or
->> I am missing something here ?
-> 
-> Just clear the bottom bits off the PFN until you get a PMD or PUD aligned
-> PFN.  It's really not hard.
+Any thoughts about that series ? As said before, this is just a 
+preparatory patchset in order to
+merge x86 mmap top down code with the generic version.
 
-As Mark pointed out earlier that might end up being just a synthetic PFN
-which might not even exist on a given system.
+Thanks for taking a look,
+
+Alex
+
