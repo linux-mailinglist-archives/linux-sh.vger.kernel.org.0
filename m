@@ -2,131 +2,132 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D62F99FD3F
-	for <lists+linux-sh@lfdr.de>; Wed, 28 Aug 2019 10:37:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7FA89FE65
+	for <lists+linux-sh@lfdr.de>; Wed, 28 Aug 2019 11:23:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726259AbfH1IhA convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-sh@lfdr.de>); Wed, 28 Aug 2019 04:37:00 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:34014 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726253AbfH1Ig7 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 28 Aug 2019 04:36:59 -0400
-Received: by mail-ot1-f67.google.com with SMTP id c7so1992378otp.1;
-        Wed, 28 Aug 2019 01:36:59 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=2Erove1KI2K6GKd3UFaZlGI+A1u6CspqOGbjftwYs2o=;
-        b=RsOVHUV2rRGqeecVWFLG9J8HlcIjMgja8ncvY9XZYMOmqj2KbuMsTXW6ref0ZZpP8y
-         O2sS5+di2RzdaHXQYtEIPQb5ok7KmnTxE3WKc4YceBZgbDRxCwsqoq0gCMFk2+jnnuzf
-         l1HryWSif65yXT4d8xZATRsz/zGG6fWJOtq2S+VUBcWK8qh9ev9g/5dBjeChYh7nWdAx
-         xFWy3iKBPVB2c73orPP7ivNKWHm4Ts4fH4rZY8D1D5vcT/uJbFuGmAisv3rbUaUmtWUR
-         9d+C2SVBB6T3NfoMRVg4YmMWEx3YAsmlz3VNuX/ishcTDSlSWXSRGyu9lYshArLxZVa8
-         g01Q==
-X-Gm-Message-State: APjAAAVE0IS7InGjjN4TWjbhmOlxt6SEVZurGt01g+nMsCroWmPz4IbA
-        1dj4tqQ5L0OwnGwsQLqPLQCAmPTAcBrYmb/QZig=
-X-Google-Smtp-Source: APXvYqwTqVVwndN/cmFOt6L70c8aRtBjQJbRXGGSl1zhN+C4xJfXzPvGeTsPdgjseoyM2bIW2gDueQGp86hfFZCk314=
-X-Received: by 2002:a9d:2cc:: with SMTP id 70mr2261989otl.145.1566981418736;
- Wed, 28 Aug 2019 01:36:58 -0700 (PDT)
+        id S1726497AbfH1JXC (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 28 Aug 2019 05:23:02 -0400
+Received: from foss.arm.com ([217.140.110.172]:56132 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726310AbfH1JXB (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Wed, 28 Aug 2019 05:23:01 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AC682337;
+        Wed, 28 Aug 2019 02:23:00 -0700 (PDT)
+Received: from [10.162.40.83] (p8cg001049571a15.blr.arm.com [10.162.40.83])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1BCFF3F59C;
+        Wed, 28 Aug 2019 02:22:50 -0700 (PDT)
+Subject: Re: [RFC V2 0/1] mm/debug: Add tests for architecture exported page
+ table helpers
+To:     Matthew Wilcox <willy@infradead.org>
+Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Mike Rapoport <rppt@linux.vnet.ibm.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Michal Hocko <mhocko@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Mark Brown <broonie@kernel.org>,
+        Steven Price <Steven.Price@arm.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Kees Cook <keescook@chromium.org>,
+        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+        Sri Krishna chowdary <schowdary@nvidia.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        James Hogan <jhogan@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+References: <1565335998-22553-1-git-send-email-anshuman.khandual@arm.com>
+ <20190809101632.GM5482@bombadil.infradead.org>
+ <a5aab7ff-f7fd-9cc1-6e37-e4185eee65ac@arm.com>
+ <20190809135202.GN5482@bombadil.infradead.org>
+ <7a88f6bb-e8c7-3ac7-2f92-1de752a01f33@arm.com>
+ <20190826131308.GA15933@bombadil.infradead.org>
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <504f891e-7346-7328-74b0-7df3acc230e8@arm.com>
+Date:   Wed, 28 Aug 2019 14:52:54 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-References: <20190724082508.27617-1-brgl@bgdev.pl> <CAMRc=Mex_Ricd+C4F7nGLmpBggO-hWwJDB6duX8kFpPEeaTDjQ@mail.gmail.com>
- <CAMRc=Mci4ncbDmns=0uL8hsAGz1Wvd5bgK4yxTF8QQQitXDv0g@mail.gmail.com> <CAMRc=McUEgm6yH7enwHuHxVTL41dmb5KAY_pxTmSr3vctCs2xg@mail.gmail.com>
-In-Reply-To: <CAMRc=McUEgm6yH7enwHuHxVTL41dmb5KAY_pxTmSr3vctCs2xg@mail.gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 28 Aug 2019 10:36:47 +0200
-Message-ID: <CAMuHMdV3obGtQ7qohNedQNgpvZvyL9xjH0HUiBKD6b8Ou5F+XA@mail.gmail.com>
-Subject: Re: [PATCH v3 0/7] backlight: gpio: simplify the driver
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Jacopo Mondi <jacopo@jmondi.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+In-Reply-To: <20190826131308.GA15933@bombadil.infradead.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-CC the pour soul with the ecovec board.
 
-On Wed, Aug 28, 2019 at 9:33 AM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
-> pt., 16 sie 2019 o 17:48 Bartosz Golaszewski <brgl@bgdev.pl> napisał(a):
-> > czw., 8 sie 2019 o 10:17 Bartosz Golaszewski <brgl@bgdev.pl> napisał(a):
-> > > śr., 24 lip 2019 o 10:25 Bartosz Golaszewski <brgl@bgdev.pl> napisał(a):
-> > > > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> > > >
-> > > > While working on my other series related to gpio-backlight[1] I noticed
-> > > > that we could simplify the driver if we made the only user of platform
-> > > > data use GPIO lookups and device properties. This series tries to do
-> > > > that.
-> > > >
-> > > > The first patch adds all necessary data structures to ecovec24. Patch
-> > > > 2/7 unifies much of the code for both pdata and non-pdata cases. Patches
-> > > > 3-4/7 remove unused platform data fields. Last three patches contain
-> > > > additional improvements for the GPIO backlight driver while we're already
-> > > > modifying it.
-> > > >
-> > > > I don't have access to this HW but hopefully this works. Only compile
-> > > > tested.
-> > > >
-> > > > [1] https://lkml.org/lkml/2019/6/25/900
-> > > >
-> > > > v1 -> v2:
-> > > > - rebased on top of v5.3-rc1 and adjusted to the recent changes from Andy
-> > > > - added additional two patches with minor improvements
-> > > >
-> > > > v2 -> v3:
-> > > > - in patch 7/7: used initializers to set values for pdata and dev local vars
-> > > >
-> > > > Bartosz Golaszewski (7):
-> > > >   sh: ecovec24: add additional properties to the backlight device
-> > > >   backlight: gpio: simplify the platform data handling
-> > > >   sh: ecovec24: don't set unused fields in platform data
-> > > >   backlight: gpio: remove unused fields from platform data
-> > > >   backlight: gpio: remove dev from struct gpio_backlight
-> > > >   backlight: gpio: remove def_value from struct gpio_backlight
-> > > >   backlight: gpio: use a helper variable for &pdev->dev
-> > > >
-> > > >  arch/sh/boards/mach-ecovec24/setup.c         | 33 ++++++--
-> > > >  drivers/video/backlight/gpio_backlight.c     | 82 +++++---------------
-> > > >  include/linux/platform_data/gpio_backlight.h |  3 -
-> > > >  3 files changed, 44 insertions(+), 74 deletions(-)
-> > > >
-> > > > --
-> > > > 2.21.0
-> > > >
-> > >
-> > > Hi Rich, Yoshinori,
-> > >
-> > > can you ack the sh patches in this series?
-> > >
-> > > Bart
-> >
-> > Ping.
->
-> Hi,
->
-> any chance of getting this reviewed for sh?
 
-Gr{oetje,eeting}s,
+On 08/26/2019 06:43 PM, Matthew Wilcox wrote:
+> On Mon, Aug 26, 2019 at 08:07:13AM +0530, Anshuman Khandual wrote:
+>> On 08/09/2019 07:22 PM, Matthew Wilcox wrote:
+>>> On Fri, Aug 09, 2019 at 04:05:07PM +0530, Anshuman Khandual wrote:
+>>>> On 08/09/2019 03:46 PM, Matthew Wilcox wrote:
+>>>>> On Fri, Aug 09, 2019 at 01:03:17PM +0530, Anshuman Khandual wrote:
+>>>>>> Should alloc_gigantic_page() be made available as an interface for general
+>>>>>> use in the kernel. The test module here uses very similar implementation from
+>>>>>> HugeTLB to allocate a PUD aligned memory block. Similar for mm_alloc() which
+>>>>>> needs to be exported through a header.
+>>>>>
+>>>>> Why are you allocating memory at all instead of just using some
+>>>>> known-to-exist PFNs like I suggested?
+>>>>
+>>>> We needed PFN to be PUD aligned for pfn_pud() and PMD aligned for mk_pmd().
+>>>> Now walking the kernel page table for a known symbol like kernel_init()
+>>>
+>>> I didn't say to walk the kernel page table.  I said to call virt_to_pfn()
+>>> for a known symbol like kernel_init().
+>>>
+>>>> as you had suggested earlier we might encounter page table page entries at PMD
+>>>> and PUD which might not be PMD or PUD aligned respectively. It seemed to me
+>>>> that alignment requirement is applicable only for mk_pmd() and pfn_pud()
+>>>> which create large mappings at those levels but that requirement does not
+>>>> exist for page table pages pointing to next level. Is not that correct ? Or
+>>>> I am missing something here ?
+>>>
+>>> Just clear the bottom bits off the PFN until you get a PMD or PUD aligned
+>>> PFN.  It's really not hard.
+>>
+>> As Mark pointed out earlier that might end up being just a synthetic PFN
+>> which might not even exist on a given system.
+> 
+> And why would that matter?
+> 
 
-                        Geert
+To start with the test uses struct page with mk_pte() and mk_pmd() while
+pfn gets used in pfn_pud() during pXX_basic_tests(). So we will not be able
+to derive a valid struct page from a synthetic pfn. Also if synthetic pfn is
+going to be used anyway then why derive it from a real kernel symbol like
+kernel_init(). Could not one be just made up with right alignment ?
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Currently the test allocates 'mm_struct' and other page table pages from real
+memory then why should it use synthetic pfn while creating actual page table
+entries ? Couple of benefits going with synthetic pfn will be..
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+- It simplifies the test a bit removing PUD_SIZE allocation helpers
+- It might enable the test to be run on systems without adequate memory
+
+In the current proposal the allocation happens during boot making it much more
+likely to succeed than not and when it fails, respective tests will be skipped.
+
+I am just wondering if being able to run complete set of tests on smaller
+systems with less memory weighs lot more in favor of going with synthetic
+pfn instead.
