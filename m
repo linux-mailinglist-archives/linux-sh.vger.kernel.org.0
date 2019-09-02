@@ -2,147 +2,110 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F93FA55F1
-	for <lists+linux-sh@lfdr.de>; Mon,  2 Sep 2019 14:27:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79B34A5633
+	for <lists+linux-sh@lfdr.de>; Mon,  2 Sep 2019 14:35:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731572AbfIBM0M (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 2 Sep 2019 08:26:12 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:5711 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729893AbfIBM0L (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Mon, 2 Sep 2019 08:26:11 -0400
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 17A6940E61A165018A38;
-        Mon,  2 Sep 2019 20:26:05 +0800 (CST)
-Received: from [127.0.0.1] (10.74.191.121) by DGGEMS410-HUB.china.huawei.com
- (10.3.19.210) with Microsoft SMTP Server id 14.3.439.0; Mon, 2 Sep 2019
- 20:25:57 +0800
-Subject: Re: [PATCH v2 2/9] x86: numa: check the node id consistently for x86
-To:     Peter Zijlstra <peterz@infradead.org>
-CC:     <dalias@libc.org>, <linux-sh@vger.kernel.org>,
-        <catalin.marinas@arm.com>, <dave.hansen@linux.intel.com>,
-        <heiko.carstens@de.ibm.com>, <linuxarm@huawei.com>,
-        <jiaxun.yang@flygoat.com>, <linux-kernel@vger.kernel.org>,
-        <mwb@linux.vnet.ibm.com>, <paulus@samba.org>, <hpa@zytor.com>,
-        <sparclinux@vger.kernel.org>, <chenhc@lemote.com>,
-        <will@kernel.org>, <linux-s390@vger.kernel.org>,
-        <ysato@users.sourceforge.jp>, <mpe@ellerman.id.au>,
-        <x86@kernel.org>, <rppt@linux.ibm.com>, <borntraeger@de.ibm.com>,
-        <dledford@redhat.com>, <mingo@redhat.com>,
-        <jeffrey.t.kirsher@intel.com>, <benh@kernel.crashing.org>,
-        <jhogan@kernel.org>, <nfont@linux.vnet.ibm.com>,
-        <mattst88@gmail.com>, <len.brown@intel.com>, <gor@linux.ibm.com>,
-        <anshuman.khandual@arm.com>, <ink@jurassic.park.msu.ru>,
-        <cai@lca.pw>, <luto@kernel.org>, <tglx@linutronix.de>,
-        <naveen.n.rao@linux.vnet.ibm.com>,
-        <linux-arm-kernel@lists.infradead.org>, <rth@twiddle.net>,
-        <axboe@kernel.dk>, <robin.murphy@arm.com>,
-        <linux-mips@vger.kernel.org>, <ralf@linux-mips.org>,
-        <tbogendoerfer@suse.de>, <paul.burton@mips.com>,
-        <linux-alpha@vger.kernel.org>, <bp@alien8.de>,
-        <akpm@linux-foundation.org>, <linuxppc-dev@lists.ozlabs.org>,
-        <davem@davemloft.net>
-References: <1567231103-13237-1-git-send-email-linyunsheng@huawei.com>
- <1567231103-13237-3-git-send-email-linyunsheng@huawei.com>
- <20190831085539.GG2369@hirez.programming.kicks-ass.net>
- <4d89c688-49e4-a2aa-32ee-65e36edcd913@huawei.com>
- <20190831161247.GM2369@hirez.programming.kicks-ass.net>
- <ae64285f-5134-4147-7b02-34bb5d519e8c@huawei.com>
- <20190902072542.GN2369@hirez.programming.kicks-ass.net>
-From:   Yunsheng Lin <linyunsheng@huawei.com>
-Message-ID: <5fa2aa99-89fa-cd41-b090-36a23cfdeb73@huawei.com>
-Date:   Mon, 2 Sep 2019 20:25:24 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.0
+        id S1730247AbfIBMey (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 2 Sep 2019 08:34:54 -0400
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:39684 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729942AbfIBMex (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 2 Sep 2019 08:34:53 -0400
+Received: by mail-wm1-f67.google.com with SMTP id n2so13037129wmk.4
+        for <linux-sh@vger.kernel.org>; Mon, 02 Sep 2019 05:34:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XtfVe2y0PV6JCnkWUgt29BFtDKrtsJ9asmKj1fX6iHM=;
+        b=pVkk4EQb8Rw026QE2F67s/FRBhwcF2RyAloU19aASKmT4dLQntoYwfHzxQIV3lDTlX
+         J2UPXFD2FdccyDHwI9GOSoMmWyKK6AWhN6uJu6eBjE9aq51c03XadnQfVpnCbnNsk4Pq
+         Re8CdR5aYt1pqNEFBLX7O4Moo6VmqLxp/bu0REWCEuoPLedggkakQpNbB+m2zXBae4hd
+         flGcAQIcc9FgyB3wsG4o+RhkuyJHlpVoaM+swKs0Zjxs27c/6T6SnaQ5wHSIn9/9E9h8
+         WdgXWvWlzbDhxolhuq+K5d4TvZYiuFKKCjxnIXK3nv/yQrvryc5SByyykXN9SPHDVF65
+         mUIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XtfVe2y0PV6JCnkWUgt29BFtDKrtsJ9asmKj1fX6iHM=;
+        b=Umt8IKPE119Sm+/ePHDnvnTcfdtXPtXioHXSMETsx5lzLlX4JR8ObWYwqMA/e6SuZw
+         IL7Ymob6gN38L5zwJR10EmqOZ1L+dQN32yZkWV5dnY0Lxq7fd+/VBNqtTgEAPd+LN2Ex
+         VeTLJ1JmDNmcNz/OLrgV7j49o8SgFQOiq+JxTOOYmC8ufDAjFqQc3WsR6wuIqIzHw8h3
+         KpkWjxOXCmGc7nsAomvnd2D1XSaMp+jFjROaX42IAfUJIVQxH5Ul1rYDbFcUOCQkRfMi
+         CYQGuKSZB/PsuW+qKgwznyFIOLgq9cGqSjzUN41tuDXaA5vFBxJAPTw9UT97SNsZlwyb
+         Ekmw==
+X-Gm-Message-State: APjAAAWuCkZnCkmKIf/y3jLhH2rp672gW1cqN8fMFaoq+frzsef14nh8
+        MVmteChYtDOKqwBVe/oMaYv/1A==
+X-Google-Smtp-Source: APXvYqyrnPWYmmZIE808s52Grv7xJXO5wACPj/78PCA7WIfz+B6gplbNIrHaV5BnZvS7GkbDFMpz5A==
+X-Received: by 2002:a1c:7513:: with SMTP id o19mr34854254wmc.126.1567427691708;
+        Mon, 02 Sep 2019 05:34:51 -0700 (PDT)
+Received: from localhost.localdomain (amontpellier-652-1-281-69.w109-210.abo.wanadoo.fr. [109.210.96.69])
+        by smtp.gmail.com with ESMTPSA id k9sm22645759wrd.7.2019.09.02.05.34.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Sep 2019 05:34:50 -0700 (PDT)
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Subject: [RESEND PATCH v3 0/7] backlight: gpio: simplify the driver
+Date:   Mon,  2 Sep 2019 14:34:37 +0200
+Message-Id: <20190902123444.19924-1-brgl@bgdev.pl>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-In-Reply-To: <20190902072542.GN2369@hirez.programming.kicks-ass.net>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.74.191.121]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 2019/9/2 15:25, Peter Zijlstra wrote:
-> On Mon, Sep 02, 2019 at 01:46:51PM +0800, Yunsheng Lin wrote:
->> On 2019/9/1 0:12, Peter Zijlstra wrote:
-> 
->>> 1) because even it is not set, the device really does belong to a node.
->>> It is impossible a device will have magic uniform access to memory when
->>> CPUs cannot.
->>
->> So it means dev_to_node() will return either NUMA_NO_NODE or a
->> valid node id?
-> 
-> NUMA_NO_NODE := -1, which is not a valid node number. It is also, like I
-> said, not a valid device location on a NUMA system.
-> 
-> Just because ACPI/BIOS is shit, doesn't mean the device doesn't have a
-> node association. It just means we don't know and might have to guess.
+From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 
-How do we guess the device's location when ACPI/BIOS does not set it?
+While working on my other series related to gpio-backlight[1] I noticed
+that we could simplify the driver if we made the only user of platform
+data use GPIO lookups and device properties. This series tries to do
+that.
 
-It seems dev_to_node() does not do anything about that and leave the
-job to the caller or whatever function that get called with its return
-value, such as cpumask_of_node().
+The first patch adds all necessary data structures to ecovec24. Patch
+2/7 unifies much of the code for both pdata and non-pdata cases. Patches
+3-4/7 remove unused platform data fields. Last three patches contain
+additional improvements for the GPIO backlight driver while we're already
+modifying it.
 
-> 
->>> 2) is already true today, cpumask_of_node() requires a valid node_id.
->>
->> Ok, most of the user does check node_id before calling
->> cpumask_of_node(), but does a little different type of checking:
->>
->> 1) some does " < 0" check;
->> 2) some does "== NUMA_NO_NODE" check;
->> 3) some does ">= MAX_NUMNODES" check;
->> 4) some does "< 0 || >= MAX_NUMNODES || !node_online(node)" check.
-> 
-> The one true way is:
-> 
-> 	'(unsigned)node_id >= nr_node_ids'
+I don't have access to this HW but hopefully this works. Only compile
+tested.
 
-I missed the magic of the "unsigned" in your previous reply.
+[1] https://lkml.org/lkml/2019/6/25/900
 
-> 
->>> 3) is just wrong and increases overhead for everyone.
->>
->> Ok, cpumask_of_node() is also used in some critical path such
->> as scheduling, which may not need those checking, the overhead
->> is unnecessary.
->>
->> But for non-critical path such as setup or configuration path,
->> it better to have consistent checking, and also simplify the
->> user code that calls cpumask_of_node().
->>
->> Do you think it is worth the trouble to add a new function
->> such as cpumask_of_node_check(maybe some other name) to do
->> consistent checking?
->>
->> Or caller just simply check if dev_to_node()'s return value is
->> NUMA_NO_NODE before calling cpumask_of_node()?
-> 
-> It is not a matter of convenience. The function is called
-> cpumask_of_node(), when node < 0 || node >= nr_node_ids, it is not a
-> valid node, therefore the function shouldn't return anything except an
-> error.
-what do you mean by error? What I can think is three type of errors:
-1) return NULL, this way it seems cpumask_of_node() also leave the
-   job to the function that calls it.
-2) cpu_none_mask, I am not sure what this means, maybe it means there
-   is no cpu on the same node with the device?
-3) give a warning, stack dump, or even a BUG_ON?
+v1 -> v2:
+- rebased on top of v5.3-rc1 and adjusted to the recent changes from Andy
+- added additional two patches with minor improvements
 
-I would prefer the second one, and implement the third one when the
-CONFIG_DEBUG_PER_CPU_MAPS is selected.
+v2 -> v3:
+- in patch 7/7: used initializers to set values for pdata and dev local vars
 
-Any suggestion?
+Bartosz Golaszewski (7):
+  sh: ecovec24: add additional properties to the backlight device
+  backlight: gpio: simplify the platform data handling
+  sh: ecovec24: don't set unused fields in platform data
+  backlight: gpio: remove unused fields from platform data
+  backlight: gpio: remove dev from struct gpio_backlight
+  backlight: gpio: remove def_value from struct gpio_backlight
+  backlight: gpio: use a helper variable for &pdev->dev
 
-> 
-> Also note that the CONFIG_DEBUG_PER_CPU_MAPS version of
-> cpumask_of_node() already does this (although it wants the below fix).
+ arch/sh/boards/mach-ecovec24/setup.c         | 33 ++++++--
+ drivers/video/backlight/gpio_backlight.c     | 82 +++++---------------
+ include/linux/platform_data/gpio_backlight.h |  3 -
+ 3 files changed, 44 insertions(+), 74 deletions(-)
 
-Thanks for the note and example.
+-- 
+2.21.0
 
