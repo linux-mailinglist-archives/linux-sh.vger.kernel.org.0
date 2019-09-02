@@ -2,95 +2,122 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C9FCBA505E
-	for <lists+linux-sh@lfdr.de>; Mon,  2 Sep 2019 09:53:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5E8FA52D5
+	for <lists+linux-sh@lfdr.de>; Mon,  2 Sep 2019 11:31:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729985AbfIBHxO (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 2 Sep 2019 03:53:14 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:33555 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729457AbfIBHxO (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 2 Sep 2019 03:53:14 -0400
-Received: by mail-ot1-f66.google.com with SMTP id p23so12811311oto.0;
-        Mon, 02 Sep 2019 00:53:13 -0700 (PDT)
+        id S1731098AbfIBJbm (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 2 Sep 2019 05:31:42 -0400
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:51922 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730452AbfIBJbm (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 2 Sep 2019 05:31:42 -0400
+Received: by mail-wm1-f66.google.com with SMTP id k1so13756769wmi.1
+        for <linux-sh@vger.kernel.org>; Mon, 02 Sep 2019 02:31:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=r8AwJSmMaHIEN05eTIkJ4SIO7fhuuHmNGUIve5f+2G0=;
+        b=Bt1VuYPsJX1pxqRR6NEEzZF0cAq3QqZSMeTnegdO8wAJVFRb/Jr0Ly4BgdgOysPSWb
+         IZVVibSQpS0gOBIr0OUQUsZUwFVf97qS4uto28oZHVLLEWbqLvQ/+C9xlwxydZuudplm
+         81UaLsko8zsLIGQXBw/VgDV7HZkHqUWUkEUWbs1UvWxFqMMsnxf+J2SceviM8fe7Ws7D
+         QYXzlFLYLoRmtUnbMXQLOVXJVHdGzIcoMqNyU2TC4Psa6PULLHTj9RdtGxZtxSu3bTkm
+         cnU2J3ip/ZBkcrqgo6YoEsJv/uU/p04nUgNpCOBqikubhWlYP2WpFFKnrv4ETvEbbXKA
+         p5Dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=eXerReUtklcQDMDiAd2B7yy5/iYyeA9QfRGIULHn46Y=;
-        b=TimCe+rboTXhKNRwod9wY0LQixXq7N4d44ur73fTW2/Sl9IlzP0TM034In+nMphow6
-         xiWiEDZqeMr0hSqMmT3xGkOz7OVg3dbGFxB6DnaI7/rbUfGLp5wGTB8UdW1WjXG8zXJq
-         GC35+s1KZNEV6mpr4HpVQXkHzZooeXqyeTqNvhLbts5fV4wZDQecIXdsonD0+BAab9PD
-         ij7RgMJOuMnsdBRGk7Iikhn+E+SpUcF8PhWa1X7S/JkgFIr4SpDy+OGKLjntqmbZyPL8
-         YXo/hLdpnibizxv/zjuyNQYT5x6g91TVLGViL8KITcv+fUoz2h9zZaMW/KkBcnt6S4gT
-         8YrQ==
-X-Gm-Message-State: APjAAAX7DS5L5+NH75wZDOV+fHjVTm+zfjVhMTvhhFYG555Vtd1bttjE
-        mQDQeXujl1PugjbVRt4e0bk7o6oxmGdZkjYu+9w=
-X-Google-Smtp-Source: APXvYqwnZmuBQPAycR4wh+MzLxpLnaIqn9yYtJhnEginGgy5iGXJS00OPV33e9x6cT87GYQg3tA+HlJbqb3xbqDiJRA=
-X-Received: by 2002:a9d:61c3:: with SMTP id h3mr14729198otk.39.1567410792636;
- Mon, 02 Sep 2019 00:53:12 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=r8AwJSmMaHIEN05eTIkJ4SIO7fhuuHmNGUIve5f+2G0=;
+        b=eY1kA+8a2kmLj9/Y4mlaFbkOfplhStSYvIPajacdAzdbDuKXr12x/HaEZixWYQ5Adc
+         NZB0o1lnBezEaMgZAd4889dyXEVN0NPaQMsoXl+1nmzCSSTbdseTKajYaFqx8wgGLy71
+         8yCx+DOZDJiDHTf2f6FAkZOM0DWLP18tb3RJz6rlZJv1Phal1T4SYPZ7Mm4i1baZAQYL
+         ZSg3+7CKq0noX5QgXB3iYtZQR4cNnIbklnLfUMRiWToHYvWbd5EwVDPnnBhWwO1IHTCa
+         9rllkneIUtA3XRjZn7iesCMpWebubP9YKE+XHS70M4DE7kFAsDC3/aQCxwLRJ8CnDLd+
+         ongw==
+X-Gm-Message-State: APjAAAUgxVY2gUtO83z1183yjoV67WHZGYaF3OIGMDIlM3Gz8Fn+bCJb
+        8ylq/kkFyT8XbWWxF9RW3bZfGQ==
+X-Google-Smtp-Source: APXvYqwSoSdzmSThKSMRUEmWnqBIzy3JLEQjsMsy3WU0XrIZvapOFxa+yJldgHFiQ3VCIhTfJdp9Wg==
+X-Received: by 2002:a1c:1f89:: with SMTP id f131mr33287131wmf.140.1567416699794;
+        Mon, 02 Sep 2019 02:31:39 -0700 (PDT)
+Received: from dell ([95.147.198.93])
+        by smtp.gmail.com with ESMTPSA id v186sm33030150wmb.5.2019.09.02.02.31.38
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 02 Sep 2019 02:31:39 -0700 (PDT)
+Date:   Mon, 2 Sep 2019 10:31:37 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Bartosz Golaszewski <brgl@bgdev.pl>
+Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Subject: Re: [PATCH v3 0/7] backlight: gpio: simplify the driver
+Message-ID: <20190902093137.GI32232@dell>
+References: <20190724082508.27617-1-brgl@bgdev.pl>
 MIME-Version: 1.0
-References: <20190817073253.27819-1-hch@lst.de> <20190817073253.27819-9-hch@lst.de>
- <CAMuHMdWyXGjokWi7tn9JHCTz9YMb_vHn6XKeE7KzH5n-54Sy0A@mail.gmail.com> <20190830160620.GD26887@lst.de>
-In-Reply-To: <20190830160620.GD26887@lst.de>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 2 Sep 2019 09:53:01 +0200
-Message-ID: <CAMuHMdXB=DWyu=Y25gih5poeanVnhLEP2MXoozvxdEY6op32FA@mail.gmail.com>
-Subject: Re: [PATCH 08/26] m68k: simplify ioremap_nocache
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Guo Ren <guoren@kernel.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        Guan Xuetao <gxt@pku.edu.cn>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        alpha <linux-alpha@vger.kernel.org>,
-        arcml <linux-snps-arc@lists.infradead.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        linux-mips@vger.kernel.org, nios2-dev@lists.rocketboards.org,
-        Openrisc <openrisc@lists.librecores.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linux-riscv@lists.infradead.org,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        linux-xtensa@linux-xtensa.org,
-        MTD Maling List <linux-mtd@lists.infradead.org>,
-        Linux-Arch <linux-arch@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190724082508.27617-1-brgl@bgdev.pl>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Christoph,
+On Wed, 24 Jul 2019, Bartosz Golaszewski wrote:
 
-On Fri, Aug 30, 2019 at 6:06 PM Christoph Hellwig <hch@lst.de> wrote:
-> On Mon, Aug 19, 2019 at 10:56:02AM +0200, Geert Uytterhoeven wrote:
-> > On Sat, Aug 17, 2019 at 9:48 AM Christoph Hellwig <hch@lst.de> wrote:
-> > > Just define ioremap_nocache to ioremap instead of duplicating the
-> > > inline.  Also defined ioremap_uc in terms of ioremap instead of
-> > > the using a double indirection.
-> > >
-> > > Signed-off-by: Christoph Hellwig <hch@lst.de>
-> >
-> > Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
->
-> Do you mind picking this up through the m68k tree?
+> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+> 
+> While working on my other series related to gpio-backlight[1] I noticed
+> that we could simplify the driver if we made the only user of platform
+> data use GPIO lookups and device properties. This series tries to do
+> that.
+> 
+> The first patch adds all necessary data structures to ecovec24. Patch
+> 2/7 unifies much of the code for both pdata and non-pdata cases. Patches
+> 3-4/7 remove unused platform data fields. Last three patches contain
+> additional improvements for the GPIO backlight driver while we're already
+> modifying it.
+> 
+> I don't have access to this HW but hopefully this works. Only compile
+> tested.
+> 
+> [1] https://lkml.org/lkml/2019/6/25/900
+> 
+> v1 -> v2:
+> - rebased on top of v5.3-rc1 and adjusted to the recent changes from Andy
+> - added additional two patches with minor improvements
+> 
+> v2 -> v3:
+> - in patch 7/7: used initializers to set values for pdata and dev local vars
+> 
+> Bartosz Golaszewski (7):
+>   sh: ecovec24: add additional properties to the backlight device
+>   backlight: gpio: simplify the platform data handling
+>   sh: ecovec24: don't set unused fields in platform data
+>   backlight: gpio: remove unused fields from platform data
+>   backlight: gpio: remove dev from struct gpio_backlight
+>   backlight: gpio: remove def_value from struct gpio_backlight
+>   backlight: gpio: use a helper variable for &pdev->dev
+> 
+>  arch/sh/boards/mach-ecovec24/setup.c         | 33 ++++++--
+>  drivers/video/backlight/gpio_backlight.c     | 82 +++++---------------
+>  include/linux/platform_data/gpio_backlight.h |  3 -
+>  3 files changed, 44 insertions(+), 74 deletions(-)
 
-Sure. Applied and queued for v5.4.
-
-Gr{oetje,eeting}s,
-
-                        Geert
+Can you collect all your Acks and re-submit please?
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog
