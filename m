@@ -2,126 +2,143 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D5903A564D
-	for <lists+linux-sh@lfdr.de>; Mon,  2 Sep 2019 14:36:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 114DEA56CE
+	for <lists+linux-sh@lfdr.de>; Mon,  2 Sep 2019 14:57:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730106AbfIBMfp (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 2 Sep 2019 08:35:45 -0400
-Received: from mail-io1-f66.google.com ([209.85.166.66]:34141 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729726AbfIBMfm (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 2 Sep 2019 08:35:42 -0400
-Received: by mail-io1-f66.google.com with SMTP id s21so28950824ioa.1
-        for <linux-sh@vger.kernel.org>; Mon, 02 Sep 2019 05:35:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=vnhw4cu5Y19Ngs/FcBn3AtSwpWd+bzaeBt1B8o4ltr0=;
-        b=qpXZrNFOf8FMkMWjsohOjNNDkWvo69WRgme+57+rTRmXKIOiO1IiNxMMiGWCQSg94p
-         uKQg1D4YEnLemazeoGnZOS6K926UhvmB4PXev0a0SIEKpuA04Frl8bbWXiPZzrc0iZpU
-         S4kbzpImRnUHETvZHhfHwZEPB8D8zYmyebN2Ht/yydHW+1WdeXyGygmDjzQ4P1yCV0xv
-         jIVdjwpC34AgTkw54p5aFkpzLRm0cjkZ050coecWNregtgHKkGE2lkr6argOPvK6AB4v
-         RXkbdicD7E7yBQJ/cJLAX1RMugFIrBYYajEWSQxVQ+BhXGyVq7OdZkN609bfjzKec+6e
-         6ehQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=vnhw4cu5Y19Ngs/FcBn3AtSwpWd+bzaeBt1B8o4ltr0=;
-        b=SudoAnQmcgdSO9KNbck4Tx0FNgC/kdwtGu83qNbp6VtO394pMbF4u2FjAdx93H6OWk
-         GcdJgn5oTYSwfwzm2H8GKAsxUw3rrA+vTHa0C7YcHaSOyJRBP976NcJ305bc56bTo3Em
-         w/jHWTc7cEOgH9VOXopotzRCwYN8GcltCxSwvWE3g7FOPknZtPCk35inINLb0EeSL/9F
-         AZnxefZ2KX5AZKkOEBUkSqRb3Xx2yZ/nTVYeExBH+m7IKlPeF96EnzvcRjwPQefFzzlM
-         I8a+fWsBhwdBXZ3Fr5lPFf8OFNwfZb8MabeAueBGZK4BH3iduKdBrjhD5V2oDG/ZhJMj
-         gWfw==
-X-Gm-Message-State: APjAAAXapk0+hFAO6h0EmUU7oaf4nrxGltcdPOjVL5Axa9a32ce0PJhe
-        kDqdpU5fk9k1keZxbqxHb9RwCmLw/g5b4OF1TOtV2w==
-X-Google-Smtp-Source: APXvYqwH4WnK2YgFBebstftIqR2c3baQcgor+d3PzdCtsmEbNLL45XxEHTEDeCGgnIkf7NhdFMpzDt1Jmy5oZMTkWgQ=
-X-Received: by 2002:a5d:870b:: with SMTP id u11mr29928734iom.220.1567427741022;
- Mon, 02 Sep 2019 05:35:41 -0700 (PDT)
+        id S1730488AbfIBM5g (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 2 Sep 2019 08:57:36 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:55238 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729950AbfIBM5g (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 2 Sep 2019 08:57:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=9h13EkBbQnZFZZifKdj3rs2HLYagXdgFWT2AUzdmgpI=; b=hbKCmxrhUY1zqpP0uzODVohmc
+        7Gc3fRoEvRGtWXSR1YHAsRyqeOQZ+xSo3xueOYK0vZkz2wXZDvUnLNC21905DicvN9MPBAs4DBoHP
+        3bEPPX3Lah67+Yt2YExpC+47yEB1NRTiRlG2syuXFfZuBnYx1rgsSfXzIhagdqy2nJMJMcIGaOkBm
+        jqE6smn69C/mhsZ+W09pCKWboIYlgkXz4x5ucnn1GxJP4fgNnVDc7NhwfOC1XwO1DTcx+XifaEChK
+        ej/28hnJz2yhxza7ykMLMj5I6MCx6KdQRmTPPejmkQG2Pu2wo4ajJdOKDSq+MquqSIw54tqAYCWoV
+        lCZUHOQWA==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+        id 1i4lt4-0006FG-Ob; Mon, 02 Sep 2019 12:56:51 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id B054A30116F;
+        Mon,  2 Sep 2019 14:56:08 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 695CA29B408C9; Mon,  2 Sep 2019 14:56:44 +0200 (CEST)
+Date:   Mon, 2 Sep 2019 14:56:44 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Yunsheng Lin <linyunsheng@huawei.com>
+Cc:     dalias@libc.org, linux-sh@vger.kernel.org, catalin.marinas@arm.com,
+        dave.hansen@linux.intel.com, heiko.carstens@de.ibm.com,
+        linuxarm@huawei.com, jiaxun.yang@flygoat.com,
+        linux-kernel@vger.kernel.org, mwb@linux.vnet.ibm.com,
+        paulus@samba.org, hpa@zytor.com, sparclinux@vger.kernel.org,
+        chenhc@lemote.com, will@kernel.org, linux-s390@vger.kernel.org,
+        ysato@users.sourceforge.jp, mpe@ellerman.id.au, x86@kernel.org,
+        rppt@linux.ibm.com, borntraeger@de.ibm.com, dledford@redhat.com,
+        mingo@redhat.com, jeffrey.t.kirsher@intel.com,
+        benh@kernel.crashing.org, jhogan@kernel.org,
+        nfont@linux.vnet.ibm.com, mattst88@gmail.com, len.brown@intel.com,
+        gor@linux.ibm.com, anshuman.khandual@arm.com,
+        ink@jurassic.park.msu.ru, cai@lca.pw, luto@kernel.org,
+        tglx@linutronix.de, naveen.n.rao@linux.vnet.ibm.com,
+        linux-arm-kernel@lists.infradead.org, rth@twiddle.net,
+        axboe@kernel.dk, robin.murphy@arm.com, linux-mips@vger.kernel.org,
+        ralf@linux-mips.org, tbogendoerfer@suse.de, paul.burton@mips.com,
+        linux-alpha@vger.kernel.org, bp@alien8.de,
+        akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
+        davem@davemloft.net,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Subject: Re: [PATCH v2 2/9] x86: numa: check the node id consistently for x86
+Message-ID: <20190902125644.GQ2369@hirez.programming.kicks-ass.net>
+References: <1567231103-13237-1-git-send-email-linyunsheng@huawei.com>
+ <1567231103-13237-3-git-send-email-linyunsheng@huawei.com>
+ <20190831085539.GG2369@hirez.programming.kicks-ass.net>
+ <4d89c688-49e4-a2aa-32ee-65e36edcd913@huawei.com>
+ <20190831161247.GM2369@hirez.programming.kicks-ass.net>
+ <ae64285f-5134-4147-7b02-34bb5d519e8c@huawei.com>
+ <20190902072542.GN2369@hirez.programming.kicks-ass.net>
+ <5fa2aa99-89fa-cd41-b090-36a23cfdeb73@huawei.com>
 MIME-Version: 1.0
-References: <20190724082508.27617-1-brgl@bgdev.pl> <20190902093137.GI32232@dell>
-In-Reply-To: <20190902093137.GI32232@dell>
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Mon, 2 Sep 2019 14:35:30 +0200
-Message-ID: <CAMRc=Me2FYJDDHo=8noU5bPNdPXBL23jDU_3XQiPfRJ3-pGh7g@mail.gmail.com>
-Subject: Re: [PATCH v3 0/7] backlight: gpio: simplify the driver
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-sh@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5fa2aa99-89fa-cd41-b090-36a23cfdeb73@huawei.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-pon., 2 wrz 2019 o 11:31 Lee Jones <lee.jones@linaro.org> napisa=C5=82(a):
->
-> On Wed, 24 Jul 2019, Bartosz Golaszewski wrote:
->
-> > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> >
-> > While working on my other series related to gpio-backlight[1] I noticed
-> > that we could simplify the driver if we made the only user of platform
-> > data use GPIO lookups and device properties. This series tries to do
-> > that.
-> >
-> > The first patch adds all necessary data structures to ecovec24. Patch
-> > 2/7 unifies much of the code for both pdata and non-pdata cases. Patche=
-s
-> > 3-4/7 remove unused platform data fields. Last three patches contain
-> > additional improvements for the GPIO backlight driver while we're alrea=
-dy
-> > modifying it.
-> >
-> > I don't have access to this HW but hopefully this works. Only compile
-> > tested.
-> >
-> > [1] https://lkml.org/lkml/2019/6/25/900
-> >
-> > v1 -> v2:
-> > - rebased on top of v5.3-rc1 and adjusted to the recent changes from An=
-dy
-> > - added additional two patches with minor improvements
-> >
-> > v2 -> v3:
-> > - in patch 7/7: used initializers to set values for pdata and dev local=
- vars
-> >
-> > Bartosz Golaszewski (7):
-> >   sh: ecovec24: add additional properties to the backlight device
-> >   backlight: gpio: simplify the platform data handling
-> >   sh: ecovec24: don't set unused fields in platform data
-> >   backlight: gpio: remove unused fields from platform data
-> >   backlight: gpio: remove dev from struct gpio_backlight
-> >   backlight: gpio: remove def_value from struct gpio_backlight
-> >   backlight: gpio: use a helper variable for &pdev->dev
-> >
-> >  arch/sh/boards/mach-ecovec24/setup.c         | 33 ++++++--
-> >  drivers/video/backlight/gpio_backlight.c     | 82 +++++---------------
-> >  include/linux/platform_data/gpio_backlight.h |  3 -
-> >  3 files changed, 44 insertions(+), 74 deletions(-)
->
-> Can you collect all your Acks and re-submit please?
->
+On Mon, Sep 02, 2019 at 08:25:24PM +0800, Yunsheng Lin wrote:
+> On 2019/9/2 15:25, Peter Zijlstra wrote:
+> > On Mon, Sep 02, 2019 at 01:46:51PM +0800, Yunsheng Lin wrote:
+> >> On 2019/9/1 0:12, Peter Zijlstra wrote:
+> > 
+> >>> 1) because even it is not set, the device really does belong to a node.
+> >>> It is impossible a device will have magic uniform access to memory when
+> >>> CPUs cannot.
+> >>
+> >> So it means dev_to_node() will return either NUMA_NO_NODE or a
+> >> valid node id?
+> > 
+> > NUMA_NO_NODE := -1, which is not a valid node number. It is also, like I
+> > said, not a valid device location on a NUMA system.
+> > 
+> > Just because ACPI/BIOS is shit, doesn't mean the device doesn't have a
+> > node association. It just means we don't know and might have to guess.
+> 
+> How do we guess the device's location when ACPI/BIOS does not set it?
 
-Done.
+See device_add(), it looks to the device's parent and on NO_NODE, puts
+it there.
 
-Bart
+Lacking any hints, just stick it to node0 and print a FW_BUG or
+something.
 
-> --
-> Lee Jones [=E6=9D=8E=E7=90=BC=E6=96=AF]
-> Linaro Services Technical Lead
-> Linaro.org =E2=94=82 Open source software for ARM SoCs
-> Follow Linaro: Facebook | Twitter | Blog
+> It seems dev_to_node() does not do anything about that and leave the
+> job to the caller or whatever function that get called with its return
+> value, such as cpumask_of_node().
+
+Well, dev_to_node() doesn't do anything; nor should it. It are the
+callers of set_dev_node() that should be taking care.
+
+Also note how device_add() sets the device node to the parent device's
+node on NUMA_NO_NODE. Arguably we should change it to complain when it
+finds NUMA_NO_NODE and !parent.
+
+---
+ drivers/base/core.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index f0dd8e38fee3..2caf204966a0 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -2120,8 +2120,16 @@ int device_add(struct device *dev)
+ 		dev->kobj.parent = kobj;
+ 
+ 	/* use parent numa_node */
+-	if (parent && (dev_to_node(dev) == NUMA_NO_NODE))
+-		set_dev_node(dev, dev_to_node(parent));
++	if (dev_to_node(dev) == NUMA_NO_NODE) {
++		if (parent)
++			set_dev_node(dev, dev_to_node(parent));
++#ifdef CONFIG_NUMA
++		else {
++			pr_err("device: '%s': has no assigned NUMA node\n", dev_name(dev));
++			set_dev_node(dev, 0);
++		}
++#endif
++	}
+ 
+ 	/* first, register with generic layer. */
+ 	/* we require the name to be set before, and pass NULL */
