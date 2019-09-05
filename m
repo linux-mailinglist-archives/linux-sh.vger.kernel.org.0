@@ -2,142 +2,258 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A74FA975B
-	for <lists+linux-sh@lfdr.de>; Thu,  5 Sep 2019 01:52:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 309B8A9BE0
+	for <lists+linux-sh@lfdr.de>; Thu,  5 Sep 2019 09:32:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729963AbfIDXwB (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 4 Sep 2019 19:52:01 -0400
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:37363 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729635AbfIDXwB (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 4 Sep 2019 19:52:01 -0400
-Received: by mail-lj1-f194.google.com with SMTP id t14so471085lji.4
-        for <linux-sh@vger.kernel.org>; Wed, 04 Sep 2019 16:51:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=lkW/YWLZKFkaRlur1cRxiMMOTA0gNhHwo+TbpZCC63g=;
-        b=Cnu5WYs/aAthmsXfnwtWzL5CNjpaY23sMnhFtcX1zve3r2rc/Ho+dRzPF32HPRMBnj
-         gveXLtTDU7YHSGctyOcfke7l1YNaudqputmw6AJ3ZcUOsNYmqHCIu9DY9WHGlywCQ4Su
-         iCCcCFmwH9f6fkeMSqS83pY7B6dx4aSlHZljU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=lkW/YWLZKFkaRlur1cRxiMMOTA0gNhHwo+TbpZCC63g=;
-        b=k7g74l3ZAue5mDfJPU2H/L+fR/rB7/29ya9s+2TBfSHRvmSWI7LsmzNasA/DSy+SjN
-         RPwQNNC7KqJhxiAkhKlXLxGTAo/2knJixrnR1K9ypYr1PvjntSzLRDOtXfWjShO3uPJb
-         fY+xZjjlBtQ08HxE4SGXoBYOSCKyes5yps6GauOtcHfy/CzBW16Dh9f+R4Nqc0wqMcbT
-         FqcpDqfWtiL+DSRjnVWjPQGxpGaKOx56ovXXRwrksaRr1CfplI68QPojm/eonj5lxWMi
-         L/adqnsQZFZdQsJ+qVQU8B1GJlqFSAniWr09waxmTXu/qIzMn/hrF4BPs4BTQ9/CaBTf
-         YjUQ==
-X-Gm-Message-State: APjAAAXuqjHQ1daYKqCLwwy01gxD0PLklwdctBK2Yy02KLyZ9Ix+RZnT
-        3uu6UVVPUebd9/+9BVRd+AWZA3vdOck=
-X-Google-Smtp-Source: APXvYqwmZEwWm441bnjch3V/nRaf2+x8aigK+Mbw4iu9SduA5O7UQoDPvdXJviyyX1GhNgSIKfEgNg==
-X-Received: by 2002:a2e:95cf:: with SMTP id y15mr129480ljh.61.1567641118542;
-        Wed, 04 Sep 2019 16:51:58 -0700 (PDT)
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com. [209.85.208.171])
-        by smtp.gmail.com with ESMTPSA id b30sm74104lfq.59.2019.09.04.16.51.58
-        for <linux-sh@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Sep 2019 16:51:58 -0700 (PDT)
-Received: by mail-lj1-f171.google.com with SMTP id y23so444099lje.9
-        for <linux-sh@vger.kernel.org>; Wed, 04 Sep 2019 16:51:58 -0700 (PDT)
-X-Received: by 2002:a2e:3a0e:: with SMTP id h14mr127121lja.180.1567640710863;
- Wed, 04 Sep 2019 16:45:10 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190904201933.10736-1-cyphar@cyphar.com> <20190904201933.10736-11-cyphar@cyphar.com>
- <CAHk-=wiod1rQMU+6Zew=cLE8uX4tUdf42bM5eKngMnNVS2My7g@mail.gmail.com>
- <20190904214856.vnvom7h5xontvngq@yavin.dot.cyphar.com> <CAHk-=wgcJq21Hydh7Tx5-o8empoPp7ULDBw0Am-du_Pa+fcftQ@mail.gmail.com>
- <20592.1567636276@warthog.procyon.org.uk> <CAHk-=wg7Wq1kj8kZ+SSpfU_o991woW60NWca9yBA2ccs2eNx8Q@mail.gmail.com>
- <20190904232911.GN1131@ZenIV.linux.org.uk>
-In-Reply-To: <20190904232911.GN1131@ZenIV.linux.org.uk>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Wed, 4 Sep 2019 16:44:54 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjx3y1Y7iE6T0yiERc8G5iT1sTABWbX_nFxw9NVHCFCPA@mail.gmail.com>
-Message-ID: <CAHk-=wjx3y1Y7iE6T0yiERc8G5iT1sTABWbX_nFxw9NVHCFCPA@mail.gmail.com>
-Subject: Re: [PATCH v12 10/12] namei: aggressively check for nd->root escape
- on ".." resolution
-To:     Al Viro <viro@zeniv.linux.org.uk>
-Cc:     David Howells <dhowells@redhat.com>,
-        Aleksa Sarai <cyphar@cyphar.com>,
+        id S1731251AbfIEHci (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 5 Sep 2019 03:32:38 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:60790 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726032AbfIEHch (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 5 Sep 2019 03:32:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=4t74LAQ8HoNYAg0doAzYeg6TjlgtY7XOq8PTAR8Aews=; b=AJRabzewRFq+7OIffGLOihagu
+        Q6x11cx7vH4lTSeXsd4sAIih6IBnXO0V0QVaYKYPuOX5IyCWWNG/A5IpMM7XxnP5h6RLlcaHT7zAl
+        Fno/b6maUNUFsIFZfcSZQfkojE92I1guZML9x4l93b6YVf0uAT4pU5Fy9CwtrM/pmFvkV07Tl/NDH
+        UWkPdVlV3t+bv3MIvz+w7aolGCsHgXfQaMgu8S2KGM3coJTlVXl+SJRvUIqp+hXS+wtnXq+q3pBAn
+        iaVF6fnqduZ0Uuod15wKkSs509rKcOJZLU443oqaQooqsVuFFvY8MOtj86gBpYi+ToNnI/idUssy/
+        WNhx5pafw==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+        id 1i5mFW-0005ul-GL; Thu, 05 Sep 2019 07:32:10 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 73B24306038;
+        Thu,  5 Sep 2019 09:31:28 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 550C129DE6C22; Thu,  5 Sep 2019 09:32:05 +0200 (CEST)
+Date:   Thu, 5 Sep 2019 09:32:05 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Aleksa Sarai <cyphar@cyphar.com>
+Cc:     Al Viro <viro@zeniv.linux.org.uk>,
         Jeff Layton <jlayton@kernel.org>,
         "J. Bruce Fields" <bfields@fieldses.org>,
-        Arnd Bergmann <arnd@arndb.de>, Shuah Khan <shuah@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        Shuah Khan <shuah@kernel.org>,
         Shuah Khan <skhan@linuxfoundation.org>,
         Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
         Christian Brauner <christian@brauner.io>,
-        Jann Horn <jannh@google.com>,
-        Kees Cook <keescook@chromium.org>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         Eric Biederman <ebiederm@xmission.com>,
         Andy Lutomirski <luto@kernel.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         Alexei Starovoitov <ast@kernel.org>,
-        Tycho Andersen <tycho@tycho.ws>,
+        Kees Cook <keescook@chromium.org>,
+        Jann Horn <jannh@google.com>, Tycho Andersen <tycho@tycho.ws>,
         David Drysdale <drysdale@google.com>,
         Chanho Min <chanho.min@lge.com>,
         Oleg Nesterov <oleg@redhat.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Jiri Olsa <jolsa@redhat.com>,
         Namhyung Kim <namhyung@kernel.org>,
         Aleksa Sarai <asarai@suse.de>,
-        Linux Containers <containers@lists.linux-foundation.org>,
-        alpha <linux-alpha@vger.kernel.org>,
-        Linux API <linux-api@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        linux-ia64@vger.kernel.org,
-        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
-        "open list:KERNEL SELFTEST FRAMEWORK" 
-        <linux-kselftest@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        containers@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
+        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
         linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v12 01/12] lib: introduce copy_struct_{to,from}_user
+ helpers
+Message-ID: <20190905073205.GY2332@hirez.programming.kicks-ass.net>
+References: <20190904201933.10736-1-cyphar@cyphar.com>
+ <20190904201933.10736-2-cyphar@cyphar.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190904201933.10736-2-cyphar@cyphar.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Wed, Sep 4, 2019 at 4:29 PM Al Viro <viro@zeniv.linux.org.uk> wrote:
->
-> On Wed, Sep 04, 2019 at 03:38:20PM -0700, Linus Torvalds wrote:
-> > On Wed, Sep 4, 2019 at 3:31 PM David Howells <dhowells@redhat.com> wrote:
-> > >
-> > > It ought to be reasonably easy to make them per-sb at least, I think.  We
-> > > don't allow cross-super rename, right?
-> >
-> > Right now the sequence count handling very much depends on it being a
-> > global entity on the reader side, at least.
-> >
-> > And while the rename sequence count could (and probably should) be
-> > per-sb, the same is very much not true of the mount one.
->
-> Huh?  That will cost us having to have a per-superblock dentry
-> hash table; recall that lockless lockup can give false negatives
-> if something gets moved from chain to chain, and rename_lock is
-> first and foremost used to catch those and retry.  If we split
-> it on per-superblock basis, we can't have dentries from different
-> superblocks in the same chain anymore...
+On Thu, Sep 05, 2019 at 06:19:22AM +1000, Aleksa Sarai wrote:
+> +/**
+> + * copy_struct_to_user: copy a struct to user space
+> + * @dst:   Destination address, in user space.
+> + * @usize: Size of @dst struct.
+> + * @src:   Source address, in kernel space.
+> + * @ksize: Size of @src struct.
+> + *
+> + * Copies a struct from kernel space to user space, in a way that guarantees
+> + * backwards-compatibility for struct syscall arguments (as long as future
+> + * struct extensions are made such that all new fields are *appended* to the
+> + * old struct, and zeroed-out new fields have the same meaning as the old
+> + * struct).
+> + *
+> + * @ksize is just sizeof(*dst), and @usize should've been passed by user space.
+> + * The recommended usage is something like the following:
+> + *
+> + *   SYSCALL_DEFINE2(foobar, struct foo __user *, uarg, size_t, usize)
+> + *   {
+> + *      int err;
+> + *      struct foo karg = {};
+> + *
+> + *      // do something with karg
+> + *
+> + *      err = copy_struct_to_user(uarg, usize, &karg, sizeof(karg));
+> + *      if (err)
+> + *        return err;
+> + *
+> + *      // ...
+> + *   }
+> + *
+> + * There are three cases to consider:
+> + *  * If @usize == @ksize, then it's copied verbatim.
+> + *  * If @usize < @ksize, then kernel space is "returning" a newer struct to an
+> + *    older user space. In order to avoid user space getting incomplete
+> + *    information (new fields might be important), all trailing bytes in @src
+> + *    (@ksize - @usize) must be zerored
 
-That's exactly the "very much depends on it being a global entity on
-the reader side" thing.
+s/zerored/zero/, right?
 
-I'm not convinced that's the _only_ way to handle things. Maybe a
-combination of (wild handwaving) per-hashqueue sequence count and some
-clever scheme for pathname handling could work.
+>                                          , otherwise -EFBIG is returned.
 
-I've not personally seen a load where the global rename lock has been
-a problem (very few things really do a lot of renames), but
-system-wide locks do make me nervous.
+'Funny' that, copy_struct_from_user() below seems to use E2BIG.
 
-We have other (and worse) ones. tasklist_lock comes to mind.
+> + *  * If @usize > @ksize, then the kernel is "returning" an older struct to a
+> + *    newer user space. The trailing bytes in @dst (@usize - @ksize) will be
+> + *    zero-filled.
+> + *
+> + * Returns (in all cases, some data may have been copied):
+> + *  * -EFBIG:  (@usize < @ksize) and there are non-zero trailing bytes in @src.
+> + *  * -EFAULT: access to user space failed.
+> + */
+> +int copy_struct_to_user(void __user *dst, size_t usize,
+> +			const void *src, size_t ksize)
+> +{
+> +	size_t size = min(ksize, usize);
+> +	size_t rest = abs(ksize - usize);
+> +
+> +	if (unlikely(usize > PAGE_SIZE))
+> +		return -EFAULT;
 
-             Linus
+Not documented above. Implementation consistent with *from*, but see
+below.
+
+> +	if (unlikely(!access_ok(dst, usize)))
+> +		return -EFAULT;
+> +
+> +	/* Deal with trailing bytes. */
+> +	if (usize < ksize) {
+> +		if (memchr_inv(src + size, 0, rest))
+> +			return -EFBIG;
+> +	} else if (usize > ksize) {
+> +		if (__memzero_user(dst + size, rest))
+> +			return -EFAULT;
+> +	}
+> +	/* Copy the interoperable parts of the struct. */
+> +	if (__copy_to_user(dst, src, size))
+> +		return -EFAULT;
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL(copy_struct_to_user);
+> +
+> +/**
+> + * copy_struct_from_user: copy a struct from user space
+> + * @dst:   Destination address, in kernel space. This buffer must be @ksize
+> + *         bytes long.
+> + * @ksize: Size of @dst struct.
+> + * @src:   Source address, in user space.
+> + * @usize: (Alleged) size of @src struct.
+> + *
+> + * Copies a struct from user space to kernel space, in a way that guarantees
+> + * backwards-compatibility for struct syscall arguments (as long as future
+> + * struct extensions are made such that all new fields are *appended* to the
+> + * old struct, and zeroed-out new fields have the same meaning as the old
+> + * struct).
+> + *
+> + * @ksize is just sizeof(*dst), and @usize should've been passed by user space.
+> + * The recommended usage is something like the following:
+> + *
+> + *   SYSCALL_DEFINE2(foobar, const struct foo __user *, uarg, size_t, usize)
+> + *   {
+> + *      int err;
+> + *      struct foo karg = {};
+> + *
+> + *      err = copy_struct_from_user(&karg, sizeof(karg), uarg, size);
+> + *      if (err)
+> + *        return err;
+> + *
+> + *      // ...
+> + *   }
+> + *
+> + * There are three cases to consider:
+> + *  * If @usize == @ksize, then it's copied verbatim.
+> + *  * If @usize < @ksize, then the user space has passed an old struct to a
+> + *    newer kernel. The rest of the trailing bytes in @dst (@ksize - @usize)
+> + *    are to be zero-filled.
+> + *  * If @usize > @ksize, then the user space has passed a new struct to an
+> + *    older kernel. The trailing bytes unknown to the kernel (@usize - @ksize)
+> + *    are checked to ensure they are zeroed, otherwise -E2BIG is returned.
+> + *
+> + * Returns (in all cases, some data may have been copied):
+> + *  * -E2BIG:  (@usize > @ksize) and there are non-zero trailing bytes in @src.
+> + *  * -E2BIG:  @usize is "too big" (at time of writing, >PAGE_SIZE).
+> + *  * -EFAULT: access to user space failed.
+> + */
+> +int copy_struct_from_user(void *dst, size_t ksize,
+> +			  const void __user *src, size_t usize)
+> +{
+> +	size_t size = min(ksize, usize);
+> +	size_t rest = abs(ksize - usize);
+> +
+> +	if (unlikely(usize > PAGE_SIZE))
+> +		return -EFAULT;
+
+Documented above as returning -E2BIG.
+
+> +	if (unlikely(!access_ok(src, usize)))
+> +		return -EFAULT;
+> +
+> +	/* Deal with trailing bytes. */
+> +	if (usize < ksize)
+> +		memset(dst + size, 0, rest);
+> +	else if (usize > ksize) {
+> +		const void __user *addr = src + size;
+> +		char buffer[BUFFER_SIZE] = {};
+
+Isn't that too big for on-stack?
+
+> +
+> +		while (rest > 0) {
+> +			size_t bufsize = min(rest, sizeof(buffer));
+> +
+> +			if (__copy_from_user(buffer, addr, bufsize))
+> +				return -EFAULT;
+> +			if (memchr_inv(buffer, 0, bufsize))
+> +				return -E2BIG;
+> +
+> +			addr += bufsize;
+> +			rest -= bufsize;
+> +		}
+
+The perf implementation uses get_user(); but if that is too slow, surely
+we can do something with uaccess_try() here?
+
+> +	}
+> +	/* Copy the interoperable parts of the struct. */
+> +	if (__copy_from_user(dst, src, size))
+> +		return -EFAULT;
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL(copy_struct_from_user);
+
+And personally I'm not a big fan of EXPORT_SYMBOL().
