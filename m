@@ -2,216 +2,229 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2880FAC018
-	for <lists+linux-sh@lfdr.de>; Fri,  6 Sep 2019 21:04:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82A78AC6A1
+	for <lists+linux-sh@lfdr.de>; Sat,  7 Sep 2019 14:40:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406220AbfIFTEF (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 6 Sep 2019 15:04:05 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:30948 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2406198AbfIFTED (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 6 Sep 2019 15:04:03 -0400
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x86J1o22034452
-        for <linux-sh@vger.kernel.org>; Fri, 6 Sep 2019 15:04:02 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2uuvk3hp3g-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-sh@vger.kernel.org>; Fri, 06 Sep 2019 15:04:02 -0400
-Received: from localhost
-        by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-sh@vger.kernel.org> from <gerald.schaefer@de.ibm.com>;
-        Fri, 6 Sep 2019 20:03:59 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
-        by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Fri, 6 Sep 2019 20:03:50 +0100
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
-        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x86J3nGp51839194
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 6 Sep 2019 19:03:49 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 20BAC42042;
-        Fri,  6 Sep 2019 19:03:49 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 047F842049;
-        Fri,  6 Sep 2019 19:03:48 +0000 (GMT)
-Received: from thinkpad (unknown [9.152.96.94])
-        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Fri,  6 Sep 2019 19:03:47 +0000 (GMT)
-Date:   Fri, 6 Sep 2019 21:03:46 +0200
-From:   Gerald Schaefer <gerald.schaefer@de.ibm.com>
-To:     Anshuman Khandual <anshuman.khandual@arm.com>
-Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mike Rapoport <rppt@linux.vnet.ibm.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Dan Williams <dan.j.williams@intel.com>,
+        id S2405924AbfIGMky (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sat, 7 Sep 2019 08:40:54 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49340 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731870AbfIGMkx (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Sat, 7 Sep 2019 08:40:53 -0400
+Received: from tleilax.poochiereds.net (68-20-15-154.lightspeed.rlghnc.sbcglobal.net [68.20.15.154])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6CE4A21871;
+        Sat,  7 Sep 2019 12:40:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1567860051;
+        bh=8CdC9s2J+EXRB9t2P5assmBfzpxHrY6X7806hW2vZbI=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=BMvFV1UX5X6Uy9Wv1qL/PSUiseB7R2rehCkF1jManrfGr8YI9PSHDWUn9L+S2pFuv
+         RCN9fVNO1dVgQYKSzjsx39Mxn3GBmfn+uxlg8EP9mU5AYcsQNbkdlUXvr6YJL1XW0i
+         aq/hmJ23hyXTE39ZyvTfy0uteQUqAjbcN+eR3HO4=
+Message-ID: <7236f382d72130f2afbbe8940e72cc67e5c6dce0.camel@kernel.org>
+Subject: Re: [PATCH v12 11/12] open: openat2(2) syscall
+From:   Jeff Layton <jlayton@kernel.org>
+To:     Aleksa Sarai <cyphar@cyphar.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Ingo Molnar <mingo@redhat.com>,
         Peter Zijlstra <peterz@infradead.org>,
-        Michal Hocko <mhocko@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Mark Brown <broonie@kernel.org>,
-        Steven Price <Steven.Price@arm.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Christian Brauner <christian@brauner.io>
+Cc:     Eric Biederman <ebiederm@xmission.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Alexei Starovoitov <ast@kernel.org>,
         Kees Cook <keescook@chromium.org>,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        Matthew Wilcox <willy@infradead.org>,
-        Sri Krishna chowdary <schowdary@nvidia.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] mm/pgtable/debug: Add test validating architecture
- page table helpers
-In-Reply-To: <3c609e33-afbb-ffaf-481a-6d225a06d1d0@arm.com>
-References: <1567497706-8649-1-git-send-email-anshuman.khandual@arm.com>
-        <1567497706-8649-2-git-send-email-anshuman.khandual@arm.com>
-        <20190904221618.1b624a98@thinkpad>
-        <20e3044d-2af5-b27b-7653-cec53bdec941@arm.com>
-        <20190905190629.523bdb87@thinkpad>
-        <3c609e33-afbb-ffaf-481a-6d225a06d1d0@arm.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+        Jann Horn <jannh@google.com>, Tycho Andersen <tycho@tycho.ws>,
+        David Drysdale <drysdale@google.com>,
+        Chanho Min <chanho.min@lge.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Aleksa Sarai <asarai@suse.de>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        containers@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
+        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
+Date:   Sat, 07 Sep 2019 08:40:47 -0400
+In-Reply-To: <20190904201933.10736-12-cyphar@cyphar.com>
+References: <20190904201933.10736-1-cyphar@cyphar.com>
+         <20190904201933.10736-12-cyphar@cyphar.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.32.4 (3.32.4-1.fc30) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19090619-0020-0000-0000-000003689871
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19090619-0021-0000-0000-000021BE1320
-Message-Id: <20190906210346.5ecbff01@thinkpad>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-09-06_07:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1909060198
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Fri, 6 Sep 2019 11:58:59 +0530
-Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+On Thu, 2019-09-05 at 06:19 +1000, Aleksa Sarai wrote:
+> The most obvious syscall to add support for the new LOOKUP_* scoping
+> flags would be openat(2). However, there are a few reasons why this is
+> not the best course of action:
+> 
+>  * The new LOOKUP_* flags are intended to be security features, and
+>    openat(2) will silently ignore all unknown flags. This means that
+>    users would need to avoid foot-gunning themselves constantly when
+>    using this interface if it were part of openat(2). This can be fixed
+>    by having userspace libraries handle this for users[1], but should be
+>    avoided if possible.
+> 
+>  * Resolution scoping feels like a different operation to the existing
+>    O_* flags. And since openat(2) has limited flag space, it seems to be
+>    quite wasteful to clutter it with 5 flags that are all
+>    resolution-related. Arguably O_NOFOLLOW is also a resolution flag but
+>    its entire purpose is to error out if you encounter a trailing
+>    symlink -- not to scope resolution.
+> 
+>  * Other systems would be able to reimplement this syscall allowing for
+>    cross-OS standardisation rather than being hidden amongst O_* flags
+>    which may result in it not being used by all the parties that might
+>    want to use it (file servers, web servers, container runtimes, etc).
+> 
+>  * It gives us the opportunity to iterate on the O_PATH interface. In
+>    particular, the new @how->upgrade_mask field for fd re-opening is
+>    only possible because we have a clean slate without needing to re-use
+>    the ACC_MODE flag design nor the existing openat(2) @mode semantics.
+> 
+> To this end, we introduce the openat2(2) syscall. It provides all of the
+> features of openat(2) through the @how->flags argument, but also
+> also provides a new @how->resolve argument which exposes RESOLVE_* flags
+> that map to our new LOOKUP_* flags. It also eliminates the long-standing
+> ugliness of variadic-open(2) by embedding it in a struct.
+> 
+> In order to allow for userspace to lock down their usage of file
+> descriptor re-opening, openat2(2) has the ability for users to disallow
+> certain re-opening modes through @how->upgrade_mask. At the moment,
+> there is no UPGRADE_NOEXEC.
+> 
+> [1]: https://github.com/openSUSE/libpathrs
+> 
+> Suggested-by: Christian Brauner <christian@brauner.io>
+> Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
+> ---
+>  arch/alpha/kernel/syscalls/syscall.tbl      |  1 +
+>  arch/arm/tools/syscall.tbl                  |  1 +
+>  arch/arm64/include/asm/unistd.h             |  2 +-
+>  arch/arm64/include/asm/unistd32.h           |  2 +
+>  arch/ia64/kernel/syscalls/syscall.tbl       |  1 +
+>  arch/m68k/kernel/syscalls/syscall.tbl       |  1 +
+>  arch/microblaze/kernel/syscalls/syscall.tbl |  1 +
+>  arch/mips/kernel/syscalls/syscall_n32.tbl   |  1 +
+>  arch/mips/kernel/syscalls/syscall_n64.tbl   |  1 +
+>  arch/mips/kernel/syscalls/syscall_o32.tbl   |  1 +
+>  arch/parisc/kernel/syscalls/syscall.tbl     |  1 +
+>  arch/powerpc/kernel/syscalls/syscall.tbl    |  1 +
+>  arch/s390/kernel/syscalls/syscall.tbl       |  1 +
+>  arch/sh/kernel/syscalls/syscall.tbl         |  1 +
+>  arch/sparc/kernel/syscalls/syscall.tbl      |  1 +
+>  arch/x86/entry/syscalls/syscall_32.tbl      |  1 +
+>  arch/x86/entry/syscalls/syscall_64.tbl      |  1 +
+>  arch/xtensa/kernel/syscalls/syscall.tbl     |  1 +
+>  fs/open.c                                   | 94 ++++++++++++++++-----
+>  include/linux/fcntl.h                       | 19 ++++-
+>  include/linux/fs.h                          |  4 +-
+>  include/linux/syscalls.h                    | 14 ++-
+>  include/uapi/asm-generic/unistd.h           |  5 +-
+>  include/uapi/linux/fcntl.h                  | 42 +++++++++
+>  24 files changed, 168 insertions(+), 30 deletions(-)
+> 
 
-> On 09/05/2019 10:36 PM, Gerald Schaefer wrote:
-> > On Thu, 5 Sep 2019 14:48:14 +0530
-> > Anshuman Khandual <anshuman.khandual@arm.com> wrote:
-> >   
-> >>> [...]    
-> >>>> +
-> >>>> +#if !defined(__PAGETABLE_PMD_FOLDED) && !defined(__ARCH_HAS_4LEVEL_HACK)
-> >>>> +static void pud_clear_tests(pud_t *pudp)
-> >>>> +{
-> >>>> +	memset(pudp, RANDOM_NZVALUE, sizeof(pud_t));
-> >>>> +	pud_clear(pudp);
-> >>>> +	WARN_ON(!pud_none(READ_ONCE(*pudp)));
-> >>>> +}    
-> >>>
-> >>> For pgd/p4d/pud_clear(), we only clear if the page table level is present
-> >>> and not folded. The memset() here overwrites the table type bits, so
-> >>> pud_clear() will not clear anything on s390 and the pud_none() check will
-> >>> fail.
-> >>> Would it be possible to OR a (larger) random value into the table, so that
-> >>> the lower 12 bits would be preserved?    
-> >>
-> >> So the suggestion is instead of doing memset() on entry with RANDOM_NZVALUE,
-> >> it should OR a large random value preserving lower 12 bits. Hmm, this should
-> >> still do the trick for other platforms, they just need non zero value. So on
-> >> s390, the lower 12 bits on the page table entry already has valid value while
-> >> entering this function which would make sure that pud_clear() really does
-> >> clear the entry ?  
-> > 
-> > Yes, in theory the table entry on s390 would have the type set in the last
-> > 4 bits, so preserving those would be enough. If it does not conflict with
-> > others, I would still suggest preserving all 12 bits since those would contain
-> > arch-specific flags in general, just to be sure. For s390, the pte/pmd tests
-> > would also work with the memset, but for consistency I think the same logic
-> > should be used in all pxd_clear_tests.  
-> 
-> Makes sense but..
-> 
-> There is a small challenge with this. Modifying individual bits on a given
-> page table entry from generic code like this test case is bit tricky. That
-> is because there are not enough helpers to create entries with an absolute
-> value. This would have been easier if all the platforms provided functions
-> like __pxx() which is not the case now. Otherwise something like this should
-> have worked.
-> 
-> 
-> pud_t pud = READ_ONCE(*pudp);
-> pud = __pud(pud_val(pud) | RANDOM_VALUE (keeping lower 12 bits 0))
-> WRITE_ONCE(*pudp, pud);
-> 
-> But __pud() will fail to build in many platforms.
+[...]
 
-Hmm, I simply used this on my system to make pud_clear_tests() work, not
-sure if it works on all archs:
+> diff --git a/include/uapi/linux/fcntl.h b/include/uapi/linux/fcntl.h
+> index 1d338357df8a..479baf2da10e 100644
+> --- a/include/uapi/linux/fcntl.h
+> +++ b/include/uapi/linux/fcntl.h
+> @@ -93,5 +93,47 @@
+>  
+>  #define AT_RECURSIVE		0x8000	/* Apply to the entire subtree */
+>  
+> +/**
+> + * Arguments for how openat2(2) should open the target path. If @resolve is
+> + * zero, then openat2(2) operates identically to openat(2).
+> + *
+> + * However, unlike openat(2), unknown bits in @flags result in -EINVAL rather
+> + * than being silently ignored. In addition, @mode (or @upgrade_mask) must be
+> + * zero unless one of {O_CREAT, O_TMPFILE, O_PATH} are set.
+> + *
 
-pud_val(*pudp) |= RANDOM_NZVALUE;
+After thinking about this a bit, I wonder if we might be better served
+with a new set of OA2_* flags instead of repurposing the O_* flags?
 
-> 
-> The other alternative will be to make sure memset() happens on all other
-> bits except the lower 12 bits which will depend on endianness. If s390
-> has a fixed endianness, we can still use either of them which will hold
-> good for others as well.
-> 
-> memset(pudp, RANDOM_NZVALUE, sizeof(pud_t) - 3);
-> 
-> OR
-> 
-> memset(pudp + 3, RANDOM_NZVALUE, sizeof(pud_t) - 3);
-> 
-> > 
-> > However, there is another issue on s390 which will make this only work
-> > for pud_clear_tests(), and not for the p4d/pgd_tests. The problem is that
-> > mm_alloc() will only give you a 3-level page table initially on s390.
-> > This means that pudp == p4dp == pgdp, and so the p4d/pgd_tests will
-> > both see the pud level (of course this also affects other tests).  
-> 
-> Got it.
-> 
-> > 
-> > Not sure yet how to fix this, i.e. how to initialize/update the page table
-> > to 5 levels. We can handle 5 level page tables, and it would be good if
-> > all levels could be tested, but using mm_alloc() to establish the page
-> > tables might not work on s390. One option could be to provide an arch-hook
-> > or weak function to allocate/initialize the mm.  
-> 
-> Sure, got it. Though I plan to do add some arch specific tests or init sequence
-> like the above later on but for now the idea is to get the smallest possible set
-> of test cases which builds and runs on all platforms without requiring any arch
-> specific hooks or special casing (#ifdef) to be agreed upon broadly and accepted.
-> 
-> Do you think this is absolutely necessary on s390 for the very first set of test
-> cases or we can add this later on as an improvement ?
+Yes, those flags are familiar, but this is an entirely new syscall. We
+have a chance to make a fresh start. Does something like O_LARGEFILE
+have any real place in openat2? I'd argue no.
 
-It can be added later, no problem. I did not expect this to work flawlessly
-on s390 right from the start anyway, with all our peculiarities, so don't
-let this hinder you. I might come up with an add-on patch later.
+Also, once you want to add a new flag, then we get into the mess of how
+to document whether open/openat also support it. It'd be good to freeze
+changes on those syscalls and aim to only introduce new functionality in
+openat2.
 
-Actually, using get_unmapped_area() as suggested by Kirill could also
-solve this issue. We do create a new mm with 3-level page tables on s390,
-and the dynamic upgrade to 4 or 5 levels is then triggered exactly by
-arch_get_unmapped_area(), depending on the addr. But I currently don't
-see how / where arch_get_unmapped_area() is set up for such a dummy mm
-created by mm_alloc().
+That would also allow us to drop some flags from openat2 that we really
+don't need, and maybe expand the flag space to 64 bits initially, to
+allow for expansion into the future.
 
-Regards,
-Gerald
+Thoughts?
+
+> + * @flags: O_* flags.
+> + * @mode: O_CREAT/O_TMPFILE file mode.
+> + * @upgrade_mask: UPGRADE_* flags (to restrict O_PATH re-opening).
+> + * @resolve: RESOLVE_* flags.
+> + */
+> +struct open_how {
+> +	__u32 flags;
+> +	union {
+> +		__u16 mode;
+> +		__u16 upgrade_mask;
+> +	};
+> +	__u16 resolve;
+> +};
+> +
+> +#define OPEN_HOW_SIZE_VER0	8 /* sizeof first published struct */
+> +
+
+Hmm, there is no version field. When you want to expand this in the
+future, what is the plan? Add a new flag to indicate that it's some
+length?
+
+
+> +/* how->resolve flags for openat2(2). */
+> +#define RESOLVE_NO_XDEV		0x01 /* Block mount-point crossings
+> +					(includes bind-mounts). */
+> +#define RESOLVE_NO_MAGICLINKS	0x02 /* Block traversal through procfs-style
+> +					"magic-links". */
+> +#define RESOLVE_NO_SYMLINKS	0x04 /* Block traversal through all symlinks
+> +					(implies OEXT_NO_MAGICLINKS) */
+> +#define RESOLVE_BENEATH		0x08 /* Block "lexical" trickery like
+> +					"..", symlinks, and absolute
+> +					paths which escape the dirfd. */
+> +#define RESOLVE_IN_ROOT		0x10 /* Make all jumps to "/" and ".."
+> +					be scoped inside the dirfd
+> +					(similar to chroot(2)). */
+> +
+> +/* how->upgrade flags for openat2(2). */
+> +/* First bit is reserved for a future UPGRADE_NOEXEC flag. */
+> +#define UPGRADE_NOREAD		0x02 /* Block re-opening with MAY_READ. */
+> +#define UPGRADE_NOWRITE		0x04 /* Block re-opening with MAY_WRITE. */
+>  
+>  #endif /* _UAPI_LINUX_FCNTL_H */
+
+-- 
+Jeff Layton <jlayton@kernel.org>
 
