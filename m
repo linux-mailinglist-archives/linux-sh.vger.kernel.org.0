@@ -2,140 +2,149 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C6786B1B4A
-	for <lists+linux-sh@lfdr.de>; Fri, 13 Sep 2019 12:01:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD84DB2E7D
+	for <lists+linux-sh@lfdr.de>; Sun, 15 Sep 2019 07:49:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388005AbfIMKBG (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 13 Sep 2019 06:01:06 -0400
-Received: from pegase1.c-s.fr ([93.17.236.30]:60145 "EHLO pegase1.c-s.fr"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387427AbfIMKBG (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Fri, 13 Sep 2019 06:01:06 -0400
-Received: from localhost (mailhub1-int [192.168.12.234])
-        by localhost (Postfix) with ESMTP id 46VB3f0pVyz9tyjW;
-        Fri, 13 Sep 2019 12:01:02 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
-        reason="1024-bit key; insecure key"
-        header.d=c-s.fr header.i=@c-s.fr header.b=Sqj8nI8N; dkim-adsp=pass;
-        dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-        by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
-        with ESMTP id wR-kri8FtY2Q; Fri, 13 Sep 2019 12:01:02 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-        by pegase1.c-s.fr (Postfix) with ESMTP id 46VB3d6fTQz9tyjG;
-        Fri, 13 Sep 2019 12:01:01 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
-        t=1568368861; bh=2ALza02n3A6CEg96aj5aMUr3JRGvxRxQLYEMFbFE/UU=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=Sqj8nI8NzbdvtlrbtrCYNcrM/TyIHT3s84kxgzLuc1bHrWIX3+Flnk1NoUeSpiScl
-         UtPpympvmV9LviqGRUz/Z7JinvogKFhxB4Hnk01VKvvK3cYgxdyYZdocRhBX7zGS2q
-         RYCcqoehg9GVxm+zOPGaVX3kpe6owDPMAy/ACXJk=
-Received: from localhost (localhost [127.0.0.1])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id F0DC88B982;
-        Fri, 13 Sep 2019 12:01:02 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-        with ESMTP id fVVtef9u6zrS; Fri, 13 Sep 2019 12:01:02 +0200 (CEST)
-Received: from [172.25.230.101] (po15451.idsi0.si.c-s.fr [172.25.230.101])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 95ADA8B958;
-        Fri, 13 Sep 2019 12:01:02 +0200 (CEST)
-Subject: Re: [PATCH V2 2/2] mm/pgtable/debug: Add test validating architecture
- page table helpers
-To:     Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mike Rapoport <rppt@linux.vnet.ibm.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Michal Hocko <mhocko@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Mark Brown <broonie@kernel.org>,
-        Steven Price <Steven.Price@arm.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Kees Cook <keescook@chromium.org>,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        Matthew Wilcox <willy@infradead.org>,
-        Sri Krishna chowdary <schowdary@nvidia.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
-        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        id S1726278AbfIOFt0 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sun, 15 Sep 2019 01:49:26 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:65490 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726279AbfIOFtX (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sun, 15 Sep 2019 01:49:23 -0400
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x8F5lKTA134435
+        for <linux-sh@vger.kernel.org>; Sun, 15 Sep 2019 01:49:22 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2v1dqe2315-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-sh@vger.kernel.org>; Sun, 15 Sep 2019 01:49:22 -0400
+Received: from localhost
+        by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-sh@vger.kernel.org> from <rppt@linux.ibm.com>;
+        Sun, 15 Sep 2019 06:49:19 +0100
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+        by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Sun, 15 Sep 2019 06:49:09 +0100
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
+        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x8F5n7JN51511398
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sun, 15 Sep 2019 05:49:07 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 0B14452051;
+        Sun, 15 Sep 2019 05:49:07 +0000 (GMT)
+Received: from linux.ibm.com (unknown [9.148.8.160])
+        by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id BB4A55204F;
+        Sun, 15 Sep 2019 05:49:03 +0000 (GMT)
+Date:   Sun, 15 Sep 2019 08:49:02 +0300
+From:   Mike Rapoport <rppt@linux.ibm.com>
+To:     Yunsheng Lin <linyunsheng@huawei.com>
+Cc:     catalin.marinas@arm.com, will@kernel.org, mingo@redhat.com,
+        bp@alien8.de, rth@twiddle.net, ink@jurassic.park.msu.ru,
+        mattst88@gmail.com, benh@kernel.crashing.org, paulus@samba.org,
+        mpe@ellerman.id.au, heiko.carstens@de.ibm.com, gor@linux.ibm.com,
+        borntraeger@de.ibm.com, ysato@users.sourceforge.jp,
+        dalias@libc.org, davem@davemloft.net, ralf@linux-mips.org,
+        paul.burton@mips.com, jhogan@kernel.org, jiaxun.yang@flygoat.com,
+        chenhc@lemote.com, akpm@linux-foundation.org,
+        anshuman.khandual@arm.com, tglx@linutronix.de, cai@lca.pw,
+        robin.murphy@arm.com, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, hpa@zytor.com, x86@kernel.org,
+        dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
+        len.brown@intel.com, axboe@kernel.dk, dledford@redhat.com,
+        jeffrey.t.kirsher@intel.com, linux-alpha@vger.kernel.org,
+        naveen.n.rao@linux.vnet.ibm.com, mwb@linux.vnet.ibm.com,
         linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
         linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-References: <1568268173-31302-1-git-send-email-anshuman.khandual@arm.com>
- <1568268173-31302-3-git-send-email-anshuman.khandual@arm.com>
- <ab0ca38b-1e4f-b636-f8b4-007a15903984@c-s.fr>
- <502c497a-9bf1-7d2e-95f2-cfebcd9cf1d9@arm.com>
-From:   Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <95ed9d92-dd43-4c45-2e52-738aed7f2fb5@c-s.fr>
-Date:   Fri, 13 Sep 2019 12:01:00 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        tbogendoerfer@suse.de, linux-mips@vger.kernel.org,
+        rafael@kernel.org, mhocko@kernel.org, gregkh@linuxfoundation.org
+Subject: Re: [PATCH v3 7/8] mips: numa: make node_to_cpumask_map()
+ NUMA_NO_NODE aware for mips
+References: <1568283334-178380-1-git-send-email-linyunsheng@huawei.com>
+ <1568283334-178380-8-git-send-email-linyunsheng@huawei.com>
 MIME-Version: 1.0
-In-Reply-To: <502c497a-9bf1-7d2e-95f2-cfebcd9cf1d9@arm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1568283334-178380-8-git-send-email-linyunsheng@huawei.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-TM-AS-GCONF: 00
+x-cbid: 19091505-0012-0000-0000-0000034BBE09
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19091505-0013-0000-0000-0000218630DE
+Message-Id: <20190915054901.GC11429@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-09-15_03:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1909150063
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
+Hi,
 
-
-Le 13/09/2019 à 11:02, Anshuman Khandual a écrit :
+On Thu, Sep 12, 2019 at 06:15:33PM +0800, Yunsheng Lin wrote:
+> When passing the return value of dev_to_node() to cpumask_of_node()
+> without checking the node id if the node id is NUMA_NO_NODE, there is
+> global-out-of-bounds detected by KASAN.
 > 
->>> +#if !defined(__PAGETABLE_PMD_FOLDED) && !defined(__ARCH_HAS_4LEVEL_HACK)
->>
->> #ifdefs have to be avoided as much as possible, see below
+> From the discussion [1], NUMA_NO_NODE really means no node affinity,
+> which also means all cpus should be usable. So the cpumask_of_node()
+> should always return all cpus online when user passes the node id
+> as NUMA_NO_NODE, just like similar semantic that page allocator handles
+> NUMA_NO_NODE.
 > 
-> Yeah but it has been bit difficult to avoid all these $ifdef because of the
-> availability (or lack of it) for all these pgtable helpers in various config
-> combinations on all platforms.
-
-As far as I can see these pgtable helpers should exist everywhere at 
-least via asm-generic/ files.
-
-Can you spot a particular config which fails ?
-
+> But we cannot really copy the page allocator logic. Simply because the
+> page allocator doesn't enforce the near node affinity. It just picks it
+> up as a preferred node but then it is free to fallback to any other numa
+> node. This is not the case here and node_to_cpumask_map will only restrict
+> to the particular node's cpus which would have really non deterministic
+> behavior depending on where the code is executed. So in fact we really
+> want to return cpu_online_mask for NUMA_NO_NODE.
 > 
->>
-
-[...]
-
->>> +#if !defined(__PAGETABLE_PUD_FOLDED) && !defined(__ARCH_HAS_5LEVEL_HACK)
->>
->> The same can be done here.
+> Since this arch was already NUMA_NO_NODE aware, this patch only changes
+> it to return cpu_online_mask and use NUMA_NO_NODE instead of "-1".
 > 
-> IIRC not only the page table helpers but there are data types (pxx_t) which
-> were not present on various configs and these wrappers help prevent build
-> failures. Any ways will try and see if this can be improved further. But
-> meanwhile if you have some suggestions, please do let me know.
+> [1] https://lore.kernel.org/patchwork/patch/1125789/
+> Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+> Suggested-by: Michal Hocko <mhocko@kernel.org>
+> ---
+> V3: Change to only handle NUMA_NO_NODE, and return cpu_online_mask
+>     for NUMA_NO_NODE case, and change the commit log to better justify
+>     the change.
+> ---
+>  arch/mips/include/asm/mach-ip27/topology.h | 4 ++--
 
-pgt_t and pmd_t are everywhere I guess.
-then pud_t and p4d_t have fallbacks in asm-generic files.
+Nit: the subject says "mips:", but this patch only touches sgi-ip27 and
+loongson is updated as a separate patch. I don't see why both patches
+cannot be merged. Moreover, the whole set can be made as a single patch,
+IMHO.
 
-So it shouldn't be an issue. Maybe if a couple of arches miss them, the 
-best would be to fix the arches, since that's the purpose of your 
-testsuite isn't it ?
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/mips/include/asm/mach-ip27/topology.h b/arch/mips/include/asm/mach-ip27/topology.h
+> index 965f079..04505e6 100644
+> --- a/arch/mips/include/asm/mach-ip27/topology.h
+> +++ b/arch/mips/include/asm/mach-ip27/topology.h
+> @@ -15,8 +15,8 @@ struct cpuinfo_ip27 {
+>  extern struct cpuinfo_ip27 sn_cpu_info[NR_CPUS];
+>  
+>  #define cpu_to_node(cpu)	(sn_cpu_info[(cpu)].p_nodeid)
+> -#define cpumask_of_node(node)	((node) == -1 ?				\
+> -				 cpu_all_mask :				\
+> +#define cpumask_of_node(node)	((node) == NUMA_NO_NODE ?		\
+> +				 cpu_online_mask :			\
+>  				 &hub_data(node)->h_cpus)
+>  struct pci_bus;
+>  extern int pcibus_to_node(struct pci_bus *);
+> -- 
+> 2.8.1
+> 
 
+-- 
+Sincerely yours,
+Mike.
 
-Christophe
