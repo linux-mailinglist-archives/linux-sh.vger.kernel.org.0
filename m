@@ -2,300 +2,276 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1894BB5791
-	for <lists+linux-sh@lfdr.de>; Tue, 17 Sep 2019 23:31:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C52BBB5A9F
+	for <lists+linux-sh@lfdr.de>; Wed, 18 Sep 2019 07:04:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728016AbfIQVav (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 17 Sep 2019 17:30:51 -0400
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:36828 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728034AbfIQVav (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 17 Sep 2019 17:30:51 -0400
-Received: by mail-oi1-f194.google.com with SMTP id k20so4222309oih.3
-        for <linux-sh@vger.kernel.org>; Tue, 17 Sep 2019 14:30:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ESCnXX2tcIZXxoYYdwBnYQ13kyLGDQXAfzDyU1IsljM=;
-        b=jUgafeXoQWRROVQcTu6YfyeHgWxQgQnh4jo0vXJb9gmwfB60c9yL42Xud+pRnhazvu
-         I55/SWoMFVopXjb7HLBe3ZwDp8YJ8AIZ8yE+MZ1ol1jCwWnIpfYZUGgVJMSnV8dTUt6g
-         Fj+f3RqGjAClmuMaYSKTGHkK+kbzWWV2PGu8pnhEDzRe1H1j/2nUdgWnUmqKQJs9XJhD
-         bcgWdPhYUHXwS43uDaRjRrlqwvcEMFzpAIgQXR+SQCsx7w3nXgWKc6kAeP7uC4P5GOpV
-         geTEa7Nd78q01D+rHdE0lfUUKO0VvNzXAoY9/ESlMRu9nFZIkRllJNqARaqGkFjsJcK8
-         RCrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ESCnXX2tcIZXxoYYdwBnYQ13kyLGDQXAfzDyU1IsljM=;
-        b=F2FRkotXLxMhxucDGmr+SiWjRus/PCtoqpBMhERRyGMWAGfJbxc9sslVI9lhYN0vi/
-         iVHsTko6Oc7z8h89JMVegxJt3fLLCAAUCl8hsVpKUOriLCNwyDhrbsSwB2Bn8nHg72Jq
-         AiXz9BKshHEFFvwNXWGIsw6fxJE01kqryfI8tKxA7fe6oTgZND9OIw1nM5wZawM4ece5
-         efEVJxXoqcVNUogOYc+p/hBSfXQmBj8CNIurNRG1qKHkMJ9YMLmR1CDvYbmBySelxAFW
-         1YUxveO+td7t9sNG3V8qjzpoPw9VyTWqWG8i5FKO1RN66HbA2pyHtTjNhFaG7pPYi9tY
-         Fj6Q==
-X-Gm-Message-State: APjAAAXeAqyNkuAd71XfymthLA7x1whI1YaAyF31uu5kqp99IQF786hM
-        Qs1VaoJmZAheeRIMEn5THrPmXzD3o+CSFCTV9MYzQQ==
-X-Google-Smtp-Source: APXvYqwxm+0NJ68SJt1aKiZMUXpTcHLshnMGNY9q+/BgS9qyQqvS1IrxODCZyEWbmarv3+IaDknKyiL8F7FGSmCNufY=
-X-Received: by 2002:aca:ed52:: with SMTP id l79mr129659oih.47.1568755849487;
- Tue, 17 Sep 2019 14:30:49 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190904201933.10736-1-cyphar@cyphar.com> <20190904201933.10736-6-cyphar@cyphar.com>
-In-Reply-To: <20190904201933.10736-6-cyphar@cyphar.com>
-From:   Jann Horn <jannh@google.com>
-Date:   Tue, 17 Sep 2019 23:30:23 +0200
-Message-ID: <CAG48ez1_64249RdX6Nj_32YS+jhuXZBAd_ZL9ozggbSQy+cc-A@mail.gmail.com>
-Subject: Re: [PATCH v12 05/12] namei: obey trailing magic-link DAC permissions
-To:     Aleksa Sarai <cyphar@cyphar.com>
-Cc:     Al Viro <viro@zeniv.linux.org.uk>,
-        Jeff Layton <jlayton@kernel.org>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Ingo Molnar <mingo@redhat.com>,
+        id S1727080AbfIRFEH (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 18 Sep 2019 01:04:07 -0400
+Received: from foss.arm.com ([217.140.110.172]:34940 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726444AbfIRFEG (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Wed, 18 Sep 2019 01:04:06 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7351F1000;
+        Tue, 17 Sep 2019 22:04:05 -0700 (PDT)
+Received: from [10.162.40.136] (p8cg001049571a15.blr.arm.com [10.162.40.136])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B280D3F575;
+        Tue, 17 Sep 2019 22:03:54 -0700 (PDT)
+Subject: Re: [PATCH V2 2/2] mm/pgtable/debug: Add test validating architecture
+ page table helpers
+To:     Christophe Leroy <christophe.leroy@c-s.fr>, linux-mm@kvack.org
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Mike Rapoport <rppt@linux.vnet.ibm.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Dan Williams <dan.j.williams@intel.com>,
         Peter Zijlstra <peterz@infradead.org>,
-        Christian Brauner <christian@brauner.io>,
-        Andy Lutomirski <luto@kernel.org>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Alexei Starovoitov <ast@kernel.org>,
+        Michal Hocko <mhocko@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Mark Brown <broonie@kernel.org>,
+        Steven Price <Steven.Price@arm.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
         Kees Cook <keescook@chromium.org>,
-        Tycho Andersen <tycho@tycho.ws>,
-        David Drysdale <drysdale@google.com>,
-        Chanho Min <chanho.min@lge.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Aleksa Sarai <asarai@suse.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Linux Containers <containers@lists.linux-foundation.org>,
-        linux-alpha@vger.kernel.org, Linux API <linux-api@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        linux-ia64@vger.kernel.org,
-        kernel list <linux-kernel@vger.kernel.org>,
-        "open list:KERNEL SELFTEST FRAMEWORK" 
-        <linux-kselftest@vger.kernel.org>, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        sparclinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+        Matthew Wilcox <willy@infradead.org>,
+        Sri Krishna chowdary <schowdary@nvidia.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        James Hogan <jhogan@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+References: <1568268173-31302-1-git-send-email-anshuman.khandual@arm.com>
+ <1568268173-31302-3-git-send-email-anshuman.khandual@arm.com>
+ <ab0ca38b-1e4f-b636-f8b4-007a15903984@c-s.fr>
+ <502c497a-9bf1-7d2e-95f2-cfebcd9cf1d9@arm.com>
+ <95ed9d92-dd43-4c45-2e52-738aed7f2fb5@c-s.fr>
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <f872e6f4-a5cb-069d-2034-78961930cb9f@arm.com>
+Date:   Wed, 18 Sep 2019 10:34:09 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
+MIME-Version: 1.0
+In-Reply-To: <95ed9d92-dd43-4c45-2e52-738aed7f2fb5@c-s.fr>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Wed, Sep 4, 2019 at 10:21 PM Aleksa Sarai <cyphar@cyphar.com> wrote:
-> The ability for userspace to "re-open" file descriptors through
-> /proc/self/fd has been a very useful tool for all sorts of usecases
-> (container runtimes are one common example). However, the current
-> interface for doing this has resulted in some pretty subtle security
-> holes. Userspace can re-open a file descriptor with more permissions
-> than the original, which can result in cases such as /proc/$pid/exe
-> being re-opened O_RDWR at a later date even though (by definition)
-> /proc/$pid/exe cannot be opened for writing. When combined with O_PATH
-> the results can get even more confusing.
-[...]
-> Instead we have to restrict it in such a way that it doesn't break
-> (good) users but does block potential attackers. The solution applied in
-> this patch is to restrict *re-opening* (not resolution through)
-> magic-links by requiring that mode of the link be obeyed. Normal
-> symlinks have modes of a+rwx but magic-links have other modes. These
-> magic-link modes were historically ignored during path resolution, but
-> they've now been re-purposed for more useful ends.
 
-Thanks for dealing with this issue!
 
-[...]
-> diff --git a/fs/namei.c b/fs/namei.c
-> index 209c51a5226c..54d57dad0f91 100644
-> --- a/fs/namei.c
-> +++ b/fs/namei.c
-> @@ -872,7 +872,7 @@ void nd_jump_link(struct path *path)
->
->         nd->path = *path;
->         nd->inode = nd->path.dentry->d_inode;
-> -       nd->flags |= LOOKUP_JUMPED;
-> +       nd->flags |= LOOKUP_JUMPED | LOOKUP_MAGICLINK_JUMPED;
->  }
-[...]
-> +static int trailing_magiclink(struct nameidata *nd, int acc_mode,
-> +                             fmode_t *opath_mask)
-> +{
-> +       struct inode *inode = nd->link_inode;
-> +       fmode_t upgrade_mask = 0;
-> +
-> +       /* Was the trailing_symlink() a magic-link? */
-> +       if (!(nd->flags & LOOKUP_MAGICLINK_JUMPED))
-> +               return 0;
-> +
-> +       /*
-> +        * Figure out the upgrade-mask of the link_inode. Since these aren't
-> +        * strictly POSIX semantics we don't do an acl_permission_check() here,
-> +        * so we only care that at least one bit is set for each upgrade-mode.
-> +        */
-> +       if (inode->i_mode & S_IRUGO)
-> +               upgrade_mask |= FMODE_PATH_READ;
-> +       if (inode->i_mode & S_IWUGO)
-> +               upgrade_mask |= FMODE_PATH_WRITE;
-> +       /* Restrict the O_PATH upgrade-mask of the caller. */
-> +       if (opath_mask)
-> +               *opath_mask &= upgrade_mask;
-> +       return may_open_magiclink(upgrade_mask, acc_mode);
->  }
+On 09/13/2019 03:31 PM, Christophe Leroy wrote:
+> 
+> 
+> Le 13/09/2019 à 11:02, Anshuman Khandual a écrit :
+>>
+>>>> +#if !defined(__PAGETABLE_PMD_FOLDED) && !defined(__ARCH_HAS_4LEVEL_HACK)
+>>>
+>>> #ifdefs have to be avoided as much as possible, see below
+>>
+>> Yeah but it has been bit difficult to avoid all these $ifdef because of the
+>> availability (or lack of it) for all these pgtable helpers in various config
+>> combinations on all platforms.
+> 
+> As far as I can see these pgtable helpers should exist everywhere at least via asm-generic/ files.
 
-This looks racy because entries in the file descriptor table can be
-switched out as long as task->files->file_lock isn't held. Unless I'm
-missing something, something like the following (untested) would
-bypass this restriction:
+But they might not actually do the right thing.
 
-int readonly_fd = ...; /* some read-only fd we want to reopen as writable */
-int writable_fd = open("/dev/null", O_RDWR);
-int flippy_fd = dup(writable_fd);
-char flippy_fd_path[100];
-sprintf(flippy_fd_path, "/proc/%d/fd/%d", getpid(), flippy_fd);
-if (fork() == 0) {
-  while (1) {
-    int reopened_fd = open(flippy_fd_path, O_RDWR);
-    if (reopened_fd == -1) continue;
-    char reopened_fd_path[100];
-    sprintf(reopened_fd_path, "/proc/self/fd/%d", reopened_fd);
-    char reopened_fd_target[1000];
-    int target_len = readlink(reopened_fd_path, reopened_fd_target,
-sizeof(reopened_fd_target)-1);
-    reopened_fd_target[target_len] = 0;
-    if (strcmp(reopened_fd_target, "/dev/null"))
-      printf("managed to reopen as writable\n");
-    close(reopened_fd);
-  }
-} else {
-  while (1) {
-    dup2(readonly_fd, flippy_fd);
-    dup2(writable_fd, flippy_fd);
-  }
+> 
+> Can you spot a particular config which fails ?
+
+Lets consider the following example (after removing the $ifdefs around it)
+which though builds successfully but fails to pass the intended test. This
+is with arm64 config 4K pages sizes with 39 bits VA space which ends up
+with a 3 level page table arrangement.
+
+static void __init p4d_clear_tests(p4d_t *p4dp)
+{
+        p4d_t p4d = READ_ONCE(*p4dp);
+
+        p4d = __p4d(p4d_val(p4d) | RANDOM_ORVALUE);
+        WRITE_ONCE(*p4dp, p4d);
+        p4d_clear(p4dp);
+        p4d = READ_ONCE(*p4dp);
+        WARN_ON(!p4d_none(p4d));
 }
 
-Perhaps you could change nd_jump_link() to "void nd_jump_link(struct
-path *path, umode_t link_mode)", and let proc_pid_get_link() pass the
-link_mode through from an out-argument of .proc_get_link()? Then
-proc_fd_link() could grab the proper mode in a race-free manner. And
-nd_jump_link() could stash the mode in the nameidata.
+The following test hits an error at WARN_ON(!p4d_none(p4d))
 
-A sketch of how I imagine that:
-===============================
-diff --git a/fs/namei.c b/fs/namei.c
-index 6b936038319b..14c6790203c7 100644
---- a/fs/namei.c
-+++ b/fs/namei.c
-@@ -506,6 +506,7 @@ struct nameidata {
-        struct inode    *link_inode;
-        unsigned        root_seq;
-        int             dfd;
-+       umode_t         last_link_mode;
- } __randomize_layout;
+[   16.757333] ------------[ cut here ]------------
+[   16.758019] WARNING: CPU: 11 PID: 1 at mm/arch_pgtable_test.c:187 arch_pgtable_tests_init+0x24c/0x474
+[   16.759455] Modules linked in:
+[   16.759952] CPU: 11 PID: 1 Comm: swapper/0 Not tainted 5.3.0-next-20190916-00005-g61c218153bb8-dirty #222
+[   16.761449] Hardware name: linux,dummy-virt (DT)
+[   16.762185] pstate: 00400005 (nzcv daif +PAN -UAO)
+[   16.762964] pc : arch_pgtable_tests_init+0x24c/0x474
+[   16.763750] lr : arch_pgtable_tests_init+0x174/0x474
+[   16.764534] sp : ffffffc011d7bd50
+[   16.765065] x29: ffffffc011d7bd50 x28: ffffffff1756bac0 
+[   16.765908] x27: ffffff85ddaf3000 x26: 00000000000002e8 
+[   16.766767] x25: ffffffc0111ce000 x24: ffffff85ddaf32e8 
+[   16.767606] x23: ffffff85ddaef278 x22: 00000045cc844000 
+[   16.768445] x21: 000000065daef003 x20: ffffffff17540000 
+[   16.769283] x19: ffffff85ddb60000 x18: 0000000000000014 
+[   16.770122] x17: 00000000980426bb x16: 00000000698594c6 
+[   16.770976] x15: 0000000066e25a88 x14: 0000000000000000 
+[   16.771813] x13: ffffffff17540000 x12: 000000000000000a 
+[   16.772651] x11: ffffff85fcfd0a40 x10: 0000000000000001 
+[   16.773488] x9 : 0000000000000008 x8 : ffffffc01143ab26 
+[   16.774336] x7 : 0000000000000000 x6 : 0000000000000000 
+[   16.775180] x5 : 0000000000000000 x4 : 0000000000000000 
+[   16.776018] x3 : ffffffff1756bbe8 x2 : 000000065daeb003 
+[   16.776856] x1 : 000000000065daeb x0 : fffffffffffff000 
+[   16.777693] Call trace:
+[   16.778092]  arch_pgtable_tests_init+0x24c/0x474
+[   16.778843]  do_one_initcall+0x74/0x1b0
+[   16.779458]  kernel_init_freeable+0x1cc/0x290
+[   16.780151]  kernel_init+0x10/0x100
+[   16.780710]  ret_from_fork+0x10/0x18
+[   16.781282] ---[ end trace 042e6c40c0a3b038 ]---
 
- static void set_nameidata(struct nameidata *p, int dfd, struct filename *name)
-@@ -890,7 +891,7 @@ static int nd_jump_root(struct nameidata *nd)
-  * Helper to directly jump to a known parsed path from ->get_link,
-  * caller must have taken a reference to path beforehand.
-  */
--void nd_jump_link(struct path *path)
-+void nd_jump_link(struct path *path, umode_t link_mode)
- {
-        struct nameidata *nd = current->nameidata;
-        path_put(&nd->path);
-@@ -898,6 +899,7 @@ void nd_jump_link(struct path *path)
-        nd->path = *path;
-        nd->inode = nd->path.dentry->d_inode;
-        nd->flags |= LOOKUP_JUMPED | LOOKUP_MAGICLINK_JUMPED;
-+       nd->last_link_mode = link_mode;
- }
+On arm64 (4K page size|39 bits VA|3 level page table)
 
- static inline void put_link(struct nameidata *nd)
-@@ -3654,9 +3656,9 @@ static int trailing_magiclink(struct nameidata
-*nd, int acc_mode,
-         * strictly POSIX semantics we don't do an acl_permission_check() here,
-         * so we only care that at least one bit is set for each upgrade-mode.
+#elif CONFIG_PGTABLE_LEVELS == 3	/* Applicable here */
+#define __ARCH_USE_5LEVEL_HACK
+#include <asm-generic/pgtable-nopud.h>
+
+Which pulls in 
+
+#include <asm-generic/pgtable-nop4d-hack.h>
+
+which pulls in
+
+#include <asm-generic/5level-fixup.h>
+
+which defines
+
+static inline int p4d_none(p4d_t p4d)
+{
+        return 0;
+}
+
+which will invariably trigger WARN_ON(!p4d_none(p4d)).
+
+Similarly for next test p4d_populate_tests() which will always be
+successful because p4d_bad() invariably returns negative.
+
+static inline int p4d_bad(p4d_t p4d)
+{
+        return 0;
+}
+
+static void __init p4d_populate_tests(struct mm_struct *mm, p4d_t *p4dp,
+                                      pud_t *pudp)
+{
+        p4d_t p4d;
+
+        /*
+         * This entry points to next level page table page.
+         * Hence this must not qualify as p4d_bad().
          */
--       if (inode->i_mode & S_IRUGO)
-+       if (nd->last_link_mode & S_IRUGO)
-                upgrade_mask |= FMODE_PATH_READ;
--       if (inode->i_mode & S_IWUGO)
-+       if (nd->last_link_mode & S_IWUGO)
-                upgrade_mask |= FMODE_PATH_WRITE;
-        /* Restrict the O_PATH upgrade-mask of the caller. */
-        if (opath_mask)
-diff --git a/fs/proc/base.c b/fs/proc/base.c
-index 297242174402..af0218447571 100644
---- a/fs/proc/base.c
-+++ b/fs/proc/base.c
-@@ -1614,6 +1614,7 @@ static const char *proc_pid_get_link(struct
-dentry *dentry,
- {
-        struct path path;
-        int error = -EACCES;
-+       umode_t link_mode;
+        pud_clear(pudp);
+        p4d_clear(p4dp);
+        p4d_populate(mm, p4dp, pudp);
+        p4d = READ_ONCE(*p4dp);
+        WARN_ON(p4d_bad(p4d));
+}
 
-        if (!dentry)
-                return ERR_PTR(-ECHILD);
-@@ -1622,11 +1623,11 @@ static const char *proc_pid_get_link(struct
-dentry *dentry,
-        if (!proc_fd_access_allowed(inode))
-                goto out;
+We should not run these tests for the above config because they are
+not applicable and will invariably produce same result.
 
--       error = PROC_I(inode)->op.proc_get_link(dentry, &path);
-+       error = PROC_I(inode)->op.proc_get_link(dentry, &path, &link_mode);
-        if (error)
-                goto out;
+> 
+>>
+>>>
+> 
+> [...]
+> 
+>>>> +#if !defined(__PAGETABLE_PUD_FOLDED) && !defined(__ARCH_HAS_5LEVEL_HACK)
+>>>
+>>> The same can be done here.
+>>
+>> IIRC not only the page table helpers but there are data types (pxx_t) which
+>> were not present on various configs and these wrappers help prevent build
+>> failures. Any ways will try and see if this can be improved further. But
+>> meanwhile if you have some suggestions, please do let me know.
+> 
+> pgt_t and pmd_t are everywhere I guess.
+> then pud_t and p4d_t have fallbacks in asm-generic files.
 
--       nd_jump_link(&path);
-+       nd_jump_link(&path, link_mode);
-        return NULL;
- out:
-        return ERR_PTR(error);
-diff --git a/fs/proc/fd.c b/fs/proc/fd.c
-index 9b7d8becb002..9c1d247177b1 100644
---- a/fs/proc/fd.c
-+++ b/fs/proc/fd.c
-@@ -163,7 +163,8 @@ static const struct dentry_operations
-tid_fd_dentry_operations = {
-        .d_delete       = pid_delete_dentry,
- };
+Lets take another example where it fails to compile. On arm64 with 16K
+page size, 48 bits VA, 4 level page table arrangement in the following
+test, pgd_populate() does not have the required signature.
 
--static int proc_fd_link(struct dentry *dentry, struct path *path)
-+static int proc_fd_link(struct dentry *dentry, struct path *path,
-+                       umode_t *link_mode)
- {
-        struct files_struct *files = NULL;
-        struct task_struct *task;
-@@ -184,6 +185,7 @@ static int proc_fd_link(struct dentry *dentry,
-struct path *path)
-                if (fd_file) {
-                        *path = fd_file->f_path;
-                        path_get(&fd_file->f_path);
-+                       *link_mode = /* something based on fd_file->f_mode */;
-                        ret = 0;
-                }
-                spin_unlock(&files->file_lock);
-diff --git a/fs/proc/internal.h b/fs/proc/internal.h
-index cd0c8d5ce9a1..a090fff984ed 100644
---- a/fs/proc/internal.h
-+++ b/fs/proc/internal.h
-@@ -74,7 +74,7 @@ extern struct kmem_cache *proc_dir_entry_cache;
- void pde_free(struct proc_dir_entry *pde);
+static void pgd_populate_tests(struct mm_struct *mm, pgd_t *pgdp, p4d_t *p4dp)
+{
+        pgd_t pgd;
 
- union proc_op {
--       int (*proc_get_link)(struct dentry *, struct path *);
-+       int (*proc_get_link)(struct dentry *, struct path *, umode_t *);
-        int (*proc_show)(struct seq_file *m,
-                struct pid_namespace *ns, struct pid *pid,
-                struct task_struct *task);
-===============================
+        if (mm_p4d_folded(mm))
+                return;
+
+       /*
+         * This entry points to next level page table page.
+         * Hence this must not qualify as pgd_bad().
+         */
+        p4d_clear(p4dp);
+        pgd_clear(pgdp);
+        pgd_populate(mm, pgdp, p4dp);
+        pgd = READ_ONCE(*pgdp);
+        WARN_ON(pgd_bad(pgd));
+}
+
+mm/arch_pgtable_test.c: In function ‘pgd_populate_tests’:
+mm/arch_pgtable_test.c:254:25: error: passing argument 3 of ‘pgd_populate’ from incompatible pointer type [-Werror=incompatible-pointer-types]
+  pgd_populate(mm, pgdp, p4dp);
+                         ^~~~
+In file included from mm/arch_pgtable_test.c:27:0:
+./arch/arm64/include/asm/pgalloc.h:81:20: note: expected ‘pud_t * {aka struct <anonymous> *}’ but argument is of type ‘pgd_t * {aka struct <anonymous> *}’
+ static inline void pgd_populate(struct mm_struct *mm, pgd_t *pgdp, pud_t *pudp)
+
+The build failure is because p4d_t * maps to pgd_t * but the applicable
+(it does not fallback on generic ones) pgd_populate() expects a pud_t *.
+
+Except for archs which have 5 level page able, pgd_populate() always accepts
+lower level page table pointers as the last argument as they dont have that
+many levels.
+
+arch/x86/include/asm/pgalloc.h:static inline void pgd_populate(struct mm_struct *mm, pgd_t *pgd, p4d_t *p4d)
+arch/s390/include/asm/pgalloc.h:static inline void pgd_populate(struct mm_struct *mm, pgd_t *pgd, p4d_t *p4d)
+
+But others
+
+arch/arm64/include/asm/pgalloc.h:static inline void pgd_populate(struct mm_struct *mm, pgd_t *pgdp, pud_t *pudp)
+arch/m68k/include/asm/motorola_pgalloc.h:static inline void pgd_populate(struct mm_struct *mm, pgd_t *pgd, pmd_t *pmd)
+arch/mips/include/asm/pgalloc.h:static inline void pgd_populate(struct mm_struct *mm, pgd_t *pgd, pud_t *pud)
+arch/powerpc/include/asm/book3s/64/pgalloc.h:static inline void pgd_populate(struct mm_struct *mm, pgd_t *pgd, pud_t *pud)
+
+I remember going through all these combinations before arriving at the
+current state of #ifdef exclusions. Probably, to solved this all platforms
+have to define pxx_populate() helpers assuming they support 5 level page
+table.
+
+> 
+> So it shouldn't be an issue. Maybe if a couple of arches miss them, the best would be to fix the arches, since that's the purpose of your testsuite isn't it ?
+
+The run time failures as explained previously is because of the folding which
+needs to be protected as they are not even applicable. The compile time
+failures are because pxx_populate() signatures are platform specific depending
+on how many page table levels they really support.
