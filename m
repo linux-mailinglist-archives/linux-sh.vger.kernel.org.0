@@ -2,22 +2,40 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A1D3BB7E3
-	for <lists+linux-sh@lfdr.de>; Mon, 23 Sep 2019 17:29:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FC2CBB881
+	for <lists+linux-sh@lfdr.de>; Mon, 23 Sep 2019 17:51:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727786AbfIWP3E (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 23 Sep 2019 11:29:04 -0400
-Received: from mx2.suse.de ([195.135.220.15]:51768 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725951AbfIWP3E (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Mon, 23 Sep 2019 11:29:04 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 3DAA9AD85;
-        Mon, 23 Sep 2019 15:28:59 +0000 (UTC)
-Date:   Mon, 23 Sep 2019 17:28:56 +0200
-From:   Michal Hocko <mhocko@kernel.org>
-To:     Peter Zijlstra <peterz@infradead.org>
+        id S1728776AbfIWPvF (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 23 Sep 2019 11:51:05 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:40272 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728720AbfIWPvF (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 23 Sep 2019 11:51:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=0RDd3iHkouZU1pRFRB48/lD4Y4fOddJfRH7mBxc6Vao=; b=NXlQx8HeAqeDb6yqEaTk/519B
+        dPw5dQx+43R/Xql9eX//W6l/1vbSDqJBsSKbX0+GgxGyR/lMzRBIJJLwaiBlYUPovHMUeZ4WuI2U9
+        pqR/T7IrCuH324g5O+5uhidav3oL5K11yioHiIVa88PxC9Lhl8Af25UBQiNsPQjgWAv5dhal7H8Pm
+        kjjT0b4sbkwdVtooJ5V/S1z3/O080RdL39Z8BxDGhymwdoNXrZ7KMaQqR08JJFpuEuA5JxPauwCNC
+        NwI5i96tju02O7rB8oB1RofYv2QQUL82ESd4By1d+WKKUSotGlAN05bG1WBwAaFYH+M7oRF/I/hUL
+        8rRYpfeYg==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92.2 #3 (Red Hat Linux))
+        id 1iCQa9-0006CY-8C; Mon, 23 Sep 2019 15:49:02 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id CEBBA303DFD;
+        Mon, 23 Sep 2019 17:48:07 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 0AF5F20D80D41; Mon, 23 Sep 2019 17:48:53 +0200 (CEST)
+Date:   Mon, 23 Sep 2019 17:48:52 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Michal Hocko <mhocko@kernel.org>
 Cc:     Yunsheng Lin <linyunsheng@huawei.com>, catalin.marinas@arm.com,
         will@kernel.org, mingo@redhat.com, bp@alien8.de, rth@twiddle.net,
         ink@jurassic.park.msu.ru, mattst88@gmail.com,
@@ -39,87 +57,60 @@ Cc:     Yunsheng Lin <linyunsheng@huawei.com>, catalin.marinas@arm.com,
         linux-mips@vger.kernel.org, rafael@kernel.org,
         gregkh@linuxfoundation.org
 Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
-Message-ID: <20190923152856.GB17206@dhcp22.suse.cz>
+Message-ID: <20190923154852.GG2369@hirez.programming.kicks-ass.net>
 References: <1568724534-146242-1-git-send-email-linyunsheng@huawei.com>
  <20190923151519.GE2369@hirez.programming.kicks-ass.net>
+ <20190923152856.GB17206@dhcp22.suse.cz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190923151519.GE2369@hirez.programming.kicks-ass.net>
+In-Reply-To: <20190923152856.GB17206@dhcp22.suse.cz>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Mon 23-09-19 17:15:19, Peter Zijlstra wrote:
-> On Tue, Sep 17, 2019 at 08:48:54PM +0800, Yunsheng Lin wrote:
-> > When passing the return value of dev_to_node() to cpumask_of_node()
-> > without checking if the device's node id is NUMA_NO_NODE, there is
-> > global-out-of-bounds detected by KASAN.
-> > 
-> > From the discussion [1], NUMA_NO_NODE really means no node affinity,
-> > which also means all cpus should be usable. So the cpumask_of_node()
-> > should always return all cpus online when user passes the node id as
-> > NUMA_NO_NODE, just like similar semantic that page allocator handles
-> > NUMA_NO_NODE.
-> > 
-> > But we cannot really copy the page allocator logic. Simply because the
-> > page allocator doesn't enforce the near node affinity. It just picks it
-> > up as a preferred node but then it is free to fallback to any other numa
-> > node. This is not the case here and node_to_cpumask_map will only restrict
-> > to the particular node's cpus which would have really non deterministic
-> > behavior depending on where the code is executed. So in fact we really
-> > want to return cpu_online_mask for NUMA_NO_NODE.
-> > 
-> > Also there is a debugging version of node_to_cpumask_map() for x86 and
-> > arm64, which is only used when CONFIG_DEBUG_PER_CPU_MAPS is defined, this
-> > patch changes it to handle NUMA_NO_NODE as normal node_to_cpumask_map().
-> > 
-> > [1] https://lore.kernel.org/patchwork/patch/1125789/
-> 
-> That is bloody unusable, don't do that. Use:
-> 
->   https://lkml.kernel.org/r/$MSGID
-> 
-> if anything. Then I can find it in my local mbox without having to
-> resort to touching a mouse and shitty browser software.
-> 
-> (also patchwork is absolute crap for reading email threads)
-> 
-> Anyway, I found it -- I think, I refused to click the link. I replied
-> there.
-> 
-> > Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
-> > Suggested-by: Michal Hocko <mhocko@kernel.org>
-> > Acked-by: Michal Hocko <mhocko@suse.com>
-> 
-> 
-> 
-> > diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
-> > index 4123100e..9859acb 100644
-> > --- a/arch/x86/mm/numa.c
-> > +++ b/arch/x86/mm/numa.c
-> > @@ -861,6 +861,9 @@ void numa_remove_cpu(int cpu)
-> >   */
-> >  const struct cpumask *cpumask_of_node(int node)
-> >  {
-> > +	if (node == NUMA_NO_NODE)
-> > +		return cpu_online_mask;
-> 
-> This mandates the caller holds cpus_read_lock() or something, I'm pretty
-> sure that if I put:
-> 
-> 	lockdep_assert_cpus_held();
+On Mon, Sep 23, 2019 at 05:28:56PM +0200, Michal Hocko wrote:
+> On Mon 23-09-19 17:15:19, Peter Zijlstra wrote:
 
-Is this documented somewhere? Also how does that differ from a normal
-case when a proper node is used? The cpumask will always be dynamic in
-the cpu hotplug presence, right?
+> > > diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+> > > index 4123100e..9859acb 100644
+> > > --- a/arch/x86/mm/numa.c
+> > > +++ b/arch/x86/mm/numa.c
+> > > @@ -861,6 +861,9 @@ void numa_remove_cpu(int cpu)
+> > >   */
+> > >  const struct cpumask *cpumask_of_node(int node)
+> > >  {
+> > > +	if (node == NUMA_NO_NODE)
+> > > +		return cpu_online_mask;
+> > 
+> > This mandates the caller holds cpus_read_lock() or something, I'm pretty
+> > sure that if I put:
+> > 
+> > 	lockdep_assert_cpus_held();
+> 
+> Is this documented somewhere?
 
-> here, it comes apart real quick. Without holding the cpu hotplug lock,
-> the online mask is gibberish.
+No idea... common sense :-)
 
-Can the returned cpu mask go away?
--- 
-Michal Hocko
-SUSE Labs
+> Also how does that differ from a normal
+> case when a proper node is used? The cpumask will always be dynamic in
+> the cpu hotplug presence, right?
+
+As per normal yes, and I'm fairly sure there's a ton of bugs. Any
+'online' state is subject to change except when you're holding
+sufficient locks to stop it.
+
+Disabling preemption also stabilizes it, because cpu unplug relies on
+stop-machine.
+
+> > here, it comes apart real quick. Without holding the cpu hotplug lock,
+> > the online mask is gibberish.
+> 
+> Can the returned cpu mask go away?
+
+No, the cpu_online_mask itself has static storage, the contents OTOH can
+change at will. Very little practical difference :-)
+
+
