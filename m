@@ -2,101 +2,127 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B39CDC374E
-	for <lists+linux-sh@lfdr.de>; Tue,  1 Oct 2019 16:29:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1496BC37B1
+	for <lists+linux-sh@lfdr.de>; Tue,  1 Oct 2019 16:40:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727181AbfJAO3Y (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 1 Oct 2019 10:29:24 -0400
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:33780 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727152AbfJAO3Y (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 1 Oct 2019 10:29:24 -0400
-Received: by mail-wm1-f66.google.com with SMTP id r17so2671463wme.0
-        for <linux-sh@vger.kernel.org>; Tue, 01 Oct 2019 07:29:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=Zbs/Q3MsdenwE0g7FlmKiMlk/SOvniNFvpDInB7/8lg=;
-        b=Ab78udnPe3CRWuo1p82gth5GZPwVCa619kuHOdLyJPwlTZWd8o67QnPGzfD0g5txa/
-         Hgmc/jnJuqVkWi7VwGXZ8lnqFcojAh6LTJrrJsydA11V+jKR6g2nJ0wuW/S4lTboC/SW
-         bKo1z1nPOemI8ZG34YVv5PlBByBjHVtciX91NVR8dL7DIiy+x5UgDPi2wQ1vDO2VxRbo
-         /LSQmlDGgjSUsQ9KL2o+b0G21XyHl0ICmPWF5a+VKrekFyLvwoa18e0ac+vetvM4EHav
-         V6wM6F4HzCA1IGEfa0dNVeVcb5gPTSNz9p4iL163mCfdf3Xyy3seTMimN6B43VNWdJQD
-         8H5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=Zbs/Q3MsdenwE0g7FlmKiMlk/SOvniNFvpDInB7/8lg=;
-        b=pAJK7XBf9y14Aa5E6ycNdsstIZGcekbLtbZINVG9CCPoQzDzvczd5Yz+MJ2hZIho9G
-         +UPPfwsY1MfBGE+/eTwoD0LFLr6lgvgtGq0WCckVIwe+4uFIcD47PrWHt/Vq6O3dEatQ
-         sr5Ds7xugeiDD6ratw2HBNnRDfMV0OjiCuQLKqMr4wBD0wZH0dtSiUzFK/khctvcNpdH
-         ObfrYsc/14vbWhhy0ON/Ms0xKtgxmpOa/ERhRvosaF9X6Ucj/47GWtuveZUiiR2z+Pru
-         TQLE3sHvuKv+U6hjmFAXKF1q6mBrPrBqFI3NvOydbBaTqfBlkv12lyb4ZuC8JGn8KF9z
-         DwoA==
-X-Gm-Message-State: APjAAAW7zGAs+8d+h7iY/2sHJvSw57islofNq4Mi8v38o6PO9T6z3M9E
-        bM+VoTmGCKkrAQh2WgkMEuoMag==
-X-Google-Smtp-Source: APXvYqxXALWaJtwvVfsLlZFYYua2CQBoHGuUym/bKHxQZ190WXx8BwxxVFOpKgosan9NU4AewmAYlQ==
-X-Received: by 2002:a05:600c:2290:: with SMTP id 16mr805781wmf.161.1569940160774;
-        Tue, 01 Oct 2019 07:29:20 -0700 (PDT)
-Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
-        by smtp.gmail.com with ESMTPSA id l18sm15404308wrc.18.2019.10.01.07.29.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Oct 2019 07:29:20 -0700 (PDT)
-Date:   Tue, 1 Oct 2019 15:29:18 +0100
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jacopo Mondi <jacopo@jmondi.org>, linux-sh@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: Re: [PATCH v4 1/7] backlight: gpio: remove unneeded include
-Message-ID: <20191001142918.gjifvlkz574dbihr@holly.lan>
-References: <20191001125837.4472-1-brgl@bgdev.pl>
- <20191001125837.4472-2-brgl@bgdev.pl>
+        id S2389133AbfJAOko (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 1 Oct 2019 10:40:44 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:33576 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2389014AbfJAOko (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Tue, 1 Oct 2019 10:40:44 -0400
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id A07773082E42;
+        Tue,  1 Oct 2019 14:40:43 +0000 (UTC)
+Received: from t460s.redhat.com (ovpn-116-54.ams2.redhat.com [10.36.116.54])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 782385D9E5;
+        Tue,  1 Oct 2019 14:40:32 +0000 (UTC)
+From:   David Hildenbrand <david@redhat.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+        linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Pankaj Gupta <pagupta@redhat.com>,
+        David Hildenbrand <david@redhat.com>
+Subject: [PATCH v5 01/10] mm/memunmap: Use the correct start and end pfn when removing pages from zone
+Date:   Tue,  1 Oct 2019 16:40:02 +0200
+Message-Id: <20191001144011.3801-2-david@redhat.com>
+In-Reply-To: <20191001144011.3801-1-david@redhat.com>
+References: <20191001144011.3801-1-david@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191001125837.4472-2-brgl@bgdev.pl>
-User-Agent: NeoMutt/20180716
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.46]); Tue, 01 Oct 2019 14:40:44 +0000 (UTC)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Tue, Oct 01, 2019 at 02:58:31PM +0200, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> 
-> We no longer use any symbols from of_gpio.h. Remove this include.
-> 
-> Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+With altmap, all the resource pfns are not initialized. While initializing
+pfn, altmap reserve space is skipped. Hence when removing pfn from zone
+skip pfns that were never initialized.
 
-> ---
->  drivers/video/backlight/gpio_backlight.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/drivers/video/backlight/gpio_backlight.c b/drivers/video/backlight/gpio_backlight.c
-> index 18e053e4716c..7e1990199fae 100644
-> --- a/drivers/video/backlight/gpio_backlight.c
-> +++ b/drivers/video/backlight/gpio_backlight.c
-> @@ -12,7 +12,6 @@
->  #include <linux/kernel.h>
->  #include <linux/module.h>
->  #include <linux/of.h>
-> -#include <linux/of_gpio.h>
->  #include <linux/platform_data/gpio_backlight.h>
->  #include <linux/platform_device.h>
->  #include <linux/property.h>
-> -- 
-> 2.23.0
-> 
+Update memunmap_pages to calculate start and end pfn based on altmap
+values. This fixes a kernel crash that is observed when destroying
+a namespace.
+
+[   81.356173] kernel BUG at include/linux/mm.h:1107!
+cpu 0x1: Vector: 700 (Program Check) at [c000000274087890]
+    pc: c0000000004b9728: memunmap_pages+0x238/0x340
+    lr: c0000000004b9724: memunmap_pages+0x234/0x340
+...
+    pid   = 3669, comm = ndctl
+kernel BUG at include/linux/mm.h:1107!
+[c000000274087ba0] c0000000009e3500 devm_action_release+0x30/0x50
+[c000000274087bc0] c0000000009e4758 release_nodes+0x268/0x2d0
+[c000000274087c30] c0000000009dd144 device_release_driver_internal+0x174/0x240
+[c000000274087c70] c0000000009d9dfc unbind_store+0x13c/0x190
+[c000000274087cb0] c0000000009d8a24 drv_attr_store+0x44/0x60
+[c000000274087cd0] c0000000005a7470 sysfs_kf_write+0x70/0xa0
+[c000000274087d10] c0000000005a5cac kernfs_fop_write+0x1ac/0x290
+[c000000274087d60] c0000000004be45c __vfs_write+0x3c/0x70
+[c000000274087d80] c0000000004c26e4 vfs_write+0xe4/0x200
+[c000000274087dd0] c0000000004c2a6c ksys_write+0x7c/0x140
+[c000000274087e20] c00000000000bbd0 system_call+0x5c/0x68
+
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Logan Gunthorpe <logang@deltatee.com>
+Cc: Ira Weiny <ira.weiny@intel.com>
+Reviewed-by: Pankaj Gupta <pagupta@redhat.com>
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+[ move all pfn-realted declarations into a single line ]
+Signed-off-by: David Hildenbrand <david@redhat.com>
+---
+ mm/memremap.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
+
+diff --git a/mm/memremap.c b/mm/memremap.c
+index 557e53c6fb46..026788b2ac69 100644
+--- a/mm/memremap.c
++++ b/mm/memremap.c
+@@ -123,7 +123,7 @@ static void dev_pagemap_cleanup(struct dev_pagemap *pgmap)
+ void memunmap_pages(struct dev_pagemap *pgmap)
+ {
+ 	struct resource *res = &pgmap->res;
+-	unsigned long pfn;
++	unsigned long pfn, nr_pages, start_pfn, end_pfn;
+ 	int nid;
+ 
+ 	dev_pagemap_kill(pgmap);
+@@ -131,14 +131,17 @@ void memunmap_pages(struct dev_pagemap *pgmap)
+ 		put_page(pfn_to_page(pfn));
+ 	dev_pagemap_cleanup(pgmap);
+ 
++	start_pfn = pfn_first(pgmap);
++	end_pfn = pfn_end(pgmap);
++	nr_pages = end_pfn - start_pfn;
++
+ 	/* pages are dead and unused, undo the arch mapping */
+-	nid = page_to_nid(pfn_to_page(PHYS_PFN(res->start)));
++	nid = page_to_nid(pfn_to_page(start_pfn));
+ 
+ 	mem_hotplug_begin();
+ 	if (pgmap->type == MEMORY_DEVICE_PRIVATE) {
+-		pfn = PHYS_PFN(res->start);
+-		__remove_pages(page_zone(pfn_to_page(pfn)), pfn,
+-				 PHYS_PFN(resource_size(res)), NULL);
++		__remove_pages(page_zone(pfn_to_page(start_pfn)), start_pfn,
++			       nr_pages, NULL);
+ 	} else {
+ 		arch_remove_memory(nid, res->start, resource_size(res),
+ 				pgmap_altmap(pgmap));
+-- 
+2.21.0
+
