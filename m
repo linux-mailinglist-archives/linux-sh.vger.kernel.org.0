@@ -2,164 +2,99 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 56980CE487
-	for <lists+linux-sh@lfdr.de>; Mon,  7 Oct 2019 16:01:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CC6FCE594
+	for <lists+linux-sh@lfdr.de>; Mon,  7 Oct 2019 16:44:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728348AbfJGOBF (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 7 Oct 2019 10:01:05 -0400
-Received: from mail-ed1-f68.google.com ([209.85.208.68]:44938 "EHLO
-        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728249AbfJGOBD (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 7 Oct 2019 10:01:03 -0400
-Received: by mail-ed1-f68.google.com with SMTP id r16so12493326edq.11
-        for <linux-sh@vger.kernel.org>; Mon, 07 Oct 2019 07:01:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=shutemov-name.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=rKL1w3iXknpln9Ux2lFi8nURmFThC0ACAB38j7xMJOw=;
-        b=1dC/oO7KYUhQk3Cp+gPvQQFfNUhXo7xBP7fOg6lJXEJoNi4xqoFx/+Z/eteEJO7TfS
-         beXRbX34FM5TGrxRC9UtlPyVu0dSHSWxoZtuR+BBMIz3ysIcWEMjUC0trYfvncn0/S1K
-         bedaHLGes2jPFyGX3hZIeFJI6nEWOI1RFwcmLQ/j5X/1FPSdYeaocVmbj1FV4QMO0Ct3
-         gzIXMAqry05u2l85X3+0Gg6QDGEktesNKTlT1AuPCVLEt0ZvIsj2v9MyWo4Idq82kDyc
-         ct/NK1YDtzPjx53EMdfO2f0gZjT1d4J5zb0WVTYkaD/x8lXnVmFKIb86ehHVrjIfm46m
-         og+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=rKL1w3iXknpln9Ux2lFi8nURmFThC0ACAB38j7xMJOw=;
-        b=ZL/Dpp4ixDyuKwVIcgk/nZBiE8VO+Jw+OA51ZdI9NAaqKmK1gQ2t5vaIklUGcHOy7v
-         2DQC/2/+14hAHIMNigrFLV5X1G9WovOGsurp957k3sRaEsjdTPF02XNDxrZxbSmmR4m/
-         bvGsS2XeBbRx23OGbZrquEQ0eQ3yjnu0+5aNfAfLkVNHBdwqY9IvZGJjCadNuV9RzyfU
-         hc76j6+/hQf2Hklspe8cQputnGmDB3lZ0SiiSMdxlvWbM/cvaZN9lDv0osG3/FLYMCBQ
-         ekoxo9yS6qrdKlm02AFli87kxhcKadOdbsGBv9h1fPlDFrs2gLo7a+hKJHePfosUtteF
-         z6SA==
-X-Gm-Message-State: APjAAAUYZCCH0Ryd7lP8L4tNwBzPi8rqwcQA7NKWyRDHPleNfbqD26GM
-        opqnEaCLh4S5ubHWY8gHWSO+jQ==
-X-Google-Smtp-Source: APXvYqxuYtPtzk9H5R4kXUotDVtZLwRxmHkom44kwHAzQPnIVU9Dw79/zIRyaunZCbGIUeO/BsAK1g==
-X-Received: by 2002:a17:906:4d08:: with SMTP id r8mr10168700eju.283.1570456860258;
-        Mon, 07 Oct 2019 07:01:00 -0700 (PDT)
-Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id r18sm3382249edl.6.2019.10.07.07.00.59
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 07 Oct 2019 07:00:59 -0700 (PDT)
-Received: by box.localdomain (Postfix, from userid 1000)
-        id BDCFF100287; Mon,  7 Oct 2019 17:00:58 +0300 (+03)
-Date:   Mon, 7 Oct 2019 17:00:58 +0300
-From:   "Kirill A. Shutemov" <kirill@shutemov.name>
-To:     Ingo Molnar <mingo@kernel.org>
-Cc:     Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        id S1727589AbfJGOoZ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 7 Oct 2019 10:44:25 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55248 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727490AbfJGOoY (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Mon, 7 Oct 2019 10:44:24 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id BAD9D21721;
+        Mon,  7 Oct 2019 14:44:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1570459464;
+        bh=VtWId5vYYsclunErfb5u6anv5q7krptmTQWAa+3fm0o=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=y/zA5wDpgBSS11fa0DPaotgCqyxAoUoP9sjoIkwDWeErZuOUvC9zQ1cht0PlgJCz7
+         oDOWEFjt3bzZFMMkF97mKTsU/ISIiQrBAPj2O+qpMWGY2JRAVAA9w6qLmhdCbLR5Qq
+         c2q9JMvQKLIEaZvl2XAwY0aDEx/POtvwuHZgOkxc=
+Date:   Mon, 7 Oct 2019 16:44:21 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Rich Felker <dalias@libc.org>
+Cc:     Bartosz Golaszewski <brgl@bgdev.pl>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Mike Rapoport <rppt@linux.vnet.ibm.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Michal Hocko <mhocko@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Mark Brown <broonie@kernel.org>,
-        Steven Price <Steven.Price@arm.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Kees Cook <keescook@chromium.org>,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        Matthew Wilcox <willy@infradead.org>,
-        Sri Krishna chowdary <schowdary@nvidia.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V4 2/2] mm/pgtable/debug: Add test validating
- architecture page table helpers
-Message-ID: <20191007140058.um5g44rvxyzyiref@box>
-References: <1570427124-21887-1-git-send-email-anshuman.khandual@arm.com>
- <1570427124-21887-3-git-send-email-anshuman.khandual@arm.com>
- <20191007130617.GB56546@gmail.com>
- <20191007132607.4q537nauwfn5thol@box>
- <20191007135158.GA36360@gmail.com>
+        Jiri Slaby <jslaby@suse.com>, linux-sh@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Subject: Re: [PATCH v4 0/2] drivers: make early_platform code SuperH-specific
+Message-ID: <20191007144421.GA966763@kroah.com>
+References: <20191003092913.10731-1-brgl@bgdev.pl>
+ <20191004130031.GA596158@kroah.com>
+ <20191004132025.GQ16318@brightrain.aerifal.cx>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191007135158.GA36360@gmail.com>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <20191004132025.GQ16318@brightrain.aerifal.cx>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Mon, Oct 07, 2019 at 03:51:58PM +0200, Ingo Molnar wrote:
-> 
-> * Kirill A. Shutemov <kirill@shutemov.name> wrote:
-> 
-> > On Mon, Oct 07, 2019 at 03:06:17PM +0200, Ingo Molnar wrote:
+On Fri, Oct 04, 2019 at 09:20:25AM -0400, Rich Felker wrote:
+> On Fri, Oct 04, 2019 at 03:00:31PM +0200, Greg Kroah-Hartman wrote:
+> > On Thu, Oct 03, 2019 at 11:29:11AM +0200, Bartosz Golaszewski wrote:
+> > > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 > > > 
-> > > * Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+> > > Some time ago I started a discussion about the need for a proper early device
+> > > probing mechanism[1]. One that would be based on real platform drivers and
+> > > support both platform data and device tree.
 > > > 
-> > > > This adds a test module which will validate architecture page table helpers
-> > > > and accessors regarding compliance with generic MM semantics expectations.
-> > > > This will help various architectures in validating changes to the existing
-> > > > page table helpers or addition of new ones.
-> > > > 
-> > > > Test page table and memory pages creating it's entries at various level are
-> > > > all allocated from system memory with required alignments. If memory pages
-> > > > with required size and alignment could not be allocated, then all depending
-> > > > individual tests are skipped.
+> > > While we're far from reaching any consensus on the implementation, Arnd
+> > > suggested that I start off by moving the SuperH-specific early platform
+> > > drivers implementation to arch/sh[2].
 > > > 
-> > > > diff --git a/arch/x86/include/asm/pgtable_64_types.h b/arch/x86/include/asm/pgtable_64_types.h
-> > > > index 52e5f5f2240d..b882792a3999 100644
-> > > > --- a/arch/x86/include/asm/pgtable_64_types.h
-> > > > +++ b/arch/x86/include/asm/pgtable_64_types.h
-> > > > @@ -40,6 +40,8 @@ static inline bool pgtable_l5_enabled(void)
-> > > >  #define pgtable_l5_enabled() 0
-> > > >  #endif /* CONFIG_X86_5LEVEL */
-> > > >  
-> > > > +#define mm_p4d_folded(mm) (!pgtable_l5_enabled())
-> > > > +
-> > > >  extern unsigned int pgdir_shift;
-> > > >  extern unsigned int ptrs_per_p4d;
+> > > This series is the first attempt at making way for a new, less hacky
+> > > implementation.
 > > > 
-> > > Any deep reason this has to be a macro instead of proper C?
+> > > The first patch moves all the early_platform code to arch/sh.
+> > > 
+> > > The second patch prefixes all early_platform symbols with 'sh_'.
+> > > 
+> > > [1] https://lkml.org/lkml/2018/4/26/657
+> > > [2] https://lkml.org/lkml/2018/4/27/239
+> > > 
+> > > v1 -> v2:
+> > > - certain drivers are compiled for arm/mach-shmobile too - we need to
+> > >   add ifdefs for CONFIG_SUPERH around early_platform calls
+> > > 
+> > > v2 -> v3:
+> > > - added a stub for is_early_platform_device() which always returns false
+> > >   on non-SuperH architectures
+> > > 
+> > > v3 -> v4:
+> > > - rebased on top of v5.4-rc1
+> > > - removed patches that are already upstream from the series
+> > > 
+> > > Bartosz Golaszewski (2):
+> > >   drivers: move the early platform device support to arch/sh
+> > >   sh: add the sh_ prefix to early platform symbols
 > > 
-> > It's a way to override the generic mm_p4d_folded(). It can be rewritten
-> > as inline function + define. Something like:
-> > 
-> > #define mm_p4d_folded mm_p4d_folded
-> > static inline bool mm_p4d_folded(struct mm_struct *mm)
-> > {
-> > 	return !pgtable_l5_enabled();
-> > }
-> > 
-> > But I don't see much reason to be more verbose here than needed.
+> > I like this, any objection from anyone if I take this in my driver-core
+> > tree for 5.5-rc1?
 > 
-> C type checking? Documentation? Yeah, I know it's just a one-liner, but 
-> the principle of the death by a thousand cuts applies here.
+> I don't think I have any objection. It will probably make gratuitous
+> merge conflicts with Sato-san's old device tree sh4 work when we get
+> back to finishing that, but that's not really a big deal.
 
-Okay, if you think it worth it. Anshuman, could you fix it up for the next
-submission?
+Ok, I've queued it up in my tree now, thanks,
 
-
-> BTW., any reason this must be in the low level pgtable_64_types.h type 
-> header, instead of one of the API level header files?
-
-I defined it next pgtable_l5_enabled(). What is more appropriate place to
-you? pgtable_64.h? Yeah, it makes sense.
-
--- 
- Kirill A. Shutemov
+greg k-h
