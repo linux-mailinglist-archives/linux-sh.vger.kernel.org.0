@@ -2,171 +2,191 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E3E1CE26B
-	for <lists+linux-sh@lfdr.de>; Mon,  7 Oct 2019 14:56:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CA2CCE2A6
+	for <lists+linux-sh@lfdr.de>; Mon,  7 Oct 2019 15:06:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727881AbfJGM4I (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 7 Oct 2019 08:56:08 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:33920 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727861AbfJGM4H (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 7 Oct 2019 08:56:07 -0400
-Received: by mail-wr1-f67.google.com with SMTP id j11so9391764wrp.1
-        for <linux-sh@vger.kernel.org>; Mon, 07 Oct 2019 05:56:06 -0700 (PDT)
+        id S1727838AbfJGNGZ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 7 Oct 2019 09:06:25 -0400
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:36683 "EHLO
+        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727742AbfJGNGZ (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 7 Oct 2019 09:06:25 -0400
+Received: by mail-wm1-f65.google.com with SMTP id m18so12274421wmc.1;
+        Mon, 07 Oct 2019 06:06:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=lNH90AFjH7treDMnlBjyecd4jzPpSJ8AKVgoDKflMFE=;
-        b=LXCip3xNAoYNYlV6dtRSB1uaKZJUo/K2WvzEmJRHr+u/U9uUi6O/di4oCQpBqx6of6
-         J8XOGzJu5nCzvTxGoqsiLjRPzX9KO9l4JCcWeI93DIREUfvtMDYRTnbHLsgnFVRxVI91
-         eNra9cn8FwGFq8SDd2yIo0KXFmOCwHroK8OA2B5D1/jzLI/DY49mWmhZxm/vLUxlHJAu
-         IlX2X51TLp9dLtREuMFWPmRDOal9jgmHy97kXh6hnCm5M672qNcj/YFGyiD7kXlx7jBP
-         8arMHMBD1atKgJ6GHC9o9ETGcZeqw3lUmF21zbtZEjD1U0ryJS/rR24tZMSTn1SLOEyI
-         VALg==
+        bh=RZE8Cj868kn5EJS/0QY29Orx1bZsg1Fle+VfrZSmgF8=;
+        b=tJAewuqAmBMfjpkJA/1enuzflTjuI48UJZ0Z0fdDtpXMvjWt8JagrRMgnZLLai9UeY
+         mkbErQhWM39j4Hm1s7MX9m/lzVTnkp+OMeG5ZXtiir6jn8BLfHkzXnUShAGoykAHXOnf
+         zYcGSR++z2tbIUzuTH5tpf5m9vIc8eF3O3REAZ36+mr/kHp8w4U5Z+7uVFz79ksG8TIC
+         eqab017gzKxysvQg39onykCPqr4VZgoidG0IKRK7bzgdYmIjLQ14xRLyhnknxrgOj8o1
+         kkqFWIhWiVMX57N1WUPYfE6wABoyQFZVbrbpv3hVtkeFHgU3i9sImWF4xz9fwLCh2ch6
+         oGzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=lNH90AFjH7treDMnlBjyecd4jzPpSJ8AKVgoDKflMFE=;
-        b=ca3wOCWX1WHuDohIhwiBGMz3dD4jHeakDOsimTP5Wp1pJ0pHjwRWehHzw3NTpOScDP
-         JBRmmyvQsx3FA62UU3uQWwpqLc1MpuITbZ+ALrfaJzokpBgGcqS6Nd6tPExznb1VQrzj
-         DY7l/EWguipYtO+8EAjsLjk2Q3518EdexyDUWJjaf7r8NY1DzqzAYlzAX978i3s0fhtF
-         y9fSPE5f0qkB95+CnF3KLQhe0JnCwFQSP8DskSnE/QfSxTXYg5w+xkztAP7DR06b86at
-         l45NwqVOj6LHqeRNFS58AYLMY3cQ0Vda2SthTqZHA3AYnDXOogePjmXUg0nJOftypqgp
-         RV9g==
-X-Gm-Message-State: APjAAAWZSA9/76aX1+1x8z+ZfnNt2tyd69d3ch8IBsfVA4lbASjpMqjj
-        Mb+PwlAVfwIO1gAETHQCXgboaw==
-X-Google-Smtp-Source: APXvYqw4wrBCEizxjGd3Oo7lWF2KXUVRw9xkZJnF90lw1VD0wL+cQobj6SS5sgKiiRn76myZtcAY3Q==
-X-Received: by 2002:adf:ef8f:: with SMTP id d15mr22105358wro.67.1570452966040;
-        Mon, 07 Oct 2019 05:56:06 -0700 (PDT)
-Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
-        by smtp.gmail.com with ESMTPSA id c9sm14922385wrt.7.2019.10.07.05.56.04
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=RZE8Cj868kn5EJS/0QY29Orx1bZsg1Fle+VfrZSmgF8=;
+        b=kDsKqAwuPWAL0bcQtAwiRJrJ71vM7e9hsBI27gGr9OpDwKOqF1Y4lqsJ9af8xZUkya
+         nvdZPI8oP+5IvgU567nqDNLZvWjZgZ4pa7NV7Lgwe8yRudtL7oIrEER/JzUaqacIYtkP
+         YBrNLy+ZZaqxMQbzMybcspG2CDkS52fA3ypS9hz8EZX8kRS1koBUWi871Rtesd2aAWez
+         UBa6P+f1uQpxJmZhD1Gz3iDWKFQ40AWdymV5/H2Y3OHtPcY+EDNmUq1D9Xzt4kj954hX
+         rSnZKNUlVqCJseqq7wuOx8V8qWnaGS10eeewUvktzU1+ZALZ96PXbbspK3durC5doxom
+         ejyQ==
+X-Gm-Message-State: APjAAAWABw3yyyt1CuXYUJ/zGsY0vA16wmXwSEURVSIU3zauNwl3sQxD
+        6PAcaJ7NCjPzhvPXZqbf0bQ=
+X-Google-Smtp-Source: APXvYqwnZjlpL4PUUAvfK5d4pYWeE31TwsXrlSV5mEiGcVQWwRB9VHCMKlpm1WOlkrkBBukHu/Su/w==
+X-Received: by 2002:a1c:7fcc:: with SMTP id a195mr21060937wmd.27.1570453581529;
+        Mon, 07 Oct 2019 06:06:21 -0700 (PDT)
+Received: from gmail.com (2E8B0CD5.catv.pool.telekom.hu. [46.139.12.213])
+        by smtp.gmail.com with ESMTPSA id l4sm14525979wrw.6.2019.10.07.06.06.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Oct 2019 05:56:05 -0700 (PDT)
-Date:   Mon, 7 Oct 2019 13:56:03 +0100
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jacopo Mondi <jacopo@jmondi.org>, linux-sh@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: Re: [PATCH v5 7/7] backlight: gpio: pull
- gpio_backlight_initial_power_state() into probe
-Message-ID: <20191007125603.qmb6jfu2tjxnzmm6@holly.lan>
-References: <20191007033200.13443-1-brgl@bgdev.pl>
- <20191007033200.13443-8-brgl@bgdev.pl>
+        Mon, 07 Oct 2019 06:06:20 -0700 (PDT)
+Date:   Mon, 7 Oct 2019 15:06:17 +0200
+From:   Ingo Molnar <mingo@kernel.org>
+To:     Anshuman Khandual <anshuman.khandual@arm.com>
+Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Mike Rapoport <rppt@linux.vnet.ibm.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Michal Hocko <mhocko@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Mark Brown <broonie@kernel.org>,
+        Steven Price <Steven.Price@arm.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Kees Cook <keescook@chromium.org>,
+        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+        Matthew Wilcox <willy@infradead.org>,
+        Sri Krishna chowdary <schowdary@nvidia.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        James Hogan <jhogan@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V4 2/2] mm/pgtable/debug: Add test validating
+ architecture page table helpers
+Message-ID: <20191007130617.GB56546@gmail.com>
+References: <1570427124-21887-1-git-send-email-anshuman.khandual@arm.com>
+ <1570427124-21887-3-git-send-email-anshuman.khandual@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191007033200.13443-8-brgl@bgdev.pl>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <1570427124-21887-3-git-send-email-anshuman.khandual@arm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Mon, Oct 07, 2019 at 05:32:00AM +0200, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> 
-> The probe function in the gpio-backlight driver is quite short. If we
-> pull gpio_backlight_initial_power_state() into probe we can drop two
-> more fields from struct gpio_backlight and shrink the driver code.
-> 
-> Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 
-Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
+* Anshuman Khandual <anshuman.khandual@arm.com> wrote:
 
-> ---
->  drivers/video/backlight/gpio_backlight.c | 37 +++++++++---------------
->  1 file changed, 13 insertions(+), 24 deletions(-)
+> This adds a test module which will validate architecture page table helpers
+> and accessors regarding compliance with generic MM semantics expectations.
+> This will help various architectures in validating changes to the existing
+> page table helpers or addition of new ones.
 > 
-> diff --git a/drivers/video/backlight/gpio_backlight.c b/drivers/video/backlight/gpio_backlight.c
-> index 6247687b6330..407d4eaafc5c 100644
-> --- a/drivers/video/backlight/gpio_backlight.c
-> +++ b/drivers/video/backlight/gpio_backlight.c
-> @@ -17,11 +17,8 @@
->  #include <linux/slab.h>
+> Test page table and memory pages creating it's entries at various level are
+> all allocated from system memory with required alignments. If memory pages
+> with required size and alignment could not be allocated, then all depending
+> individual tests are skipped.
+
+> diff --git a/arch/x86/include/asm/pgtable_64_types.h b/arch/x86/include/asm/pgtable_64_types.h
+> index 52e5f5f2240d..b882792a3999 100644
+> --- a/arch/x86/include/asm/pgtable_64_types.h
+> +++ b/arch/x86/include/asm/pgtable_64_types.h
+> @@ -40,6 +40,8 @@ static inline bool pgtable_l5_enabled(void)
+>  #define pgtable_l5_enabled() 0
+>  #endif /* CONFIG_X86_5LEVEL */
 >  
->  struct gpio_backlight {
-> -	struct device *dev;
->  	struct device *fbdev;
-> -
->  	struct gpio_desc *gpiod;
-> -	int def_value;
->  };
->  
->  static int gpio_backlight_update_status(struct backlight_device *bl)
-> @@ -53,41 +50,24 @@ static const struct backlight_ops gpio_backlight_ops = {
->  	.check_fb	= gpio_backlight_check_fb,
->  };
->  
-> -static int gpio_backlight_initial_power_state(struct gpio_backlight *gbl)
-> -{
-> -	struct device_node *node = gbl->dev->of_node;
-> -
-> -	/* Not booted with device tree or no phandle link to the node */
-> -	if (!node || !node->phandle)
-> -		return gbl->def_value ? FB_BLANK_UNBLANK : FB_BLANK_POWERDOWN;
-> -
-> -	/* if the enable GPIO is disabled, do not enable the backlight */
-> -	if (gpiod_get_value_cansleep(gbl->gpiod) == 0)
-> -		return FB_BLANK_POWERDOWN;
-> -
-> -	return FB_BLANK_UNBLANK;
-> -}
-> -
-> -
->  static int gpio_backlight_probe(struct platform_device *pdev)
->  {
->  	struct device *dev = &pdev->dev;
->  	struct gpio_backlight_platform_data *pdata = dev_get_platdata(dev);
-> +	struct device_node *of_node = dev->of_node;
->  	struct backlight_properties props;
->  	struct backlight_device *bl;
->  	struct gpio_backlight *gbl;
-> -	int ret;
-> +	int ret, def_value;
->  
->  	gbl = devm_kzalloc(dev, sizeof(*gbl), GFP_KERNEL);
->  	if (gbl == NULL)
->  		return -ENOMEM;
->  
-> -	gbl->dev = dev;
-> -
->  	if (pdata)
->  		gbl->fbdev = pdata->fbdev;
->  
-> -	gbl->def_value = device_property_read_bool(dev, "default-on");
-> +	def_value = device_property_read_bool(dev, "default-on");
->  
->  	gbl->gpiod = devm_gpiod_get(dev, NULL, GPIOD_ASIS);
->  	if (IS_ERR(gbl->gpiod)) {
-> @@ -109,7 +89,16 @@ static int gpio_backlight_probe(struct platform_device *pdev)
->  		return PTR_ERR(bl);
->  	}
->  
-> -	bl->props.power = gpio_backlight_initial_power_state(gbl);
-> +	/* Set the initial power state */
-> +	if (!of_node || !of_node->phandle)
-> +		/* Not booted with device tree or no phandle link to the node */
-> +		bl->props.power = def_value ? FB_BLANK_UNBLANK
-> +					    : FB_BLANK_POWERDOWN;
-> +	else if (gpiod_get_value_cansleep(gbl->gpiod) == 0)
-> +		bl->props.power = FB_BLANK_POWERDOWN;
-> +	else
-> +		bl->props.power = FB_BLANK_UNBLANK;
+> +#define mm_p4d_folded(mm) (!pgtable_l5_enabled())
 > +
->  	bl->props.brightness = 1;
->  
->  	backlight_update_status(bl);
-> -- 
-> 2.23.0
-> 
+>  extern unsigned int pgdir_shift;
+>  extern unsigned int ptrs_per_p4d;
+
+Any deep reason this has to be a macro instead of proper C?
+
+> diff --git a/mm/Kconfig.debug b/mm/Kconfig.debug
+> index 327b3ebf23bf..683131b1ee7d 100644
+> --- a/mm/Kconfig.debug
+> +++ b/mm/Kconfig.debug
+> @@ -117,3 +117,18 @@ config DEBUG_RODATA_TEST
+>      depends on STRICT_KERNEL_RWX
+>      ---help---
+>        This option enables a testcase for the setting rodata read-only.
+> +
+> +config DEBUG_ARCH_PGTABLE_TEST
+> +	bool "Test arch page table helpers for semantics compliance"
+> +	depends on MMU
+> +	depends on DEBUG_KERNEL
+> +	depends on !(ARM || IA64)
+
+Please add a proper enabling switch for architectures to opt in.
+
+Please also add it to Documentation/features/list-arch.sh so that it's 
+listed as a 'TODO' entry on architectures where the tests are not enabled 
+yet.
+
+> +	help
+> +	  This options provides a kernel module which can be used to test
+> +	  architecture page table helper functions on various platform in
+> +	  verifying if they comply with expected generic MM semantics. This
+> +	  will help architectures code in making sure that any changes or
+> +	  new additions of these helpers will still conform to generic MM
+> +	  expected semantics.
+
+Typos and grammar fixed:
+
+	help
+	  This option provides a kernel module which can be used to test
+	  architecture page table helper functions on various platforms in
+	  verifying if they comply with expected generic MM semantics. This
+	  will help architecture code in making sure that any changes or
+	  new additions of these helpers still conform to expected 
+	  semantics of the generic MM.
+
+Also, more fundamentally: isn't a kernel module too late for such a debug 
+check, should something break due to a core MM change? Have these debug 
+checks caught any bugs or inconsistencies before?
+
+Why not call this as some earlier MM debug check, after enabling paging 
+but before executing user-space binaries or relying on complex MM ops 
+within the kernel, called at a stage when those primitives are all 
+expected to work fine?
+
+It seems to me that arch_pgtable_tests_init) won't even context-switch 
+normally, right?
+
+Finally, instead of inventing yet another randomly named .config debug 
+switch, please fit it into the regular MM debug options which go along 
+the CONFIG_DEBUG_VM* naming scheme.
+
+Might even make sense to enable these new debug checks by default if 
+CONFIG_DEBUG_VM=y, that way we'll get a *lot* more debug coverage than 
+some random module somewhere that few people will know about, let alone 
+run.
+
+Thanks,
+
+	Ingo
