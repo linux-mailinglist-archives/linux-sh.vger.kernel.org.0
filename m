@@ -2,118 +2,179 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 146B0D0EA5
-	for <lists+linux-sh@lfdr.de>; Wed,  9 Oct 2019 14:25:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 884DED16CF
+	for <lists+linux-sh@lfdr.de>; Wed,  9 Oct 2019 19:33:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730871AbfJIMZ0 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 9 Oct 2019 08:25:26 -0400
-Received: from foss.arm.com ([217.140.110.172]:33288 "EHLO foss.arm.com"
+        id S1732221AbfJIRcf (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 9 Oct 2019 13:32:35 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47968 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730861AbfJIMZ0 (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Wed, 9 Oct 2019 08:25:26 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CF15D142F;
-        Wed,  9 Oct 2019 05:25:24 -0700 (PDT)
-Received: from [10.37.12.37] (unknown [10.37.12.37])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E022B3F703;
-        Wed,  9 Oct 2019 05:25:16 -0700 (PDT)
-Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
-To:     Yunsheng Lin <linyunsheng@huawei.com>,
-        Peter Zijlstra <peterz@infradead.org>
-Cc:     Michal Hocko <mhocko@kernel.org>, catalin.marinas@arm.com,
-        will@kernel.org, mingo@redhat.com, bp@alien8.de, rth@twiddle.net,
-        ink@jurassic.park.msu.ru, mattst88@gmail.com,
-        benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
-        heiko.carstens@de.ibm.com, gor@linux.ibm.com,
-        borntraeger@de.ibm.com, ysato@users.sourceforge.jp,
-        dalias@libc.org, davem@davemloft.net, ralf@linux-mips.org,
-        paul.burton@mips.com, jhogan@kernel.org, jiaxun.yang@flygoat.com,
-        chenhc@lemote.com, akpm@linux-foundation.org, rppt@linux.ibm.com,
-        anshuman.khandual@arm.com, tglx@linutronix.de, cai@lca.pw,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        hpa@zytor.com, x86@kernel.org, dave.hansen@linux.intel.com,
-        luto@kernel.org, len.brown@intel.com, axboe@kernel.dk,
-        dledford@redhat.com, jeffrey.t.kirsher@intel.com,
-        linux-alpha@vger.kernel.org, naveen.n.rao@linux.vnet.ibm.com,
-        mwb@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, tbogendoerfer@suse.de,
-        linux-mips@vger.kernel.org, rafael@kernel.org,
-        gregkh@linuxfoundation.org
-References: <20190924091714.GJ2369@hirez.programming.kicks-ass.net>
- <20190924105622.GH23050@dhcp22.suse.cz>
- <20190924112349.GJ2332@hirez.programming.kicks-ass.net>
- <20190924115401.GM23050@dhcp22.suse.cz>
- <20190924120943.GP2349@hirez.programming.kicks-ass.net>
- <20190924122500.GP23050@dhcp22.suse.cz>
- <20190924124325.GQ2349@hirez.programming.kicks-ass.net>
- <20190924125936.GR2349@hirez.programming.kicks-ass.net>
- <20190924131939.GS23050@dhcp22.suse.cz>
- <1adcbe68-6753-3497-48a0-cc84ac503372@huawei.com>
- <20190925104108.GE4553@hirez.programming.kicks-ass.net>
- <47fa4cee-8528-7c23-c7de-7be1b65aa2ae@huawei.com>
-From:   Robin Murphy <robin.murphy@arm.com>
-Message-ID: <bec80499-86d9-bf1f-df23-9044a8099992@arm.com>
-Date:   Wed, 9 Oct 2019 13:25:14 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+        id S1731145AbfJIRXz (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Wed, 9 Oct 2019 13:23:55 -0400
+Received: from sasha-vm.mshome.net (unknown [167.220.2.234])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id AE394218DE;
+        Wed,  9 Oct 2019 17:23:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1570641833;
+        bh=K02rh1HsZkrO5DpDzfg0K9uNvLOc6lHlJ8tW9pFGt+0=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Cd6Q9R6iyZSwnf2sUjMSrLHYgtSpWVD5esuQnyhbfK7iEoIDHW2b8CjpKiva6XWhK
+         cAUskU5vGFLgMo/ivHt9vquVSexuBFOqeax8W8deZNeNzHCwZd6awcxXDGSRK/vT2/
+         3ba3Ijblb/bYtAXtLWlSYG3+W52FaJhApWpy8K6c=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     "Lowry Li (Arm Technology China)" <Lowry.Li@arm.com>,
+        Lowry Li <lowry.li@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
+        James Qian Wang <james.qian.wang@arm.com>,
+        Sasha Levin <sashal@kernel.org>,
+        dri-devel@lists.freedesktop.org, linux-sh@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.3 02/68] drm: Free the writeback_job when it with an empty fb
+Date:   Wed,  9 Oct 2019 13:04:41 -0400
+Message-Id: <20191009170547.32204-2-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191009170547.32204-1-sashal@kernel.org>
+References: <20191009170547.32204-1-sashal@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <47fa4cee-8528-7c23-c7de-7be1b65aa2ae@huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 2019-10-08 9:38 am, Yunsheng Lin wrote:
-> On 2019/9/25 18:41, Peter Zijlstra wrote:
->> On Wed, Sep 25, 2019 at 05:14:20PM +0800, Yunsheng Lin wrote:
->>>  From the discussion above, It seems making the node_to_cpumask_map()
->>> NUMA_NO_NODE aware is the most feasible way to move forwad.
->>
->> That's still wrong.
-> 
-> Hi, Peter
-> 
-> It seems this has trapped in the dead circle.
-> 
->  From my understanding, NUMA_NO_NODE which means not node numa preference
-> is the state to describe the node of virtual device or the physical device
-> that has equal distance to all cpu.
-> 
-> We can be stricter if the device does have a nearer node, but we can not
-> deny that a device does not have a node numa preference or node affinity,
-> which also means the control or data buffer can be allocated at the node where
-> the process is running.
-> 
-> As you has proposed, making it -2 and have dev_to_node() warn if the device does
-> have a nearer node and not set by the fw is a way to be stricter.
-> 
-> But I think maybe being stricter is not really relevant to NUMA_NO_NODE, because
-> we does need a state to describe the device that have equal distance to all node,
-> even if it is not physically scalable.
-> 
-> Any better suggestion to move this forward?
+From: "Lowry Li (Arm Technology China)" <Lowry.Li@arm.com>
 
-FWIW (since this is in my inbox), it sounds like the fundamental issue 
-is that NUMA_NO_NODE is conflated for at least two different purposes, 
-so trying to sort that out would be a good first step. AFAICS we have 
-genuine "don't care" cases like alloc_pages_node(), where if the 
-producer says it doesn't matter then the consumer is free to make its 
-own judgement on what to do, and fundamentally different "we expect this 
-thing to have an affinity but it doesn't, so we can't say what's 
-appropriate" cases which could really do with some separate indicator 
-like "NUMA_INVALID_NODE".
+[ Upstream commit 8581d51055a08cc6eb061c8856062290e8582ce4 ]
 
-The tricky part is then bestowed on the producers to decide whether they 
-can downgrade "invalid" to "don't care". You can technically build 'a 
-device' whose internal logic is distributed between nodes and thus 
-appears to have equal affinity - interrupt controllers, for example, may 
-have per-CPU or per-node interfaces that end up looking like that - so 
-although it's unlikely it's not outright nonsensical. Similarly a 
-'device' that's actually emulated behind a firmware call interface may 
-well effectively have no real affinity.
+Adds the check if the writeback_job with an empty fb, then it should
+be freed in atomic_check phase.
 
-Robin.
+With this change, the driver users will not check empty fb case any more.
+So refined accordingly.
+
+Signed-off-by: Lowry Li (Arm Technology China) <lowry.li@arm.com>
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+Reviewed-by: James Qian Wang (Arm Technology China) <james.qian.wang@arm.com>
+Signed-off-by: james qian wang (Arm Technology China) <james.qian.wang@arm.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/1564571048-15029-2-git-send-email-lowry.li@arm.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ .../drm/arm/display/komeda/komeda_wb_connector.c    |  3 +--
+ drivers/gpu/drm/arm/malidp_mw.c                     |  4 ++--
+ drivers/gpu/drm/drm_atomic.c                        | 13 +++++++++----
+ drivers/gpu/drm/rcar-du/rcar_du_writeback.c         |  4 ++--
+ drivers/gpu/drm/vc4/vc4_txp.c                       |  5 ++---
+ 5 files changed, 16 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/gpu/drm/arm/display/komeda/komeda_wb_connector.c b/drivers/gpu/drm/arm/display/komeda/komeda_wb_connector.c
+index 2851cac94d869..23fbee268119f 100644
+--- a/drivers/gpu/drm/arm/display/komeda/komeda_wb_connector.c
++++ b/drivers/gpu/drm/arm/display/komeda/komeda_wb_connector.c
+@@ -43,9 +43,8 @@ komeda_wb_encoder_atomic_check(struct drm_encoder *encoder,
+ 	struct komeda_data_flow_cfg dflow;
+ 	int err;
+ 
+-	if (!writeback_job || !writeback_job->fb) {
++	if (!writeback_job)
+ 		return 0;
+-	}
+ 
+ 	if (!crtc_st->active) {
+ 		DRM_DEBUG_ATOMIC("Cannot write the composition result out on a inactive CRTC.\n");
+diff --git a/drivers/gpu/drm/arm/malidp_mw.c b/drivers/gpu/drm/arm/malidp_mw.c
+index 2e812525025dd..a59227b2cdb55 100644
+--- a/drivers/gpu/drm/arm/malidp_mw.c
++++ b/drivers/gpu/drm/arm/malidp_mw.c
+@@ -130,7 +130,7 @@ malidp_mw_encoder_atomic_check(struct drm_encoder *encoder,
+ 	struct drm_framebuffer *fb;
+ 	int i, n_planes;
+ 
+-	if (!conn_state->writeback_job || !conn_state->writeback_job->fb)
++	if (!conn_state->writeback_job)
+ 		return 0;
+ 
+ 	fb = conn_state->writeback_job->fb;
+@@ -247,7 +247,7 @@ void malidp_mw_atomic_commit(struct drm_device *drm,
+ 
+ 	mw_state = to_mw_state(conn_state);
+ 
+-	if (conn_state->writeback_job && conn_state->writeback_job->fb) {
++	if (conn_state->writeback_job) {
+ 		struct drm_framebuffer *fb = conn_state->writeback_job->fb;
+ 
+ 		DRM_DEV_DEBUG_DRIVER(drm->dev,
+diff --git a/drivers/gpu/drm/drm_atomic.c b/drivers/gpu/drm/drm_atomic.c
+index 419381abbdd16..14aeaf7363210 100644
+--- a/drivers/gpu/drm/drm_atomic.c
++++ b/drivers/gpu/drm/drm_atomic.c
+@@ -430,10 +430,15 @@ static int drm_atomic_connector_check(struct drm_connector *connector,
+ 		return -EINVAL;
+ 	}
+ 
+-	if (writeback_job->out_fence && !writeback_job->fb) {
+-		DRM_DEBUG_ATOMIC("[CONNECTOR:%d:%s] requesting out-fence without framebuffer\n",
+-				 connector->base.id, connector->name);
+-		return -EINVAL;
++	if (!writeback_job->fb) {
++		if (writeback_job->out_fence) {
++			DRM_DEBUG_ATOMIC("[CONNECTOR:%d:%s] requesting out-fence without framebuffer\n",
++					 connector->base.id, connector->name);
++			return -EINVAL;
++		}
++
++		drm_writeback_cleanup_job(writeback_job);
++		state->writeback_job = NULL;
+ 	}
+ 
+ 	return 0;
+diff --git a/drivers/gpu/drm/rcar-du/rcar_du_writeback.c b/drivers/gpu/drm/rcar-du/rcar_du_writeback.c
+index ae07290bba6a4..04efa78d70b6e 100644
+--- a/drivers/gpu/drm/rcar-du/rcar_du_writeback.c
++++ b/drivers/gpu/drm/rcar-du/rcar_du_writeback.c
+@@ -147,7 +147,7 @@ static int rcar_du_wb_enc_atomic_check(struct drm_encoder *encoder,
+ 	struct drm_device *dev = encoder->dev;
+ 	struct drm_framebuffer *fb;
+ 
+-	if (!conn_state->writeback_job || !conn_state->writeback_job->fb)
++	if (!conn_state->writeback_job)
+ 		return 0;
+ 
+ 	fb = conn_state->writeback_job->fb;
+@@ -221,7 +221,7 @@ void rcar_du_writeback_setup(struct rcar_du_crtc *rcrtc,
+ 	unsigned int i;
+ 
+ 	state = rcrtc->writeback.base.state;
+-	if (!state || !state->writeback_job || !state->writeback_job->fb)
++	if (!state || !state->writeback_job)
+ 		return;
+ 
+ 	fb = state->writeback_job->fb;
+diff --git a/drivers/gpu/drm/vc4/vc4_txp.c b/drivers/gpu/drm/vc4/vc4_txp.c
+index 96f91c1b4b6e6..e92fa12750343 100644
+--- a/drivers/gpu/drm/vc4/vc4_txp.c
++++ b/drivers/gpu/drm/vc4/vc4_txp.c
+@@ -229,7 +229,7 @@ static int vc4_txp_connector_atomic_check(struct drm_connector *conn,
+ 	int i;
+ 
+ 	conn_state = drm_atomic_get_new_connector_state(state, conn);
+-	if (!conn_state->writeback_job || !conn_state->writeback_job->fb)
++	if (!conn_state->writeback_job)
+ 		return 0;
+ 
+ 	crtc_state = drm_atomic_get_new_crtc_state(state, conn_state->crtc);
+@@ -269,8 +269,7 @@ static void vc4_txp_connector_atomic_commit(struct drm_connector *conn,
+ 	u32 ctrl;
+ 	int i;
+ 
+-	if (WARN_ON(!conn_state->writeback_job ||
+-		    !conn_state->writeback_job->fb))
++	if (WARN_ON(!conn_state->writeback_job))
+ 		return;
+ 
+ 	mode = &conn_state->crtc->state->adjusted_mode;
+-- 
+2.20.1
+
