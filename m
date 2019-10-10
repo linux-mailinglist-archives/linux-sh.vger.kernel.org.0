@@ -2,166 +2,77 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F40BD2553
-	for <lists+linux-sh@lfdr.de>; Thu, 10 Oct 2019 11:01:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29A15D2ADD
+	for <lists+linux-sh@lfdr.de>; Thu, 10 Oct 2019 15:17:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389516AbfJJI5o (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 10 Oct 2019 04:57:44 -0400
-Received: from merlin.infradead.org ([205.233.59.134]:57860 "EHLO
-        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389496AbfJJI5m (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 10 Oct 2019 04:57:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=rb2GpQEK1mzik7VDpp+Q0B0w/sBe3+HggdUz3hckVXc=; b=GheWtHyuaOnqUCnRP+8IuZIby
-        4L30bGsje9ocd5iUH8NVIyCuSMdmhnrmZrWz4CqW+5c5ARUagEFX1CvM76na3juS0ZJgeA2iYqwk/
-        vwGspjDN5aU24+JGaDMCixz3MgBW377tOmmXo2TWuT0UuPWw0cRhImx8n6XpmynMtaPKIAN3DBxTa
-        0KYATEHfwUVLJhVPmXdgaiKw32BBuEEZNOhzsRv1MWaogEY/OvQauPZeduJb2hzhIlP3nOAsoN5Rl
-        /qvf5mbxvb8slIP6EE8OU3wON/t6u1zPMDLdVuSRCezXRpuRyx1ogUaXW7AVDphTfQVYCd6ZMVuiy
-        IrIgGZokA==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by merlin.infradead.org with esmtpsa (Exim 4.92.2 #3 (Red Hat Linux))
-        id 1iIUFD-0000dI-8N; Thu, 10 Oct 2019 08:56:23 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id B86223074EB;
-        Thu, 10 Oct 2019 10:55:24 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id DBA9E202F4F50; Thu, 10 Oct 2019 10:56:16 +0200 (CEST)
-Date:   Thu, 10 Oct 2019 10:56:16 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Robin Murphy <robin.murphy@arm.com>
-Cc:     Yunsheng Lin <linyunsheng@huawei.com>,
-        Michal Hocko <mhocko@kernel.org>, catalin.marinas@arm.com,
-        will@kernel.org, mingo@redhat.com, bp@alien8.de, rth@twiddle.net,
-        ink@jurassic.park.msu.ru, mattst88@gmail.com,
-        benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
-        heiko.carstens@de.ibm.com, gor@linux.ibm.com,
-        borntraeger@de.ibm.com, ysato@users.sourceforge.jp,
-        dalias@libc.org, davem@davemloft.net, ralf@linux-mips.org,
-        paul.burton@mips.com, jhogan@kernel.org, jiaxun.yang@flygoat.com,
-        chenhc@lemote.com, akpm@linux-foundation.org, rppt@linux.ibm.com,
-        anshuman.khandual@arm.com, tglx@linutronix.de, cai@lca.pw,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        hpa@zytor.com, x86@kernel.org, dave.hansen@linux.intel.com,
-        luto@kernel.org, len.brown@intel.com, axboe@kernel.dk,
-        dledford@redhat.com, jeffrey.t.kirsher@intel.com,
-        linux-alpha@vger.kernel.org, naveen.n.rao@linux.vnet.ibm.com,
-        mwb@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, tbogendoerfer@suse.de,
-        linux-mips@vger.kernel.org, rafael@kernel.org,
-        gregkh@linuxfoundation.org
-Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
-Message-ID: <20191010085616.GQ2311@hirez.programming.kicks-ass.net>
-References: <20190924115401.GM23050@dhcp22.suse.cz>
- <20190924120943.GP2349@hirez.programming.kicks-ass.net>
- <20190924122500.GP23050@dhcp22.suse.cz>
- <20190924124325.GQ2349@hirez.programming.kicks-ass.net>
- <20190924125936.GR2349@hirez.programming.kicks-ass.net>
- <20190924131939.GS23050@dhcp22.suse.cz>
- <1adcbe68-6753-3497-48a0-cc84ac503372@huawei.com>
- <20190925104108.GE4553@hirez.programming.kicks-ass.net>
- <47fa4cee-8528-7c23-c7de-7be1b65aa2ae@huawei.com>
- <bec80499-86d9-bf1f-df23-9044a8099992@arm.com>
+        id S2388323AbfJJNRr (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 10 Oct 2019 09:17:47 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:35500 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388320AbfJJNRp (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 10 Oct 2019 09:17:45 -0400
+Received: by mail-ot1-f66.google.com with SMTP id z6so4834342otb.2
+        for <linux-sh@vger.kernel.org>; Thu, 10 Oct 2019 06:17:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ub-ac-id.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=QTZIdVmjWEaVgfwGRupI4vAqJVGET3VIX90hz2R16m0=;
+        b=kbDD0ETnfb+9T5ky4afnuU19WL5B3TgSTtrvr8/78l52RfSJ/bD7cjcm8C45XsJ4wr
+         kY8zUv/ms1sLDr56E/0rqAcpldgbTirzVsO1TqrlTRt5AL5IhxusLfWbWkCQZqSDApog
+         xVZixZPZF5pv+wD9wYHHFszyBuRJ0Z0/71+2E/SGgHwnMzv66/86w9uplcX1z0grTv9p
+         1TYZ7MtIagYr+hnMPgyspL8CH18dkY1RexU6NSgr6L6/lGHi7jHNMmmGOoiBuh2azqNd
+         aWHFVXbx5cxjkbX5kJe7PAp4IU2wf06fogqa+YoO9ylF7jna+POCU+xNsHXT6R2wFQg9
+         YqYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=QTZIdVmjWEaVgfwGRupI4vAqJVGET3VIX90hz2R16m0=;
+        b=P3jSsxmfVY8nyAL94niYnzQ4IQDE79hS1AYzo3uzOCOYUdQi/JHMY5e6r855DSbfQ1
+         5jYqPSLpvjfDCAcfJfaA4Uu1hr1QtcDhEBm96BPSPlW8tehyGkF/6bCN3ltB5WhdVUfA
+         VnEF4ezRAgb5GDcfh4vE1c3XpuaNcAzuLifcioss35L5RVelWlwzFsWb7v42vGBRlugZ
+         z8RRe+EOuNyJpVzOms35C0D4gH7HjgjuxxLQBS0A5xs8du9LQe8LUeKqmcCbwKsyr81H
+         LKsSIIVYdBqNcITSmr8czM8/YqjEGdEVcdvrQa4cGMq475FsNA4kzH1kVL+ACJVC04u0
+         vMZg==
+X-Gm-Message-State: APjAAAVczCiV1K1cT6MCjuh5goef1hpaz1coghxyioqHypUIl+RuRY47
+        pd5yFdWyi+cY2xUw+bldS72MAPEXAQISpbGWFn5N
+X-Google-Smtp-Source: APXvYqwe5B6z/3dUuNDQtQ0n2oQYOsdY3HQR3dkIin1gqVhu0NNteov05tKzv4DhJBBR4bjK2RG7Phnj6WUHoBrkRYc=
+X-Received: by 2002:a05:6830:1103:: with SMTP id w3mr7909437otq.312.1570713462861;
+ Thu, 10 Oct 2019 06:17:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bec80499-86d9-bf1f-df23-9044a8099992@arm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Received: by 2002:a4a:3346:0:0:0:0:0 with HTTP; Thu, 10 Oct 2019 06:17:41
+ -0700 (PDT)
+Reply-To: sunrisefundingltd50@gmail.com
+From:   Valentina Yurina <v_yurina@ub.ac.id>
+Date:   Thu, 10 Oct 2019 14:17:41 +0100
+Message-ID: <CAKoEkvu4vc5Yn9-hzxQ5dYmUL=oO69=GSP0FC7O+CGz9Jni8+Q@mail.gmail.com>
+Subject: Apply For Financial investment at a lower rate 2%
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Wed, Oct 09, 2019 at 01:25:14PM +0100, Robin Murphy wrote:
-> On 2019-10-08 9:38 am, Yunsheng Lin wrote:
-> > On 2019/9/25 18:41, Peter Zijlstra wrote:
-> > > On Wed, Sep 25, 2019 at 05:14:20PM +0800, Yunsheng Lin wrote:
-> > > >  From the discussion above, It seems making the node_to_cpumask_map()
-> > > > NUMA_NO_NODE aware is the most feasible way to move forwad.
-> > > 
-> > > That's still wrong.
-> > 
-> > Hi, Peter
-> > 
-> > It seems this has trapped in the dead circle.
-> > 
-> >  From my understanding, NUMA_NO_NODE which means not node numa preference
-> > is the state to describe the node of virtual device or the physical device
-> > that has equal distance to all cpu.
+-- 
+Hello,
 
-So I _really_ don't believe in the equidistant physical device. Physics
-just doesn't allow that. Or rather, you can, but then it'll be so slow
-it doesn't matter.
+We are private lenders based in UK.
 
-The only possible option is equidistant to a _small_ number of nodes,
-and if that is a reality, then we should look at that. So far however
-it's purely been a hypothetical device.
+Do you need a loan (credit) as soon as possible. Are you in search of
+money to solve your personal needs or finance your business venture,
+then get Your desired loan today! Consult us at Sunrise Funding Ltd.
 
-> > We can be stricter if the device does have a nearer node, but we can not
-> > deny that a device does not have a node numa preference or node affinity,
-> > which also means the control or data buffer can be allocated at the node where
-> > the process is running.
-> > 
-> > As you has proposed, making it -2 and have dev_to_node() warn if the device does
-> > have a nearer node and not set by the fw is a way to be stricter.
+* We offer personal loan & huge capital loan at 2% interest rate to
+the general public both locally and internationally.
+* Credit amount range from $5,000.00 -- $500,000.00 and above.
+* Special $10,000,000.00 Loan offer for huge project also available.
+* Loan period of 6 months -- 10 years.
+* Loan is granted 24 hours after approval and accredited, directly in
+hand or bank account.
 
-Because it is 100% guaranteed (we have proof) that BIOS is shit and
-doesn't set node affinity for devices that really should have it.
+Please note that you are advised to contact us for more details via
+the following e-mail address below;
 
-So we're trading a hypothetical shared device vs not reporting actual
-BIOS bugs. That's no contest.
-
-Worse, we have virtual devices that have clear node affinity without it
-set.
-
-So we're growing shit, allowing bugs, and what do we get in return? Warm
-fuzzies is not it.
-
-> > Any better suggestion to move this forward?
-> 
-> FWIW (since this is in my inbox), it sounds like the fundamental issue is
-> that NUMA_NO_NODE is conflated for at least two different purposes, so
-> trying to sort that out would be a good first step. AFAICS we have genuine
-> "don't care" cases like alloc_pages_node(), where if the producer says it
-> doesn't matter then the consumer is free to make its own judgement on what
-> to do, and fundamentally different "we expect this thing to have an affinity
-> but it doesn't, so we can't say what's appropriate" cases which could really
-> do with some separate indicator like "NUMA_INVALID_NODE".
-
-It can possible be a 3 state:
-
- - UNKNON; overridden by parent/bus/etc..
-   ERROR when still UNKNOWN on register.
-
- - INVALID; ERROR on devm usage.
-   for virtual devices / pure sysfs nodes
-
- - NO_NODE; may only be set on virtual devices (we can check against PCI
-   bus etc..) when there really is no better option.
-
-But I only want to see the NO_NODE crap at the end, after all other
-possible avenues have been done.
-
-> The tricky part is then bestowed on the producers to decide whether they can
-> downgrade "invalid" to "don't care". You can technically build 'a device'
-> whose internal logic is distributed between nodes and thus appears to have
-> equal affinity - interrupt controllers, for example, may have per-CPU or
-> per-node interfaces that end up looking like that - so although it's
-> unlikely it's not outright nonsensical.
-
-I'm thinking we should/do create per cpu/node devices for such
-distributed stuff. For instance, we create per-cpu clockevent devices
-(where appropriate).
-
-> Similarly a 'device' that's actually emulated behind a firmware call
-> interface may well effectively have no real affinity.
-
-Emulated devices are typically slow as heck and should be avoided if at
-all possible. I don't see NUMA affinity being important for them.
+EMAIL : sunrisefundingltd50@gmail.com
+FIRM : Sunrise Funding Ltd UK.
