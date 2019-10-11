@@ -2,75 +2,87 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AE62D4196
-	for <lists+linux-sh@lfdr.de>; Fri, 11 Oct 2019 15:43:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0B17D45BD
+	for <lists+linux-sh@lfdr.de>; Fri, 11 Oct 2019 18:51:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728068AbfJKNnj (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 11 Oct 2019 09:43:39 -0400
-Received: from imap1.codethink.co.uk ([176.9.8.82]:34083 "EHLO
-        imap1.codethink.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727855AbfJKNnj (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 11 Oct 2019 09:43:39 -0400
-Received: from [167.98.27.226] (helo=[10.35.5.173])
-        by imap1.codethink.co.uk with esmtpsa (Exim 4.84_2 #1 (Debian))
-        id 1iIvCf-0005ik-SM; Fri, 11 Oct 2019 14:43:34 +0100
-Subject: Re: [PATCH] proc: centralise declaration of cpuinfo_op
-To:     Christoph Hellwig <hch@infradead.org>
-Cc:     linux-kernel@lists.codethink.co.uk,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mark Salter <msalter@redhat.com>,
-        Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        id S1728086AbfJKQvp (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 11 Oct 2019 12:51:45 -0400
+Received: from mx2.suse.de ([195.135.220.15]:35036 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726728AbfJKQvp (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Fri, 11 Oct 2019 12:51:45 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 60453B2AC;
+        Fri, 11 Oct 2019 16:51:43 +0000 (UTC)
+From:   Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+To:     linux-kernel@vger.kernel.org
+Cc:     hch@infradead.org, Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        linux-c6x-dev@linux-c6x.org, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-References: <20191009113930.13236-1-ben.dooks@codethink.co.uk>
- <20191009175149.GA28540@infradead.org>
-From:   Ben Dooks <ben.dooks@codethink.co.uk>
-Organization: Codethink Limited.
-Message-ID: <5c4ad594-55a3-a9c5-1674-e85665422aa1@codethink.co.uk>
-Date:   Fri, 11 Oct 2019 14:43:32 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org
+Subject: [PATCH] sh: use dma_to_phys() instead of dev->dma_pfn_offset
+Date:   Fri, 11 Oct 2019 18:51:29 +0200
+Message-Id: <20191011165129.29655-1-nsaenzjulienne@suse.de>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-In-Reply-To: <20191009175149.GA28540@infradead.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 09/10/2019 18:51, Christoph Hellwig wrote:
-> On Wed, Oct 09, 2019 at 12:39:30PM +0100, Ben Dooks wrote:
->> When building for arm, cpuinfo_op generates a warning due
->> to no declaration. Since this is used in fs/proc/cpuinfo.c
->> and inconsitently declared across archiectures move the
->> declaration info <linux/seq_file.h>. This means that the
->> cpuinfo_op will have a declaration any place it is used.
->>
->> Removes the following sparse warning:
->>
->> arch/arm/kernel/setup.c:1320:29: warning: symbol 'cpuinfo_op' was not declared. Should it be static?
-> 
-> I like the consolidation, but I don't think seq_file.h is the right
-> place.  A procfs or cpu topology related header seems like the better
-> choice.
+It's more explicit and lets dma-direct handle the specifics of how to
+translate addresses.
 
-Ok, thanks.
+On top of that get rid of warnings as, since the introduction of commit
+6fa1d28e38c ("sh: use generic dma_noncoherent_ops"), it's impossible for
+the dev to be NULL.
 
-I'll have a look at where else it could go, but I'm not sure if I have
-the resources to build /all/ kernels that this would effect.
+Signed-off-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+---
 
+NOTE: this was only compile tested.
+
+ arch/sh/kernel/dma-coherent.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
+
+diff --git a/arch/sh/kernel/dma-coherent.c b/arch/sh/kernel/dma-coherent.c
+index b17514619b7e..f6618ed01a42 100644
+--- a/arch/sh/kernel/dma-coherent.c
++++ b/arch/sh/kernel/dma-coherent.c
+@@ -4,6 +4,7 @@
+  */
+ #include <linux/mm.h>
+ #include <linux/init.h>
++#include <linux/dma-direct.h>
+ #include <linux/dma-noncoherent.h>
+ #include <linux/module.h>
+ #include <asm/cacheflush.h>
+@@ -36,9 +37,7 @@ void *arch_dma_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle,
+ 
+ 	split_page(pfn_to_page(virt_to_phys(ret) >> PAGE_SHIFT), order);
+ 
+-	*dma_handle = virt_to_phys(ret);
+-	if (!WARN_ON(!dev))
+-		*dma_handle -= PFN_PHYS(dev->dma_pfn_offset);
++	*dma_handle = phys_to_dma(dev, virt_to_phys(ret));
+ 
+ 	return ret_nocache;
+ }
+@@ -47,12 +46,9 @@ void arch_dma_free(struct device *dev, size_t size, void *vaddr,
+ 		dma_addr_t dma_handle, unsigned long attrs)
+ {
+ 	int order = get_order(size);
+-	unsigned long pfn = (dma_handle >> PAGE_SHIFT);
++	unsigned long pfn = __phys_to_pfn(dma_to_phys(dev, dma_handle));
+ 	int k;
+ 
+-	if (!WARN_ON(!dev))
+-		pfn += dev->dma_pfn_offset;
+-
+ 	for (k = 0; k < (1 << order); k++)
+ 		__free_pages(pfn_to_page(pfn + k), 0);
+ 
 -- 
-Ben Dooks				http://www.codethink.co.uk/
-Senior Engineer				Codethink - Providing Genius
+2.23.0
 
-https://www.codethink.co.uk/privacy.html
