@@ -2,144 +2,150 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AF68D5D3A
-	for <lists+linux-sh@lfdr.de>; Mon, 14 Oct 2019 10:16:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FB43D5E19
+	for <lists+linux-sh@lfdr.de>; Mon, 14 Oct 2019 11:06:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730046AbfJNIQF (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 14 Oct 2019 04:16:05 -0400
-Received: from mail-io1-f65.google.com ([209.85.166.65]:45561 "EHLO
-        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728883AbfJNIQF (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 14 Oct 2019 04:16:05 -0400
-Received: by mail-io1-f65.google.com with SMTP id c25so35991710iot.12
-        for <linux-sh@vger.kernel.org>; Mon, 14 Oct 2019 01:16:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=t44CqyvdXypuwtzNTJ7ymJovfCkTaCpIACjq52B13FE=;
-        b=JK9+D8JY6bxWRDbYtmDx//zrK7L0P5ZaJiOA1u2JTy/ek0rC1FVjF5jbx8SF6OPnwM
-         y36p/5at+welqaHGrpeciApYazXiC0HEwjfvfqfT75fnauattpvVQgA5+JjHIIw5Epe+
-         BFm5EzGuJgp3mNjZOZTQrvS0bqwWhoOVOOhDa7eYnntod0vH1L3sRwunV3OTS7MhWLLR
-         bdBgCHLnxqmC6n+VjUzcb/2EDArfWypGehE2YtuxWMKu51XpQg4M8+T5JmjUUPVxT/eV
-         scRYIVaE5rhUNQtV8KHYgGmvdShVcQqKfqdI907x6Kf447HKopmeuc22GHcH8S+3lmxp
-         6hfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=t44CqyvdXypuwtzNTJ7ymJovfCkTaCpIACjq52B13FE=;
-        b=B7H3lJSoVesf4XuuBW2nTbSMWBToToeIHFRqkv69cZLBmxqruVue5FYtvU764hntiL
-         jGI0XVKYmhWj3GnKZIrrrHrLBbuuSl+/C19n2/Jx8FA6+HnSvT5UdKwFa/LbLVDgqBV7
-         1kz8OzIJbIjLc/ql/8ueMLWwTIF3gCJ5jz1eb2WS31H2+G17GSgntkTBis3Qg4poWjxT
-         aTtjO09Nk9oL6CUP3+kGQE/GbekqIhwIqw8hfo3DHq4hkMlDxbk56ZXLWc5YG1nmvq+i
-         yAvNrhpVwD/3z9MKSuZK8irUwc0OUbej+Aan5wACiYgD0cGG2Yh5xOvN/lXQ9RgbOgFt
-         sckQ==
-X-Gm-Message-State: APjAAAUuUgCWka0nb+tSY2ABEeJIvmjqmvx/+wNGJnSGuZGsJ0B6qwc2
-        823WhZdJ8iHanHWbw83wRnWCylfDueuCJt7otZr8EQ==
-X-Google-Smtp-Source: APXvYqwLQ8EL+87kFnJZAnOI6uFthuTZJqtrvmnMJN6wDA31bnQPrVHdctZs00tKOaFLcdTgP9uegvfD+UtrZuLktaY=
-X-Received: by 2002:a05:6602:248e:: with SMTP id g14mr19829138ioe.6.1571040964440;
- Mon, 14 Oct 2019 01:16:04 -0700 (PDT)
+        id S1730656AbfJNJGA (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 14 Oct 2019 05:06:00 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:45300 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730605AbfJNJGA (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Mon, 14 Oct 2019 05:06:00 -0400
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 962863082E42;
+        Mon, 14 Oct 2019 09:05:59 +0000 (UTC)
+Received: from [10.36.117.10] (ovpn-117-10.ams2.redhat.com [10.36.117.10])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 6C47860BE2;
+        Mon, 14 Oct 2019 09:05:55 +0000 (UTC)
+Subject: Re: [PATCH v6 01/10] mm/memunmap: Don't access uninitialized memmap
+ in memunmap_pages()
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+        linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        x86@kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Ira Weiny <ira.weiny@intel.com>
+References: <20191006085646.5768-1-david@redhat.com>
+ <20191006085646.5768-2-david@redhat.com>
+From:   David Hildenbrand <david@redhat.com>
+Organization: Red Hat GmbH
+Message-ID: <c528655a-7050-506b-c9bb-632dfde6c209@redhat.com>
+Date:   Mon, 14 Oct 2019 11:05:54 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.0
 MIME-Version: 1.0
-References: <20191007033200.13443-1-brgl@bgdev.pl> <20191014081220.GK4545@dell>
-In-Reply-To: <20191014081220.GK4545@dell>
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Mon, 14 Oct 2019 10:15:53 +0200
-Message-ID: <CAMRc=MfSiJY-85ZHM_aSxUDc6LkbG1FidRFgTHtbZy6hHiQ+iw@mail.gmail.com>
-Subject: Re: [PATCH v5 0/7] backlight: gpio: simplify the driver
-To:     Lee Jones <lee.jones@linaro.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>
-Cc:     Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jacopo Mondi <jacopo@jmondi.org>, linux-sh@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20191006085646.5768-2-david@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.46]); Mon, 14 Oct 2019 09:06:00 +0000 (UTC)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-pon., 14 pa=C5=BA 2019 o 10:12 Lee Jones <lee.jones@linaro.org> napisa=C5=
-=82(a):
->
-> On Mon, 07 Oct 2019, Bartosz Golaszewski wrote:
->
-> > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> >
-> > While working on my other series related to gpio-backlight[1] I noticed
-> > that we could simplify the driver if we made the only user of platform
-> > data use GPIO lookups and device properties. This series tries to do
-> > that.
-> >
-> > The first patch adds all necessary data structures to ecovec24. Patch
-> > 2/7 unifies much of the code for both pdata and non-pdata cases. Patche=
-s
-> > 3-4/7 remove unused platform data fields. Last three patches contain
-> > additional improvements for the GPIO backlight driver while we're alrea=
-dy
-> > modifying it.
-> >
-> > I don't have access to this HW but hopefully this works. Only compile
-> > tested.
-> >
-> > [1] https://lkml.org/lkml/2019/6/25/900
-> >
-> > v1 -> v2:
-> > - rebased on top of v5.3-rc1 and adjusted to the recent changes from An=
-dy
-> > - added additional two patches with minor improvements
-> >
-> > v2 -> v3:
-> > - in patch 7/7: used initializers to set values for pdata and dev local=
- vars
-> >
-> > v3 -> v4:
-> > - rebased on top of v5.4-rc1
-> > - removed changes that are no longer relevant after commit ec665b756e6f
-> >   ("backlight: gpio-backlight: Correct initial power state handling")
-> > - added patch 7/7
-> >
-> > v4 ->V5:
-> > - in patch 7/7: added a comment replacing the name of the function bein=
-g
-> >   pulled into probe()
-> >
-> > Bartosz Golaszewski (7):
-> >   backlight: gpio: remove unneeded include
-> >   sh: ecovec24: add additional properties to the backlight device
-> >   backlight: gpio: simplify the platform data handling
-> >   sh: ecovec24: don't set unused fields in platform data
-> >   backlight: gpio: remove unused fields from platform data
-> >   backlight: gpio: use a helper variable for &pdev->dev
-> >   backlight: gpio: pull gpio_backlight_initial_power_state() into probe
-> >
-> >  arch/sh/boards/mach-ecovec24/setup.c         |  33 ++++--
->
-> I guess we're just waiting for the SH Acks now?
->
+On 06.10.19 10:56, David Hildenbrand wrote:
+> From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+> 
+> With an altmap, the memmap falling into the reserved altmap space are
+> not initialized and, therefore, contain a garbage NID and a garbage
+> zone. Make sure to read the NID/zone from a memmap that was initialzed.
+> 
+> This fixes a kernel crash that is observed when destroying a namespace:
+> 
+> [   81.356173] kernel BUG at include/linux/mm.h:1107!
+> cpu 0x1: Vector: 700 (Program Check) at [c000000274087890]
+>      pc: c0000000004b9728: memunmap_pages+0x238/0x340
+>      lr: c0000000004b9724: memunmap_pages+0x234/0x340
+> ...
+>      pid   = 3669, comm = ndctl
+> kernel BUG at include/linux/mm.h:1107!
+> [c000000274087ba0] c0000000009e3500 devm_action_release+0x30/0x50
+> [c000000274087bc0] c0000000009e4758 release_nodes+0x268/0x2d0
+> [c000000274087c30] c0000000009dd144 device_release_driver_internal+0x174/0x240
+> [c000000274087c70] c0000000009d9dfc unbind_store+0x13c/0x190
+> [c000000274087cb0] c0000000009d8a24 drv_attr_store+0x44/0x60
+> [c000000274087cd0] c0000000005a7470 sysfs_kf_write+0x70/0xa0
+> [c000000274087d10] c0000000005a5cac kernfs_fop_write+0x1ac/0x290
+> [c000000274087d60] c0000000004be45c __vfs_write+0x3c/0x70
+> [c000000274087d80] c0000000004c26e4 vfs_write+0xe4/0x200
+> [c000000274087dd0] c0000000004c2a6c ksys_write+0x7c/0x140
+> [c000000274087e20] c00000000000bbd0 system_call+0x5c/0x68
+> 
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> Cc: Logan Gunthorpe <logang@deltatee.com>
+> Cc: Ira Weiny <ira.weiny@intel.com>
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> [ minimze code changes, rephrase description ]
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>   mm/memremap.c | 11 +++++++----
+>   1 file changed, 7 insertions(+), 4 deletions(-)
+> 
+> diff --git a/mm/memremap.c b/mm/memremap.c
+> index 557e53c6fb46..8c2fb44c3b4d 100644
+> --- a/mm/memremap.c
+> +++ b/mm/memremap.c
+> @@ -123,6 +123,7 @@ static void dev_pagemap_cleanup(struct dev_pagemap *pgmap)
+>   void memunmap_pages(struct dev_pagemap *pgmap)
+>   {
+>   	struct resource *res = &pgmap->res;
+> +	struct page *first_page;
+>   	unsigned long pfn;
+>   	int nid;
+>   
+> @@ -131,14 +132,16 @@ void memunmap_pages(struct dev_pagemap *pgmap)
+>   		put_page(pfn_to_page(pfn));
+>   	dev_pagemap_cleanup(pgmap);
+>   
+> +	/* make sure to access a memmap that was actually initialized */
+> +	first_page = pfn_to_page(pfn_first(pgmap));
+> +
+>   	/* pages are dead and unused, undo the arch mapping */
+> -	nid = page_to_nid(pfn_to_page(PHYS_PFN(res->start)));
+> +	nid = page_to_nid(first_page);
+>   
+>   	mem_hotplug_begin();
+>   	if (pgmap->type == MEMORY_DEVICE_PRIVATE) {
+> -		pfn = PHYS_PFN(res->start);
+> -		__remove_pages(page_zone(pfn_to_page(pfn)), pfn,
+> -				 PHYS_PFN(resource_size(res)), NULL);
+> +		__remove_pages(page_zone(first_page), PHYS_PFN(res->start),
+> +			       PHYS_PFN(resource_size(res)), NULL);
+>   	} else {
+>   		arch_remove_memory(nid, res->start, resource_size(res),
+>   				pgmap_altmap(pgmap));
+> 
 
-We've been waiting for them for a couple months now - the sh patches
-haven't changed since v1...
+@Andrew, can you add
 
-Rich, Yoshinori - could you ack this so that it can go in for v5.5?
+Fixes: 2c2a5af6fed2 ("mm, memory_hotplug: add nid parameter to 
+arch_remove_memory")
+
+(which basically introduced the nid = page_to_nid(first_page))
+
+The "page_zone(pfn_to_page(pfn)" was introduced by 69324b8f4833 ("mm, 
+devm_memremap_pages: add MEMORY_DEVICE_PRIVATE support"), however, I 
+think we will never have driver reserved memory with 
+MEMORY_DEVICE_PRIVATE (no altmap AFAIKS).
+
+Also, I think
+
+Cc: stable@vger.kernel.org # v5.0+
+
+makes sense.
+
+-- 
 
 Thanks,
-Bartosz
 
-> >  drivers/video/backlight/gpio_backlight.c     | 108 +++++--------------
-> >  include/linux/platform_data/gpio_backlight.h |   3 -
-> >  3 files changed, 53 insertions(+), 91 deletions(-)
-> >
->
-> --
-> Lee Jones [=E6=9D=8E=E7=90=BC=E6=96=AF]
-> Linaro Services Technical Lead
-> Linaro.org =E2=94=82 Open source software for ARM SoCs
-> Follow Linaro: Facebook | Twitter | Blog
+David / dhildenb
