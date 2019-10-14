@@ -2,97 +2,103 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 207EED5EF8
-	for <lists+linux-sh@lfdr.de>; Mon, 14 Oct 2019 11:32:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80A37D5F4C
+	for <lists+linux-sh@lfdr.de>; Mon, 14 Oct 2019 11:49:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730966AbfJNJcS (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 14 Oct 2019 05:32:18 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:49560 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730667AbfJNJcR (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Mon, 14 Oct 2019 05:32:17 -0400
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 13146A3CD7D;
-        Mon, 14 Oct 2019 09:32:17 +0000 (UTC)
-Received: from [10.36.116.28] (ovpn-116-28.ams2.redhat.com [10.36.116.28])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 9106F600CD;
-        Mon, 14 Oct 2019 09:32:14 +0000 (UTC)
-Subject: Re: [PATCH v6 04/10] mm/memory_hotplug: Don't access uninitialized
- memmaps in shrink_zone_span()
-To:     linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
-        linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        id S1731121AbfJNJtQ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 14 Oct 2019 05:49:16 -0400
+Received: from merlin.infradead.org ([205.233.59.134]:55282 "EHLO
+        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730941AbfJNJtQ (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 14 Oct 2019 05:49:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=3rjVtCZLgsilEpkgOnYIzDjjtZ2Kp11iwIF4i8XF3A8=; b=nac7UknEctDLA9sc4gOIH979e
+        nULCKrIjMf9CbbLUdLNoMbDBE0mr6s1/DovqlcygDZu7Xzl8gihBDK2b+kSb1KzE2IgaqU6eyOhVj
+        M45eKskAz2svxNJUvPYZMZBXUUMG4IHedszWllhdYyqP6PkfV1ssGyok384LEqu3jBctIrZMg4gRs
+        QK9XCaccrPOP3B6fIDDognLit2HFlE2QRQxLjvlTNoPsNZuwLCNv1rFQaR5u5lbyNW6n7/UtYY4UJ
+        sF/067U/08kPkzB/j54E7VGtoZ9W5cTqB97zx/TIf07va6Of7cYzeIZqeC2G/9xNW5hjW74k6FNx2
+        6EMbnPzWw==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1iJwyY-0005Ry-CU; Mon, 14 Oct 2019 09:49:14 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id DF818300EBF;
+        Mon, 14 Oct 2019 11:48:18 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id D48F820238A9A; Mon, 14 Oct 2019 11:49:12 +0200 (CEST)
+Date:   Mon, 14 Oct 2019 11:49:12 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Yunsheng Lin <linyunsheng@huawei.com>,
+        Michal Hocko <mhocko@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>, catalin.marinas@arm.com,
+        will@kernel.org, mingo@redhat.com, bp@alien8.de, rth@twiddle.net,
+        ink@jurassic.park.msu.ru, mattst88@gmail.com,
+        benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
+        heiko.carstens@de.ibm.com, gor@linux.ibm.com,
+        borntraeger@de.ibm.com, ysato@users.sourceforge.jp,
+        dalias@libc.org, davem@davemloft.net, ralf@linux-mips.org,
+        paul.burton@mips.com, jhogan@kernel.org, jiaxun.yang@flygoat.com,
+        chenhc@lemote.com, akpm@linux-foundation.org, rppt@linux.ibm.com,
+        anshuman.khandual@arm.com, tglx@linutronix.de, cai@lca.pw,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        hpa@zytor.com, x86@kernel.org, dave.hansen@linux.intel.com,
+        luto@kernel.org, len.brown@intel.com, axboe@kernel.dk,
+        dledford@redhat.com, jeffrey.t.kirsher@intel.com,
+        linux-alpha@vger.kernel.org, naveen.n.rao@linux.vnet.ibm.com,
+        mwb@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
         linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        x86@kernel.org, Oscar Salvador <osalvador@suse.de>,
-        Michal Hocko <mhocko@suse.com>,
-        Pavel Tatashin <pasha.tatashin@soleen.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
-References: <20191006085646.5768-1-david@redhat.com>
- <20191006085646.5768-5-david@redhat.com>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat GmbH
-Message-ID: <5a4573de-bd8a-6cd3-55d0-86d503a236fd@redhat.com>
-Date:   Mon, 14 Oct 2019 11:32:13 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.0
+        sparclinux@vger.kernel.org, tbogendoerfer@suse.de,
+        linux-mips@vger.kernel.org, rafael@kernel.org, bhelgaas@google.com,
+        linux-pci@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        lenb@kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
+Message-ID: <20191014094912.GY2311@hirez.programming.kicks-ass.net>
+References: <20191010073212.GB18412@dhcp22.suse.cz>
+ <6cc94f9b-0d79-93a8-5ec2-4f6c21639268@huawei.com>
+ <20191011111539.GX2311@hirez.programming.kicks-ass.net>
+ <7fad58d6-5126-e8b8-a7d8-a91814da53ba@huawei.com>
+ <20191012074014.GA2037204@kroah.com>
+ <1e1ec851-b5e7-8f35-a627-4c12ca9c2d3c@huawei.com>
+ <20191012104001.GA2052933@kroah.com>
+ <20191012104742.GA2053473@kroah.com>
+ <82000bc8-6912-205b-0251-25b9cc430973@huawei.com>
+ <20191014092509.GA3050088@kroah.com>
 MIME-Version: 1.0
-In-Reply-To: <20191006085646.5768-5-david@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.2 (mx1.redhat.com [10.5.110.68]); Mon, 14 Oct 2019 09:32:17 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191014092509.GA3050088@kroah.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 06.10.19 10:56, David Hildenbrand wrote:
-> Let's limit shrinking to !ZONE_DEVICE so we can fix the current code. We
-> should never try to touch the memmap of offline sections where we could
-> have uninitialized memmaps and could trigger BUGs when calling
-> page_to_nid() on poisoned pages.
-> 
-> There is no reliable way to distinguish an uninitialized memmap from an
-> initialized memmap that belongs to ZONE_DEVICE, as we don't have
-> anything like SECTION_IS_ONLINE we can use similar to
-> pfn_to_online_section() for !ZONE_DEVICE memory. E.g.,
-> set_zone_contiguous() similarly relies on pfn_to_online_section() and
-> will therefore never set a ZONE_DEVICE zone consecutive. Stopping to
-> shrink the ZONE_DEVICE therefore results in no observable changes,
-> besides /proc/zoneinfo indicating different boundaries - something we
-> can totally live with.
-> 
-> Before commit d0dc12e86b31 ("mm/memory_hotplug: optimize memory
-> hotplug"), the memmap was initialized with 0 and the node with the
-> right value. So the zone might be wrong but not garbage. After that
-> commit, both the zone and the node will be garbage when touching
-> uninitialized memmaps.
-> 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Oscar Salvador <osalvador@suse.de>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Fixes: d0dc12e86b31 ("mm/memory_hotplug: optimize memory hotplug")
+On Mon, Oct 14, 2019 at 11:25:09AM +0200, Greg KH wrote:
+> Good luck, I don't really think that most, if any, of this is needed,
+> but hey, it's nice to clean it up where it can be :)
 
-@Andrew, can you convert that to
+Some of the virtual devices we have (that use devm) really ought to set
+the node too, like drivers/base/cpu.c and driver/base/node.c and
+arguably the cooling devices too (they create a device per cpu).
 
-Fixes: f1dd2cd13c4b ("mm, memory_hotplug: do not associate hotadded 
-memory to zones until online") # visible after d0dc12e86b319
+The patch I had here:
 
-and add
+  https://lkml.kernel.org/r/20190925214526.GA4643@worktop.programming.kicks-ass.net
 
-Cc: stable@vger.kernel.org # v4.13+
+takes the more radical approach of requiring a node, except when
+explicitly marked not (the fake devices that don't use devm for
+example).
 
+But yes, PCI and other physical busses really should be having a node
+set, no excuses.
 
--- 
-
-Thanks,
-
-David / dhildenb
+Anyway, I don't think non-physical devices actually use
+cpumask_of_node() much, a quick grep didn't show any.
