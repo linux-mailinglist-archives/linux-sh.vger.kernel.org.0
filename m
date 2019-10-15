@@ -2,37 +2,61 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B003ED6C7F
-	for <lists+linux-sh@lfdr.de>; Tue, 15 Oct 2019 02:33:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10901D7055
+	for <lists+linux-sh@lfdr.de>; Tue, 15 Oct 2019 09:43:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727039AbfJOAdt (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 14 Oct 2019 20:33:49 -0400
-Received: from [67.229.103.114] ([67.229.103.114]:40990 "EHLO
-        SQ5606-6.localdomain" rhost-flags-FAIL-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726576AbfJOAds (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 14 Oct 2019 20:33:48 -0400
-Received: from localhost (localhost [IPv6:::1])
-        by SQ5606-6.localdomain (Postfix) with SMTP id AD46956E67
-        for <linux-sh@vger.kernel.org>; Tue, 15 Oct 2019 07:48:03 +0800 (CST)
-From:   linux-sh@vger.kernel.org
-Reply-To: prodawez@teleworm.us
-To:     linux-sh@vger.kernel.org,
-        =?utf-8?Q?=D0=97=D0=B4=D1=80=D0=B0=D0=B2=D1=81=D1=82=D0?=@SQ5606-6.localdomain,
-        _=D0=92=D0=B0=D1=81?=@=?utf-8?Q?=B2=D1=83=D0=B9=D1=82=D0=B5.localdomain,
-        =?utf-8?Q?_=D0=B8=D0=BD=D1=82=D0=B5=D1=80=D0=B5=D1=81=D1?=@SQ5606-6.localdomain,
-        =?utf-8?Q?=83=D1=8E=D1=82_=D0=BA=D0=BB=D0=B8=D0=B5=D0=BD?=@SQ5606-6.localdomain,
-        =?utf-8?Q?=D1=82=D1=81=D0=BA=D0=B8=D0=B5_=D0=B1=D0=B0=D0?=@SQ5606-6.localdomain,
-        =?utf-8?Q?=B7=D1=8B_=D0=B4=D0=B0=D0=BD=D0=BD=D1=8B=D1=85?=@SQ5606-6.localdomain,
-        =?utf-8?Q?=3F?=@SQ5606-6.localdomain
+        id S1726115AbfJOHn5 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 15 Oct 2019 03:43:57 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:54178 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725890AbfJOHn5 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 15 Oct 2019 03:43:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=4S4N93Cm9h7fO1vc9dO9u69+HAsS/2PLABvLeEowmjQ=; b=hOZ6xxUjLznsleyIeVNFMWFaT
+        WrEj5fzAHZ0sdmwT3R1SR8H9968JD50pGDkVXqzUAOfBE5vfSvoHOLeJENsk/gPNupwX1nQoEBNKl
+        2JcEFvMBIG5kKFGKqYs5hry1bGl22i01+NGeLGY+usA7+1QcLSUkL49P3c7umWgq+oAIF2+inWeyV
+        QMgpf/JGYkBFj/JWnOmdt62kC6o7kAXsfjT5Ui8kQb77NblmT08ABDg9uuO55WKUzGJbXpfpmyWtO
+        GvTl4y7JHsOVEMUVjkt0rQRVcf2vf6tFNeQnrUOPmVAs7j3tfbMTuaPg/PrJwwdMawBNd4vzO90Ln
+        F0hOo2mXA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1iKHUo-0002G6-3d; Tue, 15 Oct 2019 07:43:54 +0000
+Date:   Tue, 15 Oct 2019 00:43:54 -0700
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+Cc:     linux-kernel@vger.kernel.org, hch@infradead.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org
+Subject: Re: [PATCH] sh: use dma_to_phys() instead of dev->dma_pfn_offset
+Message-ID: <20191015074354.GB3464@infradead.org>
+References: <20191011165129.29655-1-nsaenzjulienne@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8";
-Content-Transfer-Encoding: 8bit
-Message-Id: <20191014234804.AD46956E67@SQ5606-6.localdomain>
-Date:   Tue, 15 Oct 2019 07:48:03 +0800 (CST)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191011165129.29655-1-nsaenzjulienne@suse.de>
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Здравствуйте! Вас интересуют клиентские базы данных?
+On Fri, Oct 11, 2019 at 06:51:29PM +0200, Nicolas Saenz Julienne wrote:
+> It's more explicit and lets dma-direct handle the specifics of how to
+> translate addresses.
+> 
+> On top of that get rid of warnings as, since the introduction of commit
+> 6fa1d28e38c ("sh: use generic dma_noncoherent_ops"), it's impossible for
+> the dev to be NULL.
 
+This looks ok, but the real answer is to switch sh to the generic
+dma remapping code.  I've been trying to get this included for about
+a year now, but never managed to get a reply from the sh maintainers.
+
+Here is the last one:
+
+http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/sh-dma-remap
