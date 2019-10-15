@@ -2,61 +2,94 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 10901D7055
-	for <lists+linux-sh@lfdr.de>; Tue, 15 Oct 2019 09:43:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CFACD70B5
+	for <lists+linux-sh@lfdr.de>; Tue, 15 Oct 2019 10:05:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726115AbfJOHn5 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 15 Oct 2019 03:43:57 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:54178 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725890AbfJOHn5 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 15 Oct 2019 03:43:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=4S4N93Cm9h7fO1vc9dO9u69+HAsS/2PLABvLeEowmjQ=; b=hOZ6xxUjLznsleyIeVNFMWFaT
-        WrEj5fzAHZ0sdmwT3R1SR8H9968JD50pGDkVXqzUAOfBE5vfSvoHOLeJENsk/gPNupwX1nQoEBNKl
-        2JcEFvMBIG5kKFGKqYs5hry1bGl22i01+NGeLGY+usA7+1QcLSUkL49P3c7umWgq+oAIF2+inWeyV
-        QMgpf/JGYkBFj/JWnOmdt62kC6o7kAXsfjT5Ui8kQb77NblmT08ABDg9uuO55WKUzGJbXpfpmyWtO
-        GvTl4y7JHsOVEMUVjkt0rQRVcf2vf6tFNeQnrUOPmVAs7j3tfbMTuaPg/PrJwwdMawBNd4vzO90Ln
-        F0hOo2mXA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1iKHUo-0002G6-3d; Tue, 15 Oct 2019 07:43:54 +0000
-Date:   Tue, 15 Oct 2019 00:43:54 -0700
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-Cc:     linux-kernel@vger.kernel.org, hch@infradead.org,
+        id S1728408AbfJOIFz (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 15 Oct 2019 04:05:55 -0400
+Received: from mx2.suse.de ([195.135.220.15]:59616 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728350AbfJOIFz (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Tue, 15 Oct 2019 04:05:55 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id BB241B562;
+        Tue, 15 Oct 2019 08:05:53 +0000 (UTC)
+Message-ID: <453a9a954f4967a68a7023c8c79a39fdcb69254a.camel@suse.de>
+Subject: Re: [PATCH] sh: use dma_to_phys() instead of dev->dma_pfn_offset
+From:   Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+To:     Christoph Hellwig <hch@infradead.org>
+Cc:     linux-kernel@vger.kernel.org,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org
-Subject: Re: [PATCH] sh: use dma_to_phys() instead of dev->dma_pfn_offset
-Message-ID: <20191015074354.GB3464@infradead.org>
+Date:   Tue, 15 Oct 2019 10:05:52 +0200
+In-Reply-To: <20191015074354.GB3464@infradead.org>
 References: <20191011165129.29655-1-nsaenzjulienne@suse.de>
+         <20191015074354.GB3464@infradead.org>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+        protocol="application/pgp-signature"; boundary="=-LqhdFNFQbXFXXko83wzg"
+User-Agent: Evolution 3.32.4 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191011165129.29655-1-nsaenzjulienne@suse.de>
-User-Agent: Mutt/1.12.1 (2019-06-15)
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Fri, Oct 11, 2019 at 06:51:29PM +0200, Nicolas Saenz Julienne wrote:
-> It's more explicit and lets dma-direct handle the specifics of how to
-> translate addresses.
-> 
-> On top of that get rid of warnings as, since the introduction of commit
-> 6fa1d28e38c ("sh: use generic dma_noncoherent_ops"), it's impossible for
-> the dev to be NULL.
 
-This looks ok, but the real answer is to switch sh to the generic
-dma remapping code.  I've been trying to get this included for about
-a year now, but never managed to get a reply from the sh maintainers.
+--=-LqhdFNFQbXFXXko83wzg
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Here is the last one:
+On Tue, 2019-10-15 at 00:43 -0700, Christoph Hellwig wrote:
+> On Fri, Oct 11, 2019 at 06:51:29PM +0200, Nicolas Saenz Julienne wrote:
+> > It's more explicit and lets dma-direct handle the specifics of how to
+> > translate addresses.
+> >=20
+> > On top of that get rid of warnings as, since the introduction of commit
+> > 6fa1d28e38c ("sh: use generic dma_noncoherent_ops"), it's impossible fo=
+r
+> > the dev to be NULL.
+>=20
+> This looks ok, but the real answer is to switch sh to the generic
+> dma remapping code.  I've been trying to get this included for about
+> a year now, but never managed to get a reply from the sh maintainers.
 
-http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/sh-dma-remap
+I see, well I guess this one will get ignored too :)
+
+> Here is the last one:
+>=20
+> http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/sh-dma-re=
+map
+
+I'd be happy with your series too.
+
+In case you're wondering why I want this: I'm interested in supporting mult=
+iple
+dma-ranges in DT. So I was looking at the amount of work needed to centrali=
+ze
+usage of dev->dma_pfn_offset. This one patch seemed trivial enough to send
+right away.
+
+Regards,
+Nicolas
+
+
+--=-LqhdFNFQbXFXXko83wzg
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEErOkkGDHCg2EbPcGjlfZmHno8x/4FAl2lfeAACgkQlfZmHno8
+x/7FnQf/fWogNvidITqlQcsKCGc7oeRASPSjW/lRMdE4n3pH/nBJe8zF9LqxNsZj
+n0yCrXQfiJt9fVzHMLjWmi7vrC8/e7MQ94nqYnK9R1E9KPKnkriRFU0ux2ahlU8l
+xXHa0Q0momOpZimYl5rR0rYVVi1nrhkRl8TUJn2WAAfO2X+z9r1O2LwWTAVmR6yL
+wIG81FoN1wXzZShor97MX7RAivRQ5HwediXU6o1GOjsqRPl8K8YvCFDuTnXH6iGZ
+7TvnaGzKy0flfbvihDOCUNCLYTIy01aq/lqxBDl0/O9yOuRwNjfD8GekckaOx3p6
+GJk1+BKLk3RydGJXLzJn37JhXq2eqg==
+=h442
+-----END PGP SIGNATURE-----
+
+--=-LqhdFNFQbXFXXko83wzg--
+
