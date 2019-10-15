@@ -2,22 +2,24 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0038DD7560
-	for <lists+linux-sh@lfdr.de>; Tue, 15 Oct 2019 13:46:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22C61D767A
+	for <lists+linux-sh@lfdr.de>; Tue, 15 Oct 2019 14:27:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726895AbfJOLqP (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 15 Oct 2019 07:46:15 -0400
-Received: from mx2.suse.de ([195.135.220.15]:42162 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726208AbfJOLqP (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Tue, 15 Oct 2019 07:46:15 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 41B27AD79;
-        Tue, 15 Oct 2019 11:46:12 +0000 (UTC)
-Date:   Tue, 15 Oct 2019 13:46:11 +0200
-From:   Michal Hocko <mhocko@kernel.org>
-To:     Anshuman Khandual <anshuman.khandual@arm.com>
+        id S1729067AbfJOM04 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 15 Oct 2019 08:26:56 -0400
+Received: from foss.arm.com ([217.140.110.172]:37692 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726441AbfJOM04 (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Tue, 15 Oct 2019 08:26:56 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0AB1D337;
+        Tue, 15 Oct 2019 05:26:55 -0700 (PDT)
+Received: from [10.162.42.142] (p8cg001049571a15.blr.arm.com [10.162.42.142])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 182753F68E;
+        Tue, 15 Oct 2019 05:26:41 -0700 (PDT)
+Subject: Re: [PATCH V6 2/2] mm/debug: Add tests validating architecture page
+ table helpers
+To:     Michal Hocko <mhocko@kernel.org>
 Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
         Vlastimil Babka <vbabka@suse.cz>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -54,45 +56,49 @@ Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
         linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
         linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
         x86@kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V6 2/2] mm/debug: Add tests validating architecture page
- table helpers
-Message-ID: <20191015114611.GC317@dhcp22.suse.cz>
 References: <1571131302-32290-1-git-send-email-anshuman.khandual@arm.com>
  <1571131302-32290-3-git-send-email-anshuman.khandual@arm.com>
+ <20191015114611.GC317@dhcp22.suse.cz>
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <cb441eab-6cde-5537-6f94-f183f119c92e@arm.com>
+Date:   Tue, 15 Oct 2019 17:57:08 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1571131302-32290-3-git-send-email-anshuman.khandual@arm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20191015114611.GC317@dhcp22.suse.cz>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Tue 15-10-19 14:51:42, Anshuman Khandual wrote:
-> This adds tests which will validate architecture page table helpers and
-> other accessors in their compliance with expected generic MM semantics.
-> This will help various architectures in validating changes to existing
-> page table helpers or addition of new ones.
-> 
-> Test page table and memory pages creating it's entries at various level are
-> all allocated from system memory with required size and alignments. But if
-> memory pages with required size and alignment could not be allocated, then
-> all depending individual tests are just skipped afterwards. This test gets
-> called right after init_mm_internals() required for alloc_contig_range() to
-> work correctly.
-> 
-> This gets build and run when CONFIG_DEBUG_VM_PGTABLE is selected along with
-> CONFIG_VM_DEBUG. Architectures willing to subscribe this test also need to
-> select CONFIG_ARCH_HAS_DEBUG_VM_PGTABLE which for now is limited to x86 and
-> arm64. Going forward, other architectures too can enable this after fixing
-> build or runtime problems (if any) with their page table helpers.
 
-A highlevel description of tests and what they are testing for would be
-really appreciated. Who wants to run these tests and why/when? What kind
-of bugs would get detected? In short why do we really need/want this
-code in the tree?
 
--- 
-Michal Hocko
-SUSE Labs
+On 10/15/2019 05:16 PM, Michal Hocko wrote:
+> On Tue 15-10-19 14:51:42, Anshuman Khandual wrote:
+>> This adds tests which will validate architecture page table helpers and
+>> other accessors in their compliance with expected generic MM semantics.
+>> This will help various architectures in validating changes to existing
+>> page table helpers or addition of new ones.
+>>
+>> Test page table and memory pages creating it's entries at various level are
+>> all allocated from system memory with required size and alignments. But if
+>> memory pages with required size and alignment could not be allocated, then
+>> all depending individual tests are just skipped afterwards. This test gets
+>> called right after init_mm_internals() required for alloc_contig_range() to
+>> work correctly.
+>>
+>> This gets build and run when CONFIG_DEBUG_VM_PGTABLE is selected along with
+>> CONFIG_VM_DEBUG. Architectures willing to subscribe this test also need to
+>> select CONFIG_ARCH_HAS_DEBUG_VM_PGTABLE which for now is limited to x86 and
+>> arm64. Going forward, other architectures too can enable this after fixing
+>> build or runtime problems (if any) with their page table helpers.
+> 
+> A highlevel description of tests and what they are testing for would be
+> really appreciated. Who wants to run these tests and why/when? What kind
+> of bugs would get detected? In short why do we really need/want this
+> code in the tree?
+
+Sure, will do.
