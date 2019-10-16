@@ -2,101 +2,65 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 699B2D91EE
-	for <lists+linux-sh@lfdr.de>; Wed, 16 Oct 2019 15:03:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04FFAD933C
+	for <lists+linux-sh@lfdr.de>; Wed, 16 Oct 2019 16:01:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393419AbfJPNDx (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 16 Oct 2019 09:03:53 -0400
-Received: from relay2-d.mail.gandi.net ([217.70.183.194]:33665 "EHLO
-        relay2-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391721AbfJPNDx (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 16 Oct 2019 09:03:53 -0400
-X-Originating-IP: 2.224.242.101
-Received: from uno.localdomain (2-224-242-101.ip172.fastwebnet.it [2.224.242.101])
-        (Authenticated sender: jacopo@jmondi.org)
-        by relay2-d.mail.gandi.net (Postfix) with ESMTPSA id E6C754001D;
-        Wed, 16 Oct 2019 13:03:47 +0000 (UTC)
-Date:   Wed, 16 Oct 2019 15:05:36 +0200
-From:   Jacopo Mondi <jacopo@jmondi.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Lee Jones <lee.jones@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: Re: [PATCH v5 0/7] backlight: gpio: simplify the driver
-Message-ID: <20191016130536.222vsi5whkoy6vzo@uno.localdomain>
-References: <20191007033200.13443-1-brgl@bgdev.pl>
- <20191014081220.GK4545@dell>
- <CACRpkda9Kco-bVPw1OA6FMpQ1L8dZ4WFJ227wTCM9rh5JE7-+A@mail.gmail.com>
+        id S2393753AbfJPOBs (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 16 Oct 2019 10:01:48 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:39878 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388087AbfJPOBs (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Wed, 16 Oct 2019 10:01:48 -0400
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 477112A09B1;
+        Wed, 16 Oct 2019 14:01:48 +0000 (UTC)
+Received: from [10.36.116.19] (ovpn-116-19.ams2.redhat.com [10.36.116.19])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id B60E160605;
+        Wed, 16 Oct 2019 14:01:45 +0000 (UTC)
+Subject: Re: [PATCH v6 06/10] mm/memory_hotplug: Poison memmap in
+ remove_pfn_range_from_zone()
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+        linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        x86@kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+        Oscar Salvador <osalvador@suse.de>,
+        Michal Hocko <mhocko@suse.com>,
+        Pavel Tatashin <pasha.tatashin@soleen.com>,
+        Dan Williams <dan.j.williams@intel.com>
+References: <20191006085646.5768-1-david@redhat.com>
+ <20191006085646.5768-7-david@redhat.com>
+From:   David Hildenbrand <david@redhat.com>
+Organization: Red Hat GmbH
+Message-ID: <f5159e91-cef3-de65-af59-7c81e7c84d6d@redhat.com>
+Date:   Wed, 16 Oct 2019 16:01:44 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="obmlgf7bnd7gsis3"
-Content-Disposition: inline
-In-Reply-To: <CACRpkda9Kco-bVPw1OA6FMpQ1L8dZ4WFJ227wTCM9rh5JE7-+A@mail.gmail.com>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <20191006085646.5768-7-david@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.38]); Wed, 16 Oct 2019 14:01:48 +0000 (UTC)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
+On 06.10.19 10:56, David Hildenbrand wrote:
+> Let's poison the pages similar to when adding new memory in
+> sparse_add_section(). Also call remove_pfn_range_from_zone() from
+> memunmap_pages(), so we can poison the memmap from there as well.
+> 
+> While at it, calculate the pfn in memunmap_pages() only once.
 
---obmlgf7bnd7gsis3
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+FWIW, this comment is stale and could be dropped :)
 
-Hi, sorry for not having replied earlier
+-- 
 
-On Wed, Oct 16, 2019 at 02:56:57PM +0200, Linus Walleij wrote:
-> On Mon, Oct 14, 2019 at 10:12 AM Lee Jones <lee.jones@linaro.org> wrote:
->
-> > >  arch/sh/boards/mach-ecovec24/setup.c         |  33 ++++--
-> >
-> > I guess we're just waiting for the SH Acks now?
->
-> The one maintainer with this board is probably overloaded.
->
-> I would say just apply it, it can't hold back the entire series.
+Thanks,
 
-I've been able to resurect the Ecovec, and I've also been given a copy
-of its schematics file a few weeks ago.
-
-It's in my TODO list to test this series but I didn't manage to find
-time. If I pinky promise I get back to you before end of the week,
-could you wait for me ? :)
-
-Thanks and sorry again!
-
->
-> Yours,
-> Linus Walleij
-
---obmlgf7bnd7gsis3
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEtcQ9SICaIIqPWDjAcjQGjxahVjwFAl2nFaAACgkQcjQGjxah
-VjzoFBAAhwhZPZe4vv+vLpIH9nXV/zZkAZjerr/FDZoeAm13GfCbvATlAG3xuN2O
-/yt4lmoNa0HPZn59BxgVUsCZC5/uTUg8NosCm33YOUGtYU1bhqo9dvBIQc2U7OXJ
-u+CxQrlsXVXJtF+51bzDbU0dQRXgccwVhl8F0KMtq/OwyzboyFOl400CN5CqIKHP
-Htq5yUN7BPhMNWtSM9ar/CfZpLQUvhl2P/h4id6uuPhM8CQtlDEHxHSULFxtJBwl
-w7y0N5f+7wUKtrPVsJ5M6ya3iPrhda49XWtcEPuYGGkOxgM3DiLJENLnStTf78Bh
-4hde/25m0jCdbqqRENmccyBcznO1ljcdQOYTAZty+ufXtTWFcJwNk7+Obaz2P447
-09kuzxY+Syp7QWAmjh9R1gxaxBpfHCkALgttNqws8jLhou70YeglHSgA/4z/aHgK
-wgTcAz2HrzgbtJA15KTO9x+99Gyr/NzJE7ffXSNPXket5u9U2O0r+efDKeCMAGVl
-O1YQD4zAnk460taT03o8QndflimZp1kq8Wg8PlXgV3y4XAsIgq64Dc2QGqzLaxI6
-30Ak7ph277+RSc6SU6lMazid9TF/b8sf1Rk8tc/usVoWrN7BoHhyFSJj9tdFG71f
-kFfg9ieXD+Lno9Ri03PmblRxX1Qted/2kJzw6YX65On55W72l0A=
-=RcMR
------END PGP SIGNATURE-----
-
---obmlgf7bnd7gsis3--
+David / dhildenb
