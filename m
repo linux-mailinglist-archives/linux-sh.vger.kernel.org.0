@@ -2,134 +2,143 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C5DB4DBE58
-	for <lists+linux-sh@lfdr.de>; Fri, 18 Oct 2019 09:31:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DC11DC802
+	for <lists+linux-sh@lfdr.de>; Fri, 18 Oct 2019 17:03:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2504620AbfJRHbJ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 18 Oct 2019 03:31:09 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:36638 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2394031AbfJRHbI (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 18 Oct 2019 03:31:08 -0400
-Received: by mail-ot1-f66.google.com with SMTP id 67so4178483oto.3;
-        Fri, 18 Oct 2019 00:31:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=1vcvhB5CLF/+MeUyHDDl7fZL+tAXhkabxwY8RzqlUc4=;
-        b=K7Yt9YoviXa1EKl7IKMUxzV7fJKccYRkl/f/zlrsDAxPX7Y9NmcboBMaiUIBkisj6s
-         K/0rvmrdS4ruOkQk5Hdy5r6QgqM1ptvNEsMgEXyzH8j6K0hnmphrD4eoFVYR+YrhhTji
-         sv+lhgqy6QZRgZD9UXmKb0NmFnA2KEJsRyI8XTEnOKaVxHXC04Fd1wRItkbgJivTsSzv
-         WEjfcgaPLmReo38CmBMZ/lqF/gNrP8OH1ATnQNrGFeXk1zTfNbGS0Z139E6RYM4lQPHa
-         YGrHDrKdq3kF/mSl878GMtb0SEYzxy5WW3bYfpCTb0nm0HnvYBXtXxIRewJLiRbL9mf0
-         r1zg==
-X-Gm-Message-State: APjAAAUdHG9sRGDmTM/26149dvkFYcNaNyzvjXWe3Xz+3DsVdopC+4VX
-        Fd9KC55bUts+HuDpW7qo55LwNuOur/drHhczNuw=
-X-Google-Smtp-Source: APXvYqz5ZTzm2szPG0oqRjP0bYm68wI5cC2zWPx8OuV5blCVSPhZgU0siPaT+bnCFclqt0wG9CC25EAYDHrDP1i11C0=
-X-Received: by 2002:a9d:70d0:: with SMTP id w16mr6117171otj.107.1571383865678;
- Fri, 18 Oct 2019 00:31:05 -0700 (PDT)
-MIME-Version: 1.0
-References: <20191017174554.29840-1-hch@lst.de> <20191017174554.29840-14-hch@lst.de>
-In-Reply-To: <20191017174554.29840-14-hch@lst.de>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Fri, 18 Oct 2019 09:30:54 +0200
-Message-ID: <CAMuHMdWaQ15j7fQ9-8XKgrSwgf96nT=yY+FCPWPxoPC9LGqvbQ@mail.gmail.com>
-Subject: Re: [PATCH 13/21] m68k: rename __iounmap and mark it static
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Guo Ren <guoren@kernel.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        Guan Xuetao <gxt@pku.edu.cn>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Linux-Arch <linux-arch@vger.kernel.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
+        id S2634307AbfJRPCn (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 18 Oct 2019 11:02:43 -0400
+Received: from relay11.mail.gandi.net ([217.70.178.231]:47445 "EHLO
+        relay11.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2634283AbfJRPCm (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 18 Oct 2019 11:02:42 -0400
+Received: from uno.localdomain (2-224-242-101.ip172.fastwebnet.it [2.224.242.101])
+        (Authenticated sender: jacopo@jmondi.org)
+        by relay11.mail.gandi.net (Postfix) with ESMTPSA id 7412A100004;
+        Fri, 18 Oct 2019 15:02:36 +0000 (UTC)
+Date:   Fri, 18 Oct 2019 17:04:26 +0200
+From:   Jacopo Mondi <jacopo@jmondi.org>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Linux-sh list <linux-sh@vger.kernel.org>,
-        "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
-        linux-xtensa@linux-xtensa.org, linux-mips@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Openrisc <openrisc@lists.librecores.org>,
-        MTD Maling List <linux-mtd@lists.infradead.org>,
-        alpha <linux-alpha@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        nios2-dev@lists.rocketboards.org, linux-riscv@lists.infradead.org,
-        arcml <linux-snps-arc@lists.infradead.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Subject: Re: [PATCH v5 0/7] backlight: gpio: simplify the driver
+Message-ID: <20191018150426.7w5q55nhkiqbqhuk@uno.localdomain>
+References: <20191007033200.13443-1-brgl@bgdev.pl>
+ <20191014081220.GK4545@dell>
+ <CACRpkda9Kco-bVPw1OA6FMpQ1L8dZ4WFJ227wTCM9rh5JE7-+A@mail.gmail.com>
+ <20191016130536.222vsi5whkoy6vzo@uno.localdomain>
+ <20191017072550.GK4365@dell>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="jig6tcqnwznz3xde"
+Content-Disposition: inline
+In-Reply-To: <20191017072550.GK4365@dell>
+User-Agent: NeoMutt/20180716
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Christoph,
 
-On Thu, Oct 17, 2019 at 7:53 PM Christoph Hellwig <hch@lst.de> wrote:
-> m68k uses __iounmap as the name for an internal helper that is only
-> used for some CPU types.  Mark it static and give it a better name.
+--jig6tcqnwznz3xde
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi,
+
+On Thu, Oct 17, 2019 at 08:25:50AM +0100, Lee Jones wrote:
+> On Wed, 16 Oct 2019, Jacopo Mondi wrote:
 >
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> > Hi, sorry for not having replied earlier
+> >
+> > On Wed, Oct 16, 2019 at 02:56:57PM +0200, Linus Walleij wrote:
+> > > On Mon, Oct 14, 2019 at 10:12 AM Lee Jones <lee.jones@linaro.org> wro=
+te:
+> > >
+> > > > >  arch/sh/boards/mach-ecovec24/setup.c         |  33 ++++--
+> > > >
+> > > > I guess we're just waiting for the SH Acks now?
+> > >
+> > > The one maintainer with this board is probably overloaded.
+> > >
+> > > I would say just apply it, it can't hold back the entire series.
+> >
+> > I've been able to resurect the Ecovec, and I've also been given a copy
+> > of its schematics file a few weeks ago.
+> >
+> > It's in my TODO list to test this series but I didn't manage to find
+> > time. If I pinky promise I get back to you before end of the week,
+> > could you wait for me ? :)
 
-Thanks for your patch!
+Finally had some time to spend on this.
 
-> --- a/arch/m68k/mm/kmap.c
-> +++ b/arch/m68k/mm/kmap.c
-> @@ -52,6 +52,7 @@ static inline void free_io_area(void *addr)
+As I've reported to Bartosz, this version does not work on Ecovec out
+of the box, as the GPIO line connected to the backlight needs to be
+configured to work in output mode before registering the backlight
+device.
+
+With this simple change:
+
+$ git diff
+diff --git a/arch/sh/boards/mach-ecovec24/setup.c b/arch/sh/boards/mach-eco=
+vec24/setup.c
+index dd427bac5cde..eec6e805c3ed 100644
+--- a/arch/sh/boards/mach-ecovec24/setup.c
++++ b/arch/sh/boards/mach-ecovec24/setup.c
+@@ -1473,6 +1473,7 @@ static int __init arch_setup(void)
+ #endif
+ #endif
+
++       gpio_direction_output(GPIO_PTR1, 1);
+        gpiod_add_lookup_table(&gpio_backlight_lookup);
+        gpio_backlight_device =3D platform_device_register_full(
+                                        &gpio_backlight_device_info);
+
+I can now control the gpio through the backlight interface.
+
+So please add this bit on top of next iteration and add my:
+Tested-by: Jacopo Mondi <jacopo+renesas@jmondi.org>
+
+Thanks and sorry for the long time it took!
+
 >
->  #define IO_SIZE                (256*1024)
+> Yes, no problem.
 >
-> +static void __free_io_area(void *addr, unsigned long size);
->  static struct vm_struct *iolist;
->
->  static struct vm_struct *get_io_area(unsigned long size)
-> @@ -90,7 +91,7 @@ static inline void free_io_area(void *addr)
->                 if (tmp->addr == addr) {
->                         *p = tmp->next;
->                         /* remove gap added in get_io_area() */
-> -                       __iounmap(tmp->addr, tmp->size - IO_SIZE);
-> +                       __free_io_area(tmp->addr, tmp->size - IO_SIZE);
->                         kfree(tmp);
->                         return;
->                 }
-> @@ -249,12 +250,13 @@ void iounmap(void __iomem *addr)
->  }
->  EXPORT_SYMBOL(iounmap);
->
-> +#ifndef CPU_M68040_OR_M68060_ONLY
+> --
+> Lee Jones [=E6=9D=8E=E7=90=BC=E6=96=AF]
+> Linaro Services Technical Lead
+> Linaro.org =E2=94=82 Open source software for ARM SoCs
+> Follow Linaro: Facebook | Twitter | Blog
 
-Can you please move this block up, instead of adding more #ifdef cluttery?
-That would also remove the need for a forward declaration.
+--jig6tcqnwznz3xde
+Content-Type: application/pgp-signature; name="signature.asc"
 
->  /*
-> - * __iounmap unmaps nearly everything, so be careful
-> + * __free_io_area unmaps nearly everything, so be careful
->   * Currently it doesn't free pointer/page tables anymore but this
->   * wasn't used anyway and might be added later.
->   */
-> -void __iounmap(void *addr, unsigned long size)
-> +static void __free_io_area(void *addr, unsigned long size)
->  {
->         unsigned long virtaddr = (unsigned long)addr;
->         pgd_t *pgd_dir;
-> @@ -297,6 +299,7 @@ void __iounmap(void *addr, unsigned long size)
->
->         flush_tlb_all();
->  }
-> +#endif /* CPU_M68040_OR_M68060_ONLY */
->
->  /*
->   * Set new cache mode for some kernel address space.
+-----BEGIN PGP SIGNATURE-----
 
-Gr{oetje,eeting}s,
+iQIzBAABCAAdFiEEtcQ9SICaIIqPWDjAcjQGjxahVjwFAl2p1HoACgkQcjQGjxah
+Vjw07Q//bXUAvYL4NvrQlWy03A4kCrvX0kolkx71JTQHnVprfyCz2qyP1BvfL7Cc
+VM0CnuW2dGjWKd1/9Fx9ltM25fbm/OJzGLCa+OLeGH54sTUzDTAwdkDkpqLAVM16
+lOx7QxHu+prPYDwbjwnS6lvO+SppEigTCV+NPXT2Y7qKkYiNb9COLsiYu+hkXAia
+lxyogP5H+JWKEPLK5uYhASSqKCcxgu39dIWxItj7+mfjOBiUHOFCpHIee2kY1+Q2
++wrIXrET20X4YDvCQPZd2egXin5k+hLD0LtR9Gcel+w4Eikg7vB8vRm7I0NJ2g5a
+FbOpRDdyLj+7uh4vyNeW8gbrnsJ4qPhtb5KxUlQ48WVrIhtLsfLnYqN/WjN4n2ET
+lR6BKAjyZuo7PQ9xBzU0/O2s7bCOsLVHTu3iH97ZWy5KMbXEuKMCxK4UGiGjyYmX
+mhqSDXEamf7x/8NqJmEZ/iam4/9GbrMa7p0uQVODMz3xJjgkjMbSvWCNMoqe4vv+
+hM5JyuSDKvrJ7DHXi8TNXb6l5iInQVijhRPh/k2YrwA22DKcxrn42QMb1XmIZgTh
+1Db7DHdBOULpQIxDjzJ7zOOOH1GbCO6SlMtRzwMuT8O2PuX8W6PkFd32UDjZgyPQ
+tAy24dJqceX2t2EVUY86PWKi3hH6fmtkTzVbVw8JNLl61ZATd3I=
+=T0RW
+-----END PGP SIGNATURE-----
 
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+--jig6tcqnwznz3xde--
