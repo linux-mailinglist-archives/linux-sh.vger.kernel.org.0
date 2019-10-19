@@ -2,151 +2,129 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 29AFDDCADE
-	for <lists+linux-sh@lfdr.de>; Fri, 18 Oct 2019 18:20:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98738DD768
+	for <lists+linux-sh@lfdr.de>; Sat, 19 Oct 2019 10:36:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394502AbfJRQUb (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 18 Oct 2019 12:20:31 -0400
-Received: from mail-il1-f194.google.com ([209.85.166.194]:32923 "EHLO
-        mail-il1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727429AbfJRQUb (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 18 Oct 2019 12:20:31 -0400
-Received: by mail-il1-f194.google.com with SMTP id v2so6073000ilm.0
-        for <linux-sh@vger.kernel.org>; Fri, 18 Oct 2019 09:20:31 -0700 (PDT)
+        id S1728297AbfJSIgN (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sat, 19 Oct 2019 04:36:13 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:35097 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726796AbfJSIgM (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sat, 19 Oct 2019 04:36:12 -0400
+Received: by mail-wr1-f65.google.com with SMTP id l10so8128879wrb.2
+        for <linux-sh@vger.kernel.org>; Sat, 19 Oct 2019 01:36:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=9uIYAnyPMezy1SrLVChvjUvSTT25CSaPRKsdjVZO6n8=;
-        b=RsS1qicPZcnkl76YmnbfWfB4DsiuiCLUqloFqkV4cKo1n8DFJo7UEQSSDFodJSbKB/
-         aBWZqVCPZgMDcLDXyYzENWxYIXywuatRXqle5E7LpooPoQQUBy7bYET/lR3hCkblPVpQ
-         lRCxDCweDqgN5VH3+jmycEAt4tkhNiTGcj63IOj6HoqYIOC+FHhzbw0j2Z6Q6PcheRlq
-         V05ZlaVDqncElnNNeR/8BJBUr0rrldkoPBjEym9DYsl1rkcPeHcDWbU59h32Cz6ffBHn
-         hRdElR9UrqvDGkKzkyMvLFvQ1KF9n7QBf9pfXR5M4kaxLzPEox6QLi5JDuA66WL4yGC9
-         X2Jg==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=VXhFfTxJpOWfUV4uLITTpdbpqdC1NQz6QjTrt5AanH0=;
+        b=AwGvW2qFwU4dQKW8lBPQ/vuxPkKv6boigxQ3TYodi8j7gdB94KMaRLHPKL/IYI6uJn
+         1CIGOUN2ylCd2HpuFctEyL1DoxZhu3AfASOYrSkE252SsLRUzo5SywovV49r4yzVsfv6
+         wqie+c7o139H5AKbInTkZ5dkRKmIJgNyF/ncbYxtrgkOuZb6cF/QiU6PbJjX+8PC4zQv
+         gDqZ2Y2/aPGyq+sozGWoiqv+Xz4IUl67k4X0ixv2UiLNr14fSDGgwHxkSeSqZ2NzKyev
+         /xJ9gxfoKX37xAdjGyo8ZogoPKFiRhyEPwZNLhzDv/5Yq2ZZ7+wwqHKQ0bpv6fRCpgP5
+         6iew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=9uIYAnyPMezy1SrLVChvjUvSTT25CSaPRKsdjVZO6n8=;
-        b=CckPpHpLmRP5Gs/hbZ+Df3X29ZLNnGoKZoizujhONMS2tKujfrOz8lmP98uAgwHwCH
-         TgAkRRPU1iJ0cjNdQZ12BAirayROp03tUFcdqU1T+tIYlRL14rZttJ7vrS9lGwRCFrKb
-         NBMl1v+iEN6446a6/UkPUqgdopMu4eZhGiiZEQ9LRbXbbHqUsJZRw+yo9vH1KosFUqoS
-         XiJZcNZavBQpw8Q8iXTEy2PnQw2RIhDGb5N5gtGEDfkkOJO2W6FhsNw4QhY1DO6r10Vq
-         PPvqzxM+p5lPkZ0oFxRSSjlN0Ztuq8zdNxJYCMcMliXb02jYNh9guaYVugNNFyH7AwjZ
-         hE5g==
-X-Gm-Message-State: APjAAAVa3iIkGGWI40wAIHX5eyLZ6NTAj8Uadc5wix4TFhtlyGTByafr
-        QZtWew3lXsgvvcvSqXrFX2YScPHDWJgoPRc3Ujr6OQ==
-X-Google-Smtp-Source: APXvYqw2YK1lwgF/TFTkt9RSwtJ17zC9sjmAtKYD5ZCcsqeN2ggjp9zo5LRHoqTvo6xjx+0AuXbxZHCiRDt5708hL+c=
-X-Received: by 2002:a92:410c:: with SMTP id o12mr11498464ila.287.1571415630625;
- Fri, 18 Oct 2019 09:20:30 -0700 (PDT)
-MIME-Version: 1.0
-References: <20191007033200.13443-1-brgl@bgdev.pl> <20191014081220.GK4545@dell>
- <CACRpkda9Kco-bVPw1OA6FMpQ1L8dZ4WFJ227wTCM9rh5JE7-+A@mail.gmail.com>
- <20191016130536.222vsi5whkoy6vzo@uno.localdomain> <20191017072550.GK4365@dell>
- <20191018150426.7w5q55nhkiqbqhuk@uno.localdomain>
-In-Reply-To: <20191018150426.7w5q55nhkiqbqhuk@uno.localdomain>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=VXhFfTxJpOWfUV4uLITTpdbpqdC1NQz6QjTrt5AanH0=;
+        b=LaACwkLxZO7Prq6grDo6eAgt+kWrC3OJonbJ96/q+q81W8lp0rz4Ebh9c+/RBuVhO2
+         +gdwKv5lhZlwj+i7EHhsiy9oCIO0CLFGJtExmCsdx+WF1sa06vT7Hd+sLb11Dr0zsVio
+         Zo/bXdjWE5sAu26hSI7KhwgJPLjTkMJV7dpB0bM2mMOb0Xeui77xU2f3cFy6oY3X9qJ7
+         A6M8GWI5nrUBErl8JqA9BGP0JWgW+FNffqrJw3cDm22C+xsn95zsNhDbxBSN6rtq+0Ze
+         LT/cMHmIddubKInOo4ulx0fI5e2anbxEAEbp/vH2vxfUvvjKD+ibGvE6yPxJTT9JKpu8
+         zbHg==
+X-Gm-Message-State: APjAAAVcfrsrv4sFZjkg8f1L6KUmSgMW9LpEqEau2gzrRVLk5AoyixB1
+        ttTZ9fKDka5OFGD7+u0Ee9cP5g==
+X-Google-Smtp-Source: APXvYqzpywR6S9c9y4631jsXMMJsyUrRt6pwryDVgj7Rqg+mTZW63A7CSWbAN0HUSeu0YfSw4B8Tvw==
+X-Received: by 2002:adf:fe10:: with SMTP id n16mr11814058wrr.288.1571474169355;
+        Sat, 19 Oct 2019 01:36:09 -0700 (PDT)
+Received: from debian-brgl.home ([2a01:cb1d:af:5b00:6d6c:8493:1ab5:dad7])
+        by smtp.gmail.com with ESMTPSA id u1sm7242627wmc.38.2019.10.19.01.36.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 19 Oct 2019 01:36:08 -0700 (PDT)
 From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Fri, 18 Oct 2019 18:20:19 +0200
-Message-ID: <CAMRc=Mc0-c_Cnbbh981pXQHW70GW1kh5hYioxJQM6JrOnCe4NQ@mail.gmail.com>
-Subject: Re: [PATCH v5 0/7] backlight: gpio: simplify the driver
-To:     Jacopo Mondi <jacopo@jmondi.org>
-Cc:     Lee Jones <lee.jones@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
+To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>,
+        Lee Jones <lee.jones@linaro.org>,
         Daniel Thompson <daniel.thompson@linaro.org>,
         Jingoo Han <jingoohan1@gmail.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Jacopo Mondi <jacopo@jmondi.org>
+Cc:     linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: [PATCH v6 0/9] backlight: gpio: simplify the driver
+Date:   Sat, 19 Oct 2019 10:35:47 +0200
+Message-Id: <20191019083556.19466-1-brgl@bgdev.pl>
+X-Mailer: git-send-email 2.23.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-pt., 18 pa=C5=BA 2019 o 17:02 Jacopo Mondi <jacopo@jmondi.org> napisa=C5=82=
-(a):
->
-> Hi,
->
-> On Thu, Oct 17, 2019 at 08:25:50AM +0100, Lee Jones wrote:
-> > On Wed, 16 Oct 2019, Jacopo Mondi wrote:
-> >
-> > > Hi, sorry for not having replied earlier
-> > >
-> > > On Wed, Oct 16, 2019 at 02:56:57PM +0200, Linus Walleij wrote:
-> > > > On Mon, Oct 14, 2019 at 10:12 AM Lee Jones <lee.jones@linaro.org> w=
-rote:
-> > > >
-> > > > > >  arch/sh/boards/mach-ecovec24/setup.c         |  33 ++++--
-> > > > >
-> > > > > I guess we're just waiting for the SH Acks now?
-> > > >
-> > > > The one maintainer with this board is probably overloaded.
-> > > >
-> > > > I would say just apply it, it can't hold back the entire series.
-> > >
-> > > I've been able to resurect the Ecovec, and I've also been given a cop=
-y
-> > > of its schematics file a few weeks ago.
-> > >
-> > > It's in my TODO list to test this series but I didn't manage to find
-> > > time. If I pinky promise I get back to you before end of the week,
-> > > could you wait for me ? :)
->
-> Finally had some time to spend on this.
->
-> As I've reported to Bartosz, this version does not work on Ecovec out
-> of the box, as the GPIO line connected to the backlight needs to be
-> configured to work in output mode before registering the backlight
-> device.
->
-> With this simple change:
->
-> $ git diff
-> diff --git a/arch/sh/boards/mach-ecovec24/setup.c b/arch/sh/boards/mach-e=
-covec24/setup.c
-> index dd427bac5cde..eec6e805c3ed 100644
-> --- a/arch/sh/boards/mach-ecovec24/setup.c
-> +++ b/arch/sh/boards/mach-ecovec24/setup.c
-> @@ -1473,6 +1473,7 @@ static int __init arch_setup(void)
->  #endif
->  #endif
->
-> +       gpio_direction_output(GPIO_PTR1, 1);
+From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 
-This is a hack actually. The problem lies with the gpio backlight
-driver - it should really set the mode to output, not leave it as is.
-If there's no good reason to keep it as it is now, I'll add another
-patch to the series that moves the call to devm_gpiod_get() to where
-we've already determined the initial value in probe() and pass an
-appropriate GPIOD_OUT_HIGH/LOW flag.
+While working on my other series related to gpio-backlight[1] I noticed
+that we could simplify the driver if we made the only user of platform
+data use GPIO lookups and device properties. This series tries to do
+that.
 
-Bart
+First two patches contain minor fixes. Third patch makes the driver
+explicitly drive the GPIO line. Fourth patch adds all necessary data
+structures to ecovec24. Patch 5/9 unifies much of the code for both
+pdata and non-pdata cases. Patches 6-7/9 remove unused platform data
+fields. Last two patches contain additional improvements for the GPIO
+backlight driver while we're already modifying it.
 
->         gpiod_add_lookup_table(&gpio_backlight_lookup);
->         gpio_backlight_device =3D platform_device_register_full(
->                                         &gpio_backlight_device_info);
->
-> I can now control the gpio through the backlight interface.
->
-> So please add this bit on top of next iteration and add my:
-> Tested-by: Jacopo Mondi <jacopo+renesas@jmondi.org>
->
-> Thanks and sorry for the long time it took!
->
-> >
-> > Yes, no problem.
-> >
-> > --
-> > Lee Jones [=E6=9D=8E=E7=90=BC=E6=96=AF]
-> > Linaro Services Technical Lead
-> > Linaro.org =E2=94=82 Open source software for ARM SoCs
-> > Follow Linaro: Facebook | Twitter | Blog
+I don't have access to this HW but hopefully this works. Only compile
+tested.
+
+[1] https://lkml.org/lkml/2019/6/25/900
+
+v1 -> v2:
+- rebased on top of v5.3-rc1 and adjusted to the recent changes from Andy
+- added additional two patches with minor improvements
+
+v2 -> v3:
+- in patch 7/7: used initializers to set values for pdata and dev local vars
+
+v3 -> v4:
+- rebased on top of v5.4-rc1
+- removed changes that are no longer relevant after commit ec665b756e6f
+  ("backlight: gpio-backlight: Correct initial power state handling")
+- added patch 7/7
+
+v4 -> v5:
+- in patch 7/7: added a comment replacing the name of the function being
+  pulled into probe()
+
+v5 -> v6:
+- added a patch making the driver explicitly set the direction of the GPIO
+  to output
+- added a patch removing a redundant newline
+
+Bartosz Golaszewski (9):
+  backlight: gpio: remove unneeded include
+  backlight: gpio: remove stray newline
+  backlight: gpio: explicitly set the direction of the GPIO
+  sh: ecovec24: add additional properties to the backlight device
+  backlight: gpio: simplify the platform data handling
+  sh: ecovec24: don't set unused fields in platform data
+  backlight: gpio: remove unused fields from platform data
+  backlight: gpio: use a helper variable for &pdev->dev
+  backlight: gpio: pull gpio_backlight_initial_power_state() into probe
+
+ arch/sh/boards/mach-ecovec24/setup.c         |  33 +++--
+ drivers/video/backlight/gpio_backlight.c     | 128 +++++++------------
+ include/linux/platform_data/gpio_backlight.h |   3 -
+ 3 files changed, 69 insertions(+), 95 deletions(-)
+
+-- 
+2.23.0
+
