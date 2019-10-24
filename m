@@ -2,108 +2,94 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 937C4E31E5
-	for <lists+linux-sh@lfdr.de>; Thu, 24 Oct 2019 14:10:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2405CE33A2
+	for <lists+linux-sh@lfdr.de>; Thu, 24 Oct 2019 15:13:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2439598AbfJXMKz (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 24 Oct 2019 08:10:55 -0400
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:34456 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2439599AbfJXMKy (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 24 Oct 2019 08:10:54 -0400
-Received: by mail-wm1-f68.google.com with SMTP id v3so1859979wmh.1
-        for <linux-sh@vger.kernel.org>; Thu, 24 Oct 2019 05:10:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=qm6MaFFOd7IZ24s/NUot8Yx+kOI9nuPZ71b2RZgYWvE=;
-        b=DPS127uU+ChceB17ZJLKDaQE07GYeDdDlytghRl6kNeHX32NLBx3xYIg9wQLCbzuNC
-         Mi/+REdC49GFr4gcHVCDBKKU80/ZswNznpFOwZbAmTjcGo2gBbXY4beaepmwpNvY9ZXb
-         /w4+/6+sumngs4e+C9YnRYkXs8lxEhqkPkgn35bX43WzmxTbvAtsh/XU0jbciulqHf6X
-         gB6oeEC4HGaRLc6h5pmoVQWjvXqyzq2rPaRx9Ksl0WslbkiGzHBZ9XCuK6me0zAreoeB
-         Pubu5eH//tvBTIc6z8zQ7qL5oUAlAfF06KxgMetKE8cDfZe5eMG9X7zruZZrKY56baqs
-         Vw6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=qm6MaFFOd7IZ24s/NUot8Yx+kOI9nuPZ71b2RZgYWvE=;
-        b=kyMfhnBLgAI0qjYIXL5BKSx1qJ7BI1Fa1h1zyANTEtjwN5FL+wXv55rm805PhRB8ol
-         JdiqdpCh6tQZJVoDMGwEF30M4wAPGPv4OQtYBh2fFsgYywlF6K0r8qFeblyKXCZY/kgg
-         jmsOugH2xFq5/r+oEOm1mn1o0ALoarpiac7XvMOpbSMdA5Kzo/xkhyaA9w8hoWcNoGS0
-         tGAVryMmKq5Fgj/57HuRT7bxAi5iozBMmUdaWK0FnViKS0SgUNu2giMRacDH9qRRAw9M
-         MoMx1CrmggXI06VUYiXdzi7QRf6D0bUQdbMXEmKeqSWAeHwbSKP91OAd+qkqi0Tl4qSs
-         VHtQ==
-X-Gm-Message-State: APjAAAXdivTX6c7Ogi6QxyLMSxMO3eUM2Whnnmj9KR56tEKYNA6GoRvq
-        f1gNXyj5+XJueJFhohicLTxC9g==
-X-Google-Smtp-Source: APXvYqx2HhqaEtBXDkosGKPp83lO/Dzy4wDFshtgtjUqtmLu8R8iP5OaqPpWe4HU8GQp+iPG7ZFDtQ==
-X-Received: by 2002:a1c:ed04:: with SMTP id l4mr4878676wmh.116.1571919050910;
-        Thu, 24 Oct 2019 05:10:50 -0700 (PDT)
-Received: from dell ([95.149.164.99])
-        by smtp.gmail.com with ESMTPSA id l6sm2395212wmg.2.2019.10.24.05.10.49
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 24 Oct 2019 05:10:49 -0700 (PDT)
-Date:   Thu, 24 Oct 2019 13:10:47 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Jacopo Mondi <jacopo@jmondi.org>
-Cc:     Daniel Thompson <daniel.thompson@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
+        id S2502427AbfJXNNR (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 24 Oct 2019 09:13:17 -0400
+Received: from michel.telenet-ops.be ([195.130.137.88]:49586 "EHLO
+        michel.telenet-ops.be" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2502424AbfJXNNR (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 24 Oct 2019 09:13:17 -0400
+Received: from ramsan ([84.195.182.253])
+        by michel.telenet-ops.be with bizsmtp
+        id HRDE2100W5USYZQ06RDEZj; Thu, 24 Oct 2019 15:13:15 +0200
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan with esmtp (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1iNcvS-00068X-L1; Thu, 24 Oct 2019 15:13:14 +0200
+Received: from geert by rox.of.borg with local (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1iNcvS-0004LR-JS; Thu, 24 Oct 2019 15:13:14 +0200
+From:   Geert Uytterhoeven <geert+renesas@glider.be>
+To:     Linus Walleij <linus.walleij@linaro.org>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: Re: [PATCH v7 0/9] backlight: gpio: simplify the driver
-Message-ID: <20191024121047.GM15843@dell>
-References: <20191022083630.28175-1-brgl@bgdev.pl>
- <CAMRc=MeyrDZgmHJ+2SMipP7y9NggxiVfkAh4kCLePFWvUku9aQ@mail.gmail.com>
- <20191023155941.q563d3cfizre4zvt@holly.lan>
- <20191024064726.GB15843@dell>
- <20191024071703.6keoebzlfnn2qmyd@uno.localdomain>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20191024071703.6keoebzlfnn2qmyd@uno.localdomain>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+        Rich Felker <dalias@libc.org>
+Cc:     Ben Dooks <ben.dooks@codethink.co.uk>, linux-gpio@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH] pinctrl: sh-pfc: sh7734: Fix duplicate TCLK1_B
+Date:   Thu, 24 Oct 2019 15:13:08 +0200
+Message-Id: <20191024131308.16659-1-geert+renesas@glider.be>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Thu, 24 Oct 2019, Jacopo Mondi wrote:
-> On Thu, Oct 24, 2019 at 07:47:26AM +0100, Lee Jones wrote:
-> > On Wed, 23 Oct 2019, Daniel Thompson wrote:
+The definitions for bit field [19:18] of the Peripheral Function Select
+Register 3 were accidentally copied from bit field [20], leading to
+duplicates for the TCLK1_B function, and missing TCLK0, CAN_CLK_B, and
+ET0_ETXD4 functions.
 
-[...]
+Fix this by adding the missing GPIO_FN_CAN_CLK_B and GPIO_FN_ET0_ETXD4
+enum values, and correcting the functions.
 
-> > > > Jacopo is travelling until November 1st and won't be able to test this
-> > > > again before this date. Do you think you can pick it up and in case
-> > > > anything's broken on SH, we can fix it after v5.5-rc1, so that it
-> > > > doesn't miss another merge window?
-> >
-> > November 1st (-rc6) will be fine.
-> >
-> > I'd rather apply it late-tested than early-non-tested.
-> >
-> > Hopefully Jacopo can prioritise testing this on Thursday or Friday,
-> > since Monday will be -rc7 which is really cutting it fine.
-> 
-> I'll do my best, I'll get home Friday late afternoon :)
+Reported-by: Ben Dooks <ben.dooks@codethink.co.uk>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+Untested due to lack of hardware.
+To be queued in sh-pfc-for-v5.5.
+---
+ arch/sh/include/cpu-sh4/cpu/sh7734.h | 2 +-
+ drivers/pinctrl/sh-pfc/pfc-sh7734.c  | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-Thanks. We'd all really appreciate it.
-
+diff --git a/arch/sh/include/cpu-sh4/cpu/sh7734.h b/arch/sh/include/cpu-sh4/cpu/sh7734.h
+index 96f0246ad2f2b756..82b63208135aec06 100644
+--- a/arch/sh/include/cpu-sh4/cpu/sh7734.h
++++ b/arch/sh/include/cpu-sh4/cpu/sh7734.h
+@@ -134,7 +134,7 @@ enum {
+ 	GPIO_FN_EX_WAIT1, GPIO_FN_SD1_DAT0_A, GPIO_FN_DREQ2, GPIO_FN_CAN1_TX_C,
+ 		GPIO_FN_ET0_LINK_C, GPIO_FN_ET0_ETXD5_A,
+ 	GPIO_FN_EX_WAIT0, GPIO_FN_TCLK1_B,
+-	GPIO_FN_RD_WR, GPIO_FN_TCLK0,
++	GPIO_FN_RD_WR, GPIO_FN_TCLK0, GPIO_FN_CAN_CLK_B, GPIO_FN_ET0_ETXD4,
+ 	GPIO_FN_EX_CS5, GPIO_FN_SD1_CMD_A, GPIO_FN_ATADIR, GPIO_FN_QSSL_B,
+ 		GPIO_FN_ET0_ETXD3_A,
+ 	GPIO_FN_EX_CS4, GPIO_FN_SD1_WP_A, GPIO_FN_ATAWR, GPIO_FN_QMI_QIO1_B,
+diff --git a/drivers/pinctrl/sh-pfc/pfc-sh7734.c b/drivers/pinctrl/sh-pfc/pfc-sh7734.c
+index 5dfd991ffdaab6e9..dbc36079c3811cde 100644
+--- a/drivers/pinctrl/sh-pfc/pfc-sh7734.c
++++ b/drivers/pinctrl/sh-pfc/pfc-sh7734.c
+@@ -1450,7 +1450,7 @@ static const struct pinmux_func pinmux_func_gpios[] = {
+ 	GPIO_FN(ET0_ETXD2_A),
+ 	GPIO_FN(EX_CS5), GPIO_FN(SD1_CMD_A), GPIO_FN(ATADIR), GPIO_FN(QSSL_B),
+ 	GPIO_FN(ET0_ETXD3_A),
+-	GPIO_FN(RD_WR), GPIO_FN(TCLK1_B),
++	GPIO_FN(RD_WR), GPIO_FN(TCLK0), GPIO_FN(CAN_CLK_B), GPIO_FN(ET0_ETXD4),
+ 	GPIO_FN(EX_WAIT0), GPIO_FN(TCLK1_B),
+ 	GPIO_FN(EX_WAIT1), GPIO_FN(SD1_DAT0_A), GPIO_FN(DREQ2),
+ 		GPIO_FN(CAN1_TX_C), GPIO_FN(ET0_LINK_C), GPIO_FN(ET0_ETXD5_A),
+@@ -1949,7 +1949,7 @@ static const struct pinmux_cfg_reg pinmux_config_regs[] = {
+ 	    /* IP3_20 [1] */
+ 		FN_EX_WAIT0, FN_TCLK1_B,
+ 	    /* IP3_19_18 [2] */
+-		FN_RD_WR, FN_TCLK1_B, 0, 0,
++		FN_RD_WR, FN_TCLK0, FN_CAN_CLK_B, FN_ET0_ETXD4,
+ 	    /* IP3_17_15 [3] */
+ 		FN_EX_CS5, FN_SD1_CMD_A, FN_ATADIR, FN_QSSL_B,
+ 		FN_ET0_ETXD3_A, 0, 0, 0,
 -- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+2.17.1
+
