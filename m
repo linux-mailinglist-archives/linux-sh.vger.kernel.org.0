@@ -2,56 +2,24 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CFD93E4315
-	for <lists+linux-sh@lfdr.de>; Fri, 25 Oct 2019 07:53:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7B4DE439F
+	for <lists+linux-sh@lfdr.de>; Fri, 25 Oct 2019 08:35:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393715AbfJYFxC (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 25 Oct 2019 01:53:02 -0400
-Received: from mail-qk1-f196.google.com ([209.85.222.196]:34099 "EHLO
-        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2393714AbfJYFxB (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 25 Oct 2019 01:53:01 -0400
-Received: by mail-qk1-f196.google.com with SMTP id f18so721175qkm.1
-        for <linux-sh@vger.kernel.org>; Thu, 24 Oct 2019 22:53:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lca.pw; s=google;
-        h=content-transfer-encoding:from:mime-version:subject:date:message-id
-         :references:cc:in-reply-to:to;
-        bh=1iOcwXtGM80ggiAcn0tWj6rY4y3FXj3/K8+9W6cybNQ=;
-        b=Zqxn3o9ynPwH66+Qcr9vdGz6gSYyudkpi+Z2Oz0jbhfPz7rA3PabNWQQCma5I+yARn
-         eBlST1wXQLW765R9cjQEb7jShJbR5OSNoXMUXkknkPBFMVf5yWXTtaUsuk9Rd2PxzAmh
-         q2AJBIMYQ1hbRT2IEgL/DenzigssaRzaLPngNDd0uNGZNn5VPmHDNtWOe5i7LU6gxGms
-         DG+cRAyxM2Yo5dTFUbyEjy/oXZ60fHMnjOKMvqPhtEVeXP3HjJ0d5mzbSpqHawcBlByH
-         TzKbaZfTQCyPdzEsLR/gqo/nNF6hyedXePJbHFV1sF38FX0OXhfyWuYjlDSDd9K5Iode
-         sxFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:content-transfer-encoding:from:mime-version
-         :subject:date:message-id:references:cc:in-reply-to:to;
-        bh=1iOcwXtGM80ggiAcn0tWj6rY4y3FXj3/K8+9W6cybNQ=;
-        b=CgFM1cyEUSICWprsQqt1+qPvUvqs2PllnnwD8DrE7v/c6vzIGSvJiHbYV9sC4Jz/+p
-         1QpdNtGrPKu9gy4G6bQtfU+POZD828JhGm6dy3n2+DnVd71IrPzVqAH+aIdRYFmZTmq1
-         k396CVI7q4lFj7EYua2wu2AXlIx07IsE8nW4Ftr5ZI3PlZkThWXy4LmaZQW0ZfaFlxki
-         mTR1lHXrDgaY17HFvez9ZHD4BANXVmb9BnrSEkscY/NCTkdYrzqU9pJQNVY9d88W+pOT
-         f13PScPdi+9DaEKwJ59y8MDgJ6+2XqTPhV8F5uYhiIQr/MnC5eKm1aHssy4am2mR/UQy
-         RtGA==
-X-Gm-Message-State: APjAAAWoAcy2rIek19mksctF7w0tXtf3Eu6/Vq4+AVjx7OWhTuD7VXHR
-        PPGlQ0zzmJ8gsNLh3E4L9GuP3w==
-X-Google-Smtp-Source: APXvYqx2Df+s9byE/wNVstFnjLEksyrVQg6dm5A3OEDXYMZmbJ9PH0J1MBt8U1ezq/VXB9h6sxXS6Q==
-X-Received: by 2002:a05:620a:a8d:: with SMTP id v13mr1326244qkg.113.1571982780765;
-        Thu, 24 Oct 2019 22:53:00 -0700 (PDT)
-Received: from [10.250.15.239] ([76.191.34.78])
-        by smtp.gmail.com with ESMTPSA id e12sm517936qth.55.2019.10.24.22.52.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Oct 2019 22:53:00 -0700 (PDT)
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
-From:   Qian Cai <cai@lca.pw>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH V7] mm/debug: Add tests validating architecture page table helpers
-Date:   Fri, 25 Oct 2019 01:52:59 -0400
-Message-Id: <69256008-2235-4AF1-A3BA-0146C82CCB93@lca.pw>
-References: <ccdd4f7a-c7dc-ca10-d30c-0bc05c7136c7@arm.com>
+        id S2392830AbfJYGfA (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 25 Oct 2019 02:35:00 -0400
+Received: from foss.arm.com ([217.140.110.172]:35572 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388289AbfJYGfA (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Fri, 25 Oct 2019 02:35:00 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BB71328;
+        Thu, 24 Oct 2019 23:34:58 -0700 (PDT)
+Received: from [10.162.41.137] (p8cg001049571a15.blr.arm.com [10.162.41.137])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2DD333F718;
+        Thu, 24 Oct 2019 23:37:36 -0700 (PDT)
+Subject: Re: [PATCH V7] mm/debug: Add tests validating architecture page table
+ helpers
+To:     Qian Cai <cai@lca.pw>
 Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
         Vlastimil Babka <vbabka@suse.cz>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -91,9 +59,18 @@ Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
         linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
         linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <ccdd4f7a-c7dc-ca10-d30c-0bc05c7136c7@arm.com>
-To:     Anshuman Khandual <Anshuman.Khandual@arm.com>
-X-Mailer: iPhone Mail (17A878)
+References: <ccdd4f7a-c7dc-ca10-d30c-0bc05c7136c7@arm.com>
+ <69256008-2235-4AF1-A3BA-0146C82CCB93@lca.pw>
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <5ce5a76c-ea89-c2a1-6665-7d75bce5fb87@arm.com>
+Date:   Fri, 25 Oct 2019 12:05:18 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
+MIME-Version: 1.0
+In-Reply-To: <69256008-2235-4AF1-A3BA-0146C82CCB93@lca.pw>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
@@ -101,13 +78,41 @@ X-Mailing-List: linux-sh@vger.kernel.org
 
 
 
-> On Oct 24, 2019, at 11:45 PM, Anshuman Khandual <Anshuman.Khandual@arm.com=
-> wrote:
->=20
-> Nothing specific. But just tested this with x86 defconfig with relevant co=
-nfigs
-> which are required for this test. Not sure if it involved W=3D1.
+On 10/25/2019 11:22 AM, Qian Cai wrote:
+> 
+> 
+>> On Oct 24, 2019, at 11:45 PM, Anshuman Khandual <Anshuman.Khandual@arm.com> wrote:
+>>
+>> Nothing specific. But just tested this with x86 defconfig with relevant configs
+>> which are required for this test. Not sure if it involved W=1.
+> 
+> No, it will not. It needs to run like,
+> 
+> make W=1 -j 64 2>/tmp/warns
 
-No, it will not. It needs to run like,
+Ahh, so we explicitly ask for it.
 
-make W=3D1 -j 64 2>/tmp/warns=
+Unfortunately compiler still flags it as an warning. Just wondering why this
+is still a problem if the second condition for an OR expression is always false.
+Because evaluation still needs to be performed for the first condition anyways,
+before arriving at the result.
+
+  DESCEND  objtool
+  CALL    scripts/atomic/check-atomics.sh
+  CALL    scripts/checksyscalls.sh
+  CHK     include/generated/compile.h
+  CC      mm/debug_vm_pgtable.o
+In file included from ./arch/x86/include/asm/bug.h:83:0,
+                 from ./include/linux/bug.h:5,
+                 from ./include/linux/mmdebug.h:5,
+                 from ./include/linux/gfp.h:5,
+                 from mm/debug_vm_pgtable.c:13:
+mm/debug_vm_pgtable.c: In function ‘get_random_vaddr’:
+mm/debug_vm_pgtable.c:314:17: warning: comparison of unsigned expression < 0 is always false [-Wtype-limits]
+   (random_vaddr < FIRST_USER_ADDRESS));
+                 ^
+./include/asm-generic/bug.h:113:25: note: in definition of macro ‘WARN_ON’
+  int __ret_warn_on = !!(condition);    \
+                         ^~~~~~~~~
+
+As you mentioned GCC is quite stubborn here. Anyways, lets keep it unchanged.
