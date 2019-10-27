@@ -2,59 +2,27 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D0B4DE625B
-	for <lists+linux-sh@lfdr.de>; Sun, 27 Oct 2019 13:05:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F964E63C8
+	for <lists+linux-sh@lfdr.de>; Sun, 27 Oct 2019 16:42:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726967AbfJ0MFe (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sun, 27 Oct 2019 08:05:34 -0400
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:40984 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726949AbfJ0MFd (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sun, 27 Oct 2019 08:05:33 -0400
-Received: by mail-lf1-f68.google.com with SMTP id j14so722279lfb.8
-        for <linux-sh@vger.kernel.org>; Sun, 27 Oct 2019 05:05:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=3Zr1M0nCXlilSobwLkNmgKE2widPtGkZk30ZqC0Jsp4=;
-        b=d3QTzyBq1ltmtg4yGSZr5XtauvY/fALYcdqhiDEtFOl1dE9JCqjexjO52exODJRIVQ
-         Eh2Een6o4qvZdUFz/jDS+JnTxGr7PmGqPX7rFmA4YZFRZjrNKL/JZDN1nI+V4NXXs/c+
-         Hp/xfBUyMptBO5mKJ7+YknkxBRlijCGcU26uA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=3Zr1M0nCXlilSobwLkNmgKE2widPtGkZk30ZqC0Jsp4=;
-        b=ZQfY0tEsobggfk3W3pdiHQRwfSqD01k+q3LdxsPzAOlH6MwdZOtDCklGRAGJq1VgqV
-         Y8b5xaWkN5rVtOJ6f0TKzZcOZpVbK017gxy9dUIo6RxGHLaT6eUpH0F4yX7QQNbTym2o
-         KCVb+/SH9tOnHhqxyC2hz5ZWUPmavwbdAxwL6R1MnKY1JqYWsg095uWsxYiP+SG+seNi
-         TxdLoEi9IunV4OUu0MvGklccHaR5DvmDCcCJvafBPyPgFrNCMwWQrEY8Ez7lXyAYxfV4
-         A3+Z2Jr4aUjDr2rOiDRqe1x8ZRk8fstvA063AcflF2NkYsQbvqs+FMis07SQma8GzArS
-         aSgQ==
-X-Gm-Message-State: APjAAAX6dOh1c76jsUskAUAcwpLZW8cc4Qm64UbwNESIBK5uybkhG7/s
-        fNdmPRE/oQWmNRq5Iif6iJj7tnvCi7KlVw==
-X-Google-Smtp-Source: APXvYqxaMT942pUqbIuAG6ZlvEcnGRrSU0XsBVcmDbUsGAtxRimvHAT+Np5BmABed8eZA/zlxyQWfw==
-X-Received: by 2002:a19:6d19:: with SMTP id i25mr8237782lfc.178.1572177931657;
-        Sun, 27 Oct 2019 05:05:31 -0700 (PDT)
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com. [209.85.167.51])
-        by smtp.gmail.com with ESMTPSA id q13sm3938440lfk.51.2019.10.27.05.05.29
-        for <linux-sh@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 27 Oct 2019 05:05:30 -0700 (PDT)
-Received: by mail-lf1-f51.google.com with SMTP id j14so722237lfb.8
-        for <linux-sh@vger.kernel.org>; Sun, 27 Oct 2019 05:05:29 -0700 (PDT)
-X-Received: by 2002:a19:5504:: with SMTP id n4mr8268196lfe.106.1572177927159;
- Sun, 27 Oct 2019 05:05:27 -0700 (PDT)
-MIME-Version: 1.0
-References: <20191026185700.10708-1-cyphar@cyphar.com> <20191026185700.10708-3-cyphar@cyphar.com>
-In-Reply-To: <20191026185700.10708-3-cyphar@cyphar.com>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Sun, 27 Oct 2019 08:05:11 -0400
-X-Gmail-Original-Message-ID: <CAHk-=wjPPWvm5_eR4uaHJaU1isTUk-4iXQV3Z2Px9A+w6j2nHg@mail.gmail.com>
-Message-ID: <CAHk-=wjPPWvm5_eR4uaHJaU1isTUk-4iXQV3Z2Px9A+w6j2nHg@mail.gmail.com>
-Subject: Re: [PATCH RESEND v14 2/6] namei: LOOKUP_IN_ROOT: chroot-like path resolution
-To:     Aleksa Sarai <cyphar@cyphar.com>
+        id S1727566AbfJ0Pl4 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sun, 27 Oct 2019 11:41:56 -0400
+Received: from mout-p-201.mailbox.org ([80.241.56.171]:27440 "EHLO
+        mout-p-201.mailbox.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727056AbfJ0Plz (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sun, 27 Oct 2019 11:41:55 -0400
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:105:465:1:2:0])
+        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+        (No client certificate requested)
+        by mout-p-201.mailbox.org (Postfix) with ESMTPS id 471MXZ3cz5zQl8s;
+        Sun, 27 Oct 2019 16:41:50 +0100 (CET)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp2.mailbox.org ([80.241.60.241])
+        by spamfilter01.heinlein-hosting.de (spamfilter01.heinlein-hosting.de [80.241.56.115]) (amavisd-new, port 10030)
+        with ESMTP id HKUBceS7i6hF; Sun, 27 Oct 2019 16:41:40 +0100 (CET)
+Date:   Mon, 28 Oct 2019 02:41:15 +1100
+From:   Aleksa Sarai <cyphar@cyphar.com>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
 Cc:     Al Viro <viro@zeniv.linux.org.uk>,
         Jeff Layton <jlayton@kernel.org>,
         "J. Bruce Fields" <bfields@fieldses.org>,
@@ -96,43 +64,83 @@ Cc:     Al Viro <viro@zeniv.linux.org.uk>,
         linux-s390 <linux-s390@vger.kernel.org>,
         Linux-sh list <linux-sh@vger.kernel.org>,
         linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH RESEND v14 2/6] namei: LOOKUP_IN_ROOT: chroot-like path
+ resolution
+Message-ID: <20191027154115.ex55njkysey4m6pu@yavin.dot.cyphar.com>
+References: <20191026185700.10708-1-cyphar@cyphar.com>
+ <20191026185700.10708-3-cyphar@cyphar.com>
+ <CAHk-=wjPPWvm5_eR4uaHJaU1isTUk-4iXQV3Z2Px9A+w6j2nHg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="x254sstnuxqz6cbi"
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wjPPWvm5_eR4uaHJaU1isTUk-4iXQV3Z2Px9A+w6j2nHg@mail.gmail.com>
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Sat, Oct 26, 2019 at 2:58 PM Aleksa Sarai <cyphar@cyphar.com> wrote:
->
-> +       /* LOOKUP_IN_ROOT treats absolute paths as being relative-to-dirfd. */
-> +       if (flags & LOOKUP_IN_ROOT)
-> +               while (*s == '/')
-> +                       s++;
-> +
->         /* Figure out the starting path and root (if needed). */
->         if (*s == '/') {
->                 error = nd_jump_root(nd);
 
-So I'm still hung up on this.
+--x254sstnuxqz6cbi
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I guess I can't help it, but I look at the above, and it makes me go
-"whoever wrote those tests wasn't thinking".
+On 2019-10-27, Linus Torvalds <torvalds@linux-foundation.org> wrote:
+> On Sat, Oct 26, 2019 at 2:58 PM Aleksa Sarai <cyphar@cyphar.com> wrote:
+> >
+> > +       /* LOOKUP_IN_ROOT treats absolute paths as being relative-to-di=
+rfd. */
+> > +       if (flags & LOOKUP_IN_ROOT)
+> > +               while (*s =3D=3D '/')
+> > +                       s++;
+> > +
+> >         /* Figure out the starting path and root (if needed). */
+> >         if (*s =3D=3D '/') {
+> >                 error =3D nd_jump_root(nd);
+>=20
+> So I'm still hung up on this.
+>=20
+> I guess I can't help it, but I look at the above, and it makes me go
+> "whoever wrote those tests wasn't thinking".
+>=20
+> It just annoys me how it tests for '/' completely unnecessarily.
+>=20
+> If LOOKUP_IN_ROOT is true, we know the subsequent test for '/' is not
+> going to match, because we just removed it. So I look at that code and
+> go "that code is doing stupid things".
 
-It just annoys me how it tests for '/' completely unnecessarily.
+Okay, fair enough.
 
-If LOOKUP_IN_ROOT is true, we know the subsequent test for '/' is not
-going to match, because we just removed it. So I look at that code and
-go "that code is doing stupid things".
+> That's why I suggested moving the LOOKUP_IN_ROOT check inside the '/' tes=
+t.
+>=20
+> Alternatively, just make the logic be
+>=20
+>         if (flags & LOOKUP_IN_ROOT) {
+>                .. remove '/'s ...
+>         } else if (*s =3D=3D '/') {
+>                 .. handl;e root ..
+>=20
+> and remove the next "else" clause
 
-That's why I suggested moving the LOOKUP_IN_ROOT check inside the '/' test.
+I've gone with the latter since I think it reads better.
 
-Alternatively, just make the logic be
+--=20
+Aleksa Sarai
+Senior Software Engineer (Containers)
+SUSE Linux GmbH
+<https://www.cyphar.com/>
 
-        if (flags & LOOKUP_IN_ROOT) {
-               .. remove '/'s ...
-        } else if (*s == '/') {
-                .. handl;e root ..
+--x254sstnuxqz6cbi
+Content-Type: application/pgp-signature; name="signature.asc"
 
-and remove the next "else" clause
+-----BEGIN PGP SIGNATURE-----
 
-    Linus
+iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXbW6lwAKCRCdlLljIbnQ
+EoPNAP0TH7raCw5NCLFnqJEAJ2bl+pDz8oGtxQKGtoXC7HohOQEAqFv71cuFJjle
+mvHPyKwhvNv8coIv55o8qUxny+XxIAg=
+=0iVb
+-----END PGP SIGNATURE-----
+
+--x254sstnuxqz6cbi--
