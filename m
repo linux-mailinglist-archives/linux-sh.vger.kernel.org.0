@@ -2,125 +2,179 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BF53CEA981
-	for <lists+linux-sh@lfdr.de>; Thu, 31 Oct 2019 04:26:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 82A11EC023
+	for <lists+linux-sh@lfdr.de>; Fri,  1 Nov 2019 09:58:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726619AbfJaD0L (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 30 Oct 2019 23:26:11 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:60838 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726336AbfJaD0K (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Wed, 30 Oct 2019 23:26:10 -0400
-Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id A11698C8659FB5227AE0;
-        Thu, 31 Oct 2019 11:26:07 +0800 (CST)
-Received: from [127.0.0.1] (10.74.191.121) by DGGEMS404-HUB.china.huawei.com
- (10.3.19.204) with Microsoft SMTP Server id 14.3.439.0; Thu, 31 Oct 2019
- 11:26:05 +0800
-Subject: Re: [PATCH v7] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
-To:     Peter Zijlstra <peterz@infradead.org>
-CC:     <catalin.marinas@arm.com>, <will@kernel.org>, <mingo@redhat.com>,
-        <bp@alien8.de>, <rth@twiddle.net>, <ink@jurassic.park.msu.ru>,
-        <mattst88@gmail.com>, <benh@kernel.crashing.org>,
-        <paulus@samba.org>, <mpe@ellerman.id.au>,
-        <heiko.carstens@de.ibm.com>, <gor@linux.ibm.com>,
-        <borntraeger@de.ibm.com>, <ysato@users.sourceforge.jp>,
-        <dalias@libc.org>, <davem@davemloft.net>, <ralf@linux-mips.org>,
-        <paul.burton@mips.com>, <jhogan@kernel.org>,
-        <jiaxun.yang@flygoat.com>, <chenhc@lemote.com>,
-        <akpm@linux-foundation.org>, <rppt@linux.ibm.com>,
-        <anshuman.khandual@arm.com>, <tglx@linutronix.de>, <cai@lca.pw>,
-        <robin.murphy@arm.com>, <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <hpa@zytor.com>, <x86@kernel.org>,
-        <dave.hansen@linux.intel.com>, <luto@kernel.org>,
-        <len.brown@intel.com>, <axboe@kernel.dk>, <dledford@redhat.com>,
-        <jeffrey.t.kirsher@intel.com>, <linux-alpha@vger.kernel.org>,
-        <naveen.n.rao@linux.vnet.ibm.com>, <mwb@linux.vnet.ibm.com>,
-        <linuxppc-dev@lists.ozlabs.org>, <linux-s390@vger.kernel.org>,
-        <linux-sh@vger.kernel.org>, <sparclinux@vger.kernel.org>,
-        <tbogendoerfer@suse.de>, <linux-mips@vger.kernel.org>,
-        <rafael@kernel.org>, <mhocko@kernel.org>,
-        <gregkh@linuxfoundation.org>, <bhelgaas@google.com>,
-        <linux-pci@vger.kernel.org>, <rjw@rjwysocki.net>,
-        <lenb@kernel.org>, <linux-acpi@vger.kernel.org>
-References: <1572428068-180880-1-git-send-email-linyunsheng@huawei.com>
- <20191030101449.GW4097@hirez.programming.kicks-ass.net>
-From:   Yunsheng Lin <linyunsheng@huawei.com>
-Message-ID: <f7aa833e-3ed3-aba0-8c6e-8753a68182c2@huawei.com>
-Date:   Thu, 31 Oct 2019 11:26:04 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.0
+        id S1726934AbfKAI6I (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 1 Nov 2019 04:58:08 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:32914 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726689AbfKAI6I (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 1 Nov 2019 04:58:08 -0400
+Received: by mail-wr1-f68.google.com with SMTP id s1so8989127wro.0
+        for <linux-sh@vger.kernel.org>; Fri, 01 Nov 2019 01:58:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=S5fQT2eVO9V38Zm9JZGmC3M3bk7YmWSMdjQ7Ok2mRcE=;
+        b=svMRcQ9vBjrXT2qn/6kethfQvV0UlAW5sEgQDR41qIHly1Y8PT1R9cce8OhGLd23tx
+         8OoR73wILPiH79hKzZCAP4sQknRdUDbuhN75ObUIOZBq09vMSCRi22PnDvfGt/T0EhnD
+         U5/eHFT8izrZnKoCnfjiweDd96fr0mvLCl5r8+vViQtyq+6hcMM8SPjXuYD3mZMmj6T9
+         wacRNcNQzaoyxuCBaFRrC4aQEkNk5mG1x3+V5UrYyc5eZoMYWBGjYGTLOu01I/64e0c3
+         INlnHrvci6GbXLmUf64Lhq54JPwhwZOI90GH32o9yIvWsKOhBmPKzkWv1ln45tHgT0p1
+         VWrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=S5fQT2eVO9V38Zm9JZGmC3M3bk7YmWSMdjQ7Ok2mRcE=;
+        b=IxWMDeXPvFgbWgoUUw54z9WLt1NT1u61dpyADUcICogm/C/OkL6zUYfMzVEj9n0xVq
+         cEDyU5DW40TlvJfvuVCsW7WC4kJyvgPV8v1TgwFst2VD/22BXE8dem5ai8+L0k7659KL
+         rftpJnFcnUSSltXe2lHLgyJESHon7l5xas3epDkjjFWzYNEXCURLqZYkzzyxtL7oBSpg
+         F4Wb7QDHyogyg3A+clRHaSdZ2FpPsZqNKJxRqdrGGRAe3m/m8qg86pchRHCK25ypb83G
+         2TgifyDmWEsiv58PkdlnGJhrIO7SaaDr1asDHMR3ye/XEYMhB1sZLjJASOyUBwWnWHCh
+         FK8w==
+X-Gm-Message-State: APjAAAV1tYaCNjtiFloU6g6r3MN+TdIvNnj85pde7ixB2xo6fFe9dZrI
+        SANK2g/lpQvZ9/ihThT+JuaUiQ==
+X-Google-Smtp-Source: APXvYqx/0D/E3fqHGg3SO471Ql1SFjgo2/8jy1O0UmD3LhH76T/0FxaRwKHUwv0G597dXLhvqq/DfA==
+X-Received: by 2002:adf:f048:: with SMTP id t8mr5980197wro.237.1572598685466;
+        Fri, 01 Nov 2019 01:58:05 -0700 (PDT)
+Received: from dell ([2.31.163.64])
+        by smtp.gmail.com with ESMTPSA id s21sm9001511wrb.31.2019.11.01.01.58.04
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 01 Nov 2019 01:58:04 -0700 (PDT)
+Date:   Fri, 1 Nov 2019 08:58:03 +0000
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Jacopo Mondi <jacopo@jmondi.org>
+Cc:     Daniel Thompson <daniel.thompson@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Subject: Re: [PATCH v7 0/9] backlight: gpio: simplify the driver
+Message-ID: <20191101085803.GD5700@dell>
+References: <20191022083630.28175-1-brgl@bgdev.pl>
+ <CAMRc=MeyrDZgmHJ+2SMipP7y9NggxiVfkAh4kCLePFWvUku9aQ@mail.gmail.com>
+ <20191023155941.q563d3cfizre4zvt@holly.lan>
+ <20191024064726.GB15843@dell>
+ <20191024071703.6keoebzlfnn2qmyd@uno.localdomain>
 MIME-Version: 1.0
-In-Reply-To: <20191030101449.GW4097@hirez.programming.kicks-ass.net>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.74.191.121]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191024071703.6keoebzlfnn2qmyd@uno.localdomain>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 2019/10/30 18:14, Peter Zijlstra wrote:
-> On Wed, Oct 30, 2019 at 05:34:28PM +0800, Yunsheng Lin wrote:
->> When passing the return value of dev_to_node() to cpumask_of_node()
->> without checking if the device's node id is NUMA_NO_NODE, there is
->> global-out-of-bounds detected by KASAN.
->>
->> From the discussion [1], NUMA_NO_NODE really means no node affinity,
->> which also means all cpus should be usable. So the cpumask_of_node()
->> should always return all cpus online when user passes the node id as
->> NUMA_NO_NODE, just like similar semantic that page allocator handles
->> NUMA_NO_NODE.
->>
->> But we cannot really copy the page allocator logic. Simply because the
->> page allocator doesn't enforce the near node affinity. It just picks it
->> up as a preferred node but then it is free to fallback to any other numa
->> node. This is not the case here and node_to_cpumask_map will only restrict
->> to the particular node's cpus which would have really non deterministic
->> behavior depending on where the code is executed. So in fact we really
->> want to return cpu_online_mask for NUMA_NO_NODE.
->>
->> Also there is a debugging version of node_to_cpumask_map() for x86 and
->> arm64, which is only used when CONFIG_DEBUG_PER_CPU_MAPS is defined, this
->> patch changes it to handle NUMA_NO_NODE as normal node_to_cpumask_map().
->>
->> [1] https://lkml.org/lkml/2019/9/11/66
->> Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
->> Suggested-by: Michal Hocko <mhocko@kernel.org>
->> Acked-by: Michal Hocko <mhocko@suse.com>
->> Acked-by: Paul Burton <paul.burton@mips.com> # MIPS bits
+On Thu, 24 Oct 2019, Jacopo Mondi wrote:
+
+> Hello,
 > 
-> Still:
+> On Thu, Oct 24, 2019 at 07:47:26AM +0100, Lee Jones wrote:
+> > On Wed, 23 Oct 2019, Daniel Thompson wrote:
+> >
+> > > On Tue, Oct 22, 2019 at 11:29:54AM +0200, Bartosz Golaszewski wrote:
+> > > > wt., 22 paź 2019 o 10:36 Bartosz Golaszewski <brgl@bgdev.pl> napisał(a):
+> > > > >
+> > > > > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+> > > > >
+> > > > > While working on my other series related to gpio-backlight[1] I noticed
+> > > > > that we could simplify the driver if we made the only user of platform
+> > > > > data use GPIO lookups and device properties. This series tries to do
+> > > > > that.
+> > > > >
+> > > > > First two patches contain minor fixes. Third patch makes the driver
+> > > > > explicitly drive the GPIO line. Fourth patch adds all necessary data
+> > > > > structures to ecovec24. Patch 5/9 unifies much of the code for both
+> > > > > pdata and non-pdata cases. Patches 6-7/9 remove unused platform data
+> > > > > fields. Last two patches contain additional improvements for the GPIO
+> > > > > backlight driver while we're already modifying it.
+> > > > >
+> > > > > I don't have access to this HW but hopefully this works. Only compile
+> > > > > tested.
+> > > > >
+> > > > > [1] https://lkml.org/lkml/2019/6/25/900
+> > > > >
+> > > > > v1 -> v2:
+> > > > > - rebased on top of v5.3-rc1 and adjusted to the recent changes from Andy
+> > > > > - added additional two patches with minor improvements
+> > > > >
+> > > > > v2 -> v3:
+> > > > > - in patch 7/7: used initializers to set values for pdata and dev local vars
+> > > > >
+> > > > > v3 -> v4:
+> > > > > - rebased on top of v5.4-rc1
+> > > > > - removed changes that are no longer relevant after commit ec665b756e6f
+> > > > >   ("backlight: gpio-backlight: Correct initial power state handling")
+> > > > > - added patch 7/7
+> > > > >
+> > > > > v4 -> v5:
+> > > > > - in patch 7/7: added a comment replacing the name of the function being
+> > > > >   pulled into probe()
+> > > > >
+> > > > > v5 -> v6:
+> > > > > - added a patch making the driver explicitly set the direction of the GPIO
+> > > > >   to output
+> > > > > - added a patch removing a redundant newline
+> > > > >
+> > > > > v6 -> v7:
+> > > > > - renamed the function calculating the new GPIO value for status update
+> > > > > - collected more tags
+> > > > >
+> > > > > Bartosz Golaszewski (9):
+> > > > >   backlight: gpio: remove unneeded include
+> > > > >   backlight: gpio: remove stray newline
+> > > > >   backlight: gpio: explicitly set the direction of the GPIO
+> > > > >   sh: ecovec24: add additional properties to the backlight device
+> > > > >   backlight: gpio: simplify the platform data handling
+> > > > >   sh: ecovec24: don't set unused fields in platform data
+> > > > >   backlight: gpio: remove unused fields from platform data
+> > > > >   backlight: gpio: use a helper variable for &pdev->dev
+> > > > >   backlight: gpio: pull gpio_backlight_initial_power_state() into probe
+> > > > >
+> > > > >  arch/sh/boards/mach-ecovec24/setup.c         |  33 +++--
+> > > > >  drivers/video/backlight/gpio_backlight.c     | 128 +++++++------------
+> > > > >  include/linux/platform_data/gpio_backlight.h |   3 -
+> > > > >  3 files changed, 69 insertions(+), 95 deletions(-)
+> > > > >
+> > > > >
+> > > >
+> > > > Lee, Daniel, Jingoo,
+> > > >
+> > > > Jacopo is travelling until November 1st and won't be able to test this
+> > > > again before this date. Do you think you can pick it up and in case
+> > > > anything's broken on SH, we can fix it after v5.5-rc1, so that it
+> > > > doesn't miss another merge window?
+> >
+> > November 1st (-rc6) will be fine.
+> >
+> > I'd rather apply it late-tested than early-non-tested.
+> >
+> > Hopefully Jacopo can prioritise testing this on Thursday or Friday,
+> > since Monday will be -rc7 which is really cutting it fine.
 > 
-> Nacked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> I'll do my best, I'll get home Friday late afternoon :)
 
-It seems I still misunderstood your meaning by "We must not silently accept
-NO_NODE there" in [1].
+Welcome home!
 
-I am not sure if there is still disagreement that the NO_NODE state for
-dev->numa_node should exist at all.
+Just a little reminder in your inbox. TIA. :)
 
-From the previous disscussion [2], you seem to propose to do "wild guess" or
-"fixup" for all devices(including virtual and physcial) with NO_NODE, which means
-the NO_NODE is needed anymore and should be removed when the "wild guess" or "fixup"
-is done. So maybe the reason for your nack here it is that there should be no other
-NO_NODE handling or fixing related to NO_NODE before the "wild guess" or "fixup"
-process is finished, so making node_to_cpumask_map() NUMA_NO_NODE aware is unnecessary.
-
-Or your reason for the nack is still specific to the pcie device without a numa node,
-the "wild guess" need to be done for this case before making node_to_cpumask_map()
-NUMA_NO_NODE?
-
-Please help to clarify the reason for nack. Or is there still some other reason for the
-nack I missed from the previous disscussion?
-
-Thanks.
-
-[1] https://lore.kernel.org/lkml/20191011111539.GX2311@hirez.programming.kicks-ass.net/
-[2] https://lore.kernel.org/lkml/20191014094912.GY2311@hirez.programming.kicks-ass.net/
-> 
-> .
-> 
-
+-- 
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog
