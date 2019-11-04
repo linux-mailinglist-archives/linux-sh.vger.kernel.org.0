@@ -2,74 +2,118 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C663EC619
-	for <lists+linux-sh@lfdr.de>; Fri,  1 Nov 2019 16:56:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BF8FED7A7
+	for <lists+linux-sh@lfdr.de>; Mon,  4 Nov 2019 03:15:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729383AbfKAP4L (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 1 Nov 2019 11:56:11 -0400
-Received: from mail-il1-f194.google.com ([209.85.166.194]:42585 "EHLO
-        mail-il1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729332AbfKAP4L (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 1 Nov 2019 11:56:11 -0400
-Received: by mail-il1-f194.google.com with SMTP id n18so2064957ilt.9
-        for <linux-sh@vger.kernel.org>; Fri, 01 Nov 2019 08:56:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=KqYLJklOErTzrVm5Bzbb6HQh9gI4PrbbORQE30GcC5Y=;
-        b=jkikiuxKNQxBjumG32R/xAOzBpTQzIQOGlQ9PlZMzROUxuROhIRW7LOTcmmKqgHbY3
-         GOAi1JnMWEnE/cHrGKrepuphWKFno/pbedjX9XbUWfuIb71+aWSjlL5ZBdl2tkqhPPKE
-         upGJ5iT/1C19qe7FISRldhXG8lpP7RchXgCPpOby1LewLJ9oB1SrBH33yMLjEi7ivjNF
-         o703S5ww1Ql1WeM1aVK41ldtWwBkirNy1eGYI9RnsPVvXaYfqhEH77U0dn8RQUxe2Nnp
-         f+7QOSjXXt7VdhDDkepSvRzDGCUBO3iHq8K6k3uKK4gkq+wr+4nHyD89dMwGRy4pl6Pa
-         lYoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=KqYLJklOErTzrVm5Bzbb6HQh9gI4PrbbORQE30GcC5Y=;
-        b=Nd8Il5ra36n6JnWjSEKhO5q0vMrJ8HISKhkVlnhIhJ8TWuxzl1LJl88bUOevc5E21u
-         OXfz75rmWdb01ZR+IVAl66wnLFTSQ0GVf9AYKaBeByNc/mS4CkGSqFgXJXlPspWR18ap
-         pFc1zlU3EMKQUHo4XSZd7J0NgIIKbhPoOTj3I9IBzUsFEkG8nkZFBTnpI0OMogtOAY3Q
-         7z3td9Vu1CoaXs8hQGOyVfthpaVtK6ALP12Nqg1zlW3kOkewkPnnxawDhrXSrJ1yMSNO
-         Q9c/pKUWp6SNtvwdKrCAJiRw+fKzJEJfOkapzmqZtOdf8/eykuztu5iaIgiLLoZYAOrf
-         aDsg==
-X-Gm-Message-State: APjAAAUU9j4o45scdGFykZt1Um6Zm+qovky/0jA/WeoQmu8NQpDUxdWS
-        Zd12G/hfr9OKfs2KPa14jmDuNLE/vAU5LvrG/A==
-X-Google-Smtp-Source: APXvYqykJV+0/JwFtVH+nsMp7ykNvWlhcV0rRy9Az9oSoBx/tmbFcQXrrs+n9sPNEOpMU4VQknLk5nY+7hLQNduMfzM=
-X-Received: by 2002:a92:9ac2:: with SMTP id c63mr13404416ill.8.1572623769676;
- Fri, 01 Nov 2019 08:56:09 -0700 (PDT)
+        id S1728395AbfKDCPl (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sun, 3 Nov 2019 21:15:41 -0500
+Received: from foss.arm.com ([217.140.110.172]:34396 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728227AbfKDCPk (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Sun, 3 Nov 2019 21:15:40 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E7F6631F;
+        Sun,  3 Nov 2019 18:15:39 -0800 (PST)
+Received: from [10.163.1.23] (unknown [10.163.1.23])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6E4893F67D;
+        Sun,  3 Nov 2019 18:15:22 -0800 (PST)
+Subject: Re: [PATCH V8] mm/debug: Add tests validating architecture page table
+ helpers
+To:     Qian Cai <cai@lca.pw>
+Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Mike Rapoport <rppt@linux.vnet.ibm.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Michal Hocko <mhocko@kernel.org>,
+        Mark Rutland <Mark.Rutland@arm.com>,
+        Mark Brown <broonie@kernel.org>,
+        Steven Price <Steven.Price@arm.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Kees Cook <keescook@chromium.org>,
+        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+        Matthew Wilcox <willy@infradead.org>,
+        Sri Krishna chowdary <schowdary@nvidia.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        James Hogan <jhogan@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Ingo Molnar <mingo@kernel.org>,
+        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+References: <1572240562-23630-1-git-send-email-anshuman.khandual@arm.com>
+ <B6AAFA3F-745D-48E2-98CC-CFB30934CE39@lca.pw>
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <fdb72ac1-5f21-bcf1-ebab-411f56e67b56@arm.com>
+Date:   Mon, 4 Nov 2019 07:45:56 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Received: by 2002:a02:7749:0:0:0:0:0 with HTTP; Fri, 1 Nov 2019 08:56:08 -0700 (PDT)
-Reply-To: moneygram.1820@outlook.fr
-From:   "Mary Coster, I.M.F director-Benin" 
-        <info.zennitbankplcnigerian@gmail.com>
-Date:   Fri, 1 Nov 2019 16:56:08 +0100
-Message-ID: <CABHzvrmbRd3tt-E2+9AO2XvrMQFKQcn+kao_7DN4rb=grxZAcA@mail.gmail.com>
-Subject: Contact Money Gram international service-Benin to receive your
- payment funds US$2.500,000 Million
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <B6AAFA3F-745D-48E2-98CC-CFB30934CE39@lca.pw>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Attn Dear,Funds Beneficiary.
-Contact Money Gram international service-Benin to receive your payment
-funds US$2.500,000 Million approved this morning through the UN
-payment settlement organization.
-Contact Person, Mr. John Dave.
-Official Director.Money Gram-Benin
-Email: moneygram.1820@outlook.fr
-Telephone +229 62619517
-Once you get intouch with Mr. John Dave, Money Gram Director, send to
-him your address including your phone numbers. He will be sending the
-transfer to you  $5000.00 USD daily until you received your complete
-payment $2.5m from the office.
-Note,I have paid the whole service fees for you but only small money
-you been required to send to this office is $23.00 only via Money Gram
-transfer.
-God bless
-Mary Coster, I.M.F director-Benin
-m.coster@aol.com
+
+
+On 10/29/2019 04:01 PM, Qian Cai wrote:
+> 
+> 
+>> On Oct 28, 2019, at 1:29 AM, Anshuman Khandual <Anshuman.Khandual@arm.com> wrote:
+>>
+>> This adds tests which will validate architecture page table helpers and
+>> other accessors in their compliance with expected generic MM semantics.
+>> This will help various architectures in validating changes to existing
+>> page table helpers or addition of new ones.
+>>
+>> This test covers basic page table entry transformations including but not
+>> limited to old, young, dirty, clean, write, write protect etc at various
+>> level along with populating intermediate entries with next page table page
+>> and validating them.
+>>
+>> Test page table pages are allocated from system memory with required size
+>> and alignments. The mapped pfns at page table levels are derived from a
+>> real pfn representing a valid kernel text symbol. This test gets called
+>> right after page_alloc_init_late().
+>>
+>> This gets build and run when CONFIG_DEBUG_VM_PGTABLE is selected along with
+>> CONFIG_VM_DEBUG. Architectures willing to subscribe this test also need to
+>> select CONFIG_ARCH_HAS_DEBUG_VM_PGTABLE which for now is limited to x86 and
+>> arm64. Going forward, other architectures too can enable this after fixing
+>> build or runtime problems (if any) with their page table helpers.
+>>
+>> Folks interested in making sure that a given platform's page table helpers
+>> conform to expected generic MM semantics should enable the above config
+>> which will just trigger this test during boot. Any non conformity here will
+>> be reported as an warning which would need to be fixed. This test will help
+>> catch any changes to the agreed upon semantics expected from generic MM and
+>> enable platforms to accommodate it thereafter.
+> 
+> This looks like a perfect candidate to streamline with the new kunit framework, no?
+
+I have not been following the kunit test framework. But being highly dependent on
+existing MM accessors (generic or platform) and very much page table modification
+centric, mm/ is the best place for this test IMHO. It is now also part of DEBUG_VM
+set of tests. Probably in future all existing MM tests (mm/ or lib/) might move to
+kunit framework but for now it should remain with DEBUG_VM set of tests.
