@@ -2,138 +2,150 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BF4EFF1067
-	for <lists+linux-sh@lfdr.de>; Wed,  6 Nov 2019 08:34:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D98A4F1CEF
+	for <lists+linux-sh@lfdr.de>; Wed,  6 Nov 2019 18:56:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731068AbfKFHeR (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 6 Nov 2019 02:34:17 -0500
-Received: from foss.arm.com ([217.140.110.172]:35138 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729896AbfKFHeQ (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Wed, 6 Nov 2019 02:34:16 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1EE3430E;
-        Tue,  5 Nov 2019 23:34:13 -0800 (PST)
-Received: from [192.168.225.149] (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2F42D3F71A;
-        Tue,  5 Nov 2019 23:36:40 -0800 (PST)
-Subject: Re: [PATCH V8] mm/debug: Add tests validating architecture page table
- helpers
-To:     Christophe Leroy <christophe.leroy@c-s.fr>, linux-mm@kvack.org
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mike Rapoport <rppt@linux.vnet.ibm.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Michal Hocko <mhocko@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Mark Brown <broonie@kernel.org>,
-        Steven Price <Steven.Price@arm.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Kees Cook <keescook@chromium.org>,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        Matthew Wilcox <willy@infradead.org>,
-        Sri Krishna chowdary <schowdary@nvidia.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-References: <1572240562-23630-1-git-send-email-anshuman.khandual@arm.com>
- <3229d68d-0b9d-0719-3370-c6e1df0ea032@arm.com>
- <42160baa-0e9d-73d0-bf72-58bdbacf10ff@c-s.fr>
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <0e0c2ce9-636d-1153-2451-baf7317ed45f@arm.com>
-Date:   Wed, 6 Nov 2019 13:04:20 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
-MIME-Version: 1.0
-In-Reply-To: <42160baa-0e9d-73d0-bf72-58bdbacf10ff@c-s.fr>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+        id S1732466AbfKFR4i (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 6 Nov 2019 12:56:38 -0500
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:37612 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732379AbfKFR4h (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 6 Nov 2019 12:56:37 -0500
+Received: by mail-pf1-f196.google.com with SMTP id p24so12990560pfn.4
+        for <linux-sh@vger.kernel.org>; Wed, 06 Nov 2019 09:56:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dabbelt-com.20150623.gappssmtp.com; s=20150623;
+        h=date:subject:in-reply-to:cc:from:to:message-id;
+        bh=xZW1gMrCUoJqpGWBEYHWFfV09K+K/0uVmzI4MIoxGS8=;
+        b=PGZwZeqhjPGqmbBUrw44Auucb8k6dPtlYxXbuNpTAeEMGmKlsnFWXhrKzSARRD1P5Z
+         ofkafacEFrUvuMMQ8srHmApZNGXOM2FXgWNtdGS1rg8UPKc85d79tzD5/t3BF7GMjDtX
+         WoCFpoFoR/nlY6sa8P7ME55iO2h9Yfcb7ZSd7Zw+om2XJAjYyCK0yIJtNHDyXsnWFiZL
+         JcRZR97cwQ2ZvZRsXx81CQhAqwyUUPUY90oJrysCQQ7l1b0iCyPludGEBBLbIE1elh0S
+         JIqszC7OB8xZ2n5/8rEoDBU7MzMibg41EDmgXW2rJwIAtaViAg8zHwFVYITgL2sVpvu1
+         UzBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id;
+        bh=xZW1gMrCUoJqpGWBEYHWFfV09K+K/0uVmzI4MIoxGS8=;
+        b=mb0kAi1eA/qBQnMVg7fDmILpXwZnM4maTYsl5/07BBqDpR15ZzVBMf4rcdTGaoVbvX
+         wVVVhxbB4kkeuUIwq5EVHg7cJiuTY1OeoZIg66NEmy+LaZLBK9pePI4irP00JgavIwlD
+         4eqDTSVfoZpBDhVs9Mk0b7Hkp3lo3xh5OKURFf/cOQ8GLpoYjqvAFCsynLhNQDqCdlBc
+         tEwllWO03hiWSV4U9eJCTcgXERA18O8r0aKqs2pTUxbY7Zn5GUvScR/dFQtEi4BD8N05
+         l0ejF9X8ZK2E81hhyqvMZEE/wMawGMoQ3dLB34N9SiANdDz66eh/4xzzAtxz+oluDnAS
+         d9YQ==
+X-Gm-Message-State: APjAAAUefdY3AAwQOuNCoatdEwSkd9c/gy8QQIZ/cg2Uf7DuWZwHrl35
+        M/deVVw+vol5O6Ylql9W+dwsnA==
+X-Google-Smtp-Source: APXvYqyZI0/opOONYHdOR3l6SH/z69P+ajsTKg8L6ObdzcVPlsahU45e+bD0ChxR/pgAJsTDNgZ9EA==
+X-Received: by 2002:a17:90a:340c:: with SMTP id o12mr5529604pjb.18.1573062994968;
+        Wed, 06 Nov 2019 09:56:34 -0800 (PST)
+Received: from localhost ([12.206.222.5])
+        by smtp.gmail.com with ESMTPSA id z11sm32745913pfg.117.2019.11.06.09.56.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Nov 2019 09:56:34 -0800 (PST)
+Date:   Wed, 06 Nov 2019 09:56:34 -0800 (PST)
+X-Google-Original-Date: Wed, 06 Nov 2019 09:56:23 PST (-0800)
+Subject:     Re: [PATCH 10/21] asm-generic: ioremap_uc should behave the same with and without MMU
+In-Reply-To: <20191029064834.23438-11-hch@lst.de>
+CC:     Arnd Bergmann <arnd@arndb.de>, guoren@kernel.org, monstr@monstr.eu,
+        green.hu@gmail.com, deanbo422@gmail.com, gxt@pku.edu.cn,
+        x86@kernel.org, linux-alpha@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-mtd@lists.infradead.org, linux-arch@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+From:   Palmer Dabbelt <palmer@dabbelt.com>
+To:     Christoph Hellwig <hch@lst.de>
+Message-ID: <mhng-3f709a8a-a8c3-4612-b4de-847d13b4af0a@palmer-si-x1c4>
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
+On Mon, 28 Oct 2019 23:48:23 PDT (-0700), Christoph Hellwig wrote:
+> Whatever reason there is for the existence of ioremap_uc, and the fact
+> that it returns NULL by default on architectures with an MMU applies
+> equally to nommu architectures, so don't provide different defaults.
+>
+> In practice the difference is meaningless as the only portable driver
+> that uses ioremap_uc is atyfb which probably doesn't show up on nommu
+> devices.
+>
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  include/asm-generic/io.h | 36 ++++++++++++++++--------------------
+>  1 file changed, 16 insertions(+), 20 deletions(-)
+>
+> diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
+> index d02806513670..a98ed6325727 100644
+> --- a/include/asm-generic/io.h
+> +++ b/include/asm-generic/io.h
+> @@ -935,18 +935,7 @@ static inline void *phys_to_virt(unsigned long address)
+>   * defined your own ioremap_*() variant you must then declare your own
+>   * ioremap_*() variant as defined to itself to avoid the default NULL return.
+>   */
+> -
+> -#ifdef CONFIG_MMU
+> -
+> -#ifndef ioremap_uc
+> -#define ioremap_uc ioremap_uc
+> -static inline void __iomem *ioremap_uc(phys_addr_t offset, size_t size)
+> -{
+> -	return NULL;
+> -}
+> -#endif
+> -
+> -#else /* !CONFIG_MMU */
+> +#ifndef CONFIG_MMU
+>
+>  /*
+>   * Change "struct page" to physical address.
+> @@ -980,14 +969,6 @@ static inline void __iomem *ioremap_nocache(phys_addr_t offset, size_t size)
+>  }
+>  #endif
+>
+> -#ifndef ioremap_uc
+> -#define ioremap_uc ioremap_uc
+> -static inline void __iomem *ioremap_uc(phys_addr_t offset, size_t size)
+> -{
+> -	return ioremap_nocache(offset, size);
+> -}
+> -#endif
+> -
+>  #ifndef ioremap_wc
+>  #define ioremap_wc ioremap_wc
+>  static inline void __iomem *ioremap_wc(phys_addr_t offset, size_t size)
+> @@ -1004,6 +985,21 @@ static inline void __iomem *ioremap_wt(phys_addr_t offset, size_t size)
+>  }
+>  #endif
+>
+> +/*
+> + * ioremap_uc is special in that we do require an explicit architecture
+> + * implementation.  In general you do now want to use this function in a
 
+Presumably that's supposed to be "do not want to use"?
 
-On 11/06/2019 12:11 PM, Christophe Leroy wrote:
-> 
-> 
-> Le 06/11/2019 à 04:22, Anshuman Khandual a écrit :
->>
->>
->> On 10/28/2019 10:59 AM, Anshuman Khandual wrote:
->>> +    -----------------------
->>> +    |         arch |status|
->>> +    -----------------------
->>> +    |       alpha: | TODO |
->>> +    |         arc: | TODO |
->>> +    |         arm: | TODO |
->>> +    |       arm64: |  ok  |
->>> +    |         c6x: | TODO |
->>> +    |        csky: | TODO |
->>> +    |       h8300: | TODO |
->>> +    |     hexagon: | TODO |
->>> +    |        ia64: | TODO |
->>> +    |        m68k: | TODO |
->>> +    |  microblaze: | TODO |
->>> +    |        mips: | TODO |
->>> +    |       nds32: | TODO |
->>> +    |       nios2: | TODO |
->>> +    |    openrisc: | TODO |
->>> +    |      parisc: | TODO |
->>> +    |     powerpc: | TODO |
->>> +    |       ppc32: |  ok  |
-> 
-> Note that ppc32 is a part of powerpc, not a standalone arch.
+> + * driver and use plain ioremap, which is uncached by default.  Similarly
+> + * architectures should not implement it unless they have a very good
+> + * reason.
+> + */
+> +#ifndef ioremap_uc
+> +#define ioremap_uc ioremap_uc
+> +static inline void __iomem *ioremap_uc(phys_addr_t offset, size_t size)
+> +{
+> +	return NULL;
+> +}
+> +#endif
+> +
+>  #ifdef CONFIG_HAS_IOPORT_MAP
+>  #ifndef CONFIG_GENERIC_IOMAP
+>  #ifndef ioport_map
 
-Right, I understand. But we are yet to hear about how this test
-came about on powerpc server platforms. Will update 'powerpc'
-arch listing above once we get some confirmation. May be once
-this works on all relevant powerpc platforms, we can just merge
-'powerpc' and 'ppc32' entries here as just 'powerpc'.
+With the fix:
 
-> 
-> Maybe something like the following would be more correct:
-> |  powerpc/32: |  ok  |
-> |  powerpc/64: | TODO |
-> 
-> Christophe
-> 
->>> +    |       riscv: | TODO |
->>> +    |        s390: | TODO |
->>> +    |          sh: | TODO |
->>> +    |       sparc: | TODO |
->>> +    |          um: | TODO |
->>> +    |   unicore32: | TODO |
->>> +    |         x86: |  ok  |
->>> +    |      xtensa: | TODO |
->>> +    -----------------------
->>
->> While here, are there some volunteers to test this on any of the
->> 'yet to be tested and supported' platforms ?
->>
->> - Anshuman
->>
-> 
+Reviewed-by: Palmer Dabbelt <palmer@dabbelt.com>
