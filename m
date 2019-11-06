@@ -2,186 +2,185 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A2A41F06FB
-	for <lists+linux-sh@lfdr.de>; Tue,  5 Nov 2019 21:35:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 37750F0C88
+	for <lists+linux-sh@lfdr.de>; Wed,  6 Nov 2019 04:08:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729735AbfKEUfE (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 5 Nov 2019 15:35:04 -0500
-Received: from foss.arm.com ([217.140.110.172]:60270 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725806AbfKEUe5 (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Tue, 5 Nov 2019 15:34:57 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7F2DD8E6;
-        Tue,  5 Nov 2019 12:34:56 -0800 (PST)
-Received: from [192.168.225.149] (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 178C53F95D;
-        Mon,  4 Nov 2019 16:00:07 -0800 (PST)
-Subject: Re: [PATCH V8] mm/debug: Add tests validating architecture page table
- helpers
-To:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>
-Cc:     Vlastimil Babka <vbabka@suse.cz>,
+        id S2388065AbfKFDIB (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 5 Nov 2019 22:08:01 -0500
+Received: from mail-pl1-f196.google.com ([209.85.214.196]:42454 "EHLO
+        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388038AbfKFDIB (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 5 Nov 2019 22:08:01 -0500
+Received: by mail-pl1-f196.google.com with SMTP id j12so8782742plt.9
+        for <linux-sh@vger.kernel.org>; Tue, 05 Nov 2019 19:08:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=arista.com; s=googlenew;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=frWd+h9S1+DPn8N5jwfQSHDVjkeBODz9vqE7P7NufDQ=;
+        b=KcOPoNDIEO7oFCLzsGT9QUoBp69J4VxvjEf7AVmeTEWeDxKpeE3cs14xrhTnLfnjyF
+         uLcLiPVX33/j20HskIoHK20T2G0fcF4c5+XmJvNw8+7r7fiy9Fq5qsqytmGXhco3UHy1
+         +BDJM1jUtIlWbyVKo8JzZNqzcnTDslJcUDS5mSWltFtZpW8rfk8qJY3hul10/E+eEcqs
+         2JPg5ta+jvYqrdXPr+AOVW8o82Rve2oPA7VnXg+luPSTmnYBlCMCyD8NmMNhrUMEKRch
+         qGpS6gdA59ABZBM36inKeyJ0RIoN3PWigL73gwCFSI8Fqd8a1ApKjgimp2w1u7t0cOXX
+         YHPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=frWd+h9S1+DPn8N5jwfQSHDVjkeBODz9vqE7P7NufDQ=;
+        b=m+cobSpCpoC4QScbt5LTQbfKfghPD1RtzzVZGKHXanQUA0uxRkTgWJAkPBbzvtfKWu
+         9vUg2TCOAQ2WYhfZlimq/kuHuBJjhmPxcW0Pq26gc1x0/8DbUO7J5U0t8EiRioKvfczm
+         aj3jUEfNpX0xD+qux87uX1Y1bHajfFw+nYj5be79yb827L5zeB0l1+DQ2MWNKWh10Mag
+         W7LOf4NSResDJNO7EZfGIhrAFTHf4DNfNwQbzJOIbsJROP8X0IBTfLsBENYutCiB3WPI
+         xtXNMCsKzpWCVqu6pYBHkfx9NSv4w0mPuo19pZHx29hXIWEQhvpm2J1xtUtonitPS0Ne
+         Upmw==
+X-Gm-Message-State: APjAAAUtmmIiRv4Q1pdsb6V6lY0CEPrL4zx6vVWVhXQKPqeAf25elr6W
+        MaPaJnQSYX5nZnMSM9NpOoNaOA==
+X-Google-Smtp-Source: APXvYqz0hYXGmkCjYM6Np502AswAzG6InOP8W+hdXPEcrj1L5cIKeV67dJwCFTwUEjqiHNc+ZnWrzQ==
+X-Received: by 2002:a17:902:bd82:: with SMTP id q2mr197350pls.106.1573009679698;
+        Tue, 05 Nov 2019 19:07:59 -0800 (PST)
+Received: from Mindolluin.ire.aristanetworks.com ([217.173.96.166])
+        by smtp.gmail.com with ESMTPSA id k24sm19570487pgl.6.2019.11.05.19.07.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 Nov 2019 19:07:58 -0800 (PST)
+From:   Dmitry Safonov <dima@arista.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Dmitry Safonov <0x7f454c46@gmail.com>,
+        Dmitry Safonov <dima@arista.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mike Rapoport <rppt@linux.vnet.ibm.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Michal Hocko <mhocko@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Mark Brown <broonie@kernel.org>,
-        Steven Price <Steven.Price@arm.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Kees Cook <keescook@chromium.org>,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        Matthew Wilcox <willy@infradead.org>,
-        Sri Krishna chowdary <schowdary@nvidia.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Ingo Molnar <mingo@kernel.org>,
-        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org,
-        Michal Hocko <mhocko@kernel.org>,
-        Matthew Wilcox <willy@infradead.org>
-References: <1572240562-23630-1-git-send-email-anshuman.khandual@arm.com>
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <e0aa8d49-5511-15e4-f413-62c99eea4fab@arm.com>
-Date:   Tue, 5 Nov 2019 05:30:41 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+        Ingo Molnar <mingo@kernel.org>, Jiri Slaby <jslaby@suse.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+        Rich Felker <dalias@libc.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        linux-sh@vger.kernel.org
+Subject: [PATCH 29/50] sh: Add loglvl to dump_mem()
+Date:   Wed,  6 Nov 2019 03:05:20 +0000
+Message-Id: <20191106030542.868541-30-dima@arista.com>
+X-Mailer: git-send-email 2.23.0
+In-Reply-To: <20191106030542.868541-1-dima@arista.com>
+References: <20191106030542.868541-1-dima@arista.com>
 MIME-Version: 1.0
-In-Reply-To: <1572240562-23630-1-git-send-email-anshuman.khandual@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
+Currently, the log-level of show_stack() depends on a platform
+realization. It creates situations where the headers are printed with
+lower log level or higher than the stacktrace (depending on
+a platform or user).
 
+Furthermore, it forces the logic decision from user to an architecture
+side. In result, some users as sysrq/kdb/etc are doing tricks with
+temporary rising console_loglevel while printing their messages.
+And in result it not only may print unwanted messages from other CPUs,
+but also omit printing at all in the unlucky case where the printk()
+was deferred.
 
-On 10/28/2019 10:59 AM, Anshuman Khandual wrote:
-> This adds tests which will validate architecture page table helpers and
-> other accessors in their compliance with expected generic MM semantics.
-> This will help various architectures in validating changes to existing
-> page table helpers or addition of new ones.
-> 
-> This test covers basic page table entry transformations including but not
-> limited to old, young, dirty, clean, write, write protect etc at various
-> level along with populating intermediate entries with next page table page
-> and validating them.
-> 
-> Test page table pages are allocated from system memory with required size
-> and alignments. The mapped pfns at page table levels are derived from a
-> real pfn representing a valid kernel text symbol. This test gets called
-> right after page_alloc_init_late().
-> 
-> This gets build and run when CONFIG_DEBUG_VM_PGTABLE is selected along with
-> CONFIG_VM_DEBUG. Architectures willing to subscribe this test also need to
-> select CONFIG_ARCH_HAS_DEBUG_VM_PGTABLE which for now is limited to x86 and
-> arm64. Going forward, other architectures too can enable this after fixing
-> build or runtime problems (if any) with their page table helpers.
-> 
-> Folks interested in making sure that a given platform's page table helpers
-> conform to expected generic MM semantics should enable the above config
-> which will just trigger this test during boot. Any non conformity here will
-> be reported as an warning which would need to be fixed. This test will help
-> catch any changes to the agreed upon semantics expected from generic MM and
-> enable platforms to accommodate it thereafter.
-> 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Mike Rapoport <rppt@linux.vnet.ibm.com>
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Michal Hocko <mhocko@kernel.org>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Steven Price <Steven.Price@arm.com>
-> Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
-> Cc: Kees Cook <keescook@chromium.org>
-> Cc: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-> Cc: Matthew Wilcox <willy@infradead.org>
-> Cc: Sri Krishna chowdary <schowdary@nvidia.com>
-> Cc: Dave Hansen <dave.hansen@intel.com>
-> Cc: Russell King - ARM Linux <linux@armlinux.org.uk>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
-> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Vineet Gupta <vgupta@synopsys.com>
-> Cc: James Hogan <jhogan@kernel.org>
-> Cc: Paul Burton <paul.burton@mips.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Kirill A. Shutemov <kirill@shutemov.name>
-> Cc: Gerald Schaefer <gerald.schaefer@de.ibm.com>
-> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-> Cc: Ingo Molnar <mingo@kernel.org>
-> Cc: linux-snps-arc@lists.infradead.org
-> Cc: linux-mips@vger.kernel.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-ia64@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-s390@vger.kernel.org
-> Cc: linux-sh@vger.kernel.org
-> Cc: sparclinux@vger.kernel.org
-> Cc: x86@kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> 
-> Tested-by: Christophe Leroy <christophe.leroy@c-s.fr>		#PPC32
-> Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
-> 
-> This adds a test validation for architecture exported page table helpers.
-> Patch adds basic transformation tests at various levels of the page table.
-> 
-> This test was originally suggested by Catalin during arm64 THP migration
-> RFC discussion earlier. Going forward it can include more specific tests
-> with respect to various generic MM functions like THP, HugeTLB etc and
-> platform specific tests.
-> 
-> https://lore.kernel.org/linux-mm/20190628102003.GA56463@arrakis.emea.arm.com/
-> 
-> Needs to be applied on linux-next (next-20191025).
-> 
-> Changes in V8:
-> 
-> - Enabled ARCH_HAS_DEBUG_VM_PGTABLE on PPC32 platform per Christophe
-> - Updated feature documentation as DEBUG_VM_PGTABLE is now enabled on PPC32 platform
-> - Moved ARCH_HAS_DEBUG_VM_PGTABLE earlier to indent it with DEBUG_VM per Christophe
-> - Added an information message in debug_vm_pgtable() per Christophe
-> - Dropped random_vaddr boundary condition checks per Christophe and Qian
-> - Replaced virt_addr_valid() check with pfn_valid() check in debug_vm_pgtable()
+Introducing log-level parameter and KERN_UNSUPPRESSED [1] seems
+an easier approach than introducing more printk buffers.
+Also, it will consolidate printings with headers.
 
-Hello Andrew,
+Add log level argument to dump_mem() as a preparation to introduce
+show_stack_loglvl().
 
-Just wondering if this version looks okay or is there anything else which still
-needs to be accommodated here first, before this test can be considered for merging ?
-Thank you.
+Cc: Rich Felker <dalias@libc.org>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: linux-sh@vger.kernel.org
+[1]: https://lore.kernel.org/lkml/20190528002412.1625-1-dima@arista.com/T/#u
+Signed-off-by: Dmitry Safonov <dima@arista.com>
+---
+ arch/sh/include/asm/kdebug.h |  3 ++-
+ arch/sh/kernel/dumpstack.c   | 17 +++++++++--------
+ arch/sh/kernel/traps.c       |  4 ++--
+ 3 files changed, 13 insertions(+), 11 deletions(-)
 
-- Anshuman
+diff --git a/arch/sh/include/asm/kdebug.h b/arch/sh/include/asm/kdebug.h
+index 5212f5fcd752..de8693fabb1d 100644
+--- a/arch/sh/include/asm/kdebug.h
++++ b/arch/sh/include/asm/kdebug.h
+@@ -13,6 +13,7 @@ enum die_val {
+ 
+ /* arch/sh/kernel/dumpstack.c */
+ extern void printk_address(unsigned long address, int reliable);
+-extern void dump_mem(const char *str, unsigned long bottom, unsigned long top);
++extern void dump_mem(const char *str, const char *loglvl,
++		     unsigned long bottom, unsigned long top);
+ 
+ #endif /* __ASM_SH_KDEBUG_H */
+diff --git a/arch/sh/kernel/dumpstack.c b/arch/sh/kernel/dumpstack.c
+index 9f1c9c11d62d..6784b914fba0 100644
+--- a/arch/sh/kernel/dumpstack.c
++++ b/arch/sh/kernel/dumpstack.c
+@@ -16,30 +16,31 @@
+ #include <asm/unwinder.h>
+ #include <asm/stacktrace.h>
+ 
+-void dump_mem(const char *str, unsigned long bottom, unsigned long top)
++void dump_mem(const char *str, const char *loglvl,
++	      unsigned long bottom, unsigned long top)
+ {
+ 	unsigned long p;
+ 	int i;
+ 
+-	printk("%s(0x%08lx to 0x%08lx)\n", str, bottom, top);
++	printk("%s%s(0x%08lx to 0x%08lx)\n", loglvl, str, bottom, top);
+ 
+ 	for (p = bottom & ~31; p < top; ) {
+-		printk("%04lx: ", p & 0xffff);
++		printk("%s%04lx: ", loglvl,  p & 0xffff);
+ 
+ 		for (i = 0; i < 8; i++, p += 4) {
+ 			unsigned int val;
+ 
+ 			if (p < bottom || p >= top)
+-				printk("         ");
++				printk("%s         ", loglvl);
+ 			else {
+ 				if (__get_user(val, (unsigned int __user *)p)) {
+-					printk("\n");
++					printk("%s\n", loglvl);
+ 					return;
+ 				}
+-				printk("%08x ", val);
++				printk("%s%08x ", loglvl, val);
+ 			}
+ 		}
+-		printk("\n");
++		printk("%s\n", loglvl);
+ 	}
+ }
+ 
+@@ -156,7 +157,7 @@ void show_stack(struct task_struct *tsk, unsigned long *sp)
+ 		sp = (unsigned long *)tsk->thread.sp;
+ 
+ 	stack = (unsigned long)sp;
+-	dump_mem("Stack: ", stack, THREAD_SIZE +
++	dump_mem("Stack: ", KERN_DEFAULT, stack, THREAD_SIZE +
+ 		 (unsigned long)task_stack_page(tsk));
+ 	show_trace(tsk, sp, NULL);
+ }
+diff --git a/arch/sh/kernel/traps.c b/arch/sh/kernel/traps.c
+index 63cf17bc760d..faad65409075 100644
+--- a/arch/sh/kernel/traps.c
++++ b/arch/sh/kernel/traps.c
+@@ -38,8 +38,8 @@ void die(const char *str, struct pt_regs *regs, long err)
+ 			task_pid_nr(current), task_stack_page(current) + 1);
+ 
+ 	if (!user_mode(regs) || in_interrupt())
+-		dump_mem("Stack: ", regs->regs[15], THREAD_SIZE +
+-			 (unsigned long)task_stack_page(current));
++		dump_mem("Stack: ", KERN_DEFAULT, regs->regs[15],
++			THREAD_SIZE + (unsigned long)task_stack_page(current));
+ 
+ 	notify_die(DIE_OOPS, str, regs, err, 255, SIGSEGV);
+ 
+-- 
+2.23.0
+
