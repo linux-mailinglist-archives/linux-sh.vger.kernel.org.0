@@ -2,24 +2,48 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F2DDFF0CF2
-	for <lists+linux-sh@lfdr.de>; Wed,  6 Nov 2019 04:22:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 57678F0F10
+	for <lists+linux-sh@lfdr.de>; Wed,  6 Nov 2019 07:41:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731088AbfKFDWT (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 5 Nov 2019 22:22:19 -0500
-Received: from foss.arm.com ([217.140.110.172]:33116 "EHLO foss.arm.com"
+        id S1729940AbfKFGlM (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 6 Nov 2019 01:41:12 -0500
+Received: from pegase1.c-s.fr ([93.17.236.30]:39227 "EHLO pegase1.c-s.fr"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730839AbfKFDWT (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Tue, 5 Nov 2019 22:22:19 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D732A30E;
-        Tue,  5 Nov 2019 19:22:18 -0800 (PST)
-Received: from [192.168.225.149] (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5A8D63F719;
-        Tue,  5 Nov 2019 19:21:57 -0800 (PST)
+        id S1725948AbfKFGlM (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Wed, 6 Nov 2019 01:41:12 -0500
+Received: from localhost (mailhub1-int [192.168.12.234])
+        by localhost (Postfix) with ESMTP id 477H450GyXz9v00D;
+        Wed,  6 Nov 2019 07:41:09 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+        reason="1024-bit key; insecure key"
+        header.d=c-s.fr header.i=@c-s.fr header.b=uDQK58sa; dkim-adsp=pass;
+        dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+        by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+        with ESMTP id NP7mUVlPVLBt; Wed,  6 Nov 2019 07:41:08 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+        by pegase1.c-s.fr (Postfix) with ESMTP id 477H445kq5z9v00C;
+        Wed,  6 Nov 2019 07:41:08 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+        t=1573022468; bh=ldK6jtPphgl+yNa6VSaAerjL+prNDwgkLRC6nRKEIeI=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=uDQK58saIN0zvehZkL7oENgA4DemT8lDWmLXhETHs2fgk7tiYooqK7uit5oPw6kqK
+         UOoMgZlJGvnNPw1TVCdC6OsuYDkWv6rJFk3JlidSUeiN1jyfI5kOdxu8g2Q0UGfHfG
+         nJ9ksEtevKFg7K5FRpbJoChZCjEM1dr9rYK/i7Rk=
+Received: from localhost (localhost [127.0.0.1])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 973408B82D;
+        Wed,  6 Nov 2019 07:41:09 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+        with ESMTP id A7VVbo-RdBde; Wed,  6 Nov 2019 07:41:09 +0100 (CET)
+Received: from [172.25.230.101] (unknown [172.25.230.101])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 27E838B7CC;
+        Wed,  6 Nov 2019 07:41:09 +0100 (CET)
 Subject: Re: [PATCH V8] mm/debug: Add tests validating architecture page table
  helpers
-To:     linux-mm@kvack.org
+To:     Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
         Vlastimil Babka <vbabka@suse.cz>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -51,7 +75,6 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         "Kirill A . Shutemov" <kirill@shutemov.name>,
         Gerald Schaefer <gerald.schaefer@de.ibm.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
         Ingo Molnar <mingo@kernel.org>,
         linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
@@ -59,16 +82,17 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>,
         linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
         x86@kernel.org, linux-kernel@vger.kernel.org
 References: <1572240562-23630-1-git-send-email-anshuman.khandual@arm.com>
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <3229d68d-0b9d-0719-3370-c6e1df0ea032@arm.com>
-Date:   Wed, 6 Nov 2019 08:52:30 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+ <3229d68d-0b9d-0719-3370-c6e1df0ea032@arm.com>
+From:   Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <42160baa-0e9d-73d0-bf72-58bdbacf10ff@c-s.fr>
+Date:   Wed, 6 Nov 2019 07:41:08 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <1572240562-23630-1-git-send-email-anshuman.khandual@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <3229d68d-0b9d-0719-3370-c6e1df0ea032@arm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
@@ -76,39 +100,52 @@ X-Mailing-List: linux-sh@vger.kernel.org
 
 
 
-On 10/28/2019 10:59 AM, Anshuman Khandual wrote:
-> +    -----------------------
-> +    |         arch |status|
-> +    -----------------------
-> +    |       alpha: | TODO |
-> +    |         arc: | TODO |
-> +    |         arm: | TODO |
-> +    |       arm64: |  ok  |
-> +    |         c6x: | TODO |
-> +    |        csky: | TODO |
-> +    |       h8300: | TODO |
-> +    |     hexagon: | TODO |
-> +    |        ia64: | TODO |
-> +    |        m68k: | TODO |
-> +    |  microblaze: | TODO |
-> +    |        mips: | TODO |
-> +    |       nds32: | TODO |
-> +    |       nios2: | TODO |
-> +    |    openrisc: | TODO |
-> +    |      parisc: | TODO |
-> +    |     powerpc: | TODO |
-> +    |       ppc32: |  ok  |
-> +    |       riscv: | TODO |
-> +    |        s390: | TODO |
-> +    |          sh: | TODO |
-> +    |       sparc: | TODO |
-> +    |          um: | TODO |
-> +    |   unicore32: | TODO |
-> +    |         x86: |  ok  |
-> +    |      xtensa: | TODO |
-> +    -----------------------
+Le 06/11/2019 à 04:22, Anshuman Khandual a écrit :
+> 
+> 
+> On 10/28/2019 10:59 AM, Anshuman Khandual wrote:
+>> +    -----------------------
+>> +    |         arch |status|
+>> +    -----------------------
+>> +    |       alpha: | TODO |
+>> +    |         arc: | TODO |
+>> +    |         arm: | TODO |
+>> +    |       arm64: |  ok  |
+>> +    |         c6x: | TODO |
+>> +    |        csky: | TODO |
+>> +    |       h8300: | TODO |
+>> +    |     hexagon: | TODO |
+>> +    |        ia64: | TODO |
+>> +    |        m68k: | TODO |
+>> +    |  microblaze: | TODO |
+>> +    |        mips: | TODO |
+>> +    |       nds32: | TODO |
+>> +    |       nios2: | TODO |
+>> +    |    openrisc: | TODO |
+>> +    |      parisc: | TODO |
+>> +    |     powerpc: | TODO |
+>> +    |       ppc32: |  ok  |
 
-While here, are there some volunteers to test this on any of the
-'yet to be tested and supported' platforms ?
+Note that ppc32 is a part of powerpc, not a standalone arch.
 
-- Anshuman
+Maybe something like the following would be more correct:
+|  powerpc/32: |  ok  |
+|  powerpc/64: | TODO |
+
+Christophe
+
+>> +    |       riscv: | TODO |
+>> +    |        s390: | TODO |
+>> +    |          sh: | TODO |
+>> +    |       sparc: | TODO |
+>> +    |          um: | TODO |
+>> +    |   unicore32: | TODO |
+>> +    |         x86: |  ok  |
+>> +    |      xtensa: | TODO |
+>> +    -----------------------
+> 
+> While here, are there some volunteers to test this on any of the
+> 'yet to be tested and supported' platforms ?
+> 
+> - Anshuman
+> 
