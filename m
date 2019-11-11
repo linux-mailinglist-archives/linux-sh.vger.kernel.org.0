@@ -2,206 +2,119 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EE49F6F2F
-	for <lists+linux-sh@lfdr.de>; Mon, 11 Nov 2019 08:44:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FB1BF7167
+	for <lists+linux-sh@lfdr.de>; Mon, 11 Nov 2019 11:09:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726962AbfKKHoV (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 11 Nov 2019 02:44:21 -0500
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:40438 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726360AbfKKHoV (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 11 Nov 2019 02:44:21 -0500
-Received: by mail-wr1-f66.google.com with SMTP id i10so13437440wrs.7
-        for <linux-sh@vger.kernel.org>; Sun, 10 Nov 2019 23:44:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=hBbBXxtB4JGrAZVYwMzrM6N5+DTJrDtT85S5KcS/BSo=;
-        b=bLNmAwmlYqMOXoRD7nIagqUBAznwl4rTE7PVm7hKKWihFmJN69jpPWmeMnxrRIpKJ7
-         WriR09Zo4VYj5FBB0WhZzZvDP5IzS2hi0oCUphMP4CAY9fawe6Q/0A0XtBPdUVXdmDC2
-         +v4p+fD+YLPYL6jkkNERCvIGgqVu26f+gEdQEn2bUS3S4uTPpOIGwlU2mf79ZaLg/Clj
-         CYPBm+ThN/pHZ2PmrMtOyuDW7RqgEexOftCPM9I9o61SafRgyKUBHylqeBqzAmtTS87P
-         eXNKZHSFcyRn+PmyGts7VRsCL+TSlFbZQK0XPWUlRVA1oLkP7J/hJ+B4AJ/bE0PEPDOr
-         BueA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=hBbBXxtB4JGrAZVYwMzrM6N5+DTJrDtT85S5KcS/BSo=;
-        b=Ks/mHY+erYCaQ0LCS8y5L/ejxuyobw7wSIomlBocMxwO/tVl2aGIIoszgTTeChQgyV
-         hvu4jzUFnCGlaXuMNoR2NAUXV6WsJD8sbVHknqWgl9ZgcHy9kjKijHhWK8J2DqlvZfPy
-         ywF8x0mKDwAqMPRU13/gTTzqNhBlQNmqETbVS2KF0lG6aWs8iG4CYu0LcZaEQWcj8n/G
-         xP/k7bv7ytZ2FPRnrcRmvRlVigYJUKqQQSGot44ru7SBMvyHciJs3Y1Swvjc/DneNACI
-         x2+gpGX8Bpcgllont+QWNbl3YK4cJGTONrL9zhTAFZTYuzeMzI+eIwEYPUIM8GOmhcLf
-         GhOQ==
-X-Gm-Message-State: APjAAAUw2naqW2Lury9Wi7SxhtRtLLsHR37C4J+viTN1bATlh7xX+wFQ
-        DanOiov5Iw4Q7hX+n0Zus6ewig==
-X-Google-Smtp-Source: APXvYqxSsd7eDpxdDNpxnC/L7qzZ+aHe+8v5YGClauimnF6TLrUu+Mb9R+pXcwC92caBEU1o4oxL7A==
-X-Received: by 2002:adf:b686:: with SMTP id j6mr19230608wre.186.1573458258403;
-        Sun, 10 Nov 2019 23:44:18 -0800 (PST)
-Received: from dell ([95.147.198.88])
-        by smtp.gmail.com with ESMTPSA id 189sm3187351wme.28.2019.11.10.23.44.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 Nov 2019 23:44:17 -0800 (PST)
-Date:   Mon, 11 Nov 2019 07:44:10 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Daniel Thompson <daniel.thompson@linaro.org>,
-        Rich Felker <dalias@libc.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Jacopo Mondi <jacopo@jmondi.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v7 0/9] backlight: gpio: simplify the driver
-Message-ID: <20191111074410.GD18902@dell>
-References: <20191022083630.28175-1-brgl@bgdev.pl>
- <CAMRc=MeyrDZgmHJ+2SMipP7y9NggxiVfkAh4kCLePFWvUku9aQ@mail.gmail.com>
- <20191023155941.q563d3cfizre4zvt@holly.lan>
- <20191024064726.GB15843@dell>
- <20191024071703.6keoebzlfnn2qmyd@uno.localdomain>
- <20191101085803.GD5700@dell>
- <20191101154133.qqjj3uriwrl2j5r5@uno.localdomain>
- <CAMRc=MejNQAPUXQkJsVFBxcQUJ83xRF0ntKM2ssnAxc1C+7Jjg@mail.gmail.com>
- <CAMRc=Meh1jdc562bTHEfodyud7B0dBM+Lti3ZaCBUaqOjDhaCQ@mail.gmail.com>
+        id S1726946AbfKKKJ1 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 11 Nov 2019 05:09:27 -0500
+Received: from mout.kundenserver.de ([217.72.192.75]:51191 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726791AbfKKKJ1 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 11 Nov 2019 05:09:27 -0500
+Received: from mail-qt1-f174.google.com ([209.85.160.174]) by
+ mrelayeu.kundenserver.de (mreue106 [212.227.15.145]) with ESMTPSA (Nemesis)
+ id 1MplsZ-1i6pZu2YgP-00qAkb; Mon, 11 Nov 2019 11:09:23 +0100
+Received: by mail-qt1-f174.google.com with SMTP id p20so15068843qtq.5;
+        Mon, 11 Nov 2019 02:09:22 -0800 (PST)
+X-Gm-Message-State: APjAAAWMTElxLIn+TusbrWobNiXOjtpxQMS46Ez741GNIi710E9PfCEJ
+        U/6/TCNLB077W7zb1GM5toTYM3dBYCJyDVtd06o=
+X-Google-Smtp-Source: APXvYqwUFI9CNnIwrAVKasmsTd09tLHKshCq1NYJLSrtULcDmOA+h22x7/m2tzlDDqS3Yhkmt+6zqdhU/D75oBqf0Ro=
+X-Received: by 2002:aed:3e41:: with SMTP id m1mr16150881qtf.142.1573466961656;
+ Mon, 11 Nov 2019 02:09:21 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMRc=Meh1jdc562bTHEfodyud7B0dBM+Lti3ZaCBUaqOjDhaCQ@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20191029064834.23438-1-hch@lst.de> <20191029064834.23438-11-hch@lst.de>
+In-Reply-To: <20191029064834.23438-11-hch@lst.de>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Mon, 11 Nov 2019 11:09:05 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a2o4R+E2hTrHrmNy7K1ki3_98aWE5a-fjkQ_NWW=xd_gQ@mail.gmail.com>
+Message-ID: <CAK8P3a2o4R+E2hTrHrmNy7K1ki3_98aWE5a-fjkQ_NWW=xd_gQ@mail.gmail.com>
+Subject: Re: [PATCH 10/21] asm-generic: ioremap_uc should behave the same with
+ and without MMU
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Guo Ren <guoren@kernel.org>, Michal Simek <monstr@monstr.eu>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Guan Xuetao <gxt@pku.edu.cn>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        alpha <linux-alpha@vger.kernel.org>,
+        "open list:SYNOPSYS ARC ARCHITECTURE" 
+        <linux-snps-arc@lists.infradead.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
+        linux-ia64@vger.kernel.org,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        linux-mips@vger.kernel.org,
+        "moderated list:NIOS2 ARCHITECTURE" 
+        <nios2-dev@lists.rocketboards.org>, openrisc@lists.librecores.org,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linux-riscv@lists.infradead.org,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        linux-xtensa@linux-xtensa.org,
+        linux-mtd <linux-mtd@lists.infradead.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:WLrPbPJDqsNolBBa0EtV84o8X3QWGuIcje+jyjzvu8qxYvKalRW
+ vVo3TWozXagE9Gvkhv9RKhJCAXh4rrcVLnVGcy2T4hm5OBp58YkOEUFIh/Am/mvfM7WC+1g
+ 94Ejh/WA6YNMtjZhLH3lXLLLVeLx0FrPhlZupRdQqVfwuImvK9gIMd+COj25ZFAUArh4v9w
+ Wv1F7eDVgjndwTfa+DiwQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:3DPxP3/AzH8=:DPOxQ1enriSFjxUu68vquX
+ eGUcgshsAuMmTHkBY5dxmuUJPWWz6fubUKJoFZWeGiMRwxNYkQUHc74ubpDvEsEBOlQQ5kT8u
+ f/aCJbLJc1CN7aYnn/FNDsbkGVuMUEpJE2tQVGEUyLPelCunzAJzsnukVx350hKhiVoG36wBL
+ F3M/LNcc4vQE2KyZ7k7dfwsNgMUyYkUuiumKsP7EyaFU21YGtAQQjDL2ESuolSjkyTiGN5+jH
+ G25CY3eWC9gJz/qY2zMyJ1QW1Mh46wHFF5wt+/j3PQHeltjdtINqad1SZ7OHQ/sEJkb9fbOBt
+ 9yyHmhrgWHj/dN55PM0GPvDdfe/5WlR3RDW46+W5XuZrPXJyk7FCNGxmtYlpvaA7D+PD1OPVR
+ Ynfbi7O0CwVvlXzkvcjkRSEFFt4NYYcQy38A8NuxlRKVD/KL3uiCpxULhcPefsOtyWv4ecOSd
+ CapTeIfnKNX7x8k3nxIrClwuCl01JQ1dHjqOwtbJSkf/JdQq1Mg+QRs1FmCVzafhM1mOL43Ab
+ joYrEOzkOqPXLk9jXVvPuhAaoLoA3mP+DzFLVi1LF2iteAkmCqwdYNxlozO5bWCKFDECBEKvS
+ ECBSQGX4K++EgBVd3QVoBipRwQMCLSpwD8tGk/dAPNG1cp6T00k88oSatqHkbN20tZrzvPnwz
+ SyXdghQoLAHldOS9pIwizYXHqPmexdevUFWkAvVI1jPN1DybWWAQxUy6kVswrrVaFLUYpqWEp
+ xr7k3KMT4BWFHMXUTuqI6PqyLm2zQou5Quti0hyT/vEOzOmrKm9cTozfJuvWjcGZ7dT+Gohp9
+ hTPghZ5YdHuzcD0z2FaoD+G3QwPOi6fjkvhrW/e7iOJ/phyVUx2hqY3mfT1NmmBL7muZMzFXl
+ nZROTB/e9eIAWJvNN9og==
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Fri, 08 Nov 2019, Bartosz Golaszewski wrote:
+On Tue, Oct 29, 2019 at 7:49 AM Christoph Hellwig <hch@lst.de> wrote:
+>
+> Whatever reason there is for the existence of ioremap_uc, and the fact
+> that it returns NULL by default on architectures with an MMU applies
+> equally to nommu architectures, so don't provide different defaults.
 
-> pon., 4 lis 2019 o 10:22 Bartosz Golaszewski <brgl@bgdev.pl> napisał(a):
-> >
-> > pt., 1 lis 2019 o 16:39 Jacopo Mondi <jacopo@jmondi.org> napisał(a):
-> > >
-> > > Hello,
-> > >   as promised...
-> > >
-> > > On Fri, Nov 01, 2019 at 08:58:03AM +0000, Lee Jones wrote:
-> > > > On Thu, 24 Oct 2019, Jacopo Mondi wrote:
-> > > >
-> > > > > Hello,
-> > > > >
-> > > > > On Thu, Oct 24, 2019 at 07:47:26AM +0100, Lee Jones wrote:
-> > > > > > On Wed, 23 Oct 2019, Daniel Thompson wrote:
-> > > > > >
-> > > > > > > On Tue, Oct 22, 2019 at 11:29:54AM +0200, Bartosz Golaszewski wrote:
-> > > > > > > > wt., 22 paź 2019 o 10:36 Bartosz Golaszewski <brgl@bgdev.pl> napisał(a):
-> > > > > > > > >
-> > > > > > > > > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> > > > > > > > >
-> > > > > > > > > While working on my other series related to gpio-backlight[1] I noticed
-> > > > > > > > > that we could simplify the driver if we made the only user of platform
-> > > > > > > > > data use GPIO lookups and device properties. This series tries to do
-> > > > > > > > > that.
-> > > > > > > > >
-> > > > > > > > > First two patches contain minor fixes. Third patch makes the driver
-> > > > > > > > > explicitly drive the GPIO line. Fourth patch adds all necessary data
-> > > > > > > > > structures to ecovec24. Patch 5/9 unifies much of the code for both
-> > > > > > > > > pdata and non-pdata cases. Patches 6-7/9 remove unused platform data
-> > > > > > > > > fields. Last two patches contain additional improvements for the GPIO
-> > > > > > > > > backlight driver while we're already modifying it.
-> > > > > > > > >
-> > > > > > > > > I don't have access to this HW but hopefully this works. Only compile
-> > > > > > > > > tested.
-> > > > > > > > >
-> > > > > > > > > [1] https://lkml.org/lkml/2019/6/25/900
-> > > > > > > > >
-> > > > > > > > > v1 -> v2:
-> > > > > > > > > - rebased on top of v5.3-rc1 and adjusted to the recent changes from Andy
-> > > > > > > > > - added additional two patches with minor improvements
-> > > > > > > > >
-> > > > > > > > > v2 -> v3:
-> > > > > > > > > - in patch 7/7: used initializers to set values for pdata and dev local vars
-> > > > > > > > >
-> > > > > > > > > v3 -> v4:
-> > > > > > > > > - rebased on top of v5.4-rc1
-> > > > > > > > > - removed changes that are no longer relevant after commit ec665b756e6f
-> > > > > > > > >   ("backlight: gpio-backlight: Correct initial power state handling")
-> > > > > > > > > - added patch 7/7
-> > > > > > > > >
-> > > > > > > > > v4 -> v5:
-> > > > > > > > > - in patch 7/7: added a comment replacing the name of the function being
-> > > > > > > > >   pulled into probe()
-> > > > > > > > >
-> > > > > > > > > v5 -> v6:
-> > > > > > > > > - added a patch making the driver explicitly set the direction of the GPIO
-> > > > > > > > >   to output
-> > > > > > > > > - added a patch removing a redundant newline
-> > > > > > > > >
-> > > > > > > > > v6 -> v7:
-> > > > > > > > > - renamed the function calculating the new GPIO value for status update
-> > > > > > > > > - collected more tags
-> > > > > > > > >
-> > > > > > > > > Bartosz Golaszewski (9):
-> > > > > > > > >   backlight: gpio: remove unneeded include
-> > > > > > > > >   backlight: gpio: remove stray newline
-> > > > > > > > >   backlight: gpio: explicitly set the direction of the GPIO
-> > > > > > > > >   sh: ecovec24: add additional properties to the backlight device
-> > > > > > > > >   backlight: gpio: simplify the platform data handling
-> > > > > > > > >   sh: ecovec24: don't set unused fields in platform data
-> > > > > > > > >   backlight: gpio: remove unused fields from platform data
-> > > > > > > > >   backlight: gpio: use a helper variable for &pdev->dev
-> > > > > > > > >   backlight: gpio: pull gpio_backlight_initial_power_state() into probe
-> > > > > > > > >
-> > > > > > > > >  arch/sh/boards/mach-ecovec24/setup.c         |  33 +++--
-> > > > > > > > >  drivers/video/backlight/gpio_backlight.c     | 128 +++++++------------
-> > > > > > > > >  include/linux/platform_data/gpio_backlight.h |   3 -
-> > > > > > > > >  3 files changed, 69 insertions(+), 95 deletions(-)
-> > > > > > > > >
-> > > > > > > > >
-> > > > > > > >
-> > > > > > > > Lee, Daniel, Jingoo,
-> > > > > > > >
-> > > > > > > > Jacopo is travelling until November 1st and won't be able to test this
-> > > > > > > > again before this date. Do you think you can pick it up and in case
-> > > > > > > > anything's broken on SH, we can fix it after v5.5-rc1, so that it
-> > > > > > > > doesn't miss another merge window?
-> > > > > >
-> > > > > > November 1st (-rc6) will be fine.
-> > > > > >
-> > > > > > I'd rather apply it late-tested than early-non-tested.
-> > > > > >
-> > > > > > Hopefully Jacopo can prioritise testing this on Thursday or Friday,
-> > > > > > since Monday will be -rc7 which is really cutting it fine.
-> > > > >
-> > > > > I'll do my best, I'll get home Friday late afternoon :)
-> > > >
-> > > > Welcome home!
-> > > >
-> > > > Just a little reminder in your inbox. TIA. :)
-> > >
-> > > For the ecovec part:
-> > > Tested-by: Jacopo Mondi <jacopo+renesas@jmondi.org>
-> > >
-> >
-> > Thanks Jacopo!
-> >
-> > Lee: I hope it's not too late to get it picked up for v5.5?
-> >
-> 
-> Hi, just a gentle ping for this series, because I'm afraid it will
-> miss yet another merge window.
+Makes sense.
 
-I have it marked to handle it, along with 10's of others.
+> In practice the difference is meaningless as the only portable driver
+> that uses ioremap_uc is atyfb which probably doesn't show up on nommu
+> devices.
 
--- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+
+
+> +/*
+> + * ioremap_uc is special in that we do require an explicit architecture
+> + * implementation.  In general you do now want to use this function in a
+> + * driver and use plain ioremap, which is uncached by default.  Similarly
+> + * architectures should not implement it unless they have a very good
+> + * reason.
+> + */
+> +#ifndef ioremap_uc
+> +#define ioremap_uc ioremap_uc
+> +static inline void __iomem *ioremap_uc(phys_addr_t offset, size_t size)
+> +{
+> +       return NULL;
+> +}
+> +#endif
+
+Maybe we could move the definition into the atyfb driver itself?
+
+As I understand it, the difference between ioremap()/ioremap_nocache()
+and ioremap_uc() only exists on pre-PAT x86-32 systems (i.e. 486, P5,
+Ppro, PII, K6, VIA C3), while on more modern systems (all non-x86,
+PentiumIII, Athlon, VIA C7)  those three are meant to be synonyms
+anyway.
+
+      Arnd
