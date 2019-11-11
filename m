@@ -2,99 +2,98 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B0446F724E
-	for <lists+linux-sh@lfdr.de>; Mon, 11 Nov 2019 11:36:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BBB74F734E
+	for <lists+linux-sh@lfdr.de>; Mon, 11 Nov 2019 12:41:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726939AbfKKKgo (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 11 Nov 2019 05:36:44 -0500
-Received: from mout.kundenserver.de ([212.227.126.133]:38207 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726887AbfKKKgn (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 11 Nov 2019 05:36:43 -0500
-Received: from mail-qv1-f46.google.com ([209.85.219.46]) by
- mrelayeu.kundenserver.de (mreue011 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1MqbI0-1i8CQi2iKu-00mc2H; Mon, 11 Nov 2019 11:36:40 +0100
-Received: by mail-qv1-f46.google.com with SMTP id f12so4660079qvu.3;
-        Mon, 11 Nov 2019 02:36:39 -0800 (PST)
-X-Gm-Message-State: APjAAAUT3Qdeiri2nf/a9hZxYA+s9YglrpYjjU1hn5ZWkyA7i5p8Vrcc
-        QA30I7QFw7jV+rFcmPGwSBM33hztJ/+dGvx7o1E=
-X-Google-Smtp-Source: APXvYqwG9UjDI7BT4/zArLXJROi41Jfl0ozvIqGD8Z6sQp9Psd5jWuuWMeGtnWBnULPRq767xF7AmE4x/PyrFGraS9U=
-X-Received: by 2002:a0c:a9cc:: with SMTP id c12mr4580319qvb.222.1573468598676;
- Mon, 11 Nov 2019 02:36:38 -0800 (PST)
+        id S1726847AbfKKLln (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 11 Nov 2019 06:41:43 -0500
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:52578 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726877AbfKKLlm (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 11 Nov 2019 06:41:42 -0500
+Received: by mail-wm1-f68.google.com with SMTP id l1so1578547wme.2
+        for <linux-sh@vger.kernel.org>; Mon, 11 Nov 2019 03:41:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=QrjCfBQcJwKIUUDAjSOiaKTYkFf5ndTaGfgn7ED2v/8=;
+        b=xR/rfmwJkeoO0nfTViXcVfHVxtjQPIw+/g/mwtDyiWl0xvZzkju6l8kehaXwzlh2hE
+         N1caFwcFkMVVjG7mM4hS1Blyhb6dQzMq3+L4kUjJL7APe9OhT789Q95imMdQbJBfa0pQ
+         vSqM98PXFHwYP30Pq63EGCZNqrne1AYiDuqsb+LDO5ixEeUtq3iWulMX0I0BfR1te1hR
+         Am4LMzfA9QgqbhrIfmXKSTmNE5mYxbuQVgCl78YPyliG86quWG85iMrVE6FPq8mHZZWB
+         sux1xYxifK6ex8Q9BAODwMIaAlOmKV8P9Sc/tZOdcAfUTD3EagSv9YO0fIxUmlGiDJfy
+         8isA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=QrjCfBQcJwKIUUDAjSOiaKTYkFf5ndTaGfgn7ED2v/8=;
+        b=XcAO5R4ESl+KrRmbzCaTrTVUMVN/xZo6QqewSBayJp/T/Jjsm6tG4zt13e9rN8mdZj
+         qtKktlMQLT7G/RNx+2ukK8tUwwHMGQZDa1/co34fasGGsp9xA5EiJsV+wVga0nO45WTO
+         b1208XV7/ZHj2V8Yry3qiua4zcxNOH/5nYitsl9biGQL+9PC43o+M8w07THRlyBE4SKr
+         dmLZdmNfi7LIT4tSnvV1dwakY7quWzoKsh5e/0ScRJpiqt3+JXeBqhI4wa8mGY+AmntM
+         FoGLct1khRGGD0OzgGknIu/TY/K7nCgpBml6ugio8Ob0pKBSLSqej+aEL+Cm5DXJKTcz
+         7DOg==
+X-Gm-Message-State: APjAAAU6YKCqF3HQ8g5PbTXzX0CtXWqbIPuX609TksONJH1Z1B9cqPV5
+        YVvxTLZ69jckTt4Q0EY3rH77iQ==
+X-Google-Smtp-Source: APXvYqzVlKEucZs/sDv+ll++yan1K7OhNmoAUm0WJEXWNZIj5Q9haqGMCwNCLqw05ElIJj46eF9uUw==
+X-Received: by 2002:a1c:e915:: with SMTP id q21mr9278569wmc.164.1573472498674;
+        Mon, 11 Nov 2019 03:41:38 -0800 (PST)
+Received: from dell ([95.147.198.88])
+        by smtp.gmail.com with ESMTPSA id g8sm15865768wmk.23.2019.11.11.03.41.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Nov 2019 03:41:38 -0800 (PST)
+Date:   Mon, 11 Nov 2019 11:41:30 +0000
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Bartosz Golaszewski <brgl@bgdev.pl>
+Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jacopo Mondi <jacopo@jmondi.org>, linux-sh@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Subject: Re: [PATCH v7 0/9] backlight: gpio: simplify the driver
+Message-ID: <20191111114130.GL3218@dell>
+References: <20191022083630.28175-1-brgl@bgdev.pl>
 MIME-Version: 1.0
-References: <20191029064834.23438-1-hch@lst.de> <20191029064834.23438-4-hch@lst.de>
-In-Reply-To: <20191029064834.23438-4-hch@lst.de>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Mon, 11 Nov 2019 11:36:22 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a3k2KRyhCy4OWJkToNBiw_mw0e_A=Ta6UANMMF3EXnhmA@mail.gmail.com>
-Message-ID: <CAK8P3a3k2KRyhCy4OWJkToNBiw_mw0e_A=Ta6UANMMF3EXnhmA@mail.gmail.com>
-Subject: Re: [PATCH 03/21] ia64: rename ioremap_nocache to ioremap_uc
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Guo Ren <guoren@kernel.org>, Michal Simek <monstr@monstr.eu>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        Guan Xuetao <gxt@pku.edu.cn>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        alpha <linux-alpha@vger.kernel.org>,
-        "open list:SYNOPSYS ARC ARCHITECTURE" 
-        <linux-snps-arc@lists.infradead.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
-        linux-ia64@vger.kernel.org,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        linux-mips@vger.kernel.org,
-        "moderated list:NIOS2 ARCHITECTURE" 
-        <nios2-dev@lists.rocketboards.org>, openrisc@lists.librecores.org,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linux-riscv@lists.infradead.org,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        linux-xtensa@linux-xtensa.org,
-        linux-mtd <linux-mtd@lists.infradead.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:1JhgznTD+nxQakSYexEK5Pk7b21gJFc2WwU/VhlwbME8N3jGV/+
- TpZ37rg3qW3B4NpO67un+1fSQwj7nJ9WZxTx4tTw9EKEbeJLwQT1TG9P/3xrMgCSPaMoGDW
- 4OmMhZWar6tNBwoASHsSKmwJI7CPx497+h8ii4N2nIjzGmy0KJ0TV9vHBlIGb31rRCksOx9
- aTZ8Ir7FbCAiPNKD11llg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Ine2h7iyM1A=:qlrnOzki59DM0rGyHbF8c+
- 4c41xr+Pjp3dv6qx5neQvKwVeJxerBsQ4cZwqUg3qKbbDEFa2ZPC0yEa1cbl7oJWJAwRcsdz6
- 3MUPWCBNg96i3H6LWIf2LY64tTEzAwU6ta+wRDArNRsNPjb+cOcAHdO9J5cipKKooXSwfqh8z
- hdrlf+Webj14QrpswR0AwC+8hKtzWd3i0xF+aE+nK/v+b1TtFw3PWqR0yiKat86EI4zUEaq5S
- blnI1BhSm9FhHUQnRQYPCyh9wiNRLDsep8swNKAMT9kFtEYbcXHeA956UAKOL55rHOLQlxqd3
- lAXOyepCNVYPFNUyMmMo6uXZePmp/F+60qeAs/Tm928lA24mSrrR1jN4Nq8m3JqUpjKhlZFaU
- fvOcUxdsAUUjwEiE4xSEhPoEtQb+DOGjhCuWsoZrvcZ1CjJd2pnmp6FLV3FPDrayCN2FUB0+D
- dmLJySIAVE94FRl52KFtqFt9/TBA0a2L4yS7XNw+74hbWZJzUFOsB1zH2ZnS90kPa5a1S22XM
- mkuCB+Ze2kLOtqiQGKJqc0RlyWnS+sMOkWAdvTX+Rk1hGH5fKf0QbR6Le5fYNxtQWuM0JMh+f
- By832HCI9AAhEwsUgCfxQCimkThZsEgsisrp/yb11zuIdHEeLX16avpzV0hyWrAt6yeKP7XrG
- yjSzxrZhvOP87R/igp1n2UpO7GVNOVggicvQugamDUOVh3NDT+rQXzKcV4LH3yIkPIKuSINHm
- GaoL/XXgPWkF56Qx6lsBsgXfh3dciBTkAIu4nPZV5+fqR9kZ2QN3jAM4eo2Ub3HntQ9Kbyv/a
- ZDdBgC236xAnxPORQfWGJIrWohqntO0L5vDv2H4PTweI1FuenAFOsrx0PeMpr05WJvpzkeNBM
- RntzRq/h+i22XaPj8kSJZuypgHi3M6gwdd2H+7uFpgi5116lXuTPt2gZhmC4RNHOAUMyt7F6w
- EKVOtQp2bdxVDZZvAy6BtKT5EprzcuH1RFRAxRb4YPU7spR+xJPQCgbGgWu5JDdYB+aa/+plM
- NJyOttaoY33T+C7Iqkgauu6DDMOdPDodJFayhYpF7V4oCFsaUB1Qh4zXbOtQenYMLA==
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191022083630.28175-1-brgl@bgdev.pl>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Tue, Oct 29, 2019 at 7:48 AM Christoph Hellwig <hch@lst.de> wrote:
->
-> On ia64 ioremap_nocache fails if attributes don't match.  Not other
-> architectures does this, and we plan to get rid of ioremap_nocache.
-> So get rid of the special semantics and define ioremap_nocache in
-> terms of ioremap as no portable driver could rely on the behavior
-> anyway.
->
-> However x86 implements ioremap_uc in a similar way as the ia64
-> version of ioremap_nocache, in that it ignores the firmware tables.
-> Switch ia64 to override ioremap_uc instead.
->
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+On Tue, 22 Oct 2019, Bartosz Golaszewski wrote:
 
-Good idea,
+> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+> 
+> While working on my other series related to gpio-backlight[1] I noticed
+> that we could simplify the driver if we made the only user of platform
+> data use GPIO lookups and device properties. This series tries to do
+> that.
+> 
+> First two patches contain minor fixes. Third patch makes the driver
+> explicitly drive the GPIO line. Fourth patch adds all necessary data
+> structures to ecovec24. Patch 5/9 unifies much of the code for both
+> pdata and non-pdata cases. Patches 6-7/9 remove unused platform data
+> fields. Last two patches contain additional improvements for the GPIO
+> backlight driver while we're already modifying it.
 
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+All applied, thanks.
+
+-- 
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog
