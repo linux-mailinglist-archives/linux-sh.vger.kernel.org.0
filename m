@@ -2,34 +2,39 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D69D6FCAB8
-	for <lists+linux-sh@lfdr.de>; Thu, 14 Nov 2019 17:26:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9781CFCD19
+	for <lists+linux-sh@lfdr.de>; Thu, 14 Nov 2019 19:19:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726444AbfKNQ0P (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 14 Nov 2019 11:26:15 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55698 "EHLO mail.kernel.org"
+        id S1727593AbfKNSS2 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 14 Nov 2019 13:18:28 -0500
+Received: from mail.kernel.org ([198.145.29.99]:35744 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726251AbfKNQ0P (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Thu, 14 Nov 2019 11:26:15 -0500
+        id S1727573AbfKNSS2 (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Thu, 14 Nov 2019 13:18:28 -0500
 Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AD35720715;
-        Thu, 14 Nov 2019 16:26:13 +0000 (UTC)
-Date:   Thu, 14 Nov 2019 11:26:12 -0500
+        by mail.kernel.org (Postfix) with ESMTPSA id 9689820874;
+        Thu, 14 Nov 2019 18:18:27 +0000 (UTC)
+Received: from rostedt by gandalf.local.home with local (Exim 4.92.2)
+        (envelope-from <rostedt@goodmis.org>)
+        id 1iVJhK-00019F-RI; Thu, 14 Nov 2019 13:18:26 -0500
+Message-Id: <20191114181826.726602646@goodmis.org>
+User-Agent: quilt/0.65
+Date:   Thu, 14 Nov 2019 13:17:57 -0500
 From:   Steven Rostedt <rostedt@goodmis.org>
-To:     LKML <linux-kernel@vger.kernel.org>
-Cc:     linux-sh@vger.kernel.org,
+To:     linux-kernel@vger.kernel.org
+Cc:     Ingo Molnar <mingo@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-sh@vger.kernel.org,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>,
         Sami Tolvanen <samitolvanen@google.com>
-Subject: [PATCH v2] fgraph: Fix function type mismatches of
- ftrace_graph_return using ftrace_stub
-Message-ID: <20191114112612.3937f281@gandalf.local.home>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Subject: [for-next][PATCH 23/33] fgraph: Fix function type mismatches of ftrace_graph_return using
+ ftrace_stub
+References: <20191114181734.067922168@goodmis.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=ISO-8859-15
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
@@ -52,18 +57,12 @@ prototype of ftrace_graph_return, and make the compiler checks all happy!
 
 Link: http://lkml.kernel.org/r/20191015090055.789a0aed@gandalf.local.home
 
+Cc: linux-sh@vger.kernel.org
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc:  Rich Felker <dalias@libc.org>
 Reported-by: Sami Tolvanen <samitolvanen@google.com>
 Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
 ---
-
-Changes from v1:
-
-  When I ran this through the ktest crosstests.conf, it failed on
-  superh, as superh uses the vmlinux.lds file from the kernel for
-  its compression, it requires that it has a ftrace_stub() function
-  defined there too.
-
-
  arch/sh/boot/compressed/misc.c    |  5 +++++
  include/asm-generic/vmlinux.lds.h | 17 ++++++++++++++---
  kernel/trace/fgraph.c             | 11 ++++++++---
@@ -153,5 +152,6 @@ index 7950a0356042..fa3ce10d0405 100644
  	__ftrace_graph_entry = ftrace_graph_entry_stub;
  	ftrace_shutdown(&graph_ops, FTRACE_STOP_FUNC_RET);
 -- 
-2.20.1
+2.23.0
+
 
