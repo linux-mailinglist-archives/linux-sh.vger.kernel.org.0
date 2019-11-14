@@ -2,178 +2,156 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 96719FC7BC
-	for <lists+linux-sh@lfdr.de>; Thu, 14 Nov 2019 14:33:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D69D6FCAB8
+	for <lists+linux-sh@lfdr.de>; Thu, 14 Nov 2019 17:26:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727510AbfKNNdm (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 14 Nov 2019 08:33:42 -0500
-Received: from mout-p-201.mailbox.org ([80.241.56.171]:21264 "EHLO
-        mout-p-201.mailbox.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726473AbfKNNdl (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 14 Nov 2019 08:33:41 -0500
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:105:465:1:1:0])
-        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+        id S1726444AbfKNQ0P (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 14 Nov 2019 11:26:15 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55698 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726251AbfKNQ0P (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Thu, 14 Nov 2019 11:26:15 -0500
+Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mout-p-201.mailbox.org (Postfix) with ESMTPS id 47DMrH5rJDzQl9x;
-        Thu, 14 Nov 2019 14:33:35 +0100 (CET)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp1.mailbox.org ([80.241.60.240])
-        by spamfilter03.heinlein-hosting.de (spamfilter03.heinlein-hosting.de [80.241.56.117]) (amavisd-new, port 10030)
-        with ESMTP id Wtrcg9lX2PUE; Thu, 14 Nov 2019 14:33:30 +0100 (CET)
-Date:   Fri, 15 Nov 2019 00:33:00 +1100
-From:   Aleksa Sarai <cyphar@cyphar.com>
-To:     Al Viro <viro@zeniv.linux.org.uk>
-Cc:     Jeff Layton <jlayton@kernel.org>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Christian Brauner <christian.brauner@ubuntu.com>,
-        David Drysdale <drysdale@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Jann Horn <jannh@google.com>, Tycho Andersen <tycho@tycho.ws>,
-        Chanho Min <chanho.min@lge.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Christian Brauner <christian@brauner.io>,
-        Aleksa Sarai <asarai@suse.de>,
-        containers@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
-        linux-api@vger.kernel.org, libc-alpha@sourceware.org,
-        linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v15 3/9] namei: LOOKUP_NO_XDEV: block mountpoint crossing
-Message-ID: <20191114133300.soxnzmufwbt2ddid@yavin.dot.cyphar.com>
-References: <20191105090553.6350-1-cyphar@cyphar.com>
- <20191105090553.6350-4-cyphar@cyphar.com>
- <20191113013630.GZ26530@ZenIV.linux.org.uk>
- <20191114044945.ldedzjrb4s7i7irr@yavin.dot.cyphar.com>
- <20191114054348.GH26530@ZenIV.linux.org.uk>
+        by mail.kernel.org (Postfix) with ESMTPSA id AD35720715;
+        Thu, 14 Nov 2019 16:26:13 +0000 (UTC)
+Date:   Thu, 14 Nov 2019 11:26:12 -0500
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     LKML <linux-kernel@vger.kernel.org>
+Cc:     linux-sh@vger.kernel.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Sami Tolvanen <samitolvanen@google.com>
+Subject: [PATCH v2] fgraph: Fix function type mismatches of
+ ftrace_graph_return using ftrace_stub
+Message-ID: <20191114112612.3937f281@gandalf.local.home>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="zoh3k636biknnjmo"
-Content-Disposition: inline
-In-Reply-To: <20191114054348.GH26530@ZenIV.linux.org.uk>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
+From: "Steven Rostedt (VMware)" <rostedt@goodmis.org>
 
---zoh3k636biknnjmo
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The C compiler is allowing more checks to make sure that function pointers
+are assigned to the correct prototype function. Unfortunately, the function
+graph tracer uses a special name with its assigned ftrace_graph_return
+function pointer that maps to a stub function used by the function tracer
+(ftrace_stub). The ftrace_graph_return variable is compared to the
+ftrace_stub in some archs to know if the function graph tracer is enabled or
+not. This means we can not just simply create a new function stub that
+compares it without modifying all the archs.
 
-On 2019-11-14, Al Viro <viro@zeniv.linux.org.uk> wrote:
-> On Thu, Nov 14, 2019 at 03:49:45PM +1100, Aleksa Sarai wrote:
-> > On 2019-11-13, Al Viro <viro@zeniv.linux.org.uk> wrote:
-> > > On Tue, Nov 05, 2019 at 08:05:47PM +1100, Aleksa Sarai wrote:
-> > >=20
-> > > > @@ -862,6 +870,8 @@ static int nd_jump_root(struct nameidata *nd)
-> > > >  void nd_jump_link(struct path *path)
-> > > >  {
-> > > >  	struct nameidata *nd =3D current->nameidata;
-> > > > +
-> > > > +	nd->last_magiclink.same_mnt =3D (nd->path.mnt =3D=3D path->mnt);
-> > > >  	path_put(&nd->path);
-> > > > =20
-> > > >  	nd->path =3D *path;
-> > > > @@ -1082,6 +1092,10 @@ const char *get_link(struct nameidata *nd)
-> > > >  		if (nd->flags & LOOKUP_MAGICLINK_JUMPED) {
-> > > >  			if (unlikely(nd->flags & LOOKUP_NO_MAGICLINKS))
-> > > >  				return ERR_PTR(-ELOOP);
-> > > > +			if (unlikely(nd->flags & LOOKUP_NO_XDEV)) {
-> > > > +				if (!nd->last_magiclink.same_mnt)
-> > > > +					return ERR_PTR(-EXDEV);
-> > > > +			}
-> > > >  		}
-> > >=20
-> > > Ugh...  Wouldn't it be better to take that logics (some equivalent th=
-ereof)
-> > > into nd_jump_link()?  Or just have nd_jump_link() return an error...
-> >=20
-> > This could be done, but the reason for stashing it away in
-> > last_magiclink is because of the future magic-link re-opening patches
-> > which can't be implemented like that without putting the open_flags
-> > inside nameidata (which was decided to be too ugly a while ago).
-> >=20
-> > My point being that I could implement it this way for this series, but
-> > I'd have to implement something like last_magiclink when I end up
-> > re-posting the magic-link stuff in a few weeks.
-> >=20
-> > Looking at all the nd_jump_link() users, the other option is to just
-> > disallow magic-link crossings entirely for LOOKUP_NO_XDEV. The only
-> > thing allowing them permits is to resolve file descriptors that are
-> > pointing to the same procfs mount -- and it's unclear to me how useful
-> > that really is (apparmorfs and nsfs will always give -EXDEV because
-> > aafs_mnt and nsfs_mnt are internal kernel vfsmounts).
->=20
-> I would rather keep the entire if (nd->flags & LOOKUP_MAGICLINK_JUMPED)
-> out of the get_link().  If you want to generate some error if
-> nd_jump_link() has been called, just do it right there.  The fewer
-> pieces of state need to be carried around, the better...
+Instead, have the linker script create a function_graph_stub that maps to
+ftrace_stub, and this way we can define the prototype for it to match the
+prototype of ftrace_graph_return, and make the compiler checks all happy!
 
-Sure, I can make nd_jump_link() give -ELOOP and drop the current need
-for LOOKUP_MAGICLINK_JUMPED -- if necessary we can re-add it for the
-magic-link reopening patches.
+Link: http://lkml.kernel.org/r/20191015090055.789a0aed@gandalf.local.home
 
-> And as for opening them...  Why would you need full open_flags in there?
-> Details, please...
+Reported-by: Sami Tolvanen <samitolvanen@google.com>
+Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+---
 
-I was referring to [1] which has been dropped from this series. I
-misspoke -- you don't need the full open_flags, you just need acc_mode
-in nameidata -- but from memory you (understandably) weren't in favour
-of that either because it further muddled the open semantics with namei.
+Changes from v1:
 
-So the solution I went with was to stash away the i_mode of the
-magiclink in nd->last_magiclink.mode (though to avoid a race which Jann
-found, you actually need to recalculate it when you call nd_jump_link()
-but that's a different topic) and then check it in trailing_magiclink().
+  When I ran this through the ktest crosstests.conf, it failed on
+  superh, as superh uses the vmlinux.lds file from the kernel for
+  its compression, it requires that it has a ftrace_stub() function
+  defined there too.
 
-However, I've since figured out that we need to restrict things like
-bind-mounts and truncate() because they can be used to get around the
-restrictions. I dropped that patch from this series so that I could work
-on implementing the restrictions for the other relevant VFS syscalls
-separately from openat2 (upgrade_mask will be re-added to open_how with
-those patches).
 
-My point was that AFAICS we will either have to have nd->acc_mode (or
-something similar) or have nd->last_magiclink in order to implement the
-magic-link reopening hardening.
+ arch/sh/boot/compressed/misc.c    |  5 +++++
+ include/asm-generic/vmlinux.lds.h | 17 ++++++++++++++---
+ kernel/trace/fgraph.c             | 11 ++++++++---
+ 3 files changed, 27 insertions(+), 6 deletions(-)
 
-[1]: https://lore.kernel.org/lkml/20190930183316.10190-2-cyphar@cyphar.com/
+diff --git a/arch/sh/boot/compressed/misc.c b/arch/sh/boot/compressed/misc.c
+index c15cac9251b9..e69ec12cbbe6 100644
+--- a/arch/sh/boot/compressed/misc.c
++++ b/arch/sh/boot/compressed/misc.c
+@@ -111,6 +111,11 @@ void __stack_chk_fail(void)
+ 	error("stack-protector: Kernel stack is corrupted\n");
+ }
+ 
++/* Needed because vmlinux.lds.h references this */
++void ftrace_stub(void)
++{
++}
++
+ #ifdef CONFIG_SUPERH64
+ #define stackalign	8
+ #else
+diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+index dae64600ccbf..0f358be551cd 100644
+--- a/include/asm-generic/vmlinux.lds.h
++++ b/include/asm-generic/vmlinux.lds.h
+@@ -111,18 +111,29 @@
+ 
+ #ifdef CONFIG_FTRACE_MCOUNT_RECORD
+ #ifdef CC_USING_PATCHABLE_FUNCTION_ENTRY
++/*
++ * Need to also make ftrace_graph_stub point to ftrace_stub
++ * so that the same stub location may have different protocols
++ * and not mess up with C verifiers.
++ */
+ #define MCOUNT_REC()	. = ALIGN(8);				\
+ 			__start_mcount_loc = .;			\
+ 			KEEP(*(__patchable_function_entries))	\
+-			__stop_mcount_loc = .;
++			__stop_mcount_loc = .;			\
++			ftrace_graph_stub = ftrace_stub;
+ #else
+ #define MCOUNT_REC()	. = ALIGN(8);				\
+ 			__start_mcount_loc = .;			\
+ 			KEEP(*(__mcount_loc))			\
+-			__stop_mcount_loc = .;
++			__stop_mcount_loc = .;			\
++			ftrace_graph_stub = ftrace_stub;
+ #endif
+ #else
+-#define MCOUNT_REC()
++# ifdef CONFIG_FUNCTION_TRACER
++#  define MCOUNT_REC()	ftrace_graph_stub = ftrace_stub;
++# else
++#  define MCOUNT_REC()
++# endif
+ #endif
+ 
+ #ifdef CONFIG_TRACE_BRANCH_PROFILING
+diff --git a/kernel/trace/fgraph.c b/kernel/trace/fgraph.c
+index 7950a0356042..fa3ce10d0405 100644
+--- a/kernel/trace/fgraph.c
++++ b/kernel/trace/fgraph.c
+@@ -332,9 +332,14 @@ int ftrace_graph_entry_stub(struct ftrace_graph_ent *trace)
+ 	return 0;
+ }
+ 
++/*
++ * Simply points to ftrace_stub, but with the proper protocol.
++ * Defined by the linker script in linux/vmlinux.lds.h
++ */
++extern void ftrace_graph_stub(struct ftrace_graph_ret *);
++
+ /* The callbacks that hook a function */
+-trace_func_graph_ret_t ftrace_graph_return =
+-			(trace_func_graph_ret_t)ftrace_stub;
++trace_func_graph_ret_t ftrace_graph_return = ftrace_graph_stub;
+ trace_func_graph_ent_t ftrace_graph_entry = ftrace_graph_entry_stub;
+ static trace_func_graph_ent_t __ftrace_graph_entry = ftrace_graph_entry_stub;
+ 
+@@ -614,7 +619,7 @@ void unregister_ftrace_graph(struct fgraph_ops *gops)
+ 		goto out;
+ 
+ 	ftrace_graph_active--;
+-	ftrace_graph_return = (trace_func_graph_ret_t)ftrace_stub;
++	ftrace_graph_return = ftrace_graph_stub;
+ 	ftrace_graph_entry = ftrace_graph_entry_stub;
+ 	__ftrace_graph_entry = ftrace_graph_entry_stub;
+ 	ftrace_shutdown(&graph_ops, FTRACE_STOP_FUNC_RET);
+-- 
+2.20.1
 
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
-
---zoh3k636biknnjmo
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXc1XiQAKCRCdlLljIbnQ
-EgEVAQDde9bpKjJAbLEIt4D/9cw3B8CHqEBeW8SnIT4PqQNQUQD/TtE4FY5p3N1d
-gPZFRde/N3ihwtWscDvPXctFNxykJAQ=
-=TSKH
------END PGP SIGNATURE-----
-
---zoh3k636biknnjmo--
