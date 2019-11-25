@@ -2,47 +2,70 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 178C3108430
-	for <lists+linux-sh@lfdr.de>; Sun, 24 Nov 2019 17:25:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 641661087DE
+	for <lists+linux-sh@lfdr.de>; Mon, 25 Nov 2019 05:27:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726760AbfKXQZC (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sun, 24 Nov 2019 11:25:02 -0500
-Received: from bombadil.infradead.org ([198.137.202.133]:56952 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726752AbfKXQZC (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sun, 24 Nov 2019 11:25:02 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:References:Cc:To:From:
-        Subject:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=lEjoxWNG4GP3F7qPycSi9+5U4/aPjTVHFyvcqq6SznI=; b=mD9+QwO27OzdnzGzIJ5kAYRBG
-        93b5yfRQV3yvZ3O0eVPLJtC/x4chCCNrIdLrjfNE45v5/WFtWqynKMmcXke7e8T//idZ7WI7jmbxV
-        S6HmYnPhWM6UDei5nGSl5BXKxE2I7Th27jTNqWlulE2WE9zNnbG2aM/tPdD9gau+HNy+7nXN0JmLm
-        /VSIczBAqAaEo2vSQNpZb3783KBXP0or1PRnFslOooXEFkBZXJQYzZaZlYT7t4Ft4kZX7avdrnive
-        k/l6xHAHJvan2movNuARFbmfVukQk5idgjWZ1dfyN+RXC5VPIC6Z4zMTQDl5Fz/nWnKgfRGxWfP1R
-        wxUdsJEgA==;
-Received: from [2601:1c0:6280:3f0::5a22]
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1iYuh2-0001uu-Jj; Sun, 24 Nov 2019 16:25:00 +0000
-Subject: Re: [PATCH] arch/sh/: fix NUMA build errors
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>
-References: <20d33517-6df0-9104-fc0a-7f621f87192e@infradead.org>
- <CAMuHMdU0Vx1E9V+h8XYTyAJitPT42NdGvgzLAfG-=1BVZd-rbA@mail.gmail.com>
- <f45f983d-8ff1-a800-2706-d71413ae1824@infradead.org>
-Message-ID: <d6eac4c0-a44b-6209-42a7-8eb535e6f437@infradead.org>
-Date:   Sun, 24 Nov 2019 08:24:58 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+        id S1726998AbfKYE1i (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sun, 24 Nov 2019 23:27:38 -0500
+Received: from foss.arm.com ([217.140.110.172]:44392 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726990AbfKYE1h (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Sun, 24 Nov 2019 23:27:37 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 948E431B;
+        Sun, 24 Nov 2019 20:27:36 -0800 (PST)
+Received: from [192.168.0.10] (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 03E013F6C4;
+        Sun, 24 Nov 2019 20:27:21 -0800 (PST)
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH V10] mm/debug: Add tests validating architecture page
+ table helpers
+To:     linux-mm@kvack.org
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Mike Rapoport <rppt@linux.vnet.ibm.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Michal Hocko <mhocko@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Mark Brown <broonie@kernel.org>,
+        Steven Price <Steven.Price@arm.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Kees Cook <keescook@chromium.org>,
+        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+        Matthew Wilcox <willy@infradead.org>,
+        Sri Krishna chowdary <schowdary@nvidia.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        James Hogan <jhogan@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Ingo Molnar <mingo@kernel.org>,
+        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+References: <1574227906-20550-1-git-send-email-anshuman.khandual@arm.com>
+Message-ID: <d20b95b2-369c-bcb8-3bf0-f7ce32d0fb12@arm.com>
+Date:   Mon, 25 Nov 2019 09:58:06 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-In-Reply-To: <f45f983d-8ff1-a800-2706-d71413ae1824@infradead.org>
+In-Reply-To: <1574227906-20550-1-git-send-email-anshuman.khandual@arm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -51,63 +74,109 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 11/19/19 1:12 PM, Randy Dunlap wrote:
-> On 11/18/19 11:38 PM, Geert Uytterhoeven wrote:
->> Hi Randy,
->>
->> On Tue, Nov 19, 2019 at 1:55 AM Randy Dunlap <rdunlap@infradead.org> wrote:
->>> From: Randy Dunlap <rdunlap@infradead.org>
->>> Fix SUPERH builds that select SYS_SUPPORTS_NUMA but do not select
->>> SYS_SUPPORTS_SMP and SMP.
->>>
->>> kernel/sched/topology.c is only built for CONFIG_SMP and then the NUMA
->>> code + data inside topology.c is only built when CONFIG_NUMA is
->>> set/enabled, so these arch/sh/ configs need to select SMP and
->>> SYS_SUPPORTS_SMP to build the NUMA support.
->>>
->>> Fixes this build error in 3 different SUPERH configs:
->>>
->>> mm/page_alloc.o: In function `get_page_from_freelist':
->>> page_alloc.c:(.text+0x2ca8): undefined reference to `node_reclaim_distance'
->>>
->>> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
->>> Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
->>> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
->>> Cc: Rich Felker <dalias@libc.org>
->>> Cc: linux-sh@vger.kernel.org
->>> ---
->>> or maybe these should be fixed in the defconfig files?
->>>
->>> or alternatively, does it make any sense to support NUMA without SMP?
->>
->> I think it does.  From arch/sh/mm/Kconfig config NUMA help:
->>
->>         Some SH systems have many various memories scattered around
->>         the address space, each with varying latencies. This enables
->>         support for these blocks by binding them to nodes and allowing
->>         memory policies to be used for prioritizing and controlling
->>         allocation behaviour.
+On 11/20/2019 11:01 AM, Anshuman Khandual wrote:
+> This adds tests which will validate architecture page table helpers and
+> other accessors in their compliance with expected generic MM semantics.
+> This will help various architectures in validating changes to existing
+> page table helpers or addition of new ones.
 > 
-> Yes, I saw that and suspected it also.
+> This test covers basic page table entry transformations including but not
+> limited to old, young, dirty, clean, write, write protect etc at various
+> level along with populating intermediate entries with next page table page
+> and validating them.
 > 
-> I was (and still am) hoping that a SuperH maintainer comments on
-> this and on how they are currently building kernels for these
-> failing configs.  Maybe they have some patches that aren't in-tree yet?
+> Test page table pages are allocated from system memory with required size
+> and alignments. The mapped pfns at page table levels are derived from a
+> real pfn representing a valid kernel text symbol. This test gets called
+> right after page_alloc_init_late().
 > 
-
-Yoshinori-san,
-Can you share with us how you build kernels for SUPERH configs that set
-CONFIG_NUMA but do not set CONFIG_SMP?  Do you have any patches for this?
-
-
+> This gets build and run when CONFIG_DEBUG_VM_PGTABLE is selected along with
+> CONFIG_VM_DEBUG. Architectures willing to subscribe this test also need to
+> select CONFIG_ARCH_HAS_DEBUG_VM_PGTABLE which for now is limited to x86 and
+> arm64. Going forward, other architectures too can enable this after fixing
+> build or runtime problems (if any) with their page table helpers.
 > 
->> Probably the NUMA-core is too server/x86-centric, by assuming NUMA is
->> used only on systems with multiple CPUs, each with their own RAM.
+> Folks interested in making sure that a given platform's page table helpers
+> conform to expected generic MM semantics should enable the above config
+> which will just trigger this test during boot. Any non conformity here will
+> be reported as an warning which would need to be fixed. This test will help
+> catch any changes to the agreed upon semantics expected from generic MM and
+> enable platforms to accommodate it thereafter.
+> 
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Mike Rapoport <rppt@linux.vnet.ibm.com>
+> Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Michal Hocko <mhocko@kernel.org>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Steven Price <Steven.Price@arm.com>
+> Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+> Cc: Kees Cook <keescook@chromium.org>
+> Cc: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+> Cc: Matthew Wilcox <willy@infradead.org>
+> Cc: Sri Krishna chowdary <schowdary@nvidia.com>
+> Cc: Dave Hansen <dave.hansen@intel.com>
+> Cc: Russell King - ARM Linux <linux@armlinux.org.uk>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
+> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Vineet Gupta <vgupta@synopsys.com>
+> Cc: James Hogan <jhogan@kernel.org>
+> Cc: Paul Burton <paul.burton@mips.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Kirill A. Shutemov <kirill@shutemov.name>
+> Cc: Gerald Schaefer <gerald.schaefer@de.ibm.com>
+> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+> Cc: Ingo Molnar <mingo@kernel.org>
+> Cc: linux-snps-arc@lists.infradead.org
+> Cc: linux-mips@vger.kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-ia64@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-s390@vger.kernel.org
+> Cc: linux-sh@vger.kernel.org
+> Cc: sparclinux@vger.kernel.org
+> Cc: x86@kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> 
+> Tested-by: Christophe Leroy <christophe.leroy@c-s.fr>		#PPC32
+> Reviewed-by: Ingo Molnar <mingo@kernel.org>
+> Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
+> This adds a test validation for architecture exported page table helpers.
+> Patch adds basic transformation tests at various levels of the page table.
+> 
+> This test was originally suggested by Catalin during arm64 THP migration
+> RFC discussion earlier. Going forward it can include more specific tests
+> with respect to various generic MM functions like THP, HugeTLB etc and
+> platform specific tests.
+> 
+> https://lore.kernel.org/linux-mm/20190628102003.GA56463@arrakis.emea.arm.com/
+> 
+> Needs to be applied on linux-next (next-20191108).
+> 
+> Changes in V10:
+> 
+> - Always enable DEBUG_VM_PGTABLE when DEBUG_VM is enabled per Ingo
+> - Added tags from Ingo
 
-Yes, I looked at all of that code for a couple of days and got nowhere
-with trying to separate NUMA from SMP.
+Hello Andrew,
 
-thanks.
--- 
-~Randy
+There has not been any further comments on the previous version (V9) or this version
+(V10) of the patch which accommodated a comment from Ingo Molnar regarding making
+DEBUG_VM_PGTABLE always enabled when DEBUG_VM is selected. If this version looks okay,
+then would you please consider merging ? But if there is anything which still needs
+to be improved, please do let me know. I will try to incorporate that. Thank you.
 
+- Anshuman
