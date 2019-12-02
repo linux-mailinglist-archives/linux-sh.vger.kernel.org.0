@@ -2,89 +2,126 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EB92A10E31C
-	for <lists+linux-sh@lfdr.de>; Sun,  1 Dec 2019 19:29:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 81B0010E4FF
+	for <lists+linux-sh@lfdr.de>; Mon,  2 Dec 2019 05:14:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727167AbfLAS3i (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sun, 1 Dec 2019 13:29:38 -0500
-Received: from mtax.cdmx.gob.mx ([187.141.35.197]:14583 "EHLO mtax.cdmx.gob.mx"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726965AbfLAS3i (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Sun, 1 Dec 2019 13:29:38 -0500
-X-Greylist: delayed 7133 seconds by postgrey-1.27 at vger.kernel.org; Sun, 01 Dec 2019 13:29:37 EST
-X-NAI-Header: Modified by McAfee Email Gateway (4500)
+        id S1727318AbfLBEOq (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sun, 1 Dec 2019 23:14:46 -0500
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:41943 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727298AbfLBEOq (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sun, 1 Dec 2019 23:14:46 -0500
+Received: by mail-oi1-f193.google.com with SMTP id e9so31203747oif.8;
+        Sun, 01 Dec 2019 20:14:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cdmx.gob.mx; s=72359050-3965-11E6-920A-0192F7A2F08E;
-        t=1575217644; h=DKIM-Filter:X-Virus-Scanned:
-         Content-Type:MIME-Version:Content-Transfer-Encoding:
-         Content-Description:Subject:To:From:Date:Message-Id:
-         X-AnalysisOut:X-AnalysisOut:X-AnalysisOut:
-         X-AnalysisOut:X-AnalysisOut:X-SAAS-TrackingID:
-         X-NAI-Spam-Flag:X-NAI-Spam-Threshold:X-NAI-Spam-Score:
-         X-NAI-Spam-Rules:X-NAI-Spam-Version; bh=M
-        8rWdUYQ57RAYAgTWJQ4Rsch0kO0UXllaAVDzocOs4
-        8=; b=Hbm8yQ6ie7+WLvrvSJQPJX/EJ1H3wLubU1ScX761gfv8
-        hfsE/bqwNoJ38duxZuNrqZQxKiyCtTHL49WDoetHC/2cismrXs
-        DbkLMbTR9bGWmSYcmlQ3LJSi8ztyD3o9qK0TM4NByIqlTQo5LU
-        3Rk/dz3mo2PmL84LslY67NT6svU=
-Received: from cdmx.gob.mx (correo.cdmx.gob.mx [10.250.108.150]) by mtax.cdmx.gob.mx with smtp
-        (TLS: TLSv1/SSLv3,256bits,ECDHE-RSA-AES256-GCM-SHA384)
-         id 31cf_38bd_aff16298_93b2_4625_b5c9_38d42796c084;
-        Sun, 01 Dec 2019 10:27:23 -0600
-Received: from localhost (localhost [127.0.0.1])
-        by cdmx.gob.mx (Postfix) with ESMTP id A79ED1E29B7;
-        Sun,  1 Dec 2019 10:18:51 -0600 (CST)
-Received: from cdmx.gob.mx ([127.0.0.1])
-        by localhost (cdmx.gob.mx [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id oFsxvW8Amtl2; Sun,  1 Dec 2019 10:18:51 -0600 (CST)
-Received: from localhost (localhost [127.0.0.1])
-        by cdmx.gob.mx (Postfix) with ESMTP id 4EC451E2FDF;
-        Sun,  1 Dec 2019 10:14:19 -0600 (CST)
-DKIM-Filter: OpenDKIM Filter v2.9.2 cdmx.gob.mx 4EC451E2FDF
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cdmx.gob.mx;
-        s=72359050-3965-11E6-920A-0192F7A2F08E; t=1575216859;
-        bh=M8rWdUYQ57RAYAgTWJQ4Rsch0kO0UXllaAVDzocOs48=;
-        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:To:
-         From:Date:Message-Id;
-        b=cQia/in9Dh0rkTtEQWFWVJTmN2zn0C+JiwV+ofPbxwoNe1y6aTMWjay+uIjcCtUNu
-         ODZBOKDMqJAHYm91fEnEdNLNGcRX+9oL6JNnraxL7nLd0FfGjM8OBHkJNuu2Vzgb2H
-         PPzqdlSy4MV8JOY5Y4bvKFIk6RHYvM7llv49FyrY=
-X-Virus-Scanned: amavisd-new at cdmx.gob.mx
-Received: from cdmx.gob.mx ([127.0.0.1])
-        by localhost (cdmx.gob.mx [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id jE3ucjrO8Pil; Sun,  1 Dec 2019 10:14:19 -0600 (CST)
-Received: from [192.168.0.104] (unknown [188.125.168.160])
-        by cdmx.gob.mx (Postfix) with ESMTPSA id 1041E1E2E41;
-        Sun,  1 Dec 2019 10:05:28 -0600 (CST)
-Content-Type: text/plain; charset="iso-8859-1"
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=f/5KDWwc/xKNxHsiDOtb26jMc/teIu2y72BKQlD6HUw=;
+        b=PyPB0suN3Ac/0YBN/GdG8mMtlpX+Q2k15I84EAq6fyg6P3jVxHJ+pL9vSwl/+B+8q4
+         PWU3EUC+3u7/7UkoBdF9NI8morrmDlADs397ZTs6x/CLy3KRHnBCSu7jf0NpWKJWbtK0
+         OS9SNvWEjeRkbN5l/YTF7NK1uWGN7UXFD0tmWlOH505dDMXvfWWIRgLCgbLFhkoFHcho
+         tRbUvog+kYJmqI9IQlg6//ZjWVpwEAUy674rkBNd4ySL5ywzMlA1ncNQk3XpJw/BIibJ
+         VVn1hTFhHjahdJyg/TDKWziZHhJvo6NBn2Nist5N+J2skFel2VqMuSZZ0jvw/GzuCTzZ
+         zmaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=f/5KDWwc/xKNxHsiDOtb26jMc/teIu2y72BKQlD6HUw=;
+        b=hVuPOt9diZ1HC6AjblSd9TeXYCdW7doIUYBduUhgRF4op3maFHU7EgAoa1vKPn2H1a
+         WNdLn9DzGbWFl1vleWiJn/FvmZ+pVcRShKLDIrmAHeW/dZ5Fp4DjzR3rrjmkZNreh3Qd
+         qL4roykSAmdIm3NzrmNxEXQAVDwmg1CTxaUc7CfmlPcQV1pozPIU7fJ9wtru3e0qMxbS
+         JW3M40up882bs+gkEy+/yP0+FEqGvZImp9fWdGRzqwFpqXMcBd5XwS/h9iidKS1G/FB5
+         +eX3vAKd+HTemF252PXFDpv9lwFRagyEwS7WR1x51FSZvVae2MVKOuBNQVqnWh/xF+Yo
+         9FeQ==
+X-Gm-Message-State: APjAAAX48oVcz1Xq6/iMFDl23WExDJuFuiHI7cnvKvZyFOQBp5KSq0/j
+        G9Y44OQ+o4RrWrSycwcL+yfpnOoT
+X-Google-Smtp-Source: APXvYqzsOVbpb/beefEZE/OzfdaH+fj4ZJmh7Tyh+FkhBzgVvyUJ1tZU7N7psT2RXkxa29/o1rZ46Q==
+X-Received: by 2002:aca:d4c1:: with SMTP id l184mr22524637oig.172.1575260083692;
+        Sun, 01 Dec 2019 20:14:43 -0800 (PST)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id y23sm10176414oih.17.2019.12.01.20.14.41
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sun, 01 Dec 2019 20:14:42 -0800 (PST)
+Date:   Sun, 1 Dec 2019 20:14:40 -0800
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Bartosz Golaszewski <brgl@bgdev.pl>
+Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jiri Slaby <jslaby@suse.com>, linux-sh@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Subject: Re: [PATCH v4 1/2] drivers: move the early platform device support
+ to arch/sh
+Message-ID: <20191202041440.GA1628@roeck-us.net>
+References: <20191003092913.10731-1-brgl@bgdev.pl>
+ <20191003092912.G3pupKBmyct1r9ScP5Skuw9D-_ALcMVSnfMfHAlwe0Y@z>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Congratulations
-To:     Recipients <aac-styfe@cdmx.gob.mx>
-From:   "Bishop Johnr" <aac-styfe@cdmx.gob.mx>
-Date:   Sun, 01 Dec 2019 17:05:21 +0100
-Message-Id: <20191201160529.1041E1E2E41@cdmx.gob.mx>
-X-AnalysisOut: [v=2.2 cv=HeFkdmM8 c=1 sm=1 tr=0 p=6K-Ig8iNAUou4E5wYCEA:9 p]
-X-AnalysisOut: [=zRI05YRXt28A:10 a=T6zFoIZ12MK39YzkfxrL7A==:117 a=9152RP8M]
-X-AnalysisOut: [6GQqDhC/mI/QXQ==:17 a=8nJEP1OIZ-IA:10 a=pxVhFHJ0LMsA:10 a=]
-X-AnalysisOut: [pGLkceISAAAA:8 a=wPNLvfGTeEIA:10 a=M8O0W8wq6qAA:10 a=Ygvjr]
-X-AnalysisOut: [iKHvHXA2FhpO6d-:22]
-X-SAAS-TrackingID: 9e9e3ed5.0.23902036.00-2375.40384471.s12p02m002.mxlogic.net
-X-NAI-Spam-Flag: NO
-X-NAI-Spam-Threshold: 3
-X-NAI-Spam-Score: -5000
-X-NAI-Spam-Rules: 1 Rules triggered
-        WHITELISTED=-5000
-X-NAI-Spam-Version: 2.3.0.9418 : core <6686> : inlines <7165> : streams
- <1840193> : uri <2949750>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191003092912.G3pupKBmyct1r9ScP5Skuw9D-_ALcMVSnfMfHAlwe0Y@z>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Money was donated to you by Mr and Mrs Allen and Violet Large, just contact=
- them with this email for more information =
+On Thu, Oct 03, 2019 at 11:29:12AM +0200, Bartosz Golaszewski wrote:
+> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+> 
+> SuperH is the only user of the current implementation of early platform
+> device support. We want to introduce a more robust approach to early
+> probing. As the first step - move all the current early platform code
+> to arch/sh.
+> 
+> In order not to export internal drivers/base functions to arch code for
+> this temporary solution - copy the two needed routines for driver
+> matching from drivers/base/platform.c to arch/sh/drivers/platform_early.c.
+> 
+> Also: call early_platform_cleanup() from subsys_initcall() so that it's
+> called after all early devices are probed.
+> 
+> Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 
+Wondering ... has anyone tested this patch on affected hardware ?
+All my qemu boot tests (both sh and sheb) fail because of it.
+Bisect log below.
 
-EMail: allenandvioletlargeaward@gmail.com
+Guenter
+
+---
+# bad: [72c0870e3a05d9cd5466d08c3d2a3069ed0a2f9f] Merge branch 'for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/dtor/input
+# good: [89d57dddd7d319ded00415790a0bb3c954b7e386] Merge tag 'media/v5.5-1' of git://git.kernel.org/pub/scm/linux/kernel/git/mchehab/linux-media
+git bisect start 'HEAD' '89d57dddd7d3'
+# good: [0a6cad5df541108cfd3fbd79eef48eb824c89bdc] Merge branch 'vmwgfx-coherent' of git://people.freedesktop.org/~thomash/linux into drm-next
+git bisect good 0a6cad5df541108cfd3fbd79eef48eb824c89bdc
+# bad: [9a3d7fd275be4559277667228902824165153c80] Merge tag 'driver-core-5.5-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core
+git bisect bad 9a3d7fd275be4559277667228902824165153c80
+# good: [59274c7164807d27b24e6c068dfe734f7bea4623] Merge tag 'usb-5.5-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb
+git bisect good 59274c7164807d27b24e6c068dfe734f7bea4623
+# good: [e71903106721dc53923e90aa484d78bc86c039a9] staging: mt7621-dma: align to match open parenthesis
+git bisect good e71903106721dc53923e90aa484d78bc86c039a9
+# good: [8f56e4ebe05c26c30e167519273843476e39e244] Merge tag 'char-misc-5.5-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc
+git bisect good 8f56e4ebe05c26c30e167519273843476e39e244
+# good: [8bde9f3d2a217d1635a7c7bdf8ad4c25c9a34b50] Merge tag 'iio-for-5.5c' of https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio into staging-next
+git bisect good 8bde9f3d2a217d1635a7c7bdf8ad4c25c9a34b50
+# bad: [0628cda318df6baec439ca6e6e274007492f1ccd] mac80211: Use debugfs_create_xul() helper
+git bisect bad 0628cda318df6baec439ca6e6e274007492f1ccd
+# bad: [03324507e66c7664c754b1ef92c5c3be24c78aa2] driver core: Allow fwnode_operations.add_links to differentiate errors
+git bisect bad 03324507e66c7664c754b1ef92c5c3be24c78aa2
+# bad: [313f5dbba41d905d59c820bb2d91ee6c661aff99] debugfs: remove return value of debugfs_create_u16()
+git bisect bad 313f5dbba41d905d59c820bb2d91ee6c661aff99
+# good: [d4387cd117414ba80230f27a514be5ca4a09cfcc] of: property: Create device links for all child-supplier depencencies
+git bisect good d4387cd117414ba80230f27a514be5ca4a09cfcc
+# bad: [c31e73121f4c1ec45a3e523ac6ce3ce6dafdcec1] base: soc: Handle custom soc information sysfs entries
+git bisect bad c31e73121f4c1ec45a3e523ac6ce3ce6dafdcec1
+# bad: [201e91091b1d47047f55580b5474e1239f4d17aa] sh: add the sh_ prefix to early platform symbols
+git bisect bad 201e91091b1d47047f55580b5474e1239f4d17aa
+# bad: [507fd01d5333338753a1cc26322dfc9f856c109f] drivers: move the early platform device support to arch/sh
+git bisect bad 507fd01d5333338753a1cc26322dfc9f856c109f
+# first bad commit: [507fd01d5333338753a1cc26322dfc9f856c109f] drivers: move the early platform device support to arch/sh
