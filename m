@@ -2,84 +2,127 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F8931103EE
-	for <lists+linux-sh@lfdr.de>; Tue,  3 Dec 2019 19:02:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 19947110634
+	for <lists+linux-sh@lfdr.de>; Tue,  3 Dec 2019 21:58:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726189AbfLCSCb (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 3 Dec 2019 13:02:31 -0500
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:42869 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726057AbfLCSCb (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 3 Dec 2019 13:02:31 -0500
-Received: by mail-ot1-f65.google.com with SMTP id 66so3726176otd.9;
-        Tue, 03 Dec 2019 10:02:30 -0800 (PST)
+        id S1727244AbfLCU64 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 3 Dec 2019 15:58:56 -0500
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:37896 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727339AbfLCU64 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 3 Dec 2019 15:58:56 -0500
+Received: by mail-pg1-f194.google.com with SMTP id t3so2204034pgl.5;
+        Tue, 03 Dec 2019 12:58:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=zNJ76pkzPMxidfNvZVb2qLDA1WJgDdXvT5gi9V9xD4c=;
+        b=kMtevZOYLJyRRRiki59q8fZ8xfRi/XxUkjwXqM2zAusTJMgzolvOQ/OkvBrix7+sRY
+         5llOHxqyeTm3RgUGP1cxd9eTWOavGcdCwjFQ2qloIoGrRHN2VH/A6sV/eyDQiaEDTKDA
+         NwPWeYgV17ZypiiyuOvoa4RqcxJMtTPk1hTd7jZ3+9C3P2VqPX7WrfUSbdkzzvE02eSg
+         L4zTu5Qq3IPknh8slAAzXq66tp2UXbBzrS4JIEmVMO+91iyJn697ZdtTLvkD7obMo+2P
+         VsfYOaB6VP1AvJGgCbkDOkYw7kVQWfBU4GEPIbYYtAod/I9lr6nHMHPwwcDy4eriXHLY
+         WgMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=acRXlgJMgS4zFgkuBK6LomlOW0ErW4UsPjySwRogk2A=;
-        b=jvi01UwAOjHJt5/monrCsKvhZ2E8wjf1+njlqnKt0NzfRgRxCR+R/yPuEYIp1tNOE5
-         MoKc6iMMRu567Gh5xIM5UKhOXtIfw6+MlAYNZbedE05Ox85McG8Uucst5kBJbBCozzIz
-         nuFqnLaP45UnPXwwaJwd+3oLkq8A26X8zUzW8sQsoEzNvbCBBCZSqM/Qnysj9asJ5eak
-         Zx5+gH2bFQRrL2lD3vQQPB4WGwfkRf7zdRWd36g9Ny1JEQHvsoX44v7RHr6KBYbuDWVG
-         Bhao3oQAR3kms1Is4m/QTTrVEZT3gWAcz/pltuDkvFDe6lR/u9nvE2I9eI2SS0OTvX2N
-         IVxg==
-X-Gm-Message-State: APjAAAVDLjDXrjI1xrNA9/mmS70vHvMZAllU9PI7lJ9FLW7Utm5lZ98A
-        kui14EE8SoXrT/Hwsas5kS+hR0HOexCKBUscpnM=
-X-Google-Smtp-Source: APXvYqzm078DyDYSc09q2nCaJjtAQG8kC+kqRgZV1G9E7e37ceqH80/zXtwjyI1TeERQv3De/lCePm03uz4ONF7QF5M=
-X-Received: by 2002:a9d:19ed:: with SMTP id k100mr4147256otk.297.1575396150332;
- Tue, 03 Dec 2019 10:02:30 -0800 (PST)
-MIME-Version: 1.0
-References: <20191203162645.19950-1-geert+renesas@glider.be> <20191203162645.19950-6-geert+renesas@glider.be>
-In-Reply-To: <20191203162645.19950-6-geert+renesas@glider.be>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 3 Dec 2019 19:02:19 +0100
-Message-ID: <CAMuHMdUpDcmu=z35d8HDstrqE1+Ef-ZLUGo2dx_5wUkRNPmG4g@mail.gmail.com>
-Subject: Re: [PATCH 5/7] sh: pci: Modernize printing of kernel messages
-To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
+        bh=zNJ76pkzPMxidfNvZVb2qLDA1WJgDdXvT5gi9V9xD4c=;
+        b=mTMaJD3Np3R4AIJuhhGnE6CYcvXJUU5gyFlv3hNZ8SKFe0DpSQZg4mWx/beKgb/Pkm
+         6hFRNRxWYonPQKc/cJU0RaFHo3Gg1gev/BJKeWjVS4rZHRLitsJHmzQ7ROgpHLVtacQx
+         AUF1jzaGwgsPzcx8jazJWfxKZiA/bzTN+DPXI9Na9jAEiQPA4wDts9s1l1waDjTGvzfd
+         klUD2uq1+czSmOl5ONpMeA/2fmX0RWJYZ74ISS/QS/CUeQxhcf+djLExfporuMtcvlOA
+         pCfG7ebIQw8encxKuTelkx82m704mWlO7L/6HE64kIIQsccyZZtue/yQTix7B4okTaWO
+         WICw==
+X-Gm-Message-State: APjAAAXLBIVf/r/x/Wlm2Ixjves3A53oIYZNjx/C1Kq5D91Ci+lkMdbG
+        77Ro2o8ppshFS/IFuZStzig=
+X-Google-Smtp-Source: APXvYqyxQgIhoj2UaRTi1Qnm6VZkoGEo2ToSTbIZuCHwGWBvGX6QSpRMi/wNKjBadhmvSVefwgkEEw==
+X-Received: by 2002:a63:da4d:: with SMTP id l13mr7854866pgj.106.1575406735472;
+        Tue, 03 Dec 2019 12:58:55 -0800 (PST)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id y17sm4599175pfn.86.2019.12.03.12.58.53
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 03 Dec 2019 12:58:54 -0800 (PST)
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
         Guenter Roeck <linux@roeck-us.net>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Content-Type: text/plain; charset="UTF-8"
+        Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: [PATCH v2] drivers: Fix boot problem on SuperH
+Date:   Tue,  3 Dec 2019 12:58:52 -0800
+Message-Id: <20191203205852.15659-1-linux@roeck-us.net>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Tue, Dec 3, 2019 at 5:26 PM Geert Uytterhoeven
-<geert+renesas@glider.be> wrote:
->   - Convert from printk() to pr_*(),
->   - Add missing continuations,
->   - Join broken messages.
->
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+SuperH images crash too eearly to display any console output. Bisect
+points to commit 507fd01d5333 ("drivers: move the early platform device
+support to arch/sh"). An analysis of that patch suggests that
+early_platform_cleanup() is now called at the wrong time. Restoring its
+call point fixes the problem.
 
-> --- a/arch/sh/drivers/pci/common.c
-> +++ b/arch/sh/drivers/pci/common.c
-> @@ -143,7 +143,7 @@ unsigned int pcibios_handle_status_errors(unsigned long addr,
->                 printk(KERN_DEBUG "PCI: parity error detected: ");
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>
+Fixes: 507fd01d5333 ("drivers: move the early platform device support to arch/sh")
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+---
+v2: Use __init annotation for early_platform_cleanup()
 
-Forgot to mention: I did not replace "printk(KERN_DEBUG" by "pr_debug",
-as this changes behavior (pr_debug() is a dummy if DEBUG is not defined).
+ arch/sh/drivers/platform_early.c | 11 ++---------
+ drivers/base/platform.c          |  4 ++++
+ 2 files changed, 6 insertions(+), 9 deletions(-)
 
->                 pcibios_report_status(PCI_STATUS_PARITY |
->                                       PCI_STATUS_DETECTED_PARITY, 1);
-> -               printk("\n");
-> +               pr_cont("\n");
->
->                 cmd |= PCI_STATUS_PARITY | PCI_STATUS_DETECTED_PARITY;
->
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
+diff --git a/arch/sh/drivers/platform_early.c b/arch/sh/drivers/platform_early.c
+index f6d148451dfc..f3dc3f25b3ff 100644
+--- a/arch/sh/drivers/platform_early.c
++++ b/arch/sh/drivers/platform_early.c
+@@ -325,9 +325,9 @@ int __init sh_early_platform_driver_probe(char *class_str,
+ }
+ 
+ /**
+- * sh_early_platform_cleanup - clean up early platform code
++ * early_platform_cleanup - clean up early platform code
+  */
+-static int __init sh_early_platform_cleanup(void)
++void __init early_platform_cleanup(void)
+ {
+ 	struct platform_device *pd, *pd2;
+ 
+@@ -337,11 +337,4 @@ static int __init sh_early_platform_cleanup(void)
+ 		list_del(&pd->dev.devres_head);
+ 		memset(&pd->dev.devres_head, 0, sizeof(pd->dev.devres_head));
+ 	}
+-
+-	return 0;
+ }
+-/*
+- * This must happen once after all early devices are probed but before probing
+- * real platform devices.
+- */
+-subsys_initcall(sh_early_platform_cleanup);
+diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+index 7c532548b0a6..cf6b6b722e5c 100644
+--- a/drivers/base/platform.c
++++ b/drivers/base/platform.c
+@@ -1325,10 +1325,14 @@ struct device *platform_find_device_by_driver(struct device *start,
+ }
+ EXPORT_SYMBOL_GPL(platform_find_device_by_driver);
+ 
++void __weak __init early_platform_cleanup(void) { }
++
+ int __init platform_bus_init(void)
+ {
+ 	int error;
+ 
++	early_platform_cleanup();
++
+ 	error = device_register(&platform_bus);
+ 	if (error) {
+ 		put_device(&platform_bus);
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.17.1
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
