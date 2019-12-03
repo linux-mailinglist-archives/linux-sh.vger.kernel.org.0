@@ -2,130 +2,81 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AFF0110147
-	for <lists+linux-sh@lfdr.de>; Tue,  3 Dec 2019 16:29:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C46C011022C
+	for <lists+linux-sh@lfdr.de>; Tue,  3 Dec 2019 17:26:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726024AbfLCP33 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-sh@lfdr.de>); Tue, 3 Dec 2019 10:29:29 -0500
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:36973 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725997AbfLCP33 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 3 Dec 2019 10:29:29 -0500
-Received: by mail-ot1-f65.google.com with SMTP id k14so3259386otn.4;
-        Tue, 03 Dec 2019 07:29:28 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=hfLvVnQ8OaOqW5ONkxG90DK+rPeEKylMJL1PNCl8KZo=;
-        b=XnBLtngm3reUfzZFbdZq4nsjJ3quv/KXvOmcchNWiqgGghM7+eCLxQoopW17FtNzH6
-         0YMbo4N9W3PXeYGHF/D/WaP20BiRyZQhsCdsjatldQ18EGdntkAruQORDjQ2/LpfBe/e
-         shVUWQqNZQoqAq+Fj7JVRxjntSJLVC3xXms/jxYe8IPz8Nu5o786hNOZV8J/kyRaW38M
-         +xWv4tByS4/4OiBsZrBHm+dcATrJb2LMLhlZYP8zS0JB2Z2pOqrzcr9bC8Xk/5i1MqLc
-         XBZntoWOoS0Ed8c5poDE8BxRSJlucWzJlPNWijntr1RVgouM3dUxJomk8dUseZ6YDP+r
-         nquw==
-X-Gm-Message-State: APjAAAX5VKOaketoLknwdGrtHJGeCA3xM0WP0RkRIc86KTkBrrDCzyFP
-        7yvqFz3W4aILOWuifRO+8m8sI0qt7fW+RaeJIzHCIQ==
-X-Google-Smtp-Source: APXvYqy8FPeBXmi8lyHhcGfNHeBjO1zuQiU7pD/x8qCJPDHEK7BFc18g7cx9mVxKZ6ROMQh9a1WCkXH4RS7xAN0W+XM=
-X-Received: by 2002:a9d:3a37:: with SMTP id j52mr3623297otc.39.1575386968258;
- Tue, 03 Dec 2019 07:29:28 -0800 (PST)
-MIME-Version: 1.0
-References: <20191203144631.6629-1-linux@roeck-us.net>
-In-Reply-To: <20191203144631.6629-1-linux@roeck-us.net>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 3 Dec 2019 16:29:17 +0100
-Message-ID: <CAMuHMdWFpHsGk9V-nRaDOP-sjh5DWsGtHNGZ_jm3J3BFYd6KqA@mail.gmail.com>
-Subject: Re: [PATCH] drivers: Fix boot problem on SuperH
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+        id S1727076AbfLCQ0t (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 3 Dec 2019 11:26:49 -0500
+Received: from michel.telenet-ops.be ([195.130.137.88]:42252 "EHLO
+        michel.telenet-ops.be" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726968AbfLCQ0t (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 3 Dec 2019 11:26:49 -0500
+Received: from ramsan ([84.195.182.253])
+        by michel.telenet-ops.be with bizsmtp
+        id ZUSm2100U5USYZQ06USmFw; Tue, 03 Dec 2019 17:26:47 +0100
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan with esmtp (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1icB0g-0007fd-I3; Tue, 03 Dec 2019 17:26:46 +0100
+Received: from geert by rox.of.borg with local (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1icB0g-0005Cd-Fa; Tue, 03 Dec 2019 17:26:46 +0100
+From:   Geert Uytterhoeven <geert+renesas@glider.be>
+To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Guenter Roeck <linux@roeck-us.net>, linux-sh@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH 0/7] sh: Modernize printing of kernel messages
+Date:   Tue,  3 Dec 2019 17:26:38 +0100
+Message-Id: <20191203162645.19950-1-geert+renesas@glider.be>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Günter,
+	Hi all,
 
-On Tue, Dec 3, 2019 at 3:46 PM Guenter Roeck <linux@roeck-us.net> wrote:
-> SuperH images crash too eearly to display any console output. Bisect
-> points to commit 507fd01d5333 ("drivers: move the early platform device
-> support to arch/sh"). An analysis of that patch suggests that
-> early_platform_cleanup() is now called at the wrong time. Restoring its
-> call point fixes the problem.
->
-> Cc: Bartosz Golaszewski <brgl@bgdev.pl>
-> Fixes: 507fd01d5333 ("drivers: move the early platform device support to arch/sh")
-> Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+This patch series fixes the broken lines in kernel output, which I
+presume have been happening since commit 4bcc595ccd80decb ("printk:
+reinstate KERN_CONT for printing continuat ion lines").
+Most annoying are the ones in call traces and disassembly dumps, as they
+cause lots of small bits of information to fly by your serial console.
 
-> --- a/arch/sh/drivers/platform_early.c
-> +++ b/arch/sh/drivers/platform_early.c
-> @@ -325,9 +325,9 @@ int __init sh_early_platform_driver_probe(char *class_str,
->  }
->
->  /**
-> - * sh_early_platform_cleanup - clean up early platform code
-> + * early_platform_cleanup - clean up early platform code
->   */
-> -static int __init sh_early_platform_cleanup(void)
-> +void early_platform_cleanup(void)
+Thanks!
 
-This function should be __init...
+Geert Uytterhoeven (7):
+  sh: kernel: disassemble: Fix broken lines in disassembly dumps
+  sh: dump_stack: Fix broken lines and ptrval in calltrace dumps
+  sh: process: Fix broken lines in register dumps
+  sh: sh2007: Modernize printing of kernel messages
+  sh: pci: Modernize printing of kernel messages
+  sh: machvec: Modernize printing of kernel messages
+  sh: fault: Modernize printing of kernel messages
 
->  {
->         struct platform_device *pd, *pd2;
->
-> @@ -337,11 +337,4 @@ static int __init sh_early_platform_cleanup(void)
->                 list_del(&pd->dev.devres_head);
->                 memset(&pd->dev.devres_head, 0, sizeof(pd->dev.devres_head));
->         }
-> -
-> -       return 0;
->  }
-> -/*
-> - * This must happen once after all early devices are probed but before probing
-> - * real platform devices.
-> - */
-> -subsys_initcall(sh_early_platform_cleanup);
-> diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-> index 7c532548b0a6..3ba153e356ee 100644
-> --- a/drivers/base/platform.c
-> +++ b/drivers/base/platform.c
-> @@ -1325,10 +1325,14 @@ struct device *platform_find_device_by_driver(struct device *start,
->  }
->  EXPORT_SYMBOL_GPL(platform_find_device_by_driver);
->
-> +void __weak early_platform_cleanup(void) { }
+ arch/sh/boards/board-sh2007.c    |   4 +-
+ arch/sh/drivers/pci/common.c     |   6 +-
+ arch/sh/drivers/pci/pci-sh7780.c |  23 ++++---
+ arch/sh/drivers/pci/pci.c        |  11 ++--
+ arch/sh/kernel/disassemble.c     | 103 ++++++++++++++++---------------
+ arch/sh/kernel/dumpstack.c       |  24 +++----
+ arch/sh/kernel/machvec.c         |   8 +--
+ arch/sh/kernel/process_32.c      |  38 +++++-------
+ arch/sh/mm/fault.c               |  39 ++++++------
+ 9 files changed, 124 insertions(+), 132 deletions(-)
 
-... and this one, too.
-
-Sorry for failing to notice that before.
-Back to fixing more SH...
-
-> +
->  int __init platform_bus_init(void)
->  {
->         int error;
->
-> +       early_platform_cleanup();
-> +
->         error = device_register(&platform_bus);
->         if (error) {
->                 put_device(&platform_bus);
+-- 
+2.17.1
 
 Gr{oetje,eeting}s,
 
-                        Geert
+						Geert
 
--- 
+--
 Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
 In personal conversations with technical people, I call myself a hacker. But
 when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+							    -- Linus Torvalds
