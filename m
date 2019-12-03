@@ -2,127 +2,115 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 19947110634
-	for <lists+linux-sh@lfdr.de>; Tue,  3 Dec 2019 21:58:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 01871111B10
+	for <lists+linux-sh@lfdr.de>; Tue,  3 Dec 2019 22:36:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727244AbfLCU64 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 3 Dec 2019 15:58:56 -0500
-Received: from mail-pg1-f194.google.com ([209.85.215.194]:37896 "EHLO
-        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727339AbfLCU64 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 3 Dec 2019 15:58:56 -0500
-Received: by mail-pg1-f194.google.com with SMTP id t3so2204034pgl.5;
-        Tue, 03 Dec 2019 12:58:55 -0800 (PST)
+        id S1727457AbfLCVg6 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 3 Dec 2019 16:36:58 -0500
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:42866 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727430AbfLCVg6 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 3 Dec 2019 16:36:58 -0500
+Received: by mail-pf1-f196.google.com with SMTP id l22so2479915pff.9;
+        Tue, 03 Dec 2019 13:36:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=zNJ76pkzPMxidfNvZVb2qLDA1WJgDdXvT5gi9V9xD4c=;
-        b=kMtevZOYLJyRRRiki59q8fZ8xfRi/XxUkjwXqM2zAusTJMgzolvOQ/OkvBrix7+sRY
-         5llOHxqyeTm3RgUGP1cxd9eTWOavGcdCwjFQ2qloIoGrRHN2VH/A6sV/eyDQiaEDTKDA
-         NwPWeYgV17ZypiiyuOvoa4RqcxJMtTPk1hTd7jZ3+9C3P2VqPX7WrfUSbdkzzvE02eSg
-         L4zTu5Qq3IPknh8slAAzXq66tp2UXbBzrS4JIEmVMO+91iyJn697ZdtTLvkD7obMo+2P
-         VsfYOaB6VP1AvJGgCbkDOkYw7kVQWfBU4GEPIbYYtAod/I9lr6nHMHPwwcDy4eriXHLY
-         WgMg==
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=M46RQcwxgINKa8vpC6RQJq2Z/PQ6+1z2D0+STFMlBWs=;
+        b=urbzj+fb0UgJ2kkk6FK8gZeFnG9Pq/7eGIL09MywLyrSLgc7gWFEFJMGlba57wpQre
+         U/QVyeD5K1RojUp3LtTMzsY+BcZJn7n4hkbGJGSJmg/KggF5UtJW4tu0vFa3CyNlckd6
+         uy+TyRW3zvg1jiQgsBUTraTrrXpFPZVwxW8H9kWybJ6NsC/Ah8VromsvK3wRr13zRLw2
+         zGPuzTnlZ1Y3BRlZhaPCETSdizhP4vGTS1ikgNd/WpMt9TmY990JhNsc6MbLla7/FdA+
+         pnWBnRJSozy3sS9S1yBHsojALEfXaIGW65K8MDWrCNitpu+Ay8O/Jwyq9tEgWAJy6HRx
+         x0nQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
-        bh=zNJ76pkzPMxidfNvZVb2qLDA1WJgDdXvT5gi9V9xD4c=;
-        b=mTMaJD3Np3R4AIJuhhGnE6CYcvXJUU5gyFlv3hNZ8SKFe0DpSQZg4mWx/beKgb/Pkm
-         6hFRNRxWYonPQKc/cJU0RaFHo3Gg1gev/BJKeWjVS4rZHRLitsJHmzQ7ROgpHLVtacQx
-         AUF1jzaGwgsPzcx8jazJWfxKZiA/bzTN+DPXI9Na9jAEiQPA4wDts9s1l1waDjTGvzfd
-         klUD2uq1+czSmOl5ONpMeA/2fmX0RWJYZ74ISS/QS/CUeQxhcf+djLExfporuMtcvlOA
-         pCfG7ebIQw8encxKuTelkx82m704mWlO7L/6HE64kIIQsccyZZtue/yQTix7B4okTaWO
-         WICw==
-X-Gm-Message-State: APjAAAXLBIVf/r/x/Wlm2Ixjves3A53oIYZNjx/C1Kq5D91Ci+lkMdbG
-        77Ro2o8ppshFS/IFuZStzig=
-X-Google-Smtp-Source: APXvYqyxQgIhoj2UaRTi1Qnm6VZkoGEo2ToSTbIZuCHwGWBvGX6QSpRMi/wNKjBadhmvSVefwgkEEw==
-X-Received: by 2002:a63:da4d:: with SMTP id l13mr7854866pgj.106.1575406735472;
-        Tue, 03 Dec 2019 12:58:55 -0800 (PST)
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=M46RQcwxgINKa8vpC6RQJq2Z/PQ6+1z2D0+STFMlBWs=;
+        b=AhLz0uRPASQvErdDV3i7HitXvgXFw6pEKE7f6FIy0uohwwoUOUBBxQE8nMA8nkSa6W
+         tU0FWqPvFThPhctFDEBBFElLnpaW7WFb+aiFWIajcs7EenIG8vir2vqu/vb/ZneA99F+
+         8O+Mvx1aFgvPODZzNZO+0i9Igj8YQwmoDA5M2N3SwfTVUo0mDZQyliT1PMrJ9ONK3NDi
+         MJq4PkT4X3DOe5RRI1hdjeS0CKRT45E4MvAu1OFeaTsdFgr2DK/ZzroxZEqKLp3e4JLM
+         YK+EcfhzVn6nwXlIxQWJIC8aygOLBbkOZi1wLZ2tnBs9twmQrOWVZurSP3PHgram0jW/
+         PaDw==
+X-Gm-Message-State: APjAAAWM7yBIu4tKUo4kdzaj0twtdI33eCa5N0xBKivKzDxsGHVZrJYD
+        t4fyTARTgIyJppZjN+uAHW8=
+X-Google-Smtp-Source: APXvYqwx9HpYfEdeX8KitmYjpnkNfmF/IvBAHRIQ0bmZBBtsrNU5eUEvackFZxQtljNcP1d0JoGxKw==
+X-Received: by 2002:a62:1447:: with SMTP id 68mr7217396pfu.53.1575409017456;
+        Tue, 03 Dec 2019 13:36:57 -0800 (PST)
 Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id y17sm4599175pfn.86.2019.12.03.12.58.53
+        by smtp.gmail.com with ESMTPSA id x11sm4765624pfn.53.2019.12.03.13.36.56
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 03 Dec 2019 12:58:54 -0800 (PST)
+        Tue, 03 Dec 2019 13:36:56 -0800 (PST)
+Date:   Tue, 3 Dec 2019 13:36:55 -0800
 From:   Guenter Roeck <linux@roeck-us.net>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Geert Uytterhoeven <geert+renesas@glider.be>
 Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Guenter Roeck <linux@roeck-us.net>,
-        Bartosz Golaszewski <brgl@bgdev.pl>
-Subject: [PATCH v2] drivers: Fix boot problem on SuperH
-Date:   Tue,  3 Dec 2019 12:58:52 -0800
-Message-Id: <20191203205852.15659-1-linux@roeck-us.net>
-X-Mailer: git-send-email 2.17.1
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/7] sh: Modernize printing of kernel messages
+Message-ID: <20191203213655.GA3253@roeck-us.net>
+References: <20191203162645.19950-1-geert+renesas@glider.be>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191203162645.19950-1-geert+renesas@glider.be>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-SuperH images crash too eearly to display any console output. Bisect
-points to commit 507fd01d5333 ("drivers: move the early platform device
-support to arch/sh"). An analysis of that patch suggests that
-early_platform_cleanup() is now called at the wrong time. Restoring its
-call point fixes the problem.
+On Tue, Dec 03, 2019 at 05:26:38PM +0100, Geert Uytterhoeven wrote:
+> 	Hi all,
+> 
+> This patch series fixes the broken lines in kernel output, which I
+> presume have been happening since commit 4bcc595ccd80decb ("printk:
+> reinstate KERN_CONT for printing continuat ion lines").
+> Most annoying are the ones in call traces and disassembly dumps, as they
+> cause lots of small bits of information to fly by your serial console.
+> 
+> Thanks!
+> 
+> Geert Uytterhoeven (7):
+>   sh: kernel: disassemble: Fix broken lines in disassembly dumps
+>   sh: dump_stack: Fix broken lines and ptrval in calltrace dumps
+>   sh: process: Fix broken lines in register dumps
+>   sh: sh2007: Modernize printing of kernel messages
+>   sh: pci: Modernize printing of kernel messages
+>   sh: machvec: Modernize printing of kernel messages
+>   sh: fault: Modernize printing of kernel messages
+> 
+Yes, the output does look a bit nicer with those patches applied.
 
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>
-Fixes: 507fd01d5333 ("drivers: move the early platform device support to arch/sh")
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
----
-v2: Use __init annotation for early_platform_cleanup()
+For the series:
 
- arch/sh/drivers/platform_early.c | 11 ++---------
- drivers/base/platform.c          |  4 ++++
- 2 files changed, 6 insertions(+), 9 deletions(-)
+Tested-by: Guenter Roeck <linux@roeck-us.net>
 
-diff --git a/arch/sh/drivers/platform_early.c b/arch/sh/drivers/platform_early.c
-index f6d148451dfc..f3dc3f25b3ff 100644
---- a/arch/sh/drivers/platform_early.c
-+++ b/arch/sh/drivers/platform_early.c
-@@ -325,9 +325,9 @@ int __init sh_early_platform_driver_probe(char *class_str,
- }
- 
- /**
-- * sh_early_platform_cleanup - clean up early platform code
-+ * early_platform_cleanup - clean up early platform code
-  */
--static int __init sh_early_platform_cleanup(void)
-+void __init early_platform_cleanup(void)
- {
- 	struct platform_device *pd, *pd2;
- 
-@@ -337,11 +337,4 @@ static int __init sh_early_platform_cleanup(void)
- 		list_del(&pd->dev.devres_head);
- 		memset(&pd->dev.devres_head, 0, sizeof(pd->dev.devres_head));
- 	}
--
--	return 0;
- }
--/*
-- * This must happen once after all early devices are probed but before probing
-- * real platform devices.
-- */
--subsys_initcall(sh_early_platform_cleanup);
-diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-index 7c532548b0a6..cf6b6b722e5c 100644
---- a/drivers/base/platform.c
-+++ b/drivers/base/platform.c
-@@ -1325,10 +1325,14 @@ struct device *platform_find_device_by_driver(struct device *start,
- }
- EXPORT_SYMBOL_GPL(platform_find_device_by_driver);
- 
-+void __weak __init early_platform_cleanup(void) { }
-+
- int __init platform_bus_init(void)
- {
- 	int error;
- 
-+	early_platform_cleanup();
-+
- 	error = device_register(&platform_bus);
- 	if (error) {
- 		put_device(&platform_bus);
--- 
-2.17.1
-
+>  arch/sh/boards/board-sh2007.c    |   4 +-
+>  arch/sh/drivers/pci/common.c     |   6 +-
+>  arch/sh/drivers/pci/pci-sh7780.c |  23 ++++---
+>  arch/sh/drivers/pci/pci.c        |  11 ++--
+>  arch/sh/kernel/disassemble.c     | 103 ++++++++++++++++---------------
+>  arch/sh/kernel/dumpstack.c       |  24 +++----
+>  arch/sh/kernel/machvec.c         |   8 +--
+>  arch/sh/kernel/process_32.c      |  38 +++++-------
+>  arch/sh/mm/fault.c               |  39 ++++++------
+>  9 files changed, 124 insertions(+), 132 deletions(-)
+> 
+> -- 
+> 2.17.1
+> 
+> Gr{oetje,eeting}s,
+> 
+> 						Geert
+> 
+> --
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+> 
+> In personal conversations with technical people, I call myself a hacker. But
+> when I'm talking to journalists I just say "programmer" or something like that.
+> 							    -- Linus Torvalds
