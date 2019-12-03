@@ -2,869 +2,255 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D14BC10FA9E
-	for <lists+linux-sh@lfdr.de>; Tue,  3 Dec 2019 10:18:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1620A10FB0F
+	for <lists+linux-sh@lfdr.de>; Tue,  3 Dec 2019 10:49:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726182AbfLCJSm (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 3 Dec 2019 04:18:42 -0500
-Received: from foss.arm.com ([217.140.110.172]:39434 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726139AbfLCJSl (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Tue, 3 Dec 2019 04:18:41 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 27D6530E;
-        Tue,  3 Dec 2019 01:18:40 -0800 (PST)
-Received: from p8cg001049571a15.arm.com (unknown [10.163.1.199])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 4A76A3F68E;
-        Tue,  3 Dec 2019 01:18:05 -0800 (PST)
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-To:     linux-mm@kvack.org
-Cc:     Anshuman Khandual <anshuman.khandual@arm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
+        id S1725997AbfLCJt2 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 3 Dec 2019 04:49:28 -0500
+Received: from mail-io1-f67.google.com ([209.85.166.67]:38605 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725829AbfLCJt2 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 3 Dec 2019 04:49:28 -0500
+Received: by mail-io1-f67.google.com with SMTP id u7so452147iop.5
+        for <linux-sh@vger.kernel.org>; Tue, 03 Dec 2019 01:49:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=6aXIYJhJk7/8WEwP4jBXdYdOavwAluIwb+mxsH1scbY=;
+        b=Zz7hzYXFTOGzQiN4dOZsw0BipZPdfaJG2RF4YSLHZM0zGSqPB1tujOPLu99MAvvBVa
+         HolPnlveboPOQ1FMdO6YwSZ5M/FtthC0I2OqHxIfuAj+Pa2ueKgCDueoYFhKbmtxqQb4
+         oCUBBy1P1LCn3i1vnMT1hZm3iF/PbyNoDmWAMekJ0NGVlKYzgK7bk6I6rMrSt2AdXvY+
+         3TBsTwL5SPKdN8lp8QJsR9/Z7aw5wGuwLhM1IsdxfFO04OSIaRWK+Tdel2fCEAwdsTCR
+         6HsceOlQ2E988BzTZH3jw84QSGGl9zL1H4I9BvTSHuDiKLuGYa+MvH4mzMWCpkgtHyF/
+         yDyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=6aXIYJhJk7/8WEwP4jBXdYdOavwAluIwb+mxsH1scbY=;
+        b=SQ7xwsYBXbnOenHCJ0YYSRwi7EoiqkC1U9w+zjxeRMU3btEdj9bRqoJZh7JZot+y6x
+         U0LoH5uA1Ulkfn2gl95yEwTOeTS4D9oTrgDjVeYDXfyDO8DXStdz6Wtu2SniUGOYeKEO
+         OwkVE/Izoqx+bjeUo5l5sVLRIUMtP6wazUGTOgebQ4ncPf0dGJzlCTFTjTV22RHDN6RK
+         8K6NxaqfBQvgFdRDDZ7mJ1QsS9QaJjiCnBLtY/eIvBVeg4UQQj9zI7KJIZoSyomnKBLQ
+         KKk74VLy7jXF2d0pbrTLtkqxLa2RnXTKY8pfgZoi77Q24/734g1U4c6KmytNNCXSsxAQ
+         2a1w==
+X-Gm-Message-State: APjAAAVx9fR6gK3qNGxHvhoCq7t7n6d+EDBKa/P52ctk2OrJ6uOAzCrs
+        nwEobkNX9kZgJOQySuP2gUpHYOCxKVbn5GX9hQv/3A==
+X-Google-Smtp-Source: APXvYqzKUkeFS68tcrD5KMLK2TmIdIHqUDU5TjdET6m8Y70R++JuYm15PgU/izlEixOZhvhIxHoC411n4I6jPkgxi48=
+X-Received: by 2002:a02:711d:: with SMTP id n29mr1159147jac.114.1575366566810;
+ Tue, 03 Dec 2019 01:49:26 -0800 (PST)
+MIME-Version: 1.0
+References: <20191003092913.10731-1-brgl@bgdev.pl> <20191003092912.G3pupKBmyct1r9ScP5Skuw9D-_ALcMVSnfMfHAlwe0Y@z>
+ <20191202041440.GA1628@roeck-us.net> <CAMpxmJW3i4zmJJ14Xg65+T27kF3sgR1WG0K3FUT6+jeKtiHx=Q@mail.gmail.com>
+ <3f8ffe03-98b8-423a-7cba-53961a5600cb@roeck-us.net> <CAMpxmJUmTF3FwacjvTrC+Vvzm8MscS9E=ZyWLbJV87LkQhqVow@mail.gmail.com>
+ <5e7aafc9-deb9-9305-afea-2c86e310683f@roeck-us.net>
+In-Reply-To: <5e7aafc9-deb9-9305-afea-2c86e310683f@roeck-us.net>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Tue, 3 Dec 2019 10:49:15 +0100
+Message-ID: <CAMRc=MebSL+WA-nHFkaUd0rHTmwLkv2e16D9oO1=PY8-sPnzzQ@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] drivers: move the early platform device support to arch/sh
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Mike Rapoport <rppt@linux.vnet.ibm.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Michal Hocko <mhocko@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Mark Brown <broonie@kernel.org>,
-        Steven Price <Steven.Price@arm.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Kees Cook <keescook@chromium.org>,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        Matthew Wilcox <willy@infradead.org>,
-        Sri Krishna chowdary <schowdary@nvidia.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Ingo Molnar <mingo@kernel.org>,
-        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH V11] mm/debug: Add tests validating architecture page table helpers
-Date:   Tue,  3 Dec 2019 14:48:51 +0530
-Message-Id: <1575364731-18131-1-git-send-email-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.7.4
+        Jiri Slaby <jslaby@suse.com>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>, linux-serial@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-This adds tests which will validate architecture page table helpers and
-other accessors in their compliance with expected generic MM semantics.
-This will help various architectures in validating changes to existing
-page table helpers or addition of new ones.
+wt., 3 gru 2019 o 06:24 Guenter Roeck <linux@roeck-us.net> napisa=C5=82(a):
+>
+> On 12/2/19 9:18 AM, Bartosz Golaszewski wrote:
+> > pon., 2 gru 2019 o 14:03 Guenter Roeck <linux@roeck-us.net> napisa=C5=
+=82(a):
+> >>
+> >> On 12/1/19 11:40 PM, Bartosz Golaszewski wrote:
+> >>> pon., 2 gru 2019 o 05:14 Guenter Roeck <linux@roeck-us.net> napisa=C5=
+=82(a):
+> >>>>
+> >>>> On Thu, Oct 03, 2019 at 11:29:12AM +0200, Bartosz Golaszewski wrote:
+> >>>>> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+> >>>>>
+> >>>>> SuperH is the only user of the current implementation of early plat=
+form
+> >>>>> device support. We want to introduce a more robust approach to earl=
+y
+> >>>>> probing. As the first step - move all the current early platform co=
+de
+> >>>>> to arch/sh.
+> >>>>>
+> >>>>> In order not to export internal drivers/base functions to arch code=
+ for
+> >>>>> this temporary solution - copy the two needed routines for driver
+> >>>>> matching from drivers/base/platform.c to arch/sh/drivers/platform_e=
+arly.c.
+> >>>>>
+> >>>>> Also: call early_platform_cleanup() from subsys_initcall() so that =
+it's
+> >>>>> called after all early devices are probed.
+> >>>>>
+> >>>>> Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+> >>>>
+> >>>> Wondering ... has anyone tested this patch on affected hardware ?
+> >>>> All my qemu boot tests (both sh and sheb) fail because of it.
+> >>>> Bisect log below.
+> >>>>
+> >>>> Guenter
+> >>>>
+> >>>> ---
+> >>>> # bad: [72c0870e3a05d9cd5466d08c3d2a3069ed0a2f9f] Merge branch 'for-=
+linus' of git://git.kernel.org/pub/scm/linux/kernel/git/dtor/input
+> >>>> # good: [89d57dddd7d319ded00415790a0bb3c954b7e386] Merge tag 'media/=
+v5.5-1' of git://git.kernel.org/pub/scm/linux/kernel/git/mchehab/linux-medi=
+a
+> >>>> git bisect start 'HEAD' '89d57dddd7d3'
+> >>>> # good: [0a6cad5df541108cfd3fbd79eef48eb824c89bdc] Merge branch 'vmw=
+gfx-coherent' of git://people.freedesktop.org/~thomash/linux into drm-next
+> >>>> git bisect good 0a6cad5df541108cfd3fbd79eef48eb824c89bdc
+> >>>> # bad: [9a3d7fd275be4559277667228902824165153c80] Merge tag 'driver-=
+core-5.5-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/drive=
+r-core
+> >>>> git bisect bad 9a3d7fd275be4559277667228902824165153c80
+> >>>> # good: [59274c7164807d27b24e6c068dfe734f7bea4623] Merge tag 'usb-5.=
+5-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb
+> >>>> git bisect good 59274c7164807d27b24e6c068dfe734f7bea4623
+> >>>> # good: [e71903106721dc53923e90aa484d78bc86c039a9] staging: mt7621-d=
+ma: align to match open parenthesis
+> >>>> git bisect good e71903106721dc53923e90aa484d78bc86c039a9
+> >>>> # good: [8f56e4ebe05c26c30e167519273843476e39e244] Merge tag 'char-m=
+isc-5.5-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-m=
+isc
+> >>>> git bisect good 8f56e4ebe05c26c30e167519273843476e39e244
+> >>>> # good: [8bde9f3d2a217d1635a7c7bdf8ad4c25c9a34b50] Merge tag 'iio-fo=
+r-5.5c' of https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio into s=
+taging-next
+> >>>> git bisect good 8bde9f3d2a217d1635a7c7bdf8ad4c25c9a34b50
+> >>>> # bad: [0628cda318df6baec439ca6e6e274007492f1ccd] mac80211: Use debu=
+gfs_create_xul() helper
+> >>>> git bisect bad 0628cda318df6baec439ca6e6e274007492f1ccd
+> >>>> # bad: [03324507e66c7664c754b1ef92c5c3be24c78aa2] driver core: Allow=
+ fwnode_operations.add_links to differentiate errors
+> >>>> git bisect bad 03324507e66c7664c754b1ef92c5c3be24c78aa2
+> >>>> # bad: [313f5dbba41d905d59c820bb2d91ee6c661aff99] debugfs: remove re=
+turn value of debugfs_create_u16()
+> >>>> git bisect bad 313f5dbba41d905d59c820bb2d91ee6c661aff99
+> >>>> # good: [d4387cd117414ba80230f27a514be5ca4a09cfcc] of: property: Cre=
+ate device links for all child-supplier depencencies
+> >>>> git bisect good d4387cd117414ba80230f27a514be5ca4a09cfcc
+> >>>> # bad: [c31e73121f4c1ec45a3e523ac6ce3ce6dafdcec1] base: soc: Handle =
+custom soc information sysfs entries
+> >>>> git bisect bad c31e73121f4c1ec45a3e523ac6ce3ce6dafdcec1
+> >>>> # bad: [201e91091b1d47047f55580b5474e1239f4d17aa] sh: add the sh_ pr=
+efix to early platform symbols
+> >>>> git bisect bad 201e91091b1d47047f55580b5474e1239f4d17aa
+> >>>> # bad: [507fd01d5333338753a1cc26322dfc9f856c109f] drivers: move the =
+early platform device support to arch/sh
+> >>>> git bisect bad 507fd01d5333338753a1cc26322dfc9f856c109f
+> >>>> # first bad commit: [507fd01d5333338753a1cc26322dfc9f856c109f] drive=
+rs: move the early platform device support to arch/sh
+> >>>
+> >>> Hi Guenter,
+> >>>
+> >>> can you post some bootlogs? Is it the same problem everywhere?
+> >>>
+> >>
+> >> I don't have any useful logs. The boot fails too early for that.
+> >>
+> >
+> > Yeah, it touched "early" devices after all...
+> >
+> >> Sorry, I don't understand "everywhere". It fails in mainline and -next=
+, if that is what you mean.
+> >
+> > I referred to "All my qemu boot tests" when saying everywhere.
+> >
+> > I don't have any relevant HW - the idea for this patch is to stop
+> > compiling for everyone a bunch of code that's only used by one largely
+> > irrelevant architecture and free the namespace for a generic early
+> > platform drivers implementation.
+> >
+> > How are you creating your SH qemu images? I'm seeing there's something
+> > in buildroot for superh - maybe I'll be able to bearly_platform_cleanup=
+uild something
+> > useful.
+> >
+>
+> Below is a possible fix. As I had suspected, the call to early_platform_c=
+leanup()
+> is in the wrong place.
+>
 
-This test covers basic page table entry transformations including but not
-limited to old, young, dirty, clean, write, write protect etc at various
-level along with populating intermediate entries with next page table page
-and validating them.
+This makes sense. If it fixes the issue - do you want to send it to Greg?
 
-Test page table pages are allocated from system memory with required size
-and alignments. The mapped pfns at page table levels are derived from a
-real pfn representing a valid kernel text symbol. This test gets called
-right after page_alloc_init_late().
+Bart
 
-This gets build and run when CONFIG_DEBUG_VM_PGTABLE is selected along with
-CONFIG_VM_DEBUG. Architectures willing to subscribe this test also need to
-select CONFIG_ARCH_HAS_DEBUG_VM_PGTABLE which for now is limited to x86 and
-arm64. Going forward, other architectures too can enable this after fixing
-build or runtime problems (if any) with their page table helpers.
-
-Folks interested in making sure that a given platform's page table helpers
-conform to expected generic MM semantics should enable the above config
-which will just trigger this test during boot. Any non conformity here will
-be reported as an warning which would need to be fixed. This test will help
-catch any changes to the agreed upon semantics expected from generic MM and
-enable platforms to accommodate it thereafter.
-
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Mike Rapoport <rppt@linux.vnet.ibm.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Steven Price <Steven.Price@arm.com>
-Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Sri Krishna chowdary <schowdary@nvidia.com>
-Cc: Dave Hansen <dave.hansen@intel.com>
-Cc: Russell King - ARM Linux <linux@armlinux.org.uk>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
-Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Vineet Gupta <vgupta@synopsys.com>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: Paul Burton <paul.burton@mips.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Kirill A. Shutemov <kirill@shutemov.name>
-Cc: Gerald Schaefer <gerald.schaefer@de.ibm.com>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: linux-snps-arc@lists.infradead.org
-Cc: linux-mips@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-ia64@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-s390@vger.kernel.org
-Cc: linux-sh@vger.kernel.org
-Cc: sparclinux@vger.kernel.org
-Cc: x86@kernel.org
-Cc: linux-kernel@vger.kernel.org
-
-Tested-by: Christophe Leroy <christophe.leroy@c-s.fr>		#PPC32
-Reviewed-by: Ingo Molnar <mingo@kernel.org>
-Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
----
-This adds a test validation for architecture exported page table helpers.
-Patch adds basic transformation tests at various levels of the page table.
-
-This test was originally suggested by Catalin during arm64 THP migration
-RFC discussion earlier. Going forward it can include more specific tests
-with respect to various generic MM functions like THP, HugeTLB etc and
-platform specific tests.
-
-https://lore.kernel.org/linux-mm/20190628102003.GA56463@arrakis.emea.arm.com/
-
-Needs to be applied on linux V5.4
-
-Changes in V11:
-
-- Rebased the patch on V5.4
-
-Changes in V10: (https://patchwork.kernel.org/project/linux-mm/list/?series=205529)
-
-- Always enable DEBUG_VM_PGTABLE when DEBUG_VM is enabled per Ingo
-- Added tags from Ingo
-
-Changes in V9: (https://patchwork.kernel.org/project/linux-mm/list/?series=201429)
-
-- Changed feature support enumeration for powerpc platforms per Christophe
-- Changed config wrapper for basic_[pmd|pud]_tests() to enable ARC platform
-- Enabled the test on ARC platform
-
-Changes in V8: (https://patchwork.kernel.org/project/linux-mm/list/?series=194297)
-
-- Enabled ARCH_HAS_DEBUG_VM_PGTABLE on PPC32 platform per Christophe
-- Updated feature documentation as DEBUG_VM_PGTABLE is now enabled on PPC32 platform
-- Moved ARCH_HAS_DEBUG_VM_PGTABLE earlier to indent it with DEBUG_VM per Christophe
-- Added an information message in debug_vm_pgtable() per Christophe
-- Dropped random_vaddr boundary condition checks per Christophe and Qian
-- Replaced virt_addr_valid() check with pfn_valid() check in debug_vm_pgtable()
-- Slightly changed pr_fmt(fmt) information
-
-Changes in V7: (https://patchwork.kernel.org/project/linux-mm/list/?series=193051)
-
-- Memory allocation and free routines for mapped pages have been droped
-- Mapped pfns are derived from standard kernel text symbol per Matthew
-- Moved debug_vm_pgtaable() after page_alloc_init_late() per Michal and Qian 
-- Updated the commit message per Michal
-- Updated W=1 GCC warning problem on x86 per Qian Cai
-- Addition of new alloc_contig_pages() helper has been submitted separately
-
-Changes in V6: (https://patchwork.kernel.org/project/linux-mm/list/?series=187589)
-
-- Moved alloc_gigantic_page_order() into mm/page_alloc.c per Michal
-- Moved alloc_gigantic_page_order() within CONFIG_CONTIG_ALLOC in the test
-- Folded Andrew's include/asm-generic/pgtable.h fix into the test patch 2/2
-
-Changes in V5: (https://patchwork.kernel.org/project/linux-mm/list/?series=185991)
-
-- Redefined and moved X86 mm_p4d_folded() into a different header per Kirill/Ingo
-- Updated the config option comment per Ingo and dropped 'kernel module' reference
-- Updated the commit message and dropped 'kernel module' reference
-- Changed DEBUG_ARCH_PGTABLE_TEST into DEBUG_VM_PGTABLE per Ingo
-- Moved config option from mm/Kconfig.debug into lib/Kconfig.debug
-- Renamed core test function arch_pgtable_tests() as debug_vm_pgtable()
-- Renamed mm/arch_pgtable_test.c as mm/debug_vm_pgtable.c
-- debug_vm_pgtable() gets called from kernel_init_freeable() after init_mm_internals()
-- Added an entry in Documentation/features/debug/ per Ingo
-- Enabled the test on arm64 and x86 platforms for now
-
-Changes in V4: (https://patchwork.kernel.org/project/linux-mm/list/?series=183465)
-
-- Disable DEBUG_ARCH_PGTABLE_TEST for ARM and IA64 platforms
-
-Changes in V3: (https://lore.kernel.org/patchwork/project/lkml/list/?series=411216)
-
-- Changed test trigger from module format into late_initcall()
-- Marked all functions with __init to be freed after completion
-- Changed all __PGTABLE_PXX_FOLDED checks as mm_pxx_folded()
-- Folded in PPC32 fixes from Christophe
-
-Changes in V2:
-
-https://lore.kernel.org/linux-mm/1568268173-31302-1-git-send-email-anshuman.khandual@arm.com/T/#t
-
-- Fixed small typo error in MODULE_DESCRIPTION()
-- Fixed m64k build problems for lvalue concerns in pmd_xxx_tests()
-- Fixed dynamic page table level folding problems on x86 as per Kirril
-- Fixed second pointers during pxx_populate_tests() per Kirill and Gerald
-- Allocate and free pte table with pte_alloc_one/pte_free per Kirill
-- Modified pxx_clear_tests() to accommodate s390 lower 12 bits situation
-- Changed RANDOM_NZVALUE value from 0xbe to 0xff
-- Changed allocation, usage, free sequence for saved_ptep
-- Renamed VMA_FLAGS as VMFLAGS
-- Implemented a new method for random vaddr generation
-- Implemented some other cleanups
-- Dropped extern reference to mm_alloc()
-- Created and exported new alloc_gigantic_page_order()
-- Dropped the custom allocator and used new alloc_gigantic_page_order()
-
-Changes in V1:
-
-https://lore.kernel.org/linux-mm/1567497706-8649-1-git-send-email-anshuman.khandual@arm.com/
-
-- Added fallback mechanism for PMD aligned memory allocation failure
-
-Changes in RFC V2:
-
-https://lore.kernel.org/linux-mm/1565335998-22553-1-git-send-email-anshuman.khandual@arm.com/T/#u
-
-- Moved test module and it's config from lib/ to mm/
-- Renamed config TEST_ARCH_PGTABLE as DEBUG_ARCH_PGTABLE_TEST
-- Renamed file from test_arch_pgtable.c to arch_pgtable_test.c
-- Added relevant MODULE_DESCRIPTION() and MODULE_AUTHOR() details
-- Dropped loadable module config option
-- Basic tests now use memory blocks with required size and alignment
-- PUD aligned memory block gets allocated with alloc_contig_range()
-- If PUD aligned memory could not be allocated it falls back on PMD aligned
-  memory block from page allocator and pud_* tests are skipped
-- Clear and populate tests now operate on real in memory page table entries
-- Dummy mm_struct gets allocated with mm_alloc()
-- Dummy page table entries get allocated with [pud|pmd|pte]_alloc_[map]()
-- Simplified [p4d|pgd]_basic_tests(), now has random values in the entries
-
-Original RFC V1:
-
-https://lore.kernel.org/linux-mm/1564037723-26676-1-git-send-email-anshuman.khandual@arm.com/
-
- .../debug/debug-vm-pgtable/arch-support.txt   |  35 ++
- arch/arc/Kconfig                              |   1 +
- arch/arm64/Kconfig                            |   1 +
- arch/powerpc/Kconfig                          |   1 +
- arch/x86/Kconfig                              |   1 +
- arch/x86/include/asm/pgtable_64.h             |   6 +
- include/asm-generic/pgtable.h                 |   6 +
- init/main.c                                   |   1 +
- lib/Kconfig.debug                             |  22 +
- mm/Makefile                                   |   1 +
- mm/debug_vm_pgtable.c                         | 388 ++++++++++++++++++
- 11 files changed, 463 insertions(+)
- create mode 100644 Documentation/features/debug/debug-vm-pgtable/arch-support.txt
- create mode 100644 mm/debug_vm_pgtable.c
-
-diff --git a/Documentation/features/debug/debug-vm-pgtable/arch-support.txt b/Documentation/features/debug/debug-vm-pgtable/arch-support.txt
-new file mode 100644
-index 000000000000..f3f8111edbe3
---- /dev/null
-+++ b/Documentation/features/debug/debug-vm-pgtable/arch-support.txt
-@@ -0,0 +1,35 @@
-+#
-+# Feature name:          debug-vm-pgtable
-+#         Kconfig:       ARCH_HAS_DEBUG_VM_PGTABLE
-+#         description:   arch supports pgtable tests for semantics compliance
-+#
-+    -----------------------
-+    |         arch |status|
-+    -----------------------
-+    |       alpha: | TODO |
-+    |         arc: |  ok  |
-+    |         arm: | TODO |
-+    |       arm64: |  ok  |
-+    |         c6x: | TODO |
-+    |        csky: | TODO |
-+    |       h8300: | TODO |
-+    |     hexagon: | TODO |
-+    |        ia64: | TODO |
-+    |        m68k: | TODO |
-+    |  microblaze: | TODO |
-+    |        mips: | TODO |
-+    |       nds32: | TODO |
-+    |       nios2: | TODO |
-+    |    openrisc: | TODO |
-+    |      parisc: | TODO |
-+    |  powerpc/32: |  ok  |
-+    |  powerpc/64: | TODO |
-+    |       riscv: | TODO |
-+    |        s390: | TODO |
-+    |          sh: | TODO |
-+    |       sparc: | TODO |
-+    |          um: | TODO |
-+    |   unicore32: | TODO |
-+    |         x86: |  ok  |
-+    |      xtensa: | TODO |
-+    -----------------------
-diff --git a/arch/arc/Kconfig b/arch/arc/Kconfig
-index 8383155c8c82..4f1f63b590b9 100644
---- a/arch/arc/Kconfig
-+++ b/arch/arc/Kconfig
-@@ -6,6 +6,7 @@
- config ARC
- 	def_bool y
- 	select ARC_TIMERS
-+	select ARCH_HAS_DEBUG_VM_PGTABLE
- 	select ARCH_HAS_DMA_COHERENT_TO_PFN
- 	select ARCH_HAS_DMA_PREP_COHERENT
- 	select ARCH_HAS_PTE_SPECIAL
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 3f047afb982c..707f7f2337f0 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -11,6 +11,7 @@ config ARM64
- 	select ACPI_PPTT if ACPI
- 	select ARCH_CLOCKSOURCE_DATA
- 	select ARCH_HAS_DEBUG_VIRTUAL
-+	select ARCH_HAS_DEBUG_VM_PGTABLE
- 	select ARCH_HAS_DEVMEM_IS_ALLOWED
- 	select ARCH_HAS_DMA_COHERENT_TO_PFN
- 	select ARCH_HAS_DMA_PREP_COHERENT
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 3e56c9c2f16e..c50d7cfa566b 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -120,6 +120,7 @@ config PPC
- 	#
- 	select ARCH_32BIT_OFF_T if PPC32
- 	select ARCH_HAS_DEBUG_VIRTUAL
-+	select ARCH_HAS_DEBUG_VM_PGTABLE if PPC32
- 	select ARCH_HAS_DEVMEM_IS_ALLOWED
- 	select ARCH_HAS_ELF_RANDOMIZE
- 	select ARCH_HAS_FORTIFY_SOURCE
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 8ef85139553f..ead763161497 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -61,6 +61,7 @@ config X86
- 	select ARCH_CLOCKSOURCE_INIT
- 	select ARCH_HAS_ACPI_TABLE_UPGRADE	if ACPI
- 	select ARCH_HAS_DEBUG_VIRTUAL
-+	select ARCH_HAS_DEBUG_VM_PGTABLE
- 	select ARCH_HAS_DEVMEM_IS_ALLOWED
- 	select ARCH_HAS_ELF_RANDOMIZE
- 	select ARCH_HAS_FAST_MULTIPLIER
-diff --git a/arch/x86/include/asm/pgtable_64.h b/arch/x86/include/asm/pgtable_64.h
-index 0b6c4042942a..fb0e76d254b3 100644
---- a/arch/x86/include/asm/pgtable_64.h
-+++ b/arch/x86/include/asm/pgtable_64.h
-@@ -53,6 +53,12 @@ static inline void sync_initial_page_table(void) { }
- 
- struct mm_struct;
- 
-+#define mm_p4d_folded mm_p4d_folded
-+static inline bool mm_p4d_folded(struct mm_struct *mm)
-+{
-+	return !pgtable_l5_enabled();
-+}
-+
- void set_pte_vaddr_p4d(p4d_t *p4d_page, unsigned long vaddr, pte_t new_pte);
- void set_pte_vaddr_pud(pud_t *pud_page, unsigned long vaddr, pte_t new_pte);
- 
-diff --git a/include/asm-generic/pgtable.h b/include/asm-generic/pgtable.h
-index 818691846c90..7f97b7a4a9e2 100644
---- a/include/asm-generic/pgtable.h
-+++ b/include/asm-generic/pgtable.h
-@@ -1157,6 +1157,12 @@ static inline bool arch_has_pfn_modify_check(void)
- # define PAGE_KERNEL_EXEC PAGE_KERNEL
- #endif
- 
-+#ifdef CONFIG_DEBUG_VM_PGTABLE
-+extern void debug_vm_pgtable(void);
-+#else
-+static inline void debug_vm_pgtable(void) { }
-+#endif
-+
- #endif /* !__ASSEMBLY__ */
- 
- #ifndef io_remap_pfn_range
-diff --git a/init/main.c b/init/main.c
-index 91f6ebb30ef0..af8379ed53dc 100644
---- a/init/main.c
-+++ b/init/main.c
-@@ -1185,6 +1185,7 @@ static noinline void __init kernel_init_freeable(void)
- 	sched_init_smp();
- 
- 	page_alloc_init_late();
-+	debug_vm_pgtable();
- 	/* Initialize page ext after all struct pages are initialized. */
- 	page_ext_init();
- 
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 93d97f9b0157..089b36fe669d 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -626,6 +626,12 @@ config DEBUG_STACK_USAGE
- 
- 	  This option will slow down process creation somewhat.
- 
-+config ARCH_HAS_DEBUG_VM_PGTABLE
-+	bool
-+	help
-+	  An architecture should select this when it can successfully
-+	  build and run DEBUG_VM_PGTABLE.
-+
- config DEBUG_VM
- 	bool "Debug VM"
- 	depends on DEBUG_KERNEL
-@@ -661,6 +667,22 @@ config DEBUG_VM_PGFLAGS
- 
- 	  If unsure, say N.
- 
-+config DEBUG_VM_PGTABLE
-+	bool "Debug arch page table for semantics compliance"
-+	depends on MMU
-+	depends on DEBUG_VM
-+	depends on ARCH_HAS_DEBUG_VM_PGTABLE
-+	default y
-+	help
-+	  This option provides a debug method which can be used to test
-+	  architecture page table helper functions on various platforms in
-+	  verifying if they comply with expected generic MM semantics. This
-+	  will help architecture code in making sure that any changes or
-+	  new additions of these helpers still conform to expected
-+	  semantics of the generic MM.
-+
-+	  If unsure, say N.
-+
- config ARCH_HAS_DEBUG_VIRTUAL
- 	bool
- 
-diff --git a/mm/Makefile b/mm/Makefile
-index d996846697ef..2f085b971d34 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -86,6 +86,7 @@ obj-$(CONFIG_HWPOISON_INJECT) += hwpoison-inject.o
- obj-$(CONFIG_DEBUG_KMEMLEAK) += kmemleak.o
- obj-$(CONFIG_DEBUG_KMEMLEAK_TEST) += kmemleak-test.o
- obj-$(CONFIG_DEBUG_RODATA_TEST) += rodata_test.o
-+obj-$(CONFIG_DEBUG_VM_PGTABLE) += debug_vm_pgtable.o
- obj-$(CONFIG_PAGE_OWNER) += page_owner.o
- obj-$(CONFIG_CLEANCACHE) += cleancache.o
- obj-$(CONFIG_MEMORY_ISOLATION) += page_isolation.o
-diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
-new file mode 100644
-index 000000000000..99ebc7c2bf63
---- /dev/null
-+++ b/mm/debug_vm_pgtable.c
-@@ -0,0 +1,388 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * This kernel test validates architecture page table helpers and
-+ * accessors and helps in verifying their continued compliance with
-+ * expected generic MM semantics.
-+ *
-+ * Copyright (C) 2019 ARM Ltd.
-+ *
-+ * Author: Anshuman Khandual <anshuman.khandual@arm.com>
-+ */
-+#define pr_fmt(fmt) "debug_vm_pgtable: %s: " fmt, __func__
-+
-+#include <linux/gfp.h>
-+#include <linux/highmem.h>
-+#include <linux/hugetlb.h>
-+#include <linux/kernel.h>
-+#include <linux/kconfig.h>
-+#include <linux/mm.h>
-+#include <linux/mman.h>
-+#include <linux/mm_types.h>
-+#include <linux/module.h>
-+#include <linux/pfn_t.h>
-+#include <linux/printk.h>
-+#include <linux/random.h>
-+#include <linux/spinlock.h>
-+#include <linux/swap.h>
-+#include <linux/swapops.h>
-+#include <linux/start_kernel.h>
-+#include <linux/sched/mm.h>
-+#include <asm/pgalloc.h>
-+#include <asm/pgtable.h>
-+
-+/*
-+ * Basic operations
-+ *
-+ * mkold(entry)			= An old and not a young entry
-+ * mkyoung(entry)		= A young and not an old entry
-+ * mkdirty(entry)		= A dirty and not a clean entry
-+ * mkclean(entry)		= A clean and not a dirty entry
-+ * mkwrite(entry)		= A write and not a write protected entry
-+ * wrprotect(entry)		= A write protected and not a write entry
-+ * pxx_bad(entry)		= A mapped and non-table entry
-+ * pxx_same(entry1, entry2)	= Both entries hold the exact same value
-+ */
-+#define VMFLAGS	(VM_READ|VM_WRITE|VM_EXEC)
-+
-+/*
-+ * On s390 platform, the lower 12 bits are used to identify given page table
-+ * entry type and for other arch specific requirements. But these bits might
-+ * affect the ability to clear entries with pxx_clear(). So while loading up
-+ * the entries skip all lower 12 bits in order to accommodate s390 platform.
-+ * It does not have affect any other platform.
-+ */
-+#define RANDOM_ORVALUE	(0xfffffffffffff000UL)
-+#define RANDOM_NZVALUE	(0xff)
-+
-+static void __init pte_basic_tests(unsigned long pfn, pgprot_t prot)
-+{
-+	pte_t pte = pfn_pte(pfn, prot);
-+
-+	WARN_ON(!pte_same(pte, pte));
-+	WARN_ON(!pte_young(pte_mkyoung(pte)));
-+	WARN_ON(!pte_dirty(pte_mkdirty(pte)));
-+	WARN_ON(!pte_write(pte_mkwrite(pte)));
-+	WARN_ON(pte_young(pte_mkold(pte)));
-+	WARN_ON(pte_dirty(pte_mkclean(pte)));
-+	WARN_ON(pte_write(pte_wrprotect(pte)));
-+}
-+
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-+static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot)
-+{
-+	pmd_t pmd = pfn_pmd(pfn, prot);
-+
-+	WARN_ON(!pmd_same(pmd, pmd));
-+	WARN_ON(!pmd_young(pmd_mkyoung(pmd)));
-+	WARN_ON(!pmd_dirty(pmd_mkdirty(pmd)));
-+	WARN_ON(!pmd_write(pmd_mkwrite(pmd)));
-+	WARN_ON(pmd_young(pmd_mkold(pmd)));
-+	WARN_ON(pmd_dirty(pmd_mkclean(pmd)));
-+	WARN_ON(pmd_write(pmd_wrprotect(pmd)));
-+	/*
-+	 * A huge page does not point to next level page table
-+	 * entry. Hence this must qualify as pmd_bad().
-+	 */
-+	WARN_ON(!pmd_bad(pmd_mkhuge(pmd)));
-+}
-+
-+#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
-+static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot)
-+{
-+	pud_t pud = pfn_pud(pfn, prot);
-+
-+	WARN_ON(!pud_same(pud, pud));
-+	WARN_ON(!pud_young(pud_mkyoung(pud)));
-+	WARN_ON(!pud_write(pud_mkwrite(pud)));
-+	WARN_ON(pud_write(pud_wrprotect(pud)));
-+	WARN_ON(pud_young(pud_mkold(pud)));
-+
-+	if (mm_pmd_folded(mm) || __is_defined(ARCH_HAS_4LEVEL_HACK))
-+		return;
-+
-+	/*
-+	 * A huge page does not point to next level page table
-+	 * entry. Hence this must qualify as pud_bad().
-+	 */
-+	WARN_ON(!pud_bad(pud_mkhuge(pud)));
-+}
-+#else
-+static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot) { }
-+#endif
-+#else
-+static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot) { }
-+static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot) { }
-+#endif
-+
-+static void __init p4d_basic_tests(unsigned long pfn, pgprot_t prot)
-+{
-+	p4d_t p4d;
-+
-+	memset(&p4d, RANDOM_NZVALUE, sizeof(p4d_t));
-+	WARN_ON(!p4d_same(p4d, p4d));
-+}
-+
-+static void __init pgd_basic_tests(unsigned long pfn, pgprot_t prot)
-+{
-+	pgd_t pgd;
-+
-+	memset(&pgd, RANDOM_NZVALUE, sizeof(pgd_t));
-+	WARN_ON(!pgd_same(pgd, pgd));
-+}
-+
-+#ifndef __ARCH_HAS_4LEVEL_HACK
-+static void __init pud_clear_tests(struct mm_struct *mm, pud_t *pudp)
-+{
-+	pud_t pud = READ_ONCE(*pudp);
-+
-+	if (mm_pmd_folded(mm))
-+		return;
-+
-+	pud = __pud(pud_val(pud) | RANDOM_ORVALUE);
-+	WRITE_ONCE(*pudp, pud);
-+	pud_clear(pudp);
-+	pud = READ_ONCE(*pudp);
-+	WARN_ON(!pud_none(pud));
-+}
-+
-+static void __init pud_populate_tests(struct mm_struct *mm, pud_t *pudp,
-+				      pmd_t *pmdp)
-+{
-+	pud_t pud;
-+
-+	if (mm_pmd_folded(mm))
-+		return;
-+	/*
-+	 * This entry points to next level page table page.
-+	 * Hence this must not qualify as pud_bad().
-+	 */
-+	pmd_clear(pmdp);
-+	pud_clear(pudp);
-+	pud_populate(mm, pudp, pmdp);
-+	pud = READ_ONCE(*pudp);
-+	WARN_ON(pud_bad(pud));
-+}
-+#else
-+static void __init pud_clear_tests(struct mm_struct *mm, pud_t *pudp) { }
-+static void __init pud_populate_tests(struct mm_struct *mm, pud_t *pudp,
-+				      pmd_t *pmdp)
-+{
-+}
-+#endif
-+
-+#ifndef __ARCH_HAS_5LEVEL_HACK
-+static void __init p4d_clear_tests(struct mm_struct *mm, p4d_t *p4dp)
-+{
-+	p4d_t p4d = READ_ONCE(*p4dp);
-+
-+	if (mm_pud_folded(mm))
-+		return;
-+
-+	p4d = __p4d(p4d_val(p4d) | RANDOM_ORVALUE);
-+	WRITE_ONCE(*p4dp, p4d);
-+	p4d_clear(p4dp);
-+	p4d = READ_ONCE(*p4dp);
-+	WARN_ON(!p4d_none(p4d));
-+}
-+
-+static void __init p4d_populate_tests(struct mm_struct *mm, p4d_t *p4dp,
-+				      pud_t *pudp)
-+{
-+	p4d_t p4d;
-+
-+	if (mm_pud_folded(mm))
-+		return;
-+
-+	/*
-+	 * This entry points to next level page table page.
-+	 * Hence this must not qualify as p4d_bad().
-+	 */
-+	pud_clear(pudp);
-+	p4d_clear(p4dp);
-+	p4d_populate(mm, p4dp, pudp);
-+	p4d = READ_ONCE(*p4dp);
-+	WARN_ON(p4d_bad(p4d));
-+}
-+
-+static void __init pgd_clear_tests(struct mm_struct *mm, pgd_t *pgdp)
-+{
-+	pgd_t pgd = READ_ONCE(*pgdp);
-+
-+	if (mm_p4d_folded(mm))
-+		return;
-+
-+	pgd = __pgd(pgd_val(pgd) | RANDOM_ORVALUE);
-+	WRITE_ONCE(*pgdp, pgd);
-+	pgd_clear(pgdp);
-+	pgd = READ_ONCE(*pgdp);
-+	WARN_ON(!pgd_none(pgd));
-+}
-+
-+static void __init pgd_populate_tests(struct mm_struct *mm, pgd_t *pgdp,
-+				      p4d_t *p4dp)
-+{
-+	pgd_t pgd;
-+
-+	if (mm_p4d_folded(mm))
-+		return;
-+
-+	/*
-+	 * This entry points to next level page table page.
-+	 * Hence this must not qualify as pgd_bad().
-+	 */
-+	p4d_clear(p4dp);
-+	pgd_clear(pgdp);
-+	pgd_populate(mm, pgdp, p4dp);
-+	pgd = READ_ONCE(*pgdp);
-+	WARN_ON(pgd_bad(pgd));
-+}
-+#else
-+static void __init p4d_clear_tests(struct mm_struct *mm, p4d_t *p4dp) { }
-+static void __init pgd_clear_tests(struct mm_struct *mm, pgd_t *pgdp) { }
-+static void __init p4d_populate_tests(struct mm_struct *mm, p4d_t *p4dp,
-+				      pud_t *pudp)
-+{
-+}
-+static void __init pgd_populate_tests(struct mm_struct *mm, pgd_t *pgdp,
-+				      p4d_t *p4dp)
-+{
-+}
-+#endif
-+
-+static void __init pte_clear_tests(struct mm_struct *mm, pte_t *ptep)
-+{
-+	pte_t pte = READ_ONCE(*ptep);
-+
-+	pte = __pte(pte_val(pte) | RANDOM_ORVALUE);
-+	WRITE_ONCE(*ptep, pte);
-+	pte_clear(mm, 0, ptep);
-+	pte = READ_ONCE(*ptep);
-+	WARN_ON(!pte_none(pte));
-+}
-+
-+static void __init pmd_clear_tests(struct mm_struct *mm, pmd_t *pmdp)
-+{
-+	pmd_t pmd = READ_ONCE(*pmdp);
-+
-+	pmd = __pmd(pmd_val(pmd) | RANDOM_ORVALUE);
-+	WRITE_ONCE(*pmdp, pmd);
-+	pmd_clear(pmdp);
-+	pmd = READ_ONCE(*pmdp);
-+	WARN_ON(!pmd_none(pmd));
-+}
-+
-+static void __init pmd_populate_tests(struct mm_struct *mm, pmd_t *pmdp,
-+				      pgtable_t pgtable)
-+{
-+	pmd_t pmd;
-+
-+	/*
-+	 * This entry points to next level page table page.
-+	 * Hence this must not qualify as pmd_bad().
-+	 */
-+	pmd_clear(pmdp);
-+	pmd_populate(mm, pmdp, pgtable);
-+	pmd = READ_ONCE(*pmdp);
-+	WARN_ON(pmd_bad(pmd));
-+}
-+
-+static unsigned long __init get_random_vaddr(void)
-+{
-+	unsigned long random_vaddr, random_pages, total_user_pages;
-+
-+	total_user_pages = (TASK_SIZE - FIRST_USER_ADDRESS) / PAGE_SIZE;
-+
-+	random_pages = get_random_long() % total_user_pages;
-+	random_vaddr = FIRST_USER_ADDRESS + random_pages * PAGE_SIZE;
-+
-+	return random_vaddr;
-+}
-+
-+void __init debug_vm_pgtable(void)
-+{
-+	struct mm_struct *mm;
-+	pgd_t *pgdp;
-+	p4d_t *p4dp, *saved_p4dp;
-+	pud_t *pudp, *saved_pudp;
-+	pmd_t *pmdp, *saved_pmdp, pmd;
-+	pte_t *ptep;
-+	pgtable_t saved_ptep;
-+	pgprot_t prot;
-+	phys_addr_t paddr;
-+	unsigned long vaddr, pte_aligned, pmd_aligned;
-+	unsigned long pud_aligned, p4d_aligned, pgd_aligned;
-+
-+	pr_info("Validating architecture page table helpers\n");
-+	prot = vm_get_page_prot(VMFLAGS);
-+	vaddr = get_random_vaddr();
-+	mm = mm_alloc();
-+	if (!mm) {
-+		pr_err("mm_struct allocation failed\n");
-+		return;
-+	}
-+
-+	/*
-+	 * PFN for mapping at PTE level is determined from a standard kernel
-+	 * text symbol. But pfns for higher page table levels are derived by
-+	 * masking lower bits of this real pfn. These derived pfns might not
-+	 * exist on the platform but that does not really matter as pfn_pxx()
-+	 * helpers will still create appropriate entries for the test. This
-+	 * helps avoid large memory block allocations to be used for mapping
-+	 * at higher page table levels.
-+	 */
-+	paddr = __pa(&start_kernel);
-+
-+	pte_aligned = (paddr & PAGE_MASK) >> PAGE_SHIFT;
-+	pmd_aligned = (paddr & PMD_MASK) >> PAGE_SHIFT;
-+	pud_aligned = (paddr & PUD_MASK) >> PAGE_SHIFT;
-+	p4d_aligned = (paddr & P4D_MASK) >> PAGE_SHIFT;
-+	pgd_aligned = (paddr & PGDIR_MASK) >> PAGE_SHIFT;
-+	WARN_ON(!pfn_valid(pte_aligned));
-+
-+	pgdp = pgd_offset(mm, vaddr);
-+	p4dp = p4d_alloc(mm, pgdp, vaddr);
-+	pudp = pud_alloc(mm, p4dp, vaddr);
-+	pmdp = pmd_alloc(mm, pudp, vaddr);
-+	ptep = pte_alloc_map(mm, pmdp, vaddr);
-+
-+	/*
-+	 * Save all the page table page addresses as the page table
-+	 * entries will be used for testing with random or garbage
-+	 * values. These saved addresses will be used for freeing
-+	 * page table pages.
-+	 */
-+	pmd = READ_ONCE(*pmdp);
-+	saved_p4dp = p4d_offset(pgdp, 0UL);
-+	saved_pudp = pud_offset(p4dp, 0UL);
-+	saved_pmdp = pmd_offset(pudp, 0UL);
-+	saved_ptep = pmd_pgtable(pmd);
-+
-+	pte_basic_tests(pte_aligned, prot);
-+	pmd_basic_tests(pmd_aligned, prot);
-+	pud_basic_tests(pud_aligned, prot);
-+	p4d_basic_tests(p4d_aligned, prot);
-+	pgd_basic_tests(pgd_aligned, prot);
-+
-+	pte_clear_tests(mm, ptep);
-+	pmd_clear_tests(mm, pmdp);
-+	pud_clear_tests(mm, pudp);
-+	p4d_clear_tests(mm, p4dp);
-+	pgd_clear_tests(mm, pgdp);
-+
-+	pte_unmap(ptep);
-+
-+	pmd_populate_tests(mm, pmdp, saved_ptep);
-+	pud_populate_tests(mm, pudp, saved_pmdp);
-+	p4d_populate_tests(mm, p4dp, saved_pudp);
-+	pgd_populate_tests(mm, pgdp, saved_p4dp);
-+
-+	p4d_free(mm, saved_p4dp);
-+	pud_free(mm, saved_pudp);
-+	pmd_free(mm, saved_pmdp);
-+	pte_free(mm, saved_ptep);
-+
-+	mm_dec_nr_puds(mm);
-+	mm_dec_nr_pmds(mm);
-+	mm_dec_nr_ptes(mm);
-+	__mmdrop(mm);
-+}
--- 
-2.20.1
-
+> Guenter
+>
+> ---
+>   arch/sh/drivers/platform_early.c | 11 ++---------
+>   drivers/base/platform.c          |  4 ++++
+>   2 files changed, 6 insertions(+), 9 deletions(-)
+>
+> diff --git a/arch/sh/drivers/platform_early.c b/arch/sh/drivers/platform_=
+early.c
+> index f6d148451dfc..16f33bffd8fc 100644
+> --- a/arch/sh/drivers/platform_early.c
+> +++ b/arch/sh/drivers/platform_early.c
+> @@ -325,9 +325,9 @@ int __init sh_early_platform_driver_probe(char *class=
+_str,
+>   }
+>
+>   /**
+> - * sh_early_platform_cleanup - clean up early platform code
+> + * early_platform_cleanup - clean up early platform code
+>    */
+> -static int __init sh_early_platform_cleanup(void)
+> +void early_platform_cleanup(void)
+>   {
+>         struct platform_device *pd, *pd2;
+>
+> @@ -337,11 +337,4 @@ static int __init sh_early_platform_cleanup(void)
+>                 list_del(&pd->dev.devres_head);
+>                 memset(&pd->dev.devres_head, 0, sizeof(pd->dev.devres_hea=
+d));
+>         }
+> -
+> -       return 0;
+>   }
+> -/*
+> - * This must happen once after all early devices are probed but before p=
+robing
+> - * real platform devices.
+> - */
+> -subsys_initcall(sh_early_platform_cleanup);
+> diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+> index 7c532548b0a6..3ba153e356ee 100644
+> --- a/drivers/base/platform.c
+> +++ b/drivers/base/platform.c
+> @@ -1325,10 +1325,14 @@ struct device *platform_find_device_by_driver(str=
+uct device *start,
+>   }
+>   EXPORT_SYMBOL_GPL(platform_find_device_by_driver);
+>
+> +void __weak early_platform_cleanup(void) { }
+> +
+>   int __init platform_bus_init(void)
+>   {
+>         int error;
+>
+> +       early_platform_cleanup();
+> +
+>         error =3D device_register(&platform_bus);
+>         if (error) {
+>                 put_device(&platform_bus);
+>
