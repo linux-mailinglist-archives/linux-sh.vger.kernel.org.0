@@ -2,115 +2,61 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 01871111B10
-	for <lists+linux-sh@lfdr.de>; Tue,  3 Dec 2019 22:36:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BA321122C9
+	for <lists+linux-sh@lfdr.de>; Wed,  4 Dec 2019 07:07:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727457AbfLCVg6 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 3 Dec 2019 16:36:58 -0500
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:42866 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727430AbfLCVg6 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 3 Dec 2019 16:36:58 -0500
-Received: by mail-pf1-f196.google.com with SMTP id l22so2479915pff.9;
-        Tue, 03 Dec 2019 13:36:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=M46RQcwxgINKa8vpC6RQJq2Z/PQ6+1z2D0+STFMlBWs=;
-        b=urbzj+fb0UgJ2kkk6FK8gZeFnG9Pq/7eGIL09MywLyrSLgc7gWFEFJMGlba57wpQre
-         U/QVyeD5K1RojUp3LtTMzsY+BcZJn7n4hkbGJGSJmg/KggF5UtJW4tu0vFa3CyNlckd6
-         uy+TyRW3zvg1jiQgsBUTraTrrXpFPZVwxW8H9kWybJ6NsC/Ah8VromsvK3wRr13zRLw2
-         zGPuzTnlZ1Y3BRlZhaPCETSdizhP4vGTS1ikgNd/WpMt9TmY990JhNsc6MbLla7/FdA+
-         pnWBnRJSozy3sS9S1yBHsojALEfXaIGW65K8MDWrCNitpu+Ay8O/Jwyq9tEgWAJy6HRx
-         x0nQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=M46RQcwxgINKa8vpC6RQJq2Z/PQ6+1z2D0+STFMlBWs=;
-        b=AhLz0uRPASQvErdDV3i7HitXvgXFw6pEKE7f6FIy0uohwwoUOUBBxQE8nMA8nkSa6W
-         tU0FWqPvFThPhctFDEBBFElLnpaW7WFb+aiFWIajcs7EenIG8vir2vqu/vb/ZneA99F+
-         8O+Mvx1aFgvPODZzNZO+0i9Igj8YQwmoDA5M2N3SwfTVUo0mDZQyliT1PMrJ9ONK3NDi
-         MJq4PkT4X3DOe5RRI1hdjeS0CKRT45E4MvAu1OFeaTsdFgr2DK/ZzroxZEqKLp3e4JLM
-         YK+EcfhzVn6nwXlIxQWJIC8aygOLBbkOZi1wLZ2tnBs9twmQrOWVZurSP3PHgram0jW/
-         PaDw==
-X-Gm-Message-State: APjAAAWM7yBIu4tKUo4kdzaj0twtdI33eCa5N0xBKivKzDxsGHVZrJYD
-        t4fyTARTgIyJppZjN+uAHW8=
-X-Google-Smtp-Source: APXvYqwx9HpYfEdeX8KitmYjpnkNfmF/IvBAHRIQ0bmZBBtsrNU5eUEvackFZxQtljNcP1d0JoGxKw==
-X-Received: by 2002:a62:1447:: with SMTP id 68mr7217396pfu.53.1575409017456;
-        Tue, 03 Dec 2019 13:36:57 -0800 (PST)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id x11sm4765624pfn.53.2019.12.03.13.36.56
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 03 Dec 2019 13:36:56 -0800 (PST)
-Date:   Tue, 3 Dec 2019 13:36:55 -0800
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Geert Uytterhoeven <geert+renesas@glider.be>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/7] sh: Modernize printing of kernel messages
-Message-ID: <20191203213655.GA3253@roeck-us.net>
-References: <20191203162645.19950-1-geert+renesas@glider.be>
+        id S1726217AbfLDGHL (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 4 Dec 2019 01:07:11 -0500
+Received: from sonic313-10.consmr.mail.ne1.yahoo.com ([66.163.185.33]:34856
+        "EHLO sonic313-10.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725791AbfLDGHL (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 4 Dec 2019 01:07:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aol.com; s=a2048; t=1575439630; bh=LdaBzZO/TscnK+07Ig700Kv8wr5mA2vays5RAO6stSs=; h=Date:From:To:Subject:References:From:Subject; b=EBO1y74D82b34Ou7NXnQc7sMh1lit5ztK7bX5M5OrIjcqQ3ZiEzaAZqe7PVbFFpk/XVro5zj+nTKDoxhHYSVSTU3Tpu7hMyPxbyLFatBTYj6wvteL/4XWrcckutQrfVWhyf3qRp8BmhF7khw6Lt29oGDI2dpmK6tKrvJ58T+f/9NHkfaLLrKANPpvCT/8xiAN2QZl434RLrN9gFshEgWJWVbMw9q5JNM7ZM1NxxsaYw3BjRikbHW7w+DSswkT0UG2htqtLGtXw2xvxfHeAFSfvXWWmOET4mefq+e0ye3cvSQgFiT7aYUAVoPjrO44R2HwjMKFf+hSUEbmjUxrh2OzQ==
+X-YMail-OSG: tnbClJkVM1lG_iVzW.KZSAY3LF4lUmkPFocfOOjgibY551tjvd4O56B_uRd2Ldu
+ zkWOG_DUQGxcwNMPwKiK2ZPBunUAcIw..b.M51nFc4Z8uB.UVaCZo5zceUpYfWlsrOEeAyPdXEDB
+ dWisX13v.hBRpOAlTH1EGMLtDil7xF3agYzcsRQYJhnpRGiKg0HID2RtConjP5am23kVF91ex5UQ
+ Nbz5XaRG8N_vA4qo.gphBqt72cbKO_jzffFlU25Z2ylHA1xbIBnM5igTYCG.GrejVXDSJes.ZVVo
+ 7uehlBF8KMD7vmloWoa3.JaGCb3WVENpTvIg6.rD2uhDtlvzDbB6S7Q11CcN7juKONj3gG30SiiK
+ UybVOT.Mg4z1vcQLvyYQEH.pAVCju59_.mip8VYNsf_NaNPms2qDf5MZSWEAdMKEjJk.xWLz0Gk4
+ MgyWTZaYEHP_XnUqYv.qfjW6rIKTiMV9xm9K36LNIi5jnjxSuTA7VYzPXwBWv24mBMadlcsPqgUR
+ vx07iL3IHhBkL0Roj4RU8JgfUKCdMg_Y1SLpY0EmUTLDbdLLXDR1tjlrtfZI3.8v2TmkekwnC5T2
+ TWwGg4btoC19MFj1UM.GOn6am4xC6CwUjhHNQAUQFrLrP9kj9_qLa2YBwCaqI1BrLyeHlA3iI4iP
+ BodhBdJW.H5wUYjSXxKTdxobJKP4zGNcGa8rpZPgipULzCsr5q8mnDywbJWTwCTIRfEov4JdiCUM
+ 0QQrAbluJh137Y9arHOXtbIDTscmRQxGxN1rC4fpJMnzGrvwD8jcimMzO53vL0bHfdDnIRmYyNxt
+ bH9LGf2ufva2g8eXCFDzWrIQq3Rqo46MXUa02z0ls2kAdo3A6O74f8NVsl0u0W3sKqNtput5DCnj
+ M.EKvqs9tg0dGcrm2Q2VTqP8TlE7APh.zdmy.VkXDMzkruxbYitqOulw.rSxAV7WFj3QIT3y7kaP
+ u_vivsx_f8MnaU6xoLJgwkw5SFnud0_Nvj4kjfJi15f.NN3aIhwS5gwv5jPd9uGu6r9Z8KTJ_LZd
+ 81kXSx1uWQhRN7BjBOAjDyMPUfC1EB_4CImhosqgmhZF8OUaTnKhLOeIlvhCHRJZMGKnOf6SGT8G
+ y7m0EI.GBAHVpTH4QrxICSrCNc_jB5qxE6CEuJ1B6BbTIBqQRebcYZGBsaCg.5ZvDCsTZfiNqTf5
+ 29XC5vIaB7bpv0MBWsDN75jIQH8CSaP_QKQvGq6sB9h_31ExfD7wnSYGdvQv8p79HQww928uv0qv
+ MAZDxNXFToiOaj2xaaEYtrC5bZn6dBG_.
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic313.consmr.mail.ne1.yahoo.com with HTTP; Wed, 4 Dec 2019 06:07:10 +0000
+Date:   Wed, 4 Dec 2019 06:07:06 +0000 (UTC)
+From:   Karl Nasrallah <knnspeed@aol.com>
+To:     linux-sh@vger.kernel.org
+Message-ID: <1686953279.8556109.1575439626669@mail.yahoo.com>
+Subject: Strange SH7750/SH7750S-Style Performance Counters Behavior
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191203162645.19950-1-geert+renesas@glider.be>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+References: <1686953279.8556109.1575439626669.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.14728 aolwebmail Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Tue, Dec 03, 2019 at 05:26:38PM +0100, Geert Uytterhoeven wrote:
-> 	Hi all,
-> 
-> This patch series fixes the broken lines in kernel output, which I
-> presume have been happening since commit 4bcc595ccd80decb ("printk:
-> reinstate KERN_CONT for printing continuat ion lines").
-> Most annoying are the ones in call traces and disassembly dumps, as they
-> cause lots of small bits of information to fly by your serial console.
-> 
-> Thanks!
-> 
-> Geert Uytterhoeven (7):
->   sh: kernel: disassemble: Fix broken lines in disassembly dumps
->   sh: dump_stack: Fix broken lines and ptrval in calltrace dumps
->   sh: process: Fix broken lines in register dumps
->   sh: sh2007: Modernize printing of kernel messages
->   sh: pci: Modernize printing of kernel messages
->   sh: machvec: Modernize printing of kernel messages
->   sh: fault: Modernize printing of kernel messages
-> 
-Yes, the output does look a bit nicer with those patches applied.
+Hello,
 
-For the series:
+Apologies if this is not the right place for this, but I have encountered some strange behavior with the SH7750-style performance counters that I have been trying to understand for nearly two weeks to no avail.
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+Essentially, I wrote a set of functions to control the counters in a way analogous to the SH4 linux kernel's perf_event.c, as that file is the only real documentation I could find on them. As far as I can tell, it all works, however every time I read the counters I get a value that according to my calculations is about 11.96988 times too fast.
 
->  arch/sh/boards/board-sh2007.c    |   4 +-
->  arch/sh/drivers/pci/common.c     |   6 +-
->  arch/sh/drivers/pci/pci-sh7780.c |  23 ++++---
->  arch/sh/drivers/pci/pci.c        |  11 ++--
->  arch/sh/kernel/disassemble.c     | 103 ++++++++++++++++---------------
->  arch/sh/kernel/dumpstack.c       |  24 +++----
->  arch/sh/kernel/machvec.c         |   8 +--
->  arch/sh/kernel/process_32.c      |  38 +++++-------
->  arch/sh/mm/fault.c               |  39 ++++++------
->  9 files changed, 124 insertions(+), 132 deletions(-)
-> 
-> -- 
-> 2.17.1
-> 
-> Gr{oetje,eeting}s,
-> 
-> 						Geert
-> 
-> --
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-> 
-> In personal conversations with technical people, I call myself a hacker. But
-> when I'm talking to journalists I just say "programmer" or something like that.
-> 							    -- Linus Torvalds
+I am using elapsed time mode (event code 0x23) and the exact CPU model I am running this on is an SH7091, which were used by SEGA in the early 2000s in their Dreamcast and NAOMI machines. As far as I can tell, they are largely identical to the SH7750/SH7750S processors. The maximum internal core/PLL frequency is 200MHz, so seeing the counters run at 12x PLL is extremely odd. I have two machines as well, and they both exhibit this behavior, although for some unknown reason every now and again one of them will turn on and count 200MHz core frequency cycles instead of 11.96988 x 200MHz core frequency cycles.
+
+I have also measured that this 11.96988 number is actually extremely consistent to at least 3-4 decimal places; it is never 12 or 11.90.
+
+Is there any chance that someone here has seen this behavior before?
+Also, might anyone know what the definition PMCR_CLKF 0x100 in perf_event.c does? I have not seen this actually used anywhere.
+
+Any insight would be very greatly appreciated!
