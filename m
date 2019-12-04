@@ -2,41 +2,55 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 55924113029
-	for <lists+linux-sh@lfdr.de>; Wed,  4 Dec 2019 17:42:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CDDC8113560
+	for <lists+linux-sh@lfdr.de>; Wed,  4 Dec 2019 20:03:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728374AbfLDQmS (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 4 Dec 2019 11:42:18 -0500
-Received: from bombadil.infradead.org ([198.137.202.133]:33556 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727989AbfLDQmS (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 4 Dec 2019 11:42:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=yrRU3PisMm2st1jba/Bb8HxzI37AaG7nr9igFrhou+0=; b=YzSukzBJzdqU/YRJch4sntx/E
-        sCZkgAXqyU8Ej6+v4ETINlSOyOuAcafjK2W4U6Fs//ZIYBczlusZ/pgQ44bR+n0nAlFM5eO8MirWJ
-        qIjAFz6sXyFenhc9WNLc4StTDHvzQCcnIDggAMNIzuK8vkIlf24fOfOOlgl1Iz+UA11rQ08SXyC+w
-        G1c3Dr+c8/Q/M6YpvfUOh3xnFX89tF5/200Y85jgFFVYZK0RQqPmSFlx+U6ud+y1xRZMmXFkg9eJb
-        mG5q2RuAIdcWaLcilm+sE8on/C9JnC3syLBE4KkjSLE60YV8AStvK2Pb7JqHReYLAWBPh9Yjy6TQe
-        BG0N42Dhg==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1icXil-0007xP-5G; Wed, 04 Dec 2019 16:41:47 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 8ABC93006E3;
-        Wed,  4 Dec 2019 17:40:26 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 5D67A20B83957; Wed,  4 Dec 2019 17:41:43 +0100 (CET)
-Date:   Wed, 4 Dec 2019 17:41:43 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
+        id S1728474AbfLDTDp (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 4 Dec 2019 14:03:45 -0500
+Received: from mail-pl1-f196.google.com ([209.85.214.196]:43399 "EHLO
+        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728114AbfLDTDp (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 4 Dec 2019 14:03:45 -0500
+Received: by mail-pl1-f196.google.com with SMTP id q16so99089plr.10;
+        Wed, 04 Dec 2019 11:03:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=+2HrNLTVWalIHUdX8QP/0YhRSnO47+yfuy7Xa7RxbV8=;
+        b=YRWQO5g4rLkC0MblwqJ+tUEXDF2+/MiYU+xHjLTAS03SfnEYtgh/M/DTb3eYvIoMZB
+         JDR0KdSxhfC0/W2Db0d9wuz8uTQGbe65wHS0QZbtAD9+L3ih542dTM3oD+6o/W6aWWv0
+         2hqDJ8xVqp3Jc1hvFyz6MU8HmgZnJ1SmLVOzeKVg7lJi/qzW+953JWN8vQBVkkiPu7lw
+         sWaHIkuuWaLRl8PKGoxCY5RFipxX5KQp6Z4p+zL+GhYHahssE99KMrEf/SQCDoM/+qYT
+         D/3SjMcFeLXmL9GQvObKurlXju9QNEl4dZrU9QYQwhWXqoQtofODXRTIlPRPKAkMkN0m
+         Zqzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition
+         :content-transfer-encoding:in-reply-to:user-agent;
+        bh=+2HrNLTVWalIHUdX8QP/0YhRSnO47+yfuy7Xa7RxbV8=;
+        b=XbeVAt4IUgIDssmcbZ8pncKd+dKHV3LsdhLn9rBVHQt6C+FNelKem1MepIrrSXg5F9
+         Jk3kmvtHxdqI51Zxbg4O66v2byhMlx2WEZo5miVwgaaubsXWSu5zZy7HMx1th93GxBWS
+         RW1xtzLQauo+q+utfjgjw5MmJBhvQCaxLsTvOCu91kw2JG7ZncwZ3T7GW/afl89VbHqf
+         aM5bt8cOAf94lCJ/izv+inekbsLkmAoy9it5hY0TJYhbi2ZN8cNUWo/WSYhk3hDXCU3P
+         p8lXahwlrQa8qZVAr+E0uyu4GLsMA0J39QuI9/4R7rlI4kGLW3bHBITDZceXDmLo4cUj
+         pkmg==
+X-Gm-Message-State: APjAAAVArcNDFcpg9Ifi3W3ZWqTwVq5o1f9gaYwbQZJ5ipUXlYgLKsA3
+        7MUbIMjXT0BRd7New/qCzR2NAsx2
+X-Google-Smtp-Source: APXvYqz6lJM0e4EEbZp8mRchegTfRf+2Kjkl5gI2q0pdvDqiaIXymUCQ7kv2L298qRyBZbdnKrQ7Cg==
+X-Received: by 2002:a17:902:d902:: with SMTP id c2mr4592247plz.188.1575486224402;
+        Wed, 04 Dec 2019 11:03:44 -0800 (PST)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id e11sm8487714pgh.54.2019.12.04.11.03.42
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 04 Dec 2019 11:03:43 -0800 (PST)
+Date:   Wed, 4 Dec 2019 11:03:41 -0800
+From:   Guenter Roeck <linux@roeck-us.net>
 To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Will Deacon <will.deacon@arm.com>,
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Will Deacon <will.deacon@arm.com>,
         "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Nicholas Piggin <npiggin@gmail.com>,
@@ -48,103 +62,42 @@ Cc:     Will Deacon <will.deacon@arm.com>,
         Rik van Riel <riel@surriel.com>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>
+        Linux-sh list <linux-sh@vger.kernel.org>
 Subject: Re: [PATCH v6 10/18] sh/tlb: Convert SH to generic mmu_gather
-Message-ID: <20191204164143.GB2810@hirez.programming.kicks-ass.net>
+Message-ID: <20191204190341.GA11419@roeck-us.net>
 References: <20190219103148.192029670@infradead.org>
  <20190219103233.443069009@infradead.org>
  <CAMuHMdW3nwckjA9Bt-_Dmf50B__sZH+9E5s0_ziK1U_y9onN=g@mail.gmail.com>
  <20191204104733.GR2844@hirez.programming.kicks-ass.net>
  <CAMuHMdXs_Fm93t=O9jJPLxcREZy-T53Z_U_RtHcvaWyV+ESdjg@mail.gmail.com>
- <20191204133454.GW2844@hirez.programming.kicks-ass.net>
- <CAMuHMdVnhNFBqPQXKYCQbCnoQjZPSXRkuxbsbaguZ7_TcXXmVg@mail.gmail.com>
+ <156fa92f-4c5a-08bd-bcda-20029724c0de@roeck-us.net>
+ <CAMuHMdVKcTum5vMmT1TdttVnGnhnQihGU1jrguF26TW7ZeOJPg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <CAMuHMdVnhNFBqPQXKYCQbCnoQjZPSXRkuxbsbaguZ7_TcXXmVg@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMuHMdVKcTum5vMmT1TdttVnGnhnQihGU1jrguF26TW7ZeOJPg@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Wed, Dec 04, 2019 at 04:07:53PM +0100, Geert Uytterhoeven wrote:
-> On Wed, Dec 4, 2019 at 2:35 PM Peter Zijlstra <peterz@infradead.org> wrote:
-
-> > Does this fare better?
+On Wed, Dec 04, 2019 at 04:17:26PM +0100, Geert Uytterhoeven wrote:
+> Hi Günter,
 > 
-> Yes. Migo-R is happy again.
-> Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> > > Nah, but the v5.4-rc3 I booted recently on qemu -M r2d had
+> > > CONFIG_PGTABLE_LEVELS=2, so it didn't show the problem.
+> > >
+> >
+> > Guess that explains why I do not see the problem with my qemu boots.
+> > I use rts7751r2dplus_defconfig. Is it possible to reproduce the problem
+> > with qemu ? I don't think so, but maybe I am missing something.
 > 
-> > --- a/arch/sh/include/asm/pgalloc.h
-> > +++ b/arch/sh/include/asm/pgalloc.h
-> > @@ -36,9 +36,7 @@ do {                                                  \
-> >  #if CONFIG_PGTABLE_LEVELS > 2
-> >  #define __pmd_free_tlb(tlb, pmdp, addr)                        \
-> >  do {                                                   \
-> > -       struct page *page = virt_to_page(pmdp);         \
-> > -       pgtable_pmd_page_dtor(page);                    \
-> > -       tlb_remove_page((tlb), page);                   \
-> > +       pmd_free((tlb)->mm, (pmdp));                    \
-> >  } while (0);
-> >  #endif
+> Qemu seems to support r2d and shix only.
+> For the latter, the website pointed to by the qemu sources no longer exists.
+> But according to those sources, it's also sh7750-based, so no luck.
+> 
+Oh, well, worth asking. Thanks for the feedback.
 
-OK, so I was going to write a Changelog to go with that, but then I
-realized that while this works and is similar to before the patch, I'm
-not sure this is in fact correct.
-
-With this on (and also before) we're freeing the PMD before we've done
-the TLB invalidate, that seems wrong!
-
-Looking at the size of that pmd_cache, that looks to be 30-(12+12-3)+3
-== 12, which is exactly 1 page, for PAGE_SIZE_4K, less for the larger
-pages.
-
-I'm thinking perhaps we should do something like the below instead?
-
-
----
- arch/sh/mm/pgtable.c | 16 ++--------------
- 1 file changed, 2 insertions(+), 14 deletions(-)
-
-diff --git a/arch/sh/mm/pgtable.c b/arch/sh/mm/pgtable.c
-index 5c8f9247c3c2..fac7e822fd0c 100644
---- a/arch/sh/mm/pgtable.c
-+++ b/arch/sh/mm/pgtable.c
-@@ -5,9 +5,6 @@
- #define PGALLOC_GFP GFP_KERNEL | __GFP_ZERO
- 
- static struct kmem_cache *pgd_cachep;
--#if PAGETABLE_LEVELS > 2
--static struct kmem_cache *pmd_cachep;
--#endif
- 
- void pgd_ctor(void *x)
- {
-@@ -23,11 +20,6 @@ void pgtable_cache_init(void)
- 	pgd_cachep = kmem_cache_create("pgd_cache",
- 				       PTRS_PER_PGD * (1<<PTE_MAGNITUDE),
- 				       PAGE_SIZE, SLAB_PANIC, pgd_ctor);
--#if PAGETABLE_LEVELS > 2
--	pmd_cachep = kmem_cache_create("pmd_cache",
--				       PTRS_PER_PMD * (1<<PTE_MAGNITUDE),
--				       PAGE_SIZE, SLAB_PANIC, NULL);
--#endif
- }
- 
- pgd_t *pgd_alloc(struct mm_struct *mm)
-@@ -48,11 +40,7 @@ void pud_populate(struct mm_struct *mm, pud_t *pud, pmd_t *pmd)
- 
- pmd_t *pmd_alloc_one(struct mm_struct *mm, unsigned long address)
- {
--	return kmem_cache_alloc(pmd_cachep, PGALLOC_GFP);
--}
--
--void pmd_free(struct mm_struct *mm, pmd_t *pmd)
--{
--	kmem_cache_free(pmd_cachep, pmd);
-+	BUILD_BUG_ON(PTRS_PER_PMD * (1<<PTE_MAGNITUDE) <= PAGE_SIZE);
-+	return (pmd_t *)__get_free_page(PGALLOC_GFP);
- }
- #endif /* PAGETABLE_LEVELS > 2 */
+Guenter
