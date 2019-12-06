@@ -2,114 +2,114 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9625611498A
-	for <lists+linux-sh@lfdr.de>; Thu,  5 Dec 2019 23:56:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AAA231150FE
+	for <lists+linux-sh@lfdr.de>; Fri,  6 Dec 2019 14:28:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726034AbfLEW4M (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 5 Dec 2019 17:56:12 -0500
-Received: from mail-pj1-f67.google.com ([209.85.216.67]:42348 "EHLO
-        mail-pj1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725959AbfLEW4M (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 5 Dec 2019 17:56:12 -0500
-Received: by mail-pj1-f67.google.com with SMTP id o11so1876677pjp.9;
-        Thu, 05 Dec 2019 14:56:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=IDeK7oOW0B9CNYnGbhlUWhfaYDqmeePr7B16rf7vuug=;
-        b=TcJxvXpsivxWne6OpmZopXg+nQiC+1jQ/foJ47anY56k0POIuLQce7VaiLsrSG+Rdq
-         yiKg63sLTxBwMA2qld4SudrloQ8suHPXRFYdyYhCP6fL1h948ENgH/kMwxUJ7onxe3eD
-         TcOsmz0CywRwGQCzD1y/ybQ7TPUQcxtQ9eyvgGu8EyAKqpn80rP+5xlsBe5+pWXowMsg
-         MHQS4RzIXQu15CB4NOjusttvAW38VyS3y5uJbevX0UvFXRmfP46FZj6JocHsPQzA3tAo
-         lGAHWYrodz1yA0XU8UNcwBLMzNZUUjNcgFRcjhyIzJ7gMjXTng8XW24Ecp3T+jOtUcnG
-         IvKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=IDeK7oOW0B9CNYnGbhlUWhfaYDqmeePr7B16rf7vuug=;
-        b=diyfIMvXR5Oqn8Da42y2jwdBHYOu+oO9wJyiroD+jIi8twJN0l8Q5nLL1v5za1Jfvv
-         zLnzfn4QD3ySmqV6zNEMsr2uN6CF8KiFwHfsQeUs03oEuTZnSuvRAZAp73J3ZdxS3Mz4
-         ByKvXV2E4pDCBxKkYeT1fHlsJPpU2Jil+rfqHixswfdyDxdlyPnCNcWG7nJBzjdIril5
-         ZRXJdZ6zSvUNTyLwdw+ZFAWvnKo4AyDbUdxYWJ3ffAwl6QzP9gdvEhYVnuzvQCQ4S5zw
-         kxTwylTRuEFqbp4DJQNyQlJNJPxLKX7kM2xt8S9bdI59byLypLMsJsQjutHWjVFmPMJL
-         0Ldw==
-X-Gm-Message-State: APjAAAU43IzGKM8Q7vFpD+lwBr6o06TQRC1nVUBGQ6fUzJ7BVjnuNsWO
-        pfzIz2DKgyPgzE094EQJas0=
-X-Google-Smtp-Source: APXvYqxHzb65lDkdIjAVkQB89RP4XhIHPS1Szd01E5+eADPQbmpWTvCZzqaJVF3j5vmxirtTRjda4w==
-X-Received: by 2002:a17:90a:868b:: with SMTP id p11mr12140247pjn.60.1575586571954;
-        Thu, 05 Dec 2019 14:56:11 -0800 (PST)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id k3sm3746371pgc.3.2019.12.05.14.56.10
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 05 Dec 2019 14:56:11 -0800 (PST)
-Date:   Thu, 5 Dec 2019 14:56:10 -0800
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Will Deacon <will.deacon@arm.com>,
-        "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Linux-Arch <linux-arch@vger.kernel.org>,
-        Linux MM <linux-mm@kvack.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Rik van Riel <riel@surriel.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>
-Subject: Re: [PATCH v6 10/18] sh/tlb: Convert SH to generic mmu_gather
-Message-ID: <20191205225610.GB2532@roeck-us.net>
-References: <20190219103148.192029670@infradead.org>
- <20190219103233.443069009@infradead.org>
- <CAMuHMdW3nwckjA9Bt-_Dmf50B__sZH+9E5s0_ziK1U_y9onN=g@mail.gmail.com>
- <20191204104733.GR2844@hirez.programming.kicks-ass.net>
- <3c83eaec-8f33-1b90-1c70-9e7c1c8b1855@physik.fu-berlin.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3c83eaec-8f33-1b90-1c70-9e7c1c8b1855@physik.fu-berlin.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+        id S1726171AbfLFN2y (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 6 Dec 2019 08:28:54 -0500
+Received: from xavier.telenet-ops.be ([195.130.132.52]:51586 "EHLO
+        xavier.telenet-ops.be" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726168AbfLFN2y (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 6 Dec 2019 08:28:54 -0500
+Received: from ramsan ([84.195.182.253])
+        by xavier.telenet-ops.be with bizsmtp
+        id adUr2100C5USYZQ01dUr2F; Fri, 06 Dec 2019 14:28:52 +0100
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan with esmtp (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1idDf9-0006FD-Ag; Fri, 06 Dec 2019 14:28:51 +0100
+Received: from geert by rox.of.borg with local (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1idDf9-0007f1-89; Fri, 06 Dec 2019 14:28:51 +0100
+From:   Geert Uytterhoeven <geert+renesas@glider.be>
+To:     Alan Stern <stern@rowland.harvard.edu>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
+        linux-usb@vger.kernel.org, linux-sh@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH] usb: host: ehci-sh: Remove unused platform data support
+Date:   Fri,  6 Dec 2019 14:28:49 +0100
+Message-Id: <20191206132849.29406-1-geert+renesas@glider.be>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Thu, Dec 05, 2019 at 08:30:17PM +0100, John Paul Adrian Glaubitz wrote:
-> Hi!
-> 
-> On 12/4/19 11:47 AM, Peter Zijlstra wrote:
-> >> I got remote access to an SH7722-based Migo-R again, which spews a long
-> >> sequence of BUGs during userspace startup.  I've bisected this to commit
-> >> c5b27a889da92f4a ("sh/tlb: Convert SH to generic mmu_gather").
-> > 
-> > Whoopsy.. also, is this really the first time anybody booted an SH
-> > kernel in over a year ?!?
-> 
-> I have to admit, I have been very lazy with kernel updates. I have been
-> planning to upgrade to a much more recent release on my boards for a while
-> now, I have just been postponing it since the machines run very stable
-> with the current kernel I am using.
-> 
+ehci_sh_platdata was never used, remove it. It can be resurrected from
+git history when needed.
 
-Hey, if you write a qemu emulation, I'll be happy to run it on a regular
-basis :-)
+This basically reverts commit 3e0c70d050c7ed6d ("usb: ehci-sh: Add PHY
+init function with platform data").
 
-Problem is really that the architecture doesn't get as much attention as
-it needs. The backtrace pointed to by Rob has been seen for a long time,
-but either there is no one with the knowledge to fix it, or they are all
-busy with other stuff.
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+ drivers/usb/host/ehci-sh.c            |  7 -------
+ include/linux/platform_data/ehci-sh.h | 16 ----------------
+ 2 files changed, 23 deletions(-)
+ delete mode 100644 include/linux/platform_data/ehci-sh.h
 
-Guenter
+diff --git a/drivers/usb/host/ehci-sh.c b/drivers/usb/host/ehci-sh.c
+index 2afde14dc425c261..c25c51d26f26035b 100644
+--- a/drivers/usb/host/ehci-sh.c
++++ b/drivers/usb/host/ehci-sh.c
+@@ -8,7 +8,6 @@
+  */
+ #include <linux/platform_device.h>
+ #include <linux/clk.h>
+-#include <linux/platform_data/ehci-sh.h>
+ 
+ struct ehci_sh_priv {
+ 	struct clk *iclk, *fclk;
+@@ -76,7 +75,6 @@ static int ehci_hcd_sh_probe(struct platform_device *pdev)
+ {
+ 	struct resource *res;
+ 	struct ehci_sh_priv *priv;
+-	struct ehci_sh_platdata *pdata;
+ 	struct usb_hcd *hcd;
+ 	int irq, ret;
+ 
+@@ -89,8 +87,6 @@ static int ehci_hcd_sh_probe(struct platform_device *pdev)
+ 		goto fail_create_hcd;
+ 	}
+ 
+-	pdata = dev_get_platdata(&pdev->dev);
+-
+ 	/* initialize hcd */
+ 	hcd = usb_create_hcd(&ehci_sh_hc_driver, &pdev->dev,
+ 			     dev_name(&pdev->dev));
+@@ -127,9 +123,6 @@ static int ehci_hcd_sh_probe(struct platform_device *pdev)
+ 	clk_enable(priv->fclk);
+ 	clk_enable(priv->iclk);
+ 
+-	if (pdata && pdata->phy_init)
+-		pdata->phy_init();
+-
+ 	ret = usb_add_hcd(hcd, irq, IRQF_SHARED);
+ 	if (ret != 0) {
+ 		dev_err(&pdev->dev, "Failed to add hcd");
+diff --git a/include/linux/platform_data/ehci-sh.h b/include/linux/platform_data/ehci-sh.h
+deleted file mode 100644
+index 219bd79dabfc0a0e..0000000000000000
+--- a/include/linux/platform_data/ehci-sh.h
++++ /dev/null
+@@ -1,16 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0
+- *
+- * EHCI SuperH driver platform data
+- *
+- * Copyright (C) 2012  Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj@renesas.com>
+- * Copyright (C) 2012  Renesas Solutions Corp.
+- */
+-
+-#ifndef __USB_EHCI_SH_H
+-#define __USB_EHCI_SH_H
+-
+-struct ehci_sh_platdata {
+-	void (*phy_init)(void); /* Phy init function */
+-};
+-
+-#endif /* __USB_EHCI_SH_H */
+-- 
+2.17.1
 
-> Adrian
-> 
-> -- 
->  .''`.  John Paul Adrian Glaubitz
-> : :' :  Debian Developer - glaubitz@debian.org
-> `. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
->   `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
