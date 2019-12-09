@@ -2,195 +2,127 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A61E61172A0
-	for <lists+linux-sh@lfdr.de>; Mon,  9 Dec 2019 18:19:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2ADA8117548
+	for <lists+linux-sh@lfdr.de>; Mon,  9 Dec 2019 20:14:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726265AbfLIRTL (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 9 Dec 2019 12:19:11 -0500
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:41641 "EHLO
-        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725904AbfLIRTL (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 9 Dec 2019 12:19:11 -0500
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.85)
-          with esmtps (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id <1ieMgd-001CX5-Cr>; Mon, 09 Dec 2019 18:19:07 +0100
-Received: from p5b13af92.dip0.t-ipconnect.de ([91.19.175.146] helo=[192.168.178.40])
-          by inpost2.zedat.fu-berlin.de (Exim 4.85)
-          with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id <1ieMgd-000UM0-67>; Mon, 09 Dec 2019 18:19:07 +0100
-To:     Linux-sh list <linux-sh@vger.kernel.org>
-Cc:     debian-superh@lists.debian.org
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Subject: 2nd RESEND: Native build fails with malloc(): corrupted top size
-Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
- 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
- scOkTAZQGVpD/8AaLH4v1w==
-Message-ID: <bea762ff-abcb-b8aa-81f4-2201c53f19c3@physik.fu-berlin.de>
-Date:   Mon, 9 Dec 2019 18:19:06 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        id S1726562AbfLITOE (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 9 Dec 2019 14:14:04 -0500
+Received: from ale.deltatee.com ([207.54.116.67]:56026 "EHLO ale.deltatee.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726230AbfLITOE (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Mon, 9 Dec 2019 14:14:04 -0500
+Received: from cgy1-donard.priv.deltatee.com ([172.16.1.31])
+        by ale.deltatee.com with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <gunthorp@deltatee.com>)
+        id 1ieOTk-00025k-Lg; Mon, 09 Dec 2019 12:13:57 -0700
+Received: from gunthorp by cgy1-donard.priv.deltatee.com with local (Exim 4.92)
+        (envelope-from <gunthorp@deltatee.com>)
+        id 1ieOTd-0001Me-0k; Mon, 09 Dec 2019 12:13:49 -0700
+From:   Logan Gunthorpe <logang@deltatee.com>
+To:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, linux-mm@kvack.org,
+        Christoph Hellwig <hch@lst.de>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Logan Gunthorpe <logang@deltatee.com>
+Date:   Mon,  9 Dec 2019 12:13:40 -0700
+Message-Id: <20191209191346.5197-1-logang@deltatee.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: base64
-X-Originating-IP: 91.19.175.146
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 172.16.1.31
+X-SA-Exim-Rcpt-To: linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, platform-driver-x86@vger.kernel.org, linux-mm@kvack.org, hch@lst.de, dan.j.williams@intel.com, akpm@linux-foundation.org, catalin.marinas@arm.com, benh@kernel.crashing.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, will@kernel.org, luto@kernel.org, peterz@infradead.org, logang@deltatee.com
+X-SA-Exim-Mail-From: gunthorp@deltatee.com
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on ale.deltatee.com
+X-Spam-Level: 
+X-Spam-Status: No, score=-6.7 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        MYRULES_NO_TEXT autolearn=no autolearn_force=no version=3.4.2
+Subject: [PATCH 0/6] Allow setting caching mode in arch_add_memory() for P2PDMA
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on ale.deltatee.com)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-KFJlc2VuZCB3aXRob3V0IGF0dGFjaG1lbnRzIG5vdyBzaW5jZSB0aGlzIHNlZW1zIHRvIGJl
-IGJsb2NrZWQgYnkgdGhlIGxpc3Qgc2VydmVycykNCg0KSGkhDQoNClNpbmNlIGFyb3VuZCB0
-aGUgNS4zIHJlbGVhc2UsIHRyeWluZyB0byBidWlsZCB0aGUgU0gga2VybmVsIG5hdGl2ZWx5
-IG9uDQpteSBTSDc3ODZMQ1IgZXZhbHVhdGlvbiBib2FyZCB1bmRlciBEZWJpYW4gdW5zdGFi
-bGUgd2l0aCBhIGN1cnJlbnQgZ2NjLTkNCnRvb2xjaGFpbiBmYWlscyB3aXRoIGVycm9ycyB3
-aGljaCBzZWVtIHRvIGJlIGdlbmVyYXRlZCBieSB0aGUgQyBsaWJyYXJ5Og0KDQpnbGF1Yml0
-ekB0aXJwaXR6Oi9zcnYvZ2xhdWJpdHovbGludXgtNS4zLjE1JCBtYWtlIGNsZWFuICYmIG1h
-a2UNCkFib3J0ZWQNCkFib3J0ZWQNCkFib3J0ZWQNCkFib3J0ZWQNCkFib3J0ZWQNCkFib3J0
-ZWQNCkFib3J0ZWQNCkFib3J0ZWQNCkFib3J0ZWQNCkFib3J0ZWQNCkFib3J0ZWQNCkFib3J0
-ZWQNCkFib3J0ZWQNCkFib3J0ZWQNCkFib3J0ZWQNCkFib3J0ZWQNCkFib3J0ZWQNCkFib3J0
-ZWQNCkFib3J0ZWQNCkFib3J0ZWQNCkFib3J0ZWQNCiAgSE9TVENDICBzY3JpcHRzL2Jhc2lj
-L2ZpeGRlcA0KICBIT1NUQ0MgIHNjcmlwdHMvYmluMmMNCiAgSE9TVENDICBzY3JpcHRzL2th
-bGxzeW1zDQogIEhPU1RDQyAgc2NyaXB0cy9jb25tYWtlaGFzaA0KbWFrZVsxXTogJ2luY2x1
-ZGUvZ2VuZXJhdGVkL21hY2h0eXBlcy5oJyBpcyB1cCB0byBkYXRlLg0KICBDQyAgICAgIHNj
-cmlwdHMvbW9kL2VtcHR5Lm8NCm1hbGxvYygpOiBpbnZhbGlkIHNpemUgKHVuc29ydGVkKQ0K
-QWJvcnRlZA0KbWFrZVsxXTogKioqIFtzY3JpcHRzL01ha2VmaWxlLmJ1aWxkOjI4MTogc2Ny
-aXB0cy9tb2QvZW1wdHkub10gRXJyb3IgMTM0DQptYWtlOiAqKiogW01ha2VmaWxlOjExMjg6
-IHByZXBhcmUwXSBFcnJvciAyDQpnbGF1Yml0ekB0aXJwaXR6Oi9zcnYvZ2xhdWJpdHovbGlu
-dXgtNS4zLjE1JA0KDQpFdmVuIHdpdGggIm1ha2UgVj0xIiBpdCBkb2Vzbid0IGJlY29tZSBh
-bnkgbW9yZSBvYnZpb3VzIHdoYXQncyBnb2luZyBvbjoNCg0KZ2xhdWJpdHpAdGlycGl0ejov
-c3J2L2dsYXViaXR6L2xpbnV4LTUuMy4xNSQgbWFrZSBWPTENCkFib3J0ZWQNCkFib3J0ZWQN
-CkFib3J0ZWQNCkFib3J0ZWQNCkFib3J0ZWQNCkFib3J0ZWQNCkFib3J0ZWQNCkFib3J0ZWQN
-CkFib3J0ZWQNCkFib3J0ZWQNCkFib3J0ZWQNCkFib3J0ZWQNCkFib3J0ZWQNCkFib3J0ZWQN
-CkFib3J0ZWQNCkFib3J0ZWQNCkFib3J0ZWQNCkFib3J0ZWQNCkFib3J0ZWQNCkFib3J0ZWQN
-CkFib3J0ZWQNCm1ha2UgLWYgLi9zY3JpcHRzL01ha2VmaWxlLmJ1aWxkIG9iaj1hcmNoL3No
-L2tlcm5lbC9zeXNjYWxscyBhbGwNCm1ha2UgLWYgLi9zY3JpcHRzL01ha2VmaWxlLmJ1aWxk
-IG9iaj1zY3JpcHRzL2Jhc2ljDQpybSAtZiAudG1wX3F1aWV0X3JlY29yZG1jb3VudA0KbWFr
-ZSAtZiAuL3NjcmlwdHMvTWFrZWZpbGUuYnVpbGQgb2JqPXNjcmlwdHMvZHRjDQptYWtlIC1m
-IC4vc2NyaXB0cy9NYWtlZmlsZS5idWlsZCBvYmo9c2NyaXB0cw0Kc2V0IC1lOyBta2RpciAt
-cCBpbmNsdWRlL2NvbmZpZy87IHsgZWNobyAiNS4zLjE1JCgvYmluL2Jhc2ggLi9zY3JpcHRz
-L3NldGxvY2FsdmVyc2lvbiAuKSI7IH0gPiBpbmNsdWRlL2NvbmZpZy9rZXJuZWwucmVsZWFz
-ZS50bXA7IGlmIFsgLXIgaW5jbHVkZS9jb25maWcva2VybmVsLnJlbGVhc2UgXSAmJiBjbXAg
-LXMgaW5jbHVkZS9jb25maWcva2VybmVsLnJlbGVhc2UgaW5jbHVkZS9jb25maWcva2VybmVs
-LnJlbGVhc2UudG1wOyB0aGVuIHJtIC1mIGluY2x1ZGUvY29uZmlnL2tlcm5lbC5yZWxlYXNl
-LnRtcDsgZWxzZSA6ICcgIFVQRCAgICAgaW5jbHVkZS9jb25maWcva2VybmVsLnJlbGVhc2Un
-OyBtdiAtZiBpbmNsdWRlL2NvbmZpZy9rZXJuZWwucmVsZWFzZS50bXAgaW5jbHVkZS9jb25m
-aWcva2VybmVsLnJlbGVhc2U7IGZpDQptYWtlIC1mIC4vc2NyaXB0cy9NYWtlZmlsZS5hc20t
-Z2VuZXJpYyBvYmo9YXJjaC9zaC9pbmNsdWRlL2dlbmVyYXRlZC91YXBpL2FzbSBcDQpnZW5l
-cmljPWluY2x1ZGUvdWFwaS9hc20tZ2VuZXJpYw0KbWFrZSAtZiAuL3NjcmlwdHMvTWFrZWZp
-bGUuYXNtLWdlbmVyaWMgb2JqPWFyY2gvc2gvaW5jbHVkZS9nZW5lcmF0ZWQvYXNtIFwNCmdl
-bmVyaWM9aW5jbHVkZS9hc20tZ2VuZXJpYw0Kc2V0IC1lOyBta2RpciAtcCBpbmNsdWRlL2dl
-bmVyYXRlZC91YXBpL2xpbnV4LzsgeyAgICAgICBlY2hvIFwjZGVmaW5lIExJTlVYX1ZFUlNJ
-T05fQ09ERSAzMjg0NjM7IGVjaG8gJyNkZWZpbmUgS0VSTkVMX1ZFUlNJT04oYSxiLGMpICgo
-KGEpIDw8IDE2KSArICgoYikgPDwgOCkgKyAoYykpJzsgfSA+IGluY2x1ZGUvZ2VuZXJhdGVk
-L3VhcGkvbGludXgvdmVyc2lvbi5oLnRtcDsgaWYgWyAtciBpbmNsdWRlL2dlbmVyYXRlZC91
-YXBpL2xpbnV4L3ZlcnNpb24uaCBdICYmIGNtcCAtcyBpbmNsdWRlL2dlbmVyYXRlZC91YXBp
-L2xpbnV4L3ZlcnNpb24uaCBpbmNsdWRlL2dlbmVyYXRlZC91YXBpL2xpbnV4L3ZlcnNpb24u
-aC50bXA7IHRoZW4gcm0gLWYgaW5jbHVkZS9nZW5lcmF0ZWQvdWFwaS9saW51eC92ZXJzaW9u
-LmgudG1wOyBlbHNlIDogJyAgVVBEICAgICBpbmNsdWRlL2dlbmVyYXRlZC91YXBpL2xpbnV4
-L3ZlcnNpb24uaCc7IG12IC1mIGluY2x1ZGUvZ2VuZXJhdGVkL3VhcGkvbGludXgvdmVyc2lv
-bi5oLnRtcCBpbmNsdWRlL2dlbmVyYXRlZC91YXBpL2xpbnV4L3ZlcnNpb24uaDsgZmkNCnJt
-IC1mIGluY2x1ZGUvbGludXgvdmVyc2lvbi5oDQpzZXQgLWU7IG1rZGlyIC1wIGluY2x1ZGUv
-Z2VuZXJhdGVkLzsgeyAgaWYgWyBgZWNobyAtbiAiNS4zLjE1IiB8IHdjIC1jIGAgLWd0IDY0
-IF07IHRoZW4gZWNobyAnIjUuMy4xNSIgZXhjZWVkcyA2NCBjaGFyYWN0ZXJzJyA+JjI7IGV4
-aXQgMTsgZmk7IGVjaG8gXCNkZWZpbmUgVVRTX1JFTEVBU0UgXCI1LjMuMTVcIjsgfSA+IGlu
-Y2x1ZGUvZ2VuZXJhdGVkL3V0c3JlbGVhc2UuaC50bXA7IGlmIFsgLXIgaW5jbHVkZS9nZW5l
-cmF0ZWQvdXRzcmVsZWFzZS5oIF0gJiYgY21wIC1zIGluY2x1ZGUvZ2VuZXJhdGVkL3V0c3Jl
-bGVhc2UuaCBpbmNsdWRlL2dlbmVyYXRlZC91dHNyZWxlYXNlLmgudG1wOyB0aGVuIHJtIC1m
-IGluY2x1ZGUvZ2VuZXJhdGVkL3V0c3JlbGVhc2UuaC50bXA7IGVsc2UgOiAnICBVUEQgICAg
-IGluY2x1ZGUvZ2VuZXJhdGVkL3V0c3JlbGVhc2UuaCc7IG12IC1mIGluY2x1ZGUvZ2VuZXJh
-dGVkL3V0c3JlbGVhc2UuaC50bXAgaW5jbHVkZS9nZW5lcmF0ZWQvdXRzcmVsZWFzZS5oOyBm
-aQ0KbWFrZSAtZiAuL3NjcmlwdHMvTWFrZWZpbGUuYnVpbGQgb2JqPWFyY2gvc2gvdG9vbHMg
-aW5jbHVkZS9nZW5lcmF0ZWQvbWFjaHR5cGVzLmgNCm1ha2VbMV06ICdpbmNsdWRlL2dlbmVy
-YXRlZC9tYWNodHlwZXMuaCcgaXMgdXAgdG8gZGF0ZS4NCm1ha2UgLWYgLi9zY3JpcHRzL01h
-a2VmaWxlLmJ1aWxkIG9iaj1zY3JpcHRzL21vZA0KICBnY2MgLVdwLC1NRCxzY3JpcHRzL21v
-ZC8uZW1wdHkuby5kICAtbm9zdGRpbmMgLWlzeXN0ZW0gL3Vzci9saWIvZ2NjL3NoNC1saW51
-eC1nbnUvOS9pbmNsdWRlIC1JLi9hcmNoL3NoL2luY2x1ZGUgLUkuL2FyY2gvc2gvaW5jbHVk
-ZS9nZW5lcmF0ZWQgIC1JLi9pbmNsdWRlIC1JLi9hcmNoL3NoL2luY2x1ZGUvdWFwaSAtSS4v
-YXJjaC9zaC9pbmNsdWRlL2dlbmVyYXRlZC91YXBpIC1JLi9pbmNsdWRlL3VhcGkgLUkuL2lu
-Y2x1ZGUvZ2VuZXJhdGVkL3VhcGkgLWluY2x1ZGUgLi9pbmNsdWRlL2xpbnV4L2tjb25maWcu
-aCAtaW5jbHVkZSAuL2luY2x1ZGUvbGludXgvY29tcGlsZXJfdHlwZXMuaCAtRF9fS0VSTkVM
-X18gLW00IC1tNC1ub2ZwdSAtbTRhIC1tNGEtbm9mcHUgLW1sIC1tbm8tZmRwaWMgLVdhLC1p
-c2E9c2g0YS11cCAtZmZyZWVzdGFuZGluZyAtSSAuL2FyY2gvc2gvaW5jbHVkZS9jcHUtc2g0
-YSAtSSAuL2FyY2gvc2gvaW5jbHVkZS9jcHUtc2g0IC1JIC4vYXJjaC9zaC9pbmNsdWRlL2Nw
-dS1jb21tb24gLUkgLi9hcmNoL3NoL2luY2x1ZGUvbWFjaC1jb21tb24gLVdhbGwgLVd1bmRl
-ZiAtV2Vycm9yPXN0cmljdC1wcm90b3R5cGVzIC1Xbm8tdHJpZ3JhcGhzIC1mbm8tc3RyaWN0
-LWFsaWFzaW5nIC1mbm8tY29tbW9uIC1mc2hvcnQtd2NoYXIgLWZuby1QSUUgLVdlcnJvcj1p
-bXBsaWNpdC1mdW5jdGlvbi1kZWNsYXJhdGlvbiAtV2Vycm9yPWltcGxpY2l0LWludCAtV25v
-LWZvcm1hdC1zZWN1cml0eSAtc3RkPWdudTg5IC1waXBlIC1tNCAtbTQtbm9mcHUgLW00YSAt
-bTRhLW5vZnB1IC1tbCAtbW5vLWZkcGljIC1XYSwtaXNhPXNoNGEtdXAgLWZmcmVlc3RhbmRp
-bmcgLUkgLi9hcmNoL3NoL2luY2x1ZGUvY3B1LXNoNGEgLUkgLi9hcmNoL3NoL2luY2x1ZGUv
-Y3B1LXNoNCAtSSAuL2FyY2gvc2gvaW5jbHVkZS9jcHUtY29tbW9uIC1JIC4vYXJjaC9zaC9p
-bmNsdWRlL21hY2gtY29tbW9uIC1PMiAtZnN0YWNrLXByb3RlY3Rvci1zdHJvbmcgLVduby11
-bnVzZWQtYnV0LXNldC12YXJpYWJsZSAtZm5vLW9taXQtZnJhbWUtcG9pbnRlciAtZm5vLW9w
-dGltaXplLXNpYmxpbmctY2FsbHMgLWcgLVdkZWNsYXJhdGlvbi1hZnRlci1zdGF0ZW1lbnQg
-LVd2bGEgLVduby1wb2ludGVyLXNpZ24gICAgIC1ES0JVSUxEX0JBU0VOQU1FPSciZW1wdHki
-JyAtREtCVUlMRF9NT0ROQU1FPSciZW1wdHkiJyAtYyAtbyBzY3JpcHRzL21vZC9lbXB0eS5v
-IHNjcmlwdHMvbW9kL2VtcHR5LmMNCm1hbGxvYygpOiBjb3JydXB0ZWQgdG9wIHNpemUNCkFi
-b3J0ZWQNCm1ha2VbMV06ICoqKiBbc2NyaXB0cy9NYWtlZmlsZS5idWlsZDoyODE6IHNjcmlw
-dHMvbW9kL2VtcHR5Lm9dIEVycm9yIDEzNA0KbWFrZTogKioqIFtNYWtlZmlsZToxMTI4OiBw
-cmVwYXJlMF0gRXJyb3IgMg0KZ2xhdWJpdHpAdGlycGl0ejovc3J2L2dsYXViaXR6L2xpbnV4
-LTUuMy4xNSQNCg0KRnJvbSB0aGUgYnVpbGQgbG9nIGhpc3RvcnkgaW4gRGViaWFuLCBpdCBz
-ZWVtcyB0aGUgcHJvYmxlbSBzaG93ZWQgZmlyc3Qgd2l0aCA1LjMtcjUgWzFdLg0KDQpIb3dl
-dmVyLCBJIGhhdmUgdGVzdGVkIHRoaXMgb24gYW4gb2xkZXIgMy4xNi43IHNvdXJjZSB0aGF0
-IEkgaGF2ZSBzdGlsbCBvbiBkaXNrIGFuZA0KdGhlIHByb2JsZW0gcmVwcm9kdWNlcyB0aGVy
-ZSBhcyB3ZWxsLiBUaGUgZ2xpYmMgdmVyc2lvbiBvZiBidWlsZHMgd2hlcmUgaXQgZmFpbHMg
-YW5kDQp3aGVyZSBpdCBkaWRuJ3QsIHNlZW1zIHRvIGJlIGlkZW50aWNhbCBbMiwgM10uDQoN
-CkRvZXMgYW55b25lIGhhdmUgYW4gaWRlYSB3aGF0IGNvdWxkIGJlIGdvaW5nIG9uPyBJJ20g
-dXNpbmcgdGhlIGtlcm5lbCBjb25maWd1cmF0aW9uDQphcyBmb3VuZCBpbiBbNF0uDQoNCkFk
-cmlhbg0KDQo+IFsxXSBodHRwczovL2J1aWxkZC5kZWJpYW4ub3JnL3N0YXR1cy9sb2dzLnBo
-cD9wa2c9bGludXgmYXJjaD1zaDQNCj4gWzJdIGh0dHBzOi8vYnVpbGRkLmRlYmlhbi5vcmcv
-c3RhdHVzL2ZldGNoLnBocD9wa2c9bGludXgmYXJjaD1zaDQmdmVyPTUuMyU3RXJjNS0xJTdF
-ZXhwMSZzdGFtcD0xNTY2Njg2NDI3JnJhdz0wDQo+IFszXSBodHRwczovL2J1aWxkZC5kZWJp
-YW4ub3JnL3N0YXR1cy9mZXRjaC5waHA/cGtnPWxpbnV4JmFyY2g9c2g0JnZlcj01LjMlN0Vy
-YzUtMSU3RWV4cDImc3RhbXA9MTU2Njg4NTA2OSZyYXc9MA0KPiBbNF0gaHR0cHM6Ly9wZW9w
-bGUuZGViaWFuLm9yZy9+Z2xhdWJpdHovc2g0LWtlcm5lbC1jb25maWcudHh0DQoNCi0tIA0K
-IC4nJ2AuICBKb2huIFBhdWwgQWRyaWFuIEdsYXViaXR6DQo6IDonIDogIERlYmlhbiBEZXZl
-bG9wZXIgLSBnbGF1Yml0ekBkZWJpYW4ub3JnDQpgLiBgJyAgIEZyZWllIFVuaXZlcnNpdGFl
-dCBCZXJsaW4gLSBnbGF1Yml0ekBwaHlzaWsuZnUtYmVybGluLmRlDQogIGAtICAgIEdQRzog
-NjJGRiA4QTc1IDg0RTAgMjk1NiA5NTQ2ICAwMDA2IDc0MjYgM0IzNyBGNUI1IEY5MTMNCg0K
+Hi,
 
+Currently, the page tables created using memremap_pages() are always
+created with the PAGE_KERNEL cacheing mode. However, the P2PDMA code
+is creating pages for PCI BAR memory which should never be accessed
+through the cache and instead use either WC or UC. This still works in
+most cases, on x86, because the MTRR registers typically override the
+caching settings in the page tables for all of the IO memory to be
+UC-. However, this tends not to work so well on other arches or
+some rare x86 machines that have firmware which does not setup the
+MTRR registers in this way.
+
+Instead of this, this series proposes a change to arch_add_memory()
+to take the pgprot required by the mapping which allows us to
+explicitly set pagetable entries for P2PDMA memory to WC.
+
+This changes is pretty routine for most of the arches: x86_64, s390, arm64
+and powerpc simply need to thread the pgprot through to where the page tables
+are setup. x86_32 unfortunately sets up the page tables at boot so
+must use _set_memory_prot() to change their caching mode. ia64 and sh
+don't appear to have an easy way to change the page tables so, for now
+at least, we just return -EINVAL on such mappings and thus they will
+not support P2PDMA memory until the work for this is done.
+
+Thanks,
+
+Logan
+
+--
+
+Logan Gunthorpe (6):
+  x86/mm: Thread pgprot_t through init_memory_mapping()
+  x86/mm: Introduce _set_memory_prot()
+  powerpc/mm: Thread pgprot_t through create_section_mapping()
+  s390/mm: Thread pgprot_t through vmem_add_mapping()
+  mm, memory_hotplug: Provide argument for the pgprot_t in
+    arch_add_memory()
+  mm/memremap: Set caching mode for PCI P2PDMA memory to WC
+
+ arch/arm64/mm/mmu.c                        |  4 +--
+ arch/ia64/mm/init.c                        |  5 +++-
+ arch/powerpc/include/asm/book3s/64/hash.h  |  3 +-
+ arch/powerpc/include/asm/book3s/64/radix.h |  3 +-
+ arch/powerpc/include/asm/sparsemem.h       |  3 +-
+ arch/powerpc/mm/book3s64/hash_utils.c      |  5 ++--
+ arch/powerpc/mm/book3s64/pgtable.c         |  7 +++--
+ arch/powerpc/mm/book3s64/radix_pgtable.c   | 18 +++++++-----
+ arch/powerpc/mm/mem.c                      |  7 +++--
+ arch/s390/include/asm/pgtable.h            |  3 +-
+ arch/s390/mm/extmem.c                      |  3 +-
+ arch/s390/mm/init.c                        |  4 +--
+ arch/s390/mm/vmem.c                        | 10 +++----
+ arch/sh/mm/init.c                          |  5 +++-
+ arch/x86/include/asm/page_types.h          |  3 --
+ arch/x86/include/asm/pgtable.h             |  3 ++
+ arch/x86/include/asm/set_memory.h          |  1 +
+ arch/x86/kernel/amd_gart_64.c              |  3 +-
+ arch/x86/mm/init.c                         |  9 +++---
+ arch/x86/mm/init_32.c                      | 10 +++++--
+ arch/x86/mm/init_64.c                      | 34 ++++++++++++----------
+ arch/x86/mm/mm_internal.h                  |  3 +-
+ arch/x86/mm/pageattr.c                     |  7 +++++
+ arch/x86/platform/efi/efi_64.c             |  3 +-
+ include/linux/memory_hotplug.h             |  2 +-
+ mm/memory_hotplug.c                        |  2 +-
+ mm/memremap.c                              |  5 +++-
+ 27 files changed, 104 insertions(+), 61 deletions(-)
+
+--
+2.20.1
