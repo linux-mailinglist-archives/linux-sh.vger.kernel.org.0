@@ -2,95 +2,145 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FEB31191AE
-	for <lists+linux-sh@lfdr.de>; Tue, 10 Dec 2019 21:16:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 33F1D11930C
+	for <lists+linux-sh@lfdr.de>; Tue, 10 Dec 2019 22:08:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726500AbfLJUQs (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 10 Dec 2019 15:16:48 -0500
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:33605 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726045AbfLJUQs (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 10 Dec 2019 15:16:48 -0500
-Received: by mail-ot1-f65.google.com with SMTP id d17so16754274otc.0
-        for <linux-sh@vger.kernel.org>; Tue, 10 Dec 2019 12:16:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=landley-net.20150623.gappssmtp.com; s=20150623;
-        h=subject:from:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=fSpRuopSQsqIsBCQrngapk7qNizSkn5vIGLeu0YXzok=;
-        b=QLv9j1Kf1pl339xnRMu5I9Hk1ydy8BS8j+X62qrsluuIpkDenW9aIF02vLfXSINlBb
-         ll/3lIgfsmi0GezqLWed6FxZPbFy7G49/y2CU3OvGU0mcQ0pNRdyMAfObdGqDh+JqzvR
-         mal68g8H0Wx8SSafpanwaf/B9n6O/Uvce4Vi1eEuoOMI1cF0OESPDK2QXK6bZIaJ0mlf
-         BtgohwuOnJpGl8MznffMR/kLiYNGfOVZazfVlVVcMcBY5Cnl6+8fsT+nWiSx2+HwLtfX
-         eMolb4Lkwlm7xSbxW1Oi2wR9nJKYGqXG/41u56UdnN0RLhNL/RVeWT0evf7YQJ9YvJOu
-         QeKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=fSpRuopSQsqIsBCQrngapk7qNizSkn5vIGLeu0YXzok=;
-        b=Trh8bfLvuZCL5UTkavr/HbhXX+7pSwMdO5Or0XUnGk5bspoeFqKT2oSuyJz5dFxj2/
-         AR7VgjCLrDaRfmnZBAt6lywVm7EcRGir2rQJKGCMu95bcUt1iodo+K6oOdNnJaKZPvHg
-         KmQZvn98XlFtdFrxpaLGSLs/e8h/S3nGaLKIW/b2r3WNXw8OmKCOvVKKM4WQeiXA+k1V
-         W1owaO3os8+tjSXojSr9HhHyg+TvVu2thCYfyVe1/MDQWtlcDSu1ZTK9OtdovYGLiAPN
-         g5VMZPn41M9VWJBI9OKnxqsxresqHomezGyfvjhxOyBakU7nEDLmU+Bz0rKt3Sws+2bb
-         Genw==
-X-Gm-Message-State: APjAAAWvW9HZlYlEgyj75jrPJq4CzSD+cq6BKX7JvXAWPZ187ENYqHWr
-        iNV3OjuTukxCG+o5H/1mWGb8ZA==
-X-Google-Smtp-Source: APXvYqyaw0qhPHZY2Ts/ktriJuJUipqH6cUesR/fivT044fCZgT4Kq37YFOmki9dXprxX/iI+Sr5zw==
-X-Received: by 2002:a05:6830:1185:: with SMTP id u5mr25528276otq.147.1576009007225;
-        Tue, 10 Dec 2019 12:16:47 -0800 (PST)
-Received: from ?IPv6:2605:6000:e947:6500:6680:99ff:fe6f:cb54? ([2605:6000:e947:6500:6680:99ff:fe6f:cb54])
-        by smtp.googlemail.com with ESMTPSA id v20sm1813200otf.40.2019.12.10.12.16.46
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 10 Dec 2019 12:16:46 -0800 (PST)
-Subject: Re: [PATCH][resend] sh: kgdb: Mark expected switch fall-throughs
-From:   Rob Landley <rob@landley.net>
-To:     Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>
-Cc:     Daniel Thompson <daniel.thompson@linaro.org>,
-        Will Deacon <will@kernel.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <87o8wgy3ra.wl-kuninori.morimoto.gx@renesas.com>
- <35e63e37-6ec8-8a47-8e18-639c954732e0@landley.net>
-Message-ID: <b220b69e-575d-0530-0f2d-65584df36ea2@landley.net>
-Date:   Tue, 10 Dec 2019 14:20:08 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1726968AbfLJVFm (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 10 Dec 2019 16:05:42 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49770 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727384AbfLJVEh (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Tue, 10 Dec 2019 16:04:37 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id CB70624688;
+        Tue, 10 Dec 2019 21:04:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1576011876;
+        bh=cXy8ZML0fsnWkhNXvFU3jBh1336ClxUKiYLWUWD3YtA=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Gh4I42Dge0Hhl0/pxusFup0BY/g/FaNh7PXrMkqCkUwT+qD2iWG2itG1CHAR9hS0W
+         b/TcaK+VaaB6f/JkQ8mhynw9r6jB8COg9MlcWOjLPSwQL283ZeoH49MDcxXjkSb7mu
+         d3JaUwck6bbfrPS+EMc+y4WY0vt94JQWD0DfGUqw=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
+        Simon Horman <horms+renesas@verge.net.au>,
+        Sasha Levin <sashal@kernel.org>, linux-sh@vger.kernel.org,
+        linux-gpio@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 028/350] Revert "pinctrl: sh-pfc: r8a77990: Fix MOD_SEL1 bit30 when using SSI_SCK2 and SSI_WS2"
+Date:   Tue, 10 Dec 2019 15:58:40 -0500
+Message-Id: <20191210210402.8367-28-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191210210402.8367-1-sashal@kernel.org>
+References: <20191210210402.8367-1-sashal@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <35e63e37-6ec8-8a47-8e18-639c954732e0@landley.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
+[ Upstream commit 3672bc7093434621c83299ef27ea3b3225a67600 ]
 
-On 12/10/19 2:12 PM, Rob Landley wrote:
-> On 12/10/19 2:38 AM, Kuninori Morimoto wrote:
->>
->> Hi Andrew
->>
->> I'm posting this patch from few month ago,
->> but it seems SH maintainer is not working in these days...
-> 
-> Again, I dunno where you're getting that.
-> 
-> (Me, I removed the -Werror...)
+This reverts commit e87882eb9be10b2b9e28156922c2a47d877f5db4.
 
-In fact I looked it up, _I_ didn't remove the -Werror, Rich acked a patch
-removing the -Werror back in August:
+According to the R-Car Gen3 Hardware Manual Errata for Rev 1.00 of Aug
+24, 2018, the SEL_SSI2_{0,1} definition was to be deleted.  However,
+this errata merely fixed an accidental double definition in the Hardware
+User's Manual Rev. 1.00.  The real definition is still present in later
+revisions of the manual (Rev. 1.50 and Rev. 2.00).
 
-  https://www.spinics.net/lists/linux-sh/msg55405.html
+Hence revert the commit to recover the definition.
 
-Rob
+Based on a patch in the BSP by Takeshi Kihara
+<takeshi.kihara.df@renesas.com>.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Simon Horman <horms+renesas@verge.net.au>
+Link: https://lore.kernel.org/r/20190904121658.2617-3-geert+renesas@glider.be
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/pinctrl/sh-pfc/pfc-r8a77990.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/pinctrl/sh-pfc/pfc-r8a77990.c b/drivers/pinctrl/sh-pfc/pfc-r8a77990.c
+index 2dfb8d9cfda12..3808409cab385 100644
+--- a/drivers/pinctrl/sh-pfc/pfc-r8a77990.c
++++ b/drivers/pinctrl/sh-pfc/pfc-r8a77990.c
+@@ -448,6 +448,7 @@ FM(IP12_31_28)	IP12_31_28	FM(IP13_31_28)	IP13_31_28	FM(IP14_31_28)	IP14_31_28	FM
+ #define MOD_SEL0_1_0	   REV4(FM(SEL_SPEED_PULSE_IF_0),	FM(SEL_SPEED_PULSE_IF_1),	FM(SEL_SPEED_PULSE_IF_2),	F_(0, 0))
+ 
+ /* MOD_SEL1 */			/* 0 */				/* 1 */				/* 2 */				/* 3 */			/* 4 */			/* 5 */		/* 6 */		/* 7 */
++#define MOD_SEL1_30		FM(SEL_SSI2_0)			FM(SEL_SSI2_1)
+ #define MOD_SEL1_29		FM(SEL_TIMER_TMU_0)		FM(SEL_TIMER_TMU_1)
+ #define MOD_SEL1_28		FM(SEL_USB_20_CH0_0)		FM(SEL_USB_20_CH0_1)
+ #define MOD_SEL1_26		FM(SEL_DRIF2_0)			FM(SEL_DRIF2_1)
+@@ -468,7 +469,7 @@ FM(IP12_31_28)	IP12_31_28	FM(IP13_31_28)	IP13_31_28	FM(IP14_31_28)	IP14_31_28	FM
+ 
+ #define PINMUX_MOD_SELS	\
+ \
+-MOD_SEL0_30_29 \
++MOD_SEL0_30_29		MOD_SEL1_30 \
+ 			MOD_SEL1_29 \
+ MOD_SEL0_28		MOD_SEL1_28 \
+ MOD_SEL0_27_26 \
+@@ -1058,7 +1059,7 @@ static const u16 pinmux_data[] = {
+ 	PINMUX_IPSR_MSEL(IP10_27_24,		RIF0_CLK_B,	SEL_DRIF0_1),
+ 	PINMUX_IPSR_MSEL(IP10_27_24,		SCL2_B,		SEL_I2C2_1),
+ 	PINMUX_IPSR_MSEL(IP10_27_24,		TCLK1_A,	SEL_TIMER_TMU_0),
+-	PINMUX_IPSR_GPSR(IP10_27_24,		SSI_SCK2_B),
++	PINMUX_IPSR_MSEL(IP10_27_24,		SSI_SCK2_B,	SEL_SSI2_1),
+ 	PINMUX_IPSR_GPSR(IP10_27_24,		TS_SCK0),
+ 
+ 	PINMUX_IPSR_GPSR(IP10_31_28,		SD0_WP),
+@@ -1067,7 +1068,7 @@ static const u16 pinmux_data[] = {
+ 	PINMUX_IPSR_MSEL(IP10_31_28,		RIF0_D0_B,	SEL_DRIF0_1),
+ 	PINMUX_IPSR_MSEL(IP10_31_28,		SDA2_B,		SEL_I2C2_1),
+ 	PINMUX_IPSR_MSEL(IP10_31_28,		TCLK2_A,	SEL_TIMER_TMU_0),
+-	PINMUX_IPSR_GPSR(IP10_31_28,		SSI_WS2_B),
++	PINMUX_IPSR_MSEL(IP10_31_28,		SSI_WS2_B,	SEL_SSI2_1),
+ 	PINMUX_IPSR_GPSR(IP10_31_28,		TS_SDAT0),
+ 
+ 	/* IPSR11 */
+@@ -1085,13 +1086,13 @@ static const u16 pinmux_data[] = {
+ 
+ 	PINMUX_IPSR_MSEL(IP11_11_8,		RX0_A,		SEL_SCIF0_0),
+ 	PINMUX_IPSR_MSEL(IP11_11_8,		HRX1_A,		SEL_HSCIF1_0),
+-	PINMUX_IPSR_GPSR(IP11_11_8,		SSI_SCK2_A),
++	PINMUX_IPSR_MSEL(IP11_11_8,		SSI_SCK2_A,	SEL_SSI2_0),
+ 	PINMUX_IPSR_GPSR(IP11_11_8,		RIF1_SYNC),
+ 	PINMUX_IPSR_GPSR(IP11_11_8,		TS_SCK1),
+ 
+ 	PINMUX_IPSR_MSEL(IP11_15_12,		TX0_A,		SEL_SCIF0_0),
+ 	PINMUX_IPSR_GPSR(IP11_15_12,		HTX1_A),
+-	PINMUX_IPSR_GPSR(IP11_15_12,		SSI_WS2_A),
++	PINMUX_IPSR_MSEL(IP11_15_12,		SSI_WS2_A,	SEL_SSI2_0),
+ 	PINMUX_IPSR_GPSR(IP11_15_12,		RIF1_D0),
+ 	PINMUX_IPSR_GPSR(IP11_15_12,		TS_SDAT1),
+ 
+@@ -4957,11 +4958,12 @@ static const struct pinmux_cfg_reg pinmux_config_regs[] = {
+ 		MOD_SEL0_1_0 ))
+ 	},
+ 	{ PINMUX_CFG_REG_VAR("MOD_SEL1", 0xe6060504, 32,
+-			     GROUP(2, 1, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1,
+-				   2, 2, 2, 1, 1, 2, 1, 4),
++			     GROUP(1, 1, 1, 1, 1, 1, 1, 3, 3, 1, 1, 1,
++				   1, 2, 2, 2, 1, 1, 2, 1, 4),
+ 			     GROUP(
+-		/* RESERVED 31, 30 */
+-		0, 0, 0, 0,
++		/* RESERVED 31 */
++		0, 0,
++		MOD_SEL1_30
+ 		MOD_SEL1_29
+ 		MOD_SEL1_28
+ 		/* RESERVED 27 */
+-- 
+2.20.1
+
