@@ -2,98 +2,171 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 775071182B2
-	for <lists+linux-sh@lfdr.de>; Tue, 10 Dec 2019 09:48:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FEEF118435
+	for <lists+linux-sh@lfdr.de>; Tue, 10 Dec 2019 10:56:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726883AbfLJIr7 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 10 Dec 2019 03:47:59 -0500
-Received: from pegase1.c-s.fr ([93.17.236.30]:36433 "EHLO pegase1.c-s.fr"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726843AbfLJIr7 (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Tue, 10 Dec 2019 03:47:59 -0500
-Received: from localhost (mailhub1-ext [192.168.12.233])
-        by localhost (Postfix) with ESMTP id 47XDGj1VPZz9tyW7;
-        Tue, 10 Dec 2019 09:47:57 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
-        reason="1024-bit key; insecure key"
-        header.d=c-s.fr header.i=@c-s.fr header.b=C3bR0m/s; dkim-adsp=pass;
-        dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-        by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
-        with ESMTP id Fd8oBSUCPelI; Tue, 10 Dec 2019 09:47:57 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-        by pegase1.c-s.fr (Postfix) with ESMTP id 47XDGj0Pbxz9tyW5;
-        Tue, 10 Dec 2019 09:47:57 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
-        t=1575967677; bh=zENznlhMrznRJGWMWUM1fyRyx1+XPUaBYHrlB+Jwl+w=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=C3bR0m/sd7ui2ylcf/4sLqze9kSUVlsC2nH2GGy/7SAQFUiOrwszHGjmiCVMWRuNS
-         0g10ccnkDpQFCCACb5AWLTX+LeG0BrGxFkEeZxDfHb3z6cIDTkzX5m2n3LOxmiqQzF
-         r4AECHp94sRL+vM2fY+m2h96iFux0v/dJA7GHmMc=
-Received: from localhost (localhost [127.0.0.1])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 1060E8B805;
-        Tue, 10 Dec 2019 09:47:58 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-        with ESMTP id jVkK5NT9l2oC; Tue, 10 Dec 2019 09:47:58 +0100 (CET)
-Received: from po16098vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 425408B754;
-        Tue, 10 Dec 2019 09:47:57 +0100 (CET)
-Subject: Re: [PATCH] sh: kgdb: Mark expected switch fall-throughs
-To:     Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
+        id S1727032AbfLJJ4V (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 10 Dec 2019 04:56:21 -0500
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:38637 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727003AbfLJJ4U (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 10 Dec 2019 04:56:20 -0500
+Received: by mail-wr1-f68.google.com with SMTP id y17so19277094wrh.5;
+        Tue, 10 Dec 2019 01:56:17 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=wiDeNqk4JUYH6LbyjP3mNqGyXwUCv0yPtvfwbu07E84=;
+        b=AvZkSkayyZiR5bZRlkYLVnUBcZtoQOsZgZkxrM+X0LrkuvAbiq72iFEbzB6MutpNYL
+         W7SmqP3ANY7p+WD6rbzocvhNLVcclLks3X9Cj2oDRv7sYK8oxlJ3EBvmiVbip5N9Q6jz
+         8Ax0U3Qoqy2LHuMqRvlpgFtVqkEyuJi//2LcNeSUNCOn5KU+6KE6Lbn382dEzEr5KQnN
+         YL45bngPQU3SI0/NuOVEqyXTYpFrprVy+kqnu3H/xncUYjm0bfWeZiqLbi5h+o8NyAT6
+         nQlWtvRPT6PGk1htM8lFSLSiV2vDLMesqM/tRuA7Nb8VCY+4WQwmfPUVu1EFd/g4XCYd
+         AY1g==
+X-Gm-Message-State: APjAAAU1d/12fkybi+de6lst4oQjBDulGdBO2fzc2hLQ6m50kxoQE8YO
+        QVJsp46K5kd2agfzkTcEeSU=
+X-Google-Smtp-Source: APXvYqyOvGHL/dLqIEko15VM3eCGbjurIUWfw6wjXgmK+XRllFbX0OjTyzcaIccFUw979KzcsTh8+w==
+X-Received: by 2002:adf:fc08:: with SMTP id i8mr2324107wrr.82.1575971777315;
+        Tue, 10 Dec 2019 01:56:17 -0800 (PST)
+Received: from localhost (prg-ext-pat.suse.com. [213.151.95.130])
+        by smtp.gmail.com with ESMTPSA id u18sm2642900wrt.26.2019.12.10.01.56.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Dec 2019 01:56:16 -0800 (PST)
+Date:   Tue, 10 Dec 2019 10:56:15 +0100
+From:   Michal Hocko <mhocko@kernel.org>
+To:     Logan Gunthorpe <logang@deltatee.com>
+Cc:     David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-mm@kvack.org, Christoph Hellwig <hch@lst.de>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will@kernel.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Paul Burton <paul.burton@mips.com>, linux-sh@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <87o8wgy3ra.wl-kuninori.morimoto.gx@renesas.com>
- <87muc0y3q4.wl-kuninori.morimoto.gx@renesas.com>
-From:   Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <1009e85d-882a-d43b-8936-a0b4de596aa3@c-s.fr>
-Date:   Tue, 10 Dec 2019 08:47:56 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.7.0
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH 5/6] mm, memory_hotplug: Provide argument for the
+ pgprot_t in arch_add_memory()
+Message-ID: <20191210095615.GB10404@dhcp22.suse.cz>
+References: <20191209191346.5197-1-logang@deltatee.com>
+ <20191209191346.5197-6-logang@deltatee.com>
+ <ce50d9da-c60e-05a1-a86b-3bb3629de502@redhat.com>
+ <f34a4c52-cc95-15ed-8a72-c05ab4fd6d33@deltatee.com>
+ <20191209204128.GC7658@dhcp22.suse.cz>
+ <e0f9c1e1-4968-f48f-ec09-853fc8fc779b@deltatee.com>
 MIME-Version: 1.0
-In-Reply-To: <87muc0y3q4.wl-kuninori.morimoto.gx@renesas.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e0f9c1e1-4968-f48f-ec09-853fc8fc779b@deltatee.com>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-
-
-On 12/10/2019 08:39 AM, Kuninori Morimoto wrote:
+On Mon 09-12-19 14:24:22, Logan Gunthorpe wrote:
 > 
-> From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 > 
-> Mark switch cases where we are expecting to fall through.
+> On 2019-12-09 1:41 p.m., Michal Hocko wrote:
+> > On Mon 09-12-19 13:24:19, Logan Gunthorpe wrote:
+> >>
+> >>
+> >> On 2019-12-09 12:23 p.m., David Hildenbrand wrote:
+> >>> On 09.12.19 20:13, Logan Gunthorpe wrote:
+> >>>> devm_memremap_pages() is currently used by the PCI P2PDMA code to create
+> >>>> struct page mappings for IO memory. At present, these mappings are created
+> >>>> with PAGE_KERNEL which implies setting the PAT bits to be WB. However, on
+> >>>> x86, an mtrr register will typically override this and force the cache
+> >>>> type to be UC-. In the case firmware doesn't set this register it is
+> >>>> effectively WB and will typically result in a machine check exception
+> >>>> when it's accessed.
+> >>>>
+> >>>> Other arches are not currently likely to function correctly seeing they
+> >>>> don't have any MTRR registers to fall back on.
+> >>>>
+> >>>> To solve this, add an argument to arch_add_memory() to explicitly
+> >>>> set the pgprot value to a specific value.
+> >>>>
+> >>>> Of the arches that support MEMORY_HOTPLUG: x86_64, s390 and arm64 is a
+> >>>> simple change to pass the pgprot_t down to their respective functions
+> >>>> which set up the page tables. For x86_32, set the page tables explicitly
+> >>>> using _set_memory_prot() (seeing they are already mapped). For sh, reject
+> >>>> anything but PAGE_KERNEL settings -- this should be fine, for now, seeing
+> >>>> sh doesn't support ZONE_DEVICE anyway.
+> >>>>
+> >>>> Cc: Dan Williams <dan.j.williams@intel.com>
+> >>>> Cc: David Hildenbrand <david@redhat.com>
+> >>>> Cc: Michal Hocko <mhocko@suse.com>
+> >>>> Signed-off-by: Logan Gunthorpe <logang@deltatee.com>
+> >>>> ---
+> >>>>  arch/arm64/mm/mmu.c            | 4 ++--
+> >>>>  arch/ia64/mm/init.c            | 5 ++++-
+> >>>>  arch/powerpc/mm/mem.c          | 4 ++--
+> >>>>  arch/s390/mm/init.c            | 4 ++--
+> >>>>  arch/sh/mm/init.c              | 5 ++++-
+> >>>>  arch/x86/mm/init_32.c          | 7 ++++++-
+> >>>>  arch/x86/mm/init_64.c          | 4 ++--
+> >>>>  include/linux/memory_hotplug.h | 2 +-
+> >>>>  mm/memory_hotplug.c            | 2 +-
+> >>>>  mm/memremap.c                  | 2 +-
+> >>>>  10 files changed, 25 insertions(+), 14 deletions(-)
+> >>>>
+> >>>> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> >>>> index 60c929f3683b..48b65272df15 100644
+> >>>> --- a/arch/arm64/mm/mmu.c
+> >>>> +++ b/arch/arm64/mm/mmu.c
+> >>>> @@ -1050,7 +1050,7 @@ int p4d_free_pud_page(p4d_t *p4d, unsigned long addr)
+> >>>>  }
+> >>>>  
+> >>>>  #ifdef CONFIG_MEMORY_HOTPLUG
+> >>>> -int arch_add_memory(int nid, u64 start, u64 size,
+> >>>> +int arch_add_memory(int nid, u64 start, u64 size, pgprot_t prot,
+> >>>>  			struct mhp_restrictions *restrictions)
+> >>>
+> >>> Can we fiddle that into "struct mhp_restrictions" instead?
+> >>
+> >> Yes, if that's what people want, it's pretty trivial to do. I chose not
+> >> to do it that way because it doesn't get passed down to add_pages() and
+> >> it's not really a "restriction". If I don't hear any objections, I will
+> >> do that for v2.
+> > 
+> > I do agree that restriction is not the best fit. But I consider prot
+> > argument to complicate the API to all users even though it is not really
+> > clear whether we are going to have many users really benefiting from it.
+> > Look at the vmalloc API and try to find how many users of __vmalloc do
+> > not use PAGE_KERNEL.
+> > 
+> > So I can see two options. One of them is to add arch_add_memory_prot
+> > that would allow to have give and extra prot argument or simply call
+> > an arch independent API to change the protection after arch_add_memory.
+> > The later sounds like much less code. The memory shouldn't be in use by
+> > anybody at that stage yet AFAIU. Maybe there even is an API like that.
 > 
-> This patch fixes the following error:
-> 
-> LINUX/arch/sh/kernel/kgdb.c: In function 'kgdb_arch_handle_exception':
-> LINUX/arch/sh/kernel/kgdb.c:267:6: error: this statement may fall through [-Werror=implicit-fallthrough=]
-> if (kgdb_hex2long(&ptr, &addr))
-> ^
-> LINUX/arch/sh/kernel/kgdb.c:269:2: note: here
-> case 'D':
-> ^~~~
-> 
-> Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-> Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
+> Yes, well, we tried something like this by calling set_memory_wc()
+> inside memremap_pages(); but on large bars (tens of GB) it was too slow
+> (taking several seconds to complete) and on some hosts actually hit CPU
+> watchdog errors.
 
-I guess you should also add:
+Which looks like something to fix independently.
 
-Fixes: ab6e570ba33d ("sh: Generic kgdb stub support.")
-Cc: stable@vger.kernel.org
+> So at the very least we'd have to add some cpu_relax() calls to that
+> path. And it's also the case that set_memory_wc() is x86 only right now.
+> So we'd have to create a new general interface to walk and fixup page
+> tables for all arches.
+> 
+> But, in my opinion, setting up all those page tables twice is too large
+> of an overhead and it's better to just add them correctly the first
+> time. The changes I propose to do this aren't really a lot of code and
+> probably less than creating a new interface for all arches.
 
-Christophe
+OK, fair enough. Then I would suggest going with arch_add_memory_prot
+then unless there is a wider disagreement witht that.
+-- 
+Michal Hocko
+SUSE Labs
