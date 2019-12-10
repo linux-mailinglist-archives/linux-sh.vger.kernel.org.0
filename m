@@ -2,39 +2,39 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AFA4011979C
-	for <lists+linux-sh@lfdr.de>; Tue, 10 Dec 2019 22:34:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC5D9119ADF
+	for <lists+linux-sh@lfdr.de>; Tue, 10 Dec 2019 23:10:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729984AbfLJVeR (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 10 Dec 2019 16:34:17 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39248 "EHLO mail.kernel.org"
+        id S1728784AbfLJWEZ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 10 Dec 2019 17:04:25 -0500
+Received: from mail.kernel.org ([198.145.29.99]:35232 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729186AbfLJVeQ (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Tue, 10 Dec 2019 16:34:16 -0500
+        id S1728766AbfLJWEY (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Tue, 10 Dec 2019 17:04:24 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EDB14206D5;
-        Tue, 10 Dec 2019 21:34:14 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8133B20828;
+        Tue, 10 Dec 2019 22:04:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576013655;
+        s=default; t=1576015464;
         bh=WjS0Tq7OrsE2NjIqEF56Rkua9+801ORAczYUD93TxZA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XM1SM7OR4N2HiIuBZ7j0H1uUwoUrMwW6fFtKe0p8Pa7yjBBFbWQGcESpYKy2ecSTV
-         I8VHyoXUH8mB2NzfaetPPmi2UuUgRF1rZV6X9lha8duA+HkMewycdCjls6ngQrMOWH
-         lEH2Dg4hXPr9NHRar+rVBK8M7KHrULH5xnCgb+PY=
+        b=Kjznzty4CyoJKchwddGfw6fAevhHQplhVIUAmT6050/Fo+rroC4VW0F52l+eri3OH
+         kDwHllNWTXJQ8TW/y/BYvduw89kncH5qJFGIhm5MJfRdy1OfN8051sAA3+Wy86Yh1/
+         Zkg//xp+9tnYxcmP7tlGD7uUxOSSG3n3BpMV62xc=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
         Ben Dooks <ben.dooks@codethink.co.uk>,
         Sasha Levin <sashal@kernel.org>, linux-sh@vger.kernel.org,
         linux-renesas-soc@vger.kernel.org, linux-gpio@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 094/177] pinctrl: sh-pfc: sh7734: Fix duplicate TCLK1_B
-Date:   Tue, 10 Dec 2019 16:30:58 -0500
-Message-Id: <20191210213221.11921-94-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 070/130] pinctrl: sh-pfc: sh7734: Fix duplicate TCLK1_B
+Date:   Tue, 10 Dec 2019 17:02:01 -0500
+Message-Id: <20191210220301.13262-70-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191210213221.11921-1-sashal@kernel.org>
-References: <20191210213221.11921-1-sashal@kernel.org>
+In-Reply-To: <20191210220301.13262-1-sashal@kernel.org>
+References: <20191210220301.13262-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
