@@ -2,39 +2,39 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 963951193CF
-	for <lists+linux-sh@lfdr.de>; Tue, 10 Dec 2019 22:15:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AFA4011979C
+	for <lists+linux-sh@lfdr.de>; Tue, 10 Dec 2019 22:34:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728591AbfLJVKp (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 10 Dec 2019 16:10:45 -0500
-Received: from mail.kernel.org ([198.145.29.99]:60882 "EHLO mail.kernel.org"
+        id S1729984AbfLJVeR (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 10 Dec 2019 16:34:17 -0500
+Received: from mail.kernel.org ([198.145.29.99]:39248 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728578AbfLJVKm (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Tue, 10 Dec 2019 16:10:42 -0500
+        id S1729186AbfLJVeQ (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Tue, 10 Dec 2019 16:34:16 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 29E5724697;
-        Tue, 10 Dec 2019 21:10:41 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id EDB14206D5;
+        Tue, 10 Dec 2019 21:34:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576012242;
-        bh=4XaO/l1dHSV0PsaVCEHumtoMjvvBIDX9YGBWihvkMLQ=;
+        s=default; t=1576013655;
+        bh=WjS0Tq7OrsE2NjIqEF56Rkua9+801ORAczYUD93TxZA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hZVwll5Ecgn3m77h2aXIV9Dtu6ayjOqpHZ/kumn7djXlZ0LP+ohKwlt+baVpGj1By
-         R7IrBGvHawLD18zx3U81e2BILHR/MzCASIIGWo2WtL32jnoHGp/d83FWCz1DKOoaYx
-         NYhFfmvMlF1vONB97HWryAEBz9917/t1kcFF6vO4=
+        b=XM1SM7OR4N2HiIuBZ7j0H1uUwoUrMwW6fFtKe0p8Pa7yjBBFbWQGcESpYKy2ecSTV
+         I8VHyoXUH8mB2NzfaetPPmi2UuUgRF1rZV6X9lha8duA+HkMewycdCjls6ngQrMOWH
+         lEH2Dg4hXPr9NHRar+rVBK8M7KHrULH5xnCgb+PY=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
         Ben Dooks <ben.dooks@codethink.co.uk>,
         Sasha Levin <sashal@kernel.org>, linux-sh@vger.kernel.org,
         linux-renesas-soc@vger.kernel.org, linux-gpio@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 190/350] pinctrl: sh-pfc: sh7734: Fix duplicate TCLK1_B
-Date:   Tue, 10 Dec 2019 16:04:55 -0500
-Message-Id: <20191210210735.9077-151-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 094/177] pinctrl: sh-pfc: sh7734: Fix duplicate TCLK1_B
+Date:   Tue, 10 Dec 2019 16:30:58 -0500
+Message-Id: <20191210213221.11921-94-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191210210735.9077-1-sashal@kernel.org>
-References: <20191210210735.9077-1-sashal@kernel.org>
+In-Reply-To: <20191210213221.11921-1-sashal@kernel.org>
+References: <20191210213221.11921-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -79,10 +79,10 @@ index 96f0246ad2f2b..82b63208135ae 100644
  		GPIO_FN_ET0_ETXD3_A,
  	GPIO_FN_EX_CS4, GPIO_FN_SD1_WP_A, GPIO_FN_ATAWR, GPIO_FN_QMI_QIO1_B,
 diff --git a/drivers/pinctrl/sh-pfc/pfc-sh7734.c b/drivers/pinctrl/sh-pfc/pfc-sh7734.c
-index 5dfd991ffdaab..dbc36079c3811 100644
+index 33232041ee86d..3eccc9b3ca84a 100644
 --- a/drivers/pinctrl/sh-pfc/pfc-sh7734.c
 +++ b/drivers/pinctrl/sh-pfc/pfc-sh7734.c
-@@ -1450,7 +1450,7 @@ static const struct pinmux_func pinmux_func_gpios[] = {
+@@ -1453,7 +1453,7 @@ static const struct pinmux_func pinmux_func_gpios[] = {
  	GPIO_FN(ET0_ETXD2_A),
  	GPIO_FN(EX_CS5), GPIO_FN(SD1_CMD_A), GPIO_FN(ATADIR), GPIO_FN(QSSL_B),
  	GPIO_FN(ET0_ETXD3_A),
