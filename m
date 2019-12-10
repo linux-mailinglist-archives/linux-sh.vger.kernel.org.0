@@ -2,186 +2,83 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D867F11862D
-	for <lists+linux-sh@lfdr.de>; Tue, 10 Dec 2019 12:26:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 28040119185
+	for <lists+linux-sh@lfdr.de>; Tue, 10 Dec 2019 21:07:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727370AbfLJLZ7 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 10 Dec 2019 06:25:59 -0500
-Received: from us-smtp-2.mimecast.com ([207.211.31.81]:57844 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727349AbfLJLZ6 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 10 Dec 2019 06:25:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1575977157;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-        bh=1sfmtCAUUhHcjd98y89BbPgwjzi6ORHzMVPlzdumt7c=;
-        b=SRCfYNsIW3JqEUsYTFm5BoqITXj2um1aYEXWA5i2wf44mHPV6HNR0Yfa+g32cOIhUjflZv
-        I3Qen3+5diwvfsjUdYKSWR5DHwL9YG+Ucs5GyloJ5SdFTFxHtwRml6Q1MyHW76VfA2sjok
-        C14GaGavJzR+kk9DpCt14t0ByJ0fI44=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-423-I1kxIsanPWW9ImTAvoKXeg-1; Tue, 10 Dec 2019 06:25:54 -0500
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 6061A107ACFC;
-        Tue, 10 Dec 2019 11:25:51 +0000 (UTC)
-Received: from [10.36.117.222] (ovpn-117-222.ams2.redhat.com [10.36.117.222])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 24CDF1084196;
-        Tue, 10 Dec 2019 11:25:46 +0000 (UTC)
-Subject: Re: [PATCH 5/6] mm, memory_hotplug: Provide argument for the pgprot_t
- in arch_add_memory()
-To:     Michal Hocko <mhocko@kernel.org>
-Cc:     Dan Williams <dan.j.williams@intel.com>,
-        Logan Gunthorpe <logang@deltatee.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-ia64@vger.kernel.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Linux-sh <linux-sh@vger.kernel.org>,
-        platform-driver-x86@vger.kernel.org, Linux MM <linux-mm@kvack.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
+        id S1726417AbfLJUHc (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 10 Dec 2019 15:07:32 -0500
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:40589 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726045AbfLJUHc (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 10 Dec 2019 15:07:32 -0500
+Received: by mail-oi1-f194.google.com with SMTP id 6so11019797oix.7
+        for <linux-sh@vger.kernel.org>; Tue, 10 Dec 2019 12:07:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=landley-net.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=uQ5MRu7eBmHm6OUR1kwdbNENkUMzLBkNbzI6ewewfew=;
+        b=QFhl7FGH4yA/EbDNh1tBvUtjp++JicNkBw3DI3RZqee01B04Au/qmKS3Xhe1MHcy4O
+         ECOdiTwlIsP+XNKNVO15a4iowSTfQeQ/g2wtPzddiGndpmXwL30rHoIVk3OcgT5+KHFL
+         mV4d4CyJIKaRjL6KBD6PxtcxGo8Lhq0fRDs6IWX5zPTuVPRGUAu2VvwLgMK7nSCpDgI5
+         VvJ3FWJa/UsBY8xavAWhFP7VMuhS0FxHMiNEvEx6JRnEHKEG4odz+hhxRaKipFMLCNXF
+         TJxFrCwWn8XjhXw+ZZHjWfv7ZBvqQTKMqpyfxyap6U7Ri+65xeqpPwIXvGcW1TLOg76b
+         Y+rA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=uQ5MRu7eBmHm6OUR1kwdbNENkUMzLBkNbzI6ewewfew=;
+        b=qwRLkn8JF32e3tdFVXap20zRQN86sZoTgHkJ0fgRQ7/Bm5K1ZAI2xK5oR0Iw2qKLpF
+         LSKapGeIRS69OCB1y9z8h2Wg60udzfaOvMEEgawQN87a2QODZLxJObP1oTYUBgB4x+6R
+         f8/8f9mZAkRga+YKo2F7vWZR2lICY6d67auGMLvliT8g6rdeg/gYdau/yXvgKGcJ1HN8
+         viJc6wCD1MpPKKuBWQxc8G3hxpFqFChvQVQoKiLkDfUj9NCOYsBBxwzAwHGgJy5NZSQp
+         wCeGKjhSS92/1QXFNLwvK8ZxgS4e0/NMBfN++J+SI7bHkOsCG2thLtSLEkIX9yg4IZPK
+         ntZw==
+X-Gm-Message-State: APjAAAW+fNU146qrEUHDmzpCCzt/vprTdQU09Q3+wsO1Kwu7MvaTA5Y/
+        KapNzE5PzBoBZdmQNltApA7aAQ==
+X-Google-Smtp-Source: APXvYqz5nQOo/8Xd2Gow6+zdGyPViUZp2xjc9+dGPEHwXmsSqAF5+nQC6/w6YTilfrBBZnw6M4SOTg==
+X-Received: by 2002:a05:6808:210:: with SMTP id l16mr597004oie.95.1576008451827;
+        Tue, 10 Dec 2019 12:07:31 -0800 (PST)
+Received: from ?IPv6:2605:6000:e947:6500:6680:99ff:fe6f:cb54? ([2605:6000:e947:6500:6680:99ff:fe6f:cb54])
+        by smtp.googlemail.com with ESMTPSA id m2sm1728359oim.13.2019.12.10.12.07.30
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 10 Dec 2019 12:07:31 -0800 (PST)
+Subject: Re: [PATCH][resend] sh: kgdb: Mark expected switch fall-throughs
+To:     Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>
+Cc:     Daniel Thompson <daniel.thompson@linaro.org>,
         Will Deacon <will@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>
-References: <20191209191346.5197-1-logang@deltatee.com>
- <20191209191346.5197-6-logang@deltatee.com>
- <ce50d9da-c60e-05a1-a86b-3bb3629de502@redhat.com>
- <f34a4c52-cc95-15ed-8a72-c05ab4fd6d33@deltatee.com>
- <CAPcyv4hpXCZxV5p7WaeGgE7ceujBBa5NOz9Z8fepDHOt6zHO2A@mail.gmail.com>
- <20191210100432.GC10404@dhcp22.suse.cz>
- <6da2b279-6a6d-d89c-a34c-962ed021d91d@redhat.com>
- <20191210103452.GF10404@dhcp22.suse.cz>
-From:   David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
-Organization: Red Hat GmbH
-Message-ID: <a9d6cfe8-39fb-accf-acdc-7cce5578bf2f@redhat.com>
-Date:   Tue, 10 Dec 2019 12:25:46 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+        Douglas Anderson <dianders@chromium.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <87muc1yqip.wl-kuninori.morimoto.gx@renesas.com>
+From:   Rob Landley <rob@landley.net>
+Message-ID: <4b099e66-973a-8e75-9f62-801fc3b2f594@landley.net>
+Date:   Tue, 10 Dec 2019 14:10:52 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <20191210103452.GF10404@dhcp22.suse.cz>
+In-Reply-To: <87muc1yqip.wl-kuninori.morimoto.gx@renesas.com>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-X-MC-Unique: I1kxIsanPWW9ImTAvoKXeg-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: 7bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 10.12.19 11:34, Michal Hocko wrote:
-> On Tue 10-12-19 11:09:46, David Hildenbrand wrote:
->> On 10.12.19 11:04, Michal Hocko wrote:
->>> On Mon 09-12-19 12:43:40, Dan Williams wrote:
->>>> On Mon, Dec 9, 2019 at 12:24 PM Logan Gunthorpe <logang@deltatee.com> wrote:
->>>>>
->>>>>
->>>>>
->>>>> On 2019-12-09 12:23 p.m., David Hildenbrand wrote:
->>>>>> On 09.12.19 20:13, Logan Gunthorpe wrote:
->>> [...]
->>>>>>>  #ifdef CONFIG_MEMORY_HOTPLUG
->>>>>>> -int arch_add_memory(int nid, u64 start, u64 size,
->>>>>>> +int arch_add_memory(int nid, u64 start, u64 size, pgprot_t prot,
->>>>>>>                      struct mhp_restrictions *restrictions)
->>>>>>
->>>>>> Can we fiddle that into "struct mhp_restrictions" instead?
->>>>>
->>>>> Yes, if that's what people want, it's pretty trivial to do. I chose not
->>>>> to do it that way because it doesn't get passed down to add_pages() and
->>>>> it's not really a "restriction". If I don't hear any objections, I will
->>>>> do that for v2.
->>>>
->>>> +1 to storing this information alongside the altmap in that structure.
->>>> However, I agree struct mhp_restrictions, with the MHP_MEMBLOCK_API
->>>> flag now gone, has lost all of its "restrictions". How about dropping
->>>> the 'flags' property and renaming the struct to 'struct
->>>> mhp_modifiers'?
->>>
->>> Hmm, this email somehow didn't end up in my inbox so I have missed it
->>> before replying.
->>>
->>> Well, mhp_modifiers makes some sense and it would reduce the API
->>> proliferation but how do you expect the prot part to be handled?
->>> I really do not want people to think about PAGE_KERNEL or which
->>> protection to use because my experience tells that this will get copied
->>> without much thinking or simply will break with some odd usecases.
->>> So how exactly this would be used?
->>
->> I was thinking about exactly the same "issue".
->>
->> 1. default initialization via a function
->>
->> memhp_modifier_default_init(&modified);
->>
->> 2. a flag that unlocks the prot field (default:0). Without the flag, it
->> is ignored. We can keep the current initialization then.
->>
->> Other ideas?
+On 12/9/19 6:26 PM, Kuninori Morimoto wrote:
 > 
-> 3. a prot mask to apply on top of PAGE_KERNEL? Or would that be
-> insufficient/clumsy?
+> Hi Greg
 > 
+> I'm posting this patch from few month ago,
+> but it seems SH ML maintainer is not working in these days...
 
-If it works for the given use case, I guess this would be simple and ok.
+There's two of them and they both are? (I spoke to Rich on IRC last week?)
 
--- 
-Thanks,
-
-David / dhildenb
-
+Rob
