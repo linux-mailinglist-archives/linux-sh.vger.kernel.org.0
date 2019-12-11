@@ -2,77 +2,115 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 16E3511A6DE
-	for <lists+linux-sh@lfdr.de>; Wed, 11 Dec 2019 10:25:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A7E211B565
+	for <lists+linux-sh@lfdr.de>; Wed, 11 Dec 2019 16:53:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726988AbfLKJZp (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 11 Dec 2019 04:25:45 -0500
-Received: from mail01.asahi-net.or.jp ([202.224.55.13]:44856 "EHLO
-        mail01.asahi-net.or.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726983AbfLKJZp (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 11 Dec 2019 04:25:45 -0500
-X-Greylist: delayed 459 seconds by postgrey-1.27 at vger.kernel.org; Wed, 11 Dec 2019 04:25:44 EST
-Received: from h61-195-96-97.vps.ablenet.jp (h61-195-96-97.ablenetvps.ne.jp [61.195.96.97])
-        (Authenticated sender: PQ4Y-STU)
-        by mail01.asahi-net.or.jp (Postfix) with ESMTPA id 998FA14C7F;
-        Wed, 11 Dec 2019 18:18:03 +0900 (JST)
-Received: from localhost.ysato.name (unknown [61.199.190.28])
-        by h61-195-96-97.vps.ablenet.jp (Postfix) with ESMTPSA id 3807E24008E;
-        Wed, 11 Dec 2019 18:18:01 +0900 (JST)
-Date:   Wed, 11 Dec 2019 18:17:44 +0900
-Message-ID: <s594ky7mdaf.wl-ysato@users.sourceforge.jp>
-From:   Yoshinori Sato <ysato@users.sourceforge.jp>
-To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Cc:     Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        id S1732527AbfLKPxf (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 11 Dec 2019 10:53:35 -0500
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:38135 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731437AbfLKPTA (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 11 Dec 2019 10:19:00 -0500
+Received: by mail-wm1-f67.google.com with SMTP id p17so7371258wmi.3
+        for <linux-sh@vger.kernel.org>; Wed, 11 Dec 2019 07:18:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=qbeJjKW4nbf0Chq8HrmirNCO/t8cTX+VWEBs6JApRCM=;
+        b=sIxKfhz7W+XGG4A+6rFofyi3ZHJBmXvcd0/Lmofb8xlLjnFgZ0CEgeCNzsjg9nLaZm
+         2HJpmBkNxcmbYYlRemzPJyHRp2BtaBvLcbHeA5L3tTBIgIzquuFqTfjhMVTnuEu4yVei
+         iFR5wcNTGEO4KVaGnW3ezQ5vkRDCyqrAE0WiGgo+Yx/5sD316WPFgmqypIV1utZrCclf
+         jwvV6hs/7mEZilmGoyybo9f5s41Mf7FCQdiiBWnIyygYpvCyBqO5rrDLcsJfGQTQ8dZY
+         Rpi1NmEz6cDl/RUWtlIL8Zdon43y26OrmdUdlZFz/LpYffsTTpNz4e9QoACgaFzjJ159
+         NnVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=qbeJjKW4nbf0Chq8HrmirNCO/t8cTX+VWEBs6JApRCM=;
+        b=Mq48EKGsVyQQDGu7WYMLDIT3r4xidGC6nIoFyFO+CBJ8WvcL/3/hzVA5g9FWZCZJTm
+         49EBuPGF9UPigybktJr5FreiQxbNZwdb3FDoAgIj4Gdr06cEcuHlUjADqfoWKVAfOliO
+         xLvXn//VDLlyZ+HSdCLFM1UdCe/sR2hBLRtg4WsSK9MFlwQaOaP2I/GRoSS18vnoYf84
+         zLpPVC2KJ8wzEaAFB7TiPgFg+YNugpi08akyamzTszmL9Bt4vJqVD7HksQ3dzD81BXpG
+         Kb9vGOq6d8b9iJ7MOlgmVJkTcBUnnyho+YlyYOQHuZDSvPIR54RtX3J1MDMKONGRzvBh
+         lG2A==
+X-Gm-Message-State: APjAAAWaedvbaUiETEcoq2hXvULiQkbqbUjpw1fbBVlLqn1+OFdO4myh
+        5DWs2r2AboL3UHg/z5ltSOrciQ==
+X-Google-Smtp-Source: APXvYqwMPPc+4B4dB6jAQ8b+5nRg9tYQcN/aezgiVC9EtiwmXqwgIMdUoTdUwZTp4c6n3StHD7jnxA==
+X-Received: by 2002:a7b:cb15:: with SMTP id u21mr354499wmj.25.1576077539024;
+        Wed, 11 Dec 2019 07:18:59 -0800 (PST)
+Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
+        by smtp.gmail.com with ESMTPSA id x132sm6891747wmg.0.2019.12.11.07.18.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Dec 2019 07:18:58 -0800 (PST)
+Date:   Wed, 11 Dec 2019 15:18:56 +0000
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rich Felker <dalias@libc.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Will Deacon <will@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, Will Deacon <will@kernel.org>,
         Douglas Anderson <dianders@chromium.org>,
         Paul Burton <paul.burton@mips.com>,
         Christophe Leroy <christophe.leroy@c-s.fr>,
         linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][resend] sh: kgdb: Mark expected switch fall-throughs
-In-Reply-To: <983e0029-28d1-a428-4932-aa0588225293@embeddedor.com>
+Subject: Re: [PATCH] sh: kgdb: Mark expected switch fall-throughs
+Message-ID: <20191211151856.krh7jbrl5vsa7imq@holly.lan>
 References: <87o8wgy3ra.wl-kuninori.morimoto.gx@renesas.com>
-        <983e0029-28d1-a428-4932-aa0588225293@embeddedor.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL/10.8 EasyPG/1.0.0 Emacs/26
- (arm-unknown-linux-androideabi) MULE/6.0 (HANACHIRUSATO)
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
+ <87muc0y3q4.wl-kuninori.morimoto.gx@renesas.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87muc0y3q4.wl-kuninori.morimoto.gx@renesas.com>
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Wed, 11 Dec 2019 07:28:43 +0900,
-Gustavo A. R. Silva wrote:
+On Tue, Dec 10, 2019 at 05:39:00PM +0900, Kuninori Morimoto wrote:
 > 
-> Hi,
+> From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 > 
-> On 12/10/19 02:38, Kuninori Morimoto wrote:
-> > 
-> > Hi Andrew
-> > 
-> > I'm posting this patch from few month ago,
-> > but it seems SH maintainer is not working in these days...
-> > 
-> > Is it possible to consider about it ?
-> > SH compile will be error without this patch.
-> > 
+> Mark switch cases where we are expecting to fall through.
 > 
-> I've added this to my -next tree and will consider it for 5.5-rc2.
+> This patch fixes the following error:
 > 
-> Thanks!
-> --
-> Gustavo
+> LINUX/arch/sh/kernel/kgdb.c: In function 'kgdb_arch_handle_exception':
+> LINUX/arch/sh/kernel/kgdb.c:267:6: error: this statement may fall through [-Werror=implicit-fallthrough=]
+> if (kgdb_hex2long(&ptr, &addr))
+> ^
+> LINUX/arch/sh/kernel/kgdb.c:269:2: note: here
+> case 'D':
+> ^~~~
 > 
+> Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+> Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
+> ---
+>  arch/sh/kernel/kgdb.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/sh/kernel/kgdb.c b/arch/sh/kernel/kgdb.c
+> index 6d61f8c..0d5f3c9 100644
+> --- a/arch/sh/kernel/kgdb.c
+> +++ b/arch/sh/kernel/kgdb.c
+> @@ -266,6 +266,7 @@ int kgdb_arch_handle_exception(int e_vector, int signo, int err_code,
+>  		ptr = &remcomInBuffer[1];
+>  		if (kgdb_hex2long(&ptr, &addr))
+>  			linux_regs->pc = addr;
+> +		/* fallthrough */
 
-Thanks.
-I was going to work tonight or tomorrow.
-Dose nothing if merged.
+Since v5.5-rc1 there is the fallthrough pseudo keyword to document
+these cases:
+https://elixir.bootlin.com/linux/v5.5-rc1/source/Documentation/process/coding-style.rst#L59
 
---
-Yoshinori Sato
+
+Daniel.
+
+
+>  	case 'D':
+>  	case 'k':
+>  		atomic_set(&kgdb_cpu_doing_single_step, -1);
+> -- 
+> 2.7.4
+> 
