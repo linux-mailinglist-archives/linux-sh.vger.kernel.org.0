@@ -2,40 +2,40 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B1FB511C69C
-	for <lists+linux-sh@lfdr.de>; Thu, 12 Dec 2019 08:43:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 72DB811C6A7
+	for <lists+linux-sh@lfdr.de>; Thu, 12 Dec 2019 08:50:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728118AbfLLHnR (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 12 Dec 2019 02:43:17 -0500
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:36604 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728095AbfLLHnQ (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 12 Dec 2019 02:43:16 -0500
-Received: by mail-ot1-f67.google.com with SMTP id i4so779705otr.3;
-        Wed, 11 Dec 2019 23:43:16 -0800 (PST)
+        id S1728099AbfLLHuK (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 12 Dec 2019 02:50:10 -0500
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:44400 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728095AbfLLHuK (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 12 Dec 2019 02:50:10 -0500
+Received: by mail-ot1-f68.google.com with SMTP id x3so763523oto.11;
+        Wed, 11 Dec 2019 23:50:09 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=jYxRd099Dsy2rLtiJAv53Vqdx+5cG7B/L3QNd2QLeR0=;
-        b=K0LUpbTMxLHdjQH8m1CqETdhPUEgaQh4dR1LxZIoiCVgmgBu63wlPdz25YQKzK8uHv
-         n4rV5xUnB70mSRwNB55b32j9XYebxdLxzr5cu7GC/uNPR/gK7VIg9TfRq65nf4ObXP5C
-         mf8N5sYq560dhfk9HkGrRKluiZ7SFP+xqDuIdRjNvwmMPkt5qCcYcTAgU9P0xLW3JFJ5
-         QZ19AqqFipvzg2AAzU8LFQEW+d2BmeGKlu1tmrdO4pZcHutoFdYDsQfxpMiq2IUAWv5Z
-         +c9K/yQ+ABZmjqZrV3sN2rUiTi+62vpLLGTL4QG0GtearIgjDy2kl2ixl1Sc7n4nPTkY
-         F/uA==
-X-Gm-Message-State: APjAAAUSIb7zbwwJatT0hm0P+Ln+s9P0W+HlqalE9rb2QpVJoFqdLvgu
-        12eagjmIptD017xo1rU4h2PYTuEalcjljYr9HkadaoB2
-X-Google-Smtp-Source: APXvYqz0/aRJNePZTaN28GC3gs1ZKqIb3EyouE4dO1Hm13o7WMzPw3pQ47FF46YBikLzRsnDBY4VG8mhj6ccBAu1rqQ=
-X-Received: by 2002:a9d:2073:: with SMTP id n106mr6612378ota.145.1576136595771;
- Wed, 11 Dec 2019 23:43:15 -0800 (PST)
+        bh=/i/kQrCR6DRe6WEYPeoiMdcrOD+Sk8SKui3HhgY5J0s=;
+        b=mfksngvisLsxX/EDeyFMVuYwSYwFdD87SHWUX0H5nPuTWvyGv1bStpCx5CDkO/Idey
+         evfxi9XPRJZzqMVwD/5qx5Ujja34U8miEkiLXuW51pwlq3j2AzYvbdps/2SFyor581Td
+         iiUnUaACoZM05KSKE1VInn+gDsFkJZRqODHuZApVvjedLG8vNUppTs5NfsAx0nVEqMUa
+         Vxc7ADtU12FjyL03Ms7qCYEYtIVxCukzF53RR93v/7rFLbb11C3dWxwVnKWmSuiWYfyP
+         COvduXzUfMdGCq6XBGnxCExyD0T3zEmQijZo1ggCIExKC9nsJUcJK/MGPbPENGKMClWA
+         a7mw==
+X-Gm-Message-State: APjAAAVOuyKt/0/OijIehqspNQK63uf+kNA8GzCw34Ki+SYXq1AeaxkG
+        0ZBbXQLa9e0XX/ngITrsiijqY4CV4TB9sFgud2A=
+X-Google-Smtp-Source: APXvYqx5Q1XLzgImqMNSLFEKkWfP29H11T2mMVKgou1wFXgvzMdVoOIlVa0RXO+hmfl2N4vbkLgMry9BjhklGEomGUc=
+X-Received: by 2002:a9d:2073:: with SMTP id n106mr6639922ota.145.1576137009080;
+ Wed, 11 Dec 2019 23:50:09 -0800 (PST)
 MIME-Version: 1.0
-References: <87wob2clos.wl-kuninori.morimoto.gx@renesas.com>
-In-Reply-To: <87wob2clos.wl-kuninori.morimoto.gx@renesas.com>
+References: <87v9qmcloc.wl-kuninori.morimoto.gx@renesas.com>
+In-Reply-To: <87v9qmcloc.wl-kuninori.morimoto.gx@renesas.com>
 From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Thu, 12 Dec 2019 08:43:04 +0100
-Message-ID: <CAMuHMdWb_ipn7FVHbz8=PTdGod=MW+2xHY7yuq3yJcWwNnDvcg@mail.gmail.com>
-Subject: Re: [PATCH] sh: add missing EXPORT_SYMBOL() for __delay
+Date:   Thu, 12 Dec 2019 08:49:58 +0100
+Message-ID: <CAMuHMdU2LTuOeNAm4bHbei6LOcvEWbwS=WzVSGkZE0kw8RA0kA@mail.gmail.com>
+Subject: Re: [PATCH] sh: add missing DECLARE_EXPORT() for __ashiftrt_r4_2x
 To:     Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>,
@@ -50,41 +50,60 @@ X-Mailing-List: linux-sh@vger.kernel.org
 
 Hi Morimoto-san,
 
-On Thu, Dec 12, 2019 at 3:38 AM Kuninori Morimoto
+On Thu, Dec 12, 2019 at 3:39 AM Kuninori Morimoto
 <kuninori.morimoto.gx@renesas.com> wrote:
 > From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 >
-> __delay() is used from kernel module.
-> We need EXPORT_SYMBOL(), otherwise we will get compile error.
+> __ashiftrt_r4_2x is used from kernel module.
+> We need DECLARE_EXPORT(), otherwise we will get compile error.
 >
-> ERROR: "__delay" [drivers/net/phy/mdio-cavium.ko] undefined!
+> ERROR: "__ashiftrt_r4_25" [drivers/iio/pressure/bmp280.ko] undefined!
+> ERROR: "__ashiftrt_r4_26" [drivers/iio/dac/ad5764.ko] undefined!
+> ERROR: "__ashiftrt_r4_26" [drivers/iio/accel/mma7660.ko] undefined!
+> ERROR: "__ashiftrt_r4_25" [drivers/iio/accel/dmard06.ko] undefined!
+> ERROR: "__ashiftrt_r4_26" [drivers/iio/accel/bma220_spi.ko] undefined!
+> ERROR: "__ashiftrt_r4_25" [drivers/crypto/hisilicon/sec/hisi_sec.ko] undefined!
+> ERROR: "__ashiftrt_r4_26" [drivers/rtc/rtc-x1205.ko] undefined!
+> ERROR: "__ashiftrt_r4_25" [drivers/rtc/rtc-pcf85063.ko] undefined!
+> ERROR: "__ashiftrt_r4_25" [drivers/rtc/rtc-pcf2123.ko] undefined!
+> ERROR: "__ashiftrt_r4_25" [drivers/input/tablet/gtco.ko] undefined!
+> ERROR: "__ashiftrt_r4_26" [drivers/input/mouse/psmouse.ko] undefined!
+> ERROR: "__ashiftrt_r4_28" [drivers/input/mouse/psmouse.ko] undefined!
+> ERROR: "__ashiftrt_r4_28" [drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.ko] undefined!
+> ERROR: "__ashiftrt_r4_28" [fs/udf/udf.ko] undefined!
 >
 > Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
 Thanks for your patch!
 
-> --- a/arch/sh/lib/delay.c
-> +++ b/arch/sh/lib/delay.c
-> @@ -29,6 +29,7 @@ void __delay(unsigned long loops)
->                 : "0" (loops)
->                 : "t");
->  }
-> +EXPORT_SYMBOL(__delay);
->
->  inline void __const_udelay(unsigned long xloops)
->  {
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-I believe the correct fix is make drivers/net/phy/mdio-cavium.c use one
-of [nmu]delay() instead.
+> --- a/arch/sh/kernel/sh_ksyms_32.c
+> +++ b/arch/sh/kernel/sh_ksyms_32.c
+> @@ -53,8 +53,14 @@ DECLARE_EXPORT(__ashiftrt_r4_21);
+>  DECLARE_EXPORT(__ashiftrt_r4_22);
+>  DECLARE_EXPORT(__ashiftrt_r4_23);
+>  DECLARE_EXPORT(__ashiftrt_r4_24);
+> +DECLARE_EXPORT(__ashiftrt_r4_25);
+> +DECLARE_EXPORT(__ashiftrt_r4_26);
+>  DECLARE_EXPORT(__ashiftrt_r4_27);
+> +DECLARE_EXPORT(__ashiftrt_r4_28);
+> +DECLARE_EXPORT(__ashiftrt_r4_29);
+>  DECLARE_EXPORT(__ashiftrt_r4_30);
+> +DECLARE_EXPORT(__ashiftrt_r4_31);
+> +DECLARE_EXPORT(__ashiftrt_r4_32);
+>  DECLARE_EXPORT(__movstr);
+>  DECLARE_EXPORT(__movstrSI8);
+>  DECLARE_EXPORT(__movstrSI12);
 
-Cfr.
-https://lore.kernel.org/lkml/CAMuHMdUERaoHLNKi03zCuYi7NevgBFjXrV=pt0Yy=HOeRiL25Q@mail.gmail.com/
+Wouldn't it make sense to just add all of them (__ashiftrt_r4_[0-32])?
 
 Gr{oetje,eeting}s,
 
                         Geert
 
--- 
+
+--
 Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
 In personal conversations with technical people, I call myself a hacker. But
