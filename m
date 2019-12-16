@@ -2,80 +2,86 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CDDE0120702
-	for <lists+linux-sh@lfdr.de>; Mon, 16 Dec 2019 14:21:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BC1AA120739
+	for <lists+linux-sh@lfdr.de>; Mon, 16 Dec 2019 14:31:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727730AbfLPNVS (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 16 Dec 2019 08:21:18 -0500
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:40498 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727653AbfLPNVS (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 16 Dec 2019 08:21:18 -0500
-Received: by mail-lj1-f194.google.com with SMTP id s22so6764362ljs.7;
-        Mon, 16 Dec 2019 05:21:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=lQsx8zyUIj5ObfEsFUexXNSRbHHE+0/ar0m0MFvhew8=;
-        b=FSKVsWM16+PZVcbPhQt4ueF6AvXIFYCF2rK1iib2leLOhYfLAlCBok2E2VtzZeOtGk
-         /oLy93zRfA4lyN2CMOk/ySN7zgYBkyO0tz6h1djzZZ+xV1NMKe9mIEuBChiGJtnHeeym
-         vJvr2+RqP8Ul+YslzB/p6fLfABbFoDWUuoVQ9m58fJ4IZOFVPWtKrYBdVghNKteVaZho
-         6cyvPBzjwCE0x++n2O5iQW6qtLdh8D7OjE9SUrwEhxej9bZD+ukxlrPzLh5YN7Rim7Kh
-         j1HNIYKN3QlR1mz4AiqDr2TandMNyMvMjqHXtCP1iMwckpiRvBxXKJETj9ffuaG8hwfS
-         4phg==
+        id S1727826AbfLPNb1 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 16 Dec 2019 08:31:27 -0500
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:41517 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727601AbfLPNb0 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 16 Dec 2019 08:31:26 -0500
+Received: by mail-oi1-f194.google.com with SMTP id i1so3293311oie.8;
+        Mon, 16 Dec 2019 05:31:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=lQsx8zyUIj5ObfEsFUexXNSRbHHE+0/ar0m0MFvhew8=;
-        b=Y1bRDzpoGm4onV8D+w1rXw8hVTJRcqFzaQbL+cIcdTLzw9k1aOmE4SGid30b520DUr
-         cqHI5PXUtPwRsdx22PAGuNhzrtWxnvfm/oE+gEjLOmwIU2JImBUgB/EC9ZBHJ3F733In
-         BOVNe5TlcGmH25+LP9HncLw9cvvD6wJH5a+rA4Rohw2XNcF0GQYSbLTh2pevHM3IRGAf
-         cV3Th3Wj2c6wk2PoNUELPPmOXaL319OkMwSJtFPT0hzrlh/n/1WhOXOl+imieLS/bJte
-         rw0abbAvOsLmZPWJOp81jBysMLXZLnnAeyWd/B3H2Q7lVAwSv25AIEAgg5cqmKopqgYy
-         sSLw==
-X-Gm-Message-State: APjAAAW1IMDjIe9czvczf/bIBahhopkKp1DVsTusOmhb++fYB9axqU0N
-        oY9oRHVtexO/A0ayGBeDWfa4Iqoxa5p6MS4f6os=
-X-Google-Smtp-Source: APXvYqwyasL4AV9P77TBAwFOUCaOWSbMYr6wZzieWtwjK2yo6sJwnMOm8nr7r2NEKviSPQ6GeMTlFbGJtP4kQXgnngM=
-X-Received: by 2002:a2e:8152:: with SMTP id t18mr19475012ljg.255.1576502476464;
- Mon, 16 Dec 2019 05:21:16 -0800 (PST)
+        bh=adjDVaDOpI8al3CJQ77m74YYE8EkJXzR3/QYajElcEI=;
+        b=StC/OOVyFh/DCx1ibsKGFWicd83T1QyAS6dvKFXQY7CHTwLgm3KDUnXit8naQXFdwx
+         y0KJcWqhHxtYuJkWPW4Babu4/kbKqvsVXsvc5T/hO1/17LynlDxHj4f+wW0M9po/wukt
+         fReAYQ6Fx/mttEZl+FvenAZnEUPxpXnMArWsUfdKmCvcGHvv7ej6Ujbf+LnB/H27fl2p
+         tIkuwZdqISHniJ2E02Jk7bE/Lfx6fzMO+isXsuaL0iVV7fYZzzwD0jUDeN8VeiOiTR1u
+         SwKVt3A0KewXAl1zEHGnqFgaOAV9Xs0Pvz/WIjzY7NckqSK0dOxymZjR288oV1Wx7w2b
+         +f2Q==
+X-Gm-Message-State: APjAAAXhfeiNJM3YAEOLOsYik1OIrLZaGdIXMoXzElvYAnqMROdPl169
+        cjcuByeLzPSTPU9vpjbvT6YErPjIf/lu1kF9CXs=
+X-Google-Smtp-Source: APXvYqzpYtDQFaajS+ak1BudGvve2+sX5+qPNXt7bilITUMT9J0kfhP2OCfVlZn2kuME7LrilgZcj2EXBvnBUJh8rqA=
+X-Received: by 2002:aca:36c5:: with SMTP id d188mr9745707oia.54.1576503086134;
+ Mon, 16 Dec 2019 05:31:26 -0800 (PST)
 MIME-Version: 1.0
 References: <20191216103522.32215-1-gonsolo@gmail.com> <20191216103522.32215-2-gonsolo@gmail.com>
- <CAMuHMdVotJuotVKa3rxgR3ujCedoWM19-HhwhbTC9g6gV_EVNw@mail.gmail.com>
-In-Reply-To: <CAMuHMdVotJuotVKa3rxgR3ujCedoWM19-HhwhbTC9g6gV_EVNw@mail.gmail.com>
-From:   Gonsolo <gonsolo@gmail.com>
-Date:   Mon, 16 Dec 2019 14:21:05 +0100
-Message-ID: <CANL0fFS81NgFBcMBdWo6OKefz04h_FeXadcau9Rkcna7Ap5PDw@mail.gmail.com>
+ <CAMuHMdVotJuotVKa3rxgR3ujCedoWM19-HhwhbTC9g6gV_EVNw@mail.gmail.com> <CANL0fFS81NgFBcMBdWo6OKefz04h_FeXadcau9Rkcna7Ap5PDw@mail.gmail.com>
+In-Reply-To: <CANL0fFS81NgFBcMBdWo6OKefz04h_FeXadcau9Rkcna7Ap5PDw@mail.gmail.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 16 Dec 2019 14:31:15 +0100
+Message-ID: <CAMuHMdVtm6BGx6d+F8-Bw+fD-M-DugspLkBvCtTKGgWiPvJnSA@mail.gmail.com>
 Subject: Re: [PATCH 1/1] Fix undefined reference to 'node_reclaim_distance'.
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Gonsolo <gonsolo@gmail.com>
 Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         Mike Rapoport <rppt@linux.ibm.com>,
         Nicholas Piggin <npiggin@gmail.com>,
         Linux-sh list <linux-sh@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Matt Fleming <matt@codeblueprint.co.uk>,
+        Randy Dunlap <rdunlap@infradead.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi!
+Hi Gon,
 
-> Unfortunately that may be an x86-centric assumption: on other platforms,
-> there do exist systems with multiple memory banks with different access
-> performance figures.
+On Mon, Dec 16, 2019 at 2:21 PM Gonsolo <gonsolo@gmail.com> wrote:
+> > Unfortunately that may be an x86-centric assumption: on other platforms,
+> > there do exist systems with multiple memory banks with different access
+> > performance figures.
+>
+> Does that mean that the line
+>
+> obj-$(CONFIG_SMP) += cpupri.o cpudeadline.o topology.o stop_task.o pelt.o
+>
+> in kernel/sched/topology/Makefile:23 is wrong?
+>
+> Because in topology.c:1284 the variable node_reclaim_distance ist defined
+> which is used in mm/page_alloc.c:3529 without depending on SMP.
 
-Does that mean that the line
+The offending commit seems to be a55c7454a8c887b2 ("sched/topology:
+Improve load balancing on AMD EPYC systems").
 
-obj-$(CONFIG_SMP) += cpupri.o cpudeadline.o topology.o stop_task.o pelt.o
+Probably the node_reclaim_distance variable should be moved from
+an SMP-specific file to a NUMA-specific file.
 
-in kernel/sched/topology/Makefile:23 is wrong?
+Gr{oetje,eeting}s,
 
-Because in topology.c:1284 the variable node_reclaim_distance ist defined
-which is used in mm/page_alloc.c:3529 without depending on SMP.
+                        Geert
 
 -- 
-g
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
