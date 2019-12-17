@@ -2,134 +2,102 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 624BB122755
-	for <lists+linux-sh@lfdr.de>; Tue, 17 Dec 2019 10:09:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E781A122886
+	for <lists+linux-sh@lfdr.de>; Tue, 17 Dec 2019 11:19:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726705AbfLQJJt (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 17 Dec 2019 04:09:49 -0500
-Received: from sonic317-34.consmr.mail.ne1.yahoo.com ([66.163.184.45]:46104
-        "EHLO sonic317-34.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725805AbfLQJJs (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 17 Dec 2019 04:09:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aol.com; s=a2048; t=1576573786; bh=aXpl4+9nDg5VKeVPYhyWEJLdImIBPLEBF/My+9ERp2k=; h=Date:From:To:Cc:In-Reply-To:References:Subject:From:Subject; b=rkG1A7uOCmZk4gRvGJ1rhRnomT7X7dglgI2v6iLCrpbg+GD7Xx8T0ZCzxbKTlAdQZvZ61Y5r+zGc0vkhYDPiDKvINBvaxXIlWua+RTGErvOYOklV8kd6tTvJVsr+0c24fntdN4akcvntiO9ETiy/a/4Z6nP31cj8L9SGqbGvzsk+HPuD2wdQK7/kzL8Xqgsjuk6ITS8Uba0vvlTcTUwBJyuyUOYQvHqw2gmjHzzZkqwBiJfBF/MVibxC/S7S44i44wFFaBU9ZRnId+onOmfiO+mCf4Z7owX8iqqo8HnZqdHXEVFFtygobev4JjSWDi4gklbiUeMfbyuPYubWhZVQxw==
-X-YMail-OSG: icy1zroVM1nCiTHRIWya1n7eA9EnL39nsUaxr5yTW4ZEZjpMa7JsLOlnOz.EkUX
- mjhiij5SjVBBIDPRWmswor3K8e_x2x2q25dwQzujt36hrcnGppRZoTVQLAjD_BcXSDuB3wsQvquP
- XKcwKdfEj9ULcIk_WYqstfNm7_bElUuAqNRiIWHxZkSQN_atFCg0GePUZEyiHHdGToXY5rHu0P2g
- rEFokMu1TYYA1bmVrWp9DVhDemQ5X8uZ6ZnV.E4yERqK2gCUMCL4NXveadq2F8Frjn9avbigaccn
- xYpuksvbMkqWgndh_GUIw_FftO1mVIRCi6IS0aZgFvfoEEyN0BXvY6mHxgWHuhUyjAjjP9h1GbDi
- nwvAx1I3cl0LAvnQHk.PmUiUjy56Jcjksu3iPKb1B1Fepoup4PWlbyL.pxdeD72wjPjRf3kdnjai
- t1mvufClquFLZQh2BKFgrHzso1gx7o2MixEHETP8YULIS95b6g9DwTT3cav9ki0r4Us6EQ0JH3rD
- 2ZNlh6OkVMh8jWaF1tmSFk9eoSaU7cfMPS.jPeXDPO5QYO2OIU2joQE5ulc_U8AIv0q1d077MB7h
- vl9HuZqHYCrUVzIGQjBg9Fsu1RwJWnG1oS64jyaJrjqGkD83BOsHB04TH5zzBdEogQSWn3IEJWlX
- aewSrmPKDVH.YdqmD3uvE76pelXaHLELdWP.eqY9YJEl9pUCePOWkyN7PAToDDyu7OPbky_ghssk
- hT_2icWRufaB2eksEkohJ5OyZfHXYVwHfvJNBnB.LA64y3VqOI64DKd0ZSa9NLhRwQ3ktbu0PjcQ
- 2q6d8pUh.vLnXN58_mpQs88TeQGVde9ZP03JAFdWDELDq82hzBFnDT9v.BT4hJRZ_PSb.79WKFqB
- i5j1i3TQxxI5K3edWbw2RGTmAd_cQbCZ3ATShMsolI7iKKl_Gxnn1RLoZA7IQCSXOGkxpXvARAeN
- 7MSVK0nZhvhMJF_VVgzfDtqhFPdsEzr48CK6uVCMpjVaza8PwmLB7IVGOTpdBwuHFNn7jALmOtf5
- auLmu3mvU6wbIsyNPjovhEBsUrCfhQ1Px.wKj6LNCtwELIq2w9Dk1qcv2P8.MHF84kt6pv2IZ3XI
- H8KvYdFrvwkFLIfUXMlj6S88ddVnEhr_tk5zUWvs7RatrDW4Dg.n2bYdknFaS6FTiVYa8s_NW.WI
- k3_r.uDvSy4nwBlDGrvzYdV2P2akF4YU2GM4nvhkGgrnTBclyPo.OBU86_mONwgI3p5sdbLNMYbr
- Atb0iLtu3V4CceDxY73ghiixYf99dDRdaM3anItX0sz99ERPJI8yUVlxleVWLfkb1oD6P
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic317.consmr.mail.ne1.yahoo.com with HTTP; Tue, 17 Dec 2019 09:09:46 +0000
-Date:   Tue, 17 Dec 2019 09:09:44 +0000 (UTC)
-From:   Karl Nasrallah <knnspeed@aol.com>
-To:     kuninori.morimoto.gx@renesas.com, geert@linux-m68k.org
-Cc:     ysato@users.sourceforge.jp, dalias@libc.org,
-        linux-sh@vger.kernel.org, linux-renesas-soc@vger.kernel.org
-Message-ID: <1850003495.209647.1576573784839@mail.yahoo.com>
-In-Reply-To: <871rt3gwri.wl-kuninori.morimoto.gx@renesas.com>
-References: <87h81zh4ap.wl-kuninori.morimoto.gx@renesas.com> <CAMuHMdUHGXkmKrcZVNQo8nOcGo0h6xYgjZ+XmfGy6bJCPK9ZwQ@mail.gmail.com> <CAMuHMdUc4yyXsp4Y4Xx==3mUMrUn5DO8G-rLA_Mnv-790n6Ehg@mail.gmail.com> <871rt3gwri.wl-kuninori.morimoto.gx@renesas.com>
-Subject: Re: can someone solve string_32.h issue for SH ?
+        id S1727276AbfLQKTN (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 17 Dec 2019 05:19:13 -0500
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:45394 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726947AbfLQKTN (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 17 Dec 2019 05:19:13 -0500
+Received: by mail-lj1-f195.google.com with SMTP id j26so1142422ljc.12
+        for <linux-sh@vger.kernel.org>; Tue, 17 Dec 2019 02:19:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=FzmFmsLrqvnc5An4DsytwlvV71CPll4HoCOM1w/Xnqc=;
+        b=kLKueNxkV5kYx3mGuHNB1Z4FSliGI9/NiF8gTYy7zBzArCF3/aZpKz/q76OxaoehFB
+         PqDSxWAXN+mVpDhueKJQI8yUKsU73gPFLqZhVcxeQFuJX42OLbim6oBgnt03kBfal84t
+         AfYKEUPgl1TmFB0RmazXVtRTlXkuLy2vT2cRUmaJTfo9grhATgKQKORNXIkQ5wVch/5/
+         stRpC17/NfZetWw9IWiF9rpp4KAQwoSsNx1sZBOA5+XZF1zo3kVKSZnQglyrOKzwbVxr
+         bbAF7AqkG/10EaE8HCXi06M8Dx79XNnFqOhhvPJJnzFsmdPJOLYH9ovQozNNRpoi9csO
+         d3LQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=FzmFmsLrqvnc5An4DsytwlvV71CPll4HoCOM1w/Xnqc=;
+        b=GiAlFHUn/H7FZQsvdKmqDwsDw0zk51s8do/+viUwOSQ81DPMSfHHE6fr/A3T+ZuuNa
+         lluNjXjWhT/Gq/PkbgEHGicMkcWFE4wFi9Qy8cohsc8Hov1LouuHOgIq97fPbbltaMMs
+         nOoDuqhnX+785iJKE1K/g0ktXgc6GtDCtlnp5W4HreOCvol0L7hJjY1II2Yrj2k4InJ9
+         IKHYOaAcmg10OMOjlGsXFjQkIjzZkwpPf7M23l4bWbGggJTeShJjpJjEA1UtuAOl21Rn
+         vA/K1SL8AHCIM8ksoiRDq+0q1H3in72oe61wy6kcSr7uRCsPeuUMituhYTX0+fw6XYi2
+         EAeQ==
+X-Gm-Message-State: APjAAAV+LxCnuCuZqnMyNgyuJBGRPTHXx5qa68B36S7ud1NW8wRBctSQ
+        rc+lMCue/MI6ko1vfLa8kkp3kNRv+67fKg==
+X-Google-Smtp-Source: APXvYqzNeRwWt0AIiKm3LdZyFeA3Dsf0WuAO7HnNoldAc90hDHcI+WB59uAk4sIoINdir4Gilwo6UA==
+X-Received: by 2002:a2e:144b:: with SMTP id 11mr2599596lju.216.1576577950604;
+        Tue, 17 Dec 2019 02:19:10 -0800 (PST)
+Received: from ?IPv6:2a00:1fa0:290:15a:3c55:d836:6838:7553? ([2a00:1fa0:290:15a:3c55:d836:6838:7553])
+        by smtp.gmail.com with ESMTPSA id s7sm12163349ljo.43.2019.12.17.02.19.09
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 17 Dec 2019 02:19:10 -0800 (PST)
+Subject: Re: [PATCH] SH: Convert ins[bwl]/outs[bwl] macros to inline functions
+To:     Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     linux-sh@vger.kernel.org
+References: <87d0cnh2eb.wl-kuninori.morimoto.gx@renesas.com>
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Message-ID: <1cbfc481-ed50-64fa-ff29-c99eb434562c@cogentembedded.com>
+Date:   Tue, 17 Dec 2019 13:18:57 +0300
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: WebService/1.1.14873 aolwebmail Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36
+In-Reply-To: <87d0cnh2eb.wl-kuninori.morimoto.gx@renesas.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hello,
+Hello!
 
-Give me a day or so and I can do the following things:
+On 17.12.2019 9:50, Kuninori Morimoto wrote:
 
-1) Write you all a brand new standards-conforming strncpy in SH4 asm like t=
-his that is easier to read
-2) Compile it with sh4-elf-GCC 9.2
-3) Test it on a real SH4 (SH7750/SH7750R-like)=20
+> From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+> 
+> Macro ins[bwl]/outs[bwl] are just calling BUG(), but that results in
+> unused variable warnings all over the place.
+> This patch convert macro to inline to avoid warning
+> 
+> Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+> ---
+>   arch/sh/include/asm/io_noioport.h | 34 ++++++++++++++++++++++++++++------
+>   1 file changed, 28 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/sh/include/asm/io_noioport.h b/arch/sh/include/asm/io_noioport.h
+> index 90d6109..d39a1a8 100644
+> --- a/arch/sh/include/asm/io_noioport.h
+> +++ b/arch/sh/include/asm/io_noioport.h
+> @@ -53,12 +53,34 @@ static inline void ioport_unmap(void __iomem *addr)
+>   #define outw_p(x, addr)	outw((x), (addr))
+>   #define outl_p(x, addr)	outl((x), (addr))
+>   
+> -#define insb(a, b, c)	BUG()
+> -#define insw(a, b, c)	BUG()
+> -#define insl(a, b, c)	BUG()
+> +static inline void insb (unsigned long port, void *dst, unsigned long count)
 
-The warning, if it shows up in my test, would likely then be a GCC thing--I=
- have an idea of what it's doing, but I'll be sure after that.
-Unfortunately it's 4AM here on the other side of the world right now...
--Karl
+    Why this space after the function name? I don't think scripts/checkpatch.pl
+is happy about it...
 
+[...]
 
------Original Message-----
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>; Rich Felker <dalias@libc.o=
-rg>; Linux-SH <linux-sh@vger.kernel.org>; Linux-Renesas <linux-renesas-soc@=
-vger.kernel.org>
-Sent: Tue, Dec 17, 2019 3:51 am
-Subject: Re: can someone solve string_32.h issue for SH ?
-
-
-
-Hi Geert
-Cc Yoshinori-san
-
-> > --- a/arch/sh/include/asm/string_32.h
-> > +++ b/arch/sh/include/asm/string_32.h
-> > @@ -40,15 +40,15 @@ static inline char *strncpy(char *__dest, const
-> > char *__src, size_t __n)
-> >=C2=A0 =C2=A0 =C2=A0 =C2=A0  __asm__ __volatile__(
-> >=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0  "1:\n"
-> >=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0  "mov.b=C2=A0 @%=
-1+, %2\n\t"
-> > -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0  "mov.b=C2=A0 %2, @%0=
-\n\t"
-> > +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0  "mov.b=C2=A0 %2, @%0=
-+\n\t"
-> >=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0  "cmp/eq #0, %2\=
-n\t"
-> >=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0  "bt/s=C2=A0  2f=
-\n\t"
-> > -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0  " cmp/eq=C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 %5,%1\n\t"
-> > +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0  " cmp/eq=C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 %5,%0\n\t"
-> >=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0  "bf/s=C2=A0  1b=
-\n\t"
-> > -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0  " add=C2=A0  #1, %0\=
-n"
-> > +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0  " nop\n"
-> >=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0  "2:"
-> >=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0  : "=3Dr" (__des=
-t), "=3Dr" (__src), "=3D&z" (__dummy)
-> > -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0  : "0" (__dest), "1" =
-(__src), "r" (__src+__n)
-> > +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0  : "0" (__dest), "1" =
-(__src), "r" (__dest+__n)
-> >=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0  : "memory", "t"=
-);
-> >
-> >=C2=A0 =C2=A0 =C2=A0 =C2=A0  return __xdest;
-> >
-> > Does this make sense?
-> > Can it be improved, by putting something useful in the delay slot?
->=20
-> BTW, there seems to be a serious security issue with this strncpy()
-> implementation: while it never writes more than n bytes in the
-> destination buffer, it doesn't pad the destination buffer with zeroes if
-> the source string is shorter than the buffer size.=C2=A0 This will leak
-> data.
-
-Yeah...
-I can only do is "Reporting issue" to SH ML, unfortunately...
-
-Thank you for your help !!
-Best regards
-
----
-Kuninori Morimoto
-
+MBR, Sergei
