@@ -2,91 +2,84 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 654C1120798
-	for <lists+linux-sh@lfdr.de>; Mon, 16 Dec 2019 14:51:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15A41122480
+	for <lists+linux-sh@lfdr.de>; Tue, 17 Dec 2019 07:09:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727933AbfLPNvD (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 16 Dec 2019 08:51:03 -0500
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:46918 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727928AbfLPNvC (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 16 Dec 2019 08:51:02 -0500
-Received: by mail-lj1-f196.google.com with SMTP id z17so6840580ljk.13;
-        Mon, 16 Dec 2019 05:51:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=yXwBYgNkvNJ5wqvg9BxtWh1POLG3eTx59ak2bF6nB7I=;
-        b=KUijIDIbIaFg6FVPTC/5nwTDh7uyZJruDReFSQO3zNkpukrZUYbB44CfIw+LNGC6U8
-         u9XzhdOSWil3oG/3DDYw7QDpj6ofVZWRay2ILhm+9+5IFKZm+FepST6a/vSVA0PAUY/M
-         sxnkUx6C5nDaAmlpXzWTb7d8qBEUhGY4T+bumKi40jo/VfGoRSe3H6QSblpEQTEk9Rvu
-         4RsLMPXNTeObnlPptCR0POyt0m6JqMWI7pvzsa7wVG6HoNX49K+wKPUo+emL1f5pwG6g
-         CICNniuBWv24SD8I0QR7UPp6+f60c2QQRidi42r9Xg7QTWSX0t/T1CiGUsb5nJDvpFG8
-         wPjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=yXwBYgNkvNJ5wqvg9BxtWh1POLG3eTx59ak2bF6nB7I=;
-        b=PWVOPmPqV/XMDA70NAxIn7epC0iBPQihAHVQvhNidMo8TcnfFmZttLyRM79+OWydMF
-         ZXxtzQnQ2LNXzAAId+Q1ZIe9Q+OSrXpBw1upFZDbCgPAt+43f5c/iPZU3cfe+kmkZf50
-         wG8f9Q1XlwCtcjUwgC+ln1DLM8+Ja7r9lrvJu168e/Z/3dN217nwBkHl4/msqVwqu0CF
-         F1qxwQUd2LV85CTbZZLDQ3pFtDB/WEiNjsbp648GyWDZZ7vCvCv7bJrGD/iCQ2wC4J64
-         e5ieUUuYae3XMF3jFcl8AAnV58pZ2B2cN2mx+b19sGd5PzVajoAQTaGc/PQh4GtS5+W2
-         w/Mw==
-X-Gm-Message-State: APjAAAV84XUzpXpX/9MY2+GZdcj411gU5tJhE6+fPqCOEekAQxnGwY5M
-        /qBBdxN3EP8ZDyKIzTJexVXQs3tH0ETjKPHN/KQ=
-X-Google-Smtp-Source: APXvYqwsCGzSg/+9sl0R5MbYelV0EVCapIw5k8mbOEsosz913WIIfMDnFgSCepz5QtxVjB+u91jm/D+jqnU/CwWS5q8=
-X-Received: by 2002:a2e:9855:: with SMTP id e21mr19664424ljj.170.1576504260714;
- Mon, 16 Dec 2019 05:51:00 -0800 (PST)
-MIME-Version: 1.0
-References: <20191216103522.32215-1-gonsolo@gmail.com> <20191216103522.32215-2-gonsolo@gmail.com>
- <CAMuHMdVotJuotVKa3rxgR3ujCedoWM19-HhwhbTC9g6gV_EVNw@mail.gmail.com>
- <CANL0fFS81NgFBcMBdWo6OKefz04h_FeXadcau9Rkcna7Ap5PDw@mail.gmail.com> <CAMuHMdVtm6BGx6d+F8-Bw+fD-M-DugspLkBvCtTKGgWiPvJnSA@mail.gmail.com>
-In-Reply-To: <CAMuHMdVtm6BGx6d+F8-Bw+fD-M-DugspLkBvCtTKGgWiPvJnSA@mail.gmail.com>
-From:   Gonsolo <gonsolo@gmail.com>
-Date:   Mon, 16 Dec 2019 14:50:49 +0100
-Message-ID: <CANL0fFSNdzM-e=u+w0BTUqg5sQP_DuVBuJe9m0JDQnVTOPDMNQ@mail.gmail.com>
-Subject: Re: [PATCH 1/1] Fix undefined reference to 'node_reclaim_distance'.
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Matt Fleming <matt@codeblueprint.co.uk>,
-        Randy Dunlap <rdunlap@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+        id S1727472AbfLQGJD (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 17 Dec 2019 01:09:03 -0500
+Received: from relmlor1.renesas.com ([210.160.252.171]:35400 "EHLO
+        relmlie5.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726963AbfLQGJD (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 17 Dec 2019 01:09:03 -0500
+Date:   17 Dec 2019 15:09:02 +0900
+X-IronPort-AV: E=Sophos;i="5.69,324,1571670000"; 
+   d="scan'208";a="34623546"
+Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
+  by relmlie5.idc.renesas.com with ESMTP; 17 Dec 2019 15:09:02 +0900
+Received: from morimoto-PC.renesas.com (unknown [10.166.18.140])
+        by relmlir5.idc.renesas.com (Postfix) with ESMTP id 2225B4005E34;
+        Tue, 17 Dec 2019 15:09:02 +0900 (JST)
+Message-ID: <87h81zh4ap.wl-kuninori.morimoto.gx@renesas.com>
+From:   Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>
+Cc:     Linux-SH <linux-sh@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
+Subject: can someone solve string_32.h issue for SH ?
+User-Agent: Wanderlust/2.15.9 Emacs/24.5 Mule/6.0
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-> The offending commit seems to be a55c7454a8c887b2 ("sched/topology:
-> Improve load balancing on AMD EPYC systems").
->
-> Probably the node_reclaim_distance variable should be moved from
-> an SMP-specific file to a NUMA-specific file.
 
-There are two variables that are used elsewhere:
+Hi SH ML
 
-int                             sched_max_numa_distance;
+We get too many below strncpy() warning on SH.
+Can someone solve it ?
+I don't remember SH assembler code / can't test it...
 
-Used in kernel/sched/fair.c and kernel/sched/topology.c. I would move
-it to fair.c.
+In file included from /home/morimoto/WORK/linux/arch/sh/include/asm/string.h:3,
+                 from /home/morimoto/WORK/linux/include/linux/string.h:20,
+                 from /home/morimoto/WORK/linux/include/linux/bitmap.h:9,
+                 from /home/morimoto/WORK/linux/include/linux/nodemask.h:95,
+                 from /home/morimoto/WORK/linux/include/linux/mmzone.h:17,
+                 from /home/morimoto/WORK/linux/include/linux/gfp.h:6,
+                 from /home/morimoto/WORK/linux/include/linux/slab.h:15,
+                 from /home/morimoto/WORK/linux/drivers/mmc/host/vub300.c:38:
+/home/morimoto/WORK/linux/drivers/mmc/host/vub300.c: In function 'new_system_port_status':
+/home/morimoto/WORK/linux/arch/sh/include/asm/string_32.h:51:42: warning: array subscript 80 is above array bounds of 'char[26]' [-Warray-bounds]
+   : "0" (__dest), "1" (__src), "r" (__src+__n)
+                                     ~~~~~^~~~
 
-int __read_mostly               node_reclaim_distance = RECLAIM_DISTANCE;
+	static inline char *strncpy(char *__dest, const char *__src, size_t __n)
+	{
+		register char *__xdest = __dest;
+		unsigned long __dummy;
 
-Used in
-arch/x86/kernel/cpu/amd.c, line 894
-kernel/sched/topology.c
-mm/khugepaged.c, line 725
-mm/page_alloc.c, line 3529
+		if (__n == 0)
+			return __xdest;
 
-I'm not sure where to move this one.
+		__asm__ __volatile__(
+			"1:\n"
+			"mov.b	@%1+, %2\n\t"
+			"mov.b	%2, @%0\n\t"
+			"cmp/eq	#0, %2\n\t"
+			"bt/s	2f\n\t"
+			" cmp/eq	%5,%1\n\t"
+			"bf/s	1b\n\t"
+			" add	#1, %0\n"
+			"2:"
+			: "=r" (__dest), "=r" (__src), "=&z" (__dummy)
+=>			: "0" (__dest), "1" (__src), "r" (__src+__n)
+			: "memory", "t");
 
--- 
-g
+		return __xdest;
+	}
+
+Thank you for your help !!
+Best regards
+---
+Kuninori Morimoto
