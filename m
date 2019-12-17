@@ -2,42 +2,42 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BA8FB12266F
-	for <lists+linux-sh@lfdr.de>; Tue, 17 Dec 2019 09:15:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E4381226A1
+	for <lists+linux-sh@lfdr.de>; Tue, 17 Dec 2019 09:26:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726090AbfLQIPQ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 17 Dec 2019 03:15:16 -0500
-Received: from sonic314-22.consmr.mail.ne1.yahoo.com ([66.163.189.148]:34696
-        "EHLO sonic314-22.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726167AbfLQIPN (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 17 Dec 2019 03:15:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aol.com; s=a2048; t=1576570512; bh=YH+eA8H98kF7S7AFDnLmqvL2JDejRuXYxrPlgYqDmTA=; h=Date:From:To:Cc:In-Reply-To:References:Subject:From:Subject; b=MXkJCsbbucFfnqgl/XII2SvaS6RVMbTG95szKNpdFSAez4fflKshx3+xYc55L/tPqtd6Ti4jVUrXSZsyFDpHDemsdL4elF8zWGXZo958y9qFOqcDmQ9Yt2ZW0/0QxppN2A6hKnZnZb3uOoS4dJ07gYd474Z2uzYR/LzrYBHQ/v3kjhWeFyl39NAu0mKS7RLFQ+25RWJAQ3okobXtJEWuMnQ3T1QviRPzSDCBfbNcx7/wF3OxXSSct3TOrLrFU2OS1khtfs4YrD53izEKn2j5pm4CImT7f4jp5iKLpi2O+Fho12QYuYOMB+oQ4VXJ8TNC5JEV5a07/qKAga6518GnlQ==
-X-YMail-OSG: b0ksG20VM1mMDaXRMI5o9mo3m7ofAIT9aDvhuqYJZn.9g6IVaLQ6BmnOVVfCFJD
- N8tz2q4cwIvbsEzS6iJftidErpwwD8jrU8TbeG4vss38gNIuOQWCNvsDOLvtAI3.opbcL2xDENjA
- QC7HPvg21amWAf9s2ttdVxgJvauFVA1_l2pxdLyz2ULGw7fK6RaM1Tj5WGJttU.lzLo.NyeMkZ_F
- V8BDvO_5GBwXeLramw2znWRVqx.mDrLC0NYfSgq4lmjYUjKhx5knCYOfeQb2wAkXgekHwloyoCrO
- bP6b400w5xPpAwXrUT9GsuYSihsVbR5DtvN2wxMLmJv5UX4E5HZI190VY3qyg2KNFjbptW2gBcWF
- wo7DDBYAD.IGhXd06YNgTLeaNIHVsFbNynRMVnImhBA0ILQwuqKWrExt80l7E53PyXtUQF7t2uPF
- ZVHiC24oz2Y2dY2OkbczEkXvJ5PFTH9lcAVVCT6kLRcKtXxugyxh0SqVlygNsCVepFmSlIv8dlG5
- EaZNdtiVGL0_Cz84vta.VlQOkdk3zwaSqhLSWCOqiJ6w17BF.BauPPsC66JIHinkdRyjvnwmeU1y
- KCkLP8XlLgSaSw8ZeT7fZm0ld9C4pvwriV.rbxPNFBGMcJZa8P0loXiM83FnGtcOlbm_mTX92D07
- xxOuhlD77Fyitgs63UngqnzIT9YC5THybjHwYnjVWyUgbCRvmazQ0bQcHAWdAl06Ve0q6XZA5t0v
- CAJrgpsOmWJzYnmyVpFKcMoLowYGvjzSpbAC_jQal1mkXC1srTctWHj7lC.NOy._9Vuju9.b0lpq
- .vA_lE_uf9t0GNKUsIsnQrkpn7WqGl2u2KP0J8zfINb11ipq1hwSnXR.DR2g.n.tKKhj9Nn8aNJZ
- 69o.jG556nlbtz9Pj42_07teLzAGvMEttyZGmq590gDsS5qxVuXUwy0NpV2Z8rlNR3VSJLy.Appe
- XheoItGayPFmE7xgU8sAYD8OsYI1iKRYc5cEhDhXUxJP_AC5ZruHqzV0Ts0bPOM6e0vyRRGBffQ7
- TRKmyS48KbaPajb.qLF8oTTwB8w1g7fUxLGJp.MvAoj8XINoFjVTBoBkP0QFGMJL6t0sNpeaINZ7
- JX5usdsQyLzosVN.VxdvYaKfEYWUvv60tnc.X2n.uiBPJxOEpcGN.nmjedwvlJRBA0Zt76rSoIo7
- zB_5aFFS_agXOLwBTzh6j16ZqGHYbGojGc3jdjg2c87z5JIKrSPFF.bHmRyUP_y607NLm4QlAZsp
- MJSnudrdt_s.iRK99d.d8JvwuSDyy8P27OS8L.azsdwbbrHaMFg--
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic314.consmr.mail.ne1.yahoo.com with HTTP; Tue, 17 Dec 2019 08:15:12 +0000
-Date:   Tue, 17 Dec 2019 08:15:09 +0000 (UTC)
+        id S1725870AbfLQI0J (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 17 Dec 2019 03:26:09 -0500
+Received: from sonic307-56.consmr.mail.ne1.yahoo.com ([66.163.190.31]:45798
+        "EHLO sonic307-56.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725769AbfLQI0J (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 17 Dec 2019 03:26:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aol.com; s=a2048; t=1576571167; bh=b1/SJq2WWn84V4hINKt/QX3jee59+VkChpGtQ7C/PhE=; h=Date:From:To:Cc:In-Reply-To:References:Subject:From:Subject; b=D+IT25OV5JNCeCkgvl/6fa2nzEUQb5aZjBMMrZcyzPOMNpbkf8roi5TxXeU71iWSm39PBX0IjLeGXj3KLuYS2Qpwbyig9ZQ5VrSp1rqgxw3O4vDwHlx+1m2Dt01PdZIF0jd4TSExQTgY01m4zaO2wIGamA6xgklTb95Q6+r+i6NRPM3XMabSA2YNQ1jQ+dNWuxo2BGkPWA9qFiFHFtrxfPJv2F6z8TeyrXoQe53/iC+H+mx8cTvY61jpbbGs8sAVqNmgDT6uAlWj6Ro8d5xciZi9s+V0vbElMSIMYhU6NO+7OQp5dd+BUwnG/rW+yyTXzxx+h4bdEEGncsxl9VTH8Q==
+X-YMail-OSG: F2oAisMVM1k_EcV9_7tm3CJ18ORcEbLyrolKzPjhVFMHQ713Bu0TKk771S.dLO7
+ Dr4pMg0Rb1695BX8B.scYPnZVua7H_bHrNyKxzVxvotHzhcQdIxpRR1SjgApdlwou_NTp8IGRWnj
+ 3AY_hsmVaLHzbhP2q9RgIsgnzIISOAy9YIQKrjgZWFzel_YmpwApYNv2MtlaW42HI7ZayH6YbOov
+ 9bPfDRWQXZ7xSCxJzZr4wAhxvrY7nKRTU0jwgp59v837HLgI8wnHaZIIhgi5OZTEo56WasiYsdrd
+ pBnnYkY9kgQ7JcDFqHvMZYMM4ZbmsFLTUQTohVndYOSKoAde.QrVof0UZELAazw10umxK3NqQ4k5
+ Ijs3qj7Tlesb1R0OrGwRNbWtTE7uSYpFpQpw5urcREbnZnt_JNEEXgc1qJGEBB7bPQI3TdALbuZK
+ n7hAixozM_p7j20Gbr2oxKFrz7WFeNIne2aGzvKBYO5W3I4EolP4NgtOKzwzfhRc962hXTlK6oVJ
+ 01cBSTto8XoNIYSdGnP2bMiJBNQuor0k6pr3ZHeKGUOTi3iw2EA_J_22QD6iuRyeYNRi2OMgw36R
+ DAbNi7gj7KAQdjfp0VmY7mRpx.RNSp1hpzcNU1iArDfiATq4Fi0vslBTLFyyzPEhIpnbEqBe3E9S
+ djV7jJWEjWd9fyXenCVB.8kSjzOnGXsZaHq7qe3FyXvqYVVZlLCfhGOil0aux1Yd2hy9GK6py4L3
+ GrreHNDWMCsvRDc7.YomvLBoG41mZTNos8.PVFYfZCEW5IpfP.xO1QojfuPV9bnJ41gM3Ph9R3D0
+ JyvN.kgHK9NOOR1EL.VBf.xxZwN839rHZ9ourLJG7dP2cxeaiXh_HpDhggFWXIx5XmqnPXCuLjem
+ BPbIDJYU2W3EQM7soEZh_D8y28dpwU5FqsLkXkxBfjNBSt6S0_QuXQKsE_xaxfyb4IvIvNb_N34Q
+ agydZDcjVMtD4kHbrOcealkeRP5zGwJ4NfVCs9GLLltY9q9.xuU.3F5qJljiIGUMLO4_k4LZ3O.Y
+ YdLw0bvNvgccC_gmOJCIkEfGqawkrXqjMAq7xeNyMVQb_Jspv6dtw7DJJnl.1HAU7adyxzcHNcFu
+ QWj2QfqcNt4UT3ezr_4vDOzY7KO4gOCwtUZ7ieBUAGav_U6vBGPKi9df_W9QN6mSztuJRUzELBtw
+ yFC8E3juVcW9WaWgq6vjm5Qq7OnVoWtU4UvRCh9ldkppspo0_z9iGpfqAfXBi4uvQ4h7fByKXxBj
+ S_m0SBQBEK8VrRkaTLBdrH4Bs_uZNwAUrcNwxx1vBoe51l04TIDIP
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic307.consmr.mail.ne1.yahoo.com with HTTP; Tue, 17 Dec 2019 08:26:07 +0000
+Date:   Tue, 17 Dec 2019 08:26:04 +0000 (UTC)
 From:   Karl Nasrallah <knnspeed@aol.com>
 To:     kuninori.morimoto.gx@renesas.com
 Cc:     linux-sh@vger.kernel.org
-Message-ID: <1348932359.222850.1576570509794@mail.yahoo.com>
-In-Reply-To: <87a77rgzsi.wl-kuninori.morimoto.gx@renesas.com>
-References: <2131872019.198149.1576568166106.ref@mail.yahoo.com> <2131872019.198149.1576568166106@mail.yahoo.com> <87a77rgzsi.wl-kuninori.morimoto.gx@renesas.com>
+Message-ID: <1401968064.233432.1576571164188@mail.yahoo.com>
+In-Reply-To: <1348932359.222850.1576570509794@mail.yahoo.com>
+References: <2131872019.198149.1576568166106.ref@mail.yahoo.com> <2131872019.198149.1576568166106@mail.yahoo.com> <87a77rgzsi.wl-kuninori.morimoto.gx@renesas.com> <1348932359.222850.1576570509794@mail.yahoo.com>
 Subject: Re: can someone solve string_32.h issue for SH ?
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -48,12 +48,27 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
+Well, this will teach me to try and solve a problem at 3 AM. Please ignore my last message.
+
+strncpy behaves like this: linux (dot) die (dot) net/man/3/strncpy
+
+Which is exactly what you just wrote. So yes, strncpy is expected to write null bytes when the source is shorter than n.
+
+-----Original Message-----
+From: Karl Nasrallah <knnspeed@aol.com>
+To: kuninori.morimoto.gx <kuninori.morimoto.gx@renesas.com>
+Cc: linux-sh <linux-sh@vger.kernel.org>
+Sent: Tue, Dec 17, 2019 3:15 am
+Subject: Re: can someone solve string_32.h issue for SH ?
+
+
 Hello,
 
 I'm terribly sorry; I think I made a mistake. I looked at it again, double-checked the defined behavior of strncpy, and I think you actually just need to replace __src+__n with __dest+__n in your strncpy.
 Additionally, I don't know what the linux kernel rules are on this, but maybe unsigned long __dummy; should be initialized to 0 explicitly for readability?
 
 Sorry about that!
+
 
 -----Original Message-----
 From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
@@ -97,5 +112,6 @@ Thank you for your help !!
 Best regards
 ---
 Kuninori Morimoto
+
 
 
