@@ -2,122 +2,94 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A7DE1240E2
-	for <lists+linux-sh@lfdr.de>; Wed, 18 Dec 2019 09:02:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 46A77124B37
+	for <lists+linux-sh@lfdr.de>; Wed, 18 Dec 2019 16:14:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726736AbfLRICN (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 18 Dec 2019 03:02:13 -0500
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:37645 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726698AbfLRICN (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 18 Dec 2019 03:02:13 -0500
-Received: by mail-ot1-f67.google.com with SMTP id k14so1388967otn.4;
-        Wed, 18 Dec 2019 00:02:12 -0800 (PST)
+        id S1727386AbfLRPON (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 18 Dec 2019 10:14:13 -0500
+Received: from mail-io1-f68.google.com ([209.85.166.68]:41067 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727403AbfLRPOE (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 18 Dec 2019 10:14:04 -0500
+Received: by mail-io1-f68.google.com with SMTP id c16so2324047ioo.8
+        for <linux-sh@vger.kernel.org>; Wed, 18 Dec 2019 07:14:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=R9l9mbjTMtC+3agOxuj88vgGSGUSi1shzIvbtHPQHDA=;
+        b=RfaUJbE64AqObBUWyZFAX00yFzfv+PMQBeMlfEbyOTSSIZSlP9dNPzblRe9C4/Xp5G
+         OOrfzjlEIPRCszaxaclLviha/Gl6J+8MNE2wJIlQr3g8uWJn+m5NNx6dyOIWXJDzHKAu
+         CFfw6ayoPSChbR+RAE0+B68G/pEf5o1uZqam8GCW/DM3JVJn1rrKg09G5nyaA4x8K46C
+         DidFmOGbhUnnebgzWtKvL2IYqcm0dJ4hRYsroJX5h4wZl5ygcdMBOrPylnEG0iZgtaC4
+         tctA6UVKTV1ZO7eaOpJeM3zJ9lY8Otzi6Az77Sm1wv6CYLTS/yvcKPbBaIHIL7wY9gk+
+         23sQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=PQqCUv7RKIwxsorFpwyUpfxIl9jds6e+DU9zk9PVPIs=;
-        b=Gb5HqcDsMXKtb+95DTTnDL1xWILA5la5D9B0ajXGdoBC8HvkwtpNC7zKQZO9yM0PUR
-         +/X89b+Ql9CG91oDKppLWoTZTm5HeE8QzaFGtOOs8bm46ePNPX4fD2f/2J9b8M2NOq5u
-         hcabttw6dBArxbz0yplQAAjY94Lzjbsp+6u04f8jiFsdTHfWWwtIcWB0Tm8gQq3c6TJ3
-         0agAGOCpKAIvn+9URzwV0UiYIWGU6v+z5W0+XQiaLAjle6k+flko1QhHaci7x61WiTNs
-         BWQXNgDhFXGbmcF1vGHMSP9dwYMxNuN/V3IEhk7J+u97TkYQ0OCpyX7PKLEG/DLikyje
-         DsRQ==
-X-Gm-Message-State: APjAAAVrLCTyEY5npIhWpWlm0pLQAKdO0/C0qWZtbWswtn7FhbqeyLmn
-        oo5FMRUuIHcItGCs0M/KSzEClA/ISLxZ9/0+rcDcwEhH
-X-Google-Smtp-Source: APXvYqzUfNZ/rvrZwk3wwyL1jpu6Y00InJEF7jIq3BEr3gS2sXwq9ICRHCV3bOYHa11F/bhIR6qTWjscOP47Vu+a3Ak=
-X-Received: by 2002:a9d:7984:: with SMTP id h4mr1280207otm.297.1576656132308;
- Wed, 18 Dec 2019 00:02:12 -0800 (PST)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=R9l9mbjTMtC+3agOxuj88vgGSGUSi1shzIvbtHPQHDA=;
+        b=gbLObnXjyNw6aUvSGTFJmB1PuMBSVVSpsEUTBpHkg4pplqsAkEiDS0l7kNoAiqttdq
+         jB4CaJqnIj1jNnx+11Y9oK8Luq+oJg4sUWObj+T5Z5kNpzwsgj6n3fLbfFKZ3jQh1v6x
+         p5BaKKHVesLVrRuWc4PXA1ecqv5fXJvCS6SBLGlUvkyQvpStoyrCFTTVT9PCAIrP2rIh
+         TRQBj3AOde+2paQiOl3OZAkEuCDGUhGo/3flh9b4K4elAbpkRvoSF7l0Boj+M6yv/xiV
+         hj/2CWthcbhNOqMTOQoOGn3srxH8Ftz1vfBeOPKKktbryxarQrArsfd2M5ISQYmda3Dp
+         jRMg==
+X-Gm-Message-State: APjAAAVJgu0WztoFR1QCWcTGns1dMl6Wl5TAeiT0LxMfEaJcZIdNJJC7
+        MMUXPLPAaD8M9WWX0Jb+W3K4BN2kG+LhtvEBJQ==
+X-Google-Smtp-Source: APXvYqyIz9CrpHcrXivylieLEiE1VxRyGUw+E9DXz6VIYz+kYlOCef915g/qsmML8+OoqrwbsBK3G0eW6o6RBALrF/E=
+X-Received: by 2002:a05:6638:950:: with SMTP id f16mr2789501jad.107.1576682043767;
+ Wed, 18 Dec 2019 07:14:03 -0800 (PST)
 MIME-Version: 1.0
-References: <878snajjh2.wl-kuninori.morimoto.gx@renesas.com>
-In-Reply-To: <878snajjh2.wl-kuninori.morimoto.gx@renesas.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 18 Dec 2019 09:02:00 +0100
-Message-ID: <CAMuHMdUq6U0i_+Dg57jVNYM4iephuZ8k3QC6AyQ--W_qY5=q9w@mail.gmail.com>
-Subject: Re: [PATCH] sh: use generic strncpy()
-To:     Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        Karl Nasrallah <knnspeed@aol.com>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Linux-SH <linux-sh@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        "open list:KERNEL SELFTEST FRAMEWORK" 
-        <linux-kselftest@vger.kernel.org>
+Received: by 2002:a02:6603:0:0:0:0:0 with HTTP; Wed, 18 Dec 2019 07:14:03
+ -0800 (PST)
+Reply-To: dhl.expresscourier102156@outlook.fr
+From:   "MS. MARYANNA B. THOMASON" <info.zennitbankplcnigerian@gmail.com>
+Date:   Wed, 18 Dec 2019 16:14:03 +0100
+Message-ID: <CABHzvr=Pq7-TqhY8TPvFCsr+5-DhDQy=XOg-TM13qqbFWeemfQ@mail.gmail.com>
+Subject: =?UTF-8?Q?Urgent_delivery_Notification_of_your_ATM_MASTER_CARD?=
+        =?UTF-8?Q?_Amount=2C=2415=2E800=E2=80=99000=E2=80=9900=2C?=
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Morimoto-san, Karl,
+Attn Dear.
 
-On Wed, Dec 18, 2019 at 6:22 AM Kuninori Morimoto
-<kuninori.morimoto.gx@renesas.com> wrote:
-> From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
->
-> Current SH will get below warning at strncpy()
->
-> In file included from ${LINUX}/arch/sh/include/asm/string.h:3,
->                  from ${LINUX}/include/linux/string.h:20,
->                  from ${LINUX}/include/linux/bitmap.h:9,
->                  from ${LINUX}/include/linux/nodemask.h:95,
->                  from ${LINUX}/include/linux/mmzone.h:17,
->                  from ${LINUX}/include/linux/gfp.h:6,
->                  from ${LINUX}/innclude/linux/slab.h:15,
->                  from ${LINUX}/linux/drivers/mmc/host/vub300.c:38:
-> ${LINUX}/drivers/mmc/host/vub300.c: In function 'new_system_port_status':
-> ${LINUX}/arch/sh/include/asm/string_32.h:51:42: warning: array subscript\
->   80 is above array bounds of 'char[26]' [-Warray-bounds]
->    : "0" (__dest), "1" (__src), "r" (__src+__n)
->                                      ~~~~~^~~~
->
-> In general, strncpy() should behave like below.
->
->         char dest[10];
->         char *src = "12345";
->
->         strncpy(dest, src, 10);
->         // dest = {'1', '2', '3', '4', '5',
->                    '\0','\0','\0','\0','\0'}
->
-> But, current SH strnpy() has 2 issues.
-> 1st is it will access to out-of-memory (= src + 10).
+Urgent delivery Notification of your ATM MASTER CARD, Dhl-Benin is
+ready for delivery of your ATM Master card worth $15.800=E2=80=99000=E2=80=
+=9900, as
+approved this morning, Date, 18/12/2019. Through the Intruction from
+INTERNATIONAL MONETARY FUNDS, I.M.F official Directors.
 
-I believe this is not correct: the code does not really access memory
-beyond the end of the source string.  (Recent) gcc just thinks so,
-because "__src+__n" is used as a parameter to the routine.
+REGISTRATION NO :EG58945
+PARCEL NUMBER: 140479
+Delivery Schuleded now,
+Finally all we required from you is your ATM Card Proccessing Delivery
+fees $19.00 only which you must send to this DHL service to enable us
+dispatch the parcel to your destination today.
 
-> 2nd is it needs big fixup for it, and maintenance __asm__
-> code is difficult.
+Here is our receiving payment details.
+You are advised to send it Via Money Gram Service.
 
-Yeah, the padding is missing.
+Receiver's Name--------Alan Ude
+Country-------Benin Republic.
+City/ Address--------Cotonou
+Test Question--------In God
+Answer-------We Trust
+Amount------------$US19.00 only
+Mtcn-------------
+Sender's Name-------
 
-> To solve these issues, this patch simply uses generic strncpy()
-> instead of architecture specific one.
+Your delivery  ATM card worth $15.800=E2=80=99000=E2=80=9900,
+Is Due for delivery to your address today upon confirmation of
+required fee from you asap.
 
-That will definitely fix the issue, as we assume the generic
-implementation is correct ;-)
+Call us on this phone number for any inquiry. +229 62819378
+Awaiting your urgent response.
 
-Now, I've just tried, naively, to enable CONFIG_STRING_SELFTEST=y in my
-rts7751r2d build (without your patch), and boot it in qemu:
-
-    String selftests succeeded
-
-Woops, turns out lib/test_string.c does not have any testcases for
-strncpy()...
-
-So adding test code for the corner cases may be a valuable contribution.
-Thanks!
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+MS. MARYANNA B. THOMASON, Shipment director, DHL Express
+Courier Company-Benin
