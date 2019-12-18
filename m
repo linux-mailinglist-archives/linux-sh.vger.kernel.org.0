@@ -2,94 +2,77 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 46A77124B37
-	for <lists+linux-sh@lfdr.de>; Wed, 18 Dec 2019 16:14:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 662BF124E36
+	for <lists+linux-sh@lfdr.de>; Wed, 18 Dec 2019 17:45:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727386AbfLRPON (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 18 Dec 2019 10:14:13 -0500
-Received: from mail-io1-f68.google.com ([209.85.166.68]:41067 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727403AbfLRPOE (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 18 Dec 2019 10:14:04 -0500
-Received: by mail-io1-f68.google.com with SMTP id c16so2324047ioo.8
-        for <linux-sh@vger.kernel.org>; Wed, 18 Dec 2019 07:14:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=R9l9mbjTMtC+3agOxuj88vgGSGUSi1shzIvbtHPQHDA=;
-        b=RfaUJbE64AqObBUWyZFAX00yFzfv+PMQBeMlfEbyOTSSIZSlP9dNPzblRe9C4/Xp5G
-         OOrfzjlEIPRCszaxaclLviha/Gl6J+8MNE2wJIlQr3g8uWJn+m5NNx6dyOIWXJDzHKAu
-         CFfw6ayoPSChbR+RAE0+B68G/pEf5o1uZqam8GCW/DM3JVJn1rrKg09G5nyaA4x8K46C
-         DidFmOGbhUnnebgzWtKvL2IYqcm0dJ4hRYsroJX5h4wZl5ygcdMBOrPylnEG0iZgtaC4
-         tctA6UVKTV1ZO7eaOpJeM3zJ9lY8Otzi6Az77Sm1wv6CYLTS/yvcKPbBaIHIL7wY9gk+
-         23sQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=R9l9mbjTMtC+3agOxuj88vgGSGUSi1shzIvbtHPQHDA=;
-        b=gbLObnXjyNw6aUvSGTFJmB1PuMBSVVSpsEUTBpHkg4pplqsAkEiDS0l7kNoAiqttdq
-         jB4CaJqnIj1jNnx+11Y9oK8Luq+oJg4sUWObj+T5Z5kNpzwsgj6n3fLbfFKZ3jQh1v6x
-         p5BaKKHVesLVrRuWc4PXA1ecqv5fXJvCS6SBLGlUvkyQvpStoyrCFTTVT9PCAIrP2rIh
-         TRQBj3AOde+2paQiOl3OZAkEuCDGUhGo/3flh9b4K4elAbpkRvoSF7l0Boj+M6yv/xiV
-         hj/2CWthcbhNOqMTOQoOGn3srxH8Ftz1vfBeOPKKktbryxarQrArsfd2M5ISQYmda3Dp
-         jRMg==
-X-Gm-Message-State: APjAAAVJgu0WztoFR1QCWcTGns1dMl6Wl5TAeiT0LxMfEaJcZIdNJJC7
-        MMUXPLPAaD8M9WWX0Jb+W3K4BN2kG+LhtvEBJQ==
-X-Google-Smtp-Source: APXvYqyIz9CrpHcrXivylieLEiE1VxRyGUw+E9DXz6VIYz+kYlOCef915g/qsmML8+OoqrwbsBK3G0eW6o6RBALrF/E=
-X-Received: by 2002:a05:6638:950:: with SMTP id f16mr2789501jad.107.1576682043767;
- Wed, 18 Dec 2019 07:14:03 -0800 (PST)
+        id S1727467AbfLRQpu (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 18 Dec 2019 11:45:50 -0500
+Received: from mout.kundenserver.de ([212.227.126.131]:40151 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727192AbfLRQpu (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 18 Dec 2019 11:45:50 -0500
+Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
+ (mreue010 [212.227.15.129]) with ESMTPA (Nemesis) id
+ 1N3bnP-1hhqcJ2ccd-010bkI; Wed, 18 Dec 2019 17:45:32 +0100
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>, linux-sh@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] y2038: sh: remove timeval/timespec usage from headers
+Date:   Wed, 18 Dec 2019 17:45:11 +0100
+Message-Id: <20191218164527.542823-1-arnd@arndb.de>
+X-Mailer: git-send-email 2.20.0
 MIME-Version: 1.0
-Received: by 2002:a02:6603:0:0:0:0:0 with HTTP; Wed, 18 Dec 2019 07:14:03
- -0800 (PST)
-Reply-To: dhl.expresscourier102156@outlook.fr
-From:   "MS. MARYANNA B. THOMASON" <info.zennitbankplcnigerian@gmail.com>
-Date:   Wed, 18 Dec 2019 16:14:03 +0100
-Message-ID: <CABHzvr=Pq7-TqhY8TPvFCsr+5-DhDQy=XOg-TM13qqbFWeemfQ@mail.gmail.com>
-Subject: =?UTF-8?Q?Urgent_delivery_Notification_of_your_ATM_MASTER_CARD?=
-        =?UTF-8?Q?_Amount=2C=2415=2E800=E2=80=99000=E2=80=9900=2C?=
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:DMQ5Nstz2iNQ6VhbEOPaGqLSp/BDXB+L9DaoDSta8r7mGWTx02S
+ 2d41/T0uymdNKG4hRkAwkDdKuOBvucXRcqSZOtR4jIu2kcUqo9JGMjJluVVq+kOGnWEaSoc
+ 8so6L6HO3bN1p7SJKhWIlIWXRYaeXMPqI6sZUxGIIdiK6MCN7M7/e+ODxRKz6SQV/UZPRGV
+ jOukBrIMaAGCYLshwkvXQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:0OdFC6eI7iI=:qSLeRvQMk2UrLmt0GS/QaR
+ uMLiejva+UUVVQ+nVTJlgrprgYL3i2op9LSNd1rZl422yeDqrO+TIxXgqRU9Gf2b1nUOp9UVI
+ FFfgR9Az0FzzKh/8Qt2FhOua9jIf9v4fwQvoaRn3VV9rbssiYrUZZ6rbxsd3Mfse7ybv8CbDn
+ MXcZrrK1vG2/oxMr310BU5pIZt+Rq1XIAazKgUwX4ul6W2JFoHC4CxsqD/QwOnkH20HgJ23Bc
+ 6Djmh5pDTgqpu8NTqh5Y79IyHqw714dy6NJYKW+WA2vtro5jds+CA6fKlq+EULK5UO86cz1gP
+ uokZhOt8zuda6gdYMmSLpmcrhrIkDpdD9SWWroOdOsafgqma1z7uaFUwAVwoscuEjXqzg2et9
+ XkQQPRfQ8HfKGHYmPRpI0tGEBCBC7X4pGppX9ij7kwl5NyRcq4XHrpOSnfTW2P049z9F4oTcN
+ DhCBgHDPuoPksNywDGGMfBX9XtkXt8tKlq8qeLJdMX3P5Orvh3fKt0gjAYkhFrc9Rth9dwQ+B
+ L+attDwvtQsgryxWBi5NstpsRI7Ds7Enspy2igEPicq3yj2ytqW2WwzMXEycZ7vSwsU3uNoJA
+ 6ZL9IbxUHXbgVAwsKsUBYr9Al/KT2R4Tdw6jh4jJiU9/m97NpJnBvFbjCMWRJVyO+JornQkR9
+ G9Ahw3MYYK2qrEPwQOv+/iRBRcbkNp7nFLvz3M7ljthhSYQBasJSBM3YfXLtoABMoPlO3Qtb1
+ mKAVwxYYz/a+TMd35h6MqHd005NEDP3gs4jqNBOgzODOCV02UEY0Yh3ddjnlP05IS5pfAoizz
+ Z6IXwS8PJvxCOAkLj7XNzlpnu2Sindq08PgjDXDDhXh1g7mpRGgNVVCM45jsdmFoC71tXvtgx
+ 7rwwN6hGNO9MeSi97SNQ==
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Attn Dear.
+This header file escaped my earlier cleanups for removing
+the in-kernel usage of timeval and timespec structs.
 
-Urgent delivery Notification of your ATM MASTER CARD, Dhl-Benin is
-ready for delivery of your ATM Master card worth $15.800=E2=80=99000=E2=80=
-=9900, as
-approved this morning, Date, 18/12/2019. Through the Intruction from
-INTERNATIONAL MONETARY FUNDS, I.M.F official Directors.
+Replace them with the corresponding __kernel_old_* types.
 
-REGISTRATION NO :EG58945
-PARCEL NUMBER: 140479
-Delivery Schuleded now,
-Finally all we required from you is your ATM Card Proccessing Delivery
-fees $19.00 only which you must send to this DHL service to enable us
-dispatch the parcel to your destination today.
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ arch/sh/include/uapi/asm/sockios.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Here is our receiving payment details.
-You are advised to send it Via Money Gram Service.
+diff --git a/arch/sh/include/uapi/asm/sockios.h b/arch/sh/include/uapi/asm/sockios.h
+index ef18a668456d..3da561453260 100644
+--- a/arch/sh/include/uapi/asm/sockios.h
++++ b/arch/sh/include/uapi/asm/sockios.h
+@@ -10,7 +10,7 @@
+ #define SIOCSPGRP	_IOW('s', 8, pid_t)
+ #define SIOCGPGRP	_IOR('s', 9, pid_t)
+ 
+-#define SIOCGSTAMP_OLD	_IOR('s', 100, struct timeval) /* Get stamp (timeval) */
+-#define SIOCGSTAMPNS_OLD _IOR('s', 101, struct timespec) /* Get stamp (timespec) */
++#define SIOCGSTAMP_OLD	_IOR('s', 100, struct __kernel_old_timeval) /* Get stamp (timeval) */
++#define SIOCGSTAMPNS_OLD _IOR('s', 101, struct __kernel_old_timespec) /* Get stamp (timespec) */
+ 
+ #endif /* __ASM_SH_SOCKIOS_H */
+-- 
+2.20.0
 
-Receiver's Name--------Alan Ude
-Country-------Benin Republic.
-City/ Address--------Cotonou
-Test Question--------In God
-Answer-------We Trust
-Amount------------$US19.00 only
-Mtcn-------------
-Sender's Name-------
-
-Your delivery  ATM card worth $15.800=E2=80=99000=E2=80=9900,
-Is Due for delivery to your address today upon confirmation of
-required fee from you asap.
-
-Call us on this phone number for any inquiry. +229 62819378
-Awaiting your urgent response.
-
-MS. MARYANNA B. THOMASON, Shipment director, DHL Express
-Courier Company-Benin
