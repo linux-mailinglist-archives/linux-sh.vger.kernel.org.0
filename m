@@ -2,58 +2,125 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 93B74129F52
-	for <lists+linux-sh@lfdr.de>; Tue, 24 Dec 2019 09:46:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F04E912A68C
+	for <lists+linux-sh@lfdr.de>; Wed, 25 Dec 2019 08:18:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726178AbfLXIqB (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 24 Dec 2019 03:46:01 -0500
-Received: from mail-io1-f65.google.com ([209.85.166.65]:42873 "EHLO
-        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726160AbfLXIqA (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 24 Dec 2019 03:46:00 -0500
-Received: by mail-io1-f65.google.com with SMTP id n11so11835881iom.9
-        for <linux-sh@vger.kernel.org>; Tue, 24 Dec 2019 00:45:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=LcGU1mt+nAQIi3eKcWZpiy7DqrkNG23tK1MNYV9CB+M=;
-        b=oSNTlT55S3VMpFl+4fySqC3u4YoAoztGfoVSP3wFAPYFWsXQI1giXiHsJxeVgA8wKV
-         hwULOTryEx3lBfxk63gUH81C2gQlAZlpm+aJQe+/8QTFExYby4VXgAHOExxmkLh2JtdG
-         TiTDoeJwiEsRsob2+npOsu1HTE5l3KD8qzz/VgAKRx1Duv9MQ59SrgwEmUHNA+ZhhElO
-         FLyTrc29L41ygHkbyLYW+d4tggvOE/k3tBa1QgwGaKmT05FNAOOQsBLQoIO1VpMQ67Vd
-         aruBW7fco12liiTMGrdJ76u//KWiZN1ELjv5lB+Lg5aB3LosSk3HmcjI9v9Dl0cnEnaF
-         MVfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=LcGU1mt+nAQIi3eKcWZpiy7DqrkNG23tK1MNYV9CB+M=;
-        b=MuvyVgKbcVry1OBEFU+Q9+xAeL3006w86kJLNNV8+Fj1k5/7btKCNYA7YuowgjYgcv
-         x4C4jlzmWAOH/ercgYjcBakYm1A1ECRUDmukLNQopoOXZzFcHBmY4B+rabbeZqkQVHeD
-         un89fxTqSbe5r4pyxHFAAQVVRQzqiaq329PaEjWjZOB0AswMjsTC5jW/uCskeZjSbH8z
-         +KmFVw7NIs2+XI6dUDfyV1ymXy/MX9OzlJxKgD0lOkKYvznz/Xh1xYzy+RmT5XO8GV3x
-         fqUH48DA9oTQjqy+N16JxStwCz7vDs2pFmx0GbcCAaHHWPePKY4cTt0q0fvBJhNsdHpi
-         MVcA==
-X-Gm-Message-State: APjAAAUOnV5IhA36kTm9RPb/BW3rOL7alWBGBUIaR2O+/x9J9HlXuj1W
-        9DMCjlQD+Xz6G54seVdF3vRrPR+vFREZKSCGZEE=
-X-Google-Smtp-Source: APXvYqzDXPiusXd90IvAVlyEbeO6jCMdOyb5CPbz+Z0EDnXal3aG8RcvJ2u/hlIr8XoTCaRoauJNJKQwlLXTh0fOni4=
-X-Received: by 2002:a5d:9158:: with SMTP id y24mr4336955ioq.298.1577177159339;
- Tue, 24 Dec 2019 00:45:59 -0800 (PST)
+        id S1726399AbfLYHSl (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 25 Dec 2019 02:18:41 -0500
+Received: from bombadil.infradead.org ([198.137.202.133]:60738 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725865AbfLYHSl (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 25 Dec 2019 02:18:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
+        Subject:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=xL/ShzqmK+fdXFZ8cvAFgi6FxlFBuujEZnDwxTOQeWk=; b=DCLt52pOPxfiGYTHJ1thRI2R0
+        XZc0HDmgcULjW63q7xC8UyAyDqlrcVwy7UxzYCN690hHnK3k0VqnnrqQOw6svzBwXlmOORjrYepGq
+        AnhggJ+Es0O/3za2DU6wte4ed5sEzpjhb1L/VgTwoS6Mlm4QgJr2/PyeMV+mlGYDnA1PVMq+pwApc
+        OTnz+is44y2QupqKzL1GP2b8DLCk7Mdr2kFfK74wsjWi+hZRCoTiNdv509q3dnlmc6+jPNxQ3kjqf
+        7Emxqug9FEgI+YojGt4Gk+CPZYXOS65d1xDQKFsbGwd3WrchHOm0mM6QRpTKyA+ejtV1itFWR4rMj
+        xUGWCrlqg==;
+Received: from [2601:1c0:6280:3f0::fee9]
+        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1ik0wI-0002Pr-LZ; Wed, 25 Dec 2019 07:18:38 +0000
+Subject: Re: [PATCH 1/1] Fix undefined reference to 'node_reclaim_distance'.
+To:     Matt Fleming <matt@codeblueprint.co.uk>,
+        Gonsolo <gonsolo@gmail.com>
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <20191216103522.32215-1-gonsolo@gmail.com>
+ <20191216103522.32215-2-gonsolo@gmail.com>
+ <CAMuHMdVotJuotVKa3rxgR3ujCedoWM19-HhwhbTC9g6gV_EVNw@mail.gmail.com>
+ <CANL0fFS81NgFBcMBdWo6OKefz04h_FeXadcau9Rkcna7Ap5PDw@mail.gmail.com>
+ <CAMuHMdVtm6BGx6d+F8-Bw+fD-M-DugspLkBvCtTKGgWiPvJnSA@mail.gmail.com>
+ <CANL0fFSNdzM-e=u+w0BTUqg5sQP_DuVBuJe9m0JDQnVTOPDMNQ@mail.gmail.com>
+ <20191223164220.GA14394@codeblueprint.co.uk>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <29b721c1-b5a7-6fc1-4471-f42109d509ed@infradead.org>
+Date:   Tue, 24 Dec 2019 23:18:37 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.1
 MIME-Version: 1.0
-Received: by 2002:ac0:f302:0:0:0:0:0 with HTTP; Tue, 24 Dec 2019 00:45:58
- -0800 (PST)
-Reply-To: bethnatividad9@gmail.com
-From:   Beth Nat <clementidibia1960@gmail.com>
-Date:   Tue, 24 Dec 2019 08:45:58 +0000
-Message-ID: <CAEG=icH-SN5dpsQRSZpGxr6Zs1qfbZ=LtCEFq=gRxqcGeKyiKw@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20191223164220.GA14394@codeblueprint.co.uk>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-How are you today my dear? i saw your profile and it interests me, i
-am a Military nurse from USA. Can we be friend? I want to know more
-about you.
+On 12/23/19 8:42 AM, Matt Fleming wrote:
+> On Mon, 16 Dec, at 02:50:49PM, Gonsolo wrote:
+>>> The offending commit seems to be a55c7454a8c887b2 ("sched/topology:
+>>> Improve load balancing on AMD EPYC systems").
+>>>
+>>> Probably the node_reclaim_distance variable should be moved from
+>>> an SMP-specific file to a NUMA-specific file.
+>>
+>> There are two variables that are used elsewhere:
+>>
+>> int                             sched_max_numa_distance;
+>>
+>> Used in kernel/sched/fair.c and kernel/sched/topology.c. I would move
+>> it to fair.c.
+>>
+>> int __read_mostly               node_reclaim_distance = RECLAIM_DISTANCE;
+>>
+>> Used in
+>> arch/x86/kernel/cpu/amd.c, line 894
+>> kernel/sched/topology.c
+>> mm/khugepaged.c, line 725
+>> mm/page_alloc.c, line 3529
+>>
+>> I'm not sure where to move this one.
+> 
+> Can someone test out this patch on one of the failing architectures?
+> (sh, ppc64)
+
+Yes, it fixes the arch/sh/ build errors in my testing.
+I don't have a failing ppc64 .config file to test.
+
+thanks.
+
+> ---->8----
+> 
+> diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+> index 6ec1e595b1d4..bf20e5883026 100644
+> --- a/kernel/sched/topology.c
+> +++ b/kernel/sched/topology.c
+> @@ -1281,7 +1281,6 @@ static int			sched_domains_curr_level;
+>  int				sched_max_numa_distance;
+>  static int			*sched_domains_numa_distance;
+>  static struct cpumask		***sched_domains_numa_masks;
+> -int __read_mostly		node_reclaim_distance = RECLAIM_DISTANCE;
+>  #endif
+>  
+>  /*
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 4785a8a2040e..733890d913ea 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -3523,6 +3523,7 @@ bool zone_watermark_ok_safe(struct zone *z, unsigned int order,
+>  }
+>  
+>  #ifdef CONFIG_NUMA
+> +int __read_mostly		node_reclaim_distance = RECLAIM_DISTANCE;
+>  static bool zone_allows_reclaim(struct zone *local_zone, struct zone *zone)
+>  {
+>  	return node_distance(zone_to_nid(local_zone), zone_to_nid(zone)) <=
+> 
+
+
+-- 
+~Randy
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
