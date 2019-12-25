@@ -2,125 +2,161 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F04E912A68C
-	for <lists+linux-sh@lfdr.de>; Wed, 25 Dec 2019 08:18:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BE73212A82F
+	for <lists+linux-sh@lfdr.de>; Wed, 25 Dec 2019 14:24:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726399AbfLYHSl (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 25 Dec 2019 02:18:41 -0500
-Received: from bombadil.infradead.org ([198.137.202.133]:60738 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725865AbfLYHSl (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 25 Dec 2019 02:18:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
-        Subject:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=xL/ShzqmK+fdXFZ8cvAFgi6FxlFBuujEZnDwxTOQeWk=; b=DCLt52pOPxfiGYTHJ1thRI2R0
-        XZc0HDmgcULjW63q7xC8UyAyDqlrcVwy7UxzYCN690hHnK3k0VqnnrqQOw6svzBwXlmOORjrYepGq
-        AnhggJ+Es0O/3za2DU6wte4ed5sEzpjhb1L/VgTwoS6Mlm4QgJr2/PyeMV+mlGYDnA1PVMq+pwApc
-        OTnz+is44y2QupqKzL1GP2b8DLCk7Mdr2kFfK74wsjWi+hZRCoTiNdv509q3dnlmc6+jPNxQ3kjqf
-        7Emxqug9FEgI+YojGt4Gk+CPZYXOS65d1xDQKFsbGwd3WrchHOm0mM6QRpTKyA+ejtV1itFWR4rMj
-        xUGWCrlqg==;
-Received: from [2601:1c0:6280:3f0::fee9]
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1ik0wI-0002Pr-LZ; Wed, 25 Dec 2019 07:18:38 +0000
-Subject: Re: [PATCH 1/1] Fix undefined reference to 'node_reclaim_distance'.
-To:     Matt Fleming <matt@codeblueprint.co.uk>,
-        Gonsolo <gonsolo@gmail.com>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <20191216103522.32215-1-gonsolo@gmail.com>
- <20191216103522.32215-2-gonsolo@gmail.com>
- <CAMuHMdVotJuotVKa3rxgR3ujCedoWM19-HhwhbTC9g6gV_EVNw@mail.gmail.com>
- <CANL0fFS81NgFBcMBdWo6OKefz04h_FeXadcau9Rkcna7Ap5PDw@mail.gmail.com>
- <CAMuHMdVtm6BGx6d+F8-Bw+fD-M-DugspLkBvCtTKGgWiPvJnSA@mail.gmail.com>
- <CANL0fFSNdzM-e=u+w0BTUqg5sQP_DuVBuJe9m0JDQnVTOPDMNQ@mail.gmail.com>
- <20191223164220.GA14394@codeblueprint.co.uk>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <29b721c1-b5a7-6fc1-4471-f42109d509ed@infradead.org>
-Date:   Tue, 24 Dec 2019 23:18:37 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.1
+        id S1726397AbfLYNYK (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 25 Dec 2019 08:24:10 -0500
+Received: from szxga06-in.huawei.com ([45.249.212.32]:56374 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726185AbfLYNYJ (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Wed, 25 Dec 2019 08:24:09 -0500
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 869574CBA097F8A53C38;
+        Wed, 25 Dec 2019 21:24:07 +0800 (CST)
+Received: from huawei.com (10.175.124.28) by DGGEMS411-HUB.china.huawei.com
+ (10.3.19.211) with Microsoft SMTP Server id 14.3.439.0; Wed, 25 Dec 2019
+ 21:24:01 +0800
+From:   yu kuai <yukuai3@huawei.com>
+To:     <ysato@users.sourceforge.jp>, <dalias@libc.org>,
+        <aacraid@microsemi.com>, <jejb@linux.ibm.com>,
+        <martin.petersen@oracle.com>, <sathya.prakash@broadcom.com>,
+        <chaitra.basappa@broadcom.com>,
+        <suganath-prabu.subramani@broadcom.com>
+CC:     <linux-sh@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-scsi@vger.kernel.org>, <MPT-FusionLinux.pdl@broadcom.com>,
+        <yukuai3@huawei.com>, <zhengbin13@huawei.com>,
+        <yi.zhang@huawei.com>
+Subject: [PATCH] scsi: don't memset to zero after dma_alloc_coherent
+Date:   Wed, 25 Dec 2019 21:23:27 +0800
+Message-ID: <20191225132327.7121-1-yukuai3@huawei.com>
+X-Mailer: git-send-email 2.17.2
 MIME-Version: 1.0
-In-Reply-To: <20191223164220.GA14394@codeblueprint.co.uk>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-Originating-IP: [10.175.124.28]
+X-CFilter-Loop: Reflected
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 12/23/19 8:42 AM, Matt Fleming wrote:
-> On Mon, 16 Dec, at 02:50:49PM, Gonsolo wrote:
->>> The offending commit seems to be a55c7454a8c887b2 ("sched/topology:
->>> Improve load balancing on AMD EPYC systems").
->>>
->>> Probably the node_reclaim_distance variable should be moved from
->>> an SMP-specific file to a NUMA-specific file.
->>
->> There are two variables that are used elsewhere:
->>
->> int                             sched_max_numa_distance;
->>
->> Used in kernel/sched/fair.c and kernel/sched/topology.c. I would move
->> it to fair.c.
->>
->> int __read_mostly               node_reclaim_distance = RECLAIM_DISTANCE;
->>
->> Used in
->> arch/x86/kernel/cpu/amd.c, line 894
->> kernel/sched/topology.c
->> mm/khugepaged.c, line 725
->> mm/page_alloc.c, line 3529
->>
->> I'm not sure where to move this one.
-> 
-> Can someone test out this patch on one of the failing architectures?
-> (sh, ppc64)
+dma_alloc_coherent already zeros out memory, so memset to zero is not
+needed.
 
-Yes, it fixes the arch/sh/ build errors in my testing.
-I don't have a failing ppc64 .config file to test.
+Signed-off-by: yu kuai <yukuai3@huawei.com>
+---
+ arch/sh/mm/consistent.c             | 2 --
+ drivers/scsi/dpt_i2o.c              | 4 ----
+ drivers/scsi/mpt3sas/mpt3sas_base.c | 1 -
+ drivers/scsi/mvsas/mv_init.c        | 4 ----
+ drivers/scsi/pmcraid.c              | 1 -
+ 5 files changed, 12 deletions(-)
 
-thanks.
-
-> ---->8----
-> 
-> diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-> index 6ec1e595b1d4..bf20e5883026 100644
-> --- a/kernel/sched/topology.c
-> +++ b/kernel/sched/topology.c
-> @@ -1281,7 +1281,6 @@ static int			sched_domains_curr_level;
->  int				sched_max_numa_distance;
->  static int			*sched_domains_numa_distance;
->  static struct cpumask		***sched_domains_numa_masks;
-> -int __read_mostly		node_reclaim_distance = RECLAIM_DISTANCE;
->  #endif
->  
->  /*
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 4785a8a2040e..733890d913ea 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -3523,6 +3523,7 @@ bool zone_watermark_ok_safe(struct zone *z, unsigned int order,
->  }
->  
->  #ifdef CONFIG_NUMA
-> +int __read_mostly		node_reclaim_distance = RECLAIM_DISTANCE;
->  static bool zone_allows_reclaim(struct zone *local_zone, struct zone *zone)
->  {
->  	return node_distance(zone_to_nid(local_zone), zone_to_nid(zone)) <=
-> 
-
-
+diff --git a/arch/sh/mm/consistent.c b/arch/sh/mm/consistent.c
+index 3169a343a5ab..0de206c1acfe 100644
+--- a/arch/sh/mm/consistent.c
++++ b/arch/sh/mm/consistent.c
+@@ -57,8 +57,6 @@ int __init platform_resource_setup_memory(struct platform_device *pdev,
+ 		return -ENOMEM;
+ 	}
+ 
+-	memset(buf, 0, memsize);
+-
+ 	r->flags = IORESOURCE_MEM;
+ 	r->start = dma_handle;
+ 	r->end = r->start + memsize - 1;
+diff --git a/drivers/scsi/dpt_i2o.c b/drivers/scsi/dpt_i2o.c
+index abc74fd474dc..b1b879beebfb 100644
+--- a/drivers/scsi/dpt_i2o.c
++++ b/drivers/scsi/dpt_i2o.c
+@@ -1331,7 +1331,6 @@ static s32 adpt_i2o_reset_hba(adpt_hba* pHba)
+ 		printk(KERN_ERR"IOP reset failed - no free memory.\n");
+ 		return -ENOMEM;
+ 	}
+-	memset(status,0,4);
+ 
+ 	msg[0]=EIGHT_WORD_MSG_SIZE|SGL_OFFSET_0;
+ 	msg[1]=I2O_CMD_ADAPTER_RESET<<24|HOST_TID<<12|ADAPTER_TID;
+@@ -2803,7 +2802,6 @@ static s32 adpt_i2o_init_outbound_q(adpt_hba* pHba)
+ 			pHba->name);
+ 		return -ENOMEM;
+ 	}
+-	memset(status, 0, 4);
+ 
+ 	writel(EIGHT_WORD_MSG_SIZE| SGL_OFFSET_6, &msg[0]);
+ 	writel(I2O_CMD_OUTBOUND_INIT<<24 | HOST_TID<<12 | ADAPTER_TID, &msg[1]);
+@@ -2857,7 +2855,6 @@ static s32 adpt_i2o_init_outbound_q(adpt_hba* pHba)
+ 		printk(KERN_ERR "%s: Could not allocate reply pool\n", pHba->name);
+ 		return -ENOMEM;
+ 	}
+-	memset(pHba->reply_pool, 0 , pHba->reply_fifo_size * REPLY_FRAME_SIZE * 4);
+ 
+ 	for(i = 0; i < pHba->reply_fifo_size; i++) {
+ 		writel(pHba->reply_pool_pa + (i * REPLY_FRAME_SIZE * 4),
+@@ -3092,7 +3089,6 @@ static int adpt_i2o_build_sys_table(void)
+ 		printk(KERN_WARNING "SysTab Set failed. Out of memory.\n");	
+ 		return -ENOMEM;
+ 	}
+-	memset(sys_tbl, 0, sys_tbl_len);
+ 
+ 	sys_tbl->num_entries = hba_count;
+ 	sys_tbl->version = I2OVERSION;
+diff --git a/drivers/scsi/mpt3sas/mpt3sas_base.c b/drivers/scsi/mpt3sas/mpt3sas_base.c
+index 45fd8dfb7c40..663dd4df03e3 100644
+--- a/drivers/scsi/mpt3sas/mpt3sas_base.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
+@@ -5090,7 +5090,6 @@ _base_allocate_memory_pools(struct MPT3SAS_ADAPTER *ioc)
+ 		_base_release_memory_pools(ioc);
+ 		goto retry_allocation;
+ 	}
+-	memset(ioc->request, 0, sz);
+ 
+ 	if (retry_sz)
+ 		ioc_err(ioc, "request pool: dma_alloc_coherent succeed: hba_depth(%d), chains_per_io(%d), frame_sz(%d), total(%d kb)\n",
+diff --git a/drivers/scsi/mvsas/mv_init.c b/drivers/scsi/mvsas/mv_init.c
+index 7af9173c4925..e77f4d5a049c 100644
+--- a/drivers/scsi/mvsas/mv_init.c
++++ b/drivers/scsi/mvsas/mv_init.c
+@@ -244,19 +244,16 @@ static int mvs_alloc(struct mvs_info *mvi, struct Scsi_Host *shost)
+ 				     &mvi->tx_dma, GFP_KERNEL);
+ 	if (!mvi->tx)
+ 		goto err_out;
+-	memset(mvi->tx, 0, sizeof(*mvi->tx) * MVS_CHIP_SLOT_SZ);
+ 	mvi->rx_fis = dma_alloc_coherent(mvi->dev, MVS_RX_FISL_SZ,
+ 					 &mvi->rx_fis_dma, GFP_KERNEL);
+ 	if (!mvi->rx_fis)
+ 		goto err_out;
+-	memset(mvi->rx_fis, 0, MVS_RX_FISL_SZ);
+ 
+ 	mvi->rx = dma_alloc_coherent(mvi->dev,
+ 				     sizeof(*mvi->rx) * (MVS_RX_RING_SZ + 1),
+ 				     &mvi->rx_dma, GFP_KERNEL);
+ 	if (!mvi->rx)
+ 		goto err_out;
+-	memset(mvi->rx, 0, sizeof(*mvi->rx) * (MVS_RX_RING_SZ + 1));
+ 	mvi->rx[0] = cpu_to_le32(0xfff);
+ 	mvi->rx_cons = 0xfff;
+ 
+@@ -265,7 +262,6 @@ static int mvs_alloc(struct mvs_info *mvi, struct Scsi_Host *shost)
+ 				       &mvi->slot_dma, GFP_KERNEL);
+ 	if (!mvi->slot)
+ 		goto err_out;
+-	memset(mvi->slot, 0, sizeof(*mvi->slot) * slot_nr);
+ 
+ 	mvi->bulk_buffer = dma_alloc_coherent(mvi->dev,
+ 				       TRASH_BUCKET_SIZE,
+diff --git a/drivers/scsi/pmcraid.c b/drivers/scsi/pmcraid.c
+index 7eb88fe1eb0b..6976013cf4c7 100644
+--- a/drivers/scsi/pmcraid.c
++++ b/drivers/scsi/pmcraid.c
+@@ -4718,7 +4718,6 @@ static int pmcraid_allocate_host_rrqs(struct pmcraid_instance *pinstance)
+ 			return -ENOMEM;
+ 		}
+ 
+-		memset(pinstance->hrrq_start[i], 0, buffer_size);
+ 		pinstance->hrrq_curr[i] = pinstance->hrrq_start[i];
+ 		pinstance->hrrq_end[i] =
+ 			pinstance->hrrq_start[i] + PMCRAID_MAX_CMD - 1;
 -- 
-~Randy
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
+2.17.2
+
