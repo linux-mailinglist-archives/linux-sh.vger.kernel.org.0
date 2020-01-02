@@ -2,73 +2,60 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2879512ABEE
-	for <lists+linux-sh@lfdr.de>; Thu, 26 Dec 2019 12:33:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 821A112E18E
+	for <lists+linux-sh@lfdr.de>; Thu,  2 Jan 2020 02:58:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726055AbfLZLdS (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 26 Dec 2019 06:33:18 -0500
-Received: from szxga06-in.huawei.com ([45.249.212.32]:45148 "EHLO huawei.com"
+        id S1727579AbgABB6b (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 1 Jan 2020 20:58:31 -0500
+Received: from szxga05-in.huawei.com ([45.249.212.191]:8208 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725954AbfLZLdS (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Thu, 26 Dec 2019 06:33:18 -0500
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id AA2B7A1E62250C69BB90;
-        Thu, 26 Dec 2019 19:33:15 +0800 (CST)
-Received: from [127.0.0.1] (10.173.220.96) by DGGEMS411-HUB.china.huawei.com
- (10.3.19.211) with Microsoft SMTP Server id 14.3.439.0; Thu, 26 Dec 2019
- 19:33:06 +0800
-Subject: Re: [PATCH] scsi: don't memset to zero after dma_alloc_coherent
-To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        <ysato@users.sourceforge.jp>, <dalias@libc.org>,
-        <aacraid@microsemi.com>, <jejb@linux.ibm.com>,
-        <martin.petersen@oracle.com>, <sathya.prakash@broadcom.com>,
-        <chaitra.basappa@broadcom.com>,
-        <suganath-prabu.subramani@broadcom.com>
+        id S1727544AbgABB6b (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Wed, 1 Jan 2020 20:58:31 -0500
+Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 33C092841182367BBE00;
+        Thu,  2 Jan 2020 09:58:29 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
+ 14.3.439.0; Thu, 2 Jan 2020 09:58:20 +0800
+From:   Chen Zhou <chenzhou10@huawei.com>
+To:     <ysato@users.sourceforge.jp>, <dalias@libc.org>
 CC:     <linux-sh@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-scsi@vger.kernel.org>, <MPT-FusionLinux.pdl@broadcom.com>,
-        <zhengbin13@huawei.com>, <yi.zhang@huawei.com>
-References: <20191225132327.7121-1-yukuai3@huawei.com>
- <a3b27b94-1ab6-c33f-611c-56143fd390f8@cogentembedded.com>
- <958ffbe5-f3da-da16-9f2b-05923d13485b@huawei.com>
- <68771eb5-03c4-422b-9956-930a0e3c9de8@cogentembedded.com>
-From:   "yukuai (C)" <yukuai3@huawei.com>
-Message-ID: <bbec6a4a-2c57-2254-2970-95acb098c7f3@huawei.com>
-Date:   Thu, 26 Dec 2019 19:33:05 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        <chenzhou10@huawei.com>
+Subject: [PATCH next] sh: remove call to memset after dma_alloc_coherent
+Date:   Thu, 2 Jan 2020 09:54:30 +0800
+Message-ID: <20200102015430.140729-1-chenzhou10@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <68771eb5-03c4-422b-9956-930a0e3c9de8@cogentembedded.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.173.220.96]
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
 X-CFilter-Loop: Reflected
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
+Function dma_alloc_coherent use in buf already zeroes out memory,
+so memset is not needed.
 
+Signed-off-by: Chen Zhou <chenzhou10@huawei.com>
+---
+ arch/sh/mm/consistent.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-On 2019/12/26 19:16, Sergei Shtylyov wrote:
-> On 26.12.2019 14:13, yukuai (C) wrote:
-> 
->>>> dma_alloc_coherent already zeros out memory, so memset to zero is not
->>>> needed.
->>>>
->>>> Signed-off-by: yu kuai <yukuai3@huawei.com>
->>>> ---
->>>>   arch/sh/mm/consistent.c             | 2 --
->>>
->>>     How this one is related to SCSI?
->>>
->> Thank you for your response!
->> I put them in the same patch because I thougt they are the same 
->> situation. I'm sorry if it's not appropriate.
-> 
->     I'd recommend to split such patch to (at least) different 
-> subsystems, e.g. arch/sh/ part, drivers/scsi/ part.
-
-I'll do that, thank you again for your advise!
-
-Yu Kuai
+diff --git a/arch/sh/mm/consistent.c b/arch/sh/mm/consistent.c
+index 3169a34..0de206c 100644
+--- a/arch/sh/mm/consistent.c
++++ b/arch/sh/mm/consistent.c
+@@ -57,8 +57,6 @@ int __init platform_resource_setup_memory(struct platform_device *pdev,
+ 		return -ENOMEM;
+ 	}
+ 
+-	memset(buf, 0, memsize);
+-
+ 	r->flags = IORESOURCE_MEM;
+ 	r->start = dma_handle;
+ 	r->end = r->start + memsize - 1;
+-- 
+2.7.4
 
