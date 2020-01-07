@@ -2,92 +2,162 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 978A4132869
-	for <lists+linux-sh@lfdr.de>; Tue,  7 Jan 2020 15:04:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EF863132B95
+	for <lists+linux-sh@lfdr.de>; Tue,  7 Jan 2020 17:54:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728118AbgAGOEk (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 7 Jan 2020 09:04:40 -0500
-Received: from mail.kernel.org ([198.145.29.99]:43798 "EHLO mail.kernel.org"
+        id S1728442AbgAGQxb (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 7 Jan 2020 11:53:31 -0500
+Received: from mail.kernel.org ([198.145.29.99]:39882 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727658AbgAGOEk (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Tue, 7 Jan 2020 09:04:40 -0500
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1728386AbgAGQxa (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Tue, 7 Jan 2020 11:53:30 -0500
+Received: from PC-kkoz.proceq.com (unknown [213.160.61.66])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EA1392087F;
-        Tue,  7 Jan 2020 14:04:39 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B395D2073D;
+        Tue,  7 Jan 2020 16:53:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1578405880;
-        bh=WbXvdHgqnV+cXCXBLT7+GTR8fvfquCsJE+H5WyIk82Q=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=C8FwesqQM35vO/fuy1Vdu35HrJxErbxxKzDrMZesc56j8K4Q6o/nnbHc3A8mnfPP8
-         d7/VxtsVqzMSfzr0CGeOD3d9yXuwgQvn2vcl4dapxxLk7jLcErDXRf8OArBMDCY5/g
-         6s5R7F6Viv7H6HWYNM24tClPBQaclHb4BoxZpeqU=
-Received: by mail-lj1-f171.google.com with SMTP id o13so43426704ljg.4;
-        Tue, 07 Jan 2020 06:04:39 -0800 (PST)
-X-Gm-Message-State: APjAAAU8DuDViQnHDH1IrouzebBQlcM9wq9SldjAOpx2o/i0FR8t/5Eu
-        llbh3ojLBkWi3h1KrvjI0DZ26ylNLcmm1oN/3xg=
-X-Google-Smtp-Source: APXvYqwuJpaB1avY+d4LhVtj7v7ivw+vB84Myh9msCLGMb64KAukYZoEfMG+ooLDisdz0o2sGALGNg8sDL+TuMT2Rao=
-X-Received: by 2002:a2e:96c4:: with SMTP id d4mr56228969ljj.225.1578405878159;
- Tue, 07 Jan 2020 06:04:38 -0800 (PST)
-MIME-Version: 1.0
-References: <1578399963-2229-1-git-send-email-krzk@kernel.org>
- <CAMuHMdULcBE1inRzTRFJeRDToT1wW+nrMEfiUs7DxMLR0tqb3w@mail.gmail.com>
- <CAJKOXPcbUfUcmU2O50M5Hs2y6ggg-m5qU-AJ6HjSL9dFTCp64A@mail.gmail.com>
- <20200107133256.GA648@pi3> <CAK8P3a1EiHCVo0aJzwsv_kbT9ENMScnxfWM7Zoc08fd7bL=D1g@mail.gmail.com>
-In-Reply-To: <CAK8P3a1EiHCVo0aJzwsv_kbT9ENMScnxfWM7Zoc08fd7bL=D1g@mail.gmail.com>
+        s=default; t=1578416009;
+        bh=5pGZzG2R2Yg9BvXiJJcmzkQkuLAOfS9PEHpiBXb0Uls=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Q+mZvp8DRBQ+NGLFMRHq+ToaCPgY0sfmDNR9VpdaiZ9T2V/2nT/SeANXkK/wLMDoP
+         zenjraQPO9M07VwPEmNNuyRUDTXxaFInE+OA1UUiQvrcd9MJ0C7xFDpFQN49dMy/gI
+         GDlqwuMx3bvmjp+6UgH+xyziWuKaIO8OxKhrqNsk=
 From:   Krzysztof Kozlowski <krzk@kernel.org>
-Date:   Tue, 7 Jan 2020 15:04:26 +0100
-X-Gmail-Original-Message-ID: <CAJKOXPcwtju8w4Oub1cnW88u30=KJL=JqYsfUfUkwt++TGj_vg@mail.gmail.com>
-Message-ID: <CAJKOXPcwtju8w4Oub1cnW88u30=KJL=JqYsfUfUkwt++TGj_vg@mail.gmail.com>
-Subject: Re: [PATCH] sh: clk: Fix discarding const qualifier warning
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
+To:     Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Alexey Brodkin <abrodkin@synopsys.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Dave Airlie <airlied@redhat.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Ben Skeggs <bskeggs@redhat.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Jiri Slaby <jirislaby@gmail.com>,
+        Nick Kossifidis <mickflemm@gmail.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
+        linux-media@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-ntb@googlegroups.com,
+        virtualization@lists.linux-foundation.org,
+        linux-arch@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>
+Subject: [RFT 00/13] iomap: Constify ioreadX() iomem argument
+Date:   Tue,  7 Jan 2020 17:52:57 +0100
+Message-Id: <1578415992-24054-1-git-send-email-krzk@kernel.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Tue, 7 Jan 2020 at 14:54, Arnd Bergmann <arnd@arndb.de> wrote:
->
-> arch/powerpc/kernel/iomap.cOn Tue, Jan 7, 2020 at 2:33 PM Krzysztof
-> Kozlowski <krzk@kernel.org> wrote:
-> > On Tue, Jan 07, 2020 at 02:05:14PM +0100, Krzysztof Kozlowski wrote:
-> > > On Tue, 7 Jan 2020 at 14:00, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > >
-> > > Since this is a SuperH driver, I adjusted it to the SuperH
-> > > implementation - lack of const. However iIndeed it makes sense to have
-> > > them all taking "const"... Let me check, if I can fix it (without the
-> > > real HW).
-> >
-> > That will be non-trivial because many platforms define ioreadX() with
-> > non-const. For example entire alpha with many its implementations of
-> > ioread(). Even include/asm-generic/iomap.h defines them as non-const...
->
-> I found these instances:
->
-> arch/alpha/include/asm/io.h
-> arch/alpha/kernel/io.c
-> arch/parisc/include/asm/io.h
-> arch/parisc/lib/iomap.c
-> arch/sh/kernel/iomap.c
-> arch/powerpc/kernel/iomap.c
-> lib/iomap.c
-> include/asm-generic/iomap.h
->
-> At least the last four file would have to be done at the same time as
-> the header is shared, but the actual conversion should be trivial.
+Hi,
 
-Yes, assuming that I did not screw up some specific
-arch-implementation, it seems easy.
+The ioread8/16/32() and others have inconsistent interface among the
+architectures: some taking address as const, some not.
 
-I have patchset ready - just need to build test it and I'll share for
-kbuild & company to test.
+It seems there is nothing really stopping all of them to take
+pointer to const.
+
+Patchset was really tested on all affected architectures.
+Build testing is in progress - I hope auto-builders will point any issues.
+
+
+Todo
+====
+Convert also string versions (ioread16_rep() etc) if this aproach looks OK.
+
+
+Merging
+=======
+The first 5 patches - iomap, alpha, sh, parisc and powerpc - should probably go
+via one tree, or even squashed into one.
+
+All other can go separately after these get merged.
 
 Best regards,
 Krzysztof
+
+
+Krzysztof Kozlowski (13):
+  iomap: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  alpha: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  sh: Constify ioreadX() iomem argument (as in generic implementation)
+  parisc: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  powerpc: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  arc: Constify ioreadX() iomem argument (as in generic implementation)
+  drm/mgag200: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  drm/nouveau: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  media: fsl-viu: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  net: wireless: ath5k: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  net: wireless: rtl818x: Constify ioreadX() iomem argument (as in
+    generic implementation)
+  ntb: intel: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  virtio: pci: Constify ioreadX() iomem argument (as in generic
+    implementation)
+
+ arch/alpha/include/asm/core_apecs.h                |  6 +--
+ arch/alpha/include/asm/core_cia.h                  |  6 +--
+ arch/alpha/include/asm/core_lca.h                  |  6 +--
+ arch/alpha/include/asm/core_marvel.h               |  4 +-
+ arch/alpha/include/asm/core_mcpcia.h               |  6 +--
+ arch/alpha/include/asm/core_t2.h                   |  2 +-
+ arch/alpha/include/asm/io.h                        | 12 +++---
+ arch/alpha/include/asm/io_trivial.h                | 16 ++++----
+ arch/alpha/include/asm/jensen.h                    |  2 +-
+ arch/alpha/include/asm/machvec.h                   |  6 +--
+ arch/alpha/kernel/core_marvel.c                    |  2 +-
+ arch/alpha/kernel/io.c                             |  6 +--
+ arch/arc/plat-axs10x/axs10x.c                      |  4 +-
+ arch/parisc/include/asm/io.h                       |  4 +-
+ arch/parisc/lib/iomap.c                            | 48 +++++++++++-----------
+ arch/powerpc/kernel/iomap.c                        | 22 +++++-----
+ arch/sh/kernel/iomap.c                             | 10 ++---
+ drivers/gpu/drm/mgag200/mgag200_drv.h              |  4 +-
+ drivers/gpu/drm/nouveau/nouveau_bo.c               |  2 +-
+ drivers/media/platform/fsl-viu.c                   |  2 +-
+ drivers/net/wireless/ath/ath5k/ahb.c               | 10 ++---
+ .../net/wireless/realtek/rtl818x/rtl8180/rtl8180.h |  6 +--
+ drivers/ntb/hw/intel/ntb_hw_gen1.c                 |  2 +-
+ drivers/ntb/hw/intel/ntb_hw_gen3.h                 |  2 +-
+ drivers/ntb/hw/intel/ntb_hw_intel.h                |  2 +-
+ drivers/virtio/virtio_pci_modern.c                 |  6 +--
+ include/asm-generic/iomap.h                        | 22 +++++-----
+ include/linux/io-64-nonatomic-hi-lo.h              |  4 +-
+ include/linux/io-64-nonatomic-lo-hi.h              |  4 +-
+ lib/iomap.c                                        | 18 ++++----
+ 30 files changed, 123 insertions(+), 123 deletions(-)
+
+-- 
+2.7.4
+
