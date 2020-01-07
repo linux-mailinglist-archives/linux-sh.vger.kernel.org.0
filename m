@@ -2,110 +2,92 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BD62F1327B8
-	for <lists+linux-sh@lfdr.de>; Tue,  7 Jan 2020 14:33:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C2FF113282A
+	for <lists+linux-sh@lfdr.de>; Tue,  7 Jan 2020 14:54:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727944AbgAGNdC convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-sh@lfdr.de>); Tue, 7 Jan 2020 08:33:02 -0500
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:35194 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727959AbgAGNdB (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 7 Jan 2020 08:33:01 -0500
-Received: by mail-ed1-f67.google.com with SMTP id f8so6793629edv.2;
-        Tue, 07 Jan 2020 05:33:00 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=pwQBt0e96jtNHxOuZgzdGdXnbx40udEIwW5CMKe5MvI=;
-        b=iGwLcrq/WdFf8HuwiY+fX7Ok3vV0FHa6FBVT57eS33X+870plUo2DlUYcmnvITo9ft
-         gNjhVlBWNx3PP2aNnQxC0IPfKgwI54iJVVTpaxOtWUKF7YvcYHDD2BB43AFMMZrUpM4R
-         FnFKh7Gf0RTF+zYx5tP3YwWfE3uiH4ERisFlXRwlXY3q3ayj0gF5HUbHKIzYWAc/tpPs
-         mMr4v6Ulp1PwMG6L3ka8SY5Uo+OhLUBqEzPWTG/oK6VNw5Qb5wmts2fGevFTPBGFUT5j
-         XOlqrkyFc/HGD0lGhBmVHkcxv+oy0g790HhFrA4lB+PoOBabyhwEHJ+BsO2i6160jwhB
-         TCXQ==
-X-Gm-Message-State: APjAAAWxUXYsByUmYB27Ffuos4OG90Dfjzi1Jg7ABEX7G8JEeHeO0B2/
-        Ip1Qru7a7IyJpqY8iK1UIh0=
-X-Google-Smtp-Source: APXvYqy5u4qGiRiMpC2dS9D7/45j6Cx25ZLH25nmZfAmt/7A2dDgZk2q0kwniQBGTUOMt+VdIH/o2A==
-X-Received: by 2002:a50:fc99:: with SMTP id f25mr114269076edq.250.1578403979322;
-        Tue, 07 Jan 2020 05:32:59 -0800 (PST)
-Received: from pi3 ([194.230.155.149])
-        by smtp.googlemail.com with ESMTPSA id v2sm8019498ejj.44.2020.01.07.05.32.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jan 2020 05:32:58 -0800 (PST)
-Date:   Tue, 7 Jan 2020 14:32:56 +0100
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH] sh: clk: Fix discarding const qualifier warning
-Message-ID: <20200107133256.GA648@pi3>
+        id S1727806AbgAGNyg (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 7 Jan 2020 08:54:36 -0500
+Received: from mout.kundenserver.de ([212.227.126.130]:60325 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727658AbgAGNyf (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 7 Jan 2020 08:54:35 -0500
+Received: from mail-qk1-f181.google.com ([209.85.222.181]) by
+ mrelayeu.kundenserver.de (mreue011 [212.227.15.129]) with ESMTPSA (Nemesis)
+ id 1Mnq8Y-1jV55U0jbG-00pI9v; Tue, 07 Jan 2020 14:54:34 +0100
+Received: by mail-qk1-f181.google.com with SMTP id k6so42678792qki.5;
+        Tue, 07 Jan 2020 05:54:33 -0800 (PST)
+X-Gm-Message-State: APjAAAXQxuz4KREulreElswh1Jjf1oNapnUkTtO2gvkSaRJKHbl7WSXg
+        BP+ympirVerd79FjGwoCYquJYD1lw1qdFVnWJuY=
+X-Google-Smtp-Source: APXvYqxganD8ZrCIqDyUtQfBqO0agkD208yuy9nhgKAOXvloNNFhJIXLOG+bMa6bJ39dPMJZh/yjpxY1x4nnSb3sYgE=
+X-Received: by 2002:a37:2f02:: with SMTP id v2mr84906448qkh.3.1578405272953;
+ Tue, 07 Jan 2020 05:54:32 -0800 (PST)
+MIME-Version: 1.0
 References: <1578399963-2229-1-git-send-email-krzk@kernel.org>
  <CAMuHMdULcBE1inRzTRFJeRDToT1wW+nrMEfiUs7DxMLR0tqb3w@mail.gmail.com>
- <CAJKOXPcbUfUcmU2O50M5Hs2y6ggg-m5qU-AJ6HjSL9dFTCp64A@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8BIT
-In-Reply-To: <CAJKOXPcbUfUcmU2O50M5Hs2y6ggg-m5qU-AJ6HjSL9dFTCp64A@mail.gmail.com>
+ <CAJKOXPcbUfUcmU2O50M5Hs2y6ggg-m5qU-AJ6HjSL9dFTCp64A@mail.gmail.com> <20200107133256.GA648@pi3>
+In-Reply-To: <20200107133256.GA648@pi3>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Tue, 7 Jan 2020 14:54:16 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a1EiHCVo0aJzwsv_kbT9ENMScnxfWM7Zoc08fd7bL=D1g@mail.gmail.com>
+Message-ID: <CAK8P3a1EiHCVo0aJzwsv_kbT9ENMScnxfWM7Zoc08fd7bL=D1g@mail.gmail.com>
+Subject: Re: [PATCH] sh: clk: Fix discarding const qualifier warning
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:tU0eO8O6xurj+b44Y54kgigL29BQZecRwNVL9NdGsXX8W+0xG9d
+ m/KvYojG5ZmCv5v/Tw6t2Vp5ecy5m4Wy3UfF7q9r9G+7O3HT9j0k1Kp3f+iXh1JiBXnAow5
+ rhWeNuacha9UnIIBiF+cOftztsw+DfX5wLAeVAFQKRvbvLwSmv4RSSffFGzCc+VNX1in7+f
+ eyp3rHoR/gTTKymVq3WIw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:pBpIjKq4bxc=:sfOGqOKLVrui8Kc9jwGZFG
+ 6WgealvGo0mB1XnzG5lmF93aviHe27egZjqE7+z2gpmyqdjL0s9vEtigUTT4hkWsVOxaJ0pBp
+ uMNGoEYg9NHdkDDQUZhZM4K/iraHORT+amkLhegud09jBD+zmX+xwS6BqSp7Fw9akwj6rcvtz
+ B2uPCPiEx1ThqbUjOAZPwSzoen3KMm407InYVdsffFPsqE1I6eRusUBiiYp+UnaeHNEEhX36A
+ p5z5/vU5hT8iuWPr2PguDEAF4xNX8cVuMsyVnAEZ8HG4D93U9/zT/114jAaeoGa5T6TpUwAAV
+ /yH3Xe14ggrg93R9gr/isKHW34Kyj8zfYLPd+/NfK0AvAkcuc4vjeY6j/exQ7bs708QQ9Mw1I
+ eKn0WQWhsdzgsKkXMBTO0rrw9PhYvFxOF30LskXnAUdX8VeeF/ITtr0YnZsGikC6ssqqG184J
+ hPAp+PG6AKU8l4TAuWpQqniSx8M3475gC+UjUKkRbLRfFdWvCZShkNg6WkJtgO+NMAFmRfhoC
+ oF0M18fotksFQJuzLwLBH70eXJR+I06VbsehAiPGIbcS/yjSr2h7PUmzqeNBNKXmSCayWnUBt
+ 5UKSX3QPr8LMKnPDpYYn1AgoWacjC2BIR3hMuImeV9P2wgm9npAyHX77o5SKr9wHxYAmW6Rfn
+ AG+ZYu08gSMXYYm+GQx3o+hCxySZu80Pp3HHT6EjQsEA6ff35OE6jxqdkp1imiyMXYKPwREyw
+ wZ1L48N01cHh+I6mBNjZ5THOks01zjFRTm4i7dKBFYA4AeEFCczs8+7Do4FWElaC4Z9QWvmyb
+ ZO0chCUZ1dOqodlFllRxu3Hcbv2EDYPk0cZ2dLMmL6WfHqTzXGZ1j3bXAmZd/ttJxu9Zjbm/i
+ EAkML5yNme0/pQxR7Dhg==
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Tue, Jan 07, 2020 at 02:05:14PM +0100, Krzysztof Kozlowski wrote:
-> On Tue, 7 Jan 2020 at 14:00, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+arch/powerpc/kernel/iomap.cOn Tue, Jan 7, 2020 at 2:33 PM Krzysztof
+Kozlowski <krzk@kernel.org> wrote:
+> On Tue, Jan 07, 2020 at 02:05:14PM +0100, Krzysztof Kozlowski wrote:
+> > On Tue, 7 Jan 2020 at 14:00, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
 > >
-> > Hi Krzysztof,
-> >
-> > On Tue, Jan 7, 2020 at 1:26 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> > > ioreadX() accepts pointer to non-const memory.  This fixes warnings
-> > > like:
-> > >
-> > >     drivers/sh/clk/cpg.c: In function ‘r8’:
-> > >     drivers/sh/clk/cpg.c:41:17: warning: passing argument 1 of ‘ioread8’
-> > >         discards ‘const’ qualifier from pointer target type [-Wdiscarded-qualifiers]
-> > >
-> > > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> >
-> > Thanks for your patch!
-> >
-> > > --- a/drivers/sh/clk/cpg.c
-> > > +++ b/drivers/sh/clk/cpg.c
-> > > @@ -36,17 +36,17 @@ static void sh_clk_write(int value, struct clk *clk)
-> > >                 iowrite32(value, clk->mapped_reg);
-> > >  }
-> > >
-> > > -static unsigned int r8(const void __iomem *addr)
-> > > +static unsigned int r8(void __iomem *addr)
-> > >  {
-> > >         return ioread8(addr);
-> > >  }
-> >
-> > Isn't the real issue that some implementations of ioreadX() take const,
-> > while others don't?
-> >
-> > Even the generic ones disagree:
-> >
-> >     include/asm-generic/io.h:static inline u8 ioread8(const volatile
-> > void __iomem *addr)
-> >     include/asm-generic/iomap.h:extern unsigned int ioread8(void __iomem *);
-> >
-> > IMHO they all should take "const volatile void __iomem *".
-> 
-> Since this is a SuperH driver, I adjusted it to the SuperH
-> implementation - lack of const. However iIndeed it makes sense to have
-> them all taking "const"... Let me check, if I can fix it (without the
-> real HW).
+> > Since this is a SuperH driver, I adjusted it to the SuperH
+> > implementation - lack of const. However iIndeed it makes sense to have
+> > them all taking "const"... Let me check, if I can fix it (without the
+> > real HW).
+>
+> That will be non-trivial because many platforms define ioreadX() with
+> non-const. For example entire alpha with many its implementations of
+> ioread(). Even include/asm-generic/iomap.h defines them as non-const...
 
-That will be non-trivial because many platforms define ioreadX() with
-non-const. For example entire alpha with many its implementations of
-ioread(). Even include/asm-generic/iomap.h defines them as non-const...
+I found these instances:
 
-Best regards,
-Krzysztof
+arch/alpha/include/asm/io.h
+arch/alpha/kernel/io.c
+arch/parisc/include/asm/io.h
+arch/parisc/lib/iomap.c
+arch/sh/kernel/iomap.c
+arch/powerpc/kernel/iomap.c
+lib/iomap.c
+include/asm-generic/iomap.h
 
+At least the last four file would have to be done at the same time as
+the header is shared, but the actual conversion should be trivial.
+
+       Arnd
