@@ -2,103 +2,142 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4625A133458
-	for <lists+linux-sh@lfdr.de>; Tue,  7 Jan 2020 22:25:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF0D1133D45
+	for <lists+linux-sh@lfdr.de>; Wed,  8 Jan 2020 09:36:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727826AbgAGVZE (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 7 Jan 2020 16:25:04 -0500
-Received: from ale.deltatee.com ([207.54.116.67]:51280 "EHLO ale.deltatee.com"
+        id S1727258AbgAHIf6 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 8 Jan 2020 03:35:58 -0500
+Received: from pegase1.c-s.fr ([93.17.236.30]:54687 "EHLO pegase1.c-s.fr"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727257AbgAGVAQ (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Tue, 7 Jan 2020 16:00:16 -0500
-Received: from cgy1-donard.priv.deltatee.com ([172.16.1.31])
-        by ale.deltatee.com with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <gunthorp@deltatee.com>)
-        id 1iovxO-0007vy-Fh; Tue, 07 Jan 2020 14:00:09 -0700
-Received: from gunthorp by cgy1-donard.priv.deltatee.com with local (Exim 4.92)
-        (envelope-from <gunthorp@deltatee.com>)
-        id 1iovxJ-0001zP-94; Tue, 07 Jan 2020 14:00:01 -0700
-From:   Logan Gunthorpe <logang@deltatee.com>
-To:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-mm@kvack.org,
-        Dan Williams <dan.j.williams@intel.com>,
-        Michal Hocko <mhocko@kernel.org>,
-        David Hildenbrand <david@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     Christoph Hellwig <hch@lst.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        id S1726313AbgAHIf5 (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Wed, 8 Jan 2020 03:35:57 -0500
+Received: from localhost (mailhub1-int [192.168.12.234])
+        by localhost (Postfix) with ESMTP id 47t2dP2tfYz9v3gf;
+        Wed,  8 Jan 2020 09:35:53 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+        reason="1024-bit key; insecure key"
+        header.d=c-s.fr header.i=@c-s.fr header.b=fxUelGuu; dkim-adsp=pass;
+        dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+        by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+        with ESMTP id I0TjIRBHFA-4; Wed,  8 Jan 2020 09:35:53 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+        by pegase1.c-s.fr (Postfix) with ESMTP id 47t2dP1Xwtz9v3gS;
+        Wed,  8 Jan 2020 09:35:53 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+        t=1578472553; bh=pyCqgPPZ7kRofrDb80nScePrylWdxYR2l2/ULCClPrs=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=fxUelGuuZbXfGsWb57/3BxUjvtvdC/2QbyAEo6YqIvKJAL5rv4xC8YAPDeq7nhud3
+         dkB/UdAQUigd1rFWPHMhgX/6Fa4jCdXgPI62S3zygNDeTcqR1ZOBKH62ej2i0cflHq
+         zb2g6a/VdTBtVa3azjNLc7pwBVFpYUnXR94BgWzQ=
+Received: from localhost (localhost [127.0.0.1])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 2FF4A8B7EC;
+        Wed,  8 Jan 2020 09:35:54 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+        with ESMTP id PkGUzhhRpTGx; Wed,  8 Jan 2020 09:35:54 +0100 (CET)
+Received: from [172.25.230.100] (po15451.idsi0.si.c-s.fr [172.25.230.100])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id BE1C98B7EA;
+        Wed,  8 Jan 2020 09:35:53 +0100 (CET)
+Subject: Re: [RFT 00/13] iomap: Constify ioreadX() iomem argument
+To:     Krzysztof Kozlowski <krzk@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Rich Felker <dalias@libc.org>, Jiri Slaby <jirislaby@gmail.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        David Airlie <airlied@linux.ie>,
+        Jason Wang <jasowang@redhat.com>,
+        DRI Development <dri-devel@lists.freedesktop.org>,
+        virtualization@lists.linux-foundation.org,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        netdev <netdev@vger.kernel.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Linux-Arch <linux-arch@vger.kernel.org>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Helge Deller <deller@gmx.de>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        Alexey Brodkin <abrodkin@synopsys.com>,
+        Ben Skeggs <bskeggs@redhat.com>, nouveau@lists.freedesktop.org,
+        Dave Airlie <airlied@redhat.com>,
+        Matt Turner <mattst88@gmail.com>,
+        arcml <linux-snps-arc@lists.infradead.org>,
+        Nick Kossifidis <mickflemm@gmail.com>,
+        Allen Hubbe <allenbh@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+        alpha <linux-alpha@vger.kernel.org>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Eric Badger <ebadger@gigaio.com>,
-        Logan Gunthorpe <logang@deltatee.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>
-Date:   Tue,  7 Jan 2020 13:59:59 -0700
-Message-Id: <20200107205959.7575-9-logang@deltatee.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200107205959.7575-1-logang@deltatee.com>
-References: <20200107205959.7575-1-logang@deltatee.com>
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Richard Henderson <rth@twiddle.net>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Daniel Vetter <daniel@ffwll.ch>, Jon Mason <jdmason@kudzu.us>,
+        linux-ntb@googlegroups.com,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        "David S. Miller" <davem@davemloft.net>
+References: <1578415992-24054-1-git-send-email-krzk@kernel.org>
+ <CAMuHMdW4ek0OYQDrrbcpZjNUTTP04nSbwkmiZvBmKcU=PQM9qA@mail.gmail.com>
+ <CAMuHMdUBmYtJKtSYzS_5u67hVZOqcKSgFY1rDGme6gLNRBJ_gA@mail.gmail.com>
+ <CAJKOXPfq9vS4kSyx1jOPHBvi9_HjviRv0LU2A8ZwdmqgUuebHQ@mail.gmail.com>
+From:   Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <2355489c-a207-1927-54cf-85c04b62f18f@c-s.fr>
+Date:   Wed, 8 Jan 2020 09:35:54 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.1
 MIME-Version: 1.0
+In-Reply-To: <CAJKOXPfq9vS4kSyx1jOPHBvi9_HjviRv0LU2A8ZwdmqgUuebHQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 172.16.1.31
-X-SA-Exim-Rcpt-To: linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, platform-driver-x86@vger.kernel.org, linux-mm@kvack.org, dan.j.williams@intel.com, akpm@linux-foundation.org, hch@lst.de, catalin.marinas@arm.com, benh@kernel.crashing.org, tglx@linutronix.de, david@redhat.com, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, mhocko@kernel.org, will@kernel.org, luto@kernel.org, peterz@infradead.org, ebadger@gigaio.com, logang@deltatee.com, jgg@ziepe.ca
-X-SA-Exim-Mail-From: gunthorp@deltatee.com
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on ale.deltatee.com
-X-Spam-Level: 
-X-Spam-Status: No, score=-8.7 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        GREYLIST_ISWHITE,MYRULES_NO_TEXT autolearn=ham autolearn_force=no
-        version=3.4.2
-Subject: [PATCH v2 8/8] mm/memremap: Set caching mode for PCI P2PDMA memory to WC
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on ale.deltatee.com)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-PCI BAR IO memory should never be mapped as WB, however prior to this
-the PAT bits were set WB and it was typically overridden by MTRR
-registers set by the firmware.
 
-Set PCI P2PDMA memory to be WC (writecombining) as the only current
-user (the NVMe CMB) was originally mapped WC before the P2PDMA code
-replaced the mapping with devm_memremap_pages().
 
-Future use-cases may need to generalize this by adding flags to
-select the caching type, as some P2PDMA cases will not want WC.
-However, those use-cases are not upstream yet and this can be changed
-when they arrive.
+Le 08/01/2020 à 09:18, Krzysztof Kozlowski a écrit :
+> On Wed, 8 Jan 2020 at 09:13, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+>>
+>> Hi Krzysztof,
+>>
+>> On Wed, Jan 8, 2020 at 9:07 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+>>> On Tue, Jan 7, 2020 at 5:53 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+>>>> The ioread8/16/32() and others have inconsistent interface among the
+>>>> architectures: some taking address as const, some not.
+>>>>
+>>>> It seems there is nothing really stopping all of them to take
+>>>> pointer to const.
+>>>
+>>> Shouldn't all of them take const volatile __iomem pointers?
+>>> It seems the "volatile" is missing from all but the implementations in
+>>> include/asm-generic/io.h.
+>>
+>> As my "volatile" comment applies to iowrite*(), too, probably that should be
+>> done in a separate patch.
+>>
+>> Hence with patches 1-5 squashed, and for patches 11-13:
+>> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> 
+> I'll add to this one also changes to ioreadX_rep() and add another
+> patch for volatile for reads and writes. I guess your review will be
+> appreciated once more because of ioreadX_rep()
+> 
 
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Signed-off-by: Logan Gunthorpe <logang@deltatee.com>
----
- mm/memremap.c | 3 +++
- 1 file changed, 3 insertions(+)
+volatile should really only be used where deemed necessary:
 
-diff --git a/mm/memremap.c b/mm/memremap.c
-index 45ab4ef0643d..d36ff688b768 100644
---- a/mm/memremap.c
-+++ b/mm/memremap.c
-@@ -187,7 +187,10 @@ void *memremap_pages(struct dev_pagemap *pgmap, int nid)
- 		}
- 		break;
- 	case MEMORY_DEVICE_DEVDAX:
-+		need_devmap_managed = false;
-+		break;
- 	case MEMORY_DEVICE_PCI_P2PDMA:
-+		modifiers.pgprot = pgprot_writecombine(modifiers.pgprot);
- 		need_devmap_managed = false;
- 		break;
- 	default:
--- 
-2.20.1
+https://www.kernel.org/doc/html/latest/process/volatile-considered-harmful.html
 
+It is said: " ...  accessor functions might use volatile on 
+architectures where direct I/O memory access does work. Essentially, 
+each accessor call becomes a little critical section on its own and 
+ensures that the access happens as expected by the programmer."
+
+Christophe
