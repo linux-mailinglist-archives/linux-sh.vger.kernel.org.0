@@ -2,143 +2,131 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D106E134D94
-	for <lists+linux-sh@lfdr.de>; Wed,  8 Jan 2020 21:29:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 64BDE134DCD
+	for <lists+linux-sh@lfdr.de>; Wed,  8 Jan 2020 21:42:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726801AbgAHU3N (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 8 Jan 2020 15:29:13 -0500
-Received: from mga06.intel.com ([134.134.136.31]:45383 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725446AbgAHU3M (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Wed, 8 Jan 2020 15:29:12 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 08 Jan 2020 12:29:11 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,411,1571727600"; 
-   d="scan'208";a="223034363"
-Received: from djiang5-desk3.ch.intel.com ([143.182.136.137])
-  by orsmga006.jf.intel.com with ESMTP; 08 Jan 2020 12:29:09 -0800
-Subject: Re: [PATCH v2 3/9] ntb: intel: Constify ioreadX() iomem argument (as
- in generic implementation)
-To:     Krzysztof Kozlowski <krzk@kernel.org>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Alexey Brodkin <abrodkin@synopsys.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Dave Airlie <airlied@redhat.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Ben Skeggs <bskeggs@redhat.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Jiri Slaby <jirislaby@gmail.com>,
-        Nick Kossifidis <mickflemm@gmail.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
-        linux-media@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-ntb@googlegroups.com,
-        virtualization@lists.linux-foundation.org,
-        linux-arch@vger.kernel.org
-References: <20200108200528.4614-1-krzk@kernel.org>
- <20200108200528.4614-4-krzk@kernel.org>
-From:   Dave Jiang <dave.jiang@intel.com>
-Message-ID: <64659f77-f807-7c8e-7595-731056c73bf4@intel.com>
-Date:   Wed, 8 Jan 2020 13:29:08 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        id S1726426AbgAHUms (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 8 Jan 2020 15:42:48 -0500
+Received: from mail-lf1-f65.google.com ([209.85.167.65]:46548 "EHLO
+        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726902AbgAHUmq (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 8 Jan 2020 15:42:46 -0500
+Received: by mail-lf1-f65.google.com with SMTP id f15so3450952lfl.13
+        for <linux-sh@vger.kernel.org>; Wed, 08 Jan 2020 12:42:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
+        h=from:subject:to:cc:organization:message-id:date:user-agent
+         :mime-version:content-language:content-transfer-encoding;
+        bh=2IiY4N4pReCFQeec/jXgRHTFsEHZAk7Hj3asNpqdl5I=;
+        b=Ae+RtYeIdvcQS40lGc2auBeQbqMIubDNKl0YFadIU/8XDb9xdYaHUtlUU55JpPVLhR
+         xwhbv9wpUneqT6+ENruV+qj6EvTiPLrH/Gel487bucNsLyXkBzJvK7icIDeVM/fSGeOl
+         Prxph3JGTPxTwOOq9LVj79jD1CBKndrdWVJvQd1kE/bIeY5iFy261xRS/FRc/1JdorOM
+         tkJEeOuTWKVn8m3bfoc9s/9zDVnqaTU2ZD5Boze7seoDtYtJ8IOdpHeLqC6vnToJ6LhL
+         TOt10ftHYKBYe0HJ+Bw3GUVJd5IfUEWQ1IX+ntFeUurTAHtq5yQBvOUM7+JPV9WvqsPn
+         EpMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:subject:to:cc:organization:message-id:date
+         :user-agent:mime-version:content-language:content-transfer-encoding;
+        bh=2IiY4N4pReCFQeec/jXgRHTFsEHZAk7Hj3asNpqdl5I=;
+        b=HbaSZfGEY7CnzxezCKgEfsmm6KPTXBxWWbHanbhHXngUvHFDLG7x7VV2cHyQAGgO3N
+         xR2kG06Q1FB4HUbwGk/7FbQ+/3tHUrSfiNbnAdC0SqyGlcert9SrCrIgc8ceaMQw7OuW
+         7Ck0I9KmRptNKYUIA6eSVj6SdGsJkQ9VooYwcenSnYWhlnxvsSMAU7gEPzboWZ9KqY4i
+         NbUvCXD9ueMwSoCm7OjcpYNQOLaI/PEyMEpdOd4aswkhGRnptBgUMQ5f3+E6sjr51Lpf
+         2q8lR4dIJFkdtXL3zTwPss1uQZHnHft/r01uiffEAY/P5BXYIB4RWTAdPI4kZ8b7P5eS
+         s5NQ==
+X-Gm-Message-State: APjAAAUCGa0xw6PN48Dxly6sNnWl+AOAE9V3KNt7mNNSZBrVDXQK5l38
+        xY6ghholy0/lsl2dHWDvqVNTIhXHwZs=
+X-Google-Smtp-Source: APXvYqwRpRKPPx7IoeRjM4DhG4s8+U9E0kHHUO0hCavt0O2SVsCEl5tEaCxP5YwCqb/yJ0gBCDz8uw==
+X-Received: by 2002:a05:6512:25c:: with SMTP id b28mr4077708lfo.184.1578516164782;
+        Wed, 08 Jan 2020 12:42:44 -0800 (PST)
+Received: from wasted.cogentembedded.com ([2a00:1fa0:825:468a:fc63:5f3d:481e:e931])
+        by smtp.gmail.com with ESMTPSA id s3sm1954623lfo.77.2020.01.08.12.42.43
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 08 Jan 2020 12:42:44 -0800 (PST)
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Subject: [PATCH net] sh_eth: check sh_eth_cpu_data::dual_port when dumping
+ registers
+To:     netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>
+Cc:     linux-renesas-soc@vger.kernel.org, linux-sh@vger.kernel.org
+Organization: Cogent Embedded
+Message-ID: <5f03e777-6838-f70d-31bc-2046d253c11a@cogentembedded.com>
+Date:   Wed, 8 Jan 2020 23:42:42 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.1
 MIME-Version: 1.0
-In-Reply-To: <20200108200528.4614-4-krzk@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-MW
 Content-Transfer-Encoding: 7bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
+When adding the sh_eth_cpu_data::dual_port flag I forgot to add the flag
+checks to __sh_eth_get_regs(), causing the non-existing TSU registers to
+be dumped by 'ethtool' on the single port Ether controllers having TSU...
 
+Fixes: a94cf2a614f8 ("sh_eth: fix TSU init on SH7734/R8A7740")
+Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
 
-On 1/8/20 1:05 PM, Krzysztof Kozlowski wrote:
-> The ioreadX() helpers have inconsistent interface.  On some architectures
-> void *__iomem address argument is a pointer to const, on some not.
-> 
-> Implementations of ioreadX() do not modify the memory under the address
-> so they can be converted to a "const" version for const-safety and
-> consistency among architectures.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+This patch is against DaveM's 'net.git' repo.
 
-Acked-by: Dave Jiang <dave.jiang@intel.com>
+There are 3 more alike patches that check the same kind of omissions but they
+seem to be subject to the latter register offset sanity checking, so shouldn't
+affect the register dumping...
 
-> 
-> ---
-> 
-> Changes since v1:
-> 1. Add Geert's review.
-> ---
->   drivers/ntb/hw/intel/ntb_hw_gen1.c  | 2 +-
->   drivers/ntb/hw/intel/ntb_hw_gen3.h  | 2 +-
->   drivers/ntb/hw/intel/ntb_hw_intel.h | 2 +-
->   3 files changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/ntb/hw/intel/ntb_hw_gen1.c b/drivers/ntb/hw/intel/ntb_hw_gen1.c
-> index bb57ec239029..9202502a9787 100644
-> --- a/drivers/ntb/hw/intel/ntb_hw_gen1.c
-> +++ b/drivers/ntb/hw/intel/ntb_hw_gen1.c
-> @@ -1202,7 +1202,7 @@ int intel_ntb_peer_spad_write(struct ntb_dev *ntb, int pidx, int sidx,
->   			       ndev->peer_reg->spad);
->   }
->   
-> -static u64 xeon_db_ioread(void __iomem *mmio)
-> +static u64 xeon_db_ioread(const void __iomem *mmio)
->   {
->   	return (u64)ioread16(mmio);
->   }
-> diff --git a/drivers/ntb/hw/intel/ntb_hw_gen3.h b/drivers/ntb/hw/intel/ntb_hw_gen3.h
-> index 75fb86ca27bb..d1455f24ec99 100644
-> --- a/drivers/ntb/hw/intel/ntb_hw_gen3.h
-> +++ b/drivers/ntb/hw/intel/ntb_hw_gen3.h
-> @@ -91,7 +91,7 @@
->   #define GEN3_DB_TOTAL_SHIFT		33
->   #define GEN3_SPAD_COUNT			16
->   
-> -static inline u64 gen3_db_ioread(void __iomem *mmio)
-> +static inline u64 gen3_db_ioread(const void __iomem *mmio)
->   {
->   	return ioread64(mmio);
->   }
-> diff --git a/drivers/ntb/hw/intel/ntb_hw_intel.h b/drivers/ntb/hw/intel/ntb_hw_intel.h
-> index e071e28bca3f..3c0a5a2da241 100644
-> --- a/drivers/ntb/hw/intel/ntb_hw_intel.h
-> +++ b/drivers/ntb/hw/intel/ntb_hw_intel.h
-> @@ -102,7 +102,7 @@ struct intel_ntb_dev;
->   struct intel_ntb_reg {
->   	int (*poll_link)(struct intel_ntb_dev *ndev);
->   	int (*link_is_up)(struct intel_ntb_dev *ndev);
-> -	u64 (*db_ioread)(void __iomem *mmio);
-> +	u64 (*db_ioread)(const void __iomem *mmio);
->   	void (*db_iowrite)(u64 db_bits, void __iomem *mmio);
->   	unsigned long			ntb_ctl;
->   	resource_size_t			db_size;
-> 
+ drivers/net/ethernet/renesas/sh_eth.c |   38 ++++++++++++++++++----------------
+ 1 file changed, 21 insertions(+), 17 deletions(-)
+
+Index: net/drivers/net/ethernet/renesas/sh_eth.c
+===================================================================
+--- net.orig/drivers/net/ethernet/renesas/sh_eth.c
++++ net/drivers/net/ethernet/renesas/sh_eth.c
+@@ -2204,24 +2204,28 @@ static size_t __sh_eth_get_regs(struct n
+ 	if (cd->tsu) {
+ 		add_tsu_reg(ARSTR);
+ 		add_tsu_reg(TSU_CTRST);
+-		add_tsu_reg(TSU_FWEN0);
+-		add_tsu_reg(TSU_FWEN1);
+-		add_tsu_reg(TSU_FCM);
+-		add_tsu_reg(TSU_BSYSL0);
+-		add_tsu_reg(TSU_BSYSL1);
+-		add_tsu_reg(TSU_PRISL0);
+-		add_tsu_reg(TSU_PRISL1);
+-		add_tsu_reg(TSU_FWSL0);
+-		add_tsu_reg(TSU_FWSL1);
++		if (cd->dual_port) {
++			add_tsu_reg(TSU_FWEN0);
++			add_tsu_reg(TSU_FWEN1);
++			add_tsu_reg(TSU_FCM);
++			add_tsu_reg(TSU_BSYSL0);
++			add_tsu_reg(TSU_BSYSL1);
++			add_tsu_reg(TSU_PRISL0);
++			add_tsu_reg(TSU_PRISL1);
++			add_tsu_reg(TSU_FWSL0);
++			add_tsu_reg(TSU_FWSL1);
++		}
+ 		add_tsu_reg(TSU_FWSLC);
+-		add_tsu_reg(TSU_QTAGM0);
+-		add_tsu_reg(TSU_QTAGM1);
+-		add_tsu_reg(TSU_FWSR);
+-		add_tsu_reg(TSU_FWINMK);
+-		add_tsu_reg(TSU_ADQT0);
+-		add_tsu_reg(TSU_ADQT1);
+-		add_tsu_reg(TSU_VTAG0);
+-		add_tsu_reg(TSU_VTAG1);
++		if (cd->dual_port) {
++			add_tsu_reg(TSU_QTAGM0);
++			add_tsu_reg(TSU_QTAGM1);
++			add_tsu_reg(TSU_FWSR);
++			add_tsu_reg(TSU_FWINMK);
++			add_tsu_reg(TSU_ADQT0);
++			add_tsu_reg(TSU_ADQT1);
++			add_tsu_reg(TSU_VTAG0);
++			add_tsu_reg(TSU_VTAG1);
++		}
+ 		add_tsu_reg(TSU_ADSBSY);
+ 		add_tsu_reg(TSU_TEN);
+ 		add_tsu_reg(TSU_POST1);
