@@ -2,133 +2,107 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B18A613542E
-	for <lists+linux-sh@lfdr.de>; Thu,  9 Jan 2020 09:18:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B354413599A
+	for <lists+linux-sh@lfdr.de>; Thu,  9 Jan 2020 13:57:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728405AbgAIISr (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 9 Jan 2020 03:18:47 -0500
-Received: from mail-qt1-f196.google.com ([209.85.160.196]:37782 "EHLO
-        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728273AbgAIISq (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 9 Jan 2020 03:18:46 -0500
-Received: by mail-qt1-f196.google.com with SMTP id w47so5191189qtk.4;
-        Thu, 09 Jan 2020 00:18:46 -0800 (PST)
+        id S1729321AbgAIM5K convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-sh@lfdr.de>); Thu, 9 Jan 2020 07:57:10 -0500
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:47059 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727701AbgAIM5K (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 9 Jan 2020 07:57:10 -0500
+Received: by mail-oi1-f196.google.com with SMTP id 13so3860014oij.13;
+        Thu, 09 Jan 2020 04:57:09 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=GJqTWyJTs1zwYmmHyFe9SRWpjlE7IkPRXbAKLt6+Ehs=;
-        b=MwH/NvJqcfnBhXVRAbXjxcdbDgUIOTzExNZdavAfGg+/BTltQPmXIV7cV0nfluvWow
-         HykrI2a0ab2sXrVOlhFoFu6LHy0z64HbFgPq2o+CvwIvXnrc6jPUfOM//t0h7LSj3yeU
-         hVfntb0F+hGIvVnhjI0nLyX8bDVmSr3NXh1/S/NHHp/SQpvna9VJYACJzu7TQYhHKuvE
-         8oSpFAtxcyqGkmCTn6GgeBxoS6Equp8CyQLWvnUlREWAx5r93KBP9FpTWkQdi3We1XTg
-         lKeoGCOIUJIZlcJmDP+kCyLXhIBv2KrRWjignwB3M89tpfqFxULMZVVie0Op6IXZWWNz
-         B9uA==
-X-Gm-Message-State: APjAAAWybVRU3EJdpEGgPukumLev32v3yRAfweiTxZfb6pCySrAklyH9
-        py+5v4uQGgxm0l55qrPcNIasxe/4L3s7mlPlCIoDm0+E
-X-Google-Smtp-Source: APXvYqyWbS7PuUTlSTTCzM+dBZcrBH0cNspZNTCeGmAHvOarpA8BIVugqe2qYGN74SJrHG65JLC/kHAKQQT268wqC08=
-X-Received: by 2002:aed:27de:: with SMTP id m30mr7053330qtg.151.1578557925922;
- Thu, 09 Jan 2020 00:18:45 -0800 (PST)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=39RtL8rk7bDV6g9PvKUtpmQ7zFMxOJOdNZ+12WIVKnY=;
+        b=h1XxKiBStXHpHoGM1c3e1YqFMdLu9BjUv5GwYB3oDS9oMRhi+aVVgj45Q++/tkiZ7T
+         LnI7UEH5iaWXxiRbodolJi0sidQguoubJREoJ9MQvjAOo7Yw4D2FZ1ql24U14iqCdNfj
+         oD6wz4QxbDWR2ocKdPK7pN8VxA0EQoKP70sNEL8xDsq+1873rhhDEm66UAniY3o4YR9k
+         /sELO9rmaxNJtEPY/56GxGQjX6Ia1CYNfaL+dY1Y30Z7x9Ucj4RJPRG1AQb56xSrgu/Z
+         JLupZa4PvRl2xyJss9mfJoKkO+uYT4JXhmnuhAGwMy0vYIRyXZ71aN61qbiGZGCQEIfe
+         oWCg==
+X-Gm-Message-State: APjAAAWnLJUswRdHPgTrNHObaOAUSSmQ9tOoBuUeErBfgP+bVpjeZ8kL
+        6O4mwmXEDaCWU9VCKnFnP94R4oLIV3vy54pcw8g=
+X-Google-Smtp-Source: APXvYqzXIeHRSEaojF1m+3afdoHrMEVdpGnWdqm+Ic8pQMZKUJ2siNc76OEtMGXSFfhO06nJEdD1sPQJKoj5PuXTjfg=
+X-Received: by 2002:a05:6808:292:: with SMTP id z18mr2863814oic.131.1578574629374;
+ Thu, 09 Jan 2020 04:57:09 -0800 (PST)
 MIME-Version: 1.0
-References: <87o8vdsceg.wl-kuninori.morimoto.gx@renesas.com> <87lfqhscac.wl-kuninori.morimoto.gx@renesas.com>
-In-Reply-To: <87lfqhscac.wl-kuninori.morimoto.gx@renesas.com>
+References: <20200108194520.3341-1-krzk@kernel.org>
+In-Reply-To: <20200108194520.3341-1-krzk@kernel.org>
 From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Thu, 9 Jan 2020 09:18:34 +0100
-Message-ID: <CAMuHMdWo2w=Uf-yKReg+BMjKk4otGqG0DE4urtWhVOTE9+o1kw@mail.gmail.com>
-Subject: Re: [PATCH][repost] sh: clkfwk: remove r8/r16/r32
-To:     Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Date:   Thu, 9 Jan 2020 13:56:58 +0100
+Message-ID: <CAMuHMdULhY=_GF2MsX-h_j=eLKL+2x3=YcgmFRsAy1_LUOdZ+g@mail.gmail.com>
+Subject: Re: [PATCH] sh: sh4a: Remove unused tmu3_device
+To:     Krzysztof Kozlowski <krzk@kernel.org>
 Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linux-SH <linux-sh@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Morimoto-san,
+Hi Krzysztof,
 
-On Thu, Jan 9, 2020 at 1:29 AM Kuninori Morimoto
-<kuninori.morimoto.gx@renesas.com> wrote:
-> From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+On Wed, Jan 8, 2020 at 8:45 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> Remove left-over from previous cleanups to silence the warning:
 >
-> SH will get below warning
+>     arch/sh/kernel/cpu/sh4a/setup-sh7786.c:243:31:
+>         warning: ‘tmu3_device’ defined but not used [-Wunused-variable]
 >
-> ${LINUX}/drivers/sh/clk/cpg.c: In function 'r8':
-> ${LINUX}/drivers/sh/clk/cpg.c:41:17: warning: passing argument 1 of 'ioread8'
->  discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
->   return ioread8(addr);
->                  ^~~~
-> In file included from ${LINUX}/arch/sh/include/asm/io.h:21,
->                  from ${LINUX}/include/linux/io.h:13,
->                  from ${LINUX}/drivers/sh/clk/cpg.c:14:
-> ${LINUX}/include/asm-generic/iomap.h:29:29: note: expected 'void *' but
-> argument is of type 'const void *'
->  extern unsigned int ioread8(void __iomem *);
->                              ^~~~~~~~~~~~~~
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> ---
+>  arch/sh/kernel/cpu/sh4a/setup-sh7786.c | 21 ---------------------
+>  1 file changed, 21 deletions(-)
 >
-> We don't need "const" for r8/r16/r32.
-> And we don't need r8/r16/r32 themselvs.
-> This patch cleanup these.
+> diff --git a/arch/sh/kernel/cpu/sh4a/setup-sh7786.c b/arch/sh/kernel/cpu/sh4a/setup-sh7786.c
+> index 4b0db8259e3d..22d1c38f742f 100644
+> --- a/arch/sh/kernel/cpu/sh4a/setup-sh7786.c
+> +++ b/arch/sh/kernel/cpu/sh4a/setup-sh7786.c
+> @@ -229,27 +229,6 @@ static struct platform_device tmu2_device = {
+>         .num_resources  = ARRAY_SIZE(tmu2_resources),
+>  };
 >
-> Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-
-One note below.
-
-> --- a/drivers/sh/clk/cpg.c
-> +++ b/drivers/sh/clk/cpg.c
-> @@ -36,36 +36,21 @@ static void sh_clk_write(int value, struct clk *clk)
->                 iowrite32(value, clk->mapped_reg);
->  }
->
-> -static unsigned int r8(const void __iomem *addr)
-> -{
-> -       return ioread8(addr);
-> -}
+> -static struct sh_timer_config tmu3_platform_data = {
+> -       .channels_mask = 7,
+> -};
 > -
-> -static unsigned int r16(const void __iomem *addr)
-> -{
-> -       return ioread16(addr);
-> -}
+> -static struct resource tmu3_resources[] = {
+> -       DEFINE_RES_MEM(0xffde0000, 0x2c),
+> -       DEFINE_RES_IRQ(evt2irq(0x7c0)),
+> -       DEFINE_RES_IRQ(evt2irq(0x7c0)),
+> -       DEFINE_RES_IRQ(evt2irq(0x7c0)),
+> -};
 > -
-> -static unsigned int r32(const void __iomem *addr)
-> -{
-> -       return ioread32(addr);
-> -}
+> -static struct platform_device tmu3_device = {
+> -       .name           = "sh-tmu",
+> -       .id             = 3,
+> -       .dev = {
+> -               .platform_data  = &tmu3_platform_data,
+> -       },
+> -       .resource       = tmu3_resources,
+> -       .num_resources  = ARRAY_SIZE(tmu3_resources),
+> -};
 > -
->  static int sh_clk_mstp_enable(struct clk *clk)
->  {
->         sh_clk_write(sh_clk_read(clk) & ~(1 << clk->enable_bit), clk);
->         if (clk->status_reg) {
-> -               unsigned int (*read)(const void __iomem *addr);
-> +               unsigned int (*read)(void __iomem *addr);
+>  static const struct sh_dmae_channel dmac0_channels[] = {
+>         {
+>                 .offset = 0,
 
-While it is good to get rid of the wrappers, the change above will conflict with
-[PATCH v2 1/9] iomap: Constify ioreadX() iomem argument (as in generic
-implementation)
-(https://lore.kernel.org/lkml/20200108200528.4614-2-krzk@kernel.org/),
-which will add const to ioread*().
+Looks like the previous cleanup accidentally removed one too many tmu
+device pointers.  The old style used one device per timer, the new style
+uses one device per 3 timers, i.e. 4 devices for 12 timers.
 
->                 int i;
->                 void __iomem *mapped_status = (phys_addr_t)clk->status_reg -
->                         (phys_addr_t)clk->enable_reg + clk->mapped_reg;
->
->                 if (clk->flags & CLK_ENABLE_REG_8BIT)
-> -                       read = r8;
-> +                       read = ioread8;
->                 else if (clk->flags & CLK_ENABLE_REG_16BIT)
-> -                       read = r16;
-> +                       read = ioread16;
->                 else
-> -                       read = r32;
-> +                       read = ioread32;
->
->                 for (i = 1000;
->                      (read(mapped_status) & (1 << clk->enable_bit)) && i;
+So the correct fix would be to re-add "&tmu3_device" to
+sh7786_early_devices[].
+
+Fixes: 1399c195ef5009bf ("sh: Switch to new style TMU device")
 
 Gr{oetje,eeting}s,
 
