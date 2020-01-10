@@ -2,49 +2,85 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DC60136569
-	for <lists+linux-sh@lfdr.de>; Fri, 10 Jan 2020 03:35:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4142F136DD1
+	for <lists+linux-sh@lfdr.de>; Fri, 10 Jan 2020 14:19:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730830AbgAJCfx (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 9 Jan 2020 21:35:53 -0500
-Received: from shards.monkeyblade.net ([23.128.96.9]:60740 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730764AbgAJCfx (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 9 Jan 2020 21:35:53 -0500
-Received: from localhost (unknown [IPv6:2601:601:9f00:1c3::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 0BE1F1573658A;
-        Thu,  9 Jan 2020 18:35:53 -0800 (PST)
-Date:   Thu, 09 Jan 2020 18:35:52 -0800 (PST)
-Message-Id: <20200109.183552.1973904363091394974.davem@davemloft.net>
-To:     sergei.shtylyov@cogentembedded.com
-Cc:     netdev@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-sh@vger.kernel.org
-Subject: Re: [PATCH net] sh_eth: check sh_eth_cpu_data::dual_port when
- dumping registers
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <5f03e777-6838-f70d-31bc-2046d253c11a@cogentembedded.com>
-References: <5f03e777-6838-f70d-31bc-2046d253c11a@cogentembedded.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 09 Jan 2020 18:35:53 -0800 (PST)
+        id S1727595AbgAJNTk (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 10 Jan 2020 08:19:40 -0500
+Received: from laurent.telenet-ops.be ([195.130.137.89]:51718 "EHLO
+        laurent.telenet-ops.be" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727641AbgAJNTb (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 10 Jan 2020 08:19:31 -0500
+Received: from ramsan ([84.195.182.253])
+        by laurent.telenet-ops.be with bizsmtp
+        id odKU210085USYZQ01dKUuP; Fri, 10 Jan 2020 14:19:28 +0100
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan with esmtp (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1ipuCG-0007Wm-93; Fri, 10 Jan 2020 14:19:28 +0100
+Received: from geert by rox.of.borg with local (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1ipuCG-0000Hi-7A; Fri, 10 Jan 2020 14:19:28 +0100
+From:   Geert Uytterhoeven <geert+renesas@glider.be>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     linux-gpio@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-sh@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH 00/13] pinctrl: sh-pfc: checker: Various improvements
+Date:   Fri, 10 Jan 2020 14:19:14 +0100
+Message-Id: <20200110131927.1029-1-geert+renesas@glider.be>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Date: Wed, 8 Jan 2020 23:42:42 +0300
+	Hi all,
 
-> When adding the sh_eth_cpu_data::dual_port flag I forgot to add the flag
-> checks to __sh_eth_get_regs(), causing the non-existing TSU registers to
-> be dumped by 'ethtool' on the single port Ether controllers having TSU...
-> 
-> Fixes: a94cf2a614f8 ("sh_eth: fix TSU init on SH7734/R8A7740")
-> Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+This patch series contains various improvements for the builtin pin
+control table runtime checks of the Renesas Pin Function Controller
+driver.  These checks are enabled with CONFIG_DEBUG_PINCTRL=y, which can
+be combined with CONFIG_COMPILE_TEST=y to increase coverage to all
+Renesas ARM and SuperH SoCs..
 
-Applied, thanks.
+Note that all issues detected by this have already been fixed in "[PATCH
+0/6] pinctrl: sh-pfc: More miscellenaous fixes"[1], and are now part of
+linux-next.
+
+I plan to queue this in sh-pfc-for-v5.7.
+
+Thanks for your comments!
+
+[1] https://lore.kernel.org/linux-renesas-soc/20191218194812.12741-1-geert+renesas@glider.be/
+
+Geert Uytterhoeven (13):
+  pinctrl: sh-pfc: checker: Move data before code
+  pinctrl: sh-pfc: checker: Add helpers for reporting
+  pinctrl: sh-pfc: checker: Add helper for safe name comparison
+  pinctrl: sh-pfc: checker: Add check for config register conflicts
+  pinctrl: sh-pfc: checker: Add check for enum ID conflicts
+  pinctrl: sh-pfc: checker: Improve pin checks
+  pinctrl: sh-pfc: checker: Improve pin function checks
+  pinctrl: sh-pfc: checker: Improve pin group checks
+  pinctrl: sh-pfc: checker: Add drive strength register checks
+  pinctrl: sh-pfc: checker: Add bias register checks
+  pinctrl: sh-pfc: checker: Add ioctrl register checks
+  pinctrl: sh-pfc: checker: Add data register checks
+  pinctrl: sh-pfc: checker: Add function GPIO checks
+
+ drivers/pinctrl/sh-pfc/core.c | 312 +++++++++++++++++++++++++++-------
+ 1 file changed, 250 insertions(+), 62 deletions(-)
+
+-- 
+2.17.1
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds
