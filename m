@@ -2,72 +2,422 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F086138B42
-	for <lists+linux-sh@lfdr.de>; Mon, 13 Jan 2020 06:52:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F7CB13A7E1
+	for <lists+linux-sh@lfdr.de>; Tue, 14 Jan 2020 12:07:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728748AbgAMFwb (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 13 Jan 2020 00:52:31 -0500
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:35618 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733278AbgAMFw1 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 13 Jan 2020 00:52:27 -0500
-Received: by mail-oi1-f194.google.com with SMTP id k4so7232440oik.2
-        for <linux-sh@vger.kernel.org>; Sun, 12 Jan 2020 21:52:26 -0800 (PST)
+        id S1729496AbgANLHB (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 14 Jan 2020 06:07:01 -0500
+Received: from mail-pj1-f68.google.com ([209.85.216.68]:52444 "EHLO
+        mail-pj1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729212AbgANLHA (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 14 Jan 2020 06:07:00 -0500
+Received: by mail-pj1-f68.google.com with SMTP id a6so5553417pjh.2
+        for <linux-sh@vger.kernel.org>; Tue, 14 Jan 2020 03:06:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=Rjbe3pVeMfYVPdmVklZ4b2stSqI32LIYp+bn/8NyJvk=;
-        b=El5YZgtDEXJCHEtZrRB1ujEJT5GnrR9nqQvx3oNXkD1KXWKAy5lE4fahagwXmNRBuY
-         Z373bCStdjZZAvrcMmyjZhqXNYKD7qS8gpQ1uKt4Zm/CJYofbOmd6y2KCfdaIf8lu4gx
-         e04Qq2Wd5k0QzXhgODgXLh9+BTAbr7mIJG1kvrHD2cB5892G2QaMtoQjZ8YbwAsn/v/R
-         qN1ulSwy8kLJzDOOwwvDkEa6g0paOaNUUW6lO8NcaOsOsQMTh2eV34LXY/bnRxfyDcL+
-         OFIAYoYpyWTxvo4nB11oXa8J2BNLiFXnr18VfN4DCPOmpXqWPT8f/9GzmZX8VWLxs4VK
-         s+8g==
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=MNgfzm6EXsikNzpTmQHZtOY2ctIAX5sxMvrCd/l5Q4M=;
+        b=HbVzm8JgCKz9YrI4BTVXmgJlfRhVHDvDDiEvGPf2r98+LpvqTR+z+vLCPDV+JyE7JS
+         g/zKs4EqTNXS9ael8iE00V2LGkIMOshVlgH96BnbrsU6KxOFzIR8GtaRsBZ7rS4NDYW2
+         cHucgAshAYyKb3gci3UrnBF+/TLaNgAuJm+W4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=Rjbe3pVeMfYVPdmVklZ4b2stSqI32LIYp+bn/8NyJvk=;
-        b=Yc7WKogjgnkVlefsdR4/aqQYR17baEmkVpn/xI5z9vaYQwNB1OH0yPl+g0OnvDepTv
-         Dj3qlD8YYVDSvEkkK1Nb9q+g/Wiw+MHQv0GM09Omv2hFWxUBjtTTIOGEgGl0ludqxEIP
-         GLK/UN3CunBH8WzEDdkzVKRHtdbdXAvZsmFqEQc80cyX0UkZEM0rCg8AI3m22NCMGWYb
-         fH3ASLgVz9LxWI8ApavOdoCBJXnjJOvq4ZiUcBsN6lK4dIbawamGufhYPwAJYjBB1izy
-         3YqaDKSYqNqqyynk79R/bd6FajDmpB56b/Xnugh4I17DEa8g7B7W9hrjST8QJjn+O7gf
-         TA3w==
-X-Gm-Message-State: APjAAAUAtGmOPEnVh8EH2QMOH6RX7r7IGBFGv4uq9MB6bz8NCLnbpYkT
-        XDiqv38Ijbb7iYMCSSikLn45PILZgsTCMKSWbPH4fFbK
-X-Google-Smtp-Source: APXvYqy7JhGBt0ZjJ/1t4CT74GIhTuvbOMnCynReBbsGRcTAfZPwoiLBCe9XiPA9xaK1JAPmy14eucUMWI9DLkbKsUo=
-X-Received: by 2002:a54:4713:: with SMTP id k19mr11513430oik.113.1578894745174;
- Sun, 12 Jan 2020 21:52:25 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=MNgfzm6EXsikNzpTmQHZtOY2ctIAX5sxMvrCd/l5Q4M=;
+        b=tw/fsK6mLIjnd5i6lE+BQt/79Q1jm1xCw+fzEeQoT79ll6BoKBfvXthZ/1Ndk8Jdw4
+         Em3J/AHyXK2efoJCNFbLbqob+5Tux5ejblHMYLzNR4x1ItU9dAGlHeCHDEy4ytRQ+Bm7
+         5IWnPQvTxiKXGL9GqQSUUIjQnGb20xUv5aZBmYz0bxE3Qowud1CYYojdSVh/wTKxFy+2
+         +Ss47q06kG4X7gzAD8JElAe6nQ4TPNNwygVu+qXb0XRtIFdYRhABeMDXO/KPxFaLA+WB
+         ydidpdsGoiv7i1J8mrShyOuMWLDbgThUeWrGQAyG9YBIjhpsQ3prOBcv0CgVJ4//AdZ+
+         aJuQ==
+X-Gm-Message-State: APjAAAVkIkNB9EIKAhZWp8YpwXy1arlr/lS3XGYvuUAuBwrHG48T8v2q
+        ml0supdD+wYcQnhRRRhiijWWmcoO+gw=
+X-Google-Smtp-Source: APXvYqwU0OYW5KmVF1d0ELYaNbpAqikNTrE8mJycx7w+5PZ9ihZmF69h1LdaenGQyo4bij6Vw9FrHA==
+X-Received: by 2002:a17:90a:ec10:: with SMTP id l16mr27711749pjy.19.1579000019066;
+        Tue, 14 Jan 2020 03:06:59 -0800 (PST)
+Received: from hsinyi-z840.tpe.corp.google.com ([2401:fa00:1:10:b852:bd51:9305:4261])
+        by smtp.gmail.com with ESMTPSA id g67sm18478107pfb.66.2020.01.14.03.06.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jan 2020 03:06:58 -0800 (PST)
+From:   Hsin-Yi Wang <hsinyi@chromium.org>
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     Josh Poimboeuf <jpoimboe@redhat.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Jiri Kosina <jkosina@suse.cz>,
+        Pavankumar Kondeti <pkondeti@codeaurora.org>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Aaro Koskinen <aaro.koskinen@nokia.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Will Deacon <will@kernel.org>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        James Morse <james.morse@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Guenter Roeck <groeck@chromium.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, linux-pm@vger.kernel.org
+Subject: [PATCH RESEND v4] reboot: support offline CPUs before reboot
+Date:   Tue, 14 Jan 2020 19:06:20 +0800
+Message-Id: <20200114110620.164861-1-hsinyi@chromium.org>
+X-Mailer: git-send-email 2.25.0.rc1.283.g88dfdc4193-goog
 MIME-Version: 1.0
-Received: by 2002:a4a:41cb:0:0:0:0:0 with HTTP; Sun, 12 Jan 2020 21:52:24
- -0800 (PST)
-Reply-To: rickschaech@gmail.com
-From:   Rick Schaech <cathben72@gmail.com>
-Date:   Mon, 13 Jan 2020 01:52:24 -0400
-Message-ID: <CAEcBxO=TAnFn5LzizHa22hUC0Db5FuiZJF28m=yX3_9m--jRqg@mail.gmail.com>
-Subject: I wait for your swift response,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Dear, I'm Mr Rick Schaech, I am the General Account Auditor, Though i
-know we have not meet each other before but sometimes in life God have
-a reason of bringing two people from two different countries together
-as business partners or life partners.
+Currently system reboots uses architecture specific codes (smp_send_stop)
+to offline non reboot CPUs. Most architecture's implementation is looping
+through all non reboot online CPUs and call ipi function to each of them. Some
+architecture like arm64, arm, and x86... would set offline masks to cpu without
+really offline them. This causes some race condition and kernel warning comes
+out sometimes when system reboots.
 
-My dear friend, I have the sum of 15.7 Million USD i wish to put in
-your name due to the death of my late client who died several years
-ago as his next of kin column still remain blank. Though the internet
-medium is highly abuse these days but am assuring you that this
-transaction is legitimate and I am contacting you that we may have a
-deal, note for your cooperation and collaboration 40% of the sum will
-be for you while the other 60% will be for me as well. I wait for your
-swift response for more details. please forward your response to my
-personal E-mail: rickschaech@gmail.com
+This patch adds a config ARCH_OFFLINE_CPUS_ON_REBOOT, which would offline cpus in
+migrate_to_reboot_cpu(). If non reboot cpus are all offlined here, the loop for
+checking online cpus would be an empty loop. If architecture don't enable this
+config, or some cpus somehow fails to offline, it would fallback to ipi
+function.
 
-Yours sincerely,
-Rick Schaech.
+Opt in this config for architectures that support CONFIG_HOTPLUG_CPU.
+
+Signed-off-by: Hsin-Yi Wang <hsinyi@chromium.org>
+---
+Resend v4:
+* Cc more people and mailing lists. Also fix a few nits from v4.
+
+Change from v3:
+* Opt in config for architectures that support CONFIG_HOTPLUG_CPU
+* Merge function offline_secondary_cpus() and freeze_secondary_cpus()
+  with an additional flag.
+
+Change from v2:
+* Add another config instead of configed by CONFIG_HOTPLUG_CPU
+
+Previous related discussion on list:
+https://lore.kernel.org/lkml/20190727164450.GA11726@roeck-us.net/
+https://lore.kernel.org/patchwork/patch/1117201/
+---
+ arch/Kconfig                          |  5 +++++
+ arch/arm/Kconfig                      |  1 +
+ arch/arm64/Kconfig                    |  1 +
+ arch/arm64/kernel/hibernate.c         |  2 +-
+ arch/csky/Kconfig                     |  1 +
+ arch/ia64/Kconfig                     |  1 +
+ arch/mips/Kconfig                     |  1 +
+ arch/parisc/Kconfig                   |  1 +
+ arch/powerpc/Kconfig                  |  1 +
+ arch/s390/Kconfig                     |  1 +
+ arch/sh/Kconfig                       |  1 +
+ arch/sparc/Kconfig                    |  1 +
+ arch/x86/Kconfig                      |  1 +
+ arch/xtensa/Kconfig                   |  1 +
+ drivers/power/reset/sc27xx-poweroff.c |  2 +-
+ include/linux/cpu.h                   |  9 ++++++---
+ kernel/cpu.c                          | 12 ++++++++----
+ kernel/reboot.c                       |  8 ++++++++
+ 18 files changed, 41 insertions(+), 9 deletions(-)
+
+diff --git a/arch/Kconfig b/arch/Kconfig
+index 48b5e103bdb0..210095ce2d92 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -255,6 +255,11 @@ config ARCH_HAS_UNCACHED_SEGMENT
+ 	select ARCH_HAS_DMA_PREP_COHERENT
+ 	bool
+ 
++# Select to do a full offline on secondary CPUs before reboot.
++config ARCH_OFFLINE_CPUS_ON_REBOOT
++	bool "Support for offline CPUs before reboot"
++	depends on HOTPLUG_CPU
++
+ # Select if arch init_task must go in the __init_task_data section
+ config ARCH_TASK_STRUCT_ON_STACK
+ 	bool
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 69950fb5be64..d53cc8cb47e3 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -28,6 +28,7 @@ config ARM
+ 	select ARCH_KEEP_MEMBLOCK if HAVE_ARCH_PFN_VALID || KEXEC
+ 	select ARCH_MIGHT_HAVE_PC_PARPORT
+ 	select ARCH_NO_SG_CHAIN if !ARM_HAS_SG_CHAIN
++	select ARCH_OFFLINE_CPUS_ON_REBOOT if HOTPLUG_CPU
+ 	select ARCH_OPTIONAL_KERNEL_RWX if ARCH_HAS_STRICT_KERNEL_RWX
+ 	select ARCH_OPTIONAL_KERNEL_RWX_DEFAULT if CPU_V7
+ 	select ARCH_SUPPORTS_ATOMIC_RMW
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 9af26ac75d19..9f913bc5c1f6 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -61,6 +61,7 @@ config ARM64
+ 	select ARCH_INLINE_SPIN_UNLOCK_IRQ if !PREEMPTION
+ 	select ARCH_INLINE_SPIN_UNLOCK_IRQRESTORE if !PREEMPTION
+ 	select ARCH_KEEP_MEMBLOCK
++	select ARCH_OFFLINE_CPUS_ON_REBOOT if HOTPLUG_CPU
+ 	select ARCH_USE_CMPXCHG_LOCKREF
+ 	select ARCH_USE_QUEUED_RWLOCKS
+ 	select ARCH_USE_QUEUED_SPINLOCKS
+diff --git a/arch/arm64/kernel/hibernate.c b/arch/arm64/kernel/hibernate.c
+index 590963c9c609..f7245dfa09d9 100644
+--- a/arch/arm64/kernel/hibernate.c
++++ b/arch/arm64/kernel/hibernate.c
+@@ -581,5 +581,5 @@ int hibernate_resume_nonboot_cpu_disable(void)
+ 		return -ENODEV;
+ 	}
+ 
+-	return freeze_secondary_cpus(sleep_cpu);
++	return freeze_secondary_cpus(sleep_cpu, false);
+ }
+diff --git a/arch/csky/Kconfig b/arch/csky/Kconfig
+index 4acef4088de7..0f03e5c3f2fc 100644
+--- a/arch/csky/Kconfig
++++ b/arch/csky/Kconfig
+@@ -5,6 +5,7 @@ config CSKY
+ 	select ARCH_HAS_DMA_PREP_COHERENT
+ 	select ARCH_HAS_SYNC_DMA_FOR_CPU
+ 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
++	select ARCH_OFFLINE_CPUS_ON_REBOOT if HOTPLUG_CPU
+ 	select ARCH_USE_BUILTIN_BSWAP
+ 	select ARCH_USE_QUEUED_RWLOCKS if NR_CPUS>2
+ 	select COMMON_CLK
+diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
+index bab7cd878464..f12b4b11ee98 100644
+--- a/arch/ia64/Kconfig
++++ b/arch/ia64/Kconfig
+@@ -10,6 +10,7 @@ config IA64
+ 	bool
+ 	select ARCH_MIGHT_HAVE_PC_PARPORT
+ 	select ARCH_MIGHT_HAVE_PC_SERIO
++	select ARCH_OFFLINE_CPUS_ON_REBOOT if HOTPLUG_CPU
+ 	select ACPI
+ 	select ACPI_NUMA if NUMA
+ 	select ARCH_SUPPORTS_ACPI
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index b6b5f83af169..9bb2556d21fc 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -8,6 +8,7 @@ config MIPS
+ 	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
+ 	select ARCH_HAS_UBSAN_SANITIZE_ALL
+ 	select ARCH_HAS_FORTIFY_SOURCE
++	select ARCH_OFFLINE_CPUS_ON_REBOOT if HOTPLUG_CPU
+ 	select ARCH_SUPPORTS_UPROBES
+ 	select ARCH_USE_BUILTIN_BSWAP
+ 	select ARCH_USE_CMPXCHG_LOCKREF if 64BIT
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index 71034b54d74e..41609f00b057 100644
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -13,6 +13,7 @@ config PARISC
+ 	select ARCH_HAS_STRICT_KERNEL_RWX
+ 	select ARCH_HAS_UBSAN_SANITIZE_ALL
+ 	select ARCH_NO_SG_CHAIN
++	select ARCH_OFFLINE_CPUS_ON_REBOOT if HOTPLUG_CPU
+ 	select ARCH_SUPPORTS_MEMORY_FAILURE
+ 	select RTC_CLASS
+ 	select RTC_DRV_GENERIC
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 658e0324d256..a6b76dd82a2d 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -142,6 +142,7 @@ config PPC
+ 	select ARCH_KEEP_MEMBLOCK
+ 	select ARCH_MIGHT_HAVE_PC_PARPORT
+ 	select ARCH_MIGHT_HAVE_PC_SERIO
++	select ARCH_OFFLINE_CPUS_ON_REBOOT	if HOTPLUG_CPU
+ 	select ARCH_OPTIONAL_KERNEL_RWX		if ARCH_HAS_STRICT_KERNEL_RWX
+ 	select ARCH_SUPPORTS_ATOMIC_RMW
+ 	select ARCH_USE_BUILTIN_BSWAP
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index 287714d51b47..19eec37b1682 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -102,6 +102,7 @@ config S390
+ 	select ARCH_INLINE_WRITE_UNLOCK_IRQ
+ 	select ARCH_INLINE_WRITE_UNLOCK_IRQRESTORE
+ 	select ARCH_KEEP_MEMBLOCK
++	select ARCH_OFFLINE_CPUS_ON_REBOOT if HOTPLUG_CPU
+ 	select ARCH_SAVE_PAGE_KEYS if HIBERNATION
+ 	select ARCH_STACKWALK
+ 	select ARCH_SUPPORTS_ATOMIC_RMW
+diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
+index 9ece111b0254..4ed1e0ca83a2 100644
+--- a/arch/sh/Kconfig
++++ b/arch/sh/Kconfig
+@@ -18,6 +18,7 @@ config SUPERH
+ 	select ARCH_HAVE_CUSTOM_GPIO_H
+ 	select ARCH_HAVE_NMI_SAFE_CMPXCHG if (GUSA_RB || CPU_SH4A)
+ 	select ARCH_HAS_GCOV_PROFILE_ALL
++	select ARCH_OFFLINE_CPUS_ON_REBOOT if HOTPLUG_CPU
+ 	select PERF_USE_VMALLOC
+ 	select HAVE_DEBUG_KMEMLEAK
+ 	select HAVE_KERNEL_GZIP
+diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+index e8c3ea01c12f..f31700309621 100644
+--- a/arch/sparc/Kconfig
++++ b/arch/sparc/Kconfig
+@@ -30,6 +30,7 @@ config SPARC
+ 	select RTC_SYSTOHC
+ 	select HAVE_ARCH_JUMP_LABEL if SPARC64
+ 	select GENERIC_IRQ_SHOW
++	select ARCH_OFFLINE_CPUS_ON_REBOOT if HOTPLUG_CPU
+ 	select ARCH_WANT_IPC_PARSE_VERSION
+ 	select GENERIC_PCI_IOMAP
+ 	select HAVE_NMI_WATCHDOG if SPARC64
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index b595ecb21a0f..e8edab974f67 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -85,6 +85,7 @@ config X86
+ 	select ARCH_MIGHT_HAVE_ACPI_PDC		if ACPI
+ 	select ARCH_MIGHT_HAVE_PC_PARPORT
+ 	select ARCH_MIGHT_HAVE_PC_SERIO
++	select ARCH_OFFLINE_CPUS_ON_REBOOT	if HOTPLUG_CPU
+ 	select ARCH_STACKWALK
+ 	select ARCH_SUPPORTS_ACPI
+ 	select ARCH_SUPPORTS_ATOMIC_RMW
+diff --git a/arch/xtensa/Kconfig b/arch/xtensa/Kconfig
+index 1c645172b4b5..c862dfa69ed9 100644
+--- a/arch/xtensa/Kconfig
++++ b/arch/xtensa/Kconfig
+@@ -7,6 +7,7 @@ config XTENSA
+ 	select ARCH_HAS_SYNC_DMA_FOR_CPU if MMU
+ 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE if MMU
+ 	select ARCH_HAS_UNCACHED_SEGMENT if MMU
++	select ARCH_OFFLINE_CPUS_ON_REBOOT if HOTPLUG_CPU
+ 	select ARCH_USE_QUEUED_RWLOCKS
+ 	select ARCH_USE_QUEUED_SPINLOCKS
+ 	select ARCH_WANT_FRAME_POINTERS
+diff --git a/drivers/power/reset/sc27xx-poweroff.c b/drivers/power/reset/sc27xx-poweroff.c
+index 29fb08b8faa0..d6cdf837235c 100644
+--- a/drivers/power/reset/sc27xx-poweroff.c
++++ b/drivers/power/reset/sc27xx-poweroff.c
+@@ -30,7 +30,7 @@ static void sc27xx_poweroff_shutdown(void)
+ #ifdef CONFIG_PM_SLEEP_SMP
+ 	int cpu = smp_processor_id();
+ 
+-	freeze_secondary_cpus(cpu);
++	freeze_secondary_cpus(cpu, false);
+ #endif
+ }
+ 
+diff --git a/include/linux/cpu.h b/include/linux/cpu.h
+index 1ca2baf817ed..9c62274a4db9 100644
+--- a/include/linux/cpu.h
++++ b/include/linux/cpu.h
+@@ -137,11 +137,14 @@ static inline void cpu_hotplug_done(void) { cpus_write_unlock(); }
+ static inline void get_online_cpus(void) { cpus_read_lock(); }
+ static inline void put_online_cpus(void) { cpus_read_unlock(); }
+ 
++#if defined(CONFIG_PM_SLEEP_SMP) || defined(CONFIG_ARCH_OFFLINE_CPUS_ON_REBOOT)
++extern int freeze_secondary_cpus(int primary, bool reboot);
++#endif
++
+ #ifdef CONFIG_PM_SLEEP_SMP
+-extern int freeze_secondary_cpus(int primary);
+ static inline int disable_nonboot_cpus(void)
+ {
+-	return freeze_secondary_cpus(0);
++	return freeze_secondary_cpus(0, false);
+ }
+ extern void enable_nonboot_cpus(void);
+ 
+@@ -152,7 +155,7 @@ static inline int suspend_disable_secondary_cpus(void)
+ 	if (IS_ENABLED(CONFIG_PM_SLEEP_SMP_NONZERO_CPU))
+ 		cpu = -1;
+ 
+-	return freeze_secondary_cpus(cpu);
++	return freeze_secondary_cpus(cpu, false);
+ }
+ static inline void suspend_enable_secondary_cpus(void)
+ {
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index 9c706af713fb..52d04e4e1aab 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -1209,10 +1209,10 @@ int cpu_up(unsigned int cpu)
+ }
+ EXPORT_SYMBOL_GPL(cpu_up);
+ 
+-#ifdef CONFIG_PM_SLEEP_SMP
++#if defined(CONFIG_PM_SLEEP_SMP) || defined(CONFIG_ARCH_OFFLINE_CPUS_ON_REBOOT)
+ static cpumask_var_t frozen_cpus;
+ 
+-int freeze_secondary_cpus(int primary)
++int freeze_secondary_cpus(int primary, bool reboot)
+ {
+ 	int cpu, error = 0;
+ 
+@@ -1237,11 +1237,13 @@ int freeze_secondary_cpus(int primary)
+ 		if (cpu == primary)
+ 			continue;
+ 
+-		if (pm_wakeup_pending()) {
++#ifdef CONFIG_PM_SLEEP
++		if (!reboot && pm_wakeup_pending()) {
+ 			pr_info("Wakeup pending. Abort CPU freeze\n");
+ 			error = -EBUSY;
+ 			break;
+ 		}
++#endif
+ 
+ 		trace_suspend_resume(TPS("CPU_OFF"), cpu, true);
+ 		error = _cpu_down(cpu, 1, CPUHP_OFFLINE);
+@@ -1250,7 +1252,9 @@ int freeze_secondary_cpus(int primary)
+ 			cpumask_set_cpu(cpu, frozen_cpus);
+ 		else {
+ 			pr_err("Error taking CPU%d down: %d\n", cpu, error);
+-			break;
++			/* When rebooting, offline as many CPUs as possible. */
++			if (!reboot)
++				break;
+ 		}
+ 	}
+ 
+diff --git a/kernel/reboot.c b/kernel/reboot.c
+index c4d472b7f1b4..12f643b66e57 100644
+--- a/kernel/reboot.c
++++ b/kernel/reboot.c
+@@ -7,6 +7,7 @@
+ 
+ #define pr_fmt(fmt)	"reboot: " fmt
+ 
++#include <linux/cpu.h>
+ #include <linux/ctype.h>
+ #include <linux/export.h>
+ #include <linux/kexec.h>
+@@ -220,7 +221,9 @@ void migrate_to_reboot_cpu(void)
+ 	/* The boot cpu is always logical cpu 0 */
+ 	int cpu = reboot_cpu;
+ 
++#if !IS_ENABLED(CONFIG_ARCH_OFFLINE_CPUS_ON_REBOOT)
+ 	cpu_hotplug_disable();
++#endif
+ 
+ 	/* Make certain the cpu I'm about to reboot on is online */
+ 	if (!cpu_online(cpu))
+@@ -231,6 +234,11 @@ void migrate_to_reboot_cpu(void)
+ 
+ 	/* Make certain I only run on the appropriate processor */
+ 	set_cpus_allowed_ptr(current, cpumask_of(cpu));
++
++#if IS_ENABLED(CONFIG_ARCH_OFFLINE_CPUS_ON_REBOOT)
++	/* Offline other cpus if possible */
++	freeze_secondary_cpus(cpu, true);
++#endif
+ }
+ 
+ /**
+-- 
+2.25.0.rc1.283.g88dfdc4193-goog
+
