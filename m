@@ -2,76 +2,62 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 97FFD1416CF
-	for <lists+linux-sh@lfdr.de>; Sat, 18 Jan 2020 10:36:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F8AA141F76
+	for <lists+linux-sh@lfdr.de>; Sun, 19 Jan 2020 19:44:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726811AbgARJgc convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-sh@lfdr.de>); Sat, 18 Jan 2020 04:36:32 -0500
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:41487 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726602AbgARJgb (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sat, 18 Jan 2020 04:36:31 -0500
-Received: by mail-oi1-f194.google.com with SMTP id i1so24456462oie.8;
-        Sat, 18 Jan 2020 01:36:31 -0800 (PST)
+        id S1728803AbgASSoU (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sun, 19 Jan 2020 13:44:20 -0500
+Received: from mail-il1-f194.google.com ([209.85.166.194]:39262 "EHLO
+        mail-il1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727195AbgASSoT (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sun, 19 Jan 2020 13:44:19 -0500
+Received: by mail-il1-f194.google.com with SMTP id x5so25495449ila.6
+        for <linux-sh@vger.kernel.org>; Sun, 19 Jan 2020 10:44:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=/o+CA7VDRA7UR3HGeT8+/tYzwEnOXwq5B8ZHP2/HeYc=;
+        b=MveYcniUJUB532f0dlOoihdmkjAHV60cDj8LBHI8M4h+3H+egt8ZCsWSnQoG7CEhld
+         h286H+k74rDzfRQOoY/f9M81WRQr88YRuubiH3HanhIDyXki4cyulA7bNdgdh/npcklQ
+         CvJo43u8PBPBkMgEH5HatRsI+u5tlB3wEJ1Th3FBUvpApZQxsvg7pL4HfvgLhjM/SAbt
+         Wln7BJPpvNYZtoiRQX3zkLZKrm4kgBMldFao5RktgQ8gLQFv0TsxI7xopop5Q61lnjsD
+         O+Nqof9tzp5qXVHsDImBQ0OOhN8D0ZvK4JC9Zw+KV08LpajVcASte5dFUKOIeqnCFHwC
+         Gp1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=nIAP5cG6K/C2mCPjVg0E+T86a04ru5M9t7rhH6PyWlM=;
-        b=ZxKQbqMhHlD5AyZl3tOtIQaUaQffq21bJ8XoCgzUylybTQ7R4xRcKS5DusHx1wmPNZ
-         J6IZqJ4aDlXEbXHB5S6UO/xK52Rnl6WeObsEzFWNYAyYJxCXZG2OPIbBVSQJaM2SoJD0
-         wZ/RcvyUJFs9aj7cj/sfz4aNgn7aIJxOwwGM+hEFmc2rpXUkE3wRpHTh81bOGj8tkNtB
-         CUviALAKxzC4jnYPJpdDHSyYP+1Vd1W6wVCDowZHo2SKqcdvMkpk3/Vex7lYjFxvsmjF
-         RSpG6723TaznP4xcoxzFqP0N6+hw5QM4HbIseCgXYwcyygUXti7U9tVEYL7FDGQU6dZF
-         8hCw==
-X-Gm-Message-State: APjAAAXctmwC8yugBA8fp/DF149ESGexF0tD13+FR0BhEyqI1j1oKYai
-        WZJnT4Pdw1GvZagpq4IIPI8tPNUAFjH2fojrlyw=
-X-Google-Smtp-Source: APXvYqxF+VrrePZ2atzzLogO5TIEFetNA0fD2qRqEjpTJE6Tki/uYIIRcD71LLw38+H+wtjqoVVnBKmMWBRYrlt/8XQ=
-X-Received: by 2002:aca:1a06:: with SMTP id a6mr6308768oia.148.1579340190993;
- Sat, 18 Jan 2020 01:36:30 -0800 (PST)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=/o+CA7VDRA7UR3HGeT8+/tYzwEnOXwq5B8ZHP2/HeYc=;
+        b=LrAurSAjUf0rI4DUICWwUnhC2f4o0lqGxSUqlupU1wLWEeanH6b5ZlXAr+4UJUAOOI
+         MhGnjZCUO8fAHEUyrjJ9JBGKk36apg7IkdbfxldErdg9HQz6BNfbDitJOV85gLAM0ZPO
+         yDUP531o3+wFGLADdv7dx483pUXvtyCePm9cXvRkALPLyXUd4iSmmaGwluHpat/tSe6C
+         T6nULqzRsfXjVEzNyi6BlA0svhjQVrdLFBac0DWNZDBN796D54pDwJQ0WYfOLUR5wnM/
+         ch+4ma3fhLogwtyJA8t1DagxA4G1aW6tmxYDfCief2//5kAikg0xC8rFd6BSsdA8M2U4
+         KHpw==
+X-Gm-Message-State: APjAAAUodCH1iiBov9gK3m0YFbkyiDlfaHaOtUsT6Z8WXHWUiIFcNQge
+        GCcPjdZQpfdm86MUG3SQlRiO6EiPqMM79UU3eK0=
+X-Google-Smtp-Source: APXvYqzrfoOpFYdPx6ke6uIX585SnMDBN6pXKvD7iN8x9MT//+KimK2aFC33ps3ZC6gjq3Pi1pIlacgfKiFCQZrpYZA=
+X-Received: by 2002:a92:d1c1:: with SMTP id u1mr7477573ilg.66.1579459459106;
+ Sun, 19 Jan 2020 10:44:19 -0800 (PST)
 MIME-Version: 1.0
-References: <20200118081356.22167-1-krzk@kernel.org>
-In-Reply-To: <20200118081356.22167-1-krzk@kernel.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Sat, 18 Jan 2020 10:36:17 +0100
-Message-ID: <CAMuHMdVTg+Amw6Epuqhd60pdUDeCbTzJ=7TNDLE0BQRgCLQHPQ@mail.gmail.com>
-Subject: Re: [PATCH v2] sh: sh4a: Bring back tmu3_device early device
-To:     Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Simon Horman <horms+renesas@verge.net.au>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Received: by 2002:a02:95c8:0:0:0:0:0 with HTTP; Sun, 19 Jan 2020 10:44:18
+ -0800 (PST)
+Reply-To: favordens@email.com
+From:   Favor Desmond <contecindy5@gmail.com>
+Date:   Sun, 19 Jan 2020 18:44:18 +0000
+Message-ID: <CAOfCPNxgSoAU_ns0j9jYL-ArKfcD=i8NkJvHsR4-OGvFBVDMZg@mail.gmail.com>
+Subject: HELLO
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Sat, Jan 18, 2020 at 9:14 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> Commit 1399c195ef50 ("sh: Switch to new style TMU device") converted
-> tmu3_device platform device to new style of platform data but removed it
-> from sh7786_early_devices array effectively removing last three timers
-> and causing a warning:
->
->     arch/sh/kernel/cpu/sh4a/setup-sh7786.c:243:31:
->         warning: ‘tmu3_device’ defined but not used [-Wunused-variable]
->
-> Fixes: 1399c195ef50 ("sh: Switch to new style TMU device")
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Hello Dear
+Greetings to you,I am Favor Desmond from Ivory coast currently living
+in  Togo Republic,I would like to know you more, so that i can tell
+you little amount myself and my photo, email address is
+favordens@email.com
+Thanks
+Favor
