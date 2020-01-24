@@ -2,39 +2,39 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F0D5A1489B4
-	for <lists+linux-sh@lfdr.de>; Fri, 24 Jan 2020 15:37:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 12FA61488C5
+	for <lists+linux-sh@lfdr.de>; Fri, 24 Jan 2020 15:31:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731179AbgAXOgn (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 24 Jan 2020 09:36:43 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39324 "EHLO mail.kernel.org"
+        id S2391695AbgAXOas (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 24 Jan 2020 09:30:48 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41938 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391195AbgAXOTL (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Fri, 24 Jan 2020 09:19:11 -0500
+        id S1731597AbgAXOUk (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Fri, 24 Jan 2020 09:20:40 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D0FFB22522;
-        Fri, 24 Jan 2020 14:19:09 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1D4212087E;
+        Fri, 24 Jan 2020 14:20:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579875550;
-        bh=FRlpmS+R7cBGR2ZUrY4xTSO0XyMmTxygVvMrzqc2n4A=;
+        s=default; t=1579875639;
+        bh=3W4e0XKZhhaF9tAaPYZ+RQC+VzFFoSU+Mwv6uq38g9o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rpHHSdjx3adBpmTXi20+hKm0/KJVdIQfXIMqqIcmEXYDMNsVyFMHK7qHSnW7G+sfz
-         ZMMX0pQg7D1r00r1nQDsHKpNYuSSgW/uVWJ1SvuYcGO/B3Ti4N+eO23agvhc3H9UYY
-         pc6e8I4SHMuOBAhQ7XC8KMvEJ2wTiWUhmcf0YXyM=
+        b=i22zTd5awPNs/YXFw2e07AQZ7J4sa/y0s4PMI1G4hwHpWAjgyGtGSjRWSPrtHW8dI
+         rRFhYJvAuay6V+tNqN/37w4j73OPXpc0Me14MOJhyH1rIbVsug0LnAnFLOP4eK4TJF
+         ZU3fMA4MGBdJuhtvLYX9ScU6/oP6oTXxm+2IiRx8=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
         "David S . Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>, netdev@vger.kernel.org,
         linux-sh@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 045/107] sh_eth: check sh_eth_cpu_data::dual_port when dumping registers
-Date:   Fri, 24 Jan 2020 09:17:15 -0500
-Message-Id: <20200124141817.28793-45-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 23/56] sh_eth: check sh_eth_cpu_data::dual_port when dumping registers
+Date:   Fri, 24 Jan 2020 09:19:39 -0500
+Message-Id: <20200124142012.29752-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200124141817.28793-1-sashal@kernel.org>
-References: <20200124141817.28793-1-sashal@kernel.org>
+In-Reply-To: <20200124142012.29752-1-sashal@kernel.org>
+References: <20200124142012.29752-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -61,10 +61,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 21 insertions(+), 17 deletions(-)
 
 diff --git a/drivers/net/ethernet/renesas/sh_eth.c b/drivers/net/ethernet/renesas/sh_eth.c
-index 7ba35a0bdb292..8aa1b1bda96d1 100644
+index 5e3e6e262ba37..6068e96f5ac1e 100644
 --- a/drivers/net/ethernet/renesas/sh_eth.c
 +++ b/drivers/net/ethernet/renesas/sh_eth.c
-@@ -2204,24 +2204,28 @@ static size_t __sh_eth_get_regs(struct net_device *ndev, u32 *buf)
+@@ -2184,24 +2184,28 @@ static size_t __sh_eth_get_regs(struct net_device *ndev, u32 *buf)
  	if (cd->tsu) {
  		add_tsu_reg(ARSTR);
  		add_tsu_reg(TSU_CTRST);
