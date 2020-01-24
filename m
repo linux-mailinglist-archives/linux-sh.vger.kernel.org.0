@@ -2,83 +2,114 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4043414498C
-	for <lists+linux-sh@lfdr.de>; Wed, 22 Jan 2020 02:47:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F0D5A1489B4
+	for <lists+linux-sh@lfdr.de>; Fri, 24 Jan 2020 15:37:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728609AbgAVBr0 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 21 Jan 2020 20:47:26 -0500
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:45427 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726968AbgAVBrZ (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 21 Jan 2020 20:47:25 -0500
-Received: by mail-pl1-f193.google.com with SMTP id b22so2170101pls.12
-        for <linux-sh@vger.kernel.org>; Tue, 21 Jan 2020 17:47:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=landley-net.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=5ebG0ux6M6dxneH91X14V/sxx6cPKVYFQexW0YVajLc=;
-        b=b+YQGhCqgrIpkuHOYBXH/Gxolcs4BbukRUxnfbKnWiVCWNqBNwZhEztC7PERH1ATmQ
-         r2kXUlZmMmenB3+6ns06ZfyRLckF4FQJwTg/js62d8CS0DC9q1DpS6nYo0BPuKvcK3yR
-         ECQC6+jNi/45/PWkTyZVFx6av+N5XEvLAHyywB5IUmQJ9MMbDymXWvXjbjuGreNwaq68
-         1nFI9eG3mkbNV7agqHykiqIt9QDJApKggbELo87uQMbpONf5F0LeL0BBAzhB8UgnRHSk
-         N5t8Maz5ZYv/0kU/5PDN7UZH/Z67eA5YdciCHAKNUOYaTMrlapSlIeWeKyrevdnABlV4
-         btxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=5ebG0ux6M6dxneH91X14V/sxx6cPKVYFQexW0YVajLc=;
-        b=parrQz5ddtq4H9JGvYwwH512cN9noiI8tv6lacaW3gJ63VAIiKYzuRUH+c2bfhm0J5
-         XNT3GFj+whSLge2Gm2g2rLtfe9qtRS0M7nAaSE9aqwph/8l0ziRh6oehxNzxmyCQmTMB
-         3FBQNGCzbjfvSqI3ldLYRtM/HwArQ1Hoz6yXZ1dy3zyr/TjotJAYEigtdvr61984M4o8
-         hpxY+HnFIjzdT2c3rM05rf9e+uyiBhOtMGjxoRNI4gcWVZ3WivnbeupeWslSllc/hlp3
-         sDkdRUuR5wJ1xKP0umawm5fyFxavTGVqJq+c1mcbL3LDPLR7nVf5FWrMLbENY868n3o5
-         EAMw==
-X-Gm-Message-State: APjAAAVxZJGGYyCGe8v4SeO/f1xLntLj/xwn3KkxE7Tr/Dsw8GZnqiOQ
-        HCCS4glZuriHC6Imoi+ANhboVA==
-X-Google-Smtp-Source: APXvYqwRicdFgpjTI4R2YeesuVWicQUPqvuPqPTiGrEZXsacF+6sOG7i3P2oNqibeYgh7wFwRC4GHg==
-X-Received: by 2002:a17:902:9a8c:: with SMTP id w12mr8414172plp.19.1579657645140;
-        Tue, 21 Jan 2020 17:47:25 -0800 (PST)
-Received: from [192.168.11.4] (softbank126112255110.biz.bbtec.net. [126.112.255.110])
-        by smtp.googlemail.com with ESMTPSA id g11sm42642687pgd.26.2020.01.21.17.47.22
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 21 Jan 2020 17:47:24 -0800 (PST)
-Subject: Re: [PATCH resend 0/3] SH: compile fixup patches
-To:     Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     Linux-SH <linux-sh@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>
-References: <87o8uyylat.wl-kuninori.morimoto.gx@renesas.com>
-From:   Rob Landley <rob@landley.net>
-Message-ID: <656cb059-366e-06b1-0d8f-741454c472b8@landley.net>
-Date:   Tue, 21 Jan 2020 19:51:45 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1731179AbgAXOgn (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 24 Jan 2020 09:36:43 -0500
+Received: from mail.kernel.org ([198.145.29.99]:39324 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2391195AbgAXOTL (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Fri, 24 Jan 2020 09:19:11 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D0FFB22522;
+        Fri, 24 Jan 2020 14:19:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1579875550;
+        bh=FRlpmS+R7cBGR2ZUrY4xTSO0XyMmTxygVvMrzqc2n4A=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=rpHHSdjx3adBpmTXi20+hKm0/KJVdIQfXIMqqIcmEXYDMNsVyFMHK7qHSnW7G+sfz
+         ZMMX0pQg7D1r00r1nQDsHKpNYuSSgW/uVWJ1SvuYcGO/B3Ti4N+eO23agvhc3H9UYY
+         pc6e8I4SHMuOBAhQ7XC8KMvEJ2wTiWUhmcf0YXyM=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>, netdev@vger.kernel.org,
+        linux-sh@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 045/107] sh_eth: check sh_eth_cpu_data::dual_port when dumping registers
+Date:   Fri, 24 Jan 2020 09:17:15 -0500
+Message-Id: <20200124141817.28793-45-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200124141817.28793-1-sashal@kernel.org>
+References: <20200124141817.28793-1-sashal@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <87o8uyylat.wl-kuninori.morimoto.gx@renesas.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 1/19/20 7:21 PM, Kuninori Morimoto wrote:
-> 
-> Hi Andrew
-> Cc: Yoshinori, Rich
-> 
-> I'm posting these patches to SH ML from few month ago,
-> but SH maintainer is not working in these days...
+From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
 
-There are two, they're still working, I spoke to Rich yesterday.
+[ Upstream commit 3249b1e442a1be1a6b9f1026785b519d1443f807 ]
 
-It is entirely possible you've convinced them to spam-block _you_ for repeatedly
-saying that...
+When adding the sh_eth_cpu_data::dual_port flag I forgot to add the flag
+checks to __sh_eth_get_regs(), causing the non-existing TSU registers to
+be dumped by 'ethtool' on the single port Ether controllers having TSU...
 
-Rob
+Fixes: a94cf2a614f8 ("sh_eth: fix TSU init on SH7734/R8A7740")
+Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/ethernet/renesas/sh_eth.c | 38 +++++++++++++++------------
+ 1 file changed, 21 insertions(+), 17 deletions(-)
+
+diff --git a/drivers/net/ethernet/renesas/sh_eth.c b/drivers/net/ethernet/renesas/sh_eth.c
+index 7ba35a0bdb292..8aa1b1bda96d1 100644
+--- a/drivers/net/ethernet/renesas/sh_eth.c
++++ b/drivers/net/ethernet/renesas/sh_eth.c
+@@ -2204,24 +2204,28 @@ static size_t __sh_eth_get_regs(struct net_device *ndev, u32 *buf)
+ 	if (cd->tsu) {
+ 		add_tsu_reg(ARSTR);
+ 		add_tsu_reg(TSU_CTRST);
+-		add_tsu_reg(TSU_FWEN0);
+-		add_tsu_reg(TSU_FWEN1);
+-		add_tsu_reg(TSU_FCM);
+-		add_tsu_reg(TSU_BSYSL0);
+-		add_tsu_reg(TSU_BSYSL1);
+-		add_tsu_reg(TSU_PRISL0);
+-		add_tsu_reg(TSU_PRISL1);
+-		add_tsu_reg(TSU_FWSL0);
+-		add_tsu_reg(TSU_FWSL1);
++		if (cd->dual_port) {
++			add_tsu_reg(TSU_FWEN0);
++			add_tsu_reg(TSU_FWEN1);
++			add_tsu_reg(TSU_FCM);
++			add_tsu_reg(TSU_BSYSL0);
++			add_tsu_reg(TSU_BSYSL1);
++			add_tsu_reg(TSU_PRISL0);
++			add_tsu_reg(TSU_PRISL1);
++			add_tsu_reg(TSU_FWSL0);
++			add_tsu_reg(TSU_FWSL1);
++		}
+ 		add_tsu_reg(TSU_FWSLC);
+-		add_tsu_reg(TSU_QTAGM0);
+-		add_tsu_reg(TSU_QTAGM1);
+-		add_tsu_reg(TSU_FWSR);
+-		add_tsu_reg(TSU_FWINMK);
+-		add_tsu_reg(TSU_ADQT0);
+-		add_tsu_reg(TSU_ADQT1);
+-		add_tsu_reg(TSU_VTAG0);
+-		add_tsu_reg(TSU_VTAG1);
++		if (cd->dual_port) {
++			add_tsu_reg(TSU_QTAGM0);
++			add_tsu_reg(TSU_QTAGM1);
++			add_tsu_reg(TSU_FWSR);
++			add_tsu_reg(TSU_FWINMK);
++			add_tsu_reg(TSU_ADQT0);
++			add_tsu_reg(TSU_ADQT1);
++			add_tsu_reg(TSU_VTAG0);
++			add_tsu_reg(TSU_VTAG1);
++		}
+ 		add_tsu_reg(TSU_ADSBSY);
+ 		add_tsu_reg(TSU_TEN);
+ 		add_tsu_reg(TSU_POST1);
+-- 
+2.20.1
+
