@@ -2,114 +2,113 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 12FA61488C5
-	for <lists+linux-sh@lfdr.de>; Fri, 24 Jan 2020 15:31:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 939E4149B46
+	for <lists+linux-sh@lfdr.de>; Sun, 26 Jan 2020 16:11:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391695AbgAXOas (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 24 Jan 2020 09:30:48 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41938 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731597AbgAXOUk (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Fri, 24 Jan 2020 09:20:40 -0500
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1726382AbgAZPLl (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sun, 26 Jan 2020 10:11:41 -0500
+Received: from mail25.static.mailgun.info ([104.130.122.25]:19334 "EHLO
+        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725908AbgAZPLl (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sun, 26 Jan 2020 10:11:41 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1580051500; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=GgNouC08XBq9czPTNzqE2b2+ochAUWZ+cpydcRWvAGA=;
+ b=BTV/g0P9RHydBV3l5ZxiREpyPHacX3iTO5EmeEpCmCgsFqZKx+0r1f3YK+kfukF7sYCGJxQx
+ br9uzQO+1gO5FOXqgMlLoCxwe0EaSlEZcfCBWWVI5jYwTEmN8w5X9OhtIu6xaa20JX9WaXJ6
+ xLeKlwcexZYHW6yLzqSXDWz87uc=
+X-Mailgun-Sending-Ip: 104.130.122.25
+X-Mailgun-Sid: WyJiNGMxMiIsICJsaW51eC1zaEB2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e2dac29.7f4488aabe30-smtp-out-n01;
+ Sun, 26 Jan 2020 15:11:37 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id C0CA8C43383; Sun, 26 Jan 2020 15:11:37 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1D4212087E;
-        Fri, 24 Jan 2020 14:20:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579875639;
-        bh=3W4e0XKZhhaF9tAaPYZ+RQC+VzFFoSU+Mwv6uq38g9o=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=i22zTd5awPNs/YXFw2e07AQZ7J4sa/y0s4PMI1G4hwHpWAjgyGtGSjRWSPrtHW8dI
-         rRFhYJvAuay6V+tNqN/37w4j73OPXpc0Me14MOJhyH1rIbVsug0LnAnFLOP4eK4TJF
-         ZU3fMA4MGBdJuhtvLYX9ScU6/oP6oTXxm+2IiRx8=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>, netdev@vger.kernel.org,
-        linux-sh@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 23/56] sh_eth: check sh_eth_cpu_data::dual_port when dumping registers
-Date:   Fri, 24 Jan 2020 09:19:39 -0500
-Message-Id: <20200124142012.29752-23-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200124142012.29752-1-sashal@kernel.org>
-References: <20200124142012.29752-1-sashal@kernel.org>
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 77D01C43383;
+        Sun, 26 Jan 2020 15:11:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 77D01C43383
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 2/9] net: wireless: rtl818x: Constify ioreadX() iomem
+ argument (as in generic implementation)
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200108200528.4614-3-krzk@kernel.org>
+References: <20200108200528.4614-3-krzk@kernel.org>
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Alexey Brodkin <abrodkin@synopsys.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Dave Airlie <airlied@redhat.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Ben Skeggs <bskeggs@redhat.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Jiri Slaby <jirislaby@gmail.com>,
+        Nick Kossifidis <mickflemm@gmail.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
+        linux-media@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-ntb@googlegroups.com,
+        virtualization@lists.linux-foundation.org,
+        linux-arch@vger.kernel.org
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20200126151137.C0CA8C43383@smtp.codeaurora.org>
+Date:   Sun, 26 Jan 2020 15:11:37 +0000 (UTC)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Krzysztof Kozlowski <krzk@kernel.org> wrote:
 
-[ Upstream commit 3249b1e442a1be1a6b9f1026785b519d1443f807 ]
+> The ioreadX() helpers have inconsistent interface.  On some architectures
+> void *__iomem address argument is a pointer to const, on some not.
+> 
+> Implementations of ioreadX() do not modify the memory under the address
+> so they can be converted to a "const" version for const-safety and
+> consistency among architectures.
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-When adding the sh_eth_cpu_data::dual_port flag I forgot to add the flag
-checks to __sh_eth_get_regs(), causing the non-existing TSU registers to
-be dumped by 'ethtool' on the single port Ether controllers having TSU...
+I assume this and patch 9 are going via some other tree so dropping them
+from my patchwork queue.
 
-Fixes: a94cf2a614f8 ("sh_eth: fix TSU init on SH7734/R8A7740")
-Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/ethernet/renesas/sh_eth.c | 38 +++++++++++++++------------
- 1 file changed, 21 insertions(+), 17 deletions(-)
-
-diff --git a/drivers/net/ethernet/renesas/sh_eth.c b/drivers/net/ethernet/renesas/sh_eth.c
-index 5e3e6e262ba37..6068e96f5ac1e 100644
---- a/drivers/net/ethernet/renesas/sh_eth.c
-+++ b/drivers/net/ethernet/renesas/sh_eth.c
-@@ -2184,24 +2184,28 @@ static size_t __sh_eth_get_regs(struct net_device *ndev, u32 *buf)
- 	if (cd->tsu) {
- 		add_tsu_reg(ARSTR);
- 		add_tsu_reg(TSU_CTRST);
--		add_tsu_reg(TSU_FWEN0);
--		add_tsu_reg(TSU_FWEN1);
--		add_tsu_reg(TSU_FCM);
--		add_tsu_reg(TSU_BSYSL0);
--		add_tsu_reg(TSU_BSYSL1);
--		add_tsu_reg(TSU_PRISL0);
--		add_tsu_reg(TSU_PRISL1);
--		add_tsu_reg(TSU_FWSL0);
--		add_tsu_reg(TSU_FWSL1);
-+		if (cd->dual_port) {
-+			add_tsu_reg(TSU_FWEN0);
-+			add_tsu_reg(TSU_FWEN1);
-+			add_tsu_reg(TSU_FCM);
-+			add_tsu_reg(TSU_BSYSL0);
-+			add_tsu_reg(TSU_BSYSL1);
-+			add_tsu_reg(TSU_PRISL0);
-+			add_tsu_reg(TSU_PRISL1);
-+			add_tsu_reg(TSU_FWSL0);
-+			add_tsu_reg(TSU_FWSL1);
-+		}
- 		add_tsu_reg(TSU_FWSLC);
--		add_tsu_reg(TSU_QTAGM0);
--		add_tsu_reg(TSU_QTAGM1);
--		add_tsu_reg(TSU_FWSR);
--		add_tsu_reg(TSU_FWINMK);
--		add_tsu_reg(TSU_ADQT0);
--		add_tsu_reg(TSU_ADQT1);
--		add_tsu_reg(TSU_VTAG0);
--		add_tsu_reg(TSU_VTAG1);
-+		if (cd->dual_port) {
-+			add_tsu_reg(TSU_QTAGM0);
-+			add_tsu_reg(TSU_QTAGM1);
-+			add_tsu_reg(TSU_FWSR);
-+			add_tsu_reg(TSU_FWINMK);
-+			add_tsu_reg(TSU_ADQT0);
-+			add_tsu_reg(TSU_ADQT1);
-+			add_tsu_reg(TSU_VTAG0);
-+			add_tsu_reg(TSU_VTAG1);
-+		}
- 		add_tsu_reg(TSU_ADSBSY);
- 		add_tsu_reg(TSU_TEN);
- 		add_tsu_reg(TSU_POST1);
 -- 
-2.20.1
+https://patchwork.kernel.org/patch/11324461/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
