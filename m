@@ -2,218 +2,361 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 645C014DD93
-	for <lists+linux-sh@lfdr.de>; Thu, 30 Jan 2020 16:07:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F34F14E331
+	for <lists+linux-sh@lfdr.de>; Thu, 30 Jan 2020 20:27:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727244AbgA3PHN (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 30 Jan 2020 10:07:13 -0500
-Received: from foss.arm.com ([217.140.110.172]:54190 "EHLO foss.arm.com"
+        id S1727448AbgA3T1g (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 30 Jan 2020 14:27:36 -0500
+Received: from mail.kernel.org ([198.145.29.99]:48704 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727107AbgA3PHN (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Thu, 30 Jan 2020 10:07:13 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 00F0FFEC;
-        Thu, 30 Jan 2020 07:07:12 -0800 (PST)
-Received: from [192.168.0.129] (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F053F3F68E;
-        Thu, 30 Jan 2020 07:06:51 -0800 (PST)
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH V12] mm/debug: Add tests validating architecture page
- table helpers
-To:     linux-mm@kvack.org, linux-alpha@vger.kernel.org,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>, linux-c6x-dev@linux-c6x.org,
-        Mark Salter <msalter@redhat.com>,
-        Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
-        uclinux-h8-devel@lists.sourceforge.jp,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        linux-hexagon@vger.kernel.org, Brian Cain <bcain@codeaurora.org>,
-        linux-m68k@lists.linux-m68k.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        linux-riscv@lists.infradead.org,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Guan Xuetao <gxt@pku.edu.cn>, linux-xtensa@linux-xtensa.org,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mike Rapoport <rppt@linux.vnet.ibm.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Michal Hocko <mhocko@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Mark Brown <broonie@kernel.org>,
-        Steven Price <Steven.Price@arm.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Kees Cook <keescook@chromium.org>,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        Matthew Wilcox <willy@infradead.org>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Ingo Molnar <mingo@kernel.org>,
-        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-References: <1580174873-18117-1-git-send-email-anshuman.khandual@arm.com>
-Message-ID: <fe26671a-7f26-17d7-402b-5e01fdca773e@arm.com>
-Date:   Thu, 30 Jan 2020 20:36:47 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
-MIME-Version: 1.0
-In-Reply-To: <1580174873-18117-1-git-send-email-anshuman.khandual@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        id S1726267AbgA3T1g (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Thu, 30 Jan 2020 14:27:36 -0500
+Received: from localhost.localdomain (unknown [194.230.155.229])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D83BD205F4;
+        Thu, 30 Jan 2020 19:27:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1580412454;
+        bh=TZ2YQmQqvfzk64TrrHyrrAVuvqNTPoqAfJ4u9CxoiQI=;
+        h=From:To:Cc:Subject:Date:From;
+        b=S4C/RU0xlkQYMldZNZlso4aYg8E9VzeekMvTPZVx0OB0mK2BwCuVFb/a+84WKn1pL
+         xpU8vheLDv6PPqfMDHut0xyhxI0IbRcjtJIuj5NUNTSmrSksRgy/Q2WGpwlBZMSidg
+         dcdBAZW4563qu3fkFKDhQzzxeoFu0UL9BFCtFbj0=
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>
+Subject: [PATCH] sh: configs: Cleanup old Kconfig IO scheduler options
+Date:   Thu, 30 Jan 2020 20:27:28 +0100
+Message-Id: <20200130192728.3398-1-krzk@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 01/28/2020 06:57 AM, Anshuman Khandual wrote:
-> This adds tests which will validate architecture page table helpers and
-> other accessors in their compliance with expected generic MM semantics.
-> This will help various architectures in validating changes to existing
-> page table helpers or addition of new ones.
-> 
-> This test covers basic page table entry transformations including but not
-> limited to old, young, dirty, clean, write, write protect etc at various
-> level along with populating intermediate entries with next page table page
-> and validating them.
-> 
-> Test page table pages are allocated from system memory with required size
-> and alignments. The mapped pfns at page table levels are derived from a
-> real pfn representing a valid kernel text symbol. This test gets called
-> right after page_alloc_init_late().
-> 
-> This gets build and run when CONFIG_DEBUG_VM_PGTABLE is selected along with
-> CONFIG_VM_DEBUG. Architectures willing to subscribe this test also need to
-> select CONFIG_ARCH_HAS_DEBUG_VM_PGTABLE which for now is limited to x86 and
-> arm64. Going forward, other architectures too can enable this after fixing
-> build or runtime problems (if any) with their page table helpers.
-> 
-> Folks interested in making sure that a given platform's page table helpers
-> conform to expected generic MM semantics should enable the above config
-> which will just trigger this test during boot. Any non conformity here will
-> be reported as an warning which would need to be fixed. This test will help
-> catch any changes to the agreed upon semantics expected from generic MM and
-> enable platforms to accommodate it thereafter.
-> 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Mike Rapoport <rppt@linux.vnet.ibm.com>
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Michal Hocko <mhocko@kernel.org>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Steven Price <Steven.Price@arm.com>
-> Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
-> Cc: Kees Cook <keescook@chromium.org>
-> Cc: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-> Cc: Matthew Wilcox <willy@infradead.org>
-> Cc: Sri Krishna chowdary <schowdary@nvidia.com>
-> Cc: Dave Hansen <dave.hansen@intel.com>
-> Cc: Russell King - ARM Linux <linux@armlinux.org.uk>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
-> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Vineet Gupta <vgupta@synopsys.com>
-> Cc: James Hogan <jhogan@kernel.org>
-> Cc: Paul Burton <paul.burton@mips.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Kirill A. Shutemov <kirill@shutemov.name>
-> Cc: Gerald Schaefer <gerald.schaefer@de.ibm.com>
-> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-> Cc: Ingo Molnar <mingo@kernel.org>
-> Cc: linux-snps-arc@lists.infradead.org
-> Cc: linux-mips@vger.kernel.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-ia64@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-s390@vger.kernel.org
-> Cc: linux-sh@vger.kernel.org
-> Cc: sparclinux@vger.kernel.org
-> Cc: x86@kernel.org
-> Cc: linux-kernel@vger.kernel.org
+CONFIG_IOSCHED_DEADLINE and CONFIG_IOSCHED_CFQ are gone since
+commit f382fb0bcef4 ("block: remove legacy IO schedulers").
 
-I should have included mailing lists for all missing platforms here.
-Will add them in the patch next time around but for now just adding
-them here explicitly so that hopefully in case some of them can build
-and run the test successfully on respective platforms.
+The IOSCHED_DEADLINE was replaced by MQ_IOSCHED_DEADLINE and it will be
+now enabled by default (along with MQ_IOSCHED_KYBER).
 
-ALPHA:
+The BFQ_GROUP_IOSCHED is the only multiqueue scheduler which comes with
+group scheduling so select it in configs previously choosing
+CFQ_GROUP_IOSCHED.
 
-+ linux-alpha@vger.kernel.org
-+ Richard Henderson <rth@twiddle.net>
-+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>
-+ Matt Turner <mattst88@gmail.com>
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+---
+ arch/sh/configs/apsh4ad0a_defconfig    | 3 ++-
+ arch/sh/configs/kfr2r09_defconfig      | 2 --
+ arch/sh/configs/magicpanelr2_defconfig | 2 --
+ arch/sh/configs/polaris_defconfig      | 1 -
+ arch/sh/configs/r7780mp_defconfig      | 2 --
+ arch/sh/configs/r7785rp_defconfig      | 2 --
+ arch/sh/configs/rsk7201_defconfig      | 2 --
+ arch/sh/configs/rsk7203_defconfig      | 2 --
+ arch/sh/configs/rsk7264_defconfig      | 2 --
+ arch/sh/configs/rsk7269_defconfig      | 2 --
+ arch/sh/configs/sdk7786_defconfig      | 3 ++-
+ arch/sh/configs/se7206_defconfig       | 2 --
+ arch/sh/configs/se7343_defconfig       | 1 -
+ arch/sh/configs/se7619_defconfig       | 2 --
+ arch/sh/configs/se7705_defconfig       | 2 --
+ arch/sh/configs/se7712_defconfig       | 2 --
+ arch/sh/configs/se7721_defconfig       | 2 --
+ arch/sh/configs/se7722_defconfig       | 2 --
+ arch/sh/configs/se7780_defconfig       | 1 -
+ arch/sh/configs/sh7710voipgw_defconfig | 1 -
+ arch/sh/configs/shmin_defconfig        | 2 --
+ arch/sh/configs/ul2_defconfig          | 2 --
+ 22 files changed, 4 insertions(+), 38 deletions(-)
 
-C6X:
+diff --git a/arch/sh/configs/apsh4ad0a_defconfig b/arch/sh/configs/apsh4ad0a_defconfig
+index 6dd0da73ca5a..6abd9bd70106 100644
+--- a/arch/sh/configs/apsh4ad0a_defconfig
++++ b/arch/sh/configs/apsh4ad0a_defconfig
+@@ -20,7 +20,8 @@ CONFIG_PROFILING=y
+ CONFIG_MODULES=y
+ CONFIG_MODULE_UNLOAD=y
+ # CONFIG_BLK_DEV_BSG is not set
+-CONFIG_CFQ_GROUP_IOSCHED=y
++CONFIG_IOSCHED_BFQ=y
++CONFIG_BFQ_GROUP_IOSCHED=y
+ CONFIG_CPU_SUBTYPE_SH7786=y
+ CONFIG_MEMORY_SIZE=0x10000000
+ CONFIG_HUGETLB_PAGE_SIZE_1MB=y
+diff --git a/arch/sh/configs/kfr2r09_defconfig b/arch/sh/configs/kfr2r09_defconfig
+index 1dc3f670c481..833404490cfe 100644
+--- a/arch/sh/configs/kfr2r09_defconfig
++++ b/arch/sh/configs/kfr2r09_defconfig
+@@ -10,8 +10,6 @@ CONFIG_SLAB=y
+ CONFIG_MODULES=y
+ CONFIG_MODULE_UNLOAD=y
+ # CONFIG_BLK_DEV_BSG is not set
+-# CONFIG_IOSCHED_DEADLINE is not set
+-# CONFIG_IOSCHED_CFQ is not set
+ CONFIG_CPU_SUBTYPE_SH7724=y
+ CONFIG_MEMORY_SIZE=0x08000000
+ CONFIG_FLATMEM_MANUAL=y
+diff --git a/arch/sh/configs/magicpanelr2_defconfig b/arch/sh/configs/magicpanelr2_defconfig
+index 664c4dee6e6a..0989ed929540 100644
+--- a/arch/sh/configs/magicpanelr2_defconfig
++++ b/arch/sh/configs/magicpanelr2_defconfig
+@@ -14,8 +14,6 @@ CONFIG_MODULE_UNLOAD=y
+ CONFIG_MODVERSIONS=y
+ CONFIG_MODULE_SRCVERSION_ALL=y
+ # CONFIG_BLK_DEV_BSG is not set
+-# CONFIG_IOSCHED_DEADLINE is not set
+-# CONFIG_IOSCHED_CFQ is not set
+ CONFIG_CPU_SUBTYPE_SH7720=y
+ CONFIG_MEMORY_START=0x0C000000
+ CONFIG_MEMORY_SIZE=0x03F00000
+diff --git a/arch/sh/configs/polaris_defconfig b/arch/sh/configs/polaris_defconfig
+index e3a1d3d2694a..246408ec7462 100644
+--- a/arch/sh/configs/polaris_defconfig
++++ b/arch/sh/configs/polaris_defconfig
+@@ -12,7 +12,6 @@ CONFIG_MODULES=y
+ CONFIG_MODULE_UNLOAD=y
+ CONFIG_MODVERSIONS=y
+ # CONFIG_BLK_DEV_BSG is not set
+-# CONFIG_IOSCHED_DEADLINE is not set
+ CONFIG_CPU_SUBTYPE_SH7709=y
+ CONFIG_MEMORY_START=0x0C000000
+ CONFIG_FLATMEM_MANUAL=y
+diff --git a/arch/sh/configs/r7780mp_defconfig b/arch/sh/configs/r7780mp_defconfig
+index 0a18f8011c55..c97ec60cff27 100644
+--- a/arch/sh/configs/r7780mp_defconfig
++++ b/arch/sh/configs/r7780mp_defconfig
+@@ -12,8 +12,6 @@ CONFIG_OPROFILE=m
+ CONFIG_MODULES=y
+ CONFIG_MODULE_UNLOAD=y
+ # CONFIG_BLK_DEV_BSG is not set
+-# CONFIG_IOSCHED_DEADLINE is not set
+-# CONFIG_IOSCHED_CFQ is not set
+ CONFIG_CPU_SUBTYPE_SH7780=y
+ CONFIG_MEMORY_SIZE=0x08000000
+ CONFIG_FLATMEM_MANUAL=y
+diff --git a/arch/sh/configs/r7785rp_defconfig b/arch/sh/configs/r7785rp_defconfig
+index 7226ac5a1d44..55fce65eb454 100644
+--- a/arch/sh/configs/r7785rp_defconfig
++++ b/arch/sh/configs/r7785rp_defconfig
+@@ -15,8 +15,6 @@ CONFIG_KPROBES=y
+ CONFIG_MODULES=y
+ CONFIG_MODULE_UNLOAD=y
+ # CONFIG_BLK_DEV_BSG is not set
+-# CONFIG_IOSCHED_DEADLINE is not set
+-# CONFIG_IOSCHED_CFQ is not set
+ CONFIG_CPU_SUBTYPE_SH7785=y
+ CONFIG_MEMORY_SIZE=0x08000000
+ CONFIG_HUGETLB_PAGE_SIZE_1MB=y
+diff --git a/arch/sh/configs/rsk7201_defconfig b/arch/sh/configs/rsk7201_defconfig
+index 9f4f474705b7..841809b5c2dc 100644
+--- a/arch/sh/configs/rsk7201_defconfig
++++ b/arch/sh/configs/rsk7201_defconfig
+@@ -15,8 +15,6 @@ CONFIG_PROFILING=y
+ CONFIG_OPROFILE=y
+ CONFIG_MODULES=y
+ # CONFIG_BLK_DEV_BSG is not set
+-# CONFIG_IOSCHED_DEADLINE is not set
+-# CONFIG_IOSCHED_CFQ is not set
+ CONFIG_CPU_SUBTYPE_SH7201=y
+ CONFIG_MEMORY_SIZE=0x01000000
+ CONFIG_FLATMEM_MANUAL=y
+diff --git a/arch/sh/configs/rsk7203_defconfig b/arch/sh/configs/rsk7203_defconfig
+index 10a32bd4cf66..0055031664ad 100644
+--- a/arch/sh/configs/rsk7203_defconfig
++++ b/arch/sh/configs/rsk7203_defconfig
+@@ -16,8 +16,6 @@ CONFIG_PROFILING=y
+ CONFIG_OPROFILE=y
+ CONFIG_MODULES=y
+ # CONFIG_BLK_DEV_BSG is not set
+-# CONFIG_IOSCHED_DEADLINE is not set
+-# CONFIG_IOSCHED_CFQ is not set
+ CONFIG_CPU_SUBTYPE_SH7203=y
+ CONFIG_MEMORY_START=0x0c000000
+ CONFIG_MEMORY_SIZE=0x01000000
+diff --git a/arch/sh/configs/rsk7264_defconfig b/arch/sh/configs/rsk7264_defconfig
+index 78643191c99e..f7b9c528c6df 100644
+--- a/arch/sh/configs/rsk7264_defconfig
++++ b/arch/sh/configs/rsk7264_defconfig
+@@ -17,8 +17,6 @@ CONFIG_MMAP_ALLOW_UNINITIALIZED=y
+ CONFIG_PROFILING=y
+ # CONFIG_BLK_DEV_BSG is not set
+ CONFIG_PARTITION_ADVANCED=y
+-# CONFIG_IOSCHED_DEADLINE is not set
+-# CONFIG_IOSCHED_CFQ is not set
+ CONFIG_CPU_SUBTYPE_SH7264=y
+ CONFIG_MEMORY_START=0x0c000000
+ CONFIG_FLATMEM_MANUAL=y
+diff --git a/arch/sh/configs/rsk7269_defconfig b/arch/sh/configs/rsk7269_defconfig
+index fb9fa7faf635..4bff14fb185d 100644
+--- a/arch/sh/configs/rsk7269_defconfig
++++ b/arch/sh/configs/rsk7269_defconfig
+@@ -4,8 +4,6 @@ CONFIG_EMBEDDED=y
+ # CONFIG_VM_EVENT_COUNTERS is not set
+ CONFIG_SLAB=y
+ # CONFIG_BLK_DEV_BSG is not set
+-# CONFIG_IOSCHED_DEADLINE is not set
+-# CONFIG_IOSCHED_CFQ is not set
+ CONFIG_SWAP_IO_SPACE=y
+ CONFIG_CPU_SUBTYPE_SH7269=y
+ CONFIG_MEMORY_START=0x0c000000
+diff --git a/arch/sh/configs/sdk7786_defconfig b/arch/sh/configs/sdk7786_defconfig
+index 7fa116b436c3..61bec46ebd66 100644
+--- a/arch/sh/configs/sdk7786_defconfig
++++ b/arch/sh/configs/sdk7786_defconfig
+@@ -39,7 +39,8 @@ CONFIG_OPROFILE=m
+ CONFIG_KPROBES=y
+ CONFIG_MODULES=y
+ CONFIG_MODULE_UNLOAD=y
+-CONFIG_CFQ_GROUP_IOSCHED=y
++CONFIG_IOSCHED_BFQ=y
++CONFIG_BFQ_GROUP_IOSCHED=y
+ CONFIG_CPU_SUBTYPE_SH7786=y
+ CONFIG_MEMORY_START=0x40000000
+ CONFIG_MEMORY_SIZE=0x20000000
+diff --git a/arch/sh/configs/se7206_defconfig b/arch/sh/configs/se7206_defconfig
+index a93402b3a319..21a43f14ffac 100644
+--- a/arch/sh/configs/se7206_defconfig
++++ b/arch/sh/configs/se7206_defconfig
+@@ -28,8 +28,6 @@ CONFIG_OPROFILE=y
+ CONFIG_MODULES=y
+ CONFIG_MODULE_UNLOAD=y
+ # CONFIG_BLK_DEV_BSG is not set
+-# CONFIG_IOSCHED_DEADLINE is not set
+-# CONFIG_IOSCHED_CFQ is not set
+ CONFIG_CPU_SUBTYPE_SH7206=y
+ CONFIG_MEMORY_START=0x0c000000
+ CONFIG_FLATMEM_MANUAL=y
+diff --git a/arch/sh/configs/se7343_defconfig b/arch/sh/configs/se7343_defconfig
+index 06d067c842cd..4e794e719a28 100644
+--- a/arch/sh/configs/se7343_defconfig
++++ b/arch/sh/configs/se7343_defconfig
+@@ -11,7 +11,6 @@ CONFIG_MODULES=y
+ CONFIG_MODULE_UNLOAD=y
+ CONFIG_MODULE_FORCE_UNLOAD=y
+ # CONFIG_BLK_DEV_BSG is not set
+-# CONFIG_IOSCHED_CFQ is not set
+ CONFIG_CPU_SUBTYPE_SH7343=y
+ CONFIG_MEMORY_START=0x0c000000
+ CONFIG_MEMORY_SIZE=0x01000000
+diff --git a/arch/sh/configs/se7619_defconfig b/arch/sh/configs/se7619_defconfig
+index f54722dbc8f5..3264415a5931 100644
+--- a/arch/sh/configs/se7619_defconfig
++++ b/arch/sh/configs/se7619_defconfig
+@@ -11,8 +11,6 @@ CONFIG_LOG_BUF_SHIFT=14
+ # CONFIG_VM_EVENT_COUNTERS is not set
+ CONFIG_SLAB=y
+ # CONFIG_BLK_DEV_BSG is not set
+-# CONFIG_IOSCHED_DEADLINE is not set
+-# CONFIG_IOSCHED_CFQ is not set
+ CONFIG_MEMORY_START=0x0c000000
+ CONFIG_FLATMEM_MANUAL=y
+ CONFIG_CPU_BIG_ENDIAN=y
+diff --git a/arch/sh/configs/se7705_defconfig b/arch/sh/configs/se7705_defconfig
+index ddfc69841955..4496b94b7d88 100644
+--- a/arch/sh/configs/se7705_defconfig
++++ b/arch/sh/configs/se7705_defconfig
+@@ -8,8 +8,6 @@ CONFIG_BLK_DEV_INITRD=y
+ CONFIG_SLAB=y
+ CONFIG_MODULES=y
+ # CONFIG_BLK_DEV_BSG is not set
+-# CONFIG_IOSCHED_DEADLINE is not set
+-# CONFIG_IOSCHED_CFQ is not set
+ CONFIG_CPU_SUBTYPE_SH7705=y
+ CONFIG_MEMORY_START=0x0c000000
+ CONFIG_MEMORY_SIZE=0x02000000
+diff --git a/arch/sh/configs/se7712_defconfig b/arch/sh/configs/se7712_defconfig
+index 9a527f978106..ee6d28ae08de 100644
+--- a/arch/sh/configs/se7712_defconfig
++++ b/arch/sh/configs/se7712_defconfig
+@@ -12,8 +12,6 @@ CONFIG_KALLSYMS_ALL=y
+ CONFIG_SLAB=y
+ CONFIG_MODULES=y
+ # CONFIG_BLK_DEV_BSG is not set
+-# CONFIG_IOSCHED_DEADLINE is not set
+-# CONFIG_IOSCHED_CFQ is not set
+ CONFIG_CPU_SUBTYPE_SH7712=y
+ CONFIG_MEMORY_START=0x0c000000
+ CONFIG_MEMORY_SIZE=0x02000000
+diff --git a/arch/sh/configs/se7721_defconfig b/arch/sh/configs/se7721_defconfig
+index 3b0e1eb6e874..bad921bc10f8 100644
+--- a/arch/sh/configs/se7721_defconfig
++++ b/arch/sh/configs/se7721_defconfig
+@@ -12,8 +12,6 @@ CONFIG_KALLSYMS_ALL=y
+ CONFIG_SLAB=y
+ CONFIG_MODULES=y
+ # CONFIG_BLK_DEV_BSG is not set
+-# CONFIG_IOSCHED_DEADLINE is not set
+-# CONFIG_IOSCHED_CFQ is not set
+ CONFIG_CPU_SUBTYPE_SH7721=y
+ CONFIG_MEMORY_START=0x0c000000
+ CONFIG_MEMORY_SIZE=0x02000000
+diff --git a/arch/sh/configs/se7722_defconfig b/arch/sh/configs/se7722_defconfig
+index 88bf9e849008..09e455817447 100644
+--- a/arch/sh/configs/se7722_defconfig
++++ b/arch/sh/configs/se7722_defconfig
+@@ -8,8 +8,6 @@ CONFIG_PROFILING=y
+ CONFIG_MODULES=y
+ CONFIG_MODULE_UNLOAD=y
+ # CONFIG_BLK_DEV_BSG is not set
+-# CONFIG_IOSCHED_DEADLINE is not set
+-# CONFIG_IOSCHED_CFQ is not set
+ CONFIG_CPU_SUBTYPE_SH7722=y
+ CONFIG_MEMORY_START=0x0c000000
+ CONFIG_NUMA=y
+diff --git a/arch/sh/configs/se7780_defconfig b/arch/sh/configs/se7780_defconfig
+index ec32c82646ed..dcd85b858ac8 100644
+--- a/arch/sh/configs/se7780_defconfig
++++ b/arch/sh/configs/se7780_defconfig
+@@ -9,7 +9,6 @@ CONFIG_LOG_BUF_SHIFT=14
+ CONFIG_SLAB=y
+ CONFIG_MODULES=y
+ CONFIG_MODULE_UNLOAD=y
+-# CONFIG_IOSCHED_CFQ is not set
+ CONFIG_CPU_SUBTYPE_SH7780=y
+ CONFIG_MEMORY_SIZE=0x08000000
+ CONFIG_SH_7780_SOLUTION_ENGINE=y
+diff --git a/arch/sh/configs/sh7710voipgw_defconfig b/arch/sh/configs/sh7710voipgw_defconfig
+index c86f28442a80..08426913c0e3 100644
+--- a/arch/sh/configs/sh7710voipgw_defconfig
++++ b/arch/sh/configs/sh7710voipgw_defconfig
+@@ -11,7 +11,6 @@ CONFIG_MODULES=y
+ CONFIG_MODULE_UNLOAD=y
+ CONFIG_MODULE_FORCE_UNLOAD=y
+ # CONFIG_BLK_DEV_BSG is not set
+-# CONFIG_IOSCHED_CFQ is not set
+ CONFIG_CPU_SUBTYPE_SH7710=y
+ CONFIG_MEMORY_START=0x0c000000
+ CONFIG_MEMORY_SIZE=0x00800000
+diff --git a/arch/sh/configs/shmin_defconfig b/arch/sh/configs/shmin_defconfig
+index d589cfdfb7eb..a27b129b93c5 100644
+--- a/arch/sh/configs/shmin_defconfig
++++ b/arch/sh/configs/shmin_defconfig
+@@ -12,8 +12,6 @@ CONFIG_LOG_BUF_SHIFT=14
+ # CONFIG_SHMEM is not set
+ CONFIG_SLOB=y
+ # CONFIG_BLK_DEV_BSG is not set
+-# CONFIG_IOSCHED_DEADLINE is not set
+-# CONFIG_IOSCHED_CFQ is not set
+ CONFIG_CPU_SUBTYPE_SH7706=y
+ CONFIG_MEMORY_START=0x0c000000
+ CONFIG_MEMORY_SIZE=0x00800000
+diff --git a/arch/sh/configs/ul2_defconfig b/arch/sh/configs/ul2_defconfig
+index dc2e3061130f..103b81ec1ffb 100644
+--- a/arch/sh/configs/ul2_defconfig
++++ b/arch/sh/configs/ul2_defconfig
+@@ -8,8 +8,6 @@ CONFIG_PROFILING=y
+ CONFIG_MODULES=y
+ CONFIG_MODULE_UNLOAD=y
+ # CONFIG_BLK_DEV_BSG is not set
+-# CONFIG_IOSCHED_DEADLINE is not set
+-# CONFIG_IOSCHED_CFQ is not set
+ CONFIG_CPU_SUBTYPE_SH7366=y
+ CONFIG_MEMORY_SIZE=0x01f00000
+ CONFIG_NUMA=y
+-- 
+2.17.1
 
-+ linux-c6x-dev@linux-c6x.org
-+ Mark Salter <msalter@redhat.com>
-+ Aurelien Jacquiot <jacquiot.aurelien@gmail.com>
-
-H8300:
-
-+ uclinux-h8-devel@lists.sourceforge.jp
-+ Yoshinori Sato <ysato@users.sourceforge.jp>
-
-HEXAGON:
-
-+ linux-hexagon@vger.kernel.org
-+ Brian Cain <bcain@codeaurora.org>
-
-M68K:
-
-+ linux-m68k@lists.linux-m68k.org
-+ Geert Uytterhoeven <geert@linux-m68k.org>
-
-MICROBLAZE:
-
-+ Michal Simek <monstr@monstr.eu>
-
-RISCV:
-
-+ linux-riscv@lists.infradead.org
-+ Paul Walmsley <paul.walmsley@sifive.com>
-+ Palmer Dabbelt <palmer@dabbelt.com>
-
-UNICORE32:
-
-+ Guan Xuetao <gxt@pku.edu.cn>
-
-XTENSA:
-
-+ linux-xtensa@linux-xtensa.org
-+ Chris Zankel <chris@zankel.net>
-+ Max Filippov <jcmvbkbc@gmail.com>
-
-Please feel free to add others if I have missed.
