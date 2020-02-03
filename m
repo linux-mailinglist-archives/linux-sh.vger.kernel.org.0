@@ -2,130 +2,129 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D51B15074D
-	for <lists+linux-sh@lfdr.de>; Mon,  3 Feb 2020 14:32:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 966E815096A
+	for <lists+linux-sh@lfdr.de>; Mon,  3 Feb 2020 16:14:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727833AbgBCNcs (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 3 Feb 2020 08:32:48 -0500
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:38693 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727257AbgBCNcs (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 3 Feb 2020 08:32:48 -0500
-Received: by mail-oi1-f196.google.com with SMTP id l9so10890529oii.5;
-        Mon, 03 Feb 2020 05:32:47 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=j8a77+R58LAe2xXbMwZGt5F1KqF29qhEEgIiu5hvCV0=;
-        b=IKZjN3TyHGpqzNf2xzFfp2+EkVgfU3rNJIMOXhZLcjIqnKMB/+xsakj5Igol8nv5To
-         wFF6YdYXH0JN9YuqQDEnpjH+nrpBq3VujbwL0/IIGBMvJwEy0Uw2i2bb9F1a4fBeDVgf
-         HD199wQNEyF6kV6FX/5hZ2TE5bXlUZDAfD1MD+n3EjGr9t9yhADVt6IYq1+2fj34b4Dy
-         iXQRuynJpuui0hFdv6fjiSwqLCSyGMmyx/andR9yHBtZAu2IqY8r6y2b1IKW4dB1ZYEp
-         XkURyqYnsrjA/n4Js0+C2gDo38lEYc8CbbvFr+yfJhqvwS9Am6YcMniIOOPKUhmVj8cK
-         8UgQ==
-X-Gm-Message-State: APjAAAWmoe61y0oqFpbP3IOA8qYJxthrK66ZkBnF94BObr7XtM/A+4i3
-        8xe+scESk5WSpSFY5ApOlsYLtpXYgi2gSZt/RVM=
-X-Google-Smtp-Source: APXvYqyRJiH/1Qcj8aUeQeozGzHCPtNftoPVo7qflSkX4WA3sZYULTlbZxKTd5bnObw2ce+CmK026N210WC5uhGFItw=
-X-Received: by 2002:aca:1a06:: with SMTP id a6mr14052076oia.148.1580736767514;
- Mon, 03 Feb 2020 05:32:47 -0800 (PST)
-MIME-Version: 1.0
-References: <20200203101806.2441-1-peter.ujfalusi@ti.com> <CAHp75Vf__isc59YBS9=O+9ApSV62XuZ2nBAWKKD_K7i72P-yFg@mail.gmail.com>
- <e47927aa-8d40-aa71-aef4-5f9c4cbbc03a@ti.com> <CAHp75Vd1A+8N_RPq3oeoXS19XeFtv7YK69H5XfzLMxWyCHbzBQ@mail.gmail.com>
- <701ab186-c240-3c37-2c0b-8ac195f8073f@ti.com>
-In-Reply-To: <701ab186-c240-3c37-2c0b-8ac195f8073f@ti.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 3 Feb 2020 14:32:35 +0100
-Message-ID: <CAMuHMdUYRvjR5qe5RVzggN+BaHw8ObEtnm8Kdn25XUiv2sJpPg@mail.gmail.com>
-Subject: Re: [PATCH 0/3] dmaengine: Stear users towards dma_request_slave_chan()
-To:     Peter Ujfalusi <peter.ujfalusi@ti.com>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        dmaengine <dmaengine@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        id S1728921AbgBCPO2 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 3 Feb 2020 10:14:28 -0500
+Received: from pegase1.c-s.fr ([93.17.236.30]:44923 "EHLO pegase1.c-s.fr"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728918AbgBCPO2 (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Mon, 3 Feb 2020 10:14:28 -0500
+Received: from localhost (mailhub1-int [192.168.12.234])
+        by localhost (Postfix) with ESMTP id 48BBF846fMz9v3ls;
+        Mon,  3 Feb 2020 16:14:20 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+        reason="1024-bit key; insecure key"
+        header.d=c-s.fr header.i=@c-s.fr header.b=OGtzFIa+; dkim-adsp=pass;
+        dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+        by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+        with ESMTP id 5VszB6UW2Yif; Mon,  3 Feb 2020 16:14:20 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+        by pegase1.c-s.fr (Postfix) with ESMTP id 48BBF82h8pz9v3lm;
+        Mon,  3 Feb 2020 16:14:20 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+        t=1580742860; bh=i4hAG7YwdO6LNDmYZ4wBEtikutj9N76WG5xl/PwnPrw=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=OGtzFIa+5ZhSxgd/BuHky5Jny2LDfnoF42zPtabwjmhorMsQSP8od+tqTvY9oMk3O
+         ug6+KKaiRNlh/wtS69Y4UVsFdUJC1Vu36ZVhY++cHIlyr4PBVDhCfDbWqmvxtfLxhX
+         pBTvZSaYZbiw2B0JwaU6kwU/pCLUp2ai2uhwAOdA=
+Received: from localhost (localhost [127.0.0.1])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 7DE228B7B0;
+        Mon,  3 Feb 2020 16:14:25 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+        with ESMTP id unrhNEULKrXy; Mon,  3 Feb 2020 16:14:25 +0100 (CET)
+Received: from [172.25.230.102] (po15451.idsi0.si.c-s.fr [172.25.230.102])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 12E638B7AC;
+        Mon,  3 Feb 2020 16:14:25 +0100 (CET)
+Subject: Re: [PATCH V12] mm/debug: Add tests validating architecture page
+ table helpers
+To:     Qian Cai <cai@lca.pw>
+Cc:     Anshuman Khandual <Anshuman.Khandual@arm.com>, linux-mm@kvack.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Mike Rapoport <rppt@linux.vnet.ibm.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
         Dan Williams <dan.j.williams@intel.com>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Peter Zijlstra <peterz@infradead.org>,
+        Michal Hocko <mhocko@kernel.org>,
+        Mark Rutland <Mark.Rutland@arm.com>,
+        Mark Brown <broonie@kernel.org>,
+        Steven Price <Steven.Price@arm.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Kees Cook <keescook@chromium.org>,
+        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+        Matthew Wilcox <willy@infradead.org>,
+        Sri Krishna chowdary <schowdary@nvidia.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        James Hogan <jhogan@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org,
+        kasan-dev <kasan-dev@googlegroups.com>
+References: <473d8198-3ac4-af3b-e2ec-c0698a3565d3@c-s.fr>
+ <2C4ADFAE-7BB4-42B7-8F54-F036EA7A4316@lca.pw>
+From:   Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <8e94a073-4045-89aa-6a3b-24847ad7c858@c-s.fr>
+Date:   Mon, 3 Feb 2020 16:14:24 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.2
+MIME-Version: 1.0
+In-Reply-To: <2C4ADFAE-7BB4-42B7-8F54-F036EA7A4316@lca.pw>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Peter,
 
-On Mon, Feb 3, 2020 at 1:49 PM Peter Ujfalusi <peter.ujfalusi@ti.com> wrote:
-> On 03/02/2020 13.16, Andy Shevchenko wrote:
-> > On Mon, Feb 3, 2020 at 12:59 PM Peter Ujfalusi <peter.ujfalusi@ti.com> wrote:
-> >> On 03/02/2020 12.37, Andy Shevchenko wrote:
-> >>> On Mon, Feb 3, 2020 at 12:32 PM Peter Ujfalusi <peter.ujfalusi@ti.com> wrote:
-> >>>> Advise users of dma_request_slave_channel() and
-> >>>> dma_request_slave_channel_compat() to move to dma_request_slave_chan()
-> >>>
-> >>> How? There are legacy ARM boards you have to care / remove before.
-> >>> DMAengine subsystem makes a p*s off decisions
-> >>
-> >> The dma_slave_map support is added few years back for the legacy ARM
-> >> boards, because we do care.
-> >> daVinci, OMAP1, pxa, s3cx4xx and even m68k/coldfire moved over.
-> >
-> > Then why simple not to convert (start converting) those few drivers to
-> > new API and simple remove the old one?
->
-> _if_ the dma_request_slave_channel_compat() is really falling back after
-> dma_request_chan() - this is what it calls first, then it is not a
-> simple convert to a new API.
-> 1. The arch needs to define the dma_slave_map for the SoC.
-> 2. The dma driver needs few lines to add it to DMAengine core (+pdata
-> change).
-> After this the _compat() can be replaced with dma_request_chan()
->
-> In most cases I do not have access to documentation and boards to test.
->
-> Looking at the output of 'git grep dma_request_slave_channel_compat':
-> drivers/mmc/host/renesas_sdhi_sys_dmac.c
-> drivers/spi/spi-pxa2xx-dma.c
-> drivers/spi/spi-rspi.c
-> drivers/spi/spi-sh-msiof.c
-> drivers/tty/serial/8250/8250_dma.c
->
-> From these rspi boots only in DT and I'm not sure about the others.
 
-Both rspi and sh-msiof have users on legacy SH (i.e. without DT):
+Le 02/02/2020 à 12:26, Qian Cai a écrit :
+> 
+> 
+>> On Jan 30, 2020, at 9:13 AM, Christophe Leroy <christophe.leroy@c-s.fr> wrote:
+>>
+>> config DEBUG_VM_PGTABLE
+>>     bool "Debug arch page table for semantics compliance" if ARCH_HAS_DEBUG_VM_PGTABLE || EXPERT
+>>     depends on MMU
+>>     default 'n' if !ARCH_HAS_DEBUG_VM_PGTABLE
+>>     default 'y' if DEBUG_VM
+> 
+> Does it really necessary to potentially force all bots to run this? Syzbot, kernel test robot etc? Does it ever pay off for all their machine times there?
+> 
 
-    arch/sh/kernel/cpu/sh4a/setup-sh7757.c: .name   = "rspi",
-    arch/sh/boards/mach-ecovec24/setup.c:   .name           = "spi_sh_msiof",
+Machine time ?
 
-The former seems to be used with drivers/dma/sh/shdmac.c:
+On a 32 bits powerpc running at 132 MHz, the tests takes less than 10ms. 
+Is it worth taking the risk of not detecting faults by not selecting it 
+by default ?
 
-    arch/sh/include/cpu-sh4/cpu/sh7757.h:   SHDMA_SLAVE_RSPI_TX,
-    arch/sh/include/cpu-sh4/cpu/sh7757.h:   SHDMA_SLAVE_RSPI_RX,
-    arch/sh/kernel/cpu/sh4a/setup-sh7757.c:         .slave_id       =
-SHDMA_SLAVE_RSPI_TX,
-    arch/sh/kernel/cpu/sh4a/setup-sh7757.c:         .slave_id       =
-SHDMA_SLAVE_RSPI_RX,
+[    5.656916] debug_vm_pgtable: debug_vm_pgtable: Validating 
+architecture page table helpers
+[    5.665661] debug_vm_pgtable: debug_vm_pgtable: Validated 
+architecture page table helpers
 
-but I have no idea if it still works (and no hardware).
-
-The latter doesn't seem to be used with DMA on ecovec24/sh7724, so
-probably we can just drop the _compat() from sh-sh-msiof.c.
-
-BTW, we no longer support non-legacy DMA in drivers/tty/serial/sh-sci.c
-(DMA was completely broken in that driver when I added DT suppport),
-but it seems it was used at some point on various SH, cfr. e.g.
-arch/sh/kernel/cpu/sh4a/setup-sh7724.c still setting up the channels.
-Which might be a motivation for just dropping _compat() from spi-rspi.c,
-too? ;-)
-
-Anyone who cares for DMA on SuperH?
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Christophe
