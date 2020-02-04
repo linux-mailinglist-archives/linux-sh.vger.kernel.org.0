@@ -2,131 +2,138 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DD7C7151778
-	for <lists+linux-sh@lfdr.de>; Tue,  4 Feb 2020 10:12:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E011B1517B0
+	for <lists+linux-sh@lfdr.de>; Tue,  4 Feb 2020 10:20:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726908AbgBDJMX (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 4 Feb 2020 04:12:23 -0500
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:46956 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726362AbgBDJMW (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 4 Feb 2020 04:12:22 -0500
-Received: by mail-pf1-f194.google.com with SMTP id k29so9106591pfp.13
-        for <linux-sh@vger.kernel.org>; Tue, 04 Feb 2020 01:12:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=landley-net.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=OEno8L+dLk53KEqvLYXsrFVru+rwMQDT1MCsCBWWmic=;
-        b=PGeL2yv80M/Xyz3TqQfy30bcMf6fkJSWDpFtX5zg7SPUH32tZaavlnLQLUeJvm61jL
-         7jc1TvZBXJLdQqek38XGa/IQ7IISMsQ6Z+WP22qtzWArm4IfXAQjwdE2Ga+ecWTR7ANa
-         YERU2WTGz9nVMujVG57yYbPj32BYQtRfE68nkB3pq2NXz1q3L+5qIKStEyr+Dhc9FAaX
-         xi6xSd1RLMPZ0pXPtcy8nYd5D924/AO2HMEt0/LdLK7SnHAYIkl+EEjc7yT/DPAWgn6p
-         gkp4llgs/xk3IzTuqHUQ5FfkQ923tWRHTjwVPNc0B2adGWZK2sgorrP3b4qNJ5nL8m+0
-         MJrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=OEno8L+dLk53KEqvLYXsrFVru+rwMQDT1MCsCBWWmic=;
-        b=SdygueoiP/fpRSM0B8tZpwgSsOwXQCCj0HMYPpN0thWLfMKUjy8DA698K/4ASOi9QY
-         +/lUDIpy74oL5XeoVPlFEbPx7nzmEFpbiLb1lCJNc83O7v1iYWcP4LiStuLKbhITu26X
-         gxDN6wanAgro6sv58/rYgllNGdVDp/q1M8Qg52mFTUixwCGO1JwJ1FaY0TLR77Yf4y+9
-         VZKP6MN5+6lH49mR45GPCNiqV9buQu2KfK6o0ozyWh/h9BGr8hNoKlg0PwRN+ncfAp3+
-         9g5XIO+DXbowkFX8N7vyyfEDAU/rquIxXIFr5dLl+22WR3krvDbNf1d8/anM3Vkw0Xnl
-         QbyQ==
-X-Gm-Message-State: APjAAAUuWwp7nu/C6LSQvHANf8KJplcoWoQyvtl9h8446U7MgoOosZmQ
-        OCnFynhlZeIvWpQdAmKJ4yi535lecu0=
-X-Google-Smtp-Source: APXvYqxShwB5mksr4VLPF6EQdoB3Thrj1dJI1OjTYyqPg21c1H8oXz+rhju/pYJoSihlvb9nLNYwrA==
-X-Received: by 2002:a62:e414:: with SMTP id r20mr29513047pfh.154.1580807542320;
-        Tue, 04 Feb 2020 01:12:22 -0800 (PST)
-Received: from [192.168.11.4] (softbank126112255110.biz.bbtec.net. [126.112.255.110])
-        by smtp.googlemail.com with ESMTPSA id b130sm23059315pga.4.2020.02.04.01.12.18
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 04 Feb 2020 01:12:21 -0800 (PST)
-Subject: Re: [PATCH 0/3] dmaengine: Stear users towards
- dma_request_slave_chan()
-To:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>
-Cc:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        dmaengine <dmaengine@vger.kernel.org>,
+        id S1726371AbgBDJU2 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 4 Feb 2020 04:20:28 -0500
+Received: from us-smtp-1.mimecast.com ([205.139.110.61]:30356 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727023AbgBDJU2 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 4 Feb 2020 04:20:28 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1580808026;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+        bh=RHvzu8t7DSk7lF1XoO7vsW7bU11o/C+y6p3UFShrwgw=;
+        b=R3ioCFZiv+cR+EIi/g7WLC3Z5ezql5txIBZYtdOpDcayGSCQJ56m3yHSoqsG8QFa9VOfu4
+        QL//sMJml1d/RBcukqvqqBknRD0YDOUEm8WQkGo88/d1fxjohHdYiS3sRIwfyBnq3Y5rs1
+        07QcQZdrRAF/GJEfSFcdyB/UVaEVDls=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-434-1mNuaWW5M6GcS8aYzpsskg-1; Tue, 04 Feb 2020 04:20:22 -0500
+X-MC-Unique: 1mNuaWW5M6GcS8aYzpsskg-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 12F3E8010F6;
+        Tue,  4 Feb 2020 09:20:20 +0000 (UTC)
+Received: from [10.36.117.121] (ovpn-117-121.ams2.redhat.com [10.36.117.121])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 4BF735C1B5;
+        Tue,  4 Feb 2020 09:20:17 +0000 (UTC)
+Subject: Re: [PATCH v6 08/10] mm/memory_hotplug: Don't check for "all holes"
+ in shrink_zone_span()
+To:     Oscar Salvador <osalvador@suse.de>
+Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, x86@kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Michal Hocko <mhocko@suse.com>,
+        Pavel Tatashin <pasha.tatashin@soleen.com>,
         Dan Williams <dan.j.williams@intel.com>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
-References: <20200203101806.2441-1-peter.ujfalusi@ti.com>
- <CAHp75Vf__isc59YBS9=O+9ApSV62XuZ2nBAWKKD_K7i72P-yFg@mail.gmail.com>
- <e47927aa-8d40-aa71-aef4-5f9c4cbbc03a@ti.com>
- <CAHp75Vd1A+8N_RPq3oeoXS19XeFtv7YK69H5XfzLMxWyCHbzBQ@mail.gmail.com>
- <701ab186-c240-3c37-2c0b-8ac195f8073f@ti.com>
- <CAMuHMdUYRvjR5qe5RVzggN+BaHw8ObEtnm8Kdn25XUiv2sJpPg@mail.gmail.com>
- <38f686ae-66fa-0e3a-ec2e-a09fc4054ac4@physik.fu-berlin.de>
- <CAMuHMdXahPt4q7Dd-mQ9RNr7JiCt8PhXeT5U2D+n-ngJmEQMgw@mail.gmail.com>
- <b09ad222-f5b8-af5a-6c2b-2dd6b30f1c73@ti.com>
- <CAMuHMdUYcSPoK8NOSdMzU_Jtg84aPMNKeGnacnF7=aidV4eqvw@mail.gmail.com>
-From:   Rob Landley <rob@landley.net>
-Message-ID: <64cffbfe-a639-c09d-8aa2-fdda8fad2cf7@landley.net>
-Date:   Tue, 4 Feb 2020 03:16:58 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        Wei Yang <richardw.yang@linux.intel.com>
+References: <20191006085646.5768-1-david@redhat.com>
+ <20191006085646.5768-9-david@redhat.com> <20200204091312.GC6494@linux>
+From:   David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
+ 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
+Organization: Red Hat GmbH
+Message-ID: <7d36f4cd-3f5b-8fec-2d8b-83e62a34ec89@redhat.com>
+Date:   Tue, 4 Feb 2020 10:20:16 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.1
 MIME-Version: 1.0
-In-Reply-To: <CAMuHMdUYcSPoK8NOSdMzU_Jtg84aPMNKeGnacnF7=aidV4eqvw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20200204091312.GC6494@linux>
+Content-Type: text/plain; charset=windows-1252
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 2/4/20 2:01 AM, Geert Uytterhoeven wrote:
-> Hi Peter,
+On 04.02.20 10:13, Oscar Salvador wrote:
+> On Sun, Oct 06, 2019 at 10:56:44AM +0200, David Hildenbrand wrote:
+>> If we have holes, the holes will automatically get detected and removed
+>> once we remove the next bigger/smaller section. The extra checks can
+>> go.
+>>
+>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>> Cc: Oscar Salvador <osalvador@suse.de>
+>> Cc: Michal Hocko <mhocko@suse.com>
+>> Cc: David Hildenbrand <david@redhat.com>
+>> Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
+>> Cc: Dan Williams <dan.j.williams@intel.com>
+>> Cc: Wei Yang <richardw.yang@linux.intel.com>
+>> Signed-off-by: David Hildenbrand <david@redhat.com>
 > 
-> On Tue, Feb 4, 2020 at 7:52 AM Peter Ujfalusi <peter.ujfalusi@ti.com> wrote:
->> On 03/02/2020 22.34, Geert Uytterhoeven wrote:
->>> On Mon, Feb 3, 2020 at 9:21 PM John Paul Adrian Glaubitz
->>> <glaubitz@physik.fu-berlin.de> wrote:
->>>> On 2/3/20 2:32 PM, Geert Uytterhoeven wrote:
->>>>> Both rspi and sh-msiof have users on legacy SH (i.e. without DT):
->>>>
->>>> FWIW, there is a patch set by Yoshinori Sato to add device tree support
->>>> for classical SuperH hardware. It was never merged, unfortunately :(.
->>>
->>> True.
->>>
->>>>> Anyone who cares for DMA on SuperH?
->>>>
->>>> What is DMA used for on SuperH? Wouldn't dropping it cut support for
->>>> essential hardware features?
->>>
->>> It may make a few things slower.
-
-The j-core stuff has DMA but we haven't hooked it up to dmaengine yet. (It's on
-the todo list but pretty far down.)
-
-I fought with dmaengine in a 7760 board in 2018, and got it to run its tests but
-the ship deadline arrived before I got the ethernet working with it.
-
-I found the documentation fairly impenetrable, is there a good primer on what's
-_current_ for new implementations? (I had similar questions for gpio. It's easy
-to google for "here's how you did it in 2010"...)
-
->> I would not drop DMA support but I would suggest to add dma_slave_map
->> for non DT boot so the _compat() can be dropped.
+> Heh, I have been here before.
+> I have to confess that when I wrote my version of this I was not really 100%
+> about removing it, because hotplug was a sort of a "catchall" for all sort of weird
+> and corner-cases configurations, but thinking more about it, I cannot think of
+> any situation that would make this blow up.
 > 
-> Which is similar in spirit to gpiod_lookup and clk_register_clkdev(),
-> right?
-> 
->> Imho on lower spec SoC (and I believe SuperH is) the DMA makes big
->> difference offloading data movement from the CPU.
-> 
-> Assumed it is actually used...
+> Reviewed-by: Oscar Salvador <osalvador@suse.de>
 
-The turtle boards need it USB, ethernet, and sdcard, but Rich Felker hasn't
-finished the j32 port yet (we just got him the updated docs last month) and the
-existing implementation is nommu so the things that are using it are reaching
-around behind the OS's back...
+Thanks for your review Oscar!
 
-Rob
+-- 
+Thanks,
+
+David / dhildenb
+
