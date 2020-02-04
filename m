@@ -2,109 +2,143 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 20E7415181C
-	for <lists+linux-sh@lfdr.de>; Tue,  4 Feb 2020 10:47:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 02A8815189E
+	for <lists+linux-sh@lfdr.de>; Tue,  4 Feb 2020 11:13:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726898AbgBDJq6 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 4 Feb 2020 04:46:58 -0500
-Received: from mx2.suse.de ([195.135.220.15]:40210 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726329AbgBDJq6 (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Tue, 4 Feb 2020 04:46:58 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id BC651ABF4;
-        Tue,  4 Feb 2020 09:46:55 +0000 (UTC)
-Date:   Tue, 4 Feb 2020 10:46:53 +0100
-From:   Oscar Salvador <osalvador@suse.de>
-To:     David Hildenbrand <david@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, x86@kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Michal Hocko <mhocko@suse.com>,
-        Pavel Tatashin <pasha.tatashin@soleen.com>,
+        id S1726479AbgBDKNa (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 4 Feb 2020 05:13:30 -0500
+Received: from mail-pl1-f194.google.com ([209.85.214.194]:35035 "EHLO
+        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726554AbgBDKNa (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 4 Feb 2020 05:13:30 -0500
+Received: by mail-pl1-f194.google.com with SMTP id g6so7087693plt.2
+        for <linux-sh@vger.kernel.org>; Tue, 04 Feb 2020 02:13:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=landley-net.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=OkODZfD0TOCWkrVmZb373OBkkt2OOLqS8H6uAuvHUNU=;
+        b=vKiI1beaLHxdeZBw93M+sozI1n1CArYvM88KZSVL5rsbXIvVVdInpw2Ag9xOQIqHq7
+         9poyiqKKRgV7RlXsmQOopQa9fty/jXVweNRFP67UYvu2KL7RGxUQAWq5ruMf6yYzO0ai
+         J75liKsCodOc3x7hkNAqgqLKe27zR5UvPgZoe8nWiKGJkWnZxVY/wnLul69ojJdyJ+qE
+         OlqM1kzB84uPeMpT6+MQvpeC9s83lfXOOfQJjV23AuN9oQinq5W/j5d2w3aUtU+CRhMW
+         +t6V35S3Y0bhfoy65fNClrCh77UdFPEtf0ejl+xdErx8QQKUDgpHqZ5+611fIs7qqmpC
+         jFeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=OkODZfD0TOCWkrVmZb373OBkkt2OOLqS8H6uAuvHUNU=;
+        b=Ya3+A44gNoyGTbLwlipT6BfQ9bVWgEuRbBhbK6fUcgscGFsAivoFW/bWpjihL4kpQS
+         ppQLD0Gx05KSfQSD/neBHVVVQgg37IfbFwHyv4AkOtNSmsbXKKcGRELo7Z+T4MtXNLBr
+         wTGNm7RKKHyacEPNn7lF79tCgWAfUZ/P5drGgRPD50m/KGHuWz4FMcS0DjaxHO80TzNH
+         4coIYpizzzdS7gWfOkJT9G9tVBHHjkJNTBzE4sSeOtBXsfpWEUuHWlQclJdqOPYJH7+q
+         i1Xweu8zzB9KvrH8QKZWc58J0igkmyEuvdEnJ74pQ5mMnqc9bzZTmJ8512QbzIgqEsaI
+         AhjA==
+X-Gm-Message-State: APjAAAUmkVbWRC7RoH6GhMkDIQJvBIHR2Fpkn8UlpR8NWb1NLlkyRVNW
+        Wc9w31HgZV22ytoSMSQBZG2nJg==
+X-Google-Smtp-Source: APXvYqzISGwROQ4q5fq5nttC+PzUoGznWW9Yc7dOP9VfbUZXZM5My/IDO1+S4yceR0m1fPSy9As0Pw==
+X-Received: by 2002:a17:902:6a8c:: with SMTP id n12mr24181422plk.191.1580811208877;
+        Tue, 04 Feb 2020 02:13:28 -0800 (PST)
+Received: from [192.168.11.4] (softbank126112255110.biz.bbtec.net. [126.112.255.110])
+        by smtp.googlemail.com with ESMTPSA id y2sm23887773pff.139.2020.02.04.02.13.26
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 04 Feb 2020 02:13:27 -0800 (PST)
+Subject: Re: [PATCH 0/3] dmaengine: Stear users towards
+ dma_request_slave_chan()
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        dmaengine <dmaengine@vger.kernel.org>,
         Dan Williams <dan.j.williams@intel.com>,
-        Wei Yang <richardw.yang@linux.intel.com>
-Subject: Re: [PATCH v6 10/10] mm/memory_hotplug: Cleanup __remove_pages()
-Message-ID: <20200204094652.GE6494@linux>
-References: <20191006085646.5768-1-david@redhat.com>
- <20191006085646.5768-11-david@redhat.com>
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
+References: <20200203101806.2441-1-peter.ujfalusi@ti.com>
+ <CAHp75Vf__isc59YBS9=O+9ApSV62XuZ2nBAWKKD_K7i72P-yFg@mail.gmail.com>
+ <e47927aa-8d40-aa71-aef4-5f9c4cbbc03a@ti.com>
+ <CAHp75Vd1A+8N_RPq3oeoXS19XeFtv7YK69H5XfzLMxWyCHbzBQ@mail.gmail.com>
+ <701ab186-c240-3c37-2c0b-8ac195f8073f@ti.com>
+ <CAMuHMdUYRvjR5qe5RVzggN+BaHw8ObEtnm8Kdn25XUiv2sJpPg@mail.gmail.com>
+ <38f686ae-66fa-0e3a-ec2e-a09fc4054ac4@physik.fu-berlin.de>
+ <CAMuHMdXahPt4q7Dd-mQ9RNr7JiCt8PhXeT5U2D+n-ngJmEQMgw@mail.gmail.com>
+ <b09ad222-f5b8-af5a-6c2b-2dd6b30f1c73@ti.com>
+ <CAMuHMdUYcSPoK8NOSdMzU_Jtg84aPMNKeGnacnF7=aidV4eqvw@mail.gmail.com>
+ <64cffbfe-a639-c09d-8aa2-fdda8fad2cf7@landley.net>
+ <CAMuHMdVeCaRu=D9stdEuWKpnVm1YBibwuVrxogVx+2RBvOb1tA@mail.gmail.com>
+From:   Rob Landley <rob@landley.net>
+Message-ID: <3601f6ef-1666-2fd5-263c-388c0c48db16@landley.net>
+Date:   Tue, 4 Feb 2020 04:18:06 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191006085646.5768-11-david@redhat.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <CAMuHMdVeCaRu=D9stdEuWKpnVm1YBibwuVrxogVx+2RBvOb1tA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Sun, Oct 06, 2019 at 10:56:46AM +0200, David Hildenbrand wrote:
-> Let's drop the basically unused section stuff and simplify.
+On 2/4/20 3:27 AM, Geert Uytterhoeven wrote:
+> Hi Rob,
 > 
-> Also, let's use a shorter variant to calculate the number of pages to
-> the next section boundary.
-> 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Oscar Salvador <osalvador@suse.de>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Cc: Wei Yang <richardw.yang@linux.intel.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+> On Tue, Feb 4, 2020 at 10:12 AM Rob Landley <rob@landley.net> wrote:
+>> On 2/4/20 2:01 AM, Geert Uytterhoeven wrote:
+>>> On Tue, Feb 4, 2020 at 7:52 AM Peter Ujfalusi <peter.ujfalusi@ti.com> wrote:
+>>>> On 03/02/2020 22.34, Geert Uytterhoeven wrote:
+>>>>> On Mon, Feb 3, 2020 at 9:21 PM John Paul Adrian Glaubitz
+>>>>> <glaubitz@physik.fu-berlin.de> wrote:
+>>>>>> On 2/3/20 2:32 PM, Geert Uytterhoeven wrote:
+>>>>>>> Both rspi and sh-msiof have users on legacy SH (i.e. without DT):
+>>>>>>
+>>>>>> FWIW, there is a patch set by Yoshinori Sato to add device tree support
+>>>>>> for classical SuperH hardware. It was never merged, unfortunately :(.
 
-I have to confess that it took me while to wrap around my head
-with the new min() change, but looks ok:
+The problem with converting everything else to j-core has always been regression
+testing. I have 2 pieces of classing sh4 hardware, and one classing sh2 board,
+and none of them are currently on the same continent I am. :)
 
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
+(I've got 3 different j-core boards, though. And am currently in the same room
+as 2 others. :)
 
-> ---
->  mm/memory_hotplug.c | 17 ++++++-----------
->  1 file changed, 6 insertions(+), 11 deletions(-)
+>>>>> True.
+>>>>>
+>>>>>>> Anyone who cares for DMA on SuperH?
+>>>>>>
+>>>>>> What is DMA used for on SuperH? Wouldn't dropping it cut support for
+>>>>>> essential hardware features?
+>>>>>
+>>>>> It may make a few things slower.
+>>
+>> The j-core stuff has DMA but we haven't hooked it up to dmaengine yet. (It's on
+>> the todo list but pretty far down.)
 > 
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index 843481bd507d..2275240cfa10 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -490,25 +490,20 @@ static void __remove_section(unsigned long pfn, unsigned long nr_pages,
->  void __remove_pages(unsigned long pfn, unsigned long nr_pages,
->  		    struct vmem_altmap *altmap)
->  {
-> +	const unsigned long end_pfn = pfn + nr_pages;
-> +	unsigned long cur_nr_pages;
->  	unsigned long map_offset = 0;
-> -	unsigned long nr, start_sec, end_sec;
->  
->  	map_offset = vmem_altmap_offset(altmap);
->  
->  	if (check_pfn_span(pfn, nr_pages, "remove"))
->  		return;
->  
-> -	start_sec = pfn_to_section_nr(pfn);
-> -	end_sec = pfn_to_section_nr(pfn + nr_pages - 1);
-> -	for (nr = start_sec; nr <= end_sec; nr++) {
-> -		unsigned long pfns;
-> -
-> +	for (; pfn < end_pfn; pfn += cur_nr_pages) {
->  		cond_resched();
-> -		pfns = min(nr_pages, PAGES_PER_SECTION
-> -				- (pfn & ~PAGE_SECTION_MASK));
-> -		__remove_section(pfn, pfns, map_offset, altmap);
-> -		pfn += pfns;
-> -		nr_pages -= pfns;
-> +		/* Select all remaining pages up to the next section boundary */
-> +		cur_nr_pages = min(end_pfn - pfn, -(pfn | PAGE_SECTION_MASK));
-> +		__remove_section(pfn, cur_nr_pages, map_offset, altmap);
->  		map_offset = 0;
->  	}
->  }
-> -- 
-> 2.21.0
-> 
-> 
+> And would use DT.  Hence the issue is not applicable to j-core.
 
--- 
-Oscar Salvador
-SUSE L3
+Indeed.
+
+The last classic sh4 board I used did not have DMA hooked up in Linux, and
+trying to make current kernels work hit the fact that the device tree people
+kept breaking various pre-device tree APIs, and my patches to fix them were met
+with "you should convert everything to device tree rather than fix this obvious
+regression we caused" and thus never went upstream. (Johnson Controls shipped
+them locally and I handed the patches over to the lawyers to do the license
+compliance tarball before I left. And of course I posted the fixes to this list...)
+
+It's nice that at least this time somebody is _asking_ before breaking
+non-device-tree support for stuff that used to work...
+
+>> The turtle boards need it USB, ethernet, and sdcard, but Rich Felker hasn't
+>> finished the j32 port yet (we just got him the updated docs last month) and the
+>> existing implementation is nommu so the things that are using it are reaching
+>> around behind the OS's back...
+> 
+> Is j32 the (rebranded) j4?
+
+Yes.
+
+Rob
