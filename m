@@ -2,55 +2,140 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 301A8151C14
-	for <lists+linux-sh@lfdr.de>; Tue,  4 Feb 2020 15:24:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 18B56151C25
+	for <lists+linux-sh@lfdr.de>; Tue,  4 Feb 2020 15:25:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727230AbgBDOYL (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 4 Feb 2020 09:24:11 -0500
-Received: from 216-12-86-13.cv.mvl.ntelos.net ([216.12.86.13]:50274 "EHLO
-        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727235AbgBDOYL (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 4 Feb 2020 09:24:11 -0500
-Received: from dalias by brightrain.aerifal.cx with local (Exim 3.15 #2)
-        id 1iyz7O-00052u-00; Tue, 04 Feb 2020 14:23:58 +0000
-Date:   Tue, 4 Feb 2020 09:23:58 -0500
-From:   Rich Felker <dalias@libc.org>
-To:     Marcin Juszkiewicz <marcin@juszkiewicz.com.pl>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        linux-sh@vger.kernel.org
-Subject: Re: No newer system calls for SuperH64?
-Message-ID: <20200204142358.GT1663@brightrain.aerifal.cx>
-References: <939c9260-213f-cfd7-f81a-e9b635a6aa10@juszkiewicz.com.pl>
+        id S1727319AbgBDOZb (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 4 Feb 2020 09:25:31 -0500
+Received: from us-smtp-1.mimecast.com ([205.139.110.61]:21070 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727316AbgBDOZa (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 4 Feb 2020 09:25:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1580826329;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=ut05QA9J5WKSRE8iQ2AH3oPYzXnHzXfW9BoUs/aT13g=;
+        b=Gi6TRcavw2Fg1v0Dl9ywaBbmd6j0lZ/sEAG+gdvUEfxI8ic60fV6znpt6pPAnSkQBuheB+
+        z0fCyUpEFrRlvPM75XUlCPpZLvLXzSxidhqIzHsGCB0c9uE34p6ZpA0jcNh5TTdwKFq8f0
+        47GlQzt5xLn4UnZ29f7pR/P6lwX6/ZM=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-172-0pa_ZXTfPAGteHs5vWnWkg-1; Tue, 04 Feb 2020 09:25:25 -0500
+X-MC-Unique: 0pa_ZXTfPAGteHs5vWnWkg-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id F08C18010E6;
+        Tue,  4 Feb 2020 14:25:22 +0000 (UTC)
+Received: from localhost (ovpn-13-129.pek2.redhat.com [10.72.13.129])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 0DC6085785;
+        Tue,  4 Feb 2020 14:25:19 +0000 (UTC)
+Date:   Tue, 4 Feb 2020 22:25:16 +0800
+From:   Baoquan He <bhe@redhat.com>
+To:     David Hildenbrand <david@redhat.com>
+Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, x86@kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Oscar Salvador <osalvador@suse.de>,
+        Michal Hocko <mhocko@suse.com>,
+        Pavel Tatashin <pasha.tatashin@soleen.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Wei Yang <richardw.yang@linux.intel.com>
+Subject: Re: [PATCH v6 08/10] mm/memory_hotplug: Don't check for "all holes"
+ in shrink_zone_span()
+Message-ID: <20200204142516.GD26758@MiWiFi-R3L-srv>
+References: <20191006085646.5768-1-david@redhat.com>
+ <20191006085646.5768-9-david@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <939c9260-213f-cfd7-f81a-e9b635a6aa10@juszkiewicz.com.pl>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+In-Reply-To: <20191006085646.5768-9-david@redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Tue, Feb 04, 2020 at 03:13:23PM +0100, Marcin Juszkiewicz wrote:
-> I am maintaining system calls table [1] which shows which system call
-> has which number on all architectures supported by Linux kernel
-> (including those removed in last years).
+On 10/06/19 at 10:56am, David Hildenbrand wrote:
+> If we have holes, the holes will automatically get detected and removed
+> once we remove the next bigger/smaller section. The extra checks can
+> go.
 > 
-> 1. https://fedora.juszkiewicz.com.pl/syscalls.html
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: Wei Yang <richardw.yang@linux.intel.com>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>  mm/memory_hotplug.c | 34 +++++++---------------------------
+>  1 file changed, 7 insertions(+), 27 deletions(-)
 > 
-> Today I have noticed that SH64 supports system calls up to 393 which is
-> pwritev2() one. None of later calls is supported in mainline 5.6-rc tree.
-> 
-> Is it an error in kernel headers or it is true? Or maybe it is an error
-> in my script but it works fine for other architectures.
-> 
-> Note: I do not own nor plan to own SuperH64 hardware. I do not even
-> remember where it was used. Just noticed weird state of it.
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index f294918f7211..8dafa1ba8d9f 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -393,6 +393,9 @@ static void shrink_zone_span(struct zone *zone, unsigned long start_pfn,
+>  		if (pfn) {
+>  			zone->zone_start_pfn = pfn;
+>  			zone->spanned_pages = zone_end_pfn - pfn;
+> +		} else {
+> +			zone->zone_start_pfn = 0;
+> +			zone->spanned_pages = 0;
+>  		}
+>  	} else if (zone_end_pfn == end_pfn) {
+>  		/*
+> @@ -405,34 +408,11 @@ static void shrink_zone_span(struct zone *zone, unsigned long start_pfn,
+>  					       start_pfn);
+>  		if (pfn)
+>  			zone->spanned_pages = pfn - zone_start_pfn + 1;
+> +		else {
+> +			zone->zone_start_pfn = 0;
+> +			zone->spanned_pages = 0;
 
-One reason you don't own it is that it essentially doesn't exist. :-)
-GCC dropped SH64 support a few years ago because the arch essentially
-never materialized and keeping it around was a lot of cruft. It should
-be removed from the kernel too; I just haven't gotten around to
-figuring out how to do that.
+Thinking in which case (zone_start_pfn != start_pfn) and it comes here.
 
-Rich
+> +		}
+>  	}
+> -
+> -	/*
+> -	 * The section is not biggest or smallest mem_section in the zone, it
+> -	 * only creates a hole in the zone. So in this case, we need not
+> -	 * change the zone. But perhaps, the zone has only hole data. Thus
+> -	 * it check the zone has only hole or not.
+> -	 */
+> -	pfn = zone_start_pfn;
+> -	for (; pfn < zone_end_pfn; pfn += PAGES_PER_SUBSECTION) {
+> -		if (unlikely(!pfn_to_online_page(pfn)))
+> -			continue;
+> -
+> -		if (page_zone(pfn_to_page(pfn)) != zone)
+> -			continue;
+> -
+> -		/* Skip range to be removed */
+> -		if (pfn >= start_pfn && pfn < end_pfn)
+> -			continue;
+> -
+> -		/* If we find valid section, we have nothing to do */
+> -		zone_span_writeunlock(zone);
+> -		return;
+> -	}
+> -
+> -	/* The zone has no valid section */
+> -	zone->zone_start_pfn = 0;
+> -	zone->spanned_pages = 0;
+>  	zone_span_writeunlock(zone);
+>  }
+>  
+> -- 
+> 2.21.0
+> 
+> 
+
