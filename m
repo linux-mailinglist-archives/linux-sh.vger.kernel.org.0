@@ -2,129 +2,131 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CB82151786
-	for <lists+linux-sh@lfdr.de>; Tue,  4 Feb 2020 10:13:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD7C7151778
+	for <lists+linux-sh@lfdr.de>; Tue,  4 Feb 2020 10:12:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726371AbgBDJNS (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 4 Feb 2020 04:13:18 -0500
-Received: from mx2.suse.de ([195.135.220.15]:47520 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726151AbgBDJNS (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Tue, 4 Feb 2020 04:13:18 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id A8FB2B020;
-        Tue,  4 Feb 2020 09:13:15 +0000 (UTC)
-Date:   Tue, 4 Feb 2020 10:13:12 +0100
-From:   Oscar Salvador <osalvador@suse.de>
-To:     David Hildenbrand <david@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, x86@kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Michal Hocko <mhocko@suse.com>,
-        Pavel Tatashin <pasha.tatashin@soleen.com>,
+        id S1726908AbgBDJMX (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 4 Feb 2020 04:12:23 -0500
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:46956 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726362AbgBDJMW (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 4 Feb 2020 04:12:22 -0500
+Received: by mail-pf1-f194.google.com with SMTP id k29so9106591pfp.13
+        for <linux-sh@vger.kernel.org>; Tue, 04 Feb 2020 01:12:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=landley-net.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=OEno8L+dLk53KEqvLYXsrFVru+rwMQDT1MCsCBWWmic=;
+        b=PGeL2yv80M/Xyz3TqQfy30bcMf6fkJSWDpFtX5zg7SPUH32tZaavlnLQLUeJvm61jL
+         7jc1TvZBXJLdQqek38XGa/IQ7IISMsQ6Z+WP22qtzWArm4IfXAQjwdE2Ga+ecWTR7ANa
+         YERU2WTGz9nVMujVG57yYbPj32BYQtRfE68nkB3pq2NXz1q3L+5qIKStEyr+Dhc9FAaX
+         xi6xSd1RLMPZ0pXPtcy8nYd5D924/AO2HMEt0/LdLK7SnHAYIkl+EEjc7yT/DPAWgn6p
+         gkp4llgs/xk3IzTuqHUQ5FfkQ923tWRHTjwVPNc0B2adGWZK2sgorrP3b4qNJ5nL8m+0
+         MJrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=OEno8L+dLk53KEqvLYXsrFVru+rwMQDT1MCsCBWWmic=;
+        b=SdygueoiP/fpRSM0B8tZpwgSsOwXQCCj0HMYPpN0thWLfMKUjy8DA698K/4ASOi9QY
+         +/lUDIpy74oL5XeoVPlFEbPx7nzmEFpbiLb1lCJNc83O7v1iYWcP4LiStuLKbhITu26X
+         gxDN6wanAgro6sv58/rYgllNGdVDp/q1M8Qg52mFTUixwCGO1JwJ1FaY0TLR77Yf4y+9
+         VZKP6MN5+6lH49mR45GPCNiqV9buQu2KfK6o0ozyWh/h9BGr8hNoKlg0PwRN+ncfAp3+
+         9g5XIO+DXbowkFX8N7vyyfEDAU/rquIxXIFr5dLl+22WR3krvDbNf1d8/anM3Vkw0Xnl
+         QbyQ==
+X-Gm-Message-State: APjAAAUuWwp7nu/C6LSQvHANf8KJplcoWoQyvtl9h8446U7MgoOosZmQ
+        OCnFynhlZeIvWpQdAmKJ4yi535lecu0=
+X-Google-Smtp-Source: APXvYqxShwB5mksr4VLPF6EQdoB3Thrj1dJI1OjTYyqPg21c1H8oXz+rhju/pYJoSihlvb9nLNYwrA==
+X-Received: by 2002:a62:e414:: with SMTP id r20mr29513047pfh.154.1580807542320;
+        Tue, 04 Feb 2020 01:12:22 -0800 (PST)
+Received: from [192.168.11.4] (softbank126112255110.biz.bbtec.net. [126.112.255.110])
+        by smtp.googlemail.com with ESMTPSA id b130sm23059315pga.4.2020.02.04.01.12.18
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 04 Feb 2020 01:12:21 -0800 (PST)
+Subject: Re: [PATCH 0/3] dmaengine: Stear users towards
+ dma_request_slave_chan()
+To:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>
+Cc:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        dmaengine <dmaengine@vger.kernel.org>,
         Dan Williams <dan.j.williams@intel.com>,
-        Wei Yang <richardw.yang@linux.intel.com>
-Subject: Re: [PATCH v6 08/10] mm/memory_hotplug: Don't check for "all holes"
- in shrink_zone_span()
-Message-ID: <20200204091312.GC6494@linux>
-References: <20191006085646.5768-1-david@redhat.com>
- <20191006085646.5768-9-david@redhat.com>
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
+References: <20200203101806.2441-1-peter.ujfalusi@ti.com>
+ <CAHp75Vf__isc59YBS9=O+9ApSV62XuZ2nBAWKKD_K7i72P-yFg@mail.gmail.com>
+ <e47927aa-8d40-aa71-aef4-5f9c4cbbc03a@ti.com>
+ <CAHp75Vd1A+8N_RPq3oeoXS19XeFtv7YK69H5XfzLMxWyCHbzBQ@mail.gmail.com>
+ <701ab186-c240-3c37-2c0b-8ac195f8073f@ti.com>
+ <CAMuHMdUYRvjR5qe5RVzggN+BaHw8ObEtnm8Kdn25XUiv2sJpPg@mail.gmail.com>
+ <38f686ae-66fa-0e3a-ec2e-a09fc4054ac4@physik.fu-berlin.de>
+ <CAMuHMdXahPt4q7Dd-mQ9RNr7JiCt8PhXeT5U2D+n-ngJmEQMgw@mail.gmail.com>
+ <b09ad222-f5b8-af5a-6c2b-2dd6b30f1c73@ti.com>
+ <CAMuHMdUYcSPoK8NOSdMzU_Jtg84aPMNKeGnacnF7=aidV4eqvw@mail.gmail.com>
+From:   Rob Landley <rob@landley.net>
+Message-ID: <64cffbfe-a639-c09d-8aa2-fdda8fad2cf7@landley.net>
+Date:   Tue, 4 Feb 2020 03:16:58 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191006085646.5768-9-david@redhat.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <CAMuHMdUYcSPoK8NOSdMzU_Jtg84aPMNKeGnacnF7=aidV4eqvw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Sun, Oct 06, 2019 at 10:56:44AM +0200, David Hildenbrand wrote:
-> If we have holes, the holes will automatically get detected and removed
-> once we remove the next bigger/smaller section. The extra checks can
-> go.
+On 2/4/20 2:01 AM, Geert Uytterhoeven wrote:
+> Hi Peter,
 > 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Oscar Salvador <osalvador@suse.de>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Cc: Wei Yang <richardw.yang@linux.intel.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+> On Tue, Feb 4, 2020 at 7:52 AM Peter Ujfalusi <peter.ujfalusi@ti.com> wrote:
+>> On 03/02/2020 22.34, Geert Uytterhoeven wrote:
+>>> On Mon, Feb 3, 2020 at 9:21 PM John Paul Adrian Glaubitz
+>>> <glaubitz@physik.fu-berlin.de> wrote:
+>>>> On 2/3/20 2:32 PM, Geert Uytterhoeven wrote:
+>>>>> Both rspi and sh-msiof have users on legacy SH (i.e. without DT):
+>>>>
+>>>> FWIW, there is a patch set by Yoshinori Sato to add device tree support
+>>>> for classical SuperH hardware. It was never merged, unfortunately :(.
+>>>
+>>> True.
+>>>
+>>>>> Anyone who cares for DMA on SuperH?
+>>>>
+>>>> What is DMA used for on SuperH? Wouldn't dropping it cut support for
+>>>> essential hardware features?
+>>>
+>>> It may make a few things slower.
 
-Heh, I have been here before.
-I have to confess that when I wrote my version of this I was not really 100%
-about removing it, because hotplug was a sort of a "catchall" for all sort of weird
-and corner-cases configurations, but thinking more about it, I cannot think of
-any situation that would make this blow up.
+The j-core stuff has DMA but we haven't hooked it up to dmaengine yet. (It's on
+the todo list but pretty far down.)
 
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
+I fought with dmaengine in a 7760 board in 2018, and got it to run its tests but
+the ship deadline arrived before I got the ethernet working with it.
 
-> ---
->  mm/memory_hotplug.c | 34 +++++++---------------------------
->  1 file changed, 7 insertions(+), 27 deletions(-)
+I found the documentation fairly impenetrable, is there a good primer on what's
+_current_ for new implementations? (I had similar questions for gpio. It's easy
+to google for "here's how you did it in 2010"...)
+
+>> I would not drop DMA support but I would suggest to add dma_slave_map
+>> for non DT boot so the _compat() can be dropped.
 > 
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index f294918f7211..8dafa1ba8d9f 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -393,6 +393,9 @@ static void shrink_zone_span(struct zone *zone, unsigned long start_pfn,
->  		if (pfn) {
->  			zone->zone_start_pfn = pfn;
->  			zone->spanned_pages = zone_end_pfn - pfn;
-> +		} else {
-> +			zone->zone_start_pfn = 0;
-> +			zone->spanned_pages = 0;
->  		}
->  	} else if (zone_end_pfn == end_pfn) {
->  		/*
-> @@ -405,34 +408,11 @@ static void shrink_zone_span(struct zone *zone, unsigned long start_pfn,
->  					       start_pfn);
->  		if (pfn)
->  			zone->spanned_pages = pfn - zone_start_pfn + 1;
-> +		else {
-> +			zone->zone_start_pfn = 0;
-> +			zone->spanned_pages = 0;
-> +		}
->  	}
-> -
-> -	/*
-> -	 * The section is not biggest or smallest mem_section in the zone, it
-> -	 * only creates a hole in the zone. So in this case, we need not
-> -	 * change the zone. But perhaps, the zone has only hole data. Thus
-> -	 * it check the zone has only hole or not.
-> -	 */
-> -	pfn = zone_start_pfn;
-> -	for (; pfn < zone_end_pfn; pfn += PAGES_PER_SUBSECTION) {
-> -		if (unlikely(!pfn_to_online_page(pfn)))
-> -			continue;
-> -
-> -		if (page_zone(pfn_to_page(pfn)) != zone)
-> -			continue;
-> -
-> -		/* Skip range to be removed */
-> -		if (pfn >= start_pfn && pfn < end_pfn)
-> -			continue;
-> -
-> -		/* If we find valid section, we have nothing to do */
-> -		zone_span_writeunlock(zone);
-> -		return;
-> -	}
-> -
-> -	/* The zone has no valid section */
-> -	zone->zone_start_pfn = 0;
-> -	zone->spanned_pages = 0;
->  	zone_span_writeunlock(zone);
->  }
->  
-> -- 
-> 2.21.0
+> Which is similar in spirit to gpiod_lookup and clk_register_clkdev(),
+> right?
 > 
+>> Imho on lower spec SoC (and I believe SuperH is) the DMA makes big
+>> difference offloading data movement from the CPU.
+> 
+> Assumed it is actually used...
 
--- 
-Oscar Salvador
-SUSE L3
+The turtle boards need it USB, ethernet, and sdcard, but Rich Felker hasn't
+finished the j32 port yet (we just got him the updated docs last month) and the
+existing implementation is nommu so the things that are using it are reaching
+around behind the OS's back...
+
+Rob
