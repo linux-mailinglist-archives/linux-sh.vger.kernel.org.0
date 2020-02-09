@@ -2,71 +2,81 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DA24156007
-	for <lists+linux-sh@lfdr.de>; Fri,  7 Feb 2020 21:44:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CAEE156875
+	for <lists+linux-sh@lfdr.de>; Sun,  9 Feb 2020 04:05:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727162AbgBGUoN (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 7 Feb 2020 15:44:13 -0500
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:47019 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727031AbgBGUoJ (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 7 Feb 2020 15:44:09 -0500
-Received: by mail-ot1-f65.google.com with SMTP id g64so553642otb.13
-        for <linux-sh@vger.kernel.org>; Fri, 07 Feb 2020 12:44:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=8cDRXBFOpE9J1p6S5H+HXSQg9q3m7pUJ3iUuQ5MPcDc=;
-        b=WJgFJ9PR0yBQ+ciD08Pby60OVZzn3dTgtieZ17slfRQssKmPnwQmAwZPgDIpR6heck
-         dDY9m0nAiR73dL1CtCDLlqWI9lV6barO9i6phYUUcmMyI9lhyUunotwwGjtLNjZZXHps
-         B+ZJy7kS8IDHqb+LatDXLkBcGkPTiMku+kX9Fb92ZmFsnK1n3liOHkc4TmrSz2VBzqpm
-         gOXxQUuwBna/l8aq9nu864h1RGE/T5vMQdJwoV4IagKfmqrsTX7n4WpDLnLJobosvK0X
-         9Z7fBUirFx02ZREq+PBFhuGxFcksAi/eOnsjoHpvtfcuXe3k+tw0qtyYWnKvHtkX+Drl
-         CMWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=8cDRXBFOpE9J1p6S5H+HXSQg9q3m7pUJ3iUuQ5MPcDc=;
-        b=jl1P9IZVuHaTMiQKEuaqu7mTTJi5PAVBoj44TZ1qJbXWnqbNFiaYSvA6Ef2quBKR14
-         sfGuJMKz6J7sy746YkP5Y1bDYRY/wJg/LD2kOGsxOZVb5PGuiZbmnnRb4xJ3o/8DMi2s
-         J8Q272K7kxI9nVBjQ7NxbZZOMJ3qDkegOsN048/rh5+kK1YybjNF2WMQrrvT5oc4dfeS
-         Kg2qOA9EPZd8eH8TUSWbuGAuTVa3xUry8MXSYP0lA6RXQkxSsgZteYbWfBYI1tlSAE6+
-         wfNImozcR86kV2TFrk1Zvk9Rv0Squ4GXcZYLkmlw7otTTuaNXzxOZLkQwa39qQE25soX
-         /RqA==
-X-Gm-Message-State: APjAAAUysSzq2E+su/DxND7PHlzAWTkSvVy1V79mfPdPaq4L3/q9L8yY
-        lj1LK0lgsZuUjoggCt7IlbrQjFwDBkPZEq7Ck04=
-X-Google-Smtp-Source: APXvYqxZ0BHxezvYatUCwR5ujJY2IO6fZCUlpHww8WEnDHAAAY+0VvtiMdEe6JnWZWwDRH8AP8uVvx3q0Y+IviYPdhQ=
-X-Received: by 2002:a9d:7305:: with SMTP id e5mr948882otk.64.1581108248790;
- Fri, 07 Feb 2020 12:44:08 -0800 (PST)
+        id S1727560AbgBIDFD (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sat, 8 Feb 2020 22:05:03 -0500
+Received: from mail01.vodafone.es ([217.130.24.71]:51088 "EHLO
+        mail01.vodafone.es" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727532AbgBIDFD (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sat, 8 Feb 2020 22:05:03 -0500
+IronPort-SDR: pInukXd3zgim/vH0QWX94QqBCRWqZzVOW0XYhXQSeBJms8yQXJ9kTR4rdE0TGr9CjVCkwE6X2a
+ fP/TiaB6ZgJw==
+IronPort-PHdr: =?us-ascii?q?9a23=3Ag1e6NxyffxYfICjXCy+O+j09IxM/srCxBDY+r6?=
+ =?us-ascii?q?Qd2+gWIJqq85mqBkHD//Il1AaPAdyHra8UwLaH++C4ACpcuM3H6ChDOLV3FD?=
+ =?us-ascii?q?Y9wf0MmAIhBMPXQWbaF9XNKxIAIcJZSVV+9Gu6O0UGUOz3ZlnVv2HgpWVKQk?=
+ =?us-ascii?q?a3OgV6PPn6FZDPhMqrye+y54fTYwJVjzahfL9+Nhq7oRjeu8UMgYZvKak9xx?=
+ =?us-ascii?q?TNr3BVf+ha2X5kKUickhrh6Mq85oJv/zhVt/k868NOTKL2crgiQ7dFFjomKW?=
+ =?us-ascii?q?c15MPqtRnHUwSC42YXX3sVnBRVHQXL9Qn2UZjtvCT0sOp9wzSaMtbtTb8oQz?=
+ =?us-ascii?q?Si7rxkRwHuhSwaKjM26mDXish3jKJGvBKsogF0zoDIbI2JMvd1Y6XQds4YS2?=
+ =?us-ascii?q?VcRMZcTyJPDIOmb4URDOQPIOlXoJXyqVYVsRuzBxWjCP/zxjNUmHP727Ax3e?=
+ =?us-ascii?q?Q7EQHB2QwtB8gAv2rIrNrrLqcZTOC6zK7OzTXMcvhb3i/955bUch8/u/GNU7?=
+ =?us-ascii?q?VwcczeyUQ0DAzFiUifppbkPjOS0OQCrXKX4PZnVeKqkmMqrRx6rDu3xso0lI?=
+ =?us-ascii?q?XFm4AYxkrZ+Sh33Io5P8O0RUFhbdOqEJZdsTyROZFsTcM4WW5ovT43yrgBuZ?=
+ =?us-ascii?q?GmYicH0I8nxxvDa/yfdIiI/w7jWP6RIThmgHJlf6qyhxOo/kihzu38TNe70F?=
+ =?us-ascii?q?JWoidKiNXMqHcN2AHJ5ciJTft9+Fmu1SyR2ADI8u1EIEY0mrTHK5M53LI8i5?=
+ =?us-ascii?q?gevV7eEiL4hEn6lrGae0o+9uWm6+nrerDmqYWdN49whAH+KKMumsmnDOQgLA?=
+ =?us-ascii?q?cOQ3aU+f6y1b3k+035T65HgeYxkqbEqp/bJMMbpqinDANPzokj7BO/Ay+80N?=
+ =?us-ascii?q?sEhXkHME5FeBWfgojtOlHOJu34DPimj1S3kDdm3O7GPrL/DZXXNHTDk6nufa?=
+ =?us-ascii?q?x760FCzAo/19df54hbCuJJHPWmXk73qcydFR8RLQO52aDkBc9724dYXniAUZ?=
+ =?us-ascii?q?WUKKfDjVjd3u8zLvPEW4gTt36pM/U56uTxink2mUQXdqmq9ZQSYXG8WP9hJh?=
+ =?us-ascii?q?PKT2Drh4I5HHsHpEIBS+rlwAmaXCJefWm1Wa0U7DY3AZChC4qFTYeo1u/SlB?=
+ =?us-ascii?q?ynF4FbMzgVQmuHFm3lIt2J?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A2FJbQBVdj9eeiMYgtlmHQEBAQkBEQU?=
+ =?us-ascii?q?FAYF7AgGBPQKBVlINExKMZIZwgU0fg0OLaIEAgzOGCBOBZw0BAQEBARsaAgE?=
+ =?us-ascii?q?BhECCRiQ8Ag0CAw0BAQUBAQEBAQUEAQECEAEBCwsLBCuFSkIBDAGBayKDcCA?=
+ =?us-ascii?q?POUpMAQ4BhiIBATOlU4kBDQ0ChR6CWAQKgQiBGyOBNgIBAYwhGoFBP4EjIYI?=
+ =?us-ascii?q?rCAGCAYJ/ARIBboJIglkEjVASIYk/mDCCRAR4lWuCOAEPiBGENQOCWA+BC4M?=
+ =?us-ascii?q?dgwiBZ4RSgX6fWIQSV4Egc3EzGiOCHYEgTxgNnGICQIEXEAJPhDuGNoIyAQE?=
+X-IPAS-Result: =?us-ascii?q?A2FJbQBVdj9eeiMYgtlmHQEBAQkBEQUFAYF7AgGBPQKBV?=
+ =?us-ascii?q?lINExKMZIZwgU0fg0OLaIEAgzOGCBOBZw0BAQEBARsaAgEBhECCRiQ8Ag0CA?=
+ =?us-ascii?q?w0BAQUBAQEBAQUEAQECEAEBCwsLBCuFSkIBDAGBayKDcCAPOUpMAQ4BhiIBA?=
+ =?us-ascii?q?TOlU4kBDQ0ChR6CWAQKgQiBGyOBNgIBAYwhGoFBP4EjIYIrCAGCAYJ/ARIBb?=
+ =?us-ascii?q?oJIglkEjVASIYk/mDCCRAR4lWuCOAEPiBGENQOCWA+BC4MdgwiBZ4RSgX6fW?=
+ =?us-ascii?q?IQSV4Egc3EzGiOCHYEgTxgNnGICQIEXEAJPhDuGNoIyAQE?=
+X-IronPort-AV: E=Sophos;i="5.70,419,1574118000"; 
+   d="scan'208";a="315685828"
+Received: from mailrel04.vodafone.es ([217.130.24.35])
+  by mail01.vodafone.es with ESMTP; 09 Feb 2020 04:05:00 +0100
+Received: (qmail 9295 invoked from network); 9 Feb 2020 00:49:17 -0000
+Received: from unknown (HELO 192.168.1.163) (apamar@[217.217.179.17])
+          (envelope-sender <peterwong@bodazone.com>)
+          by mailrel04.vodafone.es (qmail-ldap-1.03) with SMTP
+          for <linux-sh@vger.kernel.org>; 9 Feb 2020 00:49:17 -0000
+Date:   Sun, 9 Feb 2020 01:49:07 +0100 (CET)
+From:   Peter Wong <peterwong@bodazone.com>
+Reply-To: Peter Wong <peterwonghsbchk@gmail.com>
+To:     linux-sh@vger.kernel.org
+Message-ID: <16312820.233973.1581209357396.JavaMail.cash@217.130.24.55>
+Subject: Investment opportunity
 MIME-Version: 1.0
-Received: by 2002:a4a:d508:0:0:0:0:0 with HTTP; Fri, 7 Feb 2020 12:44:08 -0800 (PST)
-Reply-To: auch197722@gmail.com
-From:   "Mr. Theophilus Odadudu" <cristinamedina0010@gmail.com>
-Date:   Fri, 7 Feb 2020 15:44:08 -0500
-Message-ID: <CAPNvSTj-8q7w5QPmnH26+_3xCKjEWyE+9xcb8QyQs9Xie+iYgg@mail.gmail.com>
-Subject: LETTER OF INQUIRY
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Good Day,
+Greetings,
+Please check the attached email for a buisness proposal to explore.
+Looking forward to hearing from you for more details.
+Sincerely: Peter Wong
 
-I work as a clerk in a Bank here in Nigeria, I have a very
-confidential Business Proposition for you. There is a said amount of
-money floating in the bank unclaimed, belonging to the bank Foreign
-customer who die with his family in the Ethiopian Airline crash of
-March 11, 2019.
 
-I seek your good collaboration to move the fund for our benefit. we
-have agreed that 40% be yours once you help claim.
 
-Do get back to with 1) Your Full Name: (2) Residential Address: (3)
-Phone, Mobile  (4) Scan Copy of Your ID. to apply for claims of the
-funds.
 
-Regards
-Theophilus Odadudu
+----------------------------------------------------
+This email was sent by the shareware version of Postman Professional.
+
