@@ -2,325 +2,437 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 54FEC157EF1
-	for <lists+linux-sh@lfdr.de>; Mon, 10 Feb 2020 16:37:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BAC4B15A29B
+	for <lists+linux-sh@lfdr.de>; Wed, 12 Feb 2020 09:01:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727600AbgBJPha (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 10 Feb 2020 10:37:30 -0500
-Received: from foss.arm.com ([217.140.110.172]:35344 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726816AbgBJPha (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Mon, 10 Feb 2020 10:37:30 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7F75B1FB;
-        Mon, 10 Feb 2020 07:37:28 -0800 (PST)
-Received: from E121110.arm.com (C02TF0J2HF1T.cambridge.arm.com [10.1.26.172])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1A4B13F68E;
-        Mon, 10 Feb 2020 07:37:18 -0800 (PST)
-Date:   Mon, 10 Feb 2020 15:37:16 +0000
-From:   Catalin Marinas <catalin.marinas@arm.com>
-To:     Anshuman Khandual <anshuman.khandual@arm.com>
-Cc:     linux-mm@kvack.org, Mark Rutland <mark.rutland@arm.com>,
-        linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
-        Peter Zijlstra <peterz@infradead.org>,
-        James Hogan <jhogan@kernel.org>,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Michal Hocko <mhocko@kernel.org>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-s390@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
-        x86@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Matthew Wilcox <willy@infradead.org>,
-        Steven Price <Steven.Price@arm.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
-        linux-snps-arc@lists.infradead.org,
+        id S1728453AbgBLIBk (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 12 Feb 2020 03:01:40 -0500
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:42554 "EHLO
+        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728192AbgBLIBj (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 12 Feb 2020 03:01:39 -0500
+Received: by mail-pg1-f196.google.com with SMTP id w21so775333pgl.9;
+        Wed, 12 Feb 2020 00:01:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=bp8GhH+lTv01Fj7emi77JJtm4UgQcmSv8y6hx+7VcaM=;
+        b=V6idpjeWbkdm3Yg9WsocEttNBMzG2tMCV7v/Jnkbmv4/1mib46u42IMshvuecDSvSf
+         2yOmAMxdZpFwtzksCp1LV9a3YGgQlOoUP4SbVF+wPlttoXbtqwM0I49vJS6ae4t0YZF1
+         Z1uqi8KJ6Zau4OUy3+MsydCGC1VDnR6pplZNzS6f5PRm/C7QdWLR2luKNrgUgfxoDk00
+         Mnu2M8v5Q4cbGSnXBDWZkPnqq5qDT+Uq/KETlGpkpqsS+EHPorvjMlK0D/WxcBdtvtHj
+         +3x7nastEvjNOZhinDexpYlJjaguSs0t0W2LcIkvRDpoWHUMgRtitGbR6FzUIg40eRn+
+         GkmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=bp8GhH+lTv01Fj7emi77JJtm4UgQcmSv8y6hx+7VcaM=;
+        b=RCEvu7U76hZJV/D/9vjpEivy1lmS2sfrFFs0amsbU/62wgHGhkhLalNo8jgBIADBtG
+         ZghR4ut9oFVXtjivYiLlje45KRt8UrEnPvTZjRth9gamxuXCFpAZ+lGwdLundn1SIwEn
+         90Q5oUhYCqk0UzUScYJY0cOyrPZs0XNZxBG3wdcZZ0xWSr741YUpzmh9GwDD9N3/HWeW
+         H/QaASLIJgX4Gi3GbZww2xbK7jSDZrNXOXyMymbVhnf1YciMGeOkFb83Ta5OiMv7uG/k
+         JYJVEM2mKwPmN8SMmK8PLn/tmsPVMsDxm88yNYCAbBrBgAow1fV0wJqDAWUorb8aC/x0
+         CMXA==
+X-Gm-Message-State: APjAAAWeprDwh2oFIfchdwIeAi9PlD8yX7dS6vnqX8NxjmGBcyoW+Gti
+        7qV1g+1wwvubQER3Nwyb788utl1I
+X-Google-Smtp-Source: APXvYqxnV3nb/q4uy+L2rUWwz9UZlvNCyFsUzxgcQG4BajmKp/4rH+WqeHW/QL79FLpx5lTeAmqV6A==
+X-Received: by 2002:a63:8f5c:: with SMTP id r28mr7323021pgn.351.1581494497731;
+        Wed, 12 Feb 2020 00:01:37 -0800 (PST)
+Received: from localhost ([106.51.21.91])
+        by smtp.gmail.com with ESMTPSA id t63sm7164236pfb.70.2020.02.12.00.01.36
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 12 Feb 2020 00:01:37 -0800 (PST)
+Date:   Wed, 12 Feb 2020 13:31:35 +0530
+From:   afzal mohammed <afzal.mohd.ma@gmail.com>
+To:     linux-kernel@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
         linux-arm-kernel@lists.infradead.org,
-        Ingo Molnar <mingo@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Mark Brown <broonie@kernel.org>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Sri Krishna chowdary <schowdary@nvidia.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-mips@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        linux-kernel@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
-        Mike Rapoport <rppt@linux.vnet.ibm.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH V12] mm/debug: Add tests validating architecture page
- table helpers
-Message-ID: <20200210153716.GB9283@E121110.arm.com>
-References: <1580174873-18117-1-git-send-email-anshuman.khandual@arm.com>
+        linux-samsung-soc@vger.kernel.org, x86@kernel.org,
+        linux-sh@vger.kernel.org, linux-s390@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-parisc@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-ia64@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-c6x-dev@linux-c6x.org, linux-omap@vger.kernel.org,
+        linux-alpha@vger.kernel.org
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Julia Lawall <Julia.Lawall@lip6.fr>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        Michal Marek <michal.lkml@markovi.net>
+Subject: [PATCH 00/18] genirq: Remove setup_irq()
+Message-ID: <cover.1581478323.git.afzal.mohd.ma@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1580174873-18117-1-git-send-email-anshuman.khandual@arm.com>
+User-Agent: Mutt/1.9.3 (2018-01-21)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Tue, Jan 28, 2020 at 06:57:53AM +0530, Anshuman Khandual wrote:
-> This gets build and run when CONFIG_DEBUG_VM_PGTABLE is selected along with
-> CONFIG_VM_DEBUG. Architectures willing to subscribe this test also need to
-> select CONFIG_ARCH_HAS_DEBUG_VM_PGTABLE which for now is limited to x86 and
-> arm64. Going forward, other architectures too can enable this after fixing
-> build or runtime problems (if any) with their page table helpers.
+While trying to understand internals of irq handling, came across a
+thread [1] in which tglx was referring to avoid usage of setup_irq().
+Existing callers of setup_irq() reached mostly via 'init_IRQ()' &
+'time_init()', while memory allocators are ready by 'mm_init()'.
 
-It may be worth posting the next version to linux-arch to reach out to
-other arch maintainers.
+Hence instances of setup_irq() is replaced by request_irq() &
+setup_irq() (along with remove_irq()) definition deleted in the last
+patch.
 
-Also I've seen that you posted a v13 but it hasn't reached
-linux-arm-kernel (likely held in moderation because of the large amount
-of addresses cc'ed) and I don't normally follow LKML. I'm not cc'ed to
-this patch either (which is fine as long as you post to a list that I
-read).
+Seldom remove_irq() usage has been observed coupled with setup_irq(),
+wherever that has been found, it too has been replaced by free_irq().
 
-Since I started the reply on v12 about a week ago, I'll follow up here.
-When you post a v14, please trim the people on cc only to those strictly
-necessary (e.g. arch maintainers, linux-mm, linux-arch and lkml).
+Build & boot tested on ARM & x86_64 platforms (ensured that on the
+machines used for testing there was an existing setup_irq()
+invocation occuring at runtime)
 
-> diff --git a/Documentation/features/debug/debug-vm-pgtable/arch-support.txt b/Documentation/features/debug/debug-vm-pgtable/arch-support.txt
-> new file mode 100644
-> index 000000000000..f3f8111edbe3
-> --- /dev/null
-> +++ b/Documentation/features/debug/debug-vm-pgtable/arch-support.txt
-> @@ -0,0 +1,35 @@
-> +#
-> +# Feature name:          debug-vm-pgtable
-> +#         Kconfig:       ARCH_HAS_DEBUG_VM_PGTABLE
-> +#         description:   arch supports pgtable tests for semantics compliance
-> +#
-> +    -----------------------
-> +    |         arch |status|
-> +    -----------------------
-> +    |       alpha: | TODO |
-> +    |         arc: |  ok  |
-> +    |         arm: | TODO |
+Much of the changes were created using Coccinelle with an intention
+to learn it. spatch command was directly run w/ semantic patch below.
+But not everything could be automated.
 
-I'm sure you can find some arm32 hardware around (or a VM) to give this
-a try ;).
+Searching with 'git grep -n '\Wsetup_irq('' & avoiding the irrelevant
+ones, 153 invocation's of setup_irq() were found. 112 could be replaced
+w/ cocci, of which in a few files some desired hunks were missing or
+not as expected, these were fixed up manually. Also the remaining 41
+had to be done manually.
 
-> diff --git a/arch/x86/include/asm/pgtable_64.h b/arch/x86/include/asm/pgtable_64.h
-> index 0b6c4042942a..fb0e76d254b3 100644
-> --- a/arch/x86/include/asm/pgtable_64.h
-> +++ b/arch/x86/include/asm/pgtable_64.h
-[...]
-> @@ -1197,6 +1197,7 @@ static noinline void __init kernel_init_freeable(void)
->  	sched_init_smp();
->  
->  	page_alloc_init_late();
-> +	debug_vm_pgtable();
->  	/* Initialize page ext after all struct pages are initialized. */
->  	page_ext_init();
+Although cocci could replace 112, because of line continue not
+happening at paranthesis for request_irq(), around 80 had to be
+manually aligned in the request_irq() statement. Problem was with my
+below cocci snippet,
 
-I guess you could even make debug_vm_pgtable() an early_initcall(). I
-don't have a strong opinion either way.
+- setup_irq(E1,&act);
++ if (request_irq(E1,f_handler,f_flags,f_name,f_dev_id))
++ 	pr_err("request_irq() on %s failed\n", f_name);
 
-> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
-> new file mode 100644
-> index 000000000000..0f37f32d15f1
-> --- /dev/null
-> +++ b/mm/debug_vm_pgtable.c
-> @@ -0,0 +1,388 @@
-[...]
-> +/*
-> + * Basic operations
-> + *
-> + * mkold(entry)			= An old and not a young entry
-> + * mkyoung(entry)		= A young and not an old entry
-> + * mkdirty(entry)		= A dirty and not a clean entry
-> + * mkclean(entry)		= A clean and not a dirty entry
-> + * mkwrite(entry)		= A write and not a write protected entry
-> + * wrprotect(entry)		= A write protected and not a write entry
-> + * pxx_bad(entry)		= A mapped and non-table entry
-> + * pxx_same(entry1, entry2)	= Both entries hold the exact same value
-> + */
-> +#define VMFLAGS	(VM_READ|VM_WRITE|VM_EXEC)
-> +
-> +/*
-> + * On s390 platform, the lower 12 bits are used to identify given page table
-> + * entry type and for other arch specific requirements. But these bits might
-> + * affect the ability to clear entries with pxx_clear(). So while loading up
-> + * the entries skip all lower 12 bits in order to accommodate s390 platform.
-> + * It does not have affect any other platform.
-> + */
-> +#define RANDOM_ORVALUE	(0xfffffffffffff000UL)
+Instead of the above, if below is used, line continue happens exactly
+at paranthesis, but it lacks addition of printing on request_irq()
+failure where existing setup_irq() failure was not doing it.
 
-I'd suggest you generate this mask with something like
-GENMASK(BITS_PER_LONG, PAGE_SHIFT).
+- setup_irq(E1,&act)
++ request_irq(E1,f_handler,f_flags,f_name,f_dev_id)
 
-> +#define RANDOM_NZVALUE	(0xff)
-> +
-> +static void __init pte_basic_tests(unsigned long pfn, pgprot_t prot)
-> +{
-> +	pte_t pte = pfn_pte(pfn, prot);
-> +
-> +	WARN_ON(!pte_same(pte, pte));
-> +	WARN_ON(!pte_young(pte_mkyoung(pte)));
-> +	WARN_ON(!pte_dirty(pte_mkdirty(pte)));
-> +	WARN_ON(!pte_write(pte_mkwrite(pte)));
-> +	WARN_ON(pte_young(pte_mkold(pte)));
-> +	WARN_ON(pte_dirty(pte_mkclean(pte)));
-> +	WARN_ON(pte_write(pte_wrprotect(pte)));
+Above had an additional advantage of replacing instances of
+if (setup_irq()) & BUG(setup_irq()), but luckily those instances were
+very few.
 
-Given that you start with rwx permissions set,
-some of these ops would not have any effect. For example, on arm64 at
-least, mkwrite clears a bit already cleared here. You could try with
-multiple rwx combinations values (e.g. all set and all cleared) or maybe
-something like below:
+So though many changes could be automated, there are a considerable
+amount of manual changes, please review carefully especially mips &
+alpha.
 
-	WARN_ON(!pte_write(pte_mkwrite(pte_wrprotect(pte))));
+Usage of setup_percpu_irq() is untouched w/ this series.
 
-You could also try something like this:
+There are 2 checkpatch warning about usage of BUG() [which was already
+there w/ setup_irq()], they are left as is as it seems appropriate for
+tick timer interrupt.
 
-	WARN_ON(!pte_same(pte_wrprotect(pte), pte_wrprotect(pte_mkwrite(pte))));
+[1] https://lkml.kernel.org/r/alpine.DEB.2.20.1710191609480.1971@nanos
 
-though the above approach may not work for arm64 ptep_set_wrprotect() on
-a dirty pte (if you extend these tests later).
+--->8---
 
-> +}
-> +
-> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> +static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot)
-> +{
-> +	pmd_t pmd = pfn_pmd(pfn, prot);
-> +
-> +	WARN_ON(!pmd_same(pmd, pmd));
-> +	WARN_ON(!pmd_young(pmd_mkyoung(pmd)));
-> +	WARN_ON(!pmd_dirty(pmd_mkdirty(pmd)));
-> +	WARN_ON(!pmd_write(pmd_mkwrite(pmd)));
-> +	WARN_ON(pmd_young(pmd_mkold(pmd)));
-> +	WARN_ON(pmd_dirty(pmd_mkclean(pmd)));
-> +	WARN_ON(pmd_write(pmd_wrprotect(pmd)));
-> +	/*
-> +	 * A huge page does not point to next level page table
-> +	 * entry. Hence this must qualify as pmd_bad().
-> +	 */
-> +	WARN_ON(!pmd_bad(pmd_mkhuge(pmd)));
-> +}
-> +
-> +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
-> +static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot)
-> +{
-> +	pud_t pud = pfn_pud(pfn, prot);
-> +
-> +	WARN_ON(!pud_same(pud, pud));
-> +	WARN_ON(!pud_young(pud_mkyoung(pud)));
-> +	WARN_ON(!pud_write(pud_mkwrite(pud)));
-> +	WARN_ON(pud_write(pud_wrprotect(pud)));
-> +	WARN_ON(pud_young(pud_mkold(pud)));
-> +
-> +	if (mm_pmd_folded(mm) || __is_defined(ARCH_HAS_4LEVEL_HACK))
-> +		return;
-> +
-> +	/*
-> +	 * A huge page does not point to next level page table
-> +	 * entry. Hence this must qualify as pud_bad().
-> +	 */
-> +	WARN_ON(!pud_bad(pud_mkhuge(pud)));
-> +}
-> +#else
-> +static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot) { }
-> +#endif
-> +#else
-> +static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot) { }
-> +static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot) { }
-> +#endif
-> +
-> +static void __init p4d_basic_tests(unsigned long pfn, pgprot_t prot)
-> +{
-> +	p4d_t p4d;
-> +
-> +	memset(&p4d, RANDOM_NZVALUE, sizeof(p4d_t));
-> +	WARN_ON(!p4d_same(p4d, p4d));
-> +}
-> +
-> +static void __init pgd_basic_tests(unsigned long pfn, pgprot_t prot)
-> +{
-> +	pgd_t pgd;
-> +
-> +	memset(&pgd, RANDOM_NZVALUE, sizeof(pgd_t));
-> +	WARN_ON(!pgd_same(pgd, pgd));
-> +}
-> +
-> +#ifndef __ARCH_HAS_4LEVEL_HACK
+@r1@
+identifier ret;
+@@
 
-This macro doesn't exist in the kernel anymore (it's a 5LEVEL now). But
-can you not use the __PAGETABLE_PUD_FOLDED instead?
+(
+setup_irq(...);
+|
+ret = setup_irq(...);
+)
 
-> +static void __init pud_clear_tests(struct mm_struct *mm, pud_t *pudp)
-> +{
-> +	pud_t pud = READ_ONCE(*pudp);
-> +
-> +	if (mm_pmd_folded(mm))
-> +		return;
-> +
-> +	pud = __pud(pud_val(pud) | RANDOM_ORVALUE);
-> +	WRITE_ONCE(*pudp, pud);
-> +	pud_clear(pudp);
-> +	pud = READ_ONCE(*pudp);
-> +	WARN_ON(!pud_none(pud));
-> +}
-> +
-> +static void __init pud_populate_tests(struct mm_struct *mm, pud_t *pudp,
-> +				      pmd_t *pmdp)
-> +{
-> +	pud_t pud;
-> +
-> +	if (mm_pmd_folded(mm))
-> +		return;
-> +	/*
-> +	 * This entry points to next level page table page.
-> +	 * Hence this must not qualify as pud_bad().
-> +	 */
-> +	pmd_clear(pmdp);
-> +	pud_clear(pudp);
-> +	pud_populate(mm, pudp, pmdp);
-> +	pud = READ_ONCE(*pudp);
-> +	WARN_ON(pud_bad(pud));
-> +}
-> +#else
-> +static void __init pud_clear_tests(struct mm_struct *mm, pud_t *pudp) { }
-> +static void __init pud_populate_tests(struct mm_struct *mm, pud_t *pudp,
-> +				      pmd_t *pmdp)
-> +{
-> +}
-> +#endif
-> +
-> +#ifndef __ARCH_HAS_5LEVEL_HACK
 
-Could you use __PAGETABLE_P4D_FOLDED instead?
+@r2 depends on r1@
+identifier act;
+@@
 
-> +static void __init p4d_clear_tests(struct mm_struct *mm, p4d_t *p4dp)
-> +{
-> +	p4d_t p4d = READ_ONCE(*p4dp);
-> +
-> +	if (mm_pud_folded(mm))
-> +		return;
-> +
-> +	p4d = __p4d(p4d_val(p4d) | RANDOM_ORVALUE);
-> +	WRITE_ONCE(*p4dp, p4d);
-> +	p4d_clear(p4dp);
-> +	p4d = READ_ONCE(*p4dp);
-> +	WARN_ON(!p4d_none(p4d));
-> +}
+static struct irqaction act = {
+};
 
-Otherwise the patch looks fine. As per the comment on v13, make sure you
-don't break the build on any architecture, so this could either be an
-opt-in or patch those architectures before this patch is applied.
+@r11 depends on r2@
+identifier r2.act;
+identifier f_handler;
+@@
 
-Thanks.
+(
+- act.handler = f_handler;
+|
+static struct irqaction act = {
+ .handler = f_handler,
+};
+)
 
+@r12 depends on r2@
+identifier r2.act;
+expression f_name;
+@@
+
+(
+- act.name = f_name;
+|
+static struct irqaction act = {
+ .name = f_name,
+};
+)
+
+@r15 depends on r2@
+identifier r2.act;
+expression f_dev_id;
+@@
+
+(
+- act.dev_id = f_dev_id;
+|
+static struct irqaction act = {
+ .dev_id = f_dev_id,
+};
+)
+
+@r16 depends on r2@
+identifier r2.act;
+expression f_flags;
+@@
+
+(
+- act.flags = f_flags;
+|
+static struct irqaction act = {
+ .flags = f_flags,
+};
+)
+
+@r21 depends on r2@
+identifier r2.act;
+@@
+
+- static struct irqaction act = {
+- ...
+- };
+
+@r22 depends on r2 && r11 && r12 && r15 && r16@
+identifier r2.act;
+identifier r11.f_handler;
+expression r12.f_name;
+expression r15.f_dev_id;
+expression r16.f_flags;
+expression E1;
+identifier ret;
+@@
+
+(
+- setup_irq(E1,&act);
++ if (request_irq(E1,f_handler,f_flags,f_name,f_dev_id))
++ 	pr_err("request_irq() on %s failed\n", f_name);
+|
+- ret = setup_irq(E1,&act);
++ ret = request_irq(E1,f_handler,f_flags,f_name,f_dev_id);
+)
+
+@r23 depends on r2 && r11 && r12 && !r15 && r16@
+identifier r2.act;
+identifier r11.f_handler;
+expression r12.f_name;
+expression r16.f_flags;
+expression E1;
+identifier ret;
+@@
+
+(
+- setup_irq(E1,&act);
++ if (request_irq(E1,f_handler,f_flags,f_name,NULL))
++ 	pr_err("request_irq() on %s failed\n", f_name);
+|
+- ret = setup_irq(E1,&act);
++ ret = request_irq(E1,f_handler,f_flags,f_name,NULL);
+)
+
+@r24 depends on r2 && r11 && r12 && r15 && !r16@
+identifier r2.act;
+identifier r11.f_handler;
+expression r12.f_name;
+expression r15.f_dev_id;
+expression E1;
+identifier ret;
+@@
+
+(
+- setup_irq(E1,&act);
++ if (request_irq(E1,f_handler,0,f_name,f_dev_id))
++ 	pr_err("request_irq() on %s failed\n", f_name);
+|
+- ret = setup_irq(E1,&act);
++ ret = request_irq(E1,f_handler,0,f_name,f_dev_id);
+)
+
+@r25 depends on r2 && r11 && r12 && !r15 && !r16@
+identifier r2.act;
+identifier r11.f_handler;
+expression r12.f_name;
+expression E1;
+identifier ret;
+@@
+
+(
+- setup_irq(E1,&act);
++ if (request_irq(E1,f_handler,0,f_name,NULL))
++ 	pr_err("request_irq() on %s failed\n", f_name);
+|
+- ret = setup_irq(E1,&act);
++ ret = request_irq(E1,f_handler,0,f_name,NULL);
+)
+
+--->8---
+
+afzal mohammed (18):
+  alpha: replace setup_irq() by request_irq()
+  ARM: replace setup_irq() by request_irq()
+  c6x: replace setup_irq() by request_irq()
+  hexagon: replace setup_irq() by request_irq()
+  ia64: replace setup_irq() by request_irq()
+  m68k: Replace setup_irq() by request_irq()
+  microblaze: Replace setup_irq() by request_irq()
+  MIPS: Replace setup_irq() by request_irq()
+  parisc: Replace setup_irq() by request_irq()
+  powerpc: Replace setup_irq() by request_irq()
+  s390: replace setup_irq() by request_irq()
+  sh: replace setup_irq() by request_irq()
+  unicore32: replace setup_irq() by request_irq()
+  x86: Replace setup_irq() by request_irq()
+  xtensa: replace setup_irq() by request_irq()
+  clocksource: Replace setup_irq() by request_irq()
+  irqchip: Replace setup_irq() by request_irq()
+  genirq: Remove setup_irq() and remove_irq()
+
+ arch/alpha/kernel/irq_alpha.c                 | 29 ++-------
+ arch/alpha/kernel/irq_i8259.c                 |  8 +--
+ arch/alpha/kernel/irq_impl.h                  |  7 +--
+ arch/alpha/kernel/irq_pyxis.c                 |  3 +-
+ arch/alpha/kernel/sys_alcor.c                 |  3 +-
+ arch/alpha/kernel/sys_cabriolet.c             |  3 +-
+ arch/alpha/kernel/sys_eb64p.c                 |  3 +-
+ arch/alpha/kernel/sys_marvel.c                |  2 +-
+ arch/alpha/kernel/sys_miata.c                 |  6 +-
+ arch/alpha/kernel/sys_ruffian.c               |  3 +-
+ arch/alpha/kernel/sys_rx164.c                 |  3 +-
+ arch/alpha/kernel/sys_sx164.c                 |  3 +-
+ arch/alpha/kernel/sys_wildfire.c              |  7 +--
+ arch/alpha/kernel/time.c                      |  6 +-
+ arch/arm/mach-cns3xxx/core.c                  | 10 +---
+ arch/arm/mach-ebsa110/core.c                  | 10 +---
+ arch/arm/mach-ep93xx/timer-ep93xx.c           | 12 ++--
+ arch/arm/mach-footbridge/dc21285-timer.c      | 11 +---
+ arch/arm/mach-footbridge/isa-irq.c            |  8 +--
+ arch/arm/mach-footbridge/isa-timer.c          | 11 +---
+ arch/arm/mach-iop32x/time.c                   | 12 ++--
+ arch/arm/mach-mmp/time.c                      | 11 +---
+ arch/arm/mach-omap1/pm.c                      | 22 ++++---
+ arch/arm/mach-omap1/time.c                    | 10 +---
+ arch/arm/mach-omap1/timer32k.c                | 10 +---
+ arch/arm/mach-omap2/timer.c                   | 11 +---
+ arch/arm/mach-rpc/time.c                      |  8 +--
+ arch/arm/mach-spear/time.c                    |  9 +--
+ arch/arm/plat-orion/time.c                    | 10 +---
+ arch/c6x/platforms/timer64.c                  | 11 +---
+ arch/hexagon/kernel/smp.c                     | 17 +++---
+ arch/hexagon/kernel/time.c                    | 11 +---
+ arch/ia64/kernel/irq_ia64.c                   | 42 +++++--------
+ arch/ia64/kernel/mca.c                        | 51 +++++-----------
+ arch/m68k/68000/timers.c                      |  9 +--
+ arch/m68k/coldfire/pit.c                      |  9 +--
+ arch/m68k/coldfire/sltimers.c                 | 19 ++----
+ arch/m68k/coldfire/timers.c                   | 19 ++----
+ arch/microblaze/kernel/timer.c                | 10 +---
+ arch/mips/alchemy/common/time.c               | 11 +---
+ arch/mips/ar7/irq.c                           | 18 +++---
+ arch/mips/ath25/ar2315.c                      |  9 +--
+ arch/mips/ath25/ar5312.c                      |  9 +--
+ arch/mips/bcm63xx/irq.c                       | 38 +++++-------
+ arch/mips/cobalt/irq.c                        | 14 ++---
+ arch/mips/dec/setup.c                         | 59 ++++++++-----------
+ arch/mips/emma/markeins/irq.c                 | 20 +++----
+ arch/mips/include/asm/sni.h                   |  2 +-
+ arch/mips/jazz/irq.c                          | 12 +---
+ arch/mips/kernel/cevt-bcm1480.c               | 11 +---
+ arch/mips/kernel/cevt-ds1287.c                |  9 +--
+ arch/mips/kernel/cevt-gt641xx.c               |  9 +--
+ arch/mips/kernel/cevt-r4k.c                   |  4 +-
+ arch/mips/kernel/cevt-sb1250.c                | 11 +---
+ arch/mips/kernel/cevt-txx9.c                  | 11 +---
+ arch/mips/kernel/i8253.c                      | 10 +---
+ arch/mips/kernel/rtlx-mt.c                    |  8 +--
+ arch/mips/kernel/smp.c                        | 33 ++++-------
+ arch/mips/lasat/interrupt.c                   | 10 +---
+ arch/mips/loongson2ef/common/bonito-irq.c     |  9 +--
+ .../loongson2ef/common/cs5536/cs5536_mfgpt.c  | 10 +---
+ arch/mips/loongson2ef/fuloong-2e/irq.c        | 14 ++---
+ arch/mips/loongson2ef/lemote-2f/irq.c         | 20 ++-----
+ arch/mips/loongson32/common/irq.c             | 21 ++++---
+ arch/mips/loongson32/common/time.c            | 12 ++--
+ arch/mips/loongson64/hpet.c                   | 10 +---
+ arch/mips/mti-malta/malta-int.c               | 10 +---
+ arch/mips/netlogic/xlr/fmn.c                  |  9 +--
+ arch/mips/pmcs-msp71xx/msp_irq.c              | 28 ++++-----
+ arch/mips/pmcs-msp71xx/msp_smp.c              | 22 ++-----
+ arch/mips/pmcs-msp71xx/msp_time.c             |  7 ++-
+ arch/mips/ralink/cevt-rt3352.c                | 17 +++---
+ arch/mips/sgi-ip22/ip22-eisa.c                |  8 +--
+ arch/mips/sgi-ip22/ip22-int.c                 | 49 +++++----------
+ arch/mips/sgi-ip32/ip32-irq.c                 | 18 ++----
+ arch/mips/sni/a20r.c                          |  4 +-
+ arch/mips/sni/irq.c                           |  8 +--
+ arch/mips/sni/pcit.c                          |  8 ++-
+ arch/mips/sni/rm200.c                         | 23 +++-----
+ arch/mips/sni/time.c                          | 10 +---
+ arch/mips/vr41xx/common/irq.c                 |  9 +--
+ arch/parisc/kernel/irq.c                      | 21 ++-----
+ arch/powerpc/platforms/85xx/mpc85xx_cds.c     | 10 +---
+ arch/powerpc/platforms/8xx/cpm1.c             |  9 +--
+ arch/powerpc/platforms/8xx/m8xx_setup.c       |  9 +--
+ arch/powerpc/platforms/chrp/setup.c           | 14 ++---
+ arch/powerpc/platforms/powermac/pic.c         | 31 ++++------
+ arch/powerpc/platforms/powermac/smp.c         |  9 +--
+ arch/s390/kernel/irq.c                        |  8 +--
+ arch/sh/boards/mach-cayman/irq.c              | 18 ++----
+ arch/sh/drivers/dma/dma-pvr2.c                |  9 +--
+ arch/unicore32/kernel/time.c                  | 11 +---
+ arch/x86/kernel/irqinit.c                     | 18 +++---
+ arch/x86/kernel/time.c                        | 10 +---
+ arch/xtensa/kernel/smp.c                      |  8 +--
+ arch/xtensa/kernel/time.c                     | 10 +---
+ drivers/clocksource/bcm2835_timer.c           |  8 +--
+ drivers/clocksource/bcm_kona_timer.c          | 10 +---
+ drivers/clocksource/dw_apb_timer.c            | 11 +---
+ drivers/clocksource/exynos_mct.c              | 12 ++--
+ drivers/clocksource/mxs_timer.c               | 10 +---
+ drivers/clocksource/nomadik-mtu.c             | 11 +---
+ drivers/clocksource/samsung_pwm_timer.c       | 12 ++--
+ drivers/clocksource/timer-atlas7.c            | 50 ++++++++--------
+ drivers/clocksource/timer-cs5535.c            | 10 +---
+ drivers/clocksource/timer-efm32.c             | 10 +---
+ drivers/clocksource/timer-fsl-ftm.c           | 10 +---
+ drivers/clocksource/timer-imx-gpt.c           | 10 +---
+ drivers/clocksource/timer-integrator-ap.c     | 11 +---
+ drivers/clocksource/timer-meson6.c            | 11 +---
+ drivers/clocksource/timer-orion.c             |  9 +--
+ drivers/clocksource/timer-prima2.c            | 11 +---
+ drivers/clocksource/timer-pxa.c               | 10 +---
+ drivers/clocksource/timer-sp804.c             | 11 +---
+ drivers/clocksource/timer-u300.c              |  9 +--
+ drivers/clocksource/timer-vf-pit.c            | 10 +---
+ drivers/clocksource/timer-vt8500.c            | 11 +---
+ drivers/clocksource/timer-zevio.c             | 13 ++--
+ drivers/irqchip/irq-i8259.c                   |  9 +--
+ drivers/irqchip/irq-ingenic.c                 | 11 ++--
+ drivers/parisc/eisa.c                         |  8 +--
+ drivers/s390/cio/airq.c                       |  8 +--
+ drivers/s390/cio/cio.c                        |  8 +--
+ include/linux/dw_apb_timer.h                  |  1 -
+ include/linux/irq.h                           |  2 -
+ kernel/irq/manage.c                           | 44 --------------
+ 126 files changed, 528 insertions(+), 1111 deletions(-)
+
+
+base-commit: v5.6-rc1
 -- 
-Catalin
+2.24.1
+
