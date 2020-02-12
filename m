@@ -2,142 +2,66 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C265B15A57A
-	for <lists+linux-sh@lfdr.de>; Wed, 12 Feb 2020 10:57:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB73215A617
+	for <lists+linux-sh@lfdr.de>; Wed, 12 Feb 2020 11:18:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728936AbgBLJ5w (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 12 Feb 2020 04:57:52 -0500
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:37059 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728745AbgBLJ5w (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 12 Feb 2020 04:57:52 -0500
-Received: by mail-ot1-f68.google.com with SMTP id d3so1326259otp.4;
-        Wed, 12 Feb 2020 01:57:51 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=eeNTMzOet6YbJZM6KBXk+480ZyC+Oan10p6vM7BqSvg=;
-        b=qPr0yf12vizdIR77cFbjmKKStY6ioQTvgEUJY1K5EHi+/67GRD+hgCptLAa4H4OODF
-         DjyCJgoPvYFdfZg7sbDM+oWGFUDbHxO/C1B/kYoY44qfUrYgz3eecVkYnunWpl21eT3p
-         sUHfJnw3g04tzhAHXrcdw79BGpZ2UM4CqgAtyrgk4+tfZquZuVt0vTMxTNhAI5F7WXhQ
-         Jkb5XGvTh7q3MkIvi+QrxADxsXyBLpgPXMsS843rN1CACaayRWP8q2JVTrAJCMzulV8g
-         srFjQEH74c3NkkiWdNfsT+UEvp0m4e5j4UK+2bQOYLlk3Yu59r/rmiQB8X1Dcw6rErko
-         KlSQ==
-X-Gm-Message-State: APjAAAVikZFq0UOY3GA0PWHFEEc2Jfr7szUtIjGkwAvgLEZepbVF/OY+
-        nN+YDxfcrUj2iUpjT9fTwVSae//5EgmZ9PQckuc=
-X-Google-Smtp-Source: APXvYqxMDwVz0mamGWk/u7qbUkHdewv3+BvLrju7oQjjc9kcCPfjwC7rRallUsgMAYlyjHnrBSwrbGBRblWAlqXOwe8=
-X-Received: by 2002:a9d:7984:: with SMTP id h4mr8766923otm.297.1581501470937;
- Wed, 12 Feb 2020 01:57:50 -0800 (PST)
-MIME-Version: 1.0
-References: <dcdd615f77dacf8a98e18950b66fb5a675277f38.1581498987.git.michal.simek@xilinx.com>
- <CAMo8BfLYM-_SbqmMUCVjwqL7MpA2W7toTg_F6HTY4Sg5QxGzfw@mail.gmail.com>
- <CAMuHMdUZ_e9JsF0fuLxBwdoy7YVLarH6E98z5nKUZ2CccSkV-Q@mail.gmail.com>
- <6128aa3a-a99c-2ab0-82d1-d5c419e4f5b9@xilinx.com> <CAMuHMdX3O6aL_yGSfqrbdfPf-HHqqdkMwPHS=Y0WxMRTYOtJ4w@mail.gmail.com>
- <1d006656-bd48-0b8e-b893-cddaa5f8f8bc@xilinx.com> <CAMuHMdXaOD5kL+Cg0L=YeX_DqdVgUJXEA8LF-NiHbmkMuXKTaA@mail.gmail.com>
- <d93646fa-c844-693c-07a7-7075d0fcf2c9@xilinx.com>
-In-Reply-To: <d93646fa-c844-693c-07a7-7075d0fcf2c9@xilinx.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 12 Feb 2020 10:57:39 +0100
-Message-ID: <CAMuHMdXQqEYsL4KfDb4EkS+P+6qW=E4m3wunx_LXZddXVZMd4g@mail.gmail.com>
-Subject: Re: [PATCH v2] asm-generic: Fix unistd_32.h generation format
-To:     Michal Simek <michal.simek@xilinx.com>
-Cc:     Max Filippov <jcmvbkbc@gmail.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Michal Simek <monstr@monstr.eu>, git@xilinx.com,
-        Arnd Bergmann <arnd@arndb.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Stefan Asserhall <stefan.asserhall@xilinx.com>,
-        Chris Zankel <chris@zankel.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Helge Deller <deller@gmx.de>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Matt Turner <mattst88@gmail.com>,
-        Rich Felker <dalias@libc.org>,
-        Richard Henderson <rth@twiddle.net>,
-        Tony Luck <tony.luck@intel.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        "open list:ALPHA PORT" <linux-alpha@vger.kernel.org>,
-        "open list:IA64 (Itanium) PL..." <linux-ia64@vger.kernel.org>,
-        "open list:M68K ARCHITECTURE" <linux-m68k@lists.linux-m68k.org>,
-        "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
-        "open list:SUPERH" <linux-sh@vger.kernel.org>,
-        "open list:TENSILICA XTENSA PORT (xtensa)" 
-        <linux-xtensa@linux-xtensa.org>,
-        "open list:SPARC + UltraSPAR..." <sparclinux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        id S1727722AbgBLKSQ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 12 Feb 2020 05:18:16 -0500
+Received: from andre.telenet-ops.be ([195.130.132.53]:47758 "EHLO
+        andre.telenet-ops.be" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726135AbgBLKSQ (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 12 Feb 2020 05:18:16 -0500
+Received: from ramsan ([84.195.182.253])
+        by andre.telenet-ops.be with bizsmtp
+        id 1mJE2200A5USYZQ01mJE1K; Wed, 12 Feb 2020 11:18:14 +0100
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan with esmtp (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1j1p5y-0001Nl-7X; Wed, 12 Feb 2020 11:18:14 +0100
+Received: from geert by rox.of.borg with local (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1j1p5y-0002Pc-6M; Wed, 12 Feb 2020 11:18:14 +0100
+From:   Geert Uytterhoeven <geert+renesas@glider.be>
+To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>
+Cc:     linux-sh@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH] sh: boards: Replace <linux/clk-provider.h> by <linux/of_clk.h>
+Date:   Wed, 12 Feb 2020 11:18:13 +0100
+Message-Id: <20200212101813.9230-1-geert+renesas@glider.be>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Michal,
+The SuperH/J2 DT platform code is not a clock provider, and just needs
+to call of_clk_init().
 
-On Wed, Feb 12, 2020 at 10:42 AM Michal Simek <michal.simek@xilinx.com> wrote:
-> On 12. 02. 20 10:40, Geert Uytterhoeven wrote:
-> > On Wed, Feb 12, 2020 at 10:38 AM Michal Simek <michal.simek@xilinx.com> wrote:
-> >> On 12. 02. 20 10:32, Geert Uytterhoeven wrote:
-> >>> On Wed, Feb 12, 2020 at 10:27 AM Michal Simek <michal.simek@xilinx.com> wrote:
-> >>>> On 12. 02. 20 10:25, Geert Uytterhoeven wrote:
-> >>>>> On Wed, Feb 12, 2020 at 10:23 AM Max Filippov <jcmvbkbc@gmail.com> wrote:
-> >>>>>> On Wed, Feb 12, 2020 at 1:16 AM Michal Simek <michal.simek@xilinx.com> wrote:
-> >>>>>>>
-> >>>>>>> Generated files are also checked by sparse that's why add newline
-> >>>>>>> to remove sparse (C=1) warning.
-> >>>>>>>
-> >>>>>>> The issue was found on Microblaze and reported like this:
-> >>>>>>> ./arch/microblaze/include/generated/uapi/asm/unistd_32.h:438:45:
-> >>>>>>> warning: no newline at end of file
-> >>>>>>>
-> >>>>>>> Signed-off-by: Michal Simek <michal.simek@xilinx.com>
-> >>>>>>> Reviewed-by: Stefan Asserhall <stefan.asserhall@xilinx.com>
-> >>>>>
-> >>>>>>> --- a/arch/m68k/kernel/syscalls/syscallhdr.sh
-> >>>>>>> +++ b/arch/m68k/kernel/syscalls/syscallhdr.sh
-> >>>>>>> @@ -33,4 +33,5 @@ grep -E "^[0-9A-Fa-fXx]+[[:space:]]+${my_abis}" "$in" | sort -n | (
-> >>>>>>>         printf "#endif\n"
-> >>>>>>>         printf "\n"
-> >>>>>>>         printf "#endif /* %s */\n" "${fileguard}"
-> >>>>>>
-> >>>>>> Here there's already \n at the end, so no need for another one?
-> >>>>>
-> >>>>> Thanks! I completely missed that.
-> >>>>> So I did fix the original while applying ;-)
-> >>>>
-> >>>> I can drop m68k or align with with others. I would prefer to have the
-> >>>> same solution in all these scripts.
-> >>>
-> >>> Yeah, it makes sense to align as much as possible.
-> >>> IIRC, the original plan was to consolidate more later.
-> >>>
-> >>> Note that all other lines are terminated with a "\n" at the end.
-> >>> The separate 'printf "\n"' is an extra blank line, not the terminator for the
-> >>> previous line.
-> >>
-> >> Should we also get rid of 'printf "\n"' lines or just keep them as they
-> >> are today?
-> >
-> > Usually there is a blank line above the include guard terminator, so IMHO
-> > it makes sense to have that in generated files, too.
->
-> I meant more not to get rid of \n just include them in current prints.
-> It means like this 'printf "\n#endif /* %s */\n" "${fileguard}"'
+Hence it can include <linux/of_clk.h> instead of <linux/clk-provider.h>.
 
-I think having a "\n" at the start of a string makes the code harder to read.
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+ arch/sh/boards/of-generic.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-You could move it to the end of the previous string, but that is not always
-possible (e.g. after the loop), so I'd keep the separate prints for blank
-lines.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
+diff --git a/arch/sh/boards/of-generic.c b/arch/sh/boards/of-generic.c
+index d91065e81a4e5cff..97a536d986a23f91 100644
+--- a/arch/sh/boards/of-generic.c
++++ b/arch/sh/boards/of-generic.c
+@@ -6,10 +6,10 @@
+  */
+ 
+ #include <linux/of.h>
++#include <linux/of_clk.h>
+ #include <linux/of_fdt.h>
+ #include <linux/clocksource.h>
+ #include <linux/irqchip.h>
+-#include <linux/clk-provider.h>
+ #include <asm/machvec.h>
+ #include <asm/rtc.h>
+ 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.17.1
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
