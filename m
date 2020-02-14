@@ -2,38 +2,38 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 66D3115E974
-	for <lists+linux-sh@lfdr.de>; Fri, 14 Feb 2020 18:08:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 94F9615ED15
+	for <lists+linux-sh@lfdr.de>; Fri, 14 Feb 2020 18:32:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392312AbgBNQO1 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 14 Feb 2020 11:14:27 -0500
-Received: from mail.kernel.org ([198.145.29.99]:43968 "EHLO mail.kernel.org"
+        id S2390989AbgBNRbx (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 14 Feb 2020 12:31:53 -0500
+Received: from mail.kernel.org ([198.145.29.99]:57690 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404027AbgBNQO1 (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Fri, 14 Feb 2020 11:14:27 -0500
+        id S2390536AbgBNQGz (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Fri, 14 Feb 2020 11:06:55 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DD715246AA;
-        Fri, 14 Feb 2020 16:14:24 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id BD44C222C2;
+        Fri, 14 Feb 2020 16:06:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581696865;
-        bh=Vs4JIXKOY68VcmDg9hGYy8Jl4dneukZoBexeHZyaEZc=;
+        s=default; t=1581696414;
+        bh=UjBXoZ4H2wamTacoyZSgR2hnuYrr6d0hyjeK4CZeaVo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jJMs4awotA6H9pri+4WRc7jlXxX/pk8gbh8QKZAVcs010UBiwdt/lphus5r+2/I9G
-         apdXZ+oBTob9BcWr2i2vIS3u8iZiGttMG2nRUxuZ6GneNOumitfHgv4P4WrTU0l6RQ
-         l+GFKJipAzTUK2Zq7PScSzZB+lV3WXDSK17qfN2I=
+        b=AG0HgmagX/KkGxya8TRsMeE4Vs7flnCdFk4xj/6k+jyL0SoVuiuyoyJBItKzprINz
+         PnHCMHtZLYLkTBdYOpFP8iynlh40M2RuBAGMHRpC4n6yLcQmHoO3MTFMJrelDGHqzp
+         zVrGqkaET8Ub/+1gvuVt3ntX9+E/8BPJw9vP+lcY=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
         Sasha Levin <sashal@kernel.org>, linux-sh@vger.kernel.org,
         linux-renesas-soc@vger.kernel.org, linux-gpio@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 124/252] pinctrl: sh-pfc: sh7269: Fix CAN function GPIOs
-Date:   Fri, 14 Feb 2020 11:09:39 -0500
-Message-Id: <20200214161147.15842-124-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 236/459] pinctrl: sh-pfc: sh7269: Fix CAN function GPIOs
+Date:   Fri, 14 Feb 2020 10:58:06 -0500
+Message-Id: <20200214160149.11681-236-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200214161147.15842-1-sashal@kernel.org>
-References: <20200214161147.15842-1-sashal@kernel.org>
+In-Reply-To: <20200214160149.11681-1-sashal@kernel.org>
+References: <20200214160149.11681-1-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-stable: review
@@ -110,10 +110,10 @@ index d516e5d488180..b887cc402b712 100644
  	/* DMAC */
  	GPIO_FN_TEND0, GPIO_FN_DACK0, GPIO_FN_DREQ0,
 diff --git a/drivers/pinctrl/sh-pfc/pfc-sh7269.c b/drivers/pinctrl/sh-pfc/pfc-sh7269.c
-index cfdb4fc177c3e..3df0c0d139d08 100644
+index 6cbb18ef77dc0..d20974a55d93a 100644
 --- a/drivers/pinctrl/sh-pfc/pfc-sh7269.c
 +++ b/drivers/pinctrl/sh-pfc/pfc-sh7269.c
-@@ -740,13 +740,12 @@ enum {
+@@ -737,13 +737,12 @@ enum {
  	CRX0_MARK, CTX0_MARK,
  	CRX1_MARK, CTX1_MARK,
  	CRX2_MARK, CTX2_MARK,
@@ -131,7 +131,7 @@ index cfdb4fc177c3e..3df0c0d139d08 100644
  
  	/* VDC */
  	DV_CLK_MARK,
-@@ -824,6 +823,7 @@ static const u16 pinmux_data[] = {
+@@ -821,6 +820,7 @@ static const u16 pinmux_data[] = {
  	PINMUX_DATA(CS3_MARK, PC8MD_001),
  	PINMUX_DATA(TXD7_MARK, PC8MD_010),
  	PINMUX_DATA(CTX1_MARK, PC8MD_011),
@@ -139,7 +139,7 @@ index cfdb4fc177c3e..3df0c0d139d08 100644
  
  	PINMUX_DATA(PC7_DATA, PC7MD_000),
  	PINMUX_DATA(CKE_MARK, PC7MD_001),
-@@ -836,11 +836,12 @@ static const u16 pinmux_data[] = {
+@@ -833,11 +833,12 @@ static const u16 pinmux_data[] = {
  	PINMUX_DATA(CAS_MARK, PC6MD_001),
  	PINMUX_DATA(SCK7_MARK, PC6MD_010),
  	PINMUX_DATA(CTX0_MARK, PC6MD_011),
@@ -153,7 +153,7 @@ index cfdb4fc177c3e..3df0c0d139d08 100644
  	PINMUX_DATA(IRQ0_PC_MARK, PC5MD_101),
  
  	PINMUX_DATA(PC4_DATA, PC4MD_00),
-@@ -1292,30 +1293,32 @@ static const u16 pinmux_data[] = {
+@@ -1289,30 +1290,32 @@ static const u16 pinmux_data[] = {
  	PINMUX_DATA(LCD_DATA23_PJ23_MARK, PJ23MD_010),
  	PINMUX_DATA(LCD_TCON6_MARK, PJ23MD_011),
  	PINMUX_DATA(IRQ3_PJ_MARK, PJ23MD_100),
@@ -192,7 +192,7 @@ index cfdb4fc177c3e..3df0c0d139d08 100644
  
  	PINMUX_DATA(PJ19_DATA, PJ19MD_000),
  	PINMUX_DATA(DV_DATA19_MARK, PJ19MD_001),
-@@ -1666,12 +1669,24 @@ static const struct pinmux_func pinmux_func_gpios[] = {
+@@ -1663,12 +1666,24 @@ static const struct pinmux_func pinmux_func_gpios[] = {
  	GPIO_FN(WDTOVF),
  
  	/* CAN */
