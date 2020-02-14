@@ -2,120 +2,221 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AAA6915B70E
-	for <lists+linux-sh@lfdr.de>; Thu, 13 Feb 2020 03:16:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CB4A15E716
+	for <lists+linux-sh@lfdr.de>; Fri, 14 Feb 2020 17:52:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729505AbgBMCQI (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 12 Feb 2020 21:16:08 -0500
-Received: from foss.arm.com ([217.140.110.172]:40570 "EHLO foss.arm.com"
+        id S2404971AbgBNQTT (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 14 Feb 2020 11:19:19 -0500
+Received: from mail.kernel.org ([198.145.29.99]:52346 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729469AbgBMCQI (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Wed, 12 Feb 2020 21:16:08 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0600030E;
-        Wed, 12 Feb 2020 18:16:07 -0800 (PST)
-Received: from [192.168.0.129] (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 017A33F68E;
-        Wed, 12 Feb 2020 18:15:52 -0800 (PST)
-Subject: Re: [PATCH V12] mm/debug: Add tests validating architecture page
- table helpers
-To:     Gerald Schaefer <gerald.schaefer@de.ibm.com>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org,
-        Mark Rutland <mark.rutland@arm.com>,
-        linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
-        Peter Zijlstra <peterz@infradead.org>,
-        James Hogan <jhogan@kernel.org>,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Michal Hocko <mhocko@kernel.org>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-s390@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
-        x86@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Matthew Wilcox <willy@infradead.org>,
-        Steven Price <Steven.Price@arm.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        Ingo Molnar <mingo@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Mark Brown <broonie@kernel.org>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Sri Krishna chowdary <schowdary@nvidia.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-mips@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        linux-kernel@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
-        Mike Rapoport <rppt@linux.vnet.ibm.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        "David S. Miller" <davem@davemloft.net>
-References: <1580174873-18117-1-git-send-email-anshuman.khandual@arm.com>
- <20200210153716.GB9283@E121110.arm.com>
- <b169ff9d-7b87-91f4-b3d0-e97f86680d0c@arm.com>
- <20200212185548.3274ec2e@thinkpad>
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <085cdec7-1759-82c6-7a65-9b7d28c1c458@arm.com>
-Date:   Thu, 13 Feb 2020 07:45:55 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+        id S2404964AbgBNQTS (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Fri, 14 Feb 2020 11:19:18 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 14B5324702;
+        Fri, 14 Feb 2020 16:19:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1581697157;
+        bh=Vs4JIXKOY68VcmDg9hGYy8Jl4dneukZoBexeHZyaEZc=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=P/Wb+0K6K+yeqze4Bo3pOCmjQYDkkV0EH8RkIqF9ak3VW9IvHfB4RPBkAbCT81MCi
+         Vh1WiA13PmbJbBcC7BFMwJJaUAwGAse/I+krCgfcS1nzEVfXOI7a7brHNlLccpCGey
+         B+vG22ICBW4XvJvuUXEq5U101bMe4xBvwemHjaoY=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
+        Sasha Levin <sashal@kernel.org>, linux-sh@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org, linux-gpio@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.14 095/186] pinctrl: sh-pfc: sh7269: Fix CAN function GPIOs
+Date:   Fri, 14 Feb 2020 11:15:44 -0500
+Message-Id: <20200214161715.18113-95-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200214161715.18113-1-sashal@kernel.org>
+References: <20200214161715.18113-1-sashal@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20200212185548.3274ec2e@thinkpad>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
+[ Upstream commit 02aeb2f21530c98fc3ca51028eda742a3fafbd9f ]
 
-On 02/12/2020 11:25 PM, Gerald Schaefer wrote:
-> On Wed, 12 Feb 2020 15:12:54 +0530
-> Anshuman Khandual <anshuman.khandual@arm.com> wrote:
-> 
->>>> +/*
->>>> + * On s390 platform, the lower 12 bits are used to identify given page table
->>>> + * entry type and for other arch specific requirements. But these bits might
->>>> + * affect the ability to clear entries with pxx_clear(). So while loading up
->>>> + * the entries skip all lower 12 bits in order to accommodate s390 platform.
->>>> + * It does not have affect any other platform.
->>>> + */
->>>> +#define RANDOM_ORVALUE	(0xfffffffffffff000UL)  
->>>
->>> I'd suggest you generate this mask with something like
->>> GENMASK(BITS_PER_LONG, PAGE_SHIFT).  
->>
->> IIRC the lower 12 bits constrains on s390 platform might not be really related
->> to it's PAGE_SHIFT which can be a variable, but instead just a constant number.
->> But can definitely use GENMASK or it's variants here.
->>
->> https://lkml.org/lkml/2019/9/5/862
-> 
-> PAGE_SHIFT would be fine, it is 12 on s390. However, in order to be
-> more precise, we do not really need all 12 bits, only the last 4 bits.
-> So, something like this would work:
-> 
-> #define RANDOM_ORVALUE GENMASK(BITS_PER_LONG - 1, 4)
-> 
-> The text in the comment could then also be changed from 12 to 4, and
-> be a bit more specific on the fact that the impact on pxx_clear()
-> results from the dynamic page table folding logic on s390:
-> 
-> /*
->  * On s390 platform, the lower 4 bits are used to identify given page table
->  * entry type. But these bits might affect the ability to clear entries with
->  * pxx_clear() because of how dynamic page table folding works on s390. So
->  * while loading up the entries do not change the lower 4 bits.
->  * It does not have affect any other platform.
->  */
+pinmux_func_gpios[] contains a hole due to the missing function GPIO
+definition for the "CTX0&CTX1" signal, which is the logical "AND" of the
+first two CAN outputs.
 
-Sure, will update accordingly.
+A closer look reveals other issues:
+  - Some functionality is available on alternative pins, but the
+    PINMUX_DATA() entries is using the wrong marks,
+  - Several configurations are missing.
+
+Fix this by:
+  - Renaming CTX0CTX1CTX2_MARK, CRX0CRX1_PJ22_MARK, and
+    CRX0CRX1CRX2_PJ20_MARK to CTX0_CTX1_CTX2_MARK, CRX0_CRX1_PJ22_MARK,
+    resp. CRX0_CRX1_CRX2_PJ20_MARK for consistency with the
+    corresponding enum IDs,
+  - Adding all missing enum IDs and marks,
+  - Use the right (*_PJ2x) variants for alternative pins,
+  - Adding all missing configurations to pinmux_data[],
+  - Adding all missing function GPIO definitions to pinmux_func_gpios[].
+
+See SH7268 Group, SH7269 Group User’s Manual: Hardware, Rev. 2.00:
+  [1] Table 1.4 List of Pins
+  [2] Figure 23.29 Connection Example when Using Channels 0 and 1 as One
+      Channel (64 Mailboxes × 1 Channel) and Channel 2 as One Channel
+      (32 Mailboxes × 1 Channel),
+  [3] Figure 23.30 Connection Example when Using Channels 0, 1, and 2 as
+      One Channel (96 Mailboxes × 1 Channel),
+  [4] Table 48.3 Multiplexed Pins (Port B),
+  [5] Table 48.4 Multiplexed Pins (Port C),
+  [6] Table 48.10 Multiplexed Pins (Port J),
+  [7] Section 48.2.4 Port B Control Registers 0 to 5 (PBCR0 to PBCR5).
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20191218194812.12741-5-geert+renesas@glider.be
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/sh/include/cpu-sh2a/cpu/sh7269.h | 11 ++++++--
+ drivers/pinctrl/sh-pfc/pfc-sh7269.c   | 39 ++++++++++++++++++---------
+ 2 files changed, 36 insertions(+), 14 deletions(-)
+
+diff --git a/arch/sh/include/cpu-sh2a/cpu/sh7269.h b/arch/sh/include/cpu-sh2a/cpu/sh7269.h
+index d516e5d488180..b887cc402b712 100644
+--- a/arch/sh/include/cpu-sh2a/cpu/sh7269.h
++++ b/arch/sh/include/cpu-sh2a/cpu/sh7269.h
+@@ -78,8 +78,15 @@ enum {
+ 	GPIO_FN_WDTOVF,
+ 
+ 	/* CAN */
+-	GPIO_FN_CTX1, GPIO_FN_CRX1, GPIO_FN_CTX0, GPIO_FN_CTX0_CTX1,
+-	GPIO_FN_CRX0, GPIO_FN_CRX0_CRX1, GPIO_FN_CRX0_CRX1_CRX2,
++	GPIO_FN_CTX2, GPIO_FN_CRX2,
++	GPIO_FN_CTX1, GPIO_FN_CRX1,
++	GPIO_FN_CTX0, GPIO_FN_CRX0,
++	GPIO_FN_CTX0_CTX1, GPIO_FN_CRX0_CRX1,
++	GPIO_FN_CTX0_CTX1_CTX2, GPIO_FN_CRX0_CRX1_CRX2,
++	GPIO_FN_CTX2_PJ21, GPIO_FN_CRX2_PJ20,
++	GPIO_FN_CTX1_PJ23, GPIO_FN_CRX1_PJ22,
++	GPIO_FN_CTX0_CTX1_PJ23, GPIO_FN_CRX0_CRX1_PJ22,
++	GPIO_FN_CTX0_CTX1_CTX2_PJ21, GPIO_FN_CRX0_CRX1_CRX2_PJ20,
+ 
+ 	/* DMAC */
+ 	GPIO_FN_TEND0, GPIO_FN_DACK0, GPIO_FN_DREQ0,
+diff --git a/drivers/pinctrl/sh-pfc/pfc-sh7269.c b/drivers/pinctrl/sh-pfc/pfc-sh7269.c
+index cfdb4fc177c3e..3df0c0d139d08 100644
+--- a/drivers/pinctrl/sh-pfc/pfc-sh7269.c
++++ b/drivers/pinctrl/sh-pfc/pfc-sh7269.c
+@@ -740,13 +740,12 @@ enum {
+ 	CRX0_MARK, CTX0_MARK,
+ 	CRX1_MARK, CTX1_MARK,
+ 	CRX2_MARK, CTX2_MARK,
+-	CRX0_CRX1_MARK,
+-	CRX0_CRX1_CRX2_MARK,
+-	CTX0CTX1CTX2_MARK,
++	CRX0_CRX1_MARK, CTX0_CTX1_MARK,
++	CRX0_CRX1_CRX2_MARK, CTX0_CTX1_CTX2_MARK,
+ 	CRX1_PJ22_MARK, CTX1_PJ23_MARK,
+ 	CRX2_PJ20_MARK, CTX2_PJ21_MARK,
+-	CRX0CRX1_PJ22_MARK,
+-	CRX0CRX1CRX2_PJ20_MARK,
++	CRX0_CRX1_PJ22_MARK, CTX0_CTX1_PJ23_MARK,
++	CRX0_CRX1_CRX2_PJ20_MARK, CTX0_CTX1_CTX2_PJ21_MARK,
+ 
+ 	/* VDC */
+ 	DV_CLK_MARK,
+@@ -824,6 +823,7 @@ static const u16 pinmux_data[] = {
+ 	PINMUX_DATA(CS3_MARK, PC8MD_001),
+ 	PINMUX_DATA(TXD7_MARK, PC8MD_010),
+ 	PINMUX_DATA(CTX1_MARK, PC8MD_011),
++	PINMUX_DATA(CTX0_CTX1_MARK, PC8MD_100),
+ 
+ 	PINMUX_DATA(PC7_DATA, PC7MD_000),
+ 	PINMUX_DATA(CKE_MARK, PC7MD_001),
+@@ -836,11 +836,12 @@ static const u16 pinmux_data[] = {
+ 	PINMUX_DATA(CAS_MARK, PC6MD_001),
+ 	PINMUX_DATA(SCK7_MARK, PC6MD_010),
+ 	PINMUX_DATA(CTX0_MARK, PC6MD_011),
++	PINMUX_DATA(CTX0_CTX1_CTX2_MARK, PC6MD_100),
+ 
+ 	PINMUX_DATA(PC5_DATA, PC5MD_000),
+ 	PINMUX_DATA(RAS_MARK, PC5MD_001),
+ 	PINMUX_DATA(CRX0_MARK, PC5MD_011),
+-	PINMUX_DATA(CTX0CTX1CTX2_MARK, PC5MD_100),
++	PINMUX_DATA(CTX0_CTX1_CTX2_MARK, PC5MD_100),
+ 	PINMUX_DATA(IRQ0_PC_MARK, PC5MD_101),
+ 
+ 	PINMUX_DATA(PC4_DATA, PC4MD_00),
+@@ -1292,30 +1293,32 @@ static const u16 pinmux_data[] = {
+ 	PINMUX_DATA(LCD_DATA23_PJ23_MARK, PJ23MD_010),
+ 	PINMUX_DATA(LCD_TCON6_MARK, PJ23MD_011),
+ 	PINMUX_DATA(IRQ3_PJ_MARK, PJ23MD_100),
+-	PINMUX_DATA(CTX1_MARK, PJ23MD_101),
++	PINMUX_DATA(CTX1_PJ23_MARK, PJ23MD_101),
++	PINMUX_DATA(CTX0_CTX1_PJ23_MARK, PJ23MD_110),
+ 
+ 	PINMUX_DATA(PJ22_DATA, PJ22MD_000),
+ 	PINMUX_DATA(DV_DATA22_MARK, PJ22MD_001),
+ 	PINMUX_DATA(LCD_DATA22_PJ22_MARK, PJ22MD_010),
+ 	PINMUX_DATA(LCD_TCON5_MARK, PJ22MD_011),
+ 	PINMUX_DATA(IRQ2_PJ_MARK, PJ22MD_100),
+-	PINMUX_DATA(CRX1_MARK, PJ22MD_101),
+-	PINMUX_DATA(CRX0_CRX1_MARK, PJ22MD_110),
++	PINMUX_DATA(CRX1_PJ22_MARK, PJ22MD_101),
++	PINMUX_DATA(CRX0_CRX1_PJ22_MARK, PJ22MD_110),
+ 
+ 	PINMUX_DATA(PJ21_DATA, PJ21MD_000),
+ 	PINMUX_DATA(DV_DATA21_MARK, PJ21MD_001),
+ 	PINMUX_DATA(LCD_DATA21_PJ21_MARK, PJ21MD_010),
+ 	PINMUX_DATA(LCD_TCON4_MARK, PJ21MD_011),
+ 	PINMUX_DATA(IRQ1_PJ_MARK, PJ21MD_100),
+-	PINMUX_DATA(CTX2_MARK, PJ21MD_101),
++	PINMUX_DATA(CTX2_PJ21_MARK, PJ21MD_101),
++	PINMUX_DATA(CTX0_CTX1_CTX2_PJ21_MARK, PJ21MD_110),
+ 
+ 	PINMUX_DATA(PJ20_DATA, PJ20MD_000),
+ 	PINMUX_DATA(DV_DATA20_MARK, PJ20MD_001),
+ 	PINMUX_DATA(LCD_DATA20_PJ20_MARK, PJ20MD_010),
+ 	PINMUX_DATA(LCD_TCON3_MARK, PJ20MD_011),
+ 	PINMUX_DATA(IRQ0_PJ_MARK, PJ20MD_100),
+-	PINMUX_DATA(CRX2_MARK, PJ20MD_101),
+-	PINMUX_DATA(CRX0CRX1CRX2_PJ20_MARK, PJ20MD_110),
++	PINMUX_DATA(CRX2_PJ20_MARK, PJ20MD_101),
++	PINMUX_DATA(CRX0_CRX1_CRX2_PJ20_MARK, PJ20MD_110),
+ 
+ 	PINMUX_DATA(PJ19_DATA, PJ19MD_000),
+ 	PINMUX_DATA(DV_DATA19_MARK, PJ19MD_001),
+@@ -1666,12 +1669,24 @@ static const struct pinmux_func pinmux_func_gpios[] = {
+ 	GPIO_FN(WDTOVF),
+ 
+ 	/* CAN */
++	GPIO_FN(CTX2),
++	GPIO_FN(CRX2),
+ 	GPIO_FN(CTX1),
+ 	GPIO_FN(CRX1),
+ 	GPIO_FN(CTX0),
+ 	GPIO_FN(CRX0),
++	GPIO_FN(CTX0_CTX1),
+ 	GPIO_FN(CRX0_CRX1),
++	GPIO_FN(CTX0_CTX1_CTX2),
+ 	GPIO_FN(CRX0_CRX1_CRX2),
++	GPIO_FN(CTX2_PJ21),
++	GPIO_FN(CRX2_PJ20),
++	GPIO_FN(CTX1_PJ23),
++	GPIO_FN(CRX1_PJ22),
++	GPIO_FN(CTX0_CTX1_PJ23),
++	GPIO_FN(CRX0_CRX1_PJ22),
++	GPIO_FN(CTX0_CTX1_CTX2_PJ21),
++	GPIO_FN(CRX0_CRX1_CRX2_PJ20),
+ 
+ 	/* DMAC */
+ 	GPIO_FN(TEND0),
+-- 
+2.20.1
+
