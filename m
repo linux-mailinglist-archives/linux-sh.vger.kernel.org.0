@@ -2,38 +2,38 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CB4A15E716
-	for <lists+linux-sh@lfdr.de>; Fri, 14 Feb 2020 17:52:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC3B715E532
+	for <lists+linux-sh@lfdr.de>; Fri, 14 Feb 2020 17:40:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404971AbgBNQTT (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 14 Feb 2020 11:19:19 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52346 "EHLO mail.kernel.org"
+        id S2393317AbgBNQXB (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 14 Feb 2020 11:23:01 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58956 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404964AbgBNQTS (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Fri, 14 Feb 2020 11:19:18 -0500
+        id S2393304AbgBNQXA (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Fri, 14 Feb 2020 11:23:00 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 14B5324702;
-        Fri, 14 Feb 2020 16:19:16 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2E48B24765;
+        Fri, 14 Feb 2020 16:22:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581697157;
-        bh=Vs4JIXKOY68VcmDg9hGYy8Jl4dneukZoBexeHZyaEZc=;
+        s=default; t=1581697379;
+        bh=CGu7tBO353P7Ff+y9HIraxw5h4GN5dJ6yvrZg2/OjNo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P/Wb+0K6K+yeqze4Bo3pOCmjQYDkkV0EH8RkIqF9ak3VW9IvHfB4RPBkAbCT81MCi
-         Vh1WiA13PmbJbBcC7BFMwJJaUAwGAse/I+krCgfcS1nzEVfXOI7a7brHNlLccpCGey
-         B+vG22ICBW4XvJvuUXEq5U101bMe4xBvwemHjaoY=
+        b=klbtFeB187/JDYMXpbUbGmIgEFjzaJkL83OGtD26EUHvHdFu6dnKy6lqsIczDAUF3
+         iWW5uFjGl4JXQV89PBZTKBVJKvtp+nOAbVi06WKQMwfJuYCXufrUik6L829U9/Ktrz
+         yRDuG4ID/xj+QGspjEvUPUtDcGf1SDyURDToM/fU=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
         Sasha Levin <sashal@kernel.org>, linux-sh@vger.kernel.org,
         linux-renesas-soc@vger.kernel.org, linux-gpio@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 095/186] pinctrl: sh-pfc: sh7269: Fix CAN function GPIOs
-Date:   Fri, 14 Feb 2020 11:15:44 -0500
-Message-Id: <20200214161715.18113-95-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 076/141] pinctrl: sh-pfc: sh7269: Fix CAN function GPIOs
+Date:   Fri, 14 Feb 2020 11:20:16 -0500
+Message-Id: <20200214162122.19794-76-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200214161715.18113-1-sashal@kernel.org>
-References: <20200214161715.18113-1-sashal@kernel.org>
+In-Reply-To: <20200214162122.19794-1-sashal@kernel.org>
+References: <20200214162122.19794-1-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-stable: review
@@ -88,10 +88,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 36 insertions(+), 14 deletions(-)
 
 diff --git a/arch/sh/include/cpu-sh2a/cpu/sh7269.h b/arch/sh/include/cpu-sh2a/cpu/sh7269.h
-index d516e5d488180..b887cc402b712 100644
+index 2a0ca8780f0d8..e4caddd443daf 100644
 --- a/arch/sh/include/cpu-sh2a/cpu/sh7269.h
 +++ b/arch/sh/include/cpu-sh2a/cpu/sh7269.h
-@@ -78,8 +78,15 @@ enum {
+@@ -79,8 +79,15 @@ enum {
  	GPIO_FN_WDTOVF,
  
  	/* CAN */
