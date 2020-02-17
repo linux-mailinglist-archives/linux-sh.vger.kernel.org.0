@@ -2,106 +2,113 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C34E8160A61
-	for <lists+linux-sh@lfdr.de>; Mon, 17 Feb 2020 07:24:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B9036160BA8
+	for <lists+linux-sh@lfdr.de>; Mon, 17 Feb 2020 08:36:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726289AbgBQGYA (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 17 Feb 2020 01:24:00 -0500
-Received: from mail.kernel.org ([198.145.29.99]:36308 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725958AbgBQGX7 (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Mon, 17 Feb 2020 01:23:59 -0500
-Received: from hump (unknown [87.71.56.52])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6A24120718;
-        Mon, 17 Feb 2020 06:23:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581920638;
-        bh=/x16WuB9ipweEdbRODxI3vPb27s/qMR9LxZj9eSXNFE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=mJdZTvPNP7YeXjSuzPzV/mVObPxfKwGHjQ8p+ZHMpTmRtHHC4KJ+V+9rVhTjyc//R
-         yxkqqla61U/GzHYInQ60SIgL3AIru2SOxlhJ63F/uuX7uFtPbBAVrgP2PtOiwMtu2+
-         8lDq6YKKg11ilpAZTu8jTZrVhQnL/nAs55Me23Y8=
-Date:   Mon, 17 Feb 2020 08:23:44 +0200
-From:   Mike Rapoport <rppt@kernel.org>
-To:     Russell King - ARM Linux admin <linux@armlinux.org.uk>
-Cc:     linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Brian Cain <bcain@codeaurora.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Guan Xuetao <gxt@pku.edu.cn>,
-        James Morse <james.morse@arm.com>,
-        Jonas Bonn <jonas@southpole.se>,
-        Julien Thierry <julien.thierry.kdev@gmail.com>,
-        Ley Foon Tan <ley.foon.tan@intel.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Rich Felker <dalias@libc.org>,
-        Stafford Horne <shorne@gmail.com>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Tony Luck <tony.luck@intel.com>, Will Deacon <will@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        kvmarm@lists.cs.columbia.edu, kvm-ppc@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
-        linux-sh@vger.kernel.org, nios2-dev@lists.rocketboards.org,
-        openrisc@lists.librecores.org,
-        uclinux-h8-devel@lists.sourceforge.jp,
-        Mike Rapoport <rppt@linux.ibm.com>
-Subject: Re: [PATCH v2 00/13] mm: remove __ARCH_HAS_5LEVEL_HACK
-Message-ID: <20200217062344.GA4729@hump>
-References: <20200216081843.28670-1-rppt@kernel.org>
- <20200216082230.GV25745@shell.armlinux.org.uk>
+        id S1726267AbgBQHg2 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 17 Feb 2020 02:36:28 -0500
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:41995 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726029AbgBQHg2 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 17 Feb 2020 02:36:28 -0500
+Received: by mail-oi1-f196.google.com with SMTP id j132so15806714oih.9;
+        Sun, 16 Feb 2020 23:36:27 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=SuOiO3WgSyJKnxTjJOQN1meORdYh4/iYGl3q0xfpi6g=;
+        b=lwVDQYb2modr4q2GgEpSvbkqRMWo1/agGejwMn+dDFAFMltLrsjz5vmrChPV/hkMsY
+         M0ixASaJS2i1sUVlQWUewYPRkq73DTnyEAb6qwMbU97XXYyMBt82fqR9p6KcprVj2QP0
+         SgQyan9Ltu+WjKK9I2C9oy0mys5SIWs055YAbViuz0n00Cg5ufqdRNWTLhp/unZJWEES
+         mGujjexNSyIFDCE1JPJ6rLb1GscDjI4uB95Hhvcji04zk932lnvtr4g9opc3/r3eM2b3
+         ZB2VUcKTGj4V4LS3aeVwG0n5O8TianOytz2cI9dpuz9wQlqXkYOYzfvuG10TZIU0eKfX
+         yPrQ==
+X-Gm-Message-State: APjAAAUANc/TcO2eBQ9a6eEcChfVG9nit+tIRtexncSpf04sCe34Ozfv
+        /ChahXXioFsuyFzEAEf5cynxJvX8k+FvmAIbseQ=
+X-Google-Smtp-Source: APXvYqxKa9A1iXEoFtvs2SQx0wwpyI+D+8O+BpCQT5TTiBwESFO3k3MigqRo69thtGMj1kz+e9do4m1f9fB6IxLYpJM=
+X-Received: by 2002:aca:1a06:: with SMTP id a6mr8802173oia.148.1581924987398;
+ Sun, 16 Feb 2020 23:36:27 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200216082230.GV25745@shell.armlinux.org.uk>
+References: <1581915833-21984-1-git-send-email-anshuman.khandual@arm.com> <1581915833-21984-3-git-send-email-anshuman.khandual@arm.com>
+In-Reply-To: <1581915833-21984-3-git-send-email-anshuman.khandual@arm.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 17 Feb 2020 08:36:16 +0100
+Message-ID: <CAMuHMdU0DSTZMn6akY8qZR3SDxVEruEsd3Q3sYf-tn_ooXDDBw@mail.gmail.com>
+Subject: Re: [PATCH 2/5] mm/vma: Make vma_is_accessible() available for
+ general use
+To:     Anshuman Khandual <anshuman.khandual@arm.com>
+Cc:     Linux MM <linux-mm@kvack.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Guo Ren <guoren@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paulburton@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Mel Gorman <mgorman@suse.de>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        linux-mips@vger.kernel.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Sun, Feb 16, 2020 at 08:22:30AM +0000, Russell King - ARM Linux admin wrote:
-> On Sun, Feb 16, 2020 at 10:18:30AM +0200, Mike Rapoport wrote:
-> > From: Mike Rapoport <rppt@linux.ibm.com>
-> > 
-> > Hi,
-> > 
-> > These patches convert several architectures to use page table folding and
-> > remove __ARCH_HAS_5LEVEL_HACK along with include/asm-generic/5level-fixup.h.
-> > 
-> > The changes are mostly about mechanical replacement of pgd accessors with p4d
-> > ones and the addition of higher levels to page table traversals.
-> > 
-> > All the patches were sent separately to the respective arch lists and
-> > maintainers hence the "v2" prefix.
-> 
-> You fail to explain why this change which adds 488 additional lines of
-> code is desirable.
+On Mon, Feb 17, 2020 at 6:04 AM Anshuman Khandual
+<anshuman.khandual@arm.com> wrote:
+> Lets move vma_is_accessible() helper to include/linux/mm.h which makes it
+> available for general use. While here, this replaces all remaining open
+> encodings for VMA access check with vma_is_accessible().
+>
+> Cc: Guo Ren <guoren@kernel.org>
+> Cc: Geert Uytterhoeven <geert@linux-m68k.org
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Paul Burton <paulburton@kernel.org>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Cc: Rich Felker <dalias@libc.org>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: Andy Lutomirski <luto@kernel.org>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Steven Rostedt <rostedt@goodmis.org>
+> Cc: Mel Gorman <mgorman@suse.de>
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-m68k@lists.linux-m68k.org
+> Cc: linux-mips@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-sh@vger.kernel.org
+> Cc: linux-mm@kvack.org
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 
-Right, I should have been more explicit about it.
+>  arch/m68k/mm/fault.c    | 2 +-
 
-As Christophe mentioned in his reply, removing 'HACK' and 'fixup' is an
-improvement.
-Another thing is that when all architectures behave the same it opens
-opportunities for cleaning up repeating definitions of page table
-manipulation primitives.
+For m68k:
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
- 
-> -- 
-> RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-> FTTC broadband for 0.8mile line in suburbia: sync at 12.1Mbps down 622kbps up
-> According to speedtest.net: 11.9Mbps down 500kbps up
+Gr{oetje,eeting}s,
+
+                        Geert
 
 -- 
-Sincerely yours,
-Mike.
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
