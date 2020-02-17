@@ -2,277 +2,170 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 29946161EEC
-	for <lists+linux-sh@lfdr.de>; Tue, 18 Feb 2020 03:21:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9945516230D
+	for <lists+linux-sh@lfdr.de>; Tue, 18 Feb 2020 10:10:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726298AbgBRCV4 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 17 Feb 2020 21:21:56 -0500
-Received: from mail.kernel.org ([198.145.29.99]:50370 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726182AbgBRCV4 (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Mon, 17 Feb 2020 21:21:56 -0500
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3B29A2465D;
-        Tue, 18 Feb 2020 02:21:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581992514;
-        bh=UFm8ktdZhblu/2s0ozFeAb4+2Rlmv3TL7j0nOVximz0=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=PEjs99KqMCb92Wk1M7ayKtUXgPiXb6a6dacanXMhKN3X7z8L+Cz0w2BVaE9c0lCaZ
-         LyfwA8H6aLbB2uEYNoNrEedS7L6KUhhtxCx3d86P/WAoReitv9/CxEH8jK18jLmsZc
-         YnCh6IVgQrm1txL3nvx1nek6grRsjJ2XJXdnqhRM=
-Received: by mail-lj1-f175.google.com with SMTP id x14so21035842ljd.13;
-        Mon, 17 Feb 2020 18:21:54 -0800 (PST)
-X-Gm-Message-State: APjAAAXOlTyL4bMDkP8vL+7ftRh9Zs+6tG3jyQxTRJ9yyQgy2jBEJMiF
-        t/PQh2YEUCoKQIylSulg2BsvkczsYDP8DIdKggo=
-X-Google-Smtp-Source: APXvYqwLxeMgM+mSk0yU+FYSCGy3AfSLs0zCZ4mYg0byKooBHPWU4rt3UmuGmS6NBw9sW9r0FPIiyiQYYxAAvpvgI18=
-X-Received: by 2002:a2e:81c3:: with SMTP id s3mr11214674ljg.168.1581992512158;
- Mon, 17 Feb 2020 18:21:52 -0800 (PST)
-MIME-Version: 1.0
-References: <1581915833-21984-1-git-send-email-anshuman.khandual@arm.com> <1581915833-21984-3-git-send-email-anshuman.khandual@arm.com>
-In-Reply-To: <1581915833-21984-3-git-send-email-anshuman.khandual@arm.com>
-From:   Guo Ren <guoren@kernel.org>
-Date:   Tue, 18 Feb 2020 10:21:40 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTSj9aOhkNo5eZQD0a7vWJ1-6_CX4LSuhm54odQsxqV37Q@mail.gmail.com>
-Message-ID: <CAJF2gTSj9aOhkNo5eZQD0a7vWJ1-6_CX4LSuhm54odQsxqV37Q@mail.gmail.com>
-Subject: Re: [PATCH 2/5] mm/vma: Make vma_is_accessible() available for
- general use
-To:     Anshuman Khandual <anshuman.khandual@arm.com>
-Cc:     linux-mm@kvack.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paulburton@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        id S1726352AbgBRJKg (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 18 Feb 2020 04:10:36 -0500
+Received: from bombadil.infradead.org ([198.137.202.133]:35180 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726186AbgBRJKg (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 18 Feb 2020 04:10:36 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Sender:Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=gtxCElNvSCXWFICx33F89B+eF/cQ+L9FjqnWYk2rKuI=; b=h/D+gqw5OmQpGOwUjnu/fi4+kH
+        bT0h8EUVx9iIS8HNfPlJzJPk40KKUsFKNf009z67RPKZuDo+88sdToDM6wpb5+YlEa7V9G6OJvFol
+        R8RQl98kwCpA4ooFYQSURvPloAPXb0/KOMWODRXhBfm93RtLstFP639AaaseMhA7rBw6OI8LTEr+J
+        PXc4gR41BMqKLfnINKvS8pLmCqR3uXPMYK/daZvPEV9ynEWBeYzh1jVee6AgvUIOeV700uQ2EOPBg
+        z3vWEhpNHMY0ljZor0m1CokA7zJdOq2gDEs8oPaHQ9a9htLoD+FYLhrx/s8ITQGSuGwynWgVTIITp
+        vszoRJOw==;
+Received: from tmo-109-126.customers.d1-online.com ([80.187.109.126] helo=bombadil.infradead.org)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1j3ytn-00046s-Vd; Tue, 18 Feb 2020 09:10:36 +0000
+Received: from mchehab by bombadil.infradead.org with local (Exim 4.92.3)
+        (envelope-from <mchehab@bombadil.infradead.org>)
+        id 1j3j8V-000foa-PM; Mon, 17 Feb 2020 17:20:43 +0100
+From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        "David S. Miller" <davem@davemloft.net>,
         Paul Mackerras <paulus@samba.org>,
+        linux-arm-kernel@lists.infradead.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-sh@vger.kernel.org,
+        Will Deacon <will@kernel.org>,
+        Amit Daniel Kachhap <amit.kachhap@gmail.com>,
+        linux-crypto@vger.kernel.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        keyrings@vger.kernel.org, Viresh Kumar <viresh.kumar@linaro.org>,
+        linuxppc-dev@lists.ozlabs.org,
         Michael Ellerman <mpe@ellerman.id.au>,
+        David Howells <dhowells@redhat.com>, linux-pci@vger.kernel.org,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Bjorn Helgaas <bhelgaas@google.com>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Mel Gorman <mgorman@suse.de>, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-sh@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        Rich Felker <dalias@libc.org>, linux-pm@vger.kernel.org,
+        Javi Merino <javi.merino@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Subject: [PATCH v2 00/24] Manually convert  thermal, crypto and misc devices to ReST
+Date:   Mon, 17 Feb 2020 17:20:18 +0100
+Message-Id: <cover.1581956285.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.24.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-csky:
 
-Acked-by: Guo Ren <guoren@kernel.org>
+Manually convert some files from thermal, crypto and misc-devices
+to ReST format.
 
+This patch is against linux-next 20200217 tag.
 
-On Mon, Feb 17, 2020 at 1:04 PM Anshuman Khandual
-<anshuman.khandual@arm.com> wrote:
->
-> Lets move vma_is_accessible() helper to include/linux/mm.h which makes it
-> available for general use. While here, this replaces all remaining open
-> encodings for VMA access check with vma_is_accessible().
->
-> Cc: Guo Ren <guoren@kernel.org>
-> Cc: Geert Uytterhoeven <geert@linux-m68k.org
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Paul Burton <paulburton@kernel.org>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-> Cc: Rich Felker <dalias@libc.org>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: Andy Lutomirski <luto@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Steven Rostedt <rostedt@goodmis.org>
-> Cc: Mel Gorman <mgorman@suse.de>
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-m68k@lists.linux-m68k.org
-> Cc: linux-mips@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-sh@vger.kernel.org
-> Cc: linux-mm@kvack.org
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
->  arch/csky/mm/fault.c    | 2 +-
->  arch/m68k/mm/fault.c    | 2 +-
->  arch/mips/mm/fault.c    | 2 +-
->  arch/powerpc/mm/fault.c | 2 +-
->  arch/sh/mm/fault.c      | 2 +-
->  arch/x86/mm/fault.c     | 2 +-
->  include/linux/mm.h      | 5 +++++
->  kernel/sched/fair.c     | 2 +-
->  mm/gup.c                | 2 +-
->  mm/memory.c             | 5 -----
->  mm/mempolicy.c          | 3 +--
->  11 files changed, 14 insertions(+), 15 deletions(-)
->
-> diff --git a/arch/csky/mm/fault.c b/arch/csky/mm/fault.c
-> index f76618b630f9..4b3511b8298d 100644
-> --- a/arch/csky/mm/fault.c
-> +++ b/arch/csky/mm/fault.c
-> @@ -137,7 +137,7 @@ asmlinkage void do_page_fault(struct pt_regs *regs, unsigned long write,
->                 if (!(vma->vm_flags & VM_WRITE))
->                         goto bad_area;
->         } else {
-> -               if (!(vma->vm_flags & (VM_READ | VM_WRITE | VM_EXEC)))
-> +               if (!vma_is_accessible(vma))
->                         goto bad_area;
->         }
->
-> diff --git a/arch/m68k/mm/fault.c b/arch/m68k/mm/fault.c
-> index e9b1d7585b43..d5131ec5d923 100644
-> --- a/arch/m68k/mm/fault.c
-> +++ b/arch/m68k/mm/fault.c
-> @@ -125,7 +125,7 @@ int do_page_fault(struct pt_regs *regs, unsigned long address,
->                 case 1:         /* read, present */
->                         goto acc_err;
->                 case 0:         /* read, not present */
-> -                       if (!(vma->vm_flags & (VM_READ | VM_EXEC | VM_WRITE)))
-> +                       if (!vma_is_accessible(vma))
->                                 goto acc_err;
->         }
->
-> diff --git a/arch/mips/mm/fault.c b/arch/mips/mm/fault.c
-> index 1e8d00793784..5b9f947bfa32 100644
-> --- a/arch/mips/mm/fault.c
-> +++ b/arch/mips/mm/fault.c
-> @@ -142,7 +142,7 @@ static void __kprobes __do_page_fault(struct pt_regs *regs, unsigned long write,
->                                 goto bad_area;
->                         }
->                 } else {
-> -                       if (!(vma->vm_flags & (VM_READ | VM_WRITE | VM_EXEC)))
-> +                       if (!vma_is_accessible(vma))
->                                 goto bad_area;
->                 }
->         }
-> diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-> index 8db0507619e2..71a3658c516b 100644
-> --- a/arch/powerpc/mm/fault.c
-> +++ b/arch/powerpc/mm/fault.c
-> @@ -314,7 +314,7 @@ static bool access_error(bool is_write, bool is_exec,
->                 return false;
->         }
->
-> -       if (unlikely(!(vma->vm_flags & (VM_READ | VM_EXEC | VM_WRITE))))
-> +       if (unlikely(!vma_is_accessible(vma)))
->                 return true;
->         /*
->          * We should ideally do the vma pkey access check here. But in the
-> diff --git a/arch/sh/mm/fault.c b/arch/sh/mm/fault.c
-> index 5f51456f4fc7..a8c4253f37d7 100644
-> --- a/arch/sh/mm/fault.c
-> +++ b/arch/sh/mm/fault.c
-> @@ -355,7 +355,7 @@ static inline int access_error(int error_code, struct vm_area_struct *vma)
->                 return 1;
->
->         /* read, not present: */
-> -       if (unlikely(!(vma->vm_flags & (VM_READ | VM_EXEC | VM_WRITE))))
-> +       if (unlikely(!vma_is_accessible(vma)))
->                 return 1;
->
->         return 0;
-> diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-> index fa4ea09593ab..c461eaab0306 100644
-> --- a/arch/x86/mm/fault.c
-> +++ b/arch/x86/mm/fault.c
-> @@ -1200,7 +1200,7 @@ access_error(unsigned long error_code, struct vm_area_struct *vma)
->                 return 1;
->
->         /* read, not present: */
-> -       if (unlikely(!(vma->vm_flags & (VM_READ | VM_EXEC | VM_WRITE))))
-> +       if (unlikely(!vma_is_accessible(vma)))
->                 return 1;
->
->         return 0;
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 52269e56c514..b0e53ef13ff1 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -541,6 +541,11 @@ static inline bool vma_is_anonymous(struct vm_area_struct *vma)
->         return !vma->vm_ops;
->  }
->
-> +static inline bool vma_is_accessible(struct vm_area_struct *vma)
-> +{
-> +       return vma->vm_flags & (VM_READ | VM_WRITE | VM_EXEC);
-> +}
-> +
->  #ifdef CONFIG_SHMEM
->  /*
->   * The vma_is_shmem is not inline because it is used only by slow
-> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-> index fe4e0d775375..6ce54d57dd09 100644
-> --- a/kernel/sched/fair.c
-> +++ b/kernel/sched/fair.c
-> @@ -2573,7 +2573,7 @@ static void task_numa_work(struct callback_head *work)
->                  * Skip inaccessible VMAs to avoid any confusion between
->                  * PROT_NONE and NUMA hinting ptes
->                  */
-> -               if (!(vma->vm_flags & (VM_READ | VM_EXEC | VM_WRITE)))
-> +               if (!vma_is_accessible(vma))
->                         continue;
->
->                 do {
-> diff --git a/mm/gup.c b/mm/gup.c
-> index 1b521e0ac1de..c8ffe2e61f03 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -1171,7 +1171,7 @@ long populate_vma_page_range(struct vm_area_struct *vma,
->          * We want mlock to succeed for regions that have any permissions
->          * other than PROT_NONE.
->          */
-> -       if (vma->vm_flags & (VM_READ | VM_WRITE | VM_EXEC))
-> +       if (vma_is_accessible(vma))
->                 gup_flags |= FOLL_FORCE;
->
->         /*
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 0bccc622e482..2f07747612b7 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -3942,11 +3942,6 @@ static inline vm_fault_t wp_huge_pmd(struct vm_fault *vmf, pmd_t orig_pmd)
->         return VM_FAULT_FALLBACK;
->  }
->
-> -static inline bool vma_is_accessible(struct vm_area_struct *vma)
-> -{
-> -       return vma->vm_flags & (VM_READ | VM_EXEC | VM_WRITE);
-> -}
-> -
->  static vm_fault_t create_huge_pud(struct vm_fault *vmf)
->  {
->  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> index 977c641f78cf..91c1ad6ab8ea 100644
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-> @@ -649,8 +649,7 @@ static int queue_pages_test_walk(unsigned long start, unsigned long end,
->
->         if (flags & MPOL_MF_LAZY) {
->                 /* Similar to task_numa_work, skip inaccessible VMAs */
-> -               if (!is_vm_hugetlb_page(vma) &&
-> -                       (vma->vm_flags & (VM_READ | VM_EXEC | VM_WRITE)) &&
-> +               if (!is_vm_hugetlb_page(vma) && vma_is_accessible(vma) &&
->                         !(vma->vm_flags & VM_MIXEDMAP))
->                         change_prot_numa(vma, start, endvma);
->                 return 1;
-> --
-> 2.20.1
->
+v2: 
 
+- a small change at patch 2 to avoid uneeded whitespace changes;
+- added 13 new patches at the end
+
+Mauro Carvalho Chehab (24):
+  docs: thermal: convert cpu-idle-cooling.rst to ReST
+  docs: crypto: convert asymmetric-keys.txt to ReST
+  docs: crypto: convert api-intro.txt to ReST format
+  docs: crypto: convert async-tx-api.txt to ReST format
+  docs: crypto: descore-readme.txt: convert to ReST format
+  docs: misc-devices/spear-pcie-gadget.txt: convert to ReST
+  docs: misc-devices/pci-endpoint-test.txt: convert to ReST
+  docs: misc-devices/pci-endpoint-test.txt: convert to ReST
+  docs: misc-devices/c2port.txt: convert to ReST format
+  docs: misc-devices/bh1770glc.txt: convert to ReST
+  docs: misc-devices/apds990x.txt: convert to ReST format
+  docs: pci: endpoint/function/binding/pci-test.txt convert to ReST
+  docs: arm64: convert perf.txt to ReST format
+  docs: cpu-freq: convert index.txt to ReST
+  docs: cpu-freq: convert amd-powernow.txt to ReST
+  docs: cpu-freq: convert core.txt to ReST
+  docs: cpu-freq: convert cpu-drivers.txt to ReST
+  docs: cpu-freq: convert cpufreq-nforce2.txt to ReST
+  docs: cpu-freq: convert cpufreq-stats.txt to ReST
+  docs: cpu-freq: convert pcc-cpufreq.txt to ReST
+  docs: powerpc: convert vcpudispatch_stats.txt to ReST
+  docs: sh: convert new-machine.txt to ReST
+  docs: sh: convert register-banks.txt to ReST
+  docs: trace: ring-buffer-design.txt: convert to ReST format
+
+ .../endpoint/function/binding/pci-test.rst    |  26 +
+ .../endpoint/function/binding/pci-test.txt    |  19 -
+ Documentation/PCI/endpoint/index.rst          |   2 +
+ Documentation/arm64/index.rst                 |   1 +
+ Documentation/arm64/{perf.txt => perf.rst}    |   7 +-
+ .../{amd-powernow.txt => amd-powernow.rst}    |  12 +-
+ Documentation/cpu-freq/{core.txt => core.rst} |  65 +-
+ .../{cpu-drivers.txt => cpu-drivers.rst}      | 129 ++-
+ ...pufreq-nforce2.txt => cpufreq-nforce2.rst} |  18 +-
+ .../{cpufreq-stats.txt => cpufreq-stats.rst}  | 121 +--
+ Documentation/cpu-freq/index.rst              |  42 +
+ Documentation/cpu-freq/index.txt              |  56 --
+ .../{pcc-cpufreq.txt => pcc-cpufreq.rst}      |  86 +-
+ .../crypto/{api-intro.txt => api-intro.rst}   | 186 ++--
+ ...symmetric-keys.txt => asymmetric-keys.rst} |  91 +-
+ .../{async-tx-api.txt => async-tx-api.rst}    | 253 +++---
+ ...{descore-readme.txt => descore-readme.rst} | 152 +++-
+ Documentation/crypto/index.rst                |   5 +
+ .../driver-api/thermal/cpu-idle-cooling.rst   |  18 +-
+ Documentation/driver-api/thermal/index.rst    |   1 +
+ Documentation/index.rst                       |   1 +
+ .../{ad525x_dpot.txt => ad525x_dpot.rst}      |  24 +-
+ .../{apds990x.txt => apds990x.rst}            |  31 +-
+ .../{bh1770glc.txt => bh1770glc.rst}          |  45 +-
+ .../misc-devices/{c2port.txt => c2port.rst}   |  58 +-
+ Documentation/misc-devices/index.rst          |   6 +
+ .../misc-devices/pci-endpoint-test.rst        |  56 ++
+ .../misc-devices/pci-endpoint-test.txt        |  41 -
+ .../misc-devices/spear-pcie-gadget.rst        | 170 ++++
+ .../misc-devices/spear-pcie-gadget.txt        | 130 ---
+ Documentation/powerpc/index.rst               |   1 +
+ ...patch_stats.txt => vcpudispatch_stats.rst} |  17 +-
+ Documentation/sh/index.rst                    |   6 +
+ .../sh/{new-machine.txt => new-machine.rst}   | 193 +++--
+ ...{register-banks.txt => register-banks.rst} |  12 +-
+ Documentation/trace/index.rst                 |   1 +
+ ...ffer-design.txt => ring-buffer-design.rst} | 802 ++++++++++--------
+ 37 files changed, 1603 insertions(+), 1281 deletions(-)
+ create mode 100644 Documentation/PCI/endpoint/function/binding/pci-test.rst
+ delete mode 100644 Documentation/PCI/endpoint/function/binding/pci-test.txt
+ rename Documentation/arm64/{perf.txt => perf.rst} (95%)
+ rename Documentation/cpu-freq/{amd-powernow.txt => amd-powernow.rst} (89%)
+ rename Documentation/cpu-freq/{core.txt => core.rst} (69%)
+ rename Documentation/cpu-freq/{cpu-drivers.txt => cpu-drivers.rst} (72%)
+ rename Documentation/cpu-freq/{cpufreq-nforce2.txt => cpufreq-nforce2.rst} (55%)
+ rename Documentation/cpu-freq/{cpufreq-stats.txt => cpufreq-stats.rst} (53%)
+ create mode 100644 Documentation/cpu-freq/index.rst
+ delete mode 100644 Documentation/cpu-freq/index.txt
+ rename Documentation/cpu-freq/{pcc-cpufreq.txt => pcc-cpufreq.rst} (80%)
+ rename Documentation/crypto/{api-intro.txt => api-intro.rst} (70%)
+ rename Documentation/crypto/{asymmetric-keys.txt => asymmetric-keys.rst} (91%)
+ rename Documentation/crypto/{async-tx-api.txt => async-tx-api.rst} (55%)
+ rename Documentation/crypto/{descore-readme.txt => descore-readme.rst} (81%)
+ rename Documentation/misc-devices/{ad525x_dpot.txt => ad525x_dpot.rst} (85%)
+ rename Documentation/misc-devices/{apds990x.txt => apds990x.rst} (86%)
+ rename Documentation/misc-devices/{bh1770glc.txt => bh1770glc.rst} (83%)
+ rename Documentation/misc-devices/{c2port.txt => c2port.rst} (59%)
+ create mode 100644 Documentation/misc-devices/pci-endpoint-test.rst
+ delete mode 100644 Documentation/misc-devices/pci-endpoint-test.txt
+ create mode 100644 Documentation/misc-devices/spear-pcie-gadget.rst
+ delete mode 100644 Documentation/misc-devices/spear-pcie-gadget.txt
+ rename Documentation/powerpc/{vcpudispatch_stats.txt => vcpudispatch_stats.rst} (94%)
+ rename Documentation/sh/{new-machine.txt => new-machine.rst} (73%)
+ rename Documentation/sh/{register-banks.txt => register-banks.rst} (88%)
+ rename Documentation/trace/{ring-buffer-design.txt => ring-buffer-design.rst} (55%)
 
 -- 
-Best Regards
- Guo Ren
+2.24.1
 
-ML: https://lore.kernel.org/linux-csky/
+
