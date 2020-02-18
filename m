@@ -2,170 +2,341 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9945516230D
-	for <lists+linux-sh@lfdr.de>; Tue, 18 Feb 2020 10:10:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D9321624FD
+	for <lists+linux-sh@lfdr.de>; Tue, 18 Feb 2020 11:54:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726352AbgBRJKg (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 18 Feb 2020 04:10:36 -0500
-Received: from bombadil.infradead.org ([198.137.202.133]:35180 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726186AbgBRJKg (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 18 Feb 2020 04:10:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Sender:Content-Transfer-Encoding:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-        Content-ID:Content-Description:In-Reply-To:References;
-        bh=gtxCElNvSCXWFICx33F89B+eF/cQ+L9FjqnWYk2rKuI=; b=h/D+gqw5OmQpGOwUjnu/fi4+kH
-        bT0h8EUVx9iIS8HNfPlJzJPk40KKUsFKNf009z67RPKZuDo+88sdToDM6wpb5+YlEa7V9G6OJvFol
-        R8RQl98kwCpA4ooFYQSURvPloAPXb0/KOMWODRXhBfm93RtLstFP639AaaseMhA7rBw6OI8LTEr+J
-        PXc4gR41BMqKLfnINKvS8pLmCqR3uXPMYK/daZvPEV9ynEWBeYzh1jVee6AgvUIOeV700uQ2EOPBg
-        z3vWEhpNHMY0ljZor0m1CokA7zJdOq2gDEs8oPaHQ9a9htLoD+FYLhrx/s8ITQGSuGwynWgVTIITp
-        vszoRJOw==;
-Received: from tmo-109-126.customers.d1-online.com ([80.187.109.126] helo=bombadil.infradead.org)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1j3ytn-00046s-Vd; Tue, 18 Feb 2020 09:10:36 +0000
-Received: from mchehab by bombadil.infradead.org with local (Exim 4.92.3)
-        (envelope-from <mchehab@bombadil.infradead.org>)
-        id 1j3j8V-000foa-PM; Mon, 17 Feb 2020 17:20:43 +0100
-From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
-Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Paul Mackerras <paulus@samba.org>,
-        linux-arm-kernel@lists.infradead.org,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-sh@vger.kernel.org,
-        Will Deacon <will@kernel.org>,
-        Amit Daniel Kachhap <amit.kachhap@gmail.com>,
-        linux-crypto@vger.kernel.org,
+        id S1726539AbgBRKyx (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 18 Feb 2020 05:54:53 -0500
+Received: from mail.kernel.org ([198.145.29.99]:35726 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726327AbgBRKyx (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Tue, 18 Feb 2020 05:54:53 -0500
+Received: from hump (unknown [109.236.136.226])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 58260207FD;
+        Tue, 18 Feb 2020 10:54:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1582023292;
+        bh=CMlZZWS7PO9lkPnhA08fc6Islr+OQCEeZuheLiBfVmU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=nQZIkGPAmBAW2q8NANsj3kry2FjoyJoV6/tOeR6LNswBfh2J3GwBoJflFT5WH0M0E
+         dfZCuTZ+znP94xdsEPbHpuBFhjabZfi5XCWgerZeTyyA+r8h1bx3I9KPRweYB3ciYM
+         WYq+qWxM8vgm+Ut2efYgnUJmpLpvYONcSRjzEgV4=
+Date:   Tue, 18 Feb 2020 12:54:40 +0200
+From:   Mike Rapoport <rppt@kernel.org>
+To:     Christophe Leroy <christophe.leroy@c-s.fr>
+Cc:     linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Brian Cain <bcain@codeaurora.org>,
         Catalin Marinas <catalin.marinas@arm.com>,
-        keyrings@vger.kernel.org, Viresh Kumar <viresh.kumar@linaro.org>,
-        linuxppc-dev@lists.ozlabs.org,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Guan Xuetao <gxt@pku.edu.cn>,
+        James Morse <james.morse@arm.com>,
+        Jonas Bonn <jonas@southpole.se>,
+        Julien Thierry <julien.thierry.kdev@gmail.com>,
+        Ley Foon Tan <ley.foon.tan@intel.com>,
+        Marc Zyngier <maz@kernel.org>,
         Michael Ellerman <mpe@ellerman.id.au>,
-        David Howells <dhowells@redhat.com>, linux-pci@vger.kernel.org,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Bjorn Helgaas <bhelgaas@google.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Rich Felker <dalias@libc.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Stafford Horne <shorne@gmail.com>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Tony Luck <tony.luck@intel.com>, Will Deacon <will@kernel.org>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-pm@vger.kernel.org,
-        Javi Merino <javi.merino@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Subject: [PATCH v2 00/24] Manually convert  thermal, crypto and misc devices to ReST
-Date:   Mon, 17 Feb 2020 17:20:18 +0100
-Message-Id: <cover.1581956285.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.24.1
+        kvmarm@lists.cs.columbia.edu, kvm-ppc@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+        linux-sh@vger.kernel.org, nios2-dev@lists.rocketboards.org,
+        openrisc@lists.librecores.org,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        Mike Rapoport <rppt@linux.ibm.com>
+Subject: Re: [PATCH v2 07/13] powerpc: add support for folded p4d page tables
+Message-ID: <20200218105440.GA1698@hump>
+References: <20200216081843.28670-1-rppt@kernel.org>
+ <20200216081843.28670-8-rppt@kernel.org>
+ <c79b363c-a111-389a-5752-51cf85fa8c44@c-s.fr>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <c79b363c-a111-389a-5752-51cf85fa8c44@c-s.fr>
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
+On Sun, Feb 16, 2020 at 11:41:07AM +0100, Christophe Leroy wrote:
+> 
+> 
+> Le 16/02/2020 à 09:18, Mike Rapoport a écrit :
+> > From: Mike Rapoport <rppt@linux.ibm.com>
+> > 
+> > Implement primitives necessary for the 4th level folding, add walks of p4d
+> > level where appropriate and replace 5level-fixup.h with pgtable-nop4d.h.
+> 
+> I don't think it is worth adding all this additionnals walks of p4d, this
+> patch could be limited to changes like:
+> 
+> -		pud = pud_offset(pgd, gpa);
+> +		pud = pud_offset(p4d_offset(pgd, gpa), gpa);
+> 
+> The additionnal walks should be added through another patch the day powerpc
+> need them.
 
-Manually convert some files from thermal, crypto and misc-devices
-to ReST format.
+Ok, I'll update the patch to reduce walking the p4d.
+ 
+> See below for more comments.
+> 
+> > 
+> > Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> > Tested-by: Christophe Leroy <christophe.leroy@c-s.fr> # 8xx and 83xx
+> > ---
 
-This patch is against linux-next 20200217 tag.
+...
 
-v2: 
+> > diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+> > index 201a69e6a355..ddddbafff0ab 100644
+> > --- a/arch/powerpc/include/asm/book3s/64/pgtable.h
+> > +++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+> > @@ -2,7 +2,7 @@
+> >   #ifndef _ASM_POWERPC_BOOK3S_64_PGTABLE_H_
+> >   #define _ASM_POWERPC_BOOK3S_64_PGTABLE_H_
+> > -#include <asm-generic/5level-fixup.h>
+> > +#include <asm-generic/pgtable-nop4d.h>
+> >   #ifndef __ASSEMBLY__
+> >   #include <linux/mmdebug.h>
+> > @@ -251,7 +251,7 @@ extern unsigned long __pmd_frag_size_shift;
+> >   /* Bits to mask out from a PUD to get to the PMD page */
+> >   #define PUD_MASKED_BITS		0xc0000000000000ffUL
+> >   /* Bits to mask out from a PGD to get to the PUD page */
+> > -#define PGD_MASKED_BITS		0xc0000000000000ffUL
+> > +#define P4D_MASKED_BITS		0xc0000000000000ffUL
+> >   /*
+> >    * Used as an indicator for rcu callback functions
+> > @@ -949,54 +949,60 @@ static inline bool pud_access_permitted(pud_t pud, bool write)
+> >   	return pte_access_permitted(pud_pte(pud), write);
+> >   }
+> > -#define pgd_write(pgd)		pte_write(pgd_pte(pgd))
+> > +#define __p4d_raw(x)	((p4d_t) { __pgd_raw(x) })
+> > +static inline __be64 p4d_raw(p4d_t x)
+> > +{
+> > +	return pgd_raw(x.pgd);
+> > +}
+> > +
+> 
+> Shouldn't this be defined in asm/pgtable-be-types.h, just like other
+> __pxx_raw() ?
 
-- a small change at patch 2 to avoid uneeded whitespace changes;
-- added 13 new patches at the end
+Ideally yes, but this creates weird header file dependencies and untangling
+them would generate way too much churn.
+ 
+> > +#define p4d_write(p4d)		pte_write(p4d_pte(p4d))
+> > -static inline void pgd_clear(pgd_t *pgdp)
+> > +static inline void p4d_clear(p4d_t *p4dp)
+> >   {
+> > -	*pgdp = __pgd(0);
+> > +	*p4dp = __p4d(0);
+> >   }
 
-Mauro Carvalho Chehab (24):
-  docs: thermal: convert cpu-idle-cooling.rst to ReST
-  docs: crypto: convert asymmetric-keys.txt to ReST
-  docs: crypto: convert api-intro.txt to ReST format
-  docs: crypto: convert async-tx-api.txt to ReST format
-  docs: crypto: descore-readme.txt: convert to ReST format
-  docs: misc-devices/spear-pcie-gadget.txt: convert to ReST
-  docs: misc-devices/pci-endpoint-test.txt: convert to ReST
-  docs: misc-devices/pci-endpoint-test.txt: convert to ReST
-  docs: misc-devices/c2port.txt: convert to ReST format
-  docs: misc-devices/bh1770glc.txt: convert to ReST
-  docs: misc-devices/apds990x.txt: convert to ReST format
-  docs: pci: endpoint/function/binding/pci-test.txt convert to ReST
-  docs: arm64: convert perf.txt to ReST format
-  docs: cpu-freq: convert index.txt to ReST
-  docs: cpu-freq: convert amd-powernow.txt to ReST
-  docs: cpu-freq: convert core.txt to ReST
-  docs: cpu-freq: convert cpu-drivers.txt to ReST
-  docs: cpu-freq: convert cpufreq-nforce2.txt to ReST
-  docs: cpu-freq: convert cpufreq-stats.txt to ReST
-  docs: cpu-freq: convert pcc-cpufreq.txt to ReST
-  docs: powerpc: convert vcpudispatch_stats.txt to ReST
-  docs: sh: convert new-machine.txt to ReST
-  docs: sh: convert register-banks.txt to ReST
-  docs: trace: ring-buffer-design.txt: convert to ReST format
+...
 
- .../endpoint/function/binding/pci-test.rst    |  26 +
- .../endpoint/function/binding/pci-test.txt    |  19 -
- Documentation/PCI/endpoint/index.rst          |   2 +
- Documentation/arm64/index.rst                 |   1 +
- Documentation/arm64/{perf.txt => perf.rst}    |   7 +-
- .../{amd-powernow.txt => amd-powernow.rst}    |  12 +-
- Documentation/cpu-freq/{core.txt => core.rst} |  65 +-
- .../{cpu-drivers.txt => cpu-drivers.rst}      | 129 ++-
- ...pufreq-nforce2.txt => cpufreq-nforce2.rst} |  18 +-
- .../{cpufreq-stats.txt => cpufreq-stats.rst}  | 121 +--
- Documentation/cpu-freq/index.rst              |  42 +
- Documentation/cpu-freq/index.txt              |  56 --
- .../{pcc-cpufreq.txt => pcc-cpufreq.rst}      |  86 +-
- .../crypto/{api-intro.txt => api-intro.rst}   | 186 ++--
- ...symmetric-keys.txt => asymmetric-keys.rst} |  91 +-
- .../{async-tx-api.txt => async-tx-api.rst}    | 253 +++---
- ...{descore-readme.txt => descore-readme.rst} | 152 +++-
- Documentation/crypto/index.rst                |   5 +
- .../driver-api/thermal/cpu-idle-cooling.rst   |  18 +-
- Documentation/driver-api/thermal/index.rst    |   1 +
- Documentation/index.rst                       |   1 +
- .../{ad525x_dpot.txt => ad525x_dpot.rst}      |  24 +-
- .../{apds990x.txt => apds990x.rst}            |  31 +-
- .../{bh1770glc.txt => bh1770glc.rst}          |  45 +-
- .../misc-devices/{c2port.txt => c2port.rst}   |  58 +-
- Documentation/misc-devices/index.rst          |   6 +
- .../misc-devices/pci-endpoint-test.rst        |  56 ++
- .../misc-devices/pci-endpoint-test.txt        |  41 -
- .../misc-devices/spear-pcie-gadget.rst        | 170 ++++
- .../misc-devices/spear-pcie-gadget.txt        | 130 ---
- Documentation/powerpc/index.rst               |   1 +
- ...patch_stats.txt => vcpudispatch_stats.rst} |  17 +-
- Documentation/sh/index.rst                    |   6 +
- .../sh/{new-machine.txt => new-machine.rst}   | 193 +++--
- ...{register-banks.txt => register-banks.rst} |  12 +-
- Documentation/trace/index.rst                 |   1 +
- ...ffer-design.txt => ring-buffer-design.rst} | 802 ++++++++++--------
- 37 files changed, 1603 insertions(+), 1281 deletions(-)
- create mode 100644 Documentation/PCI/endpoint/function/binding/pci-test.rst
- delete mode 100644 Documentation/PCI/endpoint/function/binding/pci-test.txt
- rename Documentation/arm64/{perf.txt => perf.rst} (95%)
- rename Documentation/cpu-freq/{amd-powernow.txt => amd-powernow.rst} (89%)
- rename Documentation/cpu-freq/{core.txt => core.rst} (69%)
- rename Documentation/cpu-freq/{cpu-drivers.txt => cpu-drivers.rst} (72%)
- rename Documentation/cpu-freq/{cpufreq-nforce2.txt => cpufreq-nforce2.rst} (55%)
- rename Documentation/cpu-freq/{cpufreq-stats.txt => cpufreq-stats.rst} (53%)
- create mode 100644 Documentation/cpu-freq/index.rst
- delete mode 100644 Documentation/cpu-freq/index.txt
- rename Documentation/cpu-freq/{pcc-cpufreq.txt => pcc-cpufreq.rst} (80%)
- rename Documentation/crypto/{api-intro.txt => api-intro.rst} (70%)
- rename Documentation/crypto/{asymmetric-keys.txt => asymmetric-keys.rst} (91%)
- rename Documentation/crypto/{async-tx-api.txt => async-tx-api.rst} (55%)
- rename Documentation/crypto/{descore-readme.txt => descore-readme.rst} (81%)
- rename Documentation/misc-devices/{ad525x_dpot.txt => ad525x_dpot.rst} (85%)
- rename Documentation/misc-devices/{apds990x.txt => apds990x.rst} (86%)
- rename Documentation/misc-devices/{bh1770glc.txt => bh1770glc.rst} (83%)
- rename Documentation/misc-devices/{c2port.txt => c2port.rst} (59%)
- create mode 100644 Documentation/misc-devices/pci-endpoint-test.rst
- delete mode 100644 Documentation/misc-devices/pci-endpoint-test.txt
- create mode 100644 Documentation/misc-devices/spear-pcie-gadget.rst
- delete mode 100644 Documentation/misc-devices/spear-pcie-gadget.txt
- rename Documentation/powerpc/{vcpudispatch_stats.txt => vcpudispatch_stats.rst} (94%)
- rename Documentation/sh/{new-machine.txt => new-machine.rst} (73%)
- rename Documentation/sh/{register-banks.txt => register-banks.rst} (88%)
- rename Documentation/trace/{ring-buffer-design.txt => ring-buffer-design.rst} (55%)
+> > @@ -573,9 +596,15 @@ int kvmppc_create_pte(struct kvm *kvm, pgd_t *pgtable, pte_t pte,
+> >   	/* Traverse the guest's 2nd-level tree, allocate new levels needed */
+> >   	pgd = pgtable + pgd_index(gpa);
+> > -	pud = NULL;
+> > +	p4d = NULL;
+> >   	if (pgd_present(*pgd))
+> > -		pud = pud_offset(pgd, gpa);
+> > +		p4d = p4d_offset(pgd, gpa);
+> > +	else
+> > +		new_p4d = p4d_alloc_one(kvm->mm, gpa);
+> > +
+> > +	pud = NULL;
+> > +	if (p4d_present(*p4d))
+> > +		pud = pud_offset(p4d, gpa);
+> 
+> Is it worth adding all this new code ?
+> 
+> My understanding is that the series objective is to get rid of
+> __ARCH_HAS_5LEVEL_HACK, to to add support for 5 levels to an architecture
+> that not need it (at least for now).
+> If we want to add support for 5 levels, it can be done later in another
+> patch.
+> 
+> Here I think your change could be limited to:
+> 
+> -		pud = pud_offset(pgd, gpa);
+> +		pud = pud_offset(p4d_offset(pgd, gpa), gpa);
+
+This won't work. Without __ARCH_USE_5LEVEL_HACK defined pgd_present() is
+hardwired to 1 and the actual check for the top level is performed with
+p4d_present(). The 'else' clause that allocates p4d will never be taken and
+it could be removed, but I prefer to keep it for consistency.
+ 
+> >   	else
+> >   		new_pud = pud_alloc_one(kvm->mm, gpa);
+> > @@ -597,12 +626,18 @@ int kvmppc_create_pte(struct kvm *kvm, pgd_t *pgtable, pte_t pte,
+> >   	/* Now traverse again under the lock and change the tree */
+> >   	ret = -ENOMEM;
+> >   	if (pgd_none(*pgd)) {
+> > +		if (!new_p4d)
+> > +			goto out_unlock;
+> > +		pgd_populate(kvm->mm, pgd, new_p4d);
+> > +		new_p4d = NULL;
+> > +	}
+> > +	if (p4d_none(*p4d)) {
+> >   		if (!new_pud)
+> >   			goto out_unlock;
+> > -		pgd_populate(kvm->mm, pgd, new_pud);
+> > +		p4d_populate(kvm->mm, p4d, new_pud);
+> >   		new_pud = NULL;
+> >   	}
+> > -	pud = pud_offset(pgd, gpa);
+> > +	pud = pud_offset(p4d, gpa);
+> >   	if (pud_is_leaf(*pud)) {
+> >   		unsigned long hgpa = gpa & PUD_MASK;
+> > @@ -1220,6 +1255,7 @@ static ssize_t debugfs_radix_read(struct file *file, char __user *buf,
+> >   	pgd_t *pgt;
+> >   	struct kvm_nested_guest *nested;
+> >   	pgd_t pgd, *pgdp;
+> > +	p4d_t p4d, *p4dp;
+> >   	pud_t pud, *pudp;
+> >   	pmd_t pmd, *pmdp;
+> >   	pte_t *ptep;
+> > @@ -1298,7 +1334,14 @@ static ssize_t debugfs_radix_read(struct file *file, char __user *buf,
+> >   			continue;
+> >   		}
+> > -		pudp = pud_offset(&pgd, gpa);
+> > +		p4dp = p4d_offset(&pgd, gpa);
+> > +		p4d = READ_ONCE(*p4dp);
+> > +		if (!(p4d_val(p4d) & _PAGE_PRESENT)) {
+> > +			gpa = (gpa & P4D_MASK) + P4D_SIZE;
+> > +			continue;
+> > +		}
+> > +
+> > +		pudp = pud_offset(&p4d, gpa);
+> 
+> Same, here you are forcing a useless read with READ_ONCE().
+> 
+> Your change could be limited to
+> 
+> -		pudp = pud_offset(&pgd, gpa);
+> +		pudp = pud_offset(p4d_offset(&pgd, gpa), gpa);
+
+Here again the actual check must be done against p4d rather than pgd. We
+could skip READ_ONCE() for pgd, but since it is a debugfs method I don't
+think it is more important than code consistency.
+ 
+> This comment applies to many other places.
+
+I'll make another pass to see where we can take the shortcut and use 
+
+	pudp = pud_offset(p4d_offset(...))
+ 
+> >   		pud = READ_ONCE(*pudp);
+> >   		if (!(pud_val(pud) & _PAGE_PRESENT)) {
+> >   			gpa = (gpa & PUD_MASK) + PUD_SIZE;
+> > diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
+> > index 3345f039a876..7a59f6863cec 100644
+> > --- a/arch/powerpc/lib/code-patching.c
+> > +++ b/arch/powerpc/lib/code-patching.c
+> > @@ -107,13 +107,18 @@ static inline int unmap_patch_area(unsigned long addr)
+> >   	pte_t *ptep;
+> >   	pmd_t *pmdp;
+> >   	pud_t *pudp;
+> > +	p4d_t *p4dp;
+> >   	pgd_t *pgdp;
+> >   	pgdp = pgd_offset_k(addr);
+> >   	if (unlikely(!pgdp))
+> >   		return -EINVAL;
+> > -	pudp = pud_offset(pgdp, addr);
+> > +	p4dp = p4d_offset(pgdp, addr);
+> > +	if (unlikely(!p4dp))
+> > +		return -EINVAL;
+> > +
+> > +	pudp = pud_offset(p4dp, addr);
+> >   	if (unlikely(!pudp))
+> >   		return -EINVAL;
+> > diff --git a/arch/powerpc/mm/book3s32/mmu.c b/arch/powerpc/mm/book3s32/mmu.c
+> > index 0a1c65a2c565..b2fc3e71165c 100644
+> > --- a/arch/powerpc/mm/book3s32/mmu.c
+> > +++ b/arch/powerpc/mm/book3s32/mmu.c
+> > @@ -312,7 +312,7 @@ void hash_preload(struct mm_struct *mm, unsigned long ea)
+> >   	if (!Hash)
+> >   		return;
+> > -	pmd = pmd_offset(pud_offset(pgd_offset(mm, ea), ea), ea);
+> > +	pmd = pmd_offset(pud_offset(p4d_offset(pgd_offset(mm, ea), ea), ea), ea);
+> 
+> If we continue like this, in ten years this like is going to be many
+> kilometers long.
+> 
+> I think the above would be worth a generic helper.
+
+Agree. My plan was to first unify all the architectures and then start
+introducing the generic helpers, like e.g. pmd_offset_mm().
+ 
+> >   	if (!pmd_none(*pmd))
+> >   		add_hash_page(mm->context.id, ea, pmd_val(*pmd));
+> >   }
+> > diff --git a/arch/powerpc/mm/book3s32/tlb.c b/arch/powerpc/mm/book3s32/tlb.c
+> > index 2fcd321040ff..175bc33b41b7 100644
+> > --- a/arch/powerpc/mm/book3s32/tlb.c
+> > +++ b/arch/powerpc/mm/book3s32/tlb.c
+> > @@ -87,7 +87,7 @@ static void flush_range(struct mm_struct *mm, unsigned long start,
+> >   	if (start >= end)
+> >   		return;
+> >   	end = (end - 1) | ~PAGE_MASK;
+> > -	pmd = pmd_offset(pud_offset(pgd_offset(mm, start), start), start);
+> > +	pmd = pmd_offset(pud_offset(p4d_offset(pgd_offset(mm, start), start), start), start);
+> >   	for (;;) {
+> >   		pmd_end = ((start + PGDIR_SIZE) & PGDIR_MASK) - 1;
+> >   		if (pmd_end > end)
+> > @@ -145,7 +145,7 @@ void flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr)
+> >   		return;
+> >   	}
+> >   	mm = (vmaddr < TASK_SIZE)? vma->vm_mm: &init_mm;
+> > -	pmd = pmd_offset(pud_offset(pgd_offset(mm, vmaddr), vmaddr), vmaddr);
+> > +	pmd = pmd_offset(pud_offset(p4d_offset(pgd_offset(mm, vmaddr), vmaddr), vmaddr), vmaddr);
+> >   	if (!pmd_none(*pmd))
+> >   		flush_hash_pages(mm->context.id, vmaddr, pmd_val(*pmd), 1);
+> >   }
+> > diff --git a/arch/powerpc/mm/book3s64/hash_pgtable.c b/arch/powerpc/mm/book3s64/hash_pgtable.c
+> > index 64733b9cb20a..9cd15937e88a 100644
+> > --- a/arch/powerpc/mm/book3s64/hash_pgtable.c
+> > +++ b/arch/powerpc/mm/book3s64/hash_pgtable.c
+> > @@ -148,6 +148,7 @@ void hash__vmemmap_remove_mapping(unsigned long start,
+> >   int hash__map_kernel_page(unsigned long ea, unsigned long pa, pgprot_t prot)
+> >   {
+> >   	pgd_t *pgdp;
+> > +	p4d_t *p4dp;
+> >   	pud_t *pudp;
+> >   	pmd_t *pmdp;
+> >   	pte_t *ptep;
+> > @@ -155,7 +156,8 @@ int hash__map_kernel_page(unsigned long ea, unsigned long pa, pgprot_t prot)
+> >   	BUILD_BUG_ON(TASK_SIZE_USER64 > H_PGTABLE_RANGE);
+> >   	if (slab_is_available()) {
+> >   		pgdp = pgd_offset_k(ea);
+> > -		pudp = pud_alloc(&init_mm, pgdp, ea);
+> > +		p4dp = p4d_offset(pgdp, ea);
+> > +		pudp = pud_alloc(&init_mm, p4dp, ea);
+> 
+> Could be a single line, without a new var.
+> 
+> -		pudp = pud_alloc(&init_mm, pgdp, ea);
+> +		pudp = pud_alloc(&init_mm, p4d_offset(pgdp, ea), ea);
+> 
+> 
+> Same kind of comments as already done apply to the rest.
+> 
+> Christophe
 
 -- 
-2.24.1
-
-
+Sincerely yours,
+Mike.
