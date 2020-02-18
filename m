@@ -2,361 +2,277 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AD281161841
-	for <lists+linux-sh@lfdr.de>; Mon, 17 Feb 2020 17:55:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 29946161EEC
+	for <lists+linux-sh@lfdr.de>; Tue, 18 Feb 2020 03:21:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726528AbgBQQzC (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 17 Feb 2020 11:55:02 -0500
-Received: from mail.kernel.org ([198.145.29.99]:43972 "EHLO mail.kernel.org"
+        id S1726298AbgBRCV4 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 17 Feb 2020 21:21:56 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50370 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726397AbgBQQzB (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Mon, 17 Feb 2020 11:55:01 -0500
-Received: from localhost.localdomain (unknown [194.230.155.125])
+        id S1726182AbgBRCV4 (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Mon, 17 Feb 2020 21:21:56 -0500
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AB15420801;
-        Mon, 17 Feb 2020 16:54:58 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3B29A2465D;
+        Tue, 18 Feb 2020 02:21:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581958500;
-        bh=TZ2YQmQqvfzk64TrrHyrrAVuvqNTPoqAfJ4u9CxoiQI=;
-        h=From:To:Cc:Subject:Date:From;
-        b=rcSIDJ+ysl3pXyXOgshEJGqhHxZUinmA5eteYSdFoM3zpV7KPxu8ck8cekU1hiOTs
-         +3oJTqdKBcXb2KzUkIFAoY3VJDdoIgdpDPrjyYi1rqLzOilFreA4CnKnt7AmhPa16/
-         6vWylxFfRdNeBBj/vkOB6qE4M2KICO8KRBsFY50M=
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [PATCH] sh: configs: Cleanup old Kconfig IO scheduler options
-Date:   Mon, 17 Feb 2020 17:54:55 +0100
-Message-Id: <20200217165455.5086-1-krzk@kernel.org>
-X-Mailer: git-send-email 2.17.1
+        s=default; t=1581992514;
+        bh=UFm8ktdZhblu/2s0ozFeAb4+2Rlmv3TL7j0nOVximz0=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=PEjs99KqMCb92Wk1M7ayKtUXgPiXb6a6dacanXMhKN3X7z8L+Cz0w2BVaE9c0lCaZ
+         LyfwA8H6aLbB2uEYNoNrEedS7L6KUhhtxCx3d86P/WAoReitv9/CxEH8jK18jLmsZc
+         YnCh6IVgQrm1txL3nvx1nek6grRsjJ2XJXdnqhRM=
+Received: by mail-lj1-f175.google.com with SMTP id x14so21035842ljd.13;
+        Mon, 17 Feb 2020 18:21:54 -0800 (PST)
+X-Gm-Message-State: APjAAAXOlTyL4bMDkP8vL+7ftRh9Zs+6tG3jyQxTRJ9yyQgy2jBEJMiF
+        t/PQh2YEUCoKQIylSulg2BsvkczsYDP8DIdKggo=
+X-Google-Smtp-Source: APXvYqwLxeMgM+mSk0yU+FYSCGy3AfSLs0zCZ4mYg0byKooBHPWU4rt3UmuGmS6NBw9sW9r0FPIiyiQYYxAAvpvgI18=
+X-Received: by 2002:a2e:81c3:: with SMTP id s3mr11214674ljg.168.1581992512158;
+ Mon, 17 Feb 2020 18:21:52 -0800 (PST)
+MIME-Version: 1.0
+References: <1581915833-21984-1-git-send-email-anshuman.khandual@arm.com> <1581915833-21984-3-git-send-email-anshuman.khandual@arm.com>
+In-Reply-To: <1581915833-21984-3-git-send-email-anshuman.khandual@arm.com>
+From:   Guo Ren <guoren@kernel.org>
+Date:   Tue, 18 Feb 2020 10:21:40 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTSj9aOhkNo5eZQD0a7vWJ1-6_CX4LSuhm54odQsxqV37Q@mail.gmail.com>
+Message-ID: <CAJF2gTSj9aOhkNo5eZQD0a7vWJ1-6_CX4LSuhm54odQsxqV37Q@mail.gmail.com>
+Subject: Re: [PATCH 2/5] mm/vma: Make vma_is_accessible() available for
+ general use
+To:     Anshuman Khandual <anshuman.khandual@arm.com>
+Cc:     linux-mm@kvack.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paulburton@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Mel Gorman <mgorman@suse.de>, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-sh@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-CONFIG_IOSCHED_DEADLINE and CONFIG_IOSCHED_CFQ are gone since
-commit f382fb0bcef4 ("block: remove legacy IO schedulers").
+csky:
 
-The IOSCHED_DEADLINE was replaced by MQ_IOSCHED_DEADLINE and it will be
-now enabled by default (along with MQ_IOSCHED_KYBER).
+Acked-by: Guo Ren <guoren@kernel.org>
 
-The BFQ_GROUP_IOSCHED is the only multiqueue scheduler which comes with
-group scheduling so select it in configs previously choosing
-CFQ_GROUP_IOSCHED.
 
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
----
- arch/sh/configs/apsh4ad0a_defconfig    | 3 ++-
- arch/sh/configs/kfr2r09_defconfig      | 2 --
- arch/sh/configs/magicpanelr2_defconfig | 2 --
- arch/sh/configs/polaris_defconfig      | 1 -
- arch/sh/configs/r7780mp_defconfig      | 2 --
- arch/sh/configs/r7785rp_defconfig      | 2 --
- arch/sh/configs/rsk7201_defconfig      | 2 --
- arch/sh/configs/rsk7203_defconfig      | 2 --
- arch/sh/configs/rsk7264_defconfig      | 2 --
- arch/sh/configs/rsk7269_defconfig      | 2 --
- arch/sh/configs/sdk7786_defconfig      | 3 ++-
- arch/sh/configs/se7206_defconfig       | 2 --
- arch/sh/configs/se7343_defconfig       | 1 -
- arch/sh/configs/se7619_defconfig       | 2 --
- arch/sh/configs/se7705_defconfig       | 2 --
- arch/sh/configs/se7712_defconfig       | 2 --
- arch/sh/configs/se7721_defconfig       | 2 --
- arch/sh/configs/se7722_defconfig       | 2 --
- arch/sh/configs/se7780_defconfig       | 1 -
- arch/sh/configs/sh7710voipgw_defconfig | 1 -
- arch/sh/configs/shmin_defconfig        | 2 --
- arch/sh/configs/ul2_defconfig          | 2 --
- 22 files changed, 4 insertions(+), 38 deletions(-)
+On Mon, Feb 17, 2020 at 1:04 PM Anshuman Khandual
+<anshuman.khandual@arm.com> wrote:
+>
+> Lets move vma_is_accessible() helper to include/linux/mm.h which makes it
+> available for general use. While here, this replaces all remaining open
+> encodings for VMA access check with vma_is_accessible().
+>
+> Cc: Guo Ren <guoren@kernel.org>
+> Cc: Geert Uytterhoeven <geert@linux-m68k.org
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Paul Burton <paulburton@kernel.org>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Cc: Rich Felker <dalias@libc.org>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: Andy Lutomirski <luto@kernel.org>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Steven Rostedt <rostedt@goodmis.org>
+> Cc: Mel Gorman <mgorman@suse.de>
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-m68k@lists.linux-m68k.org
+> Cc: linux-mips@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-sh@vger.kernel.org
+> Cc: linux-mm@kvack.org
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
+>  arch/csky/mm/fault.c    | 2 +-
+>  arch/m68k/mm/fault.c    | 2 +-
+>  arch/mips/mm/fault.c    | 2 +-
+>  arch/powerpc/mm/fault.c | 2 +-
+>  arch/sh/mm/fault.c      | 2 +-
+>  arch/x86/mm/fault.c     | 2 +-
+>  include/linux/mm.h      | 5 +++++
+>  kernel/sched/fair.c     | 2 +-
+>  mm/gup.c                | 2 +-
+>  mm/memory.c             | 5 -----
+>  mm/mempolicy.c          | 3 +--
+>  11 files changed, 14 insertions(+), 15 deletions(-)
+>
+> diff --git a/arch/csky/mm/fault.c b/arch/csky/mm/fault.c
+> index f76618b630f9..4b3511b8298d 100644
+> --- a/arch/csky/mm/fault.c
+> +++ b/arch/csky/mm/fault.c
+> @@ -137,7 +137,7 @@ asmlinkage void do_page_fault(struct pt_regs *regs, unsigned long write,
+>                 if (!(vma->vm_flags & VM_WRITE))
+>                         goto bad_area;
+>         } else {
+> -               if (!(vma->vm_flags & (VM_READ | VM_WRITE | VM_EXEC)))
+> +               if (!vma_is_accessible(vma))
+>                         goto bad_area;
+>         }
+>
+> diff --git a/arch/m68k/mm/fault.c b/arch/m68k/mm/fault.c
+> index e9b1d7585b43..d5131ec5d923 100644
+> --- a/arch/m68k/mm/fault.c
+> +++ b/arch/m68k/mm/fault.c
+> @@ -125,7 +125,7 @@ int do_page_fault(struct pt_regs *regs, unsigned long address,
+>                 case 1:         /* read, present */
+>                         goto acc_err;
+>                 case 0:         /* read, not present */
+> -                       if (!(vma->vm_flags & (VM_READ | VM_EXEC | VM_WRITE)))
+> +                       if (!vma_is_accessible(vma))
+>                                 goto acc_err;
+>         }
+>
+> diff --git a/arch/mips/mm/fault.c b/arch/mips/mm/fault.c
+> index 1e8d00793784..5b9f947bfa32 100644
+> --- a/arch/mips/mm/fault.c
+> +++ b/arch/mips/mm/fault.c
+> @@ -142,7 +142,7 @@ static void __kprobes __do_page_fault(struct pt_regs *regs, unsigned long write,
+>                                 goto bad_area;
+>                         }
+>                 } else {
+> -                       if (!(vma->vm_flags & (VM_READ | VM_WRITE | VM_EXEC)))
+> +                       if (!vma_is_accessible(vma))
+>                                 goto bad_area;
+>                 }
+>         }
+> diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
+> index 8db0507619e2..71a3658c516b 100644
+> --- a/arch/powerpc/mm/fault.c
+> +++ b/arch/powerpc/mm/fault.c
+> @@ -314,7 +314,7 @@ static bool access_error(bool is_write, bool is_exec,
+>                 return false;
+>         }
+>
+> -       if (unlikely(!(vma->vm_flags & (VM_READ | VM_EXEC | VM_WRITE))))
+> +       if (unlikely(!vma_is_accessible(vma)))
+>                 return true;
+>         /*
+>          * We should ideally do the vma pkey access check here. But in the
+> diff --git a/arch/sh/mm/fault.c b/arch/sh/mm/fault.c
+> index 5f51456f4fc7..a8c4253f37d7 100644
+> --- a/arch/sh/mm/fault.c
+> +++ b/arch/sh/mm/fault.c
+> @@ -355,7 +355,7 @@ static inline int access_error(int error_code, struct vm_area_struct *vma)
+>                 return 1;
+>
+>         /* read, not present: */
+> -       if (unlikely(!(vma->vm_flags & (VM_READ | VM_EXEC | VM_WRITE))))
+> +       if (unlikely(!vma_is_accessible(vma)))
+>                 return 1;
+>
+>         return 0;
+> diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+> index fa4ea09593ab..c461eaab0306 100644
+> --- a/arch/x86/mm/fault.c
+> +++ b/arch/x86/mm/fault.c
+> @@ -1200,7 +1200,7 @@ access_error(unsigned long error_code, struct vm_area_struct *vma)
+>                 return 1;
+>
+>         /* read, not present: */
+> -       if (unlikely(!(vma->vm_flags & (VM_READ | VM_EXEC | VM_WRITE))))
+> +       if (unlikely(!vma_is_accessible(vma)))
+>                 return 1;
+>
+>         return 0;
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 52269e56c514..b0e53ef13ff1 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -541,6 +541,11 @@ static inline bool vma_is_anonymous(struct vm_area_struct *vma)
+>         return !vma->vm_ops;
+>  }
+>
+> +static inline bool vma_is_accessible(struct vm_area_struct *vma)
+> +{
+> +       return vma->vm_flags & (VM_READ | VM_WRITE | VM_EXEC);
+> +}
+> +
+>  #ifdef CONFIG_SHMEM
+>  /*
+>   * The vma_is_shmem is not inline because it is used only by slow
+> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+> index fe4e0d775375..6ce54d57dd09 100644
+> --- a/kernel/sched/fair.c
+> +++ b/kernel/sched/fair.c
+> @@ -2573,7 +2573,7 @@ static void task_numa_work(struct callback_head *work)
+>                  * Skip inaccessible VMAs to avoid any confusion between
+>                  * PROT_NONE and NUMA hinting ptes
+>                  */
+> -               if (!(vma->vm_flags & (VM_READ | VM_EXEC | VM_WRITE)))
+> +               if (!vma_is_accessible(vma))
+>                         continue;
+>
+>                 do {
+> diff --git a/mm/gup.c b/mm/gup.c
+> index 1b521e0ac1de..c8ffe2e61f03 100644
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -1171,7 +1171,7 @@ long populate_vma_page_range(struct vm_area_struct *vma,
+>          * We want mlock to succeed for regions that have any permissions
+>          * other than PROT_NONE.
+>          */
+> -       if (vma->vm_flags & (VM_READ | VM_WRITE | VM_EXEC))
+> +       if (vma_is_accessible(vma))
+>                 gup_flags |= FOLL_FORCE;
+>
+>         /*
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 0bccc622e482..2f07747612b7 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -3942,11 +3942,6 @@ static inline vm_fault_t wp_huge_pmd(struct vm_fault *vmf, pmd_t orig_pmd)
+>         return VM_FAULT_FALLBACK;
+>  }
+>
+> -static inline bool vma_is_accessible(struct vm_area_struct *vma)
+> -{
+> -       return vma->vm_flags & (VM_READ | VM_EXEC | VM_WRITE);
+> -}
+> -
+>  static vm_fault_t create_huge_pud(struct vm_fault *vmf)
+>  {
+>  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+> index 977c641f78cf..91c1ad6ab8ea 100644
+> --- a/mm/mempolicy.c
+> +++ b/mm/mempolicy.c
+> @@ -649,8 +649,7 @@ static int queue_pages_test_walk(unsigned long start, unsigned long end,
+>
+>         if (flags & MPOL_MF_LAZY) {
+>                 /* Similar to task_numa_work, skip inaccessible VMAs */
+> -               if (!is_vm_hugetlb_page(vma) &&
+> -                       (vma->vm_flags & (VM_READ | VM_EXEC | VM_WRITE)) &&
+> +               if (!is_vm_hugetlb_page(vma) && vma_is_accessible(vma) &&
+>                         !(vma->vm_flags & VM_MIXEDMAP))
+>                         change_prot_numa(vma, start, endvma);
+>                 return 1;
+> --
+> 2.20.1
+>
 
-diff --git a/arch/sh/configs/apsh4ad0a_defconfig b/arch/sh/configs/apsh4ad0a_defconfig
-index 6dd0da73ca5a..6abd9bd70106 100644
---- a/arch/sh/configs/apsh4ad0a_defconfig
-+++ b/arch/sh/configs/apsh4ad0a_defconfig
-@@ -20,7 +20,8 @@ CONFIG_PROFILING=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- # CONFIG_BLK_DEV_BSG is not set
--CONFIG_CFQ_GROUP_IOSCHED=y
-+CONFIG_IOSCHED_BFQ=y
-+CONFIG_BFQ_GROUP_IOSCHED=y
- CONFIG_CPU_SUBTYPE_SH7786=y
- CONFIG_MEMORY_SIZE=0x10000000
- CONFIG_HUGETLB_PAGE_SIZE_1MB=y
-diff --git a/arch/sh/configs/kfr2r09_defconfig b/arch/sh/configs/kfr2r09_defconfig
-index 1dc3f670c481..833404490cfe 100644
---- a/arch/sh/configs/kfr2r09_defconfig
-+++ b/arch/sh/configs/kfr2r09_defconfig
-@@ -10,8 +10,6 @@ CONFIG_SLAB=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- # CONFIG_BLK_DEV_BSG is not set
--# CONFIG_IOSCHED_DEADLINE is not set
--# CONFIG_IOSCHED_CFQ is not set
- CONFIG_CPU_SUBTYPE_SH7724=y
- CONFIG_MEMORY_SIZE=0x08000000
- CONFIG_FLATMEM_MANUAL=y
-diff --git a/arch/sh/configs/magicpanelr2_defconfig b/arch/sh/configs/magicpanelr2_defconfig
-index 664c4dee6e6a..0989ed929540 100644
---- a/arch/sh/configs/magicpanelr2_defconfig
-+++ b/arch/sh/configs/magicpanelr2_defconfig
-@@ -14,8 +14,6 @@ CONFIG_MODULE_UNLOAD=y
- CONFIG_MODVERSIONS=y
- CONFIG_MODULE_SRCVERSION_ALL=y
- # CONFIG_BLK_DEV_BSG is not set
--# CONFIG_IOSCHED_DEADLINE is not set
--# CONFIG_IOSCHED_CFQ is not set
- CONFIG_CPU_SUBTYPE_SH7720=y
- CONFIG_MEMORY_START=0x0C000000
- CONFIG_MEMORY_SIZE=0x03F00000
-diff --git a/arch/sh/configs/polaris_defconfig b/arch/sh/configs/polaris_defconfig
-index e3a1d3d2694a..246408ec7462 100644
---- a/arch/sh/configs/polaris_defconfig
-+++ b/arch/sh/configs/polaris_defconfig
-@@ -12,7 +12,6 @@ CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODVERSIONS=y
- # CONFIG_BLK_DEV_BSG is not set
--# CONFIG_IOSCHED_DEADLINE is not set
- CONFIG_CPU_SUBTYPE_SH7709=y
- CONFIG_MEMORY_START=0x0C000000
- CONFIG_FLATMEM_MANUAL=y
-diff --git a/arch/sh/configs/r7780mp_defconfig b/arch/sh/configs/r7780mp_defconfig
-index 0a18f8011c55..c97ec60cff27 100644
---- a/arch/sh/configs/r7780mp_defconfig
-+++ b/arch/sh/configs/r7780mp_defconfig
-@@ -12,8 +12,6 @@ CONFIG_OPROFILE=m
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- # CONFIG_BLK_DEV_BSG is not set
--# CONFIG_IOSCHED_DEADLINE is not set
--# CONFIG_IOSCHED_CFQ is not set
- CONFIG_CPU_SUBTYPE_SH7780=y
- CONFIG_MEMORY_SIZE=0x08000000
- CONFIG_FLATMEM_MANUAL=y
-diff --git a/arch/sh/configs/r7785rp_defconfig b/arch/sh/configs/r7785rp_defconfig
-index 7226ac5a1d44..55fce65eb454 100644
---- a/arch/sh/configs/r7785rp_defconfig
-+++ b/arch/sh/configs/r7785rp_defconfig
-@@ -15,8 +15,6 @@ CONFIG_KPROBES=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- # CONFIG_BLK_DEV_BSG is not set
--# CONFIG_IOSCHED_DEADLINE is not set
--# CONFIG_IOSCHED_CFQ is not set
- CONFIG_CPU_SUBTYPE_SH7785=y
- CONFIG_MEMORY_SIZE=0x08000000
- CONFIG_HUGETLB_PAGE_SIZE_1MB=y
-diff --git a/arch/sh/configs/rsk7201_defconfig b/arch/sh/configs/rsk7201_defconfig
-index 9f4f474705b7..841809b5c2dc 100644
---- a/arch/sh/configs/rsk7201_defconfig
-+++ b/arch/sh/configs/rsk7201_defconfig
-@@ -15,8 +15,6 @@ CONFIG_PROFILING=y
- CONFIG_OPROFILE=y
- CONFIG_MODULES=y
- # CONFIG_BLK_DEV_BSG is not set
--# CONFIG_IOSCHED_DEADLINE is not set
--# CONFIG_IOSCHED_CFQ is not set
- CONFIG_CPU_SUBTYPE_SH7201=y
- CONFIG_MEMORY_SIZE=0x01000000
- CONFIG_FLATMEM_MANUAL=y
-diff --git a/arch/sh/configs/rsk7203_defconfig b/arch/sh/configs/rsk7203_defconfig
-index 10a32bd4cf66..0055031664ad 100644
---- a/arch/sh/configs/rsk7203_defconfig
-+++ b/arch/sh/configs/rsk7203_defconfig
-@@ -16,8 +16,6 @@ CONFIG_PROFILING=y
- CONFIG_OPROFILE=y
- CONFIG_MODULES=y
- # CONFIG_BLK_DEV_BSG is not set
--# CONFIG_IOSCHED_DEADLINE is not set
--# CONFIG_IOSCHED_CFQ is not set
- CONFIG_CPU_SUBTYPE_SH7203=y
- CONFIG_MEMORY_START=0x0c000000
- CONFIG_MEMORY_SIZE=0x01000000
-diff --git a/arch/sh/configs/rsk7264_defconfig b/arch/sh/configs/rsk7264_defconfig
-index 78643191c99e..f7b9c528c6df 100644
---- a/arch/sh/configs/rsk7264_defconfig
-+++ b/arch/sh/configs/rsk7264_defconfig
-@@ -17,8 +17,6 @@ CONFIG_MMAP_ALLOW_UNINITIALIZED=y
- CONFIG_PROFILING=y
- # CONFIG_BLK_DEV_BSG is not set
- CONFIG_PARTITION_ADVANCED=y
--# CONFIG_IOSCHED_DEADLINE is not set
--# CONFIG_IOSCHED_CFQ is not set
- CONFIG_CPU_SUBTYPE_SH7264=y
- CONFIG_MEMORY_START=0x0c000000
- CONFIG_FLATMEM_MANUAL=y
-diff --git a/arch/sh/configs/rsk7269_defconfig b/arch/sh/configs/rsk7269_defconfig
-index fb9fa7faf635..4bff14fb185d 100644
---- a/arch/sh/configs/rsk7269_defconfig
-+++ b/arch/sh/configs/rsk7269_defconfig
-@@ -4,8 +4,6 @@ CONFIG_EMBEDDED=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- CONFIG_SLAB=y
- # CONFIG_BLK_DEV_BSG is not set
--# CONFIG_IOSCHED_DEADLINE is not set
--# CONFIG_IOSCHED_CFQ is not set
- CONFIG_SWAP_IO_SPACE=y
- CONFIG_CPU_SUBTYPE_SH7269=y
- CONFIG_MEMORY_START=0x0c000000
-diff --git a/arch/sh/configs/sdk7786_defconfig b/arch/sh/configs/sdk7786_defconfig
-index 7fa116b436c3..61bec46ebd66 100644
---- a/arch/sh/configs/sdk7786_defconfig
-+++ b/arch/sh/configs/sdk7786_defconfig
-@@ -39,7 +39,8 @@ CONFIG_OPROFILE=m
- CONFIG_KPROBES=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
--CONFIG_CFQ_GROUP_IOSCHED=y
-+CONFIG_IOSCHED_BFQ=y
-+CONFIG_BFQ_GROUP_IOSCHED=y
- CONFIG_CPU_SUBTYPE_SH7786=y
- CONFIG_MEMORY_START=0x40000000
- CONFIG_MEMORY_SIZE=0x20000000
-diff --git a/arch/sh/configs/se7206_defconfig b/arch/sh/configs/se7206_defconfig
-index a93402b3a319..21a43f14ffac 100644
---- a/arch/sh/configs/se7206_defconfig
-+++ b/arch/sh/configs/se7206_defconfig
-@@ -28,8 +28,6 @@ CONFIG_OPROFILE=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- # CONFIG_BLK_DEV_BSG is not set
--# CONFIG_IOSCHED_DEADLINE is not set
--# CONFIG_IOSCHED_CFQ is not set
- CONFIG_CPU_SUBTYPE_SH7206=y
- CONFIG_MEMORY_START=0x0c000000
- CONFIG_FLATMEM_MANUAL=y
-diff --git a/arch/sh/configs/se7343_defconfig b/arch/sh/configs/se7343_defconfig
-index 06d067c842cd..4e794e719a28 100644
---- a/arch/sh/configs/se7343_defconfig
-+++ b/arch/sh/configs/se7343_defconfig
-@@ -11,7 +11,6 @@ CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODULE_FORCE_UNLOAD=y
- # CONFIG_BLK_DEV_BSG is not set
--# CONFIG_IOSCHED_CFQ is not set
- CONFIG_CPU_SUBTYPE_SH7343=y
- CONFIG_MEMORY_START=0x0c000000
- CONFIG_MEMORY_SIZE=0x01000000
-diff --git a/arch/sh/configs/se7619_defconfig b/arch/sh/configs/se7619_defconfig
-index f54722dbc8f5..3264415a5931 100644
---- a/arch/sh/configs/se7619_defconfig
-+++ b/arch/sh/configs/se7619_defconfig
-@@ -11,8 +11,6 @@ CONFIG_LOG_BUF_SHIFT=14
- # CONFIG_VM_EVENT_COUNTERS is not set
- CONFIG_SLAB=y
- # CONFIG_BLK_DEV_BSG is not set
--# CONFIG_IOSCHED_DEADLINE is not set
--# CONFIG_IOSCHED_CFQ is not set
- CONFIG_MEMORY_START=0x0c000000
- CONFIG_FLATMEM_MANUAL=y
- CONFIG_CPU_BIG_ENDIAN=y
-diff --git a/arch/sh/configs/se7705_defconfig b/arch/sh/configs/se7705_defconfig
-index ddfc69841955..4496b94b7d88 100644
---- a/arch/sh/configs/se7705_defconfig
-+++ b/arch/sh/configs/se7705_defconfig
-@@ -8,8 +8,6 @@ CONFIG_BLK_DEV_INITRD=y
- CONFIG_SLAB=y
- CONFIG_MODULES=y
- # CONFIG_BLK_DEV_BSG is not set
--# CONFIG_IOSCHED_DEADLINE is not set
--# CONFIG_IOSCHED_CFQ is not set
- CONFIG_CPU_SUBTYPE_SH7705=y
- CONFIG_MEMORY_START=0x0c000000
- CONFIG_MEMORY_SIZE=0x02000000
-diff --git a/arch/sh/configs/se7712_defconfig b/arch/sh/configs/se7712_defconfig
-index 9a527f978106..ee6d28ae08de 100644
---- a/arch/sh/configs/se7712_defconfig
-+++ b/arch/sh/configs/se7712_defconfig
-@@ -12,8 +12,6 @@ CONFIG_KALLSYMS_ALL=y
- CONFIG_SLAB=y
- CONFIG_MODULES=y
- # CONFIG_BLK_DEV_BSG is not set
--# CONFIG_IOSCHED_DEADLINE is not set
--# CONFIG_IOSCHED_CFQ is not set
- CONFIG_CPU_SUBTYPE_SH7712=y
- CONFIG_MEMORY_START=0x0c000000
- CONFIG_MEMORY_SIZE=0x02000000
-diff --git a/arch/sh/configs/se7721_defconfig b/arch/sh/configs/se7721_defconfig
-index 3b0e1eb6e874..bad921bc10f8 100644
---- a/arch/sh/configs/se7721_defconfig
-+++ b/arch/sh/configs/se7721_defconfig
-@@ -12,8 +12,6 @@ CONFIG_KALLSYMS_ALL=y
- CONFIG_SLAB=y
- CONFIG_MODULES=y
- # CONFIG_BLK_DEV_BSG is not set
--# CONFIG_IOSCHED_DEADLINE is not set
--# CONFIG_IOSCHED_CFQ is not set
- CONFIG_CPU_SUBTYPE_SH7721=y
- CONFIG_MEMORY_START=0x0c000000
- CONFIG_MEMORY_SIZE=0x02000000
-diff --git a/arch/sh/configs/se7722_defconfig b/arch/sh/configs/se7722_defconfig
-index 88bf9e849008..09e455817447 100644
---- a/arch/sh/configs/se7722_defconfig
-+++ b/arch/sh/configs/se7722_defconfig
-@@ -8,8 +8,6 @@ CONFIG_PROFILING=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- # CONFIG_BLK_DEV_BSG is not set
--# CONFIG_IOSCHED_DEADLINE is not set
--# CONFIG_IOSCHED_CFQ is not set
- CONFIG_CPU_SUBTYPE_SH7722=y
- CONFIG_MEMORY_START=0x0c000000
- CONFIG_NUMA=y
-diff --git a/arch/sh/configs/se7780_defconfig b/arch/sh/configs/se7780_defconfig
-index ec32c82646ed..dcd85b858ac8 100644
---- a/arch/sh/configs/se7780_defconfig
-+++ b/arch/sh/configs/se7780_defconfig
-@@ -9,7 +9,6 @@ CONFIG_LOG_BUF_SHIFT=14
- CONFIG_SLAB=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
--# CONFIG_IOSCHED_CFQ is not set
- CONFIG_CPU_SUBTYPE_SH7780=y
- CONFIG_MEMORY_SIZE=0x08000000
- CONFIG_SH_7780_SOLUTION_ENGINE=y
-diff --git a/arch/sh/configs/sh7710voipgw_defconfig b/arch/sh/configs/sh7710voipgw_defconfig
-index c86f28442a80..08426913c0e3 100644
---- a/arch/sh/configs/sh7710voipgw_defconfig
-+++ b/arch/sh/configs/sh7710voipgw_defconfig
-@@ -11,7 +11,6 @@ CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODULE_FORCE_UNLOAD=y
- # CONFIG_BLK_DEV_BSG is not set
--# CONFIG_IOSCHED_CFQ is not set
- CONFIG_CPU_SUBTYPE_SH7710=y
- CONFIG_MEMORY_START=0x0c000000
- CONFIG_MEMORY_SIZE=0x00800000
-diff --git a/arch/sh/configs/shmin_defconfig b/arch/sh/configs/shmin_defconfig
-index d589cfdfb7eb..a27b129b93c5 100644
---- a/arch/sh/configs/shmin_defconfig
-+++ b/arch/sh/configs/shmin_defconfig
-@@ -12,8 +12,6 @@ CONFIG_LOG_BUF_SHIFT=14
- # CONFIG_SHMEM is not set
- CONFIG_SLOB=y
- # CONFIG_BLK_DEV_BSG is not set
--# CONFIG_IOSCHED_DEADLINE is not set
--# CONFIG_IOSCHED_CFQ is not set
- CONFIG_CPU_SUBTYPE_SH7706=y
- CONFIG_MEMORY_START=0x0c000000
- CONFIG_MEMORY_SIZE=0x00800000
-diff --git a/arch/sh/configs/ul2_defconfig b/arch/sh/configs/ul2_defconfig
-index dc2e3061130f..103b81ec1ffb 100644
---- a/arch/sh/configs/ul2_defconfig
-+++ b/arch/sh/configs/ul2_defconfig
-@@ -8,8 +8,6 @@ CONFIG_PROFILING=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- # CONFIG_BLK_DEV_BSG is not set
--# CONFIG_IOSCHED_DEADLINE is not set
--# CONFIG_IOSCHED_CFQ is not set
- CONFIG_CPU_SUBTYPE_SH7366=y
- CONFIG_MEMORY_SIZE=0x01f00000
- CONFIG_NUMA=y
+
 -- 
-2.17.1
+Best Regards
+ Guo Ren
 
+ML: https://lore.kernel.org/linux-csky/
