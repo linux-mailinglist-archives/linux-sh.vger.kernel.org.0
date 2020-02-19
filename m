@@ -2,136 +2,174 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BD7BD16453D
-	for <lists+linux-sh@lfdr.de>; Wed, 19 Feb 2020 14:24:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 055D2164C95
+	for <lists+linux-sh@lfdr.de>; Wed, 19 Feb 2020 18:51:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727487AbgBSNYm (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 19 Feb 2020 08:24:42 -0500
-Received: from mail.kernel.org ([198.145.29.99]:33228 "EHLO mail.kernel.org"
+        id S1726659AbgBSRvF (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 19 Feb 2020 12:51:05 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49980 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726671AbgBSNYm (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Wed, 19 Feb 2020 08:24:42 -0500
-Received: from hump (unknown [147.67.241.226])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1726539AbgBSRvF (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Wed, 19 Feb 2020 12:51:05 -0500
+Received: from localhost.localdomain (unknown [194.230.155.125])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 02D8B24654;
-        Wed, 19 Feb 2020 13:24:32 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0A9F7206DB;
+        Wed, 19 Feb 2020 17:50:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582118681;
-        bh=WeK8iDiz+u7KGQl8xdyYvIuPvj8pRW13k3gZGmGmUOU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=CrDKTg0KsoKO1U07yyagx89/mJ6hieOjLuM/lo6w3mB9Y9R+aQAidXZSv/ywuM3au
-         r4bYkFE2ZGGFM/SSIBeOb3LJun+6yquvbVIUq2PH+U+U65CCtHToRoSUxXZ4LnlfNf
-         XO/4CZv966+4qxBk+L+tbRqcMNDfbzR2x3+83oH0=
-Date:   Wed, 19 Feb 2020 14:24:20 +0100
-From:   Mike Rapoport <rppt@kernel.org>
-To:     Christophe Leroy <christophe.leroy@c-s.fr>
-Cc:     linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
+        s=default; t=1582134663;
+        bh=HVHQjGSEocd9AVyWevt6joEF+d2PPbwr8+8k6h+A34M=;
+        h=From:To:Cc:Subject:Date:From;
+        b=PxIaHkLn5XTar1EPyISd4vtwzk0Yb8ho6/2/5bpHXPVckPViPmh7xJy5CDKknCISe
+         aVweOki+hxup4Tb6Es9L3KhQ8BxFokAKuut29izMLGuhQbvVvdmhKIAJt21HDJ6Icz
+         WQ/bI2EQHItOjyTVPfGGfciGRDULmeQrq4s9rqPA=
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Alexey Brodkin <abrodkin@synopsys.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Brian Cain <bcain@codeaurora.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Guan Xuetao <gxt@pku.edu.cn>,
-        James Morse <james.morse@arm.com>,
-        Jonas Bonn <jonas@southpole.se>,
-        Julien Thierry <julien.thierry.kdev@gmail.com>,
-        Ley Foon Tan <ley.foon.tan@intel.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
         Paul Mackerras <paulus@samba.org>,
-        Rich Felker <dalias@libc.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Stafford Horne <shorne@gmail.com>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Tony Luck <tony.luck@intel.com>, Will Deacon <will@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
-        kvmarm@lists.cs.columbia.edu, kvm-ppc@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
-        linux-sh@vger.kernel.org, nios2-dev@lists.rocketboards.org,
-        openrisc@lists.librecores.org,
-        uclinux-h8-devel@lists.sourceforge.jp,
-        Mike Rapoport <rppt@linux.ibm.com>
-Subject: Re: [PATCH v2 07/13] powerpc: add support for folded p4d page tables
-Message-ID: <20200219132420.GA5559@hump>
-References: <20200216081843.28670-1-rppt@kernel.org>
- <20200216081843.28670-8-rppt@kernel.org>
- <5b7c3929-5833-8ceb-85c8-a8e92e6a138e@c-s.fr>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5b7c3929-5833-8ceb-85c8-a8e92e6a138e@c-s.fr>
+        Rich Felker <dalias@libc.org>,
+        Dave Airlie <airlied@redhat.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Ben Skeggs <bskeggs@redhat.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Jiri Slaby <jirislaby@gmail.com>,
+        Nick Kossifidis <mickflemm@gmail.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
+        linux-media@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-ntb@googlegroups.com,
+        virtualization@lists.linux-foundation.org,
+        linux-arch@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>
+Subject: [RESEND PATCH v2 0/9] iomap: Constify ioreadX() iomem argument
+Date:   Wed, 19 Feb 2020 18:49:58 +0100
+Message-Id: <20200219175007.13627-1-krzk@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Wed, Feb 19, 2020 at 01:07:55PM +0100, Christophe Leroy wrote:
-> 
-> Le 16/02/2020 à 09:18, Mike Rapoport a écrit :
-> > diff --git a/arch/powerpc/mm/ptdump/ptdump.c b/arch/powerpc/mm/ptdump/ptdump.c
-> > index 206156255247..7bd4b81d5b5d 100644
-> > --- a/arch/powerpc/mm/ptdump/ptdump.c
-> > +++ b/arch/powerpc/mm/ptdump/ptdump.c
-> > @@ -277,9 +277,9 @@ static void walk_pmd(struct pg_state *st, pud_t *pud, unsigned long start)
-> >   	}
-> >   }
-> > -static void walk_pud(struct pg_state *st, pgd_t *pgd, unsigned long start)
-> > +static void walk_pud(struct pg_state *st, p4d_t *p4d, unsigned long start)
-> >   {
-> > -	pud_t *pud = pud_offset(pgd, 0);
-> > +	pud_t *pud = pud_offset(p4d, 0);
-> >   	unsigned long addr;
-> >   	unsigned int i;
-> > @@ -293,6 +293,22 @@ static void walk_pud(struct pg_state *st, pgd_t *pgd, unsigned long start)
-> >   	}
-> >   }
-> > +static void walk_p4d(struct pg_state *st, pgd_t *pgd, unsigned long start)
-> > +{
-> > +	p4d_t *p4d = p4d_offset(pgd, 0);
-> > +	unsigned long addr;
-> > +	unsigned int i;
-> > +
-> > +	for (i = 0; i < PTRS_PER_P4D; i++, p4d++) {
-> > +		addr = start + i * P4D_SIZE;
-> > +		if (!p4d_none(*p4d) && !p4d_is_leaf(*p4d))
-> > +			/* p4d exists */
-> > +			walk_pud(st, p4d, addr);
-> > +		else
-> > +			note_page(st, addr, 2, p4d_val(*p4d));
-> 
-> Level 2 is already used by walk_pud().
-> 
-> I think you have to increment the level used in walk_pud() and walk_pmd()
-> and walk_pte()
+Hi,
 
-Thanks for catching this!
-I'll fix the numbers in the next version.
- 
-> > +	}
-> > +}
-> > +
-> >   static void walk_pagetables(struct pg_state *st)
-> >   {
-> >   	unsigned int i;
-> > @@ -306,7 +322,7 @@ static void walk_pagetables(struct pg_state *st)
-> >   	for (i = pgd_index(addr); i < PTRS_PER_PGD; i++, pgd++, addr += PGDIR_SIZE) {
-> >   		if (!pgd_none(*pgd) && !pgd_is_leaf(*pgd))
-> >   			/* pgd exists */
-> > -			walk_pud(st, pgd, addr);
-> > +			walk_p4d(st, pgd, addr);
-> >   		else
-> >   			note_page(st, addr, 1, pgd_val(*pgd));
-> >   	}
-> 
-> Christophe
+
+Changes since v1
+================
+https://lore.kernel.org/lkml/1578415992-24054-1-git-send-email-krzk@kernel.org/
+1. Constify also ioreadX_rep() and mmio_insX(),
+2. Squash lib+alpha+powerpc+parisc+sh into one patch for bisectability,
+3. Add acks and reviews,
+4. Re-order patches so all optional driver changes are at the end.
+
+
+Description
+===========
+The ioread8/16/32() and others have inconsistent interface among the
+architectures: some taking address as const, some not.
+
+It seems there is nothing really stopping all of them to take
+pointer to const.
+
+Patchset was only compile tested on affected architectures.  No real
+testing.
+
+
+volatile
+========
+There is still interface inconsistency between architectures around
+"volatile" qualifier:
+ - include/asm-generic/io.h:static inline u32 ioread32(const volatile void __iomem *addr)
+ - include/asm-generic/iomap.h:extern unsigned int ioread32(const void __iomem *);
+
+This is still discussed and out of scope of this patchset.
+
+
+Merging
+=======
+Multiple architectures are affected in first patch so acks are welcomed.
+
+1. All patches depend on first patch,
+2. Patches 2-4 unify the interface also in few drivers,
+3. PAtches 5-9 are optional cleanup, without actual impact.
+
+
+Best regards,
+Krzysztof
+
+
+Krzysztof Kozlowski (9):
+  iomap: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  rtl818x: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  ntb: intel: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  virtio: pci: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  arc: Constify ioreadX() iomem argument (as in generic implementation)
+  drm/mgag200: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  drm/nouveau: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  media: fsl-viu: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  ath5k: Constify ioreadX() iomem argument (as in generic
+    implementation)
+
+ arch/alpha/include/asm/core_apecs.h           |  6 +-
+ arch/alpha/include/asm/core_cia.h             |  6 +-
+ arch/alpha/include/asm/core_lca.h             |  6 +-
+ arch/alpha/include/asm/core_marvel.h          |  4 +-
+ arch/alpha/include/asm/core_mcpcia.h          |  6 +-
+ arch/alpha/include/asm/core_t2.h              |  2 +-
+ arch/alpha/include/asm/io.h                   | 12 ++--
+ arch/alpha/include/asm/io_trivial.h           | 16 ++---
+ arch/alpha/include/asm/jensen.h               |  2 +-
+ arch/alpha/include/asm/machvec.h              |  6 +-
+ arch/alpha/kernel/core_marvel.c               |  2 +-
+ arch/alpha/kernel/io.c                        | 12 ++--
+ arch/arc/plat-axs10x/axs10x.c                 |  4 +-
+ arch/parisc/include/asm/io.h                  |  4 +-
+ arch/parisc/lib/iomap.c                       | 72 +++++++++----------
+ arch/powerpc/kernel/iomap.c                   | 28 ++++----
+ arch/sh/kernel/iomap.c                        | 22 +++---
+ drivers/gpu/drm/mgag200/mgag200_drv.h         |  4 +-
+ drivers/gpu/drm/nouveau/nouveau_bo.c          |  2 +-
+ drivers/media/platform/fsl-viu.c              |  2 +-
+ drivers/net/wireless/ath/ath5k/ahb.c          | 10 +--
+ .../realtek/rtl818x/rtl8180/rtl8180.h         |  6 +-
+ drivers/ntb/hw/intel/ntb_hw_gen1.c            |  2 +-
+ drivers/ntb/hw/intel/ntb_hw_gen3.h            |  2 +-
+ drivers/ntb/hw/intel/ntb_hw_intel.h           |  2 +-
+ drivers/virtio/virtio_pci_modern.c            |  6 +-
+ include/asm-generic/iomap.h                   | 28 ++++----
+ include/linux/io-64-nonatomic-hi-lo.h         |  4 +-
+ include/linux/io-64-nonatomic-lo-hi.h         |  4 +-
+ lib/iomap.c                                   | 30 ++++----
+ 30 files changed, 156 insertions(+), 156 deletions(-)
 
 -- 
-Sincerely yours,
-Mike.
+2.17.1
+
