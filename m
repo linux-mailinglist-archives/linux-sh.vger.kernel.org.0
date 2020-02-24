@@ -2,130 +2,60 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DB10816A666
-	for <lists+linux-sh@lfdr.de>; Mon, 24 Feb 2020 13:48:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 160B516AD5B
+	for <lists+linux-sh@lfdr.de>; Mon, 24 Feb 2020 18:28:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727451AbgBXMrx convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-sh@lfdr.de>); Mon, 24 Feb 2020 07:47:53 -0500
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:36492 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726778AbgBXMrw (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 24 Feb 2020 07:47:52 -0500
-Received: by mail-ed1-f67.google.com with SMTP id j17so11757997edp.3;
-        Mon, 24 Feb 2020 04:47:49 -0800 (PST)
+        id S1727673AbgBXR2i (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 24 Feb 2020 12:28:38 -0500
+Received: from mail-io1-f67.google.com ([209.85.166.67]:44618 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727460AbgBXR2i (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 24 Feb 2020 12:28:38 -0500
+Received: by mail-io1-f67.google.com with SMTP id z16so11063795iod.11
+        for <linux-sh@vger.kernel.org>; Mon, 24 Feb 2020 09:28:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=EeLJEH+7EzvcyfpunSNXk19GqtRhsARa92mDghjdcVE=;
+        b=MpuvjGjH00b1HLh57c+Tx6ZAI1+3xUczJLbFWz4zMtHLLwVh8zycCMvKih2ivGPEAb
+         rbb4WShPcgDvJAohUYG+A1B4TJNaaR51a2gI/+xJehLgRCaebC8PEIaUjmKg3RCHYD7i
+         88VwMTY8B3IgEGu+sKeq1Wkea9Ktc6OjSDJXo1+34wTGCazx4BcLZZdtpMBkl7vykDx/
+         3TuSW1z0Cn7lryQo9mUjuOUHCwzumk/gvOTq6YRWoC0PwrQvx2++em4FLSugbilzCRSr
+         acgaBrx3x5845oW1KDqkCvz2RNQUInPxGkMjyRI5WY61C+rLSgWi+I9JfNmh8nn/94sR
+         3Lyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=6p1Rm/cgq3FqTcHGA+7QXUNsBMb6waSsaCWakkpOhMI=;
-        b=KevIibRzjYHkz7b3z6zkclYIBEKkafAUwE0AyTYxwKkMUyb291I/ISo9i/2pJpdEN5
-         E7UTE6jq2iIK+vPwAx8KGjc42VQoQD5Ntf+jqooSbNMmjOHP+3JOcQ/Lrsrj325oAnEi
-         +ouDUf8DvLtsQsUnNfxkgk2/12MLSptugXSzI2yQA9Sh20Rw3wm6lpERRHqRRmmxgrJe
-         1hW0w2XoDojno+hlDHbVVrYTRgezXrfJij2GDVSstbFmSOpVmpKDmSjVMER8vCabCfEQ
-         X1HixIwZkQZLTGTfzNCVP99iMk0IXXLQzMv8GAD2THs12N4gBuJfpJdKFA3V3XFM+MYB
-         VOww==
-X-Gm-Message-State: APjAAAUo/2ViXnpSnrWar8ORCQBgfeHSnsSGfxcYNqZLmKw9eEIGVNQY
-        h5SDppDFpaq1um3eKVv6IDQ=
-X-Google-Smtp-Source: APXvYqxOCnjuqHzZ8w9dppB5X8CKpWu3LAO4qx3F7JuCo/1tjWWY0qRzHXx7PYmPGsjZ1wOThemeng==
-X-Received: by 2002:a17:906:7fd0:: with SMTP id r16mr45290488ejs.319.1582548468870;
-        Mon, 24 Feb 2020 04:47:48 -0800 (PST)
-Received: from pi3 ([194.230.155.125])
-        by smtp.googlemail.com with ESMTPSA id n19sm944550edy.9.2020.02.24.04.47.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Feb 2020 04:47:48 -0800 (PST)
-Date:   Mon, 24 Feb 2020 13:47:44 +0100
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Jiri Slaby <jirislaby@gmail.com>
-Cc:     Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Alexey Brodkin <abrodkin@synopsys.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Dave Airlie <airlied@redhat.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Ben Skeggs <bskeggs@redhat.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Nick Kossifidis <mickflemm@gmail.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
-        linux-media@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-ntb@googlegroups.com,
-        virtualization@lists.linux-foundation.org,
-        linux-arch@vger.kernel.org
-Subject: Re: [RESEND PATCH v2 9/9] ath5k: Constify ioreadX() iomem argument
- (as in generic implementation)
-Message-ID: <20200224124744.GA1949@pi3>
-References: <20200219175007.13627-1-krzk@kernel.org>
- <20200219175007.13627-10-krzk@kernel.org>
- <518a9023-f802-17b3-fca5-582400bc34ae@gmail.com>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=EeLJEH+7EzvcyfpunSNXk19GqtRhsARa92mDghjdcVE=;
+        b=LlbE7Bsqjb0MlB9alY+LzS9Wv2A4dOtY+5/SxsaQFo0gp5/Dm0yA1yE4U40MS5Yxa/
+         PW7O9irSnABmpKrc5u1qvQjdhOx1RsJU1xOS4M6b4Db4Vv5wUxWtNcw3zp8juFGwgH9E
+         AmQ987X/m1aMGew5xqK9TaqBE3x1Cu7xSJ82wOnOrodj1LjitI/X/2jG3VKOMRf3oAyi
+         exofhtASF9PMo7xeg2w4thLsteU0aajCtRpIByQvuB+0Fq1NgZDocZ2rs0SVEpnEl+Ua
+         +EuS6MMf5e5udfsqFwPnabpRD6QUqexXfsfIwi7csHXwA1ozsQePWupUJunv2zhCOOtg
+         ibTA==
+X-Gm-Message-State: APjAAAXkFKAkiyvZsGeQYwxGo9P4H2d4btnisOGdvj/OvqCJqZOvI+kg
+        1jsIzoDK36NwMkR0HNJg2GxI92lObCx75Sikx80=
+X-Google-Smtp-Source: APXvYqwHZcj7/WOkPKpbWzircIjuu6JZRmsdJ6jYw8iYKMppfaT9/9FR/yv0bbE2GrohO/y88Lxz7kU/QeEkPsmAChQ=
+X-Received: by 2002:a6b:39c4:: with SMTP id g187mr51843954ioa.271.1582565317509;
+ Mon, 24 Feb 2020 09:28:37 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8BIT
-In-Reply-To: <518a9023-f802-17b3-fca5-582400bc34ae@gmail.com>
+Received: by 2002:ac0:91b8:0:0:0:0:0 with HTTP; Mon, 24 Feb 2020 09:28:37
+ -0800 (PST)
+Reply-To: anna_edo.35@outlook.fr
+From:   "Mrs. Annabelle Edo" <annabelleedo36@gmail.com>
+Date:   Mon, 24 Feb 2020 18:28:37 +0100
+Message-ID: <CAEFP4ecPN2QhiNuvRv9UQZBFeuHNHHM7L_OVcsHtUi=Z98ovmg@mail.gmail.com>
+Subject: RE: Happy New Year"",..
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Thu, Feb 20, 2020 at 10:48:33AM +0100, Jiri Slaby wrote:
-> On 19. 02. 20, 18:50, Krzysztof Kozlowski wrote:
-> > The ioreadX() helpers have inconsistent interface.  On some architectures
-> > void *__iomem address argument is a pointer to const, on some not.
-> > 
-> > Implementations of ioreadX() do not modify the memory under the address
-> > so they can be converted to a "const" version for const-safety and
-> > consistency among architectures.
-> > 
-> > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> > Acked-by: Kalle Valo <kvalo@codeaurora.org>
-> > ---
-> >  drivers/net/wireless/ath/ath5k/ahb.c | 10 +++++-----
-> >  1 file changed, 5 insertions(+), 5 deletions(-)
-> > 
-> > diff --git a/drivers/net/wireless/ath/ath5k/ahb.c b/drivers/net/wireless/ath/ath5k/ahb.c
-> > index 2c9cec8b53d9..8bd01df369fb 100644
-> > --- a/drivers/net/wireless/ath/ath5k/ahb.c
-> > +++ b/drivers/net/wireless/ath/ath5k/ahb.c
-> > @@ -138,18 +138,18 @@ static int ath_ahb_probe(struct platform_device *pdev)
-> >  
-> >  	if (bcfg->devid >= AR5K_SREV_AR2315_R6) {
-> >  		/* Enable WMAC AHB arbitration */
-> > -		reg = ioread32((void __iomem *) AR5K_AR2315_AHB_ARB_CTL);
-> > +		reg = ioread32((const void __iomem *) AR5K_AR2315_AHB_ARB_CTL);
-> 
-> While I understand why the parameter of ioread32 should be const, I
-> don't see a reason for these casts on the users' side. What does it
-> bring except longer code to read?
+.Happy New Year,
 
-Because the argument is an int:
+I was wondering if you got a chance to review my previous email i sent to you.
 
-drivers/net/wireless/ath/ath5k/ahb.c: In function ‘ath_ahb_probe’:
-drivers/net/wireless/ath/ath5k/ahb.c:141:18: warning: passing argument 1 of ‘ioread32’ makes pointer from integer without a cast [-Wint-conversion]
-   reg = ioread32(AR5K_AR2315_AHB_ARB_CTL);
-
-Best regards,
-Krzysztof
-
+Best Regards,,
