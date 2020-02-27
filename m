@@ -2,54 +2,55 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5ED4E1725EC
-	for <lists+linux-sh@lfdr.de>; Thu, 27 Feb 2020 19:04:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B0A61725FD
+	for <lists+linux-sh@lfdr.de>; Thu, 27 Feb 2020 19:09:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730560AbgB0SDs (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 27 Feb 2020 13:03:48 -0500
-Received: from mail-qk1-f195.google.com ([209.85.222.195]:38329 "EHLO
-        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730549AbgB0SDs (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 27 Feb 2020 13:03:48 -0500
-Received: by mail-qk1-f195.google.com with SMTP id z19so244070qkj.5
-        for <linux-sh@vger.kernel.org>; Thu, 27 Feb 2020 10:03:47 -0800 (PST)
+        id S1729951AbgB0SIV (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 27 Feb 2020 13:08:21 -0500
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:42937 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729415AbgB0SIV (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 27 Feb 2020 13:08:21 -0500
+Received: by mail-ot1-f66.google.com with SMTP id 66so21663otd.9
+        for <linux-sh@vger.kernel.org>; Thu, 27 Feb 2020 10:08:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=YVEntATD8Di4X+bfE0q+dQjUPZodyWiwMumJsgAjImQ=;
-        b=RAltTZstLeabLiJ0d66x7j4b8d0dFG+sPOHfpbO/cFKDi0l5MP5SaBmzQZcj23Dj9O
-         F/bYYNBZZSSfyS9/dujI6RC7S6GQGiGhjfoRC4Je5Ph5T17ppPj/nNg6eK7g8v4ebWzu
-         Qxmk3XbPh4QJMBWSZz4NrK//VIcI+eMAy0MaVJAPx5AhdQtsNg6OJfWlFI3uTppHsXSP
-         NLDKJ/17oMjJmVhx6/pQNGEX+CmviRc1utdWSmUNrTHklbQUwh86mk+awHvAFbaKoddd
-         0oAlTI+2vm+ko8Vd1wYitYFGuU7IYpDc+5ksP1iJZ4Sf+eRw2yMQhLqeo1YoqRFOoTVh
-         Z2sw==
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=4F3CkEYboenOdYfvgxaEFjzaB88Ias8AvgF6y2bsYJo=;
+        b=btVB1/kCSyh3miQnMYs3e17lMek8QSVYBuP0FlHl1SN8jj8AK7ZcsZTrZLYZcDr8L0
+         NSJ9MeY7RriOXGf8mxUIHycStwVTMNeNi3yrQla6dMYLj551Rp9KWZnTu9g5AKGKvvYT
+         9WlFsCXT0V4ckXbqldT9RpXG/xwR6Da9kdRkEzPi8tdoEUk2abNALGro5ZLdP/rXl0tG
+         /sptmzlpcqEIizzSfsWPT6ZSjga8U2PolwmP3cK/7EJmAplRWGpIpx3oVOIujglDOBPB
+         U/jmRkYeKgZuoKDQ/uKn2xiCIfawYUF6S/k5E1dLzCZ3Me3N7Bit13cPq5fiueJNzJqi
+         dLRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=YVEntATD8Di4X+bfE0q+dQjUPZodyWiwMumJsgAjImQ=;
-        b=jC+rIcO7XpmgzmL1fXxWhuPTUJ9mwq/dnFm0g78lJBoRxO8pVlTrQZlHMfeLzlNX6h
-         /SmMIDvpgv6DbIYtH52FCUXolEHJjzPhyfrB3x1qaj0a6GYM1wo2Q9sRIa1qHLZoObQR
-         G35F177bHL8TUDXc4ZD+8I0NtBg+XNuULF22AQfObxDuu7AT5EwZKnIXW2W2JUw/UqJv
-         S8HNCrn0vOhmq6eUVXo/+WRzvdv+dz3kIJ72tbqUpuKjboOo8PawFX41ZTkug00wrOzq
-         UQBinJlqHzjvbtKdhgATHwNTwTuU8SfPrDWMOPQYarRBhmp/0FCUxY0DjtOq/h6AdrXA
-         mCsQ==
-X-Gm-Message-State: APjAAAXXOHvGu/3uJNFfjYGCt9/yIAG4cMQCxGAv2URd17IcdUK81uGw
-        09xqDxre5UKfLp2M9WTE04f+bg==
-X-Google-Smtp-Source: APXvYqy6UDThfoJk2c6gSaNxuGupf3hgdusGohKCaZ7APtBt0Z8E4pxTDMcVw55YbgzfmGfI1mrhOg==
-X-Received: by 2002:a37:4e53:: with SMTP id c80mr533140qkb.58.1582826627303;
-        Thu, 27 Feb 2020 10:03:47 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-142-68-57-212.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.57.212])
-        by smtp.gmail.com with ESMTPSA id e64sm3551886qtd.45.2020.02.27.10.03.46
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 27 Feb 2020 10:03:46 -0800 (PST)
-Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1j7NVi-0008Pb-Fb; Thu, 27 Feb 2020 14:03:46 -0400
-Date:   Thu, 27 Feb 2020 14:03:46 -0400
-From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     Dan Williams <dan.j.williams@intel.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=4F3CkEYboenOdYfvgxaEFjzaB88Ias8AvgF6y2bsYJo=;
+        b=akhGtXf9R0j1AFooyLzdxXJq2sqvSOep5SvlQ6tXYzrCJVUQU4wNfrn4R7lAIRU1Fu
+         HZYIaN4uYZc4Rk/DFD5QBpJ0lwXPj1DnLeE8+CFzy883idfXL6mIOaN5ORzD1PbxStoA
+         l94sZ9ymxOCXTepulgGmY0OKneLjI5eqgbDSBNv4hvKrKAQbX6nTmCOog28vf5cDhtXL
+         C+Rqwevue3OSkBw9FkQF4YFVK7i8lMsk8Yb1bXejNZAEAPyOPAQR93zelQbSkmLq1eGG
+         JbMZXOSyqnNPTldLDql5f4ufu29ChbD7Pjjzx6xqB8GIZsp3hwarlJssi9lp2UxKQhTZ
+         +JOQ==
+X-Gm-Message-State: APjAAAWau52Y9cDf9H51h9kZjbdAZ/2PeACYkl01pqGmUsx3h3X12MNN
+        0cL+opFxOvnPoUfl+ogUv/nA5qvWkII4Z0zu+fBNqw==
+X-Google-Smtp-Source: APXvYqzWZDXbIbzo1esKuuymk2opANK/r16XeVx9wwrPYC7dcJfvghbSyviygno+FjUiHqeLzBQ9brN5G7f+Od4lm4g=
+X-Received: by 2002:a9d:6c9:: with SMTP id 67mr93279otx.363.1582826900650;
+ Thu, 27 Feb 2020 10:08:20 -0800 (PST)
+MIME-Version: 1.0
+References: <20200221182503.28317-1-logang@deltatee.com> <20200227171704.GK31668@ziepe.ca>
+ <e8781f85-3fc7-b9ce-c751-606803cbdc77@deltatee.com> <20200227174311.GL31668@ziepe.ca>
+ <CAPcyv4iek=EmNk9JgXq=-HcZjd9Kz4m2+qXMhnDWMshFKFZPXQ@mail.gmail.com> <20200227180346.GM31668@ziepe.ca>
+In-Reply-To: <20200227180346.GM31668@ziepe.ca>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Thu, 27 Feb 2020 10:08:09 -0800
+Message-ID: <CAPcyv4g6OYvD57LdWcqGuWVanckQv4a1uzJrE1OZyMH+z=5KZw@mail.gmail.com>
+Subject: Re: [PATCH v3 0/7] Allow setting caching mode in arch_add_memory()
+ for P2PDMA
+To:     Jason Gunthorpe <jgg@ziepe.ca>
 Cc:     Logan Gunthorpe <logang@deltatee.com>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
@@ -71,87 +72,77 @@ Cc:     Logan Gunthorpe <logang@deltatee.com>,
         Andy Lutomirski <luto@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
         Eric Badger <ebadger@gigaio.com>
-Subject: Re: [PATCH v3 0/7] Allow setting caching mode in arch_add_memory()
- for P2PDMA
-Message-ID: <20200227180346.GM31668@ziepe.ca>
-References: <20200221182503.28317-1-logang@deltatee.com>
- <20200227171704.GK31668@ziepe.ca>
- <e8781f85-3fc7-b9ce-c751-606803cbdc77@deltatee.com>
- <20200227174311.GL31668@ziepe.ca>
- <CAPcyv4iek=EmNk9JgXq=-HcZjd9Kz4m2+qXMhnDWMshFKFZPXQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAPcyv4iek=EmNk9JgXq=-HcZjd9Kz4m2+qXMhnDWMshFKFZPXQ@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Thu, Feb 27, 2020 at 09:55:04AM -0800, Dan Williams wrote:
-> On Thu, Feb 27, 2020 at 9:43 AM Jason Gunthorpe <jgg@ziepe.ca> wrote:
-> >
-> > On Thu, Feb 27, 2020 at 10:21:50AM -0700, Logan Gunthorpe wrote:
+On Thu, Feb 27, 2020 at 10:03 AM Jason Gunthorpe <jgg@ziepe.ca> wrote:
+>
+> On Thu, Feb 27, 2020 at 09:55:04AM -0800, Dan Williams wrote:
+> > On Thu, Feb 27, 2020 at 9:43 AM Jason Gunthorpe <jgg@ziepe.ca> wrote:
 > > >
-> > >
-> > > On 2020-02-27 10:17 a.m., Jason Gunthorpe wrote:
-> > > >> Instead of this, this series proposes a change to arch_add_memory()
-> > > >> to take the pgprot required by the mapping which allows us to
-> > > >> explicitly set pagetable entries for P2PDMA memory to WC.
+> > > On Thu, Feb 27, 2020 at 10:21:50AM -0700, Logan Gunthorpe wrote:
 > > > >
-> > > > Is there a particular reason why WC was selected here? I thought for
-> > > > the p2pdma cases there was no kernel user that touched the memory?
+> > > >
+> > > > On 2020-02-27 10:17 a.m., Jason Gunthorpe wrote:
+> > > > >> Instead of this, this series proposes a change to arch_add_memory()
+> > > > >> to take the pgprot required by the mapping which allows us to
+> > > > >> explicitly set pagetable entries for P2PDMA memory to WC.
+> > > > >
+> > > > > Is there a particular reason why WC was selected here? I thought for
+> > > > > the p2pdma cases there was no kernel user that touched the memory?
+> > > >
+> > > > Yes, that's correct. I choose WC here because the existing users are
+> > > > registering memory blocks without side effects which fit the WC
+> > > > semantics well.
 > > >
-> > > Yes, that's correct. I choose WC here because the existing users are
-> > > registering memory blocks without side effects which fit the WC
-> > > semantics well.
+> > > Hm, AFAIK WC memory is not compatible with the spinlocks/mutexs/etc in
+> > > Linux, so while it is true the memory has no side effects, there would
+> > > be surprising concurrency risks if anything in the kernel tried to
+> > > write to it.
+> > >
+> > > Not compatible means the locks don't contain stores to WC memory the
+> > > way you would expect. AFAIK on many CPUs extra barriers are required
+> > > to keep WC stores ordered, the same way ARM already has extra barriers
+> > > to keep UC stores ordered with locking..
+> > >
+> > > The spinlocks are defined to contain UC stores though.
 > >
-> > Hm, AFAIK WC memory is not compatible with the spinlocks/mutexs/etc in
-> > Linux, so while it is true the memory has no side effects, there would
-> > be surprising concurrency risks if anything in the kernel tried to
-> > write to it.
-> >
-> > Not compatible means the locks don't contain stores to WC memory the
-> > way you would expect. AFAIK on many CPUs extra barriers are required
-> > to keep WC stores ordered, the same way ARM already has extra barriers
-> > to keep UC stores ordered with locking..
-> >
-> > The spinlocks are defined to contain UC stores though.
-> 
-> How are spinlocks and mutexes getting into p2pdma ranges in the first
-> instance? Even with UC, the system has bigger problems if it's trying
-> to send bus locks targeting PCI, see the flurry of activity of trying
-> to trigger faults on split locks [1].
+> > How are spinlocks and mutexes getting into p2pdma ranges in the first
+> > instance? Even with UC, the system has bigger problems if it's trying
+> > to send bus locks targeting PCI, see the flurry of activity of trying
+> > to trigger faults on split locks [1].
+>
+> This is not what I was trying to explain.
+>
+> Consider
+>
+>  static spinlock lock; // CPU DRAM
+>  static idx = 0;
+>  u64 *wc_memory = [..];
+>
+>  spin_lock(&lock);
+>  wc_memory[0] = idx++;
+>  spin_unlock(&lock);
+>
+> You'd expect that the PCI device will observe stores where idx is
+> strictly increasing, but this is not guarenteed. idx may decrease, idx
+> may skip. It just won't duplicate.
+>
+> Or perhaps
+>
+>  wc_memory[0] = foo;
+>  writel(doorbell)
+>
+> foo is not guarenteed observable by the device before doorbell reaches
+> the device.
+>
+> All of these are things that do not happen with UC or NC memory, and
+> are surprising violations of our programming model.
+>
+> Generic kernel code should never touch WC memory unless the code is
+> specifically designed to handle it.
 
-This is not what I was trying to explain.
-
-Consider
-
- static spinlock lock; // CPU DRAM
- static idx = 0;
- u64 *wc_memory = [..];
-
- spin_lock(&lock);
- wc_memory[0] = idx++;
- spin_unlock(&lock);
-
-You'd expect that the PCI device will observe stores where idx is
-strictly increasing, but this is not guarenteed. idx may decrease, idx
-may skip. It just won't duplicate.
-
-Or perhaps
-
- wc_memory[0] = foo;
- writel(doorbell)
-
-foo is not guarenteed observable by the device before doorbell reaches
-the device.
-
-All of these are things that do not happen with UC or NC memory, and
-are surprising violations of our programming model.
-
-Generic kernel code should never touch WC memory unless the code is
-specifically designed to handle it.
-
-Jason
+Ah, yes, agree.
