@@ -2,28 +2,45 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 86DA61765D1
-	for <lists+linux-sh@lfdr.de>; Mon,  2 Mar 2020 22:20:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B6FBA177309
+	for <lists+linux-sh@lfdr.de>; Tue,  3 Mar 2020 10:50:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726720AbgCBVUb (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 2 Mar 2020 16:20:31 -0500
-Received: from ale.deltatee.com ([207.54.116.67]:59248 "EHLO ale.deltatee.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725911AbgCBVUb (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Mon, 2 Mar 2020 16:20:31 -0500
-Received: from guinness.priv.deltatee.com ([172.16.1.162])
-        by ale.deltatee.com with esmtp (Exim 4.92)
-        (envelope-from <logang@deltatee.com>)
-        id 1j8sTx-0000TW-UO; Mon, 02 Mar 2020 14:20:10 -0700
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-ia64@vger.kernel.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Linux-sh <linux-sh@vger.kernel.org>,
-        platform-driver-x86@vger.kernel.org, Linux MM <linux-mm@kvack.org>,
-        Michal Hocko <mhocko@kernel.org>,
+        id S1728332AbgCCJuJ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 3 Mar 2020 04:50:09 -0500
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:33500 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728257AbgCCJuJ (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 3 Mar 2020 04:50:09 -0500
+Received: by mail-wr1-f65.google.com with SMTP id x7so3526953wrr.0;
+        Tue, 03 Mar 2020 01:50:07 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=Y99FbCmw9OnfxHbqxZIXhqJVIqMSByuY8qfyzjJA6uY=;
+        b=Wva2l0lshsUmNZAHvot2+xBGKy8fq1fI/WESP5+j/0zs5PaXRZ8zZY1WS6Pje67dCY
+         vC4zgUpCU4klkhX0Et3BgKjtcW1nw+J/tNntOxtp0P0RNxZzXYCUfWe28jxuSz2iSD4w
+         U+Ex/IE+stnDx/INKhKXwm440nXDEElvkwaqjIESVDjhvVCX5DdQa4UzARmLmD/sl43n
+         4tggBCBASYL0OxKRtj0mtu7+qwn5Ix3ZtvwntI6+HXNHd0zXqA7Xq1IvEfmcjkZdxAxs
+         /p7aD/WlUT7Objm+pfMMrw2gqZ9aTFPg7bRApQhk3aswn5lpWnS+fuRN7Pq/dAhWIsln
+         gPCA==
+X-Gm-Message-State: ANhLgQ2UPTryJ6eB7ydECFfnaHkowgGWCc+J95sXCxupOfs8FT/OeChX
+        BmbNLODPGjs4wo5MLbjmEzQ=
+X-Google-Smtp-Source: ADFU+vuwthCqGkSbyuUa0Z+cIz/BhBDMexJ+IcEdZ4dQctXNHctdxSNdlijFijlYre1w0hRSFX3F9Q==
+X-Received: by 2002:a5d:4a10:: with SMTP id m16mr4435706wrq.333.1583229006583;
+        Tue, 03 Mar 2020 01:50:06 -0800 (PST)
+Received: from localhost (prg-ext-pat.suse.com. [213.151.95.130])
+        by smtp.gmail.com with ESMTPSA id u8sm3096766wmm.15.2020.03.03.01.50.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Mar 2020 01:50:05 -0800 (PST)
+Date:   Tue, 3 Mar 2020 10:50:05 +0100
+From:   Michal Hocko <mhocko@kernel.org>
+To:     Logan Gunthorpe <logang@deltatee.com>
+Cc:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, linux-mm@kvack.org,
+        Dan Williams <dan.j.williams@intel.com>,
         David Hildenbrand <david@redhat.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Christoph Hellwig <hch@lst.de>,
@@ -35,52 +52,53 @@ Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         Andy Lutomirski <luto@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
-        Eric Badger <ebadger@gigaio.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>
+        Eric Badger <ebadger@gigaio.com>
+Subject: Re: [PATCH v3 1/7] mm/memory_hotplug: Drop the flags field from
+ struct mhp_restrictions
+Message-ID: <20200303095005.GE4380@dhcp22.suse.cz>
 References: <20200221182503.28317-1-logang@deltatee.com>
- <20200221182503.28317-8-logang@deltatee.com>
- <CAPcyv4gNi3sesGnujShStoF8bi8kYg+MQkqhQRCT_1+wex5wbw@mail.gmail.com>
-From:   Logan Gunthorpe <logang@deltatee.com>
-Message-ID: <6e2591ad-4605-aba4-c7b8-2345940e91b4@deltatee.com>
-Date:   Mon, 2 Mar 2020 14:20:07 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ <20200221182503.28317-2-logang@deltatee.com>
 MIME-Version: 1.0
-In-Reply-To: <CAPcyv4gNi3sesGnujShStoF8bi8kYg+MQkqhQRCT_1+wex5wbw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-CA
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 172.16.1.162
-X-SA-Exim-Rcpt-To: jgg@ziepe.ca, ebadger@gigaio.com, peterz@infradead.org, luto@kernel.org, dave.hansen@linux.intel.com, bp@alien8.de, mingo@redhat.com, tglx@linutronix.de, benh@kernel.crashing.org, will@kernel.org, catalin.marinas@arm.com, hch@lst.de, akpm@linux-foundation.org, david@redhat.com, mhocko@kernel.org, linux-mm@kvack.org, platform-driver-x86@vger.kernel.org, linux-sh@vger.kernel.org, linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-ia64@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, dan.j.williams@intel.com
-X-SA-Exim-Mail-From: logang@deltatee.com
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on ale.deltatee.com
-X-Spam-Level: 
-X-Spam-Status: No, score=-8.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        GREYLIST_ISWHITE,SURBL_BLOCKED,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v3 7/7] mm/memremap: Set caching mode for PCI P2PDMA
- memory to WC
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on ale.deltatee.com)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200221182503.28317-2-logang@deltatee.com>
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-
-
-On 2020-02-29 3:47 p.m., Dan Williams wrote:
-> On Fri, Feb 21, 2020 at 10:25 AM Logan Gunthorpe <logang@deltatee.com> wrote:
->>
->> PCI BAR IO memory should never be mapped as WB, however prior to this
->> the PAT bits were set WB and it was typically overridden by MTRR
->> registers set by the firmware.
->>
->> Set PCI P2PDMA memory to be WC (writecombining) as the only current
->> user (the NVMe CMB) was originally mapped WC before the P2PDMA code
->> replaced the mapping with devm_memremap_pages().
+On Fri 21-02-20 11:24:57, Logan Gunthorpe wrote:
+> This variable is not used anywhere and should therefore be removed
+> from the structure.
 > 
-> Will the change to UC regress this existing use case?
+> Signed-off-by: Logan Gunthorpe <logang@deltatee.com>
+> Reviewed-by: David Hildenbrand <david@redhat.com>
 
-I don't think so. They've been essentially mapped UC for a long time now
-(since the P2PDMA patch set was merged) and nobody has complained.
+Acked-by: Michal Hocko <mhocko@suse.com>
+
+> ---
+>  include/linux/memory_hotplug.h | 2 --
+>  1 file changed, 2 deletions(-)
+> 
+> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
+> index f4d59155f3d4..69ff3037528d 100644
+> --- a/include/linux/memory_hotplug.h
+> +++ b/include/linux/memory_hotplug.h
+> @@ -55,11 +55,9 @@ enum {
+>  
+>  /*
+>   * Restrictions for the memory hotplug:
+> - * flags:  MHP_ flags
+>   * altmap: alternative allocator for memmap array
+>   */
+>  struct mhp_restrictions {
+> -	unsigned long flags;
+>  	struct vmem_altmap *altmap;
+>  };
+>  
+> -- 
+> 2.20.1
+
+-- 
+Michal Hocko
+SUSE Labs
