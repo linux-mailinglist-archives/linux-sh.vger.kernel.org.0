@@ -2,58 +2,126 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BC33217A842
-	for <lists+linux-sh@lfdr.de>; Thu,  5 Mar 2020 15:54:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DF4DF17A88E
+	for <lists+linux-sh@lfdr.de>; Thu,  5 Mar 2020 16:10:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726682AbgCEOyb convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-sh@lfdr.de>); Thu, 5 Mar 2020 09:54:31 -0500
-Received: from mail.11d02.mspz7.gob.ec ([181.211.254.254]:49020 "EHLO
-        mail.11d02.mspz7.gob.ec" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726382AbgCEOyb (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 5 Mar 2020 09:54:31 -0500
-X-Greylist: delayed 11438 seconds by postgrey-1.27 at vger.kernel.org; Thu, 05 Mar 2020 09:54:31 EST
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.11d02.mspz7.gob.ec (Postfix) with ESMTP id 017CA1464F2;
-        Thu,  5 Mar 2020 05:17:56 -0500 (-05)
-Received: from mail.11d02.mspz7.gob.ec ([127.0.0.1])
-        by localhost (mail.11d02.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id RaEHV1y3Hd4m; Thu,  5 Mar 2020 05:17:55 -0500 (-05)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.11d02.mspz7.gob.ec (Postfix) with ESMTP id DCDDD14441C;
-        Thu,  5 Mar 2020 04:16:09 -0500 (-05)
-X-Virus-Scanned: amavisd-new at 11d02.mspz7.gob.ec
-Received: from mail.11d02.mspz7.gob.ec ([127.0.0.1])
-        by localhost (mail.11d02.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id fZRo40lGxEn4; Thu,  5 Mar 2020 04:16:09 -0500 (-05)
-Received: from [10.22.221.193] (unknown [105.0.4.26])
-        by mail.11d02.mspz7.gob.ec (Postfix) with ESMTPSA id 22403143C27;
-        Thu,  5 Mar 2020 03:58:14 -0500 (-05)
-Content-Type: text/plain; charset="utf-8"
+        id S1726894AbgCEPKO (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 5 Mar 2020 10:10:14 -0500
+Received: from mail-qk1-f193.google.com ([209.85.222.193]:42772 "EHLO
+        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726317AbgCEPKN (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 5 Mar 2020 10:10:13 -0500
+Received: by mail-qk1-f193.google.com with SMTP id e11so5565750qkg.9;
+        Thu, 05 Mar 2020 07:10:12 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=vjlqsulZ8K9prSopQV0I1fobX6NO06lX2v06DPlECEg=;
+        b=foFNtqfr7y4gokHOziQZidILEolu/UP287zItw72f8Rybfc+Ytfw3o4S1qJwUPrvi2
+         pb/yPQS7ZJygSBXyl0HJcPb59v8lfQ/4uhWMZ+xDmhfr2wnlUqHvBuLfYkG5qqiFyAu9
+         eMvY5wMOauZcOVWcjwDV5NMxw0NSJG4OmAwmAltEHEHiOFIMe66T/OPgYxLJMJNPLVaT
+         dl0YP3ItdL8ZvDwFARLCQ7Yrk3KPO1d8rDaDb5P73RkSQkP28/9X4MK4Fr7ECDXYWZJm
+         84cczQ7VXBpqHszO4qxM+2ddcFWvnXV1julg5XOjTwdEa7zs+l+hZkLTS3XzmauP2riZ
+         Agew==
+X-Gm-Message-State: ANhLgQ3dziKYt9fNHW+61nFmtg58khlx7SGX8mGDzaGG5EhhKzUGtaiR
+        hvcr7Ldt723zqEa79RfQ+hM=
+X-Google-Smtp-Source: ADFU+vtlP7URSdOBinGRLUa/NfZvf3ez4vGHwQVZBV9W6KWtOQr25JZI77VoRkEQCD2epaYXZ5MIIg==
+X-Received: by 2002:ae9:e812:: with SMTP id a18mr8535338qkg.455.1583421012246;
+        Thu, 05 Mar 2020 07:10:12 -0800 (PST)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id l6sm16004184qti.10.2020.03.05.07.10.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Mar 2020 07:10:11 -0800 (PST)
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     "Tobin C . Harding" <me@tobin.cc>, Tycho Andersen <tycho@tycho.ws>,
+        kernel-hardening@lists.openwall.com,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] sh: Stop printing the virtual memory layout
+Date:   Thu,  5 Mar 2020 10:10:10 -0500
+Message-Id: <20200305151010.835954-1-nivedita@alum.mit.edu>
+X-Mailer: git-send-email 2.24.1
+In-Reply-To: <202003021038.8F0369D907@keescook>
+References: <202003021038.8F0369D907@keescook>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: =?utf-8?q?Wohlt=C3=A4tigkeitsspende_von_2=2E000=2E000_Millionen_Euro?=
-To:     Recipients <alex.zari@11d02.mspz7.gob.ec>
-From:   ''Michael Weirsky'' <alex.zari@11d02.mspz7.gob.ec>
-Date:   Thu, 05 Mar 2020 10:51:15 +0200
-Reply-To: mikeweirskyspende@gmail.com
-Message-Id: <20200305085815.22403143C27@mail.11d02.mspz7.gob.ec>
+Content-Transfer-Encoding: 8bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Lieber Freund,
+For security, don't display the kernel's virtual memory layout.
 
-Ich bin Herr Mike Weirsky, New Jersey, Vereinigte Staaten von Amerika, der Mega-Gewinner von $ 273million In Mega Millions Jackpot, spende ich an 5 zufällige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Mail nach einem Spinball ausgewählt.Ich habe den größten Teil meines Vermögens auf eine Reihe von Wohltätigkeitsorganisationen und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die Summe von € 2.000.000,00 an Sie als eine der ausgewählten 5 zu spenden, um meine Gewinne zu überprüfen.
-Das ist dein Spendencode: [MW530342019]
-www.youtube.com/watch?v=un8yRTmrYMY
+Kees Cook points out:
+"These have been entirely removed on other architectures, so let's
+just do the same for ia32 and remove it unconditionally."
 
-Antworten Sie mit dem SPENDE-CODE an diese 
+071929dbdd86 ("arm64: Stop printing the virtual memory layout")
+1c31d4e96b8c ("ARM: 8820/1: mm: Stop printing the virtual memory layout")
+31833332f798 ("m68k/mm: Stop printing the virtual memory layout")
+fd8d0ca25631 ("parisc: Hide virtual kernel memory layout")
+adb1fe9ae2ee ("mm/page_alloc: Remove kernel address exposure in free_reserved_area()")
 
-E-Mail:mikeweirskyspende@gmail.com
+Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+---
+ arch/sh/mm/init.c | 41 -----------------------------------------
+ 1 file changed, 41 deletions(-)
 
-Ich hoffe, Sie und Ihre Familie glücklich zu machen.
+diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
+index d1b1ff2be17a..e68a1106e99b 100644
+--- a/arch/sh/mm/init.c
++++ b/arch/sh/mm/init.c
+@@ -360,47 +360,6 @@ void __init mem_init(void)
+ 	vsyscall_init();
+ 
+ 	mem_init_print_info(NULL);
+-	pr_info("virtual kernel memory layout:\n"
+-		"    fixmap  : 0x%08lx - 0x%08lx   (%4ld kB)\n"
+-#ifdef CONFIG_HIGHMEM
+-		"    pkmap   : 0x%08lx - 0x%08lx   (%4ld kB)\n"
+-#endif
+-		"    vmalloc : 0x%08lx - 0x%08lx   (%4ld MB)\n"
+-		"    lowmem  : 0x%08lx - 0x%08lx   (%4ld MB) (cached)\n"
+-#ifdef CONFIG_UNCACHED_MAPPING
+-		"            : 0x%08lx - 0x%08lx   (%4ld MB) (uncached)\n"
+-#endif
+-		"      .init : 0x%08lx - 0x%08lx   (%4ld kB)\n"
+-		"      .data : 0x%08lx - 0x%08lx   (%4ld kB)\n"
+-		"      .text : 0x%08lx - 0x%08lx   (%4ld kB)\n",
+-		FIXADDR_START, FIXADDR_TOP,
+-		(FIXADDR_TOP - FIXADDR_START) >> 10,
+-
+-#ifdef CONFIG_HIGHMEM
+-		PKMAP_BASE, PKMAP_BASE+LAST_PKMAP*PAGE_SIZE,
+-		(LAST_PKMAP*PAGE_SIZE) >> 10,
+-#endif
+-
+-		(unsigned long)VMALLOC_START, VMALLOC_END,
+-		(VMALLOC_END - VMALLOC_START) >> 20,
+-
+-		(unsigned long)memory_start, (unsigned long)high_memory,
+-		((unsigned long)high_memory - (unsigned long)memory_start) >> 20,
+-
+-#ifdef CONFIG_UNCACHED_MAPPING
+-		uncached_start, uncached_end, uncached_size >> 20,
+-#endif
+-
+-		(unsigned long)&__init_begin, (unsigned long)&__init_end,
+-		((unsigned long)&__init_end -
+-		 (unsigned long)&__init_begin) >> 10,
+-
+-		(unsigned long)&_etext, (unsigned long)&_edata,
+-		((unsigned long)&_edata - (unsigned long)&_etext) >> 10,
+-
+-		(unsigned long)&_text, (unsigned long)&_etext,
+-		((unsigned long)&_etext - (unsigned long)&_text) >> 10);
+-
+ 	mem_init_done = 1;
+ }
+ 
+-- 
+2.24.1
 
-Grüße
-Herr Mike Weirsky
