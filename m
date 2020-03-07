@@ -2,103 +2,93 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 231AA17C3CE
-	for <lists+linux-sh@lfdr.de>; Fri,  6 Mar 2020 18:10:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1F2617CBD4
+	for <lists+linux-sh@lfdr.de>; Sat,  7 Mar 2020 05:00:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727069AbgCFRJE (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 6 Mar 2020 12:09:04 -0500
-Received: from ale.deltatee.com ([207.54.116.67]:38408 "EHLO ale.deltatee.com"
+        id S1726462AbgCGEAU (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 6 Mar 2020 23:00:20 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49186 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726974AbgCFRJD (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Fri, 6 Mar 2020 12:09:03 -0500
-Received: from cgy1-donard.priv.deltatee.com ([172.16.1.31])
-        by ale.deltatee.com with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <gunthorp@deltatee.com>)
-        id 1jAGSz-0004aX-Qx; Fri, 06 Mar 2020 10:08:56 -0700
-Received: from gunthorp by cgy1-donard.priv.deltatee.com with local (Exim 4.92)
-        (envelope-from <gunthorp@deltatee.com>)
-        id 1jAGSw-0002Ri-1E; Fri, 06 Mar 2020 10:08:50 -0700
-From:   Logan Gunthorpe <logang@deltatee.com>
-To:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-mm@kvack.org,
-        Dan Williams <dan.j.williams@intel.com>,
-        Michal Hocko <mhocko@kernel.org>,
-        David Hildenbrand <david@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     Christoph Hellwig <hch@lst.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
+        id S1726259AbgCGEAU (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Fri, 6 Mar 2020 23:00:20 -0500
+Received: from localhost.localdomain (c-73-231-172-41.hsd1.ca.comcast.net [73.231.172.41])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2B2EA206D5;
+        Sat,  7 Mar 2020 04:00:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1583553618;
+        bh=oV9dzypff0UA0jPadqQOWi55OmuNhXb+CU9VyawDDys=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=SGgOZOJ38TBhL5PMq2t97iVlOYiTJrLFrJZwUFY+PkmX4j8DweXDMSJ8amOibPULY
+         dukXRc++p/7grHQAkoJmRzC/WSXOXanM1qDKv14ejj7flbmiHB/27z6x/csQKB/k1O
+         jFq+DE3IugyBsaFEvfl6ba2s2SLpEYfJdkqCDacY=
+Date:   Fri, 6 Mar 2020 20:00:16 -0800
+From:   Andrew Morton <akpm@linux-foundation.org>
+To:     Mike Rapoport <rppt@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Eric Badger <ebadger@gigaio.com>,
-        Logan Gunthorpe <logang@deltatee.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>
-Date:   Fri,  6 Mar 2020 10:08:46 -0700
-Message-Id: <20200306170846.9333-8-logang@deltatee.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200306170846.9333-1-logang@deltatee.com>
-References: <20200306170846.9333-1-logang@deltatee.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 172.16.1.31
-X-SA-Exim-Rcpt-To: linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, platform-driver-x86@vger.kernel.org, linux-mm@kvack.org, dan.j.williams@intel.com, akpm@linux-foundation.org, hch@lst.de, catalin.marinas@arm.com, benh@kernel.crashing.org, tglx@linutronix.de, david@redhat.com, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, mhocko@kernel.org, will@kernel.org, luto@kernel.org, peterz@infradead.org, ebadger@gigaio.com, logang@deltatee.com, jgg@ziepe.ca
-X-SA-Exim-Mail-From: gunthorp@deltatee.com
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on ale.deltatee.com
-X-Spam-Level: 
-X-Spam-Status: No, score=-8.7 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        GREYLIST_ISWHITE,MYRULES_NO_TEXT,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.2
-Subject: [PATCH v4 7/7] mm/memremap: Set caching mode for PCI P2PDMA memory to WC
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on ale.deltatee.com)
+        Brian Cain <bcain@codeaurora.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Guan Xuetao <gxt@pku.edu.cn>,
+        James Morse <james.morse@arm.com>,
+        Jonas Bonn <jonas@southpole.se>,
+        Julien Thierry <julien.thierry.kdev@gmail.com>,
+        Ley Foon Tan <ley.foon.tan@intel.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Rich Felker <dalias@libc.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Stafford Horne <shorne@gmail.com>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Tony Luck <tony.luck@intel.com>, Will Deacon <will@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        kvmarm@lists.cs.columbia.edu, kvm-ppc@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+        linux-sh@vger.kernel.org, nios2-dev@lists.rocketboards.org,
+        openrisc@lists.librecores.org,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        Mike Rapoport <rppt@linux.ibm.com>
+Subject: Re: [PATCH v3 07/14] powerpc/32: drop get_pteptr()
+Message-Id: <20200306200016.6f3865ada0daa68b645fe5d7@linux-foundation.org>
+In-Reply-To: <20200227084608.18223-8-rppt@kernel.org>
+References: <20200227084608.18223-1-rppt@kernel.org>
+        <20200227084608.18223-8-rppt@kernel.org>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-PCI BAR IO memory should never be mapped as WB, however prior to this
-the PAT bits were set WB and it was typically overridden by MTRR
-registers set by the firmware.
+On Thu, 27 Feb 2020 10:46:01 +0200 Mike Rapoport <rppt@kernel.org> wrote:
 
-Set PCI P2PDMA memory to be UC as this is what it currently, typically,
-ends up being mapped as on x86 after the MTRR registers override the
-cache setting.
+> Commit 8d30c14cab30 ("powerpc/mm: Rework I$/D$ coherency (v3)") and
+> commit 90ac19a8b21b ("[POWERPC] Abolish iopa(), mm_ptov(),
+> io_block_mapping() from arch/powerpc") removed the use of get_pteptr()
+> outside of mm/pgtable_32.c
+> 
+> In mm/pgtable_32.c, the only user of get_pteptr() is __change_page_attr()
+> which operates on kernel context and on lowmem pages only.
+> 
+> Move page table traversal to __change_page_attr() and drop get_pteptr().
 
-Future use-cases may need to generalize this by adding flags to
-select the caching type, as some P2PDMA cases may not want UC.
-However, those use-cases are not upstream yet and this can be changed
-when they arrive.
+People have been changing things in linux-next and the powerpc patches
+are hurting.
 
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Signed-off-by: Logan Gunthorpe <logang@deltatee.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
----
- mm/memremap.c | 3 +++
- 1 file changed, 3 insertions(+)
+I'll disable this patch series for now.  Can you please redo
+powerpc-32-drop-get_pteptr.patch and
+powerpc-add-support-for-folded-p4d-page-tables.patch (and
+powerpc-add-support-for-folded-p4d-page-tables-fix.patch)?
 
-diff --git a/mm/memremap.c b/mm/memremap.c
-index 06742372a203..9033ae401448 100644
---- a/mm/memremap.c
-+++ b/mm/memremap.c
-@@ -190,7 +190,10 @@ void *memremap_pages(struct dev_pagemap *pgmap, int nid)
- 		}
- 		break;
- 	case MEMORY_DEVICE_DEVDAX:
-+		need_devmap_managed = false;
-+		break;
- 	case MEMORY_DEVICE_PCI_P2PDMA:
-+		params.pgprot = pgprot_noncached(params.pgprot);
- 		need_devmap_managed = false;
- 		break;
- 	default:
--- 
-2.20.1
+Thanks.
 
