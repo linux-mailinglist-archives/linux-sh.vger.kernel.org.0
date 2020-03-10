@@ -2,55 +2,83 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D10AB17E57C
-	for <lists+linux-sh@lfdr.de>; Mon,  9 Mar 2020 18:15:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E34D0180030
+	for <lists+linux-sh@lfdr.de>; Tue, 10 Mar 2020 15:31:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727220AbgCIRPm (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 9 Mar 2020 13:15:42 -0400
-Received: from baptiste.telenet-ops.be ([195.130.132.51]:55508 "EHLO
-        baptiste.telenet-ops.be" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727226AbgCIRPm (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 9 Mar 2020 13:15:42 -0400
-Received: from ramsan ([84.195.182.253])
-        by baptiste.telenet-ops.be with bizsmtp
-        id CHFf2200N5USYZQ01HFfcT; Mon, 09 Mar 2020 18:15:39 +0100
-Received: from rox.of.borg ([192.168.97.57])
-        by ramsan with esmtp (Exim 4.90_1)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1jBM0B-0007Pa-HO; Mon, 09 Mar 2020 18:15:39 +0100
-Received: from geert by rox.of.borg with local (Exim 4.90_1)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1jBM0B-0005ca-FS; Mon, 09 Mar 2020 18:15:39 +0100
-From:   Geert Uytterhoeven <geert+renesas@glider.be>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Chris Brandt <Chris.Brandt@renesas.com>,
+        id S1727516AbgCJObP (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 10 Mar 2020 10:31:15 -0400
+Received: from foss.arm.com ([217.140.110.172]:37802 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726252AbgCJObO (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Tue, 10 Mar 2020 10:31:14 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5A10D30E;
+        Tue, 10 Mar 2020 07:31:14 -0700 (PDT)
+Received: from localhost (unknown [10.37.6.21])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CFD193F6CF;
+        Tue, 10 Mar 2020 07:31:13 -0700 (PDT)
+Date:   Tue, 10 Mar 2020 14:31:12 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Geert Uytterhoeven <geert+renesas@glider.be>
+Cc:     Chris Brandt <Chris.Brandt@renesas.com>,
+        linux-renesas-soc@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
         Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-sh@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH] spi: rspi: Add support for active-high chip selects
-Date:   Mon,  9 Mar 2020 18:15:37 +0100
-Message-Id: <20200309171537.21551-1-geert+renesas@glider.be>
-X-Mailer: git-send-email 2.17.1
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Subject: Applied "spi: rspi: Add support for active-high chip selects" to the spi tree
+In-Reply-To:  <20200309171537.21551-1-geert+renesas@glider.be>
+Message-Id:  <applied-20200309171537.21551-1-geert+renesas@glider.be>
+X-Patchwork-Hint: ignore
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
+
+The patch
+
+   spi: rspi: Add support for active-high chip selects
+
+has been applied to the spi tree at
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+From f3a14a3a4d9a54c665e979b1dedbbab1f7503a43 Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Mon, 9 Mar 2020 18:15:37 +0100
+Subject: [PATCH] spi: rspi: Add support for active-high chip selects
 
 All RSPI variants support setting the polarity of the SSL signal.
 Advertize support for active-high chip selects, and configure polarity
 according to the state of the flag.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
-Tested on r8a7791/koelsch using spidev_test and a logic analyzer.
+Link: https://lore.kernel.org/r/20200309171537.21551-1-geert+renesas@glider.be
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
  drivers/spi/spi-rspi.c | 36 ++++++++++++++++++++++++++++++++----
  1 file changed, 32 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index aef05f2ac749c21d..06192c9ea8132911 100644
+index aef05f2ac749..06192c9ea813 100644
 --- a/drivers/spi/spi-rspi.c
 +++ b/drivers/spi/spi-rspi.c
 @@ -24,6 +24,7 @@
@@ -135,5 +163,5 @@ index aef05f2ac749c21d..06192c9ea8132911 100644
  	ctlr->dev.of_node = pdev->dev.of_node;
  	ctlr->use_gpio_descriptors = true;
 -- 
-2.17.1
+2.20.1
 
