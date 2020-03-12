@@ -2,166 +2,133 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E34D0180030
-	for <lists+linux-sh@lfdr.de>; Tue, 10 Mar 2020 15:31:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E807B182A1E
+	for <lists+linux-sh@lfdr.de>; Thu, 12 Mar 2020 09:01:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727516AbgCJObP (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 10 Mar 2020 10:31:15 -0400
-Received: from foss.arm.com ([217.140.110.172]:37802 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726252AbgCJObO (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Tue, 10 Mar 2020 10:31:14 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5A10D30E;
-        Tue, 10 Mar 2020 07:31:14 -0700 (PDT)
-Received: from localhost (unknown [10.37.6.21])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CFD193F6CF;
-        Tue, 10 Mar 2020 07:31:13 -0700 (PDT)
-Date:   Tue, 10 Mar 2020 14:31:12 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Geert Uytterhoeven <geert+renesas@glider.be>
-Cc:     Chris Brandt <Chris.Brandt@renesas.com>,
-        linux-renesas-soc@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Subject: Applied "spi: rspi: Add support for active-high chip selects" to the spi tree
-In-Reply-To:  <20200309171537.21551-1-geert+renesas@glider.be>
-Message-Id:  <applied-20200309171537.21551-1-geert+renesas@glider.be>
-X-Patchwork-Hint: ignore
+        id S2388166AbgCLIBl (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 12 Mar 2020 04:01:41 -0400
+Received: from lb1-smtp-cloud9.xs4all.net ([194.109.24.22]:55477 "EHLO
+        lb1-smtp-cloud9.xs4all.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2387999AbgCLIBl (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 12 Mar 2020 04:01:41 -0400
+Received: from [192.168.2.10] ([46.9.234.233])
+        by smtp-cloud9.xs4all.net with ESMTPA
+        id CImQjXGct9Im2CImTjipFx; Thu, 12 Mar 2020 09:01:37 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xs4all.nl; s=s1;
+        t=1584000098; bh=rlvXrsquCgOAoL6m3j4naIDiZk45jPg5qzfaHkH6ylc=;
+        h=Subject:To:From:Message-ID:Date:MIME-Version:Content-Type:From:
+         Subject;
+        b=S5pQfgbOLIHhQdw0W7sV5AZx/O5rbzeyPt7bFpTNkwgO8Qy0BKq+Rvjmju5L2B424
+         ts5RJaST/5DSO90woF88XEKoVSWzdXA1+cYgXtZ9lrnSZ/voNQNCc/kNcDWB/9eH8q
+         oukXvG+APHr07xXyoiRVnfNAIu0NoRyJO4gRl7kMox10FOdeAVa4C86hGVXEgWIL1z
+         DHpeiiUb+PUHWBRHnftozp83wtSCPlDu/KR0wA5Tus7873ErMhZjEh0V/cX/LLr9QJ
+         GcvLzWg4JtL3YxsnzXI28YMgDuIhwtNvDRGPXfnFqtov7CBrtU3S5QfdwsKM1K25I6
+         WU1k8NIIoVM6w==
+Subject: Re: [RESEND PATCH v2 8/9] media: fsl-viu: Constify ioreadX() iomem
+ argument (as in generic implementation)
+To:     Krzysztof Kozlowski <krzk@kernel.org>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Alexey Brodkin <abrodkin@synopsys.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Dave Airlie <airlied@redhat.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Ben Skeggs <bskeggs@redhat.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Jiri Slaby <jirislaby@gmail.com>,
+        Nick Kossifidis <mickflemm@gmail.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
+        linux-media@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-ntb@googlegroups.com,
+        virtualization@lists.linux-foundation.org,
+        linux-arch@vger.kernel.org
+References: <20200219175007.13627-1-krzk@kernel.org>
+ <20200219175007.13627-9-krzk@kernel.org>
+From:   Hans Verkuil <hverkuil@xs4all.nl>
+Message-ID: <1c4a11b5-5ca6-7555-de3c-ff30f707fac7@xs4all.nl>
+Date:   Thu, 12 Mar 2020 09:01:22 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
+MIME-Version: 1.0
+In-Reply-To: <20200219175007.13627-9-krzk@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-CMAE-Envelope: MS4wfB1zxMJIE7wElbGm4sdMecyYLJ6LdsDMDpZDeSQuVKwPm0HLBt9h+mOdrGXFuIDkCI9Ox7ukCv0Xr+wsEhOQPNuuqPOa2tbCK6oF1PNdZVqk6thKvC3h
+ xE4aE9bNSUWOFhWxTazaeGPVr5hr0AhveAgdpPWZHpjhg5PxgtKgtRwcEM0X31YjusYjKeuEG9QF/4JOHzjohAIjiR+oAI0nyED+Jez9yI4FW1ZB3LXkp8TH
+ 7MMndY8iJadjMhsV5+oGTHeP7z8vzm/dZU83psQzhxRsPonohHX17/JsKF2l5MFAT9+97UKYOiKAsfrv1Cpys4Ae5wkTvdw4qsE49ssk4hjAoyha0QB9BVju
+ 9SGy1FrSenK0frRjbC8NaYY9ZERWNSiNH5LA36WXT5yWf3v+Qcv3MkgEimaOp41P2nlVLuOjtsbM7Oc0IE2oIVVfFA700ZJiP3znlyaVddewRuZDpRVP7LaM
+ BmiWSHGXgw8YtQmC7z4+FTtlDdPcaOnURURbGtwGqrG9ypYOfWaczdFyon9cFrdpqrNkvqRjWmqFa6YgsB57xqLqvFfcZaXIx/5GPRUQudUCvZPJzisakVQc
+ uttKYb/aM3WYuhJM4Wb1Pv6BrMYMIVXGCFsOBd7W/xp0N3iMBGSYj0Aa0rPNR8hHdzbHBC2fjWlNKKBiBqoznNqCGZ0CiVQoEM+QtyRRgiYnx6PeAm5PLOc4
+ VNFQmhkOpnD9IFKzOg7MDbXsSwg+OAG64qEuG/VscrSiDVQ1yjv5knp7CxhKGvYM4OpGHYT1Er7Bdx2FCmXu/yAwSbBDRagCD0kotDKUph18wrkxxeFljDJA
+ LSc1aSxY7WzE0MoB4x1WWy+jz94FDlyhtSMwiZ6y0dJP3+c2+Q5En242uHE069S9l+7oW8v5MGbWOStqt5f3vSjCb7LIzWN87JmuP89GFWwWLJsughS7GMyf
+ 9DHMMrFLvERXtynUPrxsXWOFJFYcfPWtUSuDRlT6lyW4OqviXxQxmuwWWPzBiEuN74qNtI+js8zLo4yvgjsgXCeSGNoTx+kuEqyjk5W1UzIpidGK0CRrnVbE
+ 6hD9Y/vETMZdaCRGTPOlU05njcJF+46w8BJ3SNj0Py3qBk1dX7c6nBfbFypmWYBFmuncdfgfV+GvZgph5pgPHOoQxVCf/tLCrfA6lP3T+1yMX4df+BQFRKLS
+ O4WmDF2MxF8KloewGsYz/rsmgB25E6V0YSDc8EvmqseT2P6A01f6bsdZt1AJnufocp+H44s+qhBR6buNUUMphP9KyIyYuNbtmFvkGTyK649jUP2q8Nik1rK1
+ 3AqiAYrtsks7Dqmq5Qj7chR5DBva/WjXbTAi9lRBeyrc1LiDTAHtFBMmOGm8QJ0PstgU+Qss/H31YuyO+vowQc/YkfqDiEmsIU7MZy0525QlKJCDuomrR9k/
+ pt0L69OpaODhDI2GKeTabUJfloUo1rGwDFifFZ3GiczPZsdGrTGULzWF8ZqXdk44Vxmf+o40QJa4goBPwv+YDuim0xPrbohAaaGJnTcviLLAbx0Be2IOpJK7
+ 066IFrJvKfz7/Wp2S67JJX5FtbO7VF+IrVN/N63uvfJb+FM6hLMjwGqczE7h5AhCTMRfIsHhAU9mTIYVyLN+UBlZ3WL3ahk0SjumGQqE2df8rbpt41Yx3WFA
+ IW77guEXBH/AFWkGJEIg2a3N91fXva0TdPJAF0YzlkCOnwCmb9/Naw==
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-The patch
+On 2/19/20 6:50 PM, Krzysztof Kozlowski wrote:
+> The ioreadX() helpers have inconsistent interface.  On some architectures
+> void *__iomem address argument is a pointer to const, on some not.
+> 
+> Implementations of ioreadX() do not modify the memory under the address
+> so they can be converted to a "const" version for const-safety and
+> consistency among architectures.
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-   spi: rspi: Add support for active-high chip selects
+Acked-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-has been applied to the spi tree at
+Regards,
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+	Hans
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
-From f3a14a3a4d9a54c665e979b1dedbbab1f7503a43 Mon Sep 17 00:00:00 2001
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-Date: Mon, 9 Mar 2020 18:15:37 +0100
-Subject: [PATCH] spi: rspi: Add support for active-high chip selects
-
-All RSPI variants support setting the polarity of the SSL signal.
-Advertize support for active-high chip selects, and configure polarity
-according to the state of the flag.
-
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20200309171537.21551-1-geert+renesas@glider.be
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-rspi.c | 36 ++++++++++++++++++++++++++++++++----
- 1 file changed, 32 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index aef05f2ac749..06192c9ea813 100644
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -24,6 +24,7 @@
- #include <linux/sh_dma.h>
- #include <linux/spi/spi.h>
- #include <linux/spi/rspi.h>
-+#include <linux/spinlock.h>
- 
- #define RSPI_SPCR		0x00	/* Control Register */
- #define RSPI_SSLP		0x01	/* Slave Select Polarity Register */
-@@ -79,8 +80,7 @@
- #define SPCR_BSWAP		0x01	/* Byte Swap of read-data for DMAC */
- 
- /* SSLP - Slave Select Polarity Register */
--#define SSLP_SSL1P		0x02	/* SSL1 Signal Polarity Setting */
--#define SSLP_SSL0P		0x01	/* SSL0 Signal Polarity Setting */
-+#define SSLP_SSLP(i)		BIT(i)	/* SSLi Signal Polarity Setting */
- 
- /* SPPCR - Pin Control Register */
- #define SPPCR_MOIFE		0x20	/* MOSI Idle Value Fixing Enable */
-@@ -181,7 +181,9 @@ struct rspi_data {
- 	void __iomem *addr;
- 	u32 max_speed_hz;
- 	struct spi_controller *ctlr;
-+	struct platform_device *pdev;
- 	wait_queue_head_t wait;
-+	spinlock_t lock;		/* Protects RMW-access to RSPI_SSLP */
- 	struct clk *clk;
- 	u16 spcmd;
- 	u8 spsr;
-@@ -919,6 +921,29 @@ static int qspi_setup_sequencer(struct rspi_data *rspi,
- 	return 0;
- }
- 
-+static int rspi_setup(struct spi_device *spi)
-+{
-+	struct rspi_data *rspi = spi_controller_get_devdata(spi->controller);
-+	u8 sslp;
-+
-+	if (spi->cs_gpiod)
-+		return 0;
-+
-+	pm_runtime_get_sync(&rspi->pdev->dev);
-+	spin_lock_irq(&rspi->lock);
-+
-+	sslp = rspi_read8(rspi, RSPI_SSLP);
-+	if (spi->mode & SPI_CS_HIGH)
-+		sslp |= SSLP_SSLP(spi->chip_select);
-+	else
-+		sslp &= ~SSLP_SSLP(spi->chip_select);
-+	rspi_write8(rspi, sslp, RSPI_SSLP);
-+
-+	spin_unlock_irq(&rspi->lock);
-+	pm_runtime_put(&rspi->pdev->dev);
-+	return 0;
-+}
-+
- static int rspi_prepare_message(struct spi_controller *ctlr,
- 				struct spi_message *msg)
- {
-@@ -1248,17 +1273,20 @@ static int rspi_probe(struct platform_device *pdev)
- 		goto error1;
- 	}
- 
-+	rspi->pdev = pdev;
- 	pm_runtime_enable(&pdev->dev);
- 
- 	init_waitqueue_head(&rspi->wait);
-+	spin_lock_init(&rspi->lock);
- 
- 	ctlr->bus_num = pdev->id;
-+	ctlr->setup = rspi_setup;
- 	ctlr->auto_runtime_pm = true;
- 	ctlr->transfer_one = ops->transfer_one;
- 	ctlr->prepare_message = rspi_prepare_message;
- 	ctlr->unprepare_message = rspi_unprepare_message;
--	ctlr->mode_bits = SPI_CPHA | SPI_CPOL | SPI_LSB_FIRST | SPI_LOOP |
--			  ops->extra_mode_bits;
-+	ctlr->mode_bits = SPI_CPHA | SPI_CPOL | SPI_CS_HIGH | SPI_LSB_FIRST |
-+			  SPI_LOOP | ops->extra_mode_bits;
- 	ctlr->flags = ops->flags;
- 	ctlr->dev.of_node = pdev->dev.of_node;
- 	ctlr->use_gpio_descriptors = true;
--- 
-2.20.1
+> ---
+>  drivers/media/platform/fsl-viu.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/media/platform/fsl-viu.c b/drivers/media/platform/fsl-viu.c
+> index 81a8faedbba6..991d9dc82749 100644
+> --- a/drivers/media/platform/fsl-viu.c
+> +++ b/drivers/media/platform/fsl-viu.c
+> @@ -34,7 +34,7 @@
+>  /* Allow building this driver with COMPILE_TEST */
+>  #if !defined(CONFIG_PPC) && !defined(CONFIG_MICROBLAZE)
+>  #define out_be32(v, a)	iowrite32be(a, (void __iomem *)v)
+> -#define in_be32(a)	ioread32be((void __iomem *)a)
+> +#define in_be32(a)	ioread32be((const void __iomem *)a)
+>  #endif
+>  
+>  #define BUFFER_TIMEOUT		msecs_to_jiffies(500)  /* 0.5 seconds */
+> 
 
