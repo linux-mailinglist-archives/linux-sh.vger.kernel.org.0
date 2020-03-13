@@ -2,88 +2,103 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 26CAE184717
-	for <lists+linux-sh@lfdr.de>; Fri, 13 Mar 2020 13:42:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E9A21849FD
+	for <lists+linux-sh@lfdr.de>; Fri, 13 Mar 2020 15:52:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726667AbgCMMmo (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 13 Mar 2020 08:42:44 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:45582 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726646AbgCMMmo (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 13 Mar 2020 08:42:44 -0400
-Received: by mail-pf1-f196.google.com with SMTP id 2so5155219pfg.12;
-        Fri, 13 Mar 2020 05:42:43 -0700 (PDT)
+        id S1726643AbgCMOw7 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 13 Mar 2020 10:52:59 -0400
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:43027 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726216AbgCMOw6 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 13 Mar 2020 10:52:58 -0400
+Received: by mail-pf1-f193.google.com with SMTP id c144so5347441pfb.10
+        for <linux-sh@vger.kernel.org>; Fri, 13 Mar 2020 07:52:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=K7BMALHz5cMte+OkN45e7QyNpK4gOvBQVmtB+1UqSOM=;
-        b=DSWidas2yl2Aa/zcpiVFcKh6gcrKC4Uwdym2iRWyTUoKJKvdWN/zMvJQSQjZ2Wn9dV
-         RjYWeEx7DVNMO8qvpb6VWEbMlnOYEv3mrdinxYuKB/TDTvOlQDL6jfTS5JDhQEDnpPwn
-         /m9pGQFPrVk9cW/SPomAacb2tjSAMa9NLNXr624w9ORx/V/4ABg20ItONNuXoOLEwgmL
-         XUzpC3U7n4d9XcI+pVih2wrGQHBsvaCedWytA4aYjrQwY+wmIry9jX5YJguhRqR5NQkj
-         Zg7MjxPQLfilwOpNy96BHStzrux1LpxyhaSNkpK4HI9gFUosRZwCJUC/MJXtDmTPg0fy
-         Vvcg==
+        h=sender:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=fMZlA1LecrWJNCxAW+zR7Z7LhYDFn/2H1aC7+s4ivFc=;
+        b=Y+2Vr/odc2IZHXXcNQP1xK+tIIfYkUkHSngzkgbaXnkt4BQ4nY3LYtw9j9ndGQ+wsz
+         xV3C9jH6V1a1Oq7DoQ/WxL1wyLveXKuqazODXdpTP4lkSehkdvbMJ6I4hb9zyvW67RXo
+         2kWErKiEG00g6clu7CDviBVXdZHRj3HkS1HkB8zFDW6C77epAF1fHhvHt7M3IQzM2ezl
+         5+NLpB2ThNLl0fk1lDZPJ9Ri7m678wND0ThNXZV9pKpF/a1bos5rpaaPDt5F/vUOD3UE
+         FJpW3M04A93GdjR4iRsWA7B6Pu0eTgHmb3EC/TDyuAJ/MUaajdvYlx8An8NT86G6Wrpc
+         9aUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=K7BMALHz5cMte+OkN45e7QyNpK4gOvBQVmtB+1UqSOM=;
-        b=p8aQlUjFPJ5L6kIGZq6Bz/aByAG0KGG294k6sNO3M+fdhJctOK6wugzO+7h5RzeN3Z
-         N3ug9eWT7jNJVvNOftR25crtmn8e3voUs6WZSwNElYQDEAvCuZn9KCUUdapFhpPFNAxu
-         Z5O36qE1dDzuy0kO5VdCpdvxPclR5r5mBscssT6PL4YdovPjpVsXRbkJLuda2EAk3a7j
-         /ACWbltslJvhAopJoRA6GC3KvGPlsfvFzhVeXx8SEC3BL9BHS7Ld+/STFpzhdO9QRhz7
-         1I8YSOELpjs9N21KJDWE9i9UziA6KnkWYS1GJTCfSIN4WtakBUBtzS78Lole7w4J0bEr
-         4Big==
-X-Gm-Message-State: ANhLgQ0ydzCNZU8kfw3jAnH3gdQ2HJeD2TKojHQ432d72+F5oZNMxBmF
-        tvMzR2YiaKDkV6nd8hb3xD1AfdTw
-X-Google-Smtp-Source: ADFU+vvxh9DtGmJ8zX1+fVCJlBfjuHRLzXae9X/UuabKFaeKW/2AfhDkbgS5Akgfl6UjBskMDhedHg==
-X-Received: by 2002:a63:4c0b:: with SMTP id z11mr12947291pga.385.1584103363087;
-        Fri, 13 Mar 2020 05:42:43 -0700 (PDT)
-Received: from localhost ([106.51.232.35])
-        by smtp.gmail.com with ESMTPSA id w124sm8090098pfd.71.2020.03.13.05.42.42
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :mime-version:content-disposition:user-agent;
+        bh=fMZlA1LecrWJNCxAW+zR7Z7LhYDFn/2H1aC7+s4ivFc=;
+        b=SwrJdoTiuQBk5rsgXtcbxfGN8h6AAexLCkSC+HKQIa4q3u4Dpi/CXP5UnaGbygT97h
+         r4Ixp3CcQekgyczKmI9pBj7Sewc/nOOIQ3YbwEuS3GmSGBjwbd7sEvZTI0R6egLCYi4H
+         gCBI7pmWegl+HOxgIVh9KBhjjz0YoCQvxB9YBtAF7EC8i5VAmtKmiksEzPLHhhH2TyzS
+         DM3hFyyqJwb//aGxSIQ/PYrkEC43lHkutLKLXRQKE1eNhdN/sOMOW/LYcPQfPo/QgStW
+         VdjWjRgCpNMVSFrucaRr/4cooLjTzHT+SWVmVok2FKMwOXpUlx0lgNw24WDpI3I6z9db
+         9gMA==
+X-Gm-Message-State: ANhLgQ2SlUZ/ukKF1n2qg76ILonddoSczZrrVvzhw5D/nvz0pad4rtWa
+        w3hi4+tlZh1dPXLUl6c6xik=
+X-Google-Smtp-Source: ADFU+vuKcueRw9JqSNhtpC1j3bg02EnzKjc7wrGDsc4wi2o8wYDDSrn5YSaSVGJnTsgeKhkvDypnsQ==
+X-Received: by 2002:a63:ed4d:: with SMTP id m13mr13147902pgk.350.1584111176529;
+        Fri, 13 Mar 2020 07:52:56 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id h24sm17353328pfn.49.2020.03.13.07.52.55
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 13 Mar 2020 05:42:42 -0700 (PDT)
-Date:   Fri, 13 Mar 2020 18:12:40 +0530
-From:   afzal mohammed <afzal.mohd.ma@gmail.com>
-To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>
-Cc:     linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] sh: replace setup_irq() by request_irq()
-Message-ID: <20200313124240.GB7225@afzalpc>
-References: <20200304005120.5403-1-afzal.mohd.ma@gmail.com>
+        Fri, 13 Mar 2020 07:52:55 -0700 (PDT)
+Date:   Fri, 13 Mar 2020 07:52:53 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Logan Gunthorpe <logang@deltatee.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        linux-sh@vger.kernel.org
+Subject: Re: [PATCH] mm/memory_hotplug: add pgprot_t to mhp_params
+Message-ID: <20200313145253.GA29117@roeck-us.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200304005120.5403-1-afzal.mohd.ma@gmail.com>
-User-Agent: Mutt/1.9.3 (2018-01-21)
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Yoshinori Sato,
+On Fri, Mar 13, 2020 at 04:10:21PM +1100, Logan Gunthorpe wrote:
+> devm_memremap_pages() is currently used by the PCI P2PDMA code to create
+> struct page mappings for IO memory.  At present, these mappings are
+> created with PAGE_KERNEL which implies setting the PAT bits to be WB.
+> However, on x86, an mtrr register will typically override this and force
+> the cache type to be UC-.  In the case firmware doesn't set this register
+> it is effectively WB and will typically result in a machine check
+> exception when it's accessed.
+> 
+> Other arches are not currently likely to function correctly seeing they
+> don't have any MTRR registers to fall back on.
+> 
+> To solve this, provide a way to specify the pgprot value explicitly to
+> arch_add_memory().
+> 
+> Of the arches that support MEMORY_HOTPLUG: x86_64, and arm64 need a simple
+> change to pass the pgprot_t down to their respective functions which set
+> up the page tables.  For x86_32, set the page tables explicitly using
+> _set_memory_prot() (seeing they are already mapped).  For ia64, s390 and
+> sh, reject anything but PAGE_KERNEL settings -- this should be fine, for
+> now, seeing these architectures don't support ZONE_DEVICE.
+> 
+> A check in __add_pages() is also added to ensure the pgprot parameter was
+> set for all arches.
+> 
+...
 
-On Wed, Mar 04, 2020 at 06:21:19AM +0530, afzal mohammed wrote:
-> request_irq() is preferred over setup_irq(). Invocations of setup_irq()
-> occur after memory allocators are ready.
-> 
-> Per tglx[1], setup_irq() existed in olden days when allocators were not
-> ready by the time early interrupts were initialized.
-> 
-> Hence replace setup_irq() by request_irq().
-> 
-> [1] https://lkml.kernel.org/r/alpine.DEB.2.20.1710191609480.1971@nanos
-> 
-> Signed-off-by: afzal mohammed <afzal.mohd.ma@gmail.com>
-> ---
-> Hi sh maintainers,
-> 
-> if okay w/ this change, please consider taking it thr' your tree, else please
-> let me know.
+> diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
+> index e5114c053364..b9de2d4fa57e 100644
+> --- a/arch/sh/mm/init.c
+> +++ b/arch/sh/mm/init.c
+> @@ -412,6 +412,9 @@ int arch_add_memory(int nid, u64 start, u64 size,
+>  	unsigned long nr_pages = size >> PAGE_SHIFT;
+>  	int ret;
+>  
+> +	if (WARN_ON_ONCE(params->pgprot.pgprot != PAGE_KERNEL.pgprot)
+> +		return -EINVAL;
 
-Seems you handle pull requests for sh, if this patch is okay, please
-consider it for inclusion in your tree.
+Compile test ?
 
-Regards
-afzal
+Guenter
