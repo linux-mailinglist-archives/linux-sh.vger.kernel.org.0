@@ -2,56 +2,58 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A3357185EC3
-	for <lists+linux-sh@lfdr.de>; Sun, 15 Mar 2020 18:51:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 46460185EC4
+	for <lists+linux-sh@lfdr.de>; Sun, 15 Mar 2020 18:51:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728986AbgCORvO (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sun, 15 Mar 2020 13:51:14 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:40610 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728979AbgCORvO (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sun, 15 Mar 2020 13:51:14 -0400
-Received: by mail-wm1-f67.google.com with SMTP id z12so6354821wmf.5
-        for <linux-sh@vger.kernel.org>; Sun, 15 Mar 2020 10:51:13 -0700 (PDT)
+        id S1728979AbgCORvQ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sun, 15 Mar 2020 13:51:16 -0400
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:53585 "EHLO
+        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728985AbgCORvP (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sun, 15 Mar 2020 13:51:15 -0400
+Received: by mail-wm1-f65.google.com with SMTP id 25so15199470wmk.3
+        for <linux-sh@vger.kernel.org>; Sun, 15 Mar 2020 10:51:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=M6eiGa7DuFos4OFRCu6F9mmBj8osCsLS7c9lg5q8eIA=;
-        b=EWBJQaQXgXZJDtzW+Hldz74fLhYeTdA/gNgJLT1IQsUWUWcYC8lJKx/TEWw9k1MA6+
-         0nrKrhBUtakfnhMj/OvVUrvQBJpAEKNNY6GQQq5AUmFTGPZFoJcr3LHhDIjkt/7LSNIY
-         xCA02sVHf/bmTvHWbQm2j5su7kGa6Px528vIsaNDMyIfzcCUQNxmo0GD2+vaLSUbJPq4
-         Jv3JsZsOxGiEjYutaZ135kSrqUszwyX7BtovULEL2ztkxqdBt0DIoxKTOh6cfvicd0Zh
-         k2jCR3H9rBL0Hj9u7uUzWmclTflw+2KFOyTfmCg1cR94bIwTtIUXKCzn1i5Ts1HIgqkb
-         Tilw==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=2jceW0QdZvHl7bbfsFt5HpBn+mJnNMLv0oV1l+Bmnl8=;
+        b=JHzBnIsv4M4/NVEc9ednrB2VKOFV/Fff6d+vyJT3I1QQR9f9eUiu3AACCRrPExHeQ6
+         ++t/nan83deNxeILgNwO9iP7U5EoT2l8PEKWgzg8jK6ZpIB5c9rz1cTYZ7J4p39kJkj/
+         FzM2q7oPq0nHZ1ZCmbmIzZPb6mQsStZHwbnAUUY1q/meABepvnfcrjAgJvriWgoJTcZ/
+         PgWLHbVVCYIQI9QdbXdKi0uEessoaaWE4Ex4ULDhButTcHIPD5jAoLZjb9adz0mcZRxq
+         qWx6ljeSVBuxYZ3sc8t33eGMpbqnOlj406eHSIkvcEpLJBQagMYL5tB6aXhl34OtzVqz
+         f59g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=M6eiGa7DuFos4OFRCu6F9mmBj8osCsLS7c9lg5q8eIA=;
-        b=ob1fZ10A2Y3rDERewuLv3OIu0YjT/TCNjScLn7RyjQBcwE6NkxnKntjRnPU9DMEAgP
-         gFOq1P+w2rMOhDqGXiB2aKzEjP2aLLjozHwtxTcAerFJDe+lOP5K7/KRcFDC+60UWiAR
-         B3kE4ltAKFU/dyqeqKNNp7qlCCF10Erdgmj4SNy624S6g/Yna1pkNPTIYz9PEyhgr2Zs
-         La/ExlFv1PigA6o7NTPlyK+K+z0L4h3CDZqsjLc/qun1yihLe/PQgdq+ZFydM0fABkRZ
-         pppYIL3iQHpNttYT6QCS9n74SnzL64KJuAz6dfC/m3GaQ88NyhXUErJ5vTxWnFlRHhSK
-         rUMw==
-X-Gm-Message-State: ANhLgQ3d6GnSzpK5nLEHYEDopyKbEhla8PCJ/o0L/Fon//1ZmxUh0CTU
-        JTtK2rK6lq3cfYJlx8vueZ7CnbNr
-X-Google-Smtp-Source: ADFU+vuOc85CbOsJWnfFjpHWe3ZeCEhQEj3ZFlhzZ+TGwcH05WdCbNv2cgW1WHr3TZ7tsfC8U0S5JQ==
-X-Received: by 2002:a1c:a950:: with SMTP id s77mr22720660wme.176.1584294672568;
-        Sun, 15 Mar 2020 10:51:12 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=2jceW0QdZvHl7bbfsFt5HpBn+mJnNMLv0oV1l+Bmnl8=;
+        b=ZGnz3RrxFJ9KB+N//Snlj+aiZm9VqWlnSJOb9vyiGseDG1ePAdG/OEGLnC6/oM7pe2
+         6XueXmVz2ERPKBSu0turLQVMww60Uz1PghLytR1tOFa3Gn4Ey8qlo3iL5mX9LxHy2duz
+         HFvYvURODfpZ2RjNtNk2uMXkT6+Pzu7R+A4+Sa3DqfdJiImty0Ak6Hr+lfOZMZUY/g+d
+         iEBWyedDoJGhPTuaQbdOdQyq35O9o0hM7OlMHxiRLh4Uk/nLn78Y/YWKqxRZaD5KtcHv
+         7X4ddMuigBPps+FQi/D0DvCN3UF5oANdcVk0NW4xwJvF/jJOvr1afKF/irnPmA6YGrj+
+         M2vA==
+X-Gm-Message-State: ANhLgQ1turWz+0v63kwsAjv/bADmhB3znyBh9YeIBXkIpuYvF/5uryT3
+        TpNO9G+nYHVzhnD82A++UGXQbQP+
+X-Google-Smtp-Source: ADFU+vtAi+9/baEW90bjvoOorLZbZ35ThBF+ovFgMigJsrZxoyErDqxO94fPpg9LA5Nu+M1U/e0IMQ==
+X-Received: by 2002:a1c:7dc8:: with SMTP id y191mr21997730wmc.167.1584294673682;
+        Sun, 15 Mar 2020 10:51:13 -0700 (PDT)
 Received: from localhost.localdomain (2a01cb0589880c0046708304bf1f24fd.ipv6.abo.wanadoo.fr. [2a01:cb05:8988:c00:4670:8304:bf1f:24fd])
-        by smtp.gmail.com with ESMTPSA id u1sm70984239wrt.78.2020.03.15.10.51.11
+        by smtp.gmail.com with ESMTPSA id u1sm70984239wrt.78.2020.03.15.10.51.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Mar 2020 10:51:12 -0700 (PDT)
+        Sun, 15 Mar 2020 10:51:13 -0700 (PDT)
 From:   Romain Naour <romain.naour@gmail.com>
 To:     linux-sh@vger.kernel.org
 Cc:     Romain Naour <romain.naour@gmail.com>,
         Alan Modra <amodra@gmail.com>
-Subject: [PATCH 1/2] arch/sh: vmlinux.scr
-Date:   Sun, 15 Mar 2020 18:51:07 +0100
-Message-Id: <20200315175108.9694-1-romain.naour@gmail.com>
+Subject: [PATCH 2/2] include/asm-generic: vmlinux.lds.h
+Date:   Sun, 15 Mar 2020 18:51:08 +0100
+Message-Id: <20200315175108.9694-2-romain.naour@gmail.com>
 X-Mailer: git-send-email 2.24.1
+In-Reply-To: <20200315175108.9694-1-romain.naour@gmail.com>
+References: <20200315175108.9694-1-romain.naour@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-sh-owner@vger.kernel.org
@@ -69,21 +71,21 @@ Apply the patch provided by Alan Modra [2] that fix alignment of rodata.
 Signed-off-by: Romain Naour <romain.naour@gmail.com>
 Cc: Alan Modra <amodra@gmail.com>
 ---
- arch/sh/boot/compressed/vmlinux.scr | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/asm-generic/vmlinux.lds.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/sh/boot/compressed/vmlinux.scr b/arch/sh/boot/compressed/vmlinux.scr
-index 862d74808236..dd292b4b9082 100644
---- a/arch/sh/boot/compressed/vmlinux.scr
-+++ b/arch/sh/boot/compressed/vmlinux.scr
-@@ -1,6 +1,6 @@
- SECTIONS
- {
--  .rodata..compressed : {
-+  .rodata..compressed : ALIGN(8) {
- 	input_len = .;
- 	LONG(input_data_end - input_data) input_data = .;
- 	*(.data)
+diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+index e00f41aa8ec4..d46d34b58c96 100644
+--- a/include/asm-generic/vmlinux.lds.h
++++ b/include/asm-generic/vmlinux.lds.h
+@@ -374,6 +374,7 @@
+  */
+ #ifndef RO_AFTER_INIT_DATA
+ #define RO_AFTER_INIT_DATA						\
++	. = ALIGN(8);							\
+ 	__start_ro_after_init = .;					\
+ 	*(.data..ro_after_init)						\
+ 	JUMP_TABLE_DATA							\
 -- 
 2.24.1
 
