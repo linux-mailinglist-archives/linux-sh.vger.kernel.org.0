@@ -2,78 +2,106 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 514DC18CCA5
-	for <lists+linux-sh@lfdr.de>; Fri, 20 Mar 2020 12:20:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B6B218E369
+	for <lists+linux-sh@lfdr.de>; Sat, 21 Mar 2020 18:43:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726884AbgCTLUf (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 20 Mar 2020 07:20:35 -0400
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:42225 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726974AbgCTLUf (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 20 Mar 2020 07:20:35 -0400
-Received: by mail-oi1-f195.google.com with SMTP id 13so6062582oiy.9
-        for <linux-sh@vger.kernel.org>; Fri, 20 Mar 2020 04:20:34 -0700 (PDT)
+        id S1727573AbgCURnM (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sat, 21 Mar 2020 13:43:12 -0400
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:46899 "EHLO
+        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726961AbgCURnM (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sat, 21 Mar 2020 13:43:12 -0400
+Received: by mail-pg1-f196.google.com with SMTP id k191so3631741pgc.13;
+        Sat, 21 Mar 2020 10:43:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=6w+aFSJ+2vZ3lBtg9xVXLOFVqSNoMPd625E7FNYobb8=;
-        b=b8+G2njQqFgR3u/XDAahViXG5L4HmPoG2PmkzL7YKwFpy/V6B4NnAxwBi4j1wD6toy
-         RYUqv0ZFsK+MeWJg7fZsozqwofYYbgcIW7fXQFboB3lhkgBNfSLWG09xlafT0HR1GJ1n
-         +Zn1Vp7CyTUWDoX87E9pqhmS5rohRxFPsywnmnJ5z3M2fQfK5WA8RWnLeA+s+mG+IV53
-         xOGvQAzWluZ0J0/5Aj/QNSzCrsouQwdnYfkYVk6RcqJ4erlIxpDl9iAzMsUrp1xN+d7x
-         CLhZWaTW9qfYBk+Jg8449OEleJ7ebnb+pprHwKU7FysRzJq0x0TscPAB3adufsCMf0fI
-         dHnA==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=3fStVl9rL3YRgIiAf/TzVVtMNrh3VX50fi0qgiiuA8o=;
+        b=UXIHaUBhFEcnW+OMHvNaZ8x6pk7Kw7xSi1XSqUQ/ypXJwX+/0kjbU9/UcI39UYrFww
+         L4SWYiuz/x5ZDo+euy1EVFm6/xEfsJuGVNtbr58w1aJIyLLbxr5Zvw2YV6+Jz2IFJLx1
+         hSKDnD+ugCfCtYPbwa0qtQZzvaVCFI/U0Hh49Bh/9v4+8cPYNZpxmxPxHCL/ucL4FfPB
+         t55wM9/sifQrsJ2x7qaYOUyTwSXOMqFFX7kbT5BvfLIkW8EyaBXHAHAACDZSlA65LB0e
+         +oYG1mMj2pkG+negyyMWiq2E57sl6r93kYgmOlv5Tvke5FfWZ2pC2/wfVUCgtyT6TaL9
+         9P/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=6w+aFSJ+2vZ3lBtg9xVXLOFVqSNoMPd625E7FNYobb8=;
-        b=VAYfGWy7nmJP3Op2dtGCbAnLfINckCLO4kUDxfZyqUUwErH3VCCF/lKwob+/J5GT7r
-         H+Cg2zqw1+L4bsGu0aQzCGu39iuds2rPcWlnF4j30QLeQuL44nLoFfxdOo6NSQSIf7M4
-         1QSbxlMbP4nxgE0bQ1Ji9LLDPgjMU4Rw5Yq9YxXJoVmvy+gcU/ebyHrpamarHo2qvtnG
-         i8i2taUOjUGlx+EYC6cG/GU8XDV2ujiuIomSfiHyI70XhQLVMI3x62TPUyRaAFryVmWx
-         Yu7oXXGzO2VQiN4OIFFY4id+G3NJezzi6lTJJ1UWsnRfjsJYhTFyRYKZY/RWa/BntCSs
-         iUJw==
-X-Gm-Message-State: ANhLgQ1QP6qLps8yIr2FKlQ+PDee1ps1Hlh0Z+AuPpbxPjq57YKHUlLJ
-        jsK7w9Js+hpIQ7kObrVjEsSo//uCU9wpZBt/UM0=
-X-Google-Smtp-Source: ADFU+vsCtos93dCK8qGfhdkwOdud3ZjpanDjCbS9pa1TE55XirRXOvMyx1WKFGFiuClJ66yyICApJJD0HMfc1CYsXP8=
-X-Received: by 2002:aca:210c:: with SMTP id 12mr5677632oiz.0.1584703234460;
- Fri, 20 Mar 2020 04:20:34 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=3fStVl9rL3YRgIiAf/TzVVtMNrh3VX50fi0qgiiuA8o=;
+        b=Za4uAK/Rnst3X52J/G6OTQ+l4s/AZHOKh6kKpQ5ZdDLx15z4OYR19Y68wga1kyVUUG
+         ee5zp6q5qTKny4UFqJGpeahJ/qbnOYjH1s7/aAjvoabkGxio6N2MmF1B0inrNYClKF9Z
+         MOd0xVTsyXhNx5gGofVLaVBNvXW8pVFwDfi3J6j7y008urMcx6FX2pPbORPJ3I/qcYNr
+         IUiPrlnt7xGuMXWU6edZb9U/MOBHUwNGMOwT3jQEnIOFM1lfl1EPLWcYQSrcMbwm9rXV
+         eklcwN1zNrtM67GneGGnNA2PoQjkjbwMKjFMWBSJG+MQzQ9NbQcQblBL0Dv5ERnfTyFi
+         MKlg==
+X-Gm-Message-State: ANhLgQ2QqQUUd2GCN1Ivg6KqoHNYnAiZxGyaoY7bqL3CaSA4W3yIPBqY
+        SDFD7Q2H5qPCaJxAoSHqado=
+X-Google-Smtp-Source: ADFU+vtSB9sj3T3LCfhecLdyVMoQimjNCV0Ow3ys209048E+VImdKW1kqpUYGGvxT4nwaYSYvsoI7Q==
+X-Received: by 2002:a63:e856:: with SMTP id a22mr1215468pgk.283.1584812590871;
+        Sat, 21 Mar 2020 10:43:10 -0700 (PDT)
+Received: from localhost ([49.207.51.24])
+        by smtp.gmail.com with ESMTPSA id f127sm8973833pfa.9.2020.03.21.10.43.09
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 21 Mar 2020 10:43:10 -0700 (PDT)
+Date:   Sat, 21 Mar 2020 23:13:03 +0530
+From:   afzal mohammed <afzal.mohd.ma@gmail.com>
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     linux-kernel@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, x86@kernel.org,
+        linux-sh@vger.kernel.org, linux-s390@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-parisc@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-ia64@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-c6x-dev@linux-c6x.org, linux-omap@vger.kernel.org,
+        linux-alpha@vger.kernel.org, Julia Lawall <Julia.Lawall@lip6.fr>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        Michal Marek <michal.lkml@markovi.net>
+Subject: Re: [PATCH 00/18] genirq: Remove setup_irq()
+Message-ID: <20200321174303.GA7930@afzalpc>
+References: <cover.1581478323.git.afzal.mohd.ma@gmail.com>
+ <87y2somido.fsf@nanos.tec.linutronix.de>
+ <20200227110713.GA5708@afzalpc>
 MIME-Version: 1.0
-Received: by 2002:a05:6838:40c6:0:0:0:0 with HTTP; Fri, 20 Mar 2020 04:20:34
- -0700 (PDT)
-From:   ECOWAS COMMITEE <ecowasmonitoringcommitteeabj@gmail.com>
-Date:   Fri, 20 Mar 2020 11:20:34 +0000
-Message-ID: <CAHHubrbE-eXijJvb-yMhHf_zMtqHatZECXC7fpgS=r7y6kGzGQ@mail.gmail.com>
-Subject: HAPPY SURVIVAL OF CORONAVIRUS
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200227110713.GA5708@afzalpc>
+User-Agent: Mutt/1.9.3 (2018-01-21)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Dear Sir/Madam
+Hi Thomas,
 
-HAPPY SURVIVAL OF CORONAVIRUS
+On Thu, Feb 27, 2020 at 04:37:13PM +0530, afzal mohammed wrote:
+> On Thu, Feb 27, 2020 at 11:31:15AM +0100, Thomas Gleixner wrote:
 
-We the West African Monitoring Committee of the West African Economic
-Community(ECOWAS)are contacting you for a business transaction which
-we feel will be of great interest to you.
+> > Vs. merging this series, I suggest the following approach:
+> > 
+> >    - Resubmit the individual changes as single patches or small series
+> >      to the relevant maintainers and subsystem mailing lists. They have
+> >      no dependency on a core change and can be applied where they belong
+> >      to.
+> > 
+> >    - After 5.6-rc6, verify which parts have made their way into
+> >      linux-next and resubmit the ignored ones as a series to me along
+> >      with the removal of the core parts.
+> > 
+> > That way we can avoid conflicting changes between subsystems and the tip
+> > irq/core branch as much as possible.
+> 
+> Okay, i will do accordingly.
 
-Our duty is to see to the coming in and out of funds into this sub
-region.There is a fund which we confiscated worth of $12.5 million
-dollars.We will like you to receive this fund on your name in your
-account and as well helping us in the investment.
+i am on it, is delayed due to the reason as mentioned at,
 
-You are advised to contact us as soon as you get this message for
-details of the transaction if you find it interesting.
+https://lkml.kernel.org/r/20200321172626.GA6323@afzalpc
 
-Best Regards,
+[ not repeating contents here since other mail was sent just now,
+  cc'ing you ]
 
-Mr John Aka
+Regards
+afzal
 
-Chairman
-ECOWAS
-West African Monitoring Committee
-Tel 00225 6716 6756
-Abidjan Cote D'Ivoire
