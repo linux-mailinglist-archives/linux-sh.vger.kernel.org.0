@@ -2,35 +2,35 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7417019165C
-	for <lists+linux-sh@lfdr.de>; Tue, 24 Mar 2020 17:27:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B4FE519164E
+	for <lists+linux-sh@lfdr.de>; Tue, 24 Mar 2020 17:27:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727999AbgCXQ1X (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 24 Mar 2020 12:27:23 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:59600 "EHLO
+        id S1728705AbgCXQ04 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 24 Mar 2020 12:26:56 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:59610 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728769AbgCXQ0x (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 24 Mar 2020 12:26:53 -0400
+        with ESMTP id S1728828AbgCXQ04 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 24 Mar 2020 12:26:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
         MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
         :Reply-To:Content-Type:Content-ID:Content-Description;
-        bh=m7GIWdVj/NEvdV02hRT9I7IOblpBtVvEgifUUc4ndo4=; b=gSjUcJf+2VKpCazqHLWR5+MARi
-        UC5TsGNQ32+S7Yquf4FDVc8aDgiQvIqe5ArSSv8YexjObQPj6rkMkb36xy5adiui79fsDX1rrhLLT
-        Cpv4oHJcdDWshfFxfIm2FYnTwZkvbXno90sn2Ob09sEXGHVrpISgc6UD+R77aFak80iPh8LpqNFwQ
-        L77cZqOyL1Rd3+HTwYYghA+nqSThCZHUsYt8BdyUfIw0KZ3jZTTu3prygZYGIWQCnSZMKn/olHJ6D
-        d/NWnUFmnREbGWpqXoE09FmbNR9jZ34b2XgloUNPzA7j+wTSYegv83CydmCY3mwsD5wO6jMVahZaw
-        HYWWSKxg==;
+        bh=h2EwIaOH/anLec0JD5F6Hx0W2recRoJEZf2x7dpcnFY=; b=AbBG958lXvVsasnxD64D1yRZjI
+        uc3/OblwmG4sRujdUnOKo6FKqq7pCfRj+K5rR7dc70eHa+Qx50nPNyeZXfRD7KmyOuKvILG8RZJZV
+        0R/kBiYWZnUXvaKxuxpAhwHnjIU+M4Up6JPzfdFXBq/x6JTcaErosZNgbAzlsKnynH8p6xkbkWvHm
+        ta9sYxt+yUbZOfSG7pvwQcsg/Q9GUwQy7VwsFrn1aHo6sggXL2YloCR3mpg1gKhHOyd8I47yHv5ic
+        jPKhADzF5BQQP/HpsK9pIdffcrIjmaVSiOjdVXWNKD4H0u7ZQx2YihG5MrPueKi5psY7jK2ye2rz0
+        lrJWM8Ww==;
 Received: from [2001:4bb8:18c:2a9e:999c:283e:b14a:9189] (helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jGmO9-0007eF-9U; Tue, 24 Mar 2020 16:26:49 +0000
+        id 1jGmOB-0007eN-MR; Tue, 24 Mar 2020 16:26:52 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>
 Cc:     linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 06/10] sh: don't include <asm/io_trapped.h> in <asm/io.h>
-Date:   Tue, 24 Mar 2020 17:26:29 +0100
-Message-Id: <20200324162633.754714-7-hch@lst.de>
+Subject: [PATCH 07/10] sh: unexport register_trapped_io and match_trapped_io_handler
+Date:   Tue, 24 Mar 2020 17:26:30 +0100
+Message-Id: <20200324162633.754714-8-hch@lst.de>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200324162633.754714-1-hch@lst.de>
 References: <20200324162633.754714-1-hch@lst.de>
@@ -42,51 +42,33 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-No need to expose the details of trapped I/O to drivers.
+Both functions are only used by compiled in core code.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/sh/include/asm/io.h | 1 -
- arch/sh/kernel/ioport.c  | 1 +
- arch/sh/mm/ioremap.c     | 1 +
- 3 files changed, 2 insertions(+), 1 deletion(-)
+ arch/sh/kernel/io_trapped.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/sh/include/asm/io.h b/arch/sh/include/asm/io.h
-index 282ec476c06e..6beb55cadc21 100644
---- a/arch/sh/include/asm/io.h
-+++ b/arch/sh/include/asm/io.h
-@@ -22,7 +22,6 @@
+diff --git a/arch/sh/kernel/io_trapped.c b/arch/sh/kernel/io_trapped.c
+index 60c828a2b8a2..92a512e442b0 100644
+--- a/arch/sh/kernel/io_trapped.c
++++ b/arch/sh/kernel/io_trapped.c
+@@ -102,7 +102,6 @@ int register_trapped_io(struct trapped_io *tiop)
+ 	pr_warn("unable to install trapped io filter\n");
+ 	return -1;
+ }
+-EXPORT_SYMBOL_GPL(register_trapped_io);
  
- #define __IO_PREFIX     generic
- #include <asm/io_generic.h>
--#include <asm/io_trapped.h>
- #include <asm-generic/pci_iomap.h>
- #include <mach/mangle-port.h>
+ void __iomem *match_trapped_io_handler(struct list_head *list,
+ 				       unsigned long offset,
+@@ -131,7 +130,6 @@ void __iomem *match_trapped_io_handler(struct list_head *list,
+ 	spin_unlock_irqrestore(&trapped_lock, flags);
+ 	return NULL;
+ }
+-EXPORT_SYMBOL_GPL(match_trapped_io_handler);
  
-diff --git a/arch/sh/kernel/ioport.c b/arch/sh/kernel/ioport.c
-index 34f8cdbbcf0b..f39446a658bd 100644
---- a/arch/sh/kernel/ioport.c
-+++ b/arch/sh/kernel/ioport.c
-@@ -7,6 +7,7 @@
-  */
- #include <linux/module.h>
- #include <linux/io.h>
-+#include <asm/io_trapped.h>
- 
- unsigned long sh_io_port_base __read_mostly = -1;
- EXPORT_SYMBOL(sh_io_port_base);
-diff --git a/arch/sh/mm/ioremap.c b/arch/sh/mm/ioremap.c
-index a8170fa07bc1..3a13c1d3aa54 100644
---- a/arch/sh/mm/ioremap.c
-+++ b/arch/sh/mm/ioremap.c
-@@ -18,6 +18,7 @@
- #include <linux/mm.h>
- #include <linux/pci.h>
- #include <linux/io.h>
-+#include <asm/io_trapped.h>
- #include <asm/page.h>
- #include <asm/pgalloc.h>
- #include <asm/addrspace.h>
+ static struct trapped_io *lookup_tiop(unsigned long address)
+ {
 -- 
 2.25.1
 
