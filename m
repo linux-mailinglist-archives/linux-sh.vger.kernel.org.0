@@ -2,167 +2,88 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D436B195AB1
-	for <lists+linux-sh@lfdr.de>; Fri, 27 Mar 2020 17:10:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A97E41960C6
+	for <lists+linux-sh@lfdr.de>; Fri, 27 Mar 2020 23:00:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727611AbgC0QK2 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 27 Mar 2020 12:10:28 -0400
-Received: from mail-pj1-f67.google.com ([209.85.216.67]:38191 "EHLO
-        mail-pj1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726515AbgC0QK1 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 27 Mar 2020 12:10:27 -0400
-Received: by mail-pj1-f67.google.com with SMTP id m15so3964173pje.3;
-        Fri, 27 Mar 2020 09:10:27 -0700 (PDT)
+        id S1727612AbgC0WAS (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 27 Mar 2020 18:00:18 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:39528 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726781AbgC0WAS (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 27 Mar 2020 18:00:18 -0400
+Received: by mail-ot1-f67.google.com with SMTP id x11so11424864otp.6
+        for <linux-sh@vger.kernel.org>; Fri, 27 Mar 2020 15:00:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=75IkkZ1NYInUGk9X1drfGLOcKHAXU9ALtpboPRPENVs=;
-        b=bAG8+6cfrQfvrSSLoJGkn9Mx3btLb8agasQ1eNRiHrr91lZ6srxsGXppBKGid71T9u
-         ZDEDVH5LOFJFKs7Nf60HoWfxbVzMLaeu68qEaBucSTc5D9yeo7sDdVdj6QxhKFEPHaZE
-         vBx+UAiICx+3zfGJOZfhHlEzUpMa9x1YIAg922wy3yrs4Uk2ePM4FFFu8eUUUK16w9s4
-         CrkEbth6870yo3dqnnz1tHHJ8moLr91D+7+pngGKMvnvH2g8Gkat5oPaz5U9Xjp5Jc3m
-         ZI6Roj9K//5uSvv97m57UA129ZRAIpM7gyLFDd2Wh0pvFAk6RXYL61KHeU+6UG8P1cNb
-         J/Uw==
+        d=landley-net.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=DSKGdPyxBzKTet6OZPsbuYDgffxpyrcZdumnd+aXm7Q=;
+        b=mONkssnMfjyTuGgZGJjyXHpshgd5917UhKNPqhbvY5PQ6ZSGXske9llXyY10bucht4
+         h1xs3bxMniJBIDOEc72mntjWBY8eMkrSAfgWw5CeSdrd1iG8+SYQGiYy4y8iKX6vMzCZ
+         qHgJj8+4DonzUQOudd8hF/za5YbowsVKgmp3l/bttsnVh2wHdGsJHGCwXDtOMltl/rDG
+         yhgQCmFYlGYPdGU1sCBrdj1/stkL7w//JFjxwWwPk+iQgNxQUfNq9c8pxRd/tVDQppBf
+         vZup+xD2X8zxcgKXoczqfFho6L4uI58a/QZDj3QVVQ46jeRiNPkgmcbo2xbUu771jyRD
+         qGIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=75IkkZ1NYInUGk9X1drfGLOcKHAXU9ALtpboPRPENVs=;
-        b=hPcphFn5B0+3SICCkZypHMNa34ZiNoDNOVW8qvpQHEMkBXs1kmyTa9wrXGu2abZlpH
-         PUCbhWIVvV9EbQI2fl6toWtXH9Sq8G7nnzceXc7pOQOhgXIlO7oj20BgmYXqRktkv6ou
-         BM6K5r+SYkZNMDImoOAc09QZm6O8PGm+/l6dJMNM1ql4XwH3LxXE01Nm4WLaG3Vhw9kR
-         9SQWNk+ozpFiEiIE0+j/Kprk/C8kCrYvSqJFt12OOeTcK2bQ9Agmby2x+xg7SYaqGnLh
-         TMOPH8KOuxlQVgn1WH1Nkj8zdzqy0rk3SHPvK8z5w72baCFKaYw/v6PCC+YMTha2R2AE
-         lo7A==
-X-Gm-Message-State: ANhLgQ2uLWcVVw1+WpAvO8wnAMlvwxBwGfaN75NpwNW6Ms6lRQcQ9G+G
-        6xvQrdWLIUo0bKwTymTiawUB/Ymr
-X-Google-Smtp-Source: ADFU+vurKJrwwB33jYJnrhJXRA/YWejexO4juDqDNS25pviTIQnNGfPFkl1T7lks/qnpFyONQtxqjw==
-X-Received: by 2002:a17:902:b281:: with SMTP id u1mr13999282plr.287.1585325426590;
-        Fri, 27 Mar 2020 09:10:26 -0700 (PDT)
-Received: from localhost ([49.207.55.57])
-        by smtp.gmail.com with ESMTPSA id u14sm4159413pgg.67.2020.03.27.09.10.25
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 27 Mar 2020 09:10:26 -0700 (PDT)
-Date:   Fri, 27 Mar 2020 21:40:24 +0530
-From:   afzal mohammed <afzal.mohd.ma@gmail.com>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>
-Subject: [PATCH v5 4/6] sh: replace setup_irq() by request_irq()
-Message-ID: <b060312689820559121ee0a6456bbc1202fb7ee5.1585320721.git.afzal.mohd.ma@gmail.com>
-References: <20200321174303.GA7930@afzalpc>
- <cover.1585320721.git.afzal.mohd.ma@gmail.com>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=DSKGdPyxBzKTet6OZPsbuYDgffxpyrcZdumnd+aXm7Q=;
+        b=d2rwjSeobcYquJrqrWGxubgjC0DCC2jn590skFGpy4bZkUYGo1jhZk3H5VtA6m6EBR
+         lpQGwzJ+xkmI1LG8zFhbx+qEyx28uCDCJGi0fbFH7pi2VPrTIwcNZ+rcntaQwF3HBTNl
+         0x+BJGG8jNHfglWH16GjeWji84L5hYC/gsXooEyWnOk80ID8eQQwcoLaTr+M2zuH4WgH
+         wQbeL4uRoGP2jMouiKbtJW3V7gPLzLcQ62e7XVu/CSJ9tyIWWS3xVy78l5h71Z+bOJpm
+         gvqyzUFCdJHo35xub9J34WgcZB6i5+pz1XpD2rl5lscFfj9WcUWXXntH6m/PsWWgoEoH
+         4msQ==
+X-Gm-Message-State: ANhLgQ3rhpnlQ0kFav28ESztH86sWgDyLjwgxzr42UpQC94IwcimsK25
+        rfVoUOQhNIW08GRz7ddlda91+CcU48w=
+X-Google-Smtp-Source: ADFU+vsSBAkZ2GsxzBQMwjTZaH/8Fikpu8U1C4+RVK+OgMmZdluSfvXK5qkQJPFzOsFM+tuK9KLUug==
+X-Received: by 2002:a05:6830:18f4:: with SMTP id d20mr658366otf.91.1585346417076;
+        Fri, 27 Mar 2020 15:00:17 -0700 (PDT)
+Received: from [192.168.86.21] ([136.62.4.88])
+        by smtp.googlemail.com with ESMTPSA id m15sm2316715oof.28.2020.03.27.15.00.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 27 Mar 2020 15:00:16 -0700 (PDT)
+Subject: Re: [PATCH 2/2] include/asm-generic: vmlinux.lds.h
+To:     Rich Felker <dalias@libc.org>,
+        Romain Naour <romain.naour@gmail.com>
+Cc:     linux-sh@vger.kernel.org, Alan Modra <amodra@gmail.com>,
+        geert+renesas@glider.be
+References: <20200315175108.9694-1-romain.naour@gmail.com>
+ <20200315175108.9694-2-romain.naour@gmail.com>
+ <20200326204240.GF11469@brightrain.aerifal.cx>
+From:   Rob Landley <rob@landley.net>
+Message-ID: <0f44cd31-a3e4-7b14-b9a8-28e4b0fd571e@landley.net>
+Date:   Fri, 27 Mar 2020 17:05:57 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1585320721.git.afzal.mohd.ma@gmail.com>
-User-Agent: Mutt/1.9.3 (2018-01-21)
+In-Reply-To: <20200326204240.GF11469@brightrain.aerifal.cx>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-request_irq() is preferred over setup_irq(). Invocations of setup_irq()
-occur after memory allocators are ready.
 
-Per tglx[1], setup_irq() existed in olden days when allocators were not
-ready by the time early interrupts were initialized.
 
-Hence replace setup_irq() by request_irq().
+On 3/26/20 3:42 PM, Rich Felker wrote:
+> On Sun, Mar 15, 2020 at 06:51:08PM +0100, Romain Naour wrote:
+>> Since the patch [1], building the kernel using a toolchain built with
+>> Binutils 2.33.1 prevent booting a sh4 system under Qemu.
+>> Apply the patch provided by Alan Modra [2] that fix alignment of rodata.
+>>
+>> [1] https://sourceware.org/git/gitweb.cgi?p=binutils-gdb.git;h=ebd2263ba9a9124d93bbc0ece63d7e0fae89b40e
+>> [2] https://www.sourceware.org/ml/binutils/2019-12/msg00112.html
+>>
+>> Signed-off-by: Romain Naour <romain.naour@gmail.com>
+>> Cc: Alan Modra <amodra@gmail.com>
+> 
+> Acked-by: Rich Felker <dalias@libc.org>
 
-[1] https://lkml.kernel.org/r/alpine.DEB.2.20.1710191609480.1971@nanos
+Is there any way to get this into sunday's release?
 
-Signed-off-by: afzal mohammed <afzal.mohd.ma@gmail.com>
----
-
-Link to v3, v2 & v1,
-[v3] https://lkml.kernel.org/r/20200304005120.5403-1-afzal.mohd.ma@gmail.com
-[v2] https://lkml.kernel.org/r/cover.1582471508.git.afzal.mohd.ma@gmail.com
-[v1] https://lkml.kernel.org/r/cover.1581478323.git.afzal.mohd.ma@gmail.com
-
-v5:
- * No change
-v4:
- * Non-existent
-v3:
- * Split out from tree wide series, as Thomas suggested to get it thr'
-	respective maintainers
- * Modify pr_err displayed in case of error
- * Re-arrange code & choose pr_err args as required to improve readability
- * Remove irrelevant parts from commit message & improve
- 
-v2:
- * Replace pr_err("request_irq() on %s failed" by
-           pr_err("%s: request_irq() failed"
- * Commit message massage
-
- arch/sh/boards/mach-cayman/irq.c | 18 ++++++------------
- arch/sh/drivers/dma/dma-pvr2.c   |  9 +++------
- 2 files changed, 9 insertions(+), 18 deletions(-)
-
-diff --git a/arch/sh/boards/mach-cayman/irq.c b/arch/sh/boards/mach-cayman/irq.c
-index 3b6ea2d99013..0305d0b51730 100644
---- a/arch/sh/boards/mach-cayman/irq.c
-+++ b/arch/sh/boards/mach-cayman/irq.c
-@@ -40,16 +40,6 @@ static irqreturn_t cayman_interrupt_pci2(int irq, void *dev_id)
- 	return IRQ_NONE;
- }
- 
--static struct irqaction cayman_action_smsc = {
--	.name		= "Cayman SMSC Mux",
--	.handler	= cayman_interrupt_smsc,
--};
--
--static struct irqaction cayman_action_pci2 = {
--	.name		= "Cayman PCI2 Mux",
--	.handler	= cayman_interrupt_pci2,
--};
--
- static void enable_cayman_irq(struct irq_data *data)
- {
- 	unsigned int irq = data->irq;
-@@ -149,6 +139,10 @@ void init_cayman_irq(void)
- 	}
- 
- 	/* Setup the SMSC interrupt */
--	setup_irq(SMSC_IRQ, &cayman_action_smsc);
--	setup_irq(PCI2_IRQ, &cayman_action_pci2);
-+	if (request_irq(SMSC_IRQ, cayman_interrupt_smsc, 0, "Cayman SMSC Mux",
-+			NULL))
-+		pr_err("Failed to register Cayman SMSC Mux interrupt\n");
-+	if (request_irq(PCI2_IRQ, cayman_interrupt_pci2, 0, "Cayman PCI2 Mux",
-+			NULL))
-+		pr_err("Failed to register Cayman PCI2 Mux interrupt\n");
- }
-diff --git a/arch/sh/drivers/dma/dma-pvr2.c b/arch/sh/drivers/dma/dma-pvr2.c
-index b5dbd1f75768..21c347543e19 100644
---- a/arch/sh/drivers/dma/dma-pvr2.c
-+++ b/arch/sh/drivers/dma/dma-pvr2.c
-@@ -64,11 +64,6 @@ static int pvr2_xfer_dma(struct dma_channel *chan)
- 	return 0;
- }
- 
--static struct irqaction pvr2_dma_irq = {
--	.name		= "pvr2 DMA handler",
--	.handler	= pvr2_dma_interrupt,
--};
--
- static struct dma_ops pvr2_dma_ops = {
- 	.request	= pvr2_request_dma,
- 	.get_residue	= pvr2_get_dma_residue,
-@@ -84,7 +79,9 @@ static struct dma_info pvr2_dma_info = {
- 
- static int __init pvr2_dma_init(void)
- {
--	setup_irq(HW_EVENT_PVR2_DMA, &pvr2_dma_irq);
-+	if (request_irq(HW_EVENT_PVR2_DMA, pvr2_dma_interrupt, 0,
-+			"pvr2 DMA handler", NULL))
-+		pr_err("Failed to register pvr2 DMA handler interrupt\n");
- 	request_dma(PVR2_CASCADE_CHAN, "pvr2 cascade");
- 
- 	return register_dmac(&pvr2_dma_info);
--- 
-2.25.1
-
+Acked-by: Rob Landley <rob@landley.net>
