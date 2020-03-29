@@ -2,255 +2,210 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 779CF196789
-	for <lists+linux-sh@lfdr.de>; Sat, 28 Mar 2020 17:45:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 13F4C196A91
+	for <lists+linux-sh@lfdr.de>; Sun, 29 Mar 2020 04:04:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728078AbgC1Qov (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sat, 28 Mar 2020 12:44:51 -0400
-Received: from mx.sdf.org ([205.166.94.20]:49729 "EHLO mx.sdf.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727699AbgC1Qou (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Sat, 28 Mar 2020 12:44:50 -0400
-Received: from sdf.org (IDENT:lkml@sdf.lonestar.org [205.166.94.16])
-        by mx.sdf.org (8.15.2/8.14.5) with ESMTPS id 02SGhMxY005915
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits) verified NO);
-        Sat, 28 Mar 2020 16:43:23 GMT
-Received: (from lkml@localhost)
-        by sdf.org (8.15.2/8.12.8/Submit) id 02SGhM0T009250;
-        Sat, 28 Mar 2020 16:43:22 GMT
-Message-Id: <202003281643.02SGhM0T009250@sdf.org>
-From:   George Spelvin <lkml@sdf.org>
-Date:   Tue, 10 Dec 2019 00:35:14 -0500
-Subject: [RFC PATCH v1 40/50] arch/*/include/asm/stackprotector.h: Use
- get_random_canary() consistently
-To:     linux-kernel@vger.kernel.org, lkml@sdf.org
-Cc:     Russell King <linux@armlinux.org.uk>,
-        linux-arm-kernel@lists.infradead.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paulburton@kernel.org>,
-        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        linuxppc-dev@lists.ozlabs.org,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        linux-xtensa@linux-xtensa.org
+        id S1726781AbgC2CE6 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sat, 28 Mar 2020 22:04:58 -0400
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:38485 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726449AbgC2CE6 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sat, 28 Mar 2020 22:04:58 -0400
+Received: by mail-oi1-f194.google.com with SMTP id w2so12609352oic.5
+        for <linux-sh@vger.kernel.org>; Sat, 28 Mar 2020 19:04:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=landley-net.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language;
+        bh=v+mgF6/cmuWeKSQhv278kbqBS2l6IulEf0lf87Ekm9o=;
+        b=B/DzH+u7asGp3c/WrBVU4SZV+FIr08ceQpktCoG6bbMOghlX2xD5veUdEKAI81vsEH
+         8A52bTIuMETQmAEl8+zEb7jkVL7beoJ8h1c+CX8TxhY0mx8uFlhcvzvBNTZ9YwrmHDj/
+         ajO9nD0/sNhOfKondOyGUlbGiS/Z5SbjYu2FXebJiizz9pq9r/krR5q/WGQBLiDq6ySY
+         ACRoxXAmWrUg39kNmgFMCDvLg8lZ9NuJ5104Plud8d0CwKBIuVr+HBt4kOu2I6nWfpXe
+         gjaUoDPywTi8R/4eEk3eNAE/UIKPDZYprHt7IM8lBS7aXBFnvsDMb/KA6Cps4KVGs6TC
+         ymAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language;
+        bh=v+mgF6/cmuWeKSQhv278kbqBS2l6IulEf0lf87Ekm9o=;
+        b=G3TMjKJsnh3mzx+CrlQgdGDnutTg3pPDXwcrz/oQvguCM+4baBzhxuRP3XggoURPxD
+         2c3jEOj3u1lScUYsQszAcWDTk64bFWQmR+O5Tb2RU9cFObjhuf1MW/ND43O2yCP8sB/T
+         3mQkc/pO18XUJ+Vl2t5diGpeo9joPGZInfa42MLblyOjT3X3iZUq4KLFEzu0z+Azvi3X
+         hTNmWROF0LOX5vpcNotcWOd3UCfHijUP7W2ml6GNAAUot/xms/vimEayZS8yv0ZKaSnD
+         XYZxOl176vE/L5/7Oc3GtLUMDtUARZq4xkDOakuADUDjEagGop4qSpXUsL1r/FqxRG1Y
+         y0MQ==
+X-Gm-Message-State: ANhLgQ22vaNYZXMOa01txwlPF4+y1XgmRE88ddG2IsiEj4uytHSkV0Z+
+        9v6BLCvhSwcjEJSlkhttACtuqg==
+X-Google-Smtp-Source: ADFU+vuC3DXRGj8AK6xwNJn72zE/0z59WdLNIKNX8zVbF7jgfriSDYlUMA/dKSQqTYbwBqDWQwjXPA==
+X-Received: by 2002:aca:4e08:: with SMTP id c8mr3800967oib.143.1585447497187;
+        Sat, 28 Mar 2020 19:04:57 -0700 (PDT)
+Received: from [192.168.86.21] ([136.62.4.88])
+        by smtp.googlemail.com with ESMTPSA id 46sm3190939otl.12.2020.03.28.19.04.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 28 Mar 2020 19:04:56 -0700 (PDT)
+Subject: Re: [PATCH 2/2] include/asm-generic: vmlinux.lds.h
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Rich Felker <dalias@libc.org>,
+        Romain Naour <romain.naour@gmail.com>,
+        torvalds@linux-foundation.org,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        Alan Modra <amodra@gmail.com>, Arnd Bergmann <arnd@arndb.de>
+References: <20200315175108.9694-1-romain.naour@gmail.com>
+ <20200315175108.9694-2-romain.naour@gmail.com>
+ <20200326204240.GF11469@brightrain.aerifal.cx>
+ <0f44cd31-a3e4-7b14-b9a8-28e4b0fd571e@landley.net>
+ <CAMuHMdV2BPUua6T7Bgu2mRj5De7mwUKm=hqNAs3_jZK4fZnXtg@mail.gmail.com>
+From:   Rob Landley <rob@landley.net>
+Message-ID: <db57466b-8635-6c71-55bd-51c228490f3c@landley.net>
+Date:   Sat, 28 Mar 2020 21:10:38 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
+MIME-Version: 1.0
+In-Reply-To: <CAMuHMdV2BPUua6T7Bgu2mRj5De7mwUKm=hqNAs3_jZK4fZnXtg@mail.gmail.com>
+Content-Type: multipart/mixed;
+ boundary="------------479B1A57757F7B903A4373D9"
+Content-Language: en-US
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-... in boot_init_stack_canary().
+This is a multi-part message in MIME format.
+--------------479B1A57757F7B903A4373D9
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-This is the archetypical example of where the extra security of
-get_random_bytes() is wasted.  The canary is only important as
-long as it's stored in __stack_chk_guard.
+Binutils 2.33.1 needs explicit alignment directives or sh kernel won't boot.
 
-It's also a great example of code that has been copied around
-a lot and not updated.
+https://www.spinics.net/lists/linux-sh/msg56835.html
+https://www.spinics.net/lists/linux-sh/msg56836.html
 
-Remove the XOR with LINUX_VERSION_CODE as it's pointless; the inclusion
-of utsname() in init_std_data in the random seeding obviates it.
+Patches attached, acked by arch maintainer and tested by me.
 
-The XOR with the TSC on x86 and mtfb() on powerPC were left in,
-as I haven't proved them redundant yet.  For those, we call
-get_random_long(), xor, and mask manually.
+On 3/28/20 5:29 AM, Geert Uytterhoeven wrote:
+> CC arnd
+> 
+> On Fri, Mar 27, 2020 at 11:00 PM Rob Landley <rob@landley.net> wrote:
+>> On 3/26/20 3:42 PM, Rich Felker wrote:
+>>> On Sun, Mar 15, 2020 at 06:51:08PM +0100, Romain Naour wrote:
+>>>> Since the patch [1], building the kernel using a toolchain built with
+>>>> Binutils 2.33.1 prevent booting a sh4 system under Qemu.
+>>>> Apply the patch provided by Alan Modra [2] that fix alignment of rodata.
+>>>>
+>>>> [1] https://sourceware.org/git/gitweb.cgi?p=binutils-gdb.git;h=ebd2263ba9a9124d93bbc0ece63d7e0fae89b40e
+>>>> [2] https://www.sourceware.org/ml/binutils/2019-12/msg00112.html
+>>>>
+>>>> Signed-off-by: Romain Naour <romain.naour@gmail.com>
+>>>> Cc: Alan Modra <amodra@gmail.com>
+>>>
+>>> Acked-by: Rich Felker <dalias@libc.org>
+>>
+>> Is there any way to get this into sunday's release?
+> 
+> Not if the maintainer isn't in CC.
+> 
+>> Acked-by: Rob Landley <rob@landley.net>
+> 
+> Gr{oetje,eeting}s,
+> 
+>                         Geert
+> 
 
-FUNCTIONAL CHANGE: mips and xtensa were changed from 64-bit
-get_random_long() to 56-bit get_random_canary() to match the
-others, in accordance with the logic in CANARY_MASK.
+[Puppy eyes intensify.]
 
-(We could do 1 bit better and zero *one* of the two high bytes.)
+Rob
 
-Signed-off-by: George Spelvin <lkml@sdf.org>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Paul Burton <paulburton@kernel.org>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: linux-mips@vger.kernel.org
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: linux-sh@vger.kernel.org
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc:  "H. Peter Anvin" <hpa@zytor.com>
-Cc: x86@kernel.org
-Cc: Chris Zankel <chris@zankel.net>
-Cc: Max Filippov <jcmvbkbc@gmail.com>
-Cc: linux-xtensa@linux-xtensa.org
+--------------479B1A57757F7B903A4373D9
+Content-Type: text/x-patch; charset=UTF-8;
+ name="patch1.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+ filename="patch1.patch"
+
+From:   Romain Naour <romain.naour@gmail.com>
+To:     linux-sh@vger.kernel.org
+Cc:     Romain Naour <romain.naour@gmail.com>,
+        Alan Modra <amodra@gmail.com>
+Subject: [PATCH 1/2] arch/sh: vmlinux.scr
+Date:   Sun, 15 Mar 2020 18:51:07 +0100
+Message-Id: <20200315175108.9694-1-romain.naour@gmail.com>
+
+Since the patch [1], building the kernel using a toolchain built with
+Binutils 2.33.1 prevent booting a sh4 system under Qemu.
+Apply the patch provided by Alan Modra [2] that fix alignment of rodata.
+
+[1] https://sourceware.org/git/gitweb.cgi?p=binutils-gdb.git;h=ebd2263ba9a9124d93bbc0ece63d7e0fae89b40e
+[2] https://www.sourceware.org/ml/binutils/2019-12/msg00112.html
+
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+Cc: Alan Modra <amodra@gmail.com>
+Acked-by: Rich Felker <dalias@libc.org>
+Tested-by: Rob Landley <rob@landley.net>
 ---
- arch/arm/include/asm/stackprotector.h     | 9 +++------
- arch/arm64/include/asm/stackprotector.h   | 8 ++------
- arch/mips/include/asm/stackprotector.h    | 7 ++-----
- arch/powerpc/include/asm/stackprotector.h | 6 ++----
- arch/sh/include/asm/stackprotector.h      | 8 ++------
- arch/x86/include/asm/stackprotector.h     | 4 ++--
- arch/xtensa/include/asm/stackprotector.h  | 7 ++-----
- 7 files changed, 15 insertions(+), 34 deletions(-)
+ arch/sh/boot/compressed/vmlinux.scr | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/include/asm/stackprotector.h b/arch/arm/include/asm/stackprotector.h
-index 72a20c3a0a90b..88c66fec1b5f4 100644
---- a/arch/arm/include/asm/stackprotector.h
-+++ b/arch/arm/include/asm/stackprotector.h
-@@ -30,17 +30,14 @@ extern unsigned long __stack_chk_guard;
-  */
- static __always_inline void boot_init_stack_canary(void)
+diff --git a/arch/sh/boot/compressed/vmlinux.scr b/arch/sh/boot/compressed/vmlinux.scr
+index 862d74808236..dd292b4b9082 100644
+--- a/arch/sh/boot/compressed/vmlinux.scr
++++ b/arch/sh/boot/compressed/vmlinux.scr
+@@ -1,6 +1,6 @@
+ SECTIONS
  {
--	unsigned long canary;
--
- 	/* Try to get a semi random initial value. */
--	get_random_bytes(&canary, sizeof(canary));
--	canary ^= LINUX_VERSION_CODE;
-+	unsigned long canary = get_random_canary();
- 
- 	current->stack_canary = canary;
- #ifndef CONFIG_STACKPROTECTOR_PER_TASK
--	__stack_chk_guard = current->stack_canary;
-+	__stack_chk_guard = canary;
- #else
--	current_thread_info()->stack_canary = current->stack_canary;
-+	current_thread_info()->stack_canary = canary;
- #endif
- }
- 
-diff --git a/arch/arm64/include/asm/stackprotector.h b/arch/arm64/include/asm/stackprotector.h
-index 5884a2b028277..705f60b9df85e 100644
---- a/arch/arm64/include/asm/stackprotector.h
-+++ b/arch/arm64/include/asm/stackprotector.h
-@@ -26,16 +26,12 @@ extern unsigned long __stack_chk_guard;
-  */
- static __always_inline void boot_init_stack_canary(void)
- {
--	unsigned long canary;
--
- 	/* Try to get a semi random initial value. */
--	get_random_bytes(&canary, sizeof(canary));
--	canary ^= LINUX_VERSION_CODE;
--	canary &= CANARY_MASK;
-+	unsigned long canary = get_random_canary();
- 
- 	current->stack_canary = canary;
- 	if (!IS_ENABLED(CONFIG_STACKPROTECTOR_PER_TASK))
--		__stack_chk_guard = current->stack_canary;
-+		__stack_chk_guard = canary;
- }
- 
- #endif	/* _ASM_STACKPROTECTOR_H */
-diff --git a/arch/mips/include/asm/stackprotector.h b/arch/mips/include/asm/stackprotector.h
-index 68d4be9e12547..6d1e4652152bc 100644
---- a/arch/mips/include/asm/stackprotector.h
-+++ b/arch/mips/include/asm/stackprotector.h
-@@ -28,14 +28,11 @@ extern unsigned long __stack_chk_guard;
-  */
- static __always_inline void boot_init_stack_canary(void)
- {
--	unsigned long canary;
--
- 	/* Try to get a semi random initial value. */
--	get_random_bytes(&canary, sizeof(canary));
--	canary ^= LINUX_VERSION_CODE;
-+	unsigned long canary = get_random_canary();
- 
- 	current->stack_canary = canary;
--	__stack_chk_guard = current->stack_canary;
-+	__stack_chk_guard = canary;
- }
- 
- #endif	/* _ASM_STACKPROTECTOR_H */
-diff --git a/arch/powerpc/include/asm/stackprotector.h b/arch/powerpc/include/asm/stackprotector.h
-index 1c8460e235838..76577b72ef736 100644
---- a/arch/powerpc/include/asm/stackprotector.h
-+++ b/arch/powerpc/include/asm/stackprotector.h
-@@ -21,12 +21,10 @@
-  */
- static __always_inline void boot_init_stack_canary(void)
- {
--	unsigned long canary;
--
- 	/* Try to get a semi random initial value. */
--	canary = get_random_canary();
-+	unsigned long canary = get_random_long();
-+
- 	canary ^= mftb();
--	canary ^= LINUX_VERSION_CODE;
- 	canary &= CANARY_MASK;
- 
- 	current->stack_canary = canary;
-diff --git a/arch/sh/include/asm/stackprotector.h b/arch/sh/include/asm/stackprotector.h
-index 35616841d0a1c..a9ef619c8a0ec 100644
---- a/arch/sh/include/asm/stackprotector.h
-+++ b/arch/sh/include/asm/stackprotector.h
-@@ -15,15 +15,11 @@ extern unsigned long __stack_chk_guard;
-  */
- static __always_inline void boot_init_stack_canary(void)
- {
--	unsigned long canary;
--
- 	/* Try to get a semi random initial value. */
--	get_random_bytes(&canary, sizeof(canary));
--	canary ^= LINUX_VERSION_CODE;
--	canary &= CANARY_MASK;
-+	unsigned long canary = get_random_canary();
- 
- 	current->stack_canary = canary;
--	__stack_chk_guard = current->stack_canary;
-+	__stack_chk_guard = canary;
- }
- 
- #endif /* __ASM_SH_STACKPROTECTOR_H */
-diff --git a/arch/x86/include/asm/stackprotector.h b/arch/x86/include/asm/stackprotector.h
-index 91e29b6a86a5e..af74fd3130cf4 100644
---- a/arch/x86/include/asm/stackprotector.h
-+++ b/arch/x86/include/asm/stackprotector.h
-@@ -72,9 +72,9 @@ static __always_inline void boot_init_stack_canary(void)
- 	 * there it already has some randomness on most systems. Later
- 	 * on during the bootup the random pool has true entropy too.
- 	 */
--	get_random_bytes(&canary, sizeof(canary));
-+	canary = get_random_u64();
- 	tsc = rdtsc();
--	canary += tsc + (tsc << 32UL);
-+	canary += tsc + (tsc << 32);
- 	canary &= CANARY_MASK;
- 
- 	current->stack_canary = canary;
-diff --git a/arch/xtensa/include/asm/stackprotector.h b/arch/xtensa/include/asm/stackprotector.h
-index e368f94fd2af3..9807fd80e5a8e 100644
---- a/arch/xtensa/include/asm/stackprotector.h
-+++ b/arch/xtensa/include/asm/stackprotector.h
-@@ -27,14 +27,11 @@ extern unsigned long __stack_chk_guard;
-  */
- static __always_inline void boot_init_stack_canary(void)
- {
--	unsigned long canary;
--
- 	/* Try to get a semi random initial value. */
--	get_random_bytes(&canary, sizeof(canary));
--	canary ^= LINUX_VERSION_CODE;
-+	unsigned long canary = get_random_canary();
- 
- 	current->stack_canary = canary;
--	__stack_chk_guard = current->stack_canary;
-+	__stack_chk_guard = canary;
- }
- 
- #endif	/* _ASM_STACKPROTECTOR_H */
+-  .rodata..compressed : {
++  .rodata..compressed : ALIGN(8) {
+ 	input_len = .;
+ 	LONG(input_data_end - input_data) input_data = .;
+ 	*(.data)
 -- 
-2.26.0
+2.24.1
 
+
+--------------479B1A57757F7B903A4373D9
+Content-Type: text/x-patch; charset=UTF-8;
+ name="patch2.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+ filename="patch2.patch"
+
+From:   Romain Naour <romain.naour@gmail.com>
+To:     linux-sh@vger.kernel.org
+Cc:     Romain Naour <romain.naour@gmail.com>,
+        Alan Modra <amodra@gmail.com>
+Subject: [PATCH 2/2] include/asm-generic: vmlinux.lds.h
+Date:   Sun, 15 Mar 2020 18:51:08 +0100
+Message-Id: <20200315175108.9694-2-romain.naour@gmail.com>
+
+Since the patch [1], building the kernel using a toolchain built with
+Binutils 2.33.1 prevent booting a sh4 system under Qemu.
+Apply the patch provided by Alan Modra [2] that fix alignment of rodata.
+
+[1] https://sourceware.org/git/gitweb.cgi?p=binutils-gdb.git;h=ebd2263ba9a9124d93bbc0ece63d7e0fae89b40e
+[2] https://www.sourceware.org/ml/binutils/2019-12/msg00112.html
+
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+Cc: Alan Modra <amodra@gmail.com>
+Acked-by: Rich Felker <dalias@libc.org>
+Tested-by: Rob Landley <rob@landley.net>
+---
+ include/asm-generic/vmlinux.lds.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+index e00f41aa8ec4..d46d34b58c96 100644
+--- a/include/asm-generic/vmlinux.lds.h
++++ b/include/asm-generic/vmlinux.lds.h
+@@ -374,6 +374,7 @@
+  */
+ #ifndef RO_AFTER_INIT_DATA
+ #define RO_AFTER_INIT_DATA						\
++	. = ALIGN(8);							\
+ 	__start_ro_after_init = .;					\
+ 	*(.data..ro_after_init)						\
+ 	JUMP_TABLE_DATA							\
+-- 
+2.24.1
+
+
+--------------479B1A57757F7B903A4373D9--
