@@ -2,96 +2,91 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C13D619A0C6
-	for <lists+linux-sh@lfdr.de>; Tue, 31 Mar 2020 23:29:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BF9A19C562
+	for <lists+linux-sh@lfdr.de>; Thu,  2 Apr 2020 17:03:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728124AbgCaV3C (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 31 Mar 2020 17:29:02 -0400
-Received: from mail-il1-f196.google.com ([209.85.166.196]:45430 "EHLO
-        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727852AbgCaV3C (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 31 Mar 2020 17:29:02 -0400
-Received: by mail-il1-f196.google.com with SMTP id x16so20981916ilp.12;
-        Tue, 31 Mar 2020 14:29:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=kkvlt8/Qu8L0FOjwQCAMUHyd9CkHdAVLhm7bVH6k0Os=;
-        b=FuosEFuDaIGv1JZ8vwuATRx2ma6Z8EpGSBeg7hzO+StfKLUI98+T6n4n47NMCsqj8i
-         c5qKHQ8ZUz/Xgr3lxk04B8IJvoTDwXpnrfyJ/xElr+KvwT8BT6O/MLzsFm3GmWXHsdZU
-         Un/rTWCeChuVH/csQqTp3Gy4XqKLjhsy80IIzglIz7USjigiqnmw0nkhSzV5jpL23UKw
-         ZSVdLothR24FIGHVtDimY58MqRAGwjyiktgJ56PtKdwqjEYEzmkLFkb6APNt9zlJ4inD
-         Ycii1P+D445hM13RD5lMFzRv69SebnQgBJo9aQf0fVWzU52ReRuN55p2Nw+u+IhabWrq
-         /e6g==
-X-Gm-Message-State: ANhLgQ0sSK7ZHoMfLEwDiWFjHHqiiAMHLE9Tb/pCguOxA5xgKTRL4Yx9
-        VTTTr+CCMmMgdpQGGyEurw==
-X-Google-Smtp-Source: ADFU+vs8rrwwBfgqZsedXMcfqhov0x+4IQyETdV1XOaXEzpLKlk5hqcbe40ixwQa4QeSisLTDzecaw==
-X-Received: by 2002:a92:8517:: with SMTP id f23mr19418072ilh.106.1585690141676;
-        Tue, 31 Mar 2020 14:29:01 -0700 (PDT)
-Received: from rob-hp-laptop ([64.188.179.250])
-        by smtp.gmail.com with ESMTPSA id c28sm25422ilf.26.2020.03.31.14.28.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2020 14:29:00 -0700 (PDT)
-Received: (nullmailer pid 27765 invoked by uid 1000);
-        Tue, 31 Mar 2020 21:28:57 -0000
-Date:   Tue, 31 Mar 2020 15:28:57 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Geert Uytterhoeven <geert+renesas@glider.be>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ulrich Hecht <uli+renesas@fpond.eu>,
-        Chris Brandt <chris.brandt@renesas.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-serial@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-sh@vger.kernel.org, uclinux-h8-devel@lists.sourceforge.jp,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: Re: [PATCH v2] dt-bindings: serial: sh-sci: Convert to json-schema
-Message-ID: <20200331212857.GA27690@bogus>
-References: <20200325095721.11946-1-geert+renesas@glider.be>
+        id S2389043AbgDBPDg (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 2 Apr 2020 11:03:36 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:10806 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2389105AbgDBPDf (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 2 Apr 2020 11:03:35 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1585839814; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: Date: Subject: In-Reply-To: References: Cc:
+ To: From: Reply-To: Sender;
+ bh=MFdcBokfw79s+7lRCHgLw9NzMSmYZr6xzGhOl6ZSO68=; b=liUyNNQsvAGxySif54oTFwi6cbi1wZSPQ/GJBXWYhDwcL7G6AiZ0LVZIGS7uSW8bDOgkjUr7
+ A05wn6RwUGwuI/utuIYOc/vdcojE+YBiwTBHoTaRZjDV4LsvKnGcYo6jdk0YXbUz/lnuGNps
+ 0Hdxh/vlefwsY+zYH3Y2EEM8pUY=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyJiNGMxMiIsICJsaW51eC1zaEB2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e85fec5.7f860c730110-smtp-out-n01;
+ Thu, 02 Apr 2020 15:03:33 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 5C71DC433F2; Thu,  2 Apr 2020 15:03:31 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: *
+X-Spam-Status: No, score=1.5 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
+        SUSPICIOUS_RECIPS autolearn=no autolearn_force=no version=3.4.0
+Received: from BCAIN (104-54-226-75.lightspeed.austtx.sbcglobal.net [104.54.226.75])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: bcain)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 866DFC43636;
+        Thu,  2 Apr 2020 15:03:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 866DFC43636
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=bcain@codeaurora.org
+Reply-To: <bcain@codeaurora.org>
+From:   "Brian Cain" <bcain@codeaurora.org>
+To:     "'afzal mohammed'" <afzal.mohd.ma@gmail.com>
+Cc:     "'Thomas Gleixner'" <tglx@linutronix.de>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-samsung-soc@vger.kernel.org>, <x86@kernel.org>,
+        <linux-sh@vger.kernel.org>, <linux-s390@vger.kernel.org>,
+        <linuxppc-dev@lists.ozlabs.org>, <linux-parisc@vger.kernel.org>,
+        <linux-mips@vger.kernel.org>, <linux-m68k@lists.linux-m68k.org>,
+        <linux-ia64@vger.kernel.org>, <linux-hexagon@vger.kernel.org>,
+        <linux-c6x-dev@linux-c6x.org>, <linux-omap@vger.kernel.org>,
+        <linux-alpha@vger.kernel.org>
+References: <20200321174303.GA7930@afzalpc> <cover.1585320721.git.afzal.mohd.ma@gmail.com> <059b01d604ab$637355b0$2a5a0110$@codeaurora.org> <20200328073253.GA5250@afzalpc>
+In-Reply-To: <20200328073253.GA5250@afzalpc>
+Subject: RE: [PATCH 0/6] Kill setup_irq()
+Date:   Thu, 2 Apr 2020 10:03:28 -0500
+Message-ID: <0fc601d608ff$df0ea550$9d2beff0$@codeaurora.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200325095721.11946-1-geert+renesas@glider.be>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain;
+        charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Content-Language: en-us
+Thread-Index: AQH+2owB65JuA03jeOLwO39OK5TmSwJQWNztApEZe3IB1U/c2KfelGEA
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Wed, 25 Mar 2020 10:57:21 +0100, Geert Uytterhoeven wrote:
-> Convert the Renesas Serial Communication Interface ((H)SCI(F)(A|B))
-> Device Tree binding documentation to json-schema.
+> -----Original Message-----
+> From: linux-hexagon-owner@vger.kernel.org <linux-hexagon-
+> owner@vger.kernel.org> On Behalf Of afzal mohammed
+...
+> On Fri, Mar 27, 2020 at 09:48:38PM -0500, Brian Cain wrote:
 > 
-> Split the bindings in 5 files, one per major type, to ease expressing
-> constraints.
+> > > Note 2: hexagon final image creation fails even w/o my patch
 > 
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> ---
-> v2:
->   - Drop paragraph about aliases,
->   - Fix power-domains and resets to maxItems 1,
->   - Use a single const compatible value for SCI,
->   - Use lists of descriptions and const values for interrupts resp.
->     interrupt-names for SCI and SCIF,
->   - Use multiple possible lists of descriptions and const values for
->     interrupts resp. interrupt-names for SCIF.
-> ---
->  .../bindings/serial/renesas,hscif.yaml        | 135 ++++++++++++++
->  .../bindings/serial/renesas,sci-serial.txt    | 150 ---------------
->  .../bindings/serial/renesas,sci.yaml          |  69 +++++++
->  .../bindings/serial/renesas,scif.yaml         | 172 ++++++++++++++++++
->  .../bindings/serial/renesas,scifa.yaml        | 107 +++++++++++
->  .../bindings/serial/renesas,scifb.yaml        |  98 ++++++++++
->  6 files changed, 581 insertions(+), 150 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/serial/renesas,hscif.yaml
->  delete mode 100644 Documentation/devicetree/bindings/serial/renesas,sci-serial.txt
->  create mode 100644 Documentation/devicetree/bindings/serial/renesas,sci.yaml
->  create mode 100644 Documentation/devicetree/bindings/serial/renesas,scif.yaml
->  create mode 100644 Documentation/devicetree/bindings/serial/renesas,scifa.yaml
->  create mode 100644 Documentation/devicetree/bindings/serial/renesas,scifb.yaml
+> > 	What's the nature of the failure in "Note 2"?
 > 
+> drivers/base/firmware_loader/main.o: In function `fw_is_builtin_firmware':
+> /devel/src/kernel6/drivers/base/firmware_loader/main.c:132:(.text+0xc8):
+> relocation truncated to fit: R_HEX_16_X against symbol
+`__start_builtin_fw'
+> defined in .modinfo section in .tmp_vmlinux1
+> Makefile:1077: recipe for target 'vmlinux' failed
+> make: *** [vmlinux] Error 1
 
-Applied, thanks.
+Thanks for reporting it -- I will make a patch to fix it.
 
-Rob
+-Brian
