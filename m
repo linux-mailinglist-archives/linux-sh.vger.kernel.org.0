@@ -2,151 +2,80 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 05A291A060D
-	for <lists+linux-sh@lfdr.de>; Tue,  7 Apr 2020 07:07:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 924FC1A0675
+	for <lists+linux-sh@lfdr.de>; Tue,  7 Apr 2020 07:15:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726657AbgDGFHH (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 7 Apr 2020 01:07:07 -0400
-Received: from hfcrelay.icp-osb-irony-out6.external.iinet.net.au ([203.59.1.86]:8292
-        "EHLO hfcrelay.icp-osb-irony-out6.external.iinet.net.au"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726399AbgDGFHG (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Tue, 7 Apr 2020 01:07:06 -0400
-X-Greylist: delayed 558 seconds by postgrey-1.27 at vger.kernel.org; Tue, 07 Apr 2020 01:07:03 EDT
-X-SMTP-MATCH: 0
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: =?us-ascii?q?A2AqAACBB4xe/yqY3MsNWRwBAQEBAQc?=
- =?us-ascii?q?BAREBBAQBAYFpBQEBCwGERYQbj0oBAQEBAQEGgQoIJYl+j1CBewoBAQEBAQE?=
- =?us-ascii?q?BAQE3BAEBhEQCgm02Bw4CEAEBAQUBAQEBAQUDAYV3hkkBAQEDIxVBEAsSBgI?=
- =?us-ascii?q?CJgICSQ4GAQwGAgEBgyKCWK9hdYEyhUuDVYE/gQ4qAYxMeYEHgTgMgi8uPoQ?=
- =?us-ascii?q?lgzuCXgSQRYdfmHoIgj+XJCOcAo83niYKgX8zGggoCIMkUCWcd2KNCYJDAQE?=
-X-IPAS-Result: =?us-ascii?q?A2AqAACBB4xe/yqY3MsNWRwBAQEBAQcBAREBBAQBAYFpB?=
- =?us-ascii?q?QEBCwGERYQbj0oBAQEBAQEGgQoIJYl+j1CBewoBAQEBAQEBAQE3BAEBhEQCg?=
- =?us-ascii?q?m02Bw4CEAEBAQUBAQEBAQUDAYV3hkkBAQEDIxVBEAsSBgICJgICSQ4GAQwGA?=
- =?us-ascii?q?gEBgyKCWK9hdYEyhUuDVYE/gQ4qAYxMeYEHgTgMgi8uPoQlgzuCXgSQRYdfm?=
- =?us-ascii?q?HoIgj+XJCOcAo83niYKgX8zGggoCIMkUCWcd2KNCYJDAQE?=
-X-IronPort-AV: E=Sophos;i="5.72,353,1580745600"; 
-   d="scan'208";a="234957621"
-Received: from 203-220-152-42.tpgi.com.au (HELO [192.168.1.108]) ([203.220.152.42])
-  by icp-osb-irony-out6.iinet.net.au with ESMTP; 07 Apr 2020 12:57:41 +0800
-Subject: Re: [PATCH 6/9] clk: Allow the common clk framework to be selectable
-To:     Arnd Bergmann <arnd@arndb.de>, Stephen Boyd <sboyd@kernel.org>
-Cc:     Michael Turquette <mturquette@baylibre.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Mark Salter <msalter@redhat.com>,
-        Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Guan Xuetao <gxt@pku.edu.cn>,
-        Russell King <linux@armlinux.org.uk>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        linux-c6x-dev@linux-c6x.org,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>
-References: <20200405025123.154688-1-sboyd@kernel.org>
- <20200405025123.154688-7-sboyd@kernel.org>
- <CAK8P3a2M54quhRNK4xvwjz9O9oZwgrobc_wtkGaeA2PMYwOUdg@mail.gmail.com>
- <158614207114.88454.6776609424163493475@swboyd.mtv.corp.google.com>
- <CAK8P3a3Yt2woG2LMcQ0jNPGuHdMtFbBmLvtBbrWFQ4J6x3v9aQ@mail.gmail.com>
-From:   Greg Ungerer <gerg@linux-m68k.org>
-Message-ID: <8a2a142a-106a-4241-fca5-5ef12e66cd41@linux-m68k.org>
-Date:   Tue, 7 Apr 2020 14:57:39 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        id S1727049AbgDGFPX (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 7 Apr 2020 01:15:23 -0400
+Received: from mail-vs1-f68.google.com ([209.85.217.68]:36238 "EHLO
+        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726937AbgDGFPP (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 7 Apr 2020 01:15:15 -0400
+Received: by mail-vs1-f68.google.com with SMTP id 184so1431088vsu.3
+        for <linux-sh@vger.kernel.org>; Mon, 06 Apr 2020 22:15:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=38NlpNEbzNFWb7RFQtfvRASB+B576yw7dNc7pozf3pc=;
+        b=MfHDvIBIt69xqysjTBYVVNc0kV20i2uh+5pM5bA0kgqzaY38Y8DWEj01Pvo2lprKBQ
+         GeMPmsDw8mI8JPS3USlc7fo909SxPcbTvuuO8fmlDj3Epr1eVDtR360WKQPQyhZWRFR1
+         e2AVs/X8xmnpyFeBVbEpWkW/7xUX6BkoKcBNjhVPYru9i1s3MQXqsGzojyz2OPT8Gzuk
+         eAsRgBBtJfCcoxVL23nq2mmza5GNfLtG1Vewilonxc/7to20Va10m3hSWyxvaqvjeUuq
+         +R1bw/nay987q2JQWtF8qmoAYape5iyXc2fGu9oueeJmEOdg+02io2ZWkJnJglNvfVbH
+         fVHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=38NlpNEbzNFWb7RFQtfvRASB+B576yw7dNc7pozf3pc=;
+        b=OPDcy93NExsnzvDJ/Ws8b/aPkEFOgFd3TKOYAvRj/h0KD1TdyLLsRLRUV4zVAu9K9F
+         w05gpQfg0tlvIfx5esK5yiEeuuy4Gdg48Cd5Gdiqcbe2EqWmZkvk+MEHcOJgHOTVsZUL
+         1gYP5R8yyBffiNFMT+FJlayALUu6KQSMY19VGgZlrbxYA8ZWqVjXsN1RXA7I6GKM3rIV
+         Xnpssg/YDdvLB1fY2RYYj4fUEzO0C290HOLe9N1YRQyMXs2Tn30jUYDQR04BsJBVjay2
+         LBkUOboa3ynobYq6p3P7bcsNtpCaWFrLA2eOAbTMcl+jItNDEjYjWsJZ1APbI6rJvDIq
+         IlKQ==
+X-Gm-Message-State: AGi0PuYykFWj4/129+bsbTij/jDlH2f+nHB80uOzYDxvcLNYwg0hAk3t
+        UXhyTDou1s1cJShx3jdJB/3TVOc42tdAmo4i6Wg=
+X-Google-Smtp-Source: APiQypL+ArhsKP1HCJpJZSuqqOKzmqGe03VSBcvbyU5XLwMdkDIdNu0ELlIqojTyqMNnJA6AEodSyvd4rSFXD4DVz/E=
+X-Received: by 2002:a67:fa85:: with SMTP id f5mr495699vsq.65.1586236514277;
+ Mon, 06 Apr 2020 22:15:14 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CAK8P3a3Yt2woG2LMcQ0jNPGuHdMtFbBmLvtBbrWFQ4J6x3v9aQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Received: by 2002:ab0:254a:0:0:0:0:0 with HTTP; Mon, 6 Apr 2020 22:15:12 -0700 (PDT)
+From:   SANDRA DEWI <sdewisandra@gmail.com>
+Date:   Tue, 7 Apr 2020 05:15:12 +0000
+Message-ID: <CALe9-EdG2aBp2yBY=t79ZuBObzzfY6nuVfAsra6+wc2BAYMhcg@mail.gmail.com>
+Subject: whether this is your correct email address or not
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Arnd, Stephen
+Dear ,Pastor
 
-On 6/4/20 5:35 pm, Arnd Bergmann wrote:
-> On Mon, Apr 6, 2020 at 5:01 AM Stephen Boyd <sboyd@kernel.org> wrote:
->> Quoting Arnd Bergmann (2020-04-05 05:45:20)
->>> On Sun, Apr 5, 2020 at 4:51 AM Stephen Boyd <sboyd@kernel.org> wrote:
->>>> There's one snag with doing this, and that's making sure that randconfig
->>>> builds don't select this option when some architecture or platform
->>>> implements 'struct clk' outside of the common clk framework. Introduce a
->>>> new config option 'HAVE_LEGACY_CLK' to indicate those platforms that
->>>> haven't migrated to the common clk framework and therefore shouldn't be
->>>> allowed to select this new config option. Also add a note that we hope
->>>> one day to remove this config entirely.
->>>
->>> Good idea!
->>>
->>> I've looked through the individual ones and commented a bit on
->>> what I think may or may not happen with them.
->>>
->>> ralink SOC_MT7621 is the only one that I think you got wrong,
->>> as it already has common-clk support.
->>
->> Ah I missed that it was inside a big if RALINK. Thanks. I suppose I
->> should just remove the select then for that config and not worry about
->> the duplication of clkdev and common clk configs.
-> 
-> Won't that cause build failures in those configurations that have
-> both implementations?
-> 
-> According to the Makefile, the clk.c file is built whenever CONFIG_MIPS_GIC
-> is unset, so I think we need
-> 
->           select HAVE_LEGACY_CLK if !MIPS_GIC
-> 
-> or maybe move the select into the per-chip configs that need it:
-> RT288X, RT305X, RT3883, and MT7620.
-> 
->>>> diff --git a/arch/m68k/Kconfig.cpu b/arch/m68k/Kconfig.cpu
->>>> index 60ac1cd8b96f..bd2d29c22a10 100644
->>>> --- a/arch/m68k/Kconfig.cpu
->>>> +++ b/arch/m68k/Kconfig.cpu
->>>
->>>     text    data     bss     dec     hex filename
->>> 1934726 263616   83284 2281626 22d09a obj/vmlinux-before
->>> 1971989 266192   83308 2321489 236c51 obj/vmlinux-after
->>>
->>> The coldfire clock implementation looks rather simple compared
->>> to chips from the 2010s: most chips have only fixed clocks,
->>> and three of them have one of two registers of clock gates.
->>>
->>> It shouldn't be hard to convert, but enabling common-clk will
->>> cause a noticeable kernel size increase on the fairly limited
->>> hardware.
->>>
->>> Simply enabling COMMON_CLK in m5475evb_defconfig
->>> results in a 1.7% or 40KB growth in kernel size, plus there
->>> would be additional dynamic memory usage:
->> There could certainly be some work done to reduce the code size of the
->> CCF. I haven't looked but perhaps we could save some memory by making
->> the basic types selectable too and then push a bunch of kconfig updates
->> through for that.
-> 
-> Right, that might help. Another possibility would be to support both
-> the common clk layer and the custom clk implementation on coldfire
-> until we remove the other custom implementations, by which point
-> even fewer people will care about coldfire.
-> 
-> Let's see what Geert and Greg think would be the best path for coldfire,
-> maybe the added 40KB is less of a problem after all.
 
-Losing another 40k is not ideal, but not the end of the world.
-It would not stop me running it on any platforms I regularly
-run on. For sure some of the really old hardware just doesn't
-have the RAM to spare.
 
-Any way, I say we have to move forward and and move to using
-the common clock framework for ColdFire sooner than later.
+I have a client who is an oil business man and he made a fixed deposit
+of $26 million USD in my bank, where I am the director of the branch,
+My client died with his entire family in Jordanian
 
-Regards
-Greg
+50% of the fund will be for the church  for the work of God,the
+balance 50% we share it in the ratio of 50/50. Meaning 50% to you and
+50% for me
 
+intervention in the Syrian Civil War 2014 leaving behind no next of
+kin. I Propose to present you as next of kin to claim the funds, if
+interested reply me for full details and how we are to
+
+
+
+proceed to close this deal.
+
+
+
+
+Mrs. Sandra Dewi
+
+
+
+Email  mrsdewi@gmx.com
