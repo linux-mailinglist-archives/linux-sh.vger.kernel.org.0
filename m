@@ -2,132 +2,93 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 068C81A07F2
-	for <lists+linux-sh@lfdr.de>; Tue,  7 Apr 2020 09:08:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BABF31A0EF6
+	for <lists+linux-sh@lfdr.de>; Tue,  7 Apr 2020 16:15:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726808AbgDGHII (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 7 Apr 2020 03:08:08 -0400
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:43095 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726393AbgDGHII (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 7 Apr 2020 03:08:08 -0400
-Received: by mail-oi1-f193.google.com with SMTP id k5so600627oiw.10;
-        Tue, 07 Apr 2020 00:08:07 -0700 (PDT)
+        id S1728979AbgDGOPi (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 7 Apr 2020 10:15:38 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:42707 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728966AbgDGOPi (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 7 Apr 2020 10:15:38 -0400
+Received: by mail-ot1-f65.google.com with SMTP id z5so3227445oth.9
+        for <linux-sh@vger.kernel.org>; Tue, 07 Apr 2020 07:15:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=landley-net.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=gP4BTE5Ot8wy02xgCFAtqdKsONZgXOrsLloDPwgt8X0=;
+        b=t0HrRlB0oZOhVJiW0QdPbKDqh4gLwG+PSQ37PQaPgFXGy8AY6IcuvauisH/TsKWYBP
+         YV6owKQ5A4zMZXupSfsjSQpwhnxYPxyxHPEP4q2Z7xFkDLQfxc1k1z5qE8mrOpUNhtzi
+         4R7sGyjZD9waJ5xVHXF0qjtJJw/6yJq1dXqffPAAONKrfHGntEjTl0jBVzBwtJT75ZKR
+         aTuH0S+0EFJe9WZuqAf1Yi65tgEmQu7mkEf0liBBhg2qQ4vYh9u4FXLQCiyO+3qrWkkd
+         4eGY4A4IkYBguBKWEBib0qrtUNLW6EDlvkHiUyCHh+pLvyBMD/WUVHvbC7JPkxsGA7qj
+         m4oQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=9KPwW6gv1QSgTyaBqvuvuccR22yt8OHERtZtZ45QV20=;
-        b=WwSt2cfwloWFmAvZ4cKIWi95qAqUchfj3HUVgIOvUTpElpqq/n76tW7VnZqhh9d6Iy
-         FIfYV4M0yuMGym13r86/PIVYozv0HUYKC4nzvmRFCiTQCqXvvRD8FWogedPewwkXPlr5
-         JSzcg1QD41/V32E0EXrvAcFGs4pwVLrg95ts4Nh/o9+YvtcoLMLVlO5h7+1p4+fwEFUp
-         E334smNjM+MpZ7UlcLQhG+J5+FZlw5WpB5n7Ohby1OWtbYo33/SF5RL926aMqZCpfsrs
-         GCgp/N0ZG59umQBW8zSk5aofNMCKrmPPa0NP64+gkSeNc4LrdTpwkvCn+UNJSuWzNJdf
-         NJMg==
-X-Gm-Message-State: AGi0PubMLaG7PnzPg0IIpJA2bKW5B9SCBi8pM+qf0o1hpKT83dT4lP2N
-        oSvv93W+urB5DVUUMfDErPzgcBOlrLNlIU5BzAo=
-X-Google-Smtp-Source: APiQypJUPzMxv/4MrgNefdxeLOoU32bKKGVhjV9FcAL8pAgR+GgzTWByrZ8jvfBkCgjZ21+HvYrOL/5ps9Lu0L/nTBE=
-X-Received: by 2002:aca:cdd1:: with SMTP id d200mr591205oig.153.1586243287374;
- Tue, 07 Apr 2020 00:08:07 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=gP4BTE5Ot8wy02xgCFAtqdKsONZgXOrsLloDPwgt8X0=;
+        b=iuhEhyXbIjMBTK+crm6Nge+2n0355KJNq/9cnv4VPLUmEcAWt/AA6jso+OdtI2yDkg
+         EOQiH9zPVvdF5ZMJR//ihbZKoyolvs1nXtXDflp6GnFTdo1vSS3zwikakcJefz8TqyeM
+         Hf50Wn9lFuiUCLmKxL2YRALgfQI3V5bC4pJdJsBCm9Xw6ENoy6ySI2FnvLGSbHG3h+ic
+         yjM6ejf8MceFmmq3pLsG2RiJO0vByUYNZntTBfW5rJRbl5c+wRurBYVw8/XSLMfG/VvH
+         Xo6bktgShyRV6Lgq72ImLgRzdxOM/HY0K1SNOWeFROd6oYDVkiMXRmtf5ApdokxubSz9
+         OVbg==
+X-Gm-Message-State: AGi0PuYoOp/VmPv8E0b91r8cQkxrWRAfmIwy0kkTdWTU0K5Pc1Ezbd+Q
+        o2xKJ7e8vIDX2KdFPvOh70V+XYS4qOg=
+X-Google-Smtp-Source: APiQypKiMcw4uHeBy6DP7gcM1d99dJhK/u3BXp3Nqe8eUKxNUhWYSA8orrpVEQbQE3A20IqeriSszQ==
+X-Received: by 2002:a9d:6944:: with SMTP id p4mr1752826oto.220.1586268936891;
+        Tue, 07 Apr 2020 07:15:36 -0700 (PDT)
+Received: from [192.168.86.21] ([136.62.4.88])
+        by smtp.googlemail.com with ESMTPSA id r2sm5283975oom.22.2020.04.07.07.15.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Apr 2020 07:15:36 -0700 (PDT)
+Subject: Re: v5.6 is still throwing a stack trace on boot.
+To:     Rich Felker <dalias@libc.org>
+Cc:     Linux-sh list <linux-sh@vger.kernel.org>
+References: <24dbbbc2-644a-1f9e-4e82-b7b726a4ce42@landley.net>
+ <20200404000730.GE11469@brightrain.aerifal.cx>
+ <2491f2c0-14f9-a4d0-17a0-25695e25671a@landley.net>
+ <20200404005125.GF11469@brightrain.aerifal.cx>
+From:   Rob Landley <rob@landley.net>
+Message-ID: <cc602220-8000-a6ba-5b7f-5b00c7faa0ff@landley.net>
+Date:   Tue, 7 Apr 2020 09:21:26 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-References: <20200405025123.154688-1-sboyd@kernel.org> <20200405025123.154688-7-sboyd@kernel.org>
- <CAK8P3a2M54quhRNK4xvwjz9O9oZwgrobc_wtkGaeA2PMYwOUdg@mail.gmail.com>
- <158614207114.88454.6776609424163493475@swboyd.mtv.corp.google.com>
- <CAK8P3a3Yt2woG2LMcQ0jNPGuHdMtFbBmLvtBbrWFQ4J6x3v9aQ@mail.gmail.com> <8a2a142a-106a-4241-fca5-5ef12e66cd41@linux-m68k.org>
-In-Reply-To: <8a2a142a-106a-4241-fca5-5ef12e66cd41@linux-m68k.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 7 Apr 2020 09:07:56 +0200
-Message-ID: <CAMuHMdV=rqpfmxtS+_kFeSiPs7cg6h2nTw4YmBKb=4kn0PuGgg@mail.gmail.com>
-Subject: Re: [PATCH 6/9] clk: Allow the common clk framework to be selectable
-To:     Greg Ungerer <gerg@linux-m68k.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Stephen Boyd <sboyd@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Mark Salter <msalter@redhat.com>,
-        Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Guan Xuetao <gxt@pku.edu.cn>,
-        Russell King <linux@armlinux.org.uk>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        linux-c6x-dev@linux-c6x.org,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200404005125.GF11469@brightrain.aerifal.cx>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Greg,
+On 4/3/20 7:51 PM, Rich Felker wrote:
+> On Fri, Apr 03, 2020 at 07:28:27PM -0500, Rob Landley wrote:
+>>>> ---[ end trace 76213c1325250d90 ]---
+>>>
+>>> Which hardware is this on? The qemu emulated board you're using?
+>>
+>> Yes, qemu -M r2d. Built with attached miniconf, and run via:
+>>
+>> qemu-system-sh4 -M r2d -serial null -serial mon:stdio -nographic -no-reboot \
+>>   -m 256 -append "panic=1 HOST=sh4 console=ttySC1 noiotrap" -kernel zImage \
+>>   -initrd sh4.cpio.gz
+> 
+> OK. This is nbd, it's just some pedantry added in commit
+> 128227e7fe4087b60f1bd31f762e61237eb23790. Essentially it's complaining
+> that something requested zero-filled slab memory when it's about to
+> run a constructor to fill in the memory. The backtrace is (as usual)
+> somewhat bogus looking and grep isn't helping me find where it's being
+> called from. I'll keep looking and see if I can track it down.
 
-On Tue, Apr 7, 2020 at 6:57 AM Greg Ungerer <gerg@linux-m68k.org> wrote:
-> On 6/4/20 5:35 pm, Arnd Bergmann wrote:
-> > On Mon, Apr 6, 2020 at 5:01 AM Stephen Boyd <sboyd@kernel.org> wrote:
-> >> Quoting Arnd Bergmann (2020-04-05 05:45:20)
-> >>> On Sun, Apr 5, 2020 at 4:51 AM Stephen Boyd <sboyd@kernel.org> wrote:
-> >>>> There's one snag with doing this, and that's making sure that randconfig
-> >>>> builds don't select this option when some architecture or platform
-> >>>> implements 'struct clk' outside of the common clk framework. Introduce a
-> >>>> new config option 'HAVE_LEGACY_CLK' to indicate those platforms that
-> >>>> haven't migrated to the common clk framework and therefore shouldn't be
-> >>>> allowed to select this new config option. Also add a note that we hope
-> >>>> one day to remove this config entirely.
+Did you?
 
-> >>>> --- a/arch/m68k/Kconfig.cpu
-> >>>> +++ b/arch/m68k/Kconfig.cpu
-> >>>
-> >>>     text    data     bss     dec     hex filename
-> >>> 1934726 263616   83284 2281626 22d09a obj/vmlinux-before
-> >>> 1971989 266192   83308 2321489 236c51 obj/vmlinux-after
-> >>>
-> >>> The coldfire clock implementation looks rather simple compared
-> >>> to chips from the 2010s: most chips have only fixed clocks,
-> >>> and three of them have one of two registers of clock gates.
-> >>>
-> >>> It shouldn't be hard to convert, but enabling common-clk will
-> >>> cause a noticeable kernel size increase on the fairly limited
-> >>> hardware.
-> >>>
-> >>> Simply enabling COMMON_CLK in m5475evb_defconfig
-> >>> results in a 1.7% or 40KB growth in kernel size, plus there
-> >>> would be additional dynamic memory usage:
-> >> There could certainly be some work done to reduce the code size of the
-> >> CCF. I haven't looked but perhaps we could save some memory by making
-> >> the basic types selectable too and then push a bunch of kconfig updates
-> >> through for that.
-> >
-> > Right, that might help. Another possibility would be to support both
-> > the common clk layer and the custom clk implementation on coldfire
-> > until we remove the other custom implementations, by which point
-> > even fewer people will care about coldfire.
-> >
-> > Let's see what Geert and Greg think would be the best path for coldfire,
-> > maybe the added 40KB is less of a problem after all.
->
-> Losing another 40k is not ideal, but not the end of the world.
-> It would not stop me running it on any platforms I regularly
-> run on. For sure some of the really old hardware just doesn't
-> have the RAM to spare.
->
-> Any way, I say we have to move forward and and move to using
-> the common clock framework for ColdFire sooner than later.
+Also, https://marc.info/?l=linux-sh&m=158544749818664&w=2 still doesn't seem to
+be upstream?
 
-Fine for me.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Rob
