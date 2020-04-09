@@ -2,290 +2,109 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F52F1A2F63
-	for <lists+linux-sh@lfdr.de>; Thu,  9 Apr 2020 08:45:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E6761A309C
+	for <lists+linux-sh@lfdr.de>; Thu,  9 Apr 2020 10:03:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726749AbgDIGoh (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 9 Apr 2020 02:44:37 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38070 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726678AbgDIGoW (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Thu, 9 Apr 2020 02:44:22 -0400
-Received: from mail.kernel.org (unknown [104.132.0.74])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E79042075E;
-        Thu,  9 Apr 2020 06:44:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586414661;
-        bh=JVtzNaiISKX6fBluximcTwyS87nEd30X4Gdmvy33ELs=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1GgBsyLtGvfDI5Mh70k1eQRtmNZVpymSZs5M6wrUAW3/3MswM2WWhlpDNKj4RSwx5
-         FHnAXOgZmUPNGPHBkZqEO1rvhyIWbP54aNntrYkq1AIe22nrpQ9wvK7wSe0mhFKT/I
-         xsfM0Qk4FKSAM5nu/TsKeTLYaGb+Hc8yv39fTC3s=
-From:   Stephen Boyd <sboyd@kernel.org>
-To:     Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Mark Salter <msalter@redhat.com>,
-        Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Guan Xuetao <gxt@pku.edu.cn>,
-        Russell King <linux@armlinux.org.uk>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-mips@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
-        linux-m68k@lists.linux-m68k.org,
-        linux-arm-kernel@lists.infradead.org, linux-sh@vger.kernel.org
-Subject: [PATCH v2 07/10] clk: Allow the common clk framework to be selectable
-Date:   Wed,  8 Apr 2020 23:44:13 -0700
-Message-Id: <20200409064416.83340-8-sboyd@kernel.org>
-X-Mailer: git-send-email 2.26.0.292.g33ef6b2f38-goog
-In-Reply-To: <20200409064416.83340-1-sboyd@kernel.org>
-References: <20200409064416.83340-1-sboyd@kernel.org>
+        id S1725881AbgDIIDM (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 9 Apr 2020 04:03:12 -0400
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:46984 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725828AbgDIIDM (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 9 Apr 2020 04:03:12 -0400
+Received: by mail-ot1-f68.google.com with SMTP id 88so370285otx.13
+        for <linux-sh@vger.kernel.org>; Thu, 09 Apr 2020 01:03:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=landley-net.20150623.gappssmtp.com; s=20150623;
+        h=to:from:subject:message-id:date:user-agent:mime-version
+         :content-language:content-transfer-encoding;
+        bh=w7mWp7JlCwwX+LzbbexCkoqXbAVclFZtCQPsc2llRoI=;
+        b=FvEIM7XCrbir7Gwew/pwlutnm7qZinrdK9LOjKh3zbzb/7qZQoVYsaiAHa/Yuf99B9
+         g16wKQuzapH5RnjJxdDIGUZvAB8XZSurUfX02/7kfAf9x+XHw+JXLyJoL+awk1UqGjCm
+         ZoJRM+KUBOpzigEZk3HxMKrfalkM46ef5s/ikzSB/t6gFUTItFp2zHeTXvvigRyUheiL
+         oAQalMlvCH2meNy060w8L1wokTcM8hHQPblMLjXZlALZ7SvnLgxE012cr+H6LlMg/H1a
+         VJ7tchoMd3WUIVBuyr+G8o8t+2gUBisoe1km9IX0596EwUasiT2ox8H/GggbdY9Av29r
+         EVnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:to:from:subject:message-id:date:user-agent
+         :mime-version:content-language:content-transfer-encoding;
+        bh=w7mWp7JlCwwX+LzbbexCkoqXbAVclFZtCQPsc2llRoI=;
+        b=QwCoeEc17thT4nxSsYJa60MefvEE896xtfUjBil0qzyLPvcIoiay++VqXOZP/4Jhyp
+         NyUtFc/8F5oFnoH8fuSlYq1bIReJxoIfoSp5+44G7Xzas6Ctb9tP2L1WjeIhuejXWgDJ
+         hSRPOtCMuv73Kvv2We4XRG0g6T9Ht3aNgio5G08yodzhhCsCh5X7aFwCd4UsoFJoq5Iy
+         +gkvE/hbTRafvlnGkhShk0QUXK2iBe9CwCzMQc9MLV0XzxEOl0oCCm0SfWikr3VuCvEg
+         xH8G0ZgbBARNikhFEzuysJYL2NEPsUH62T4fYFuI44UtcmtSjlejkq6Hg1AoqM9CaPpb
+         aQzA==
+X-Gm-Message-State: AGi0PuYB9ON4gfoubWAULYLA9koM39ShrulI/Sfgil4BL6lQJEPyMXkc
+        aKB3TFAk/QJP+n5eeJNqOeJJIsc7sto=
+X-Google-Smtp-Source: APiQypLJ/PYzQ++Uwcc/dOcVcV5qJzxQwowiTtBhvtoXVtcbu5gX/EcOawLSuQKRj4UqU7VFV93PBA==
+X-Received: by 2002:a9d:27a7:: with SMTP id c36mr8814366otb.68.1586419391951;
+        Thu, 09 Apr 2020 01:03:11 -0700 (PDT)
+Received: from [192.168.86.21] ([136.62.4.88])
+        by smtp.googlemail.com with ESMTPSA id s27sm7928660otg.38.2020.04.09.01.03.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 09 Apr 2020 01:03:11 -0700 (PDT)
+To:     Linux-sh list <linux-sh@vger.kernel.org>,
+        Rich Felker <dalias@libc.org>
+From:   Rob Landley <rob@landley.net>
+Subject: [PATCH] Fix verbose arch/sh panic messages.
+Message-ID: <1da19521-b70c-272c-51bb-9416ece62772@landley.net>
+Date:   Thu, 9 Apr 2020 03:09:03 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Enable build testing and configuration control of the common clk
-framework so that more code coverage and testing can be done on the
-common clk framework across various architectures. This also nicely
-removes the requirement that architectures must select the framework
-when they don't use it in architecture code.
+From: Rob Landley <rob@landley.net>
 
-There's one snag with doing this, and that's making sure that randconfig
-builds don't select this option when some architecture or platform
-implements 'struct clk' outside of the common clk framework. Introduce a
-new config option 'HAVE_LEGACY_CLK' to indicate those platforms that
-haven't migrated to the common clk framework and therefore shouldn't be
-allowed to select this new config option. Also add a note that we hope
-one day to remove this config entirely.
+These days printk() adds a newline, so 8 lines of memory dump becomes 80.
 
-Based on a patch by Mark Brown <broonie@kernel.org>.
-
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Mark Salter <msalter@redhat.com>
-Cc: Aurelien Jacquiot <jacquiot.aurelien@gmail.com>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc: Guan Xuetao <gxt@pku.edu.cn>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: <linux-mips@vger.kernel.org>
-Cc: <linux-c6x-dev@linux-c6x.org>
-Cc: <linux-m68k@lists.linux-m68k.org>
-Cc: <linux-arm-kernel@lists.infradead.org>
-Cc: <linux-sh@vger.kernel.org>
-Link: https://lore.kernel.org/r/1470915049-15249-1-git-send-email-broonie@kernel.org
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Rob Landley <rob@landley.net>
 ---
- arch/arm/Kconfig              |  2 ++
- arch/c6x/Kconfig              |  1 +
- arch/m68k/Kconfig.cpu         |  2 +-
- arch/mips/Kconfig             |  5 +++--
- arch/mips/loongson2ef/Kconfig |  2 +-
- arch/mips/ralink/Kconfig      |  4 ++++
- arch/sh/boards/Kconfig        |  5 +++++
- arch/unicore32/Kconfig        |  2 +-
- drivers/clk/Kconfig           | 17 +++++++++++++----
- 9 files changed, 31 insertions(+), 9 deletions(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index eeabdc5a3dd2..0606e1bbd7b6 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -364,6 +364,7 @@ config ARCH_EP93XX
- 	select CPU_ARM920T
- 	select GENERIC_CLOCKEVENTS
- 	select GPIOLIB
-+	select HAVE_LEGACY_CLK
- 	help
- 	  This enables support for the Cirrus EP93xx series of CPUs.
- 
-@@ -522,6 +523,7 @@ config ARCH_OMAP1
- 	select GENERIC_IRQ_MULTI_HANDLER
- 	select GPIOLIB
- 	select HAVE_IDE
-+	select HAVE_LEGACY_CLK
- 	select IRQ_DOMAIN
- 	select NEED_MACH_IO_H if PCCARD
- 	select NEED_MACH_MEMORY_H
-diff --git a/arch/c6x/Kconfig b/arch/c6x/Kconfig
-index e65e8d82442a..6444ebfd06a6 100644
---- a/arch/c6x/Kconfig
-+++ b/arch/c6x/Kconfig
-@@ -11,6 +11,7 @@ config C6X
- 	select ARCH_HAS_SYNC_DMA_FOR_CPU
- 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
- 	select CLKDEV_LOOKUP
-+	select HAVE_LEGACY_CLK
- 	select GENERIC_ATOMIC64
- 	select GENERIC_IRQ_SHOW
- 	select HAVE_ARCH_TRACEHOOK
-diff --git a/arch/m68k/Kconfig.cpu b/arch/m68k/Kconfig.cpu
-index 60ac1cd8b96f..bd2d29c22a10 100644
---- a/arch/m68k/Kconfig.cpu
-+++ b/arch/m68k/Kconfig.cpu
-@@ -28,7 +28,7 @@ config COLDFIRE
- 	select CPU_HAS_NO_MULDIV64
- 	select GENERIC_CSUM
- 	select GPIOLIB
--	select HAVE_CLK
-+	select HAVE_LEGACY_CLK
- 
- endchoice
- 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index e53a8dd5c19b..fcfbe98e6bb2 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -181,7 +181,7 @@ config AR7
- 	select SYS_SUPPORTS_ZBOOT_UART16550
- 	select GPIOLIB
- 	select VLYNQ
--	select HAVE_CLK
-+	select HAVE_LEGACY_CLK
- 	help
- 	  Support for the Texas Instruments AR7 System-on-a-Chip
- 	  family: TNETD7100, 7200 and 7300.
-@@ -296,9 +296,9 @@ config BCM63XX
- 	select SYS_HAS_EARLY_PRINTK
- 	select SWAP_IO_SPACE
- 	select GPIOLIB
--	select HAVE_CLK
- 	select MIPS_L1_CACHE_SHIFT_4
- 	select CLKDEV_LOOKUP
-+	select HAVE_LEGACY_CLK
- 	help
- 	  Support for BCM63XX based boards
- 
-@@ -419,6 +419,7 @@ config LANTIQ
- 	select SWAP_IO_SPACE
- 	select BOOT_RAW
- 	select CLKDEV_LOOKUP
-+	select HAVE_LEGACY_CLK
- 	select USE_OF
- 	select PINCTRL
- 	select PINCTRL_LANTIQ
-diff --git a/arch/mips/loongson2ef/Kconfig b/arch/mips/loongson2ef/Kconfig
-index 595dd48e1e4d..c9ec43afde73 100644
---- a/arch/mips/loongson2ef/Kconfig
-+++ b/arch/mips/loongson2ef/Kconfig
-@@ -46,7 +46,7 @@ config LEMOTE_MACH2F
- 	select CSRC_R4K if ! MIPS_EXTERNAL_TIMER
- 	select DMA_NONCOHERENT
- 	select GENERIC_ISA_DMA_SUPPORT_BROKEN
--	select HAVE_CLK
-+	select HAVE_LEGACY_CLK
- 	select FORCE_PCI
- 	select I8259
- 	select IRQ_MIPS_CPU
-diff --git a/arch/mips/ralink/Kconfig b/arch/mips/ralink/Kconfig
-index 94e9ce994494..1240e6e0c28d 100644
---- a/arch/mips/ralink/Kconfig
-+++ b/arch/mips/ralink/Kconfig
-@@ -27,18 +27,22 @@ choice
- 	config SOC_RT288X
- 		bool "RT288x"
- 		select MIPS_L1_CACHE_SHIFT_4
-+		select HAVE_LEGACY_CLK
- 		select HAVE_PCI
- 
- 	config SOC_RT305X
- 		bool "RT305x"
-+		select HAVE_LEGACY_CLK
- 
- 	config SOC_RT3883
- 		bool "RT3883"
-+		select HAVE_LEGACY_CLK
- 		select HAVE_PCI
- 
- 	config SOC_MT7620
- 		bool "MT7620/8"
- 		select CPU_MIPSR2_IRQ_VI
-+		select HAVE_LEGACY_CLK
- 		select HAVE_PCI
- 
- 	config SOC_MT7621
-diff --git a/arch/sh/boards/Kconfig b/arch/sh/boards/Kconfig
-index cee24c308337..fb0ca0c1efe1 100644
---- a/arch/sh/boards/Kconfig
-+++ b/arch/sh/boards/Kconfig
-@@ -7,6 +7,11 @@ config SOLUTION_ENGINE
- config SH_ALPHA_BOARD
- 	bool
- 
-+config SH_CUSTOM_CLK
-+	def_bool y
-+	depends on !SH_DEVICE_TREE
-+	select HAVE_LEGACY_CLK
-+
- config SH_DEVICE_TREE
- 	bool
- 	select OF
-diff --git a/arch/unicore32/Kconfig b/arch/unicore32/Kconfig
-index 41fe944005f8..11ba1839d198 100644
---- a/arch/unicore32/Kconfig
-+++ b/arch/unicore32/Kconfig
-@@ -70,7 +70,7 @@ config ARCH_PUV3
- 	def_bool y
- 	select CPU_UCV2
- 	select GENERIC_CLOCKEVENTS
--	select HAVE_CLK
-+	select HAVE_LEGACY_CLK
- 	select GPIOLIB
- 
- # CONFIGs for ARCH_PUV3
-diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
-index bcb257baed06..890bed62196d 100644
---- a/drivers/clk/Kconfig
-+++ b/drivers/clk/Kconfig
-@@ -7,8 +7,18 @@ config CLKDEV_LOOKUP
- config HAVE_CLK_PREPARE
- 	bool
- 
--config COMMON_CLK
-+config HAVE_LEGACY_CLK # TODO: Remove once all legacy users are migrated
- 	bool
-+	select HAVE_CLK
-+	help
-+	  Select this option when the clock API in <linux/clk.h> is implemented
-+	  by platform/architecture code. This method is deprecated. Modern
-+	  code should select COMMON_CLK instead and not define a custom
-+	  'struct clk'.
-+
-+menuconfig COMMON_CLK
-+	bool "Common Clock Framework"
-+	depends on !HAVE_LEGACY_CLK
- 	select HAVE_CLK_PREPARE
- 	select CLKDEV_LOOKUP
- 	select SRCU
-@@ -20,8 +30,7 @@ config COMMON_CLK
- 	  Architectures utilizing the common struct clk should select
- 	  this option.
- 
--menu "Common Clock Framework"
--	depends on COMMON_CLK
-+if COMMON_CLK
- 
- config COMMON_CLK_WM831X
- 	tristate "Clock driver for WM831x/2x PMICs"
-@@ -362,4 +371,4 @@ source "drivers/clk/ti/Kconfig"
- source "drivers/clk/uniphier/Kconfig"
- source "drivers/clk/zynqmp/Kconfig"
- 
--endmenu
-+endif
--- 
-Sent by a computer, using git, on the internet
+ arch/sh/kernel/dumpstack.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/arch/sh/kernel/dumpstack.c b/arch/sh/kernel/dumpstack.c
+index 9f1c9c11d62d..bfbae0d79dde 100644
+--- a/arch/sh/kernel/dumpstack.c
++++ b/arch/sh/kernel/dumpstack.c
+@@ -19,12 +19,14 @@
+ void dump_mem(const char *str, unsigned long bottom, unsigned long top)
+ {
+ 	unsigned long p;
++	char buf[128], *s;
+ 	int i;
+
+ 	printk("%s(0x%08lx to 0x%08lx)\n", str, bottom, top);
+
+ 	for (p = bottom & ~31; p < top; ) {
+-		printk("%04lx: ", p & 0xffff);
++		s = buf;
++		s += sprintf(s, "%04lx: ", p & 0xffff);
+
+ 		for (i = 0; i < 8; i++, p += 4) {
+ 			unsigned int val;
+@@ -33,13 +35,13 @@
+ 				printk("         ");
+ 			else {
+ 				if (__get_user(val, (unsigned int __user *)p)) {
+-					printk("\n");
++					printk("FAULT\n");
+ 					return;
+ 				}
+-				printk("%08x ", val);
++				s += sprintf(s, "%08x ", val);
+ 			}
+ 		}
+-		printk("\n");
++		printk("%s\n", buf);
+ 	}
+ }
 
