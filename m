@@ -2,124 +2,89 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CF441A3161
-	for <lists+linux-sh@lfdr.de>; Thu,  9 Apr 2020 10:58:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73E151A32D8
+	for <lists+linux-sh@lfdr.de>; Thu,  9 Apr 2020 12:53:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726626AbgDII64 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 9 Apr 2020 04:58:56 -0400
-Received: from mout.kundenserver.de ([217.72.192.75]:50675 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726536AbgDII6z (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 9 Apr 2020 04:58:55 -0400
-Received: from mail-qt1-f178.google.com ([209.85.160.178]) by
- mrelayeu.kundenserver.de (mreue108 [212.227.15.145]) with ESMTPSA (Nemesis)
- id 1MhDAi-1iqzpE2uFW-00eI3c; Thu, 09 Apr 2020 10:58:54 +0200
-Received: by mail-qt1-f178.google.com with SMTP id g7so2144406qtj.13;
-        Thu, 09 Apr 2020 01:58:54 -0700 (PDT)
-X-Gm-Message-State: AGi0PuZnwcp+Tqdgl47obk3LyDCyWlo4dBmaaM0KkS9BIjsXI+mDHzu3
-        XEwP+Ipc4/ubF7jRNKv0i7K/1IVuQPRS8ER+J7s=
-X-Google-Smtp-Source: APiQypJGQnSKvwEmA3Uxqr21N7C28AlJ4H4USNdYjJ7jBa7oUXIlp/5GQn3RknUCUlZR5y4GP5LLx3U/KPQi69ASHsQ=
-X-Received: by 2002:aed:3b4c:: with SMTP id q12mr10854453qte.18.1586422733282;
- Thu, 09 Apr 2020 01:58:53 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200409064416.83340-1-sboyd@kernel.org>
-In-Reply-To: <20200409064416.83340-1-sboyd@kernel.org>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Thu, 9 Apr 2020 10:58:36 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a1mOS4bVs+FQNcWPXuAdXpB-rKAuRE-at-Pr0m=43D68g@mail.gmail.com>
-Message-ID: <CAK8P3a1mOS4bVs+FQNcWPXuAdXpB-rKAuRE-at-Pr0m=43D68g@mail.gmail.com>
-Subject: Re: [PATCH v2 00/10] Allow COMMON_CLK to be selectable
+        id S1725972AbgDIKxt (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 9 Apr 2020 06:53:49 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36252 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725970AbgDIKxs (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Thu, 9 Apr 2020 06:53:48 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 29C1320857;
+        Thu,  9 Apr 2020 10:53:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1586429628;
+        bh=BZVpag0qQETEDSuxALqBEW3mh5PAYg0YPSQ6u6hT+os=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=tTiZNE4MZTrKG51Y9OasNhBTM4o2bQLbPf4Wf7/YAQELzNOT+AZAkgn2K0xhT4IA2
+         HuyI4p0Y0c92dYiCkVqvymJQgjD6EbHBHAoaHwPXk/+7v+O7zifx1qUnqixV55VStn
+         4PNGjE29VSHGt8vR/xAWJjchP4WQ81ol1wBUKig8=
+Date:   Thu, 9 Apr 2020 11:53:46 +0100
+From:   Mark Brown <broonie@kernel.org>
 To:     Stephen Boyd <sboyd@kernel.org>
 Cc:     Michael Turquette <mturquette@baylibre.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        Alexander Shiyan <shc_work@mail.ru>,
-        =?UTF-8?Q?Andreas_F=C3=A4rber?= <afaerber@suse.de>,
-        Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Huacai Chen <chenhc@lemote.com>,
+        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
         Geert Uytterhoeven <geert@linux-m68k.org>,
-        Guan Xuetao <gxt@pku.edu.cn>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-c6x-dev@linux-c6x.org,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Lubomir Rintel <lkundrak@v3.sk>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Mark Brown <broonie@kernel.org>,
         Mark Salter <msalter@redhat.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Paul Burton <paulburton@kernel.org>,
-        Paul Walmsley <paul@pwsan.com>, Rich Felker <dalias@libc.org>,
+        Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Guan Xuetao <gxt@pku.edu.cn>,
         Russell King <linux@armlinux.org.uk>,
-        Thierry Reding <treding@nvidia.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
         Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Tony Prisk <linux@prisktech.co.nz>,
-        "moderated list:H8/300 ARCHITECTURE" 
-        <uclinux-h8-devel@lists.sourceforge.jp>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Will Deacon <will@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:O1q931hCZ40T0tLkpVu7G+bihKn8ZKa+7Q36I2aOnANCcD9rGPv
- bNiYtUO1D51Vlkj+7/CjCy8tt3nrbLkCvViBQyHvFelIwFAPWhVlrNhVKKHjGdr9KoTxIlF
- r67KKVv1oWwEiP5GAlv3JelwY2d3v8nfKlYfEbnhR2yCiAg42IaoG+JqXlsiN2+1/RZ1rE0
- GY/sQddB5aPnMh3dufYOA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:2AqidcnxkcA=:Hgp3RZDeZIgahRHJ/yk7nE
- Ulqh8jc6o/Z+yMvq7M10nOyZxnr7eip5vdx1DIfSMCTMELWDmZBF0lxuo/QJ8nUGK/29NfnXD
- B6dIoA072qWvbBqMbk5tNevgw/s2qWs/QhQqdoeSbFP0Xs6TeAsjBF8gcNEKo3bdPhAapgMXF
- tiBDTacTW3a701mf+Hf/iBvexQ81Ui7JIClEs/xmQfVwVMbur5WlTINhgZ6aXtnt/Qxz617A5
- Gu25OVYlcy/+wOGROa38MQwR1RZZvpt73ioF9Te5bYZPp4sC038OgxbZeNkPoVMaWb0h1L/q4
- aLGdyPWfuI7878M6nv6dokLnav68ecWblRGBsJJ1A33KqDYvibuUPSb2rfx0dWDy+flUbbcXB
- yjUtTz5NCsGhx8Z7A/2ms1FIi7P7EWhY/dZpMjR6JgKVzKzVxq48t0bc1y2tkXA9wV8V2rrqF
- xwGhxQcAe1u69AvnVWQTMX5dD9JyHgJvdszBeOQTcbIVMPKUrNrXf+UU0cmPxq8PNO0Xpl57V
- rClHRH0l4oFV2EkyLf8GS/vCfVDJny3RAQ/AOKzP5vxaVsmNH4YagBWKwapsPjgXcbeq14S2u
- JqxgZ3TD1NmODtlIF4dzEyP+fvgmeagmYPEy4wtLw50777om8U+8ObPsozZcdMOBJzlJW4NY/
- D88RxxGlgB9nV2tn0QEOEXnJHnlpDDD7ofucFN3mAdp5KPz5g9NZEmh4vsqrk5ZBbbDxXmZkC
- ebUgF7k8cBaIBjJejSYhrRUuLN+Z4ISdfTNh5VBGy64rJsBNqCf2Uh1Kb62WN8zbGzS4IBdxj
- 1wjjdT2t6f8d2eOsrSnyIGAnST+ls5XOE4pAXXP7wjCyNPJ4rE=
+        linux-mips@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
+        linux-m68k@lists.linux-m68k.org,
+        linux-arm-kernel@lists.infradead.org, linux-sh@vger.kernel.org
+Subject: Re: [PATCH v2 07/10] clk: Allow the common clk framework to be
+ selectable
+Message-ID: <20200409105346.GC5399@sirena.org.uk>
+References: <20200409064416.83340-1-sboyd@kernel.org>
+ <20200409064416.83340-8-sboyd@kernel.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="8X7/QrJGcKSMr1RN"
+Content-Disposition: inline
+In-Reply-To: <20200409064416.83340-8-sboyd@kernel.org>
+X-Cookie: HUGH BEAUMONT died in 1982!!
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Thu, Apr 9, 2020 at 8:44 AM Stephen Boyd <sboyd@kernel.org> wrote:
->
-> This patch series cleans up a handful of selects that were redundant and
-> deletes presumably dead code with the goal of making it possible to add
-> kunit tests for the CCF in the future. To do that, we introduce a
-> "legacy" clk Kconfig option to mark code that hasn't migrated to the
-> common clk framework and then make the COMMON_CLK config option visible
-> in the menuconfig as long as that legacy option isn't enabled. I've also
-> included a couple patches at the end that may be more controversial but
-> helped me consolidate all this logic/code.
->
-> I haven't done more than compile test a few configs for arm, arm64,
-> h8300, and mips. More testing is welcome.
->
-> The plan is that I'll just merge the whole pile through the clk tree. If
-> the first five patches or the last three patches are better going
-> through another tree like arm-soc or architecture trees that's fine too,
-> but there are potential conflicts between trees so maybe it's better to
-> just leave it all in one tree.
->
-> Changes from v1:
->  * Fixed MIPS ralink build problem pointed out by Arnd
->  * Fixed meson mx sdio build due to bad Kconfig exposed by this change
->  * Picked up acks
 
-Whole series
+--8X7/QrJGcKSMr1RN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+On Wed, Apr 08, 2020 at 11:44:13PM -0700, Stephen Boyd wrote:
+> Enable build testing and configuration control of the common clk
+> framework so that more code coverage and testing can be done on the
+> common clk framework across various architectures. This also nicely
+> removes the requirement that architectures must select the framework
+> when they don't use it in architecture code.
 
-I also made a patch to completely remove the private clk implementation
-for mips/loongson2f, but it obviously clashes with your series at the moment.
+Reviwed-by: Mark Brown <broonie@kernel.org>
 
-I'll send you what I have today and you can decide if you want to
-add it to your series after it gets an Ack from the maintainers, or I'll
-send it separately later.
+--8X7/QrJGcKSMr1RN
+Content-Type: application/pgp-signature; name="signature.asc"
 
-     Arnd
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl6O/rkACgkQJNaLcl1U
+h9C8bAf/SJkvvbTRmpOunw3fAHei1NkJ2RUZ/Ax5l+NwzvC+fSezjkGHKH+2LVOV
+6vTimPH4EKoGc/4RRBVRSrlp20QY/mz4/7+/Ojsrfp9KsWdcH167Zd26sYP3kSy2
+8jxnHBccoWJ8B9p9YVYslrMb0+y1mjnfLOsBioILN1wa6R2vuv7/JXuu1FmaeYLl
+geaZWL7Aw8Knj421ywLqEbg57Zd7M/2ei5gI/plDWIS+UoeuPPPhsUCVkza76DOE
+pyvpA21x2ceFOmCTq0O5O2a/WlM8xwfklNLML6wx3NSS02WWiqnAbMS3sZ9Adk50
+k7m1LMdfWu/q1CQwp58kVOsZJVWZ4g==
+=+bDI
+-----END PGP SIGNATURE-----
+
+--8X7/QrJGcKSMr1RN--
