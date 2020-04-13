@@ -2,82 +2,136 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (unknown [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E50B21A6167
-	for <lists+linux-sh@lfdr.de>; Mon, 13 Apr 2020 03:58:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 001D51A6176
+	for <lists+linux-sh@lfdr.de>; Mon, 13 Apr 2020 04:18:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727078AbgDMB6M (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sun, 12 Apr 2020 21:58:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.18]:35518 "EHLO
+        id S1727435AbgDMCSM (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sun, 12 Apr 2020 22:18:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.18]:38772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726989AbgDMB6M (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sun, 12 Apr 2020 21:58:12 -0400
-X-Greylist: delayed 200 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 12 Apr 2020 18:58:12 PDT
-Received: from condef-05.nifty.com (condef-05.nifty.com [202.248.20.70])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C2A5C0A3BE0
-        for <linux-sh@vger.kernel.org>; Sun, 12 Apr 2020 18:58:12 -0700 (PDT)
-Received: from conuserg-07.nifty.com ([10.126.8.70])by condef-05.nifty.com with ESMTP id 03D1o2qE022218
-        for <linux-sh@vger.kernel.org>; Mon, 13 Apr 2020 10:50:02 +0900
-Received: from oscar.flets-west.jp (softbank060142179096.bbtec.net [60.142.179.96]) (authenticated)
-        by conuserg-07.nifty.com with ESMTP id 03D1mGSZ015156;
-        Mon, 13 Apr 2020 10:48:16 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-07.nifty.com 03D1mGSZ015156
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1586742497;
-        bh=FZ/tcNXoAgAXq9JDrx/IBnjGSDeN1yynq2BOYQhPodU=;
-        h=From:To:Cc:Subject:Date:From;
-        b=m+GQ4U+9S375ShJvqBCxDDx05JNyTU578Qo/sHjuxPtGXefHrISFjRK7b51bqCW0o
-         U5Fxt6J3RaTuyvZEjFJjTQFAasA+Qjvk33UUWVjaY/Bz3c+cFipnNnpxuGnDCJhLfL
-         sPCihmHbR0dK48uw3InaOVaRx9OXq3EKkKaipXlRQo8vCccScSGxQipCYPRuKvP+XK
-         NmVXacovfeh0ady1WNj9PjAkrTBwrSxbGkKLMhIxfjx1m9RV/hIi2ct59g0nu9YPRG
-         y1XVCN3X641Ipg43U1VVSXoYp/gdR0D9Ep/53LTEQo5Ari3OofuuUN2Ww5c5GL9yud
-         oG90jFJzTqPgw==
-X-Nifty-SrcIP: [60.142.179.96]
-From:   Masahiro Yamada <masahiroy@kernel.org>
-To:     Andrew Morton <akpm@linux-foundation.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        David Hildenbrand <david@redhat.com>,
-        Logan Gunthorpe <logang@deltatee.com>,
-        Michal Hocko <mhocko@suse.com>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Oscar Salvador <osalvador@suse.de>,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH] sh: fix build error in mm/init.c
-Date:   Mon, 13 Apr 2020 10:47:43 +0900
-Message-Id: <20200413014743.16353-1-masahiroy@kernel.org>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S1727434AbgDMCSM (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sun, 12 Apr 2020 22:18:12 -0400
+Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com [IPv6:2607:f8b0:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B41DDC0A3BE0
+        for <linux-sh@vger.kernel.org>; Sun, 12 Apr 2020 19:18:12 -0700 (PDT)
+Received: by mail-ot1-x341.google.com with SMTP id i27so4885334ota.7
+        for <linux-sh@vger.kernel.org>; Sun, 12 Apr 2020 19:18:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=landley-net.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=1Bqub2fmBp5sDDaD1qf86S4AgY4tx3PoXDURHmBO2fs=;
+        b=0Oxjw1j162bBnx+8UTs64lXIU3nJGzaAMd7mVQXTI3c1Lp9ETxrwy3OgXT2Vqj5o6D
+         H+OO9vPJcnW8WCeDFqLgc8jg/iyMRzRQWhefLkS3Mjq+xPFb2SUZ9zj3e0GImvWfPt/O
+         zh5+4Xu8AYfOf871BMtKZpnBSOSkhgwx8qH0kWT7MTXowyv/sf1qquNhR+kc9lpb/7au
+         JVLwM7cTDtc/rXN9sdL0yLrL4V6wWJbNcBbEkyBnfA6WRo7mpDp7FSjfU+uRPjfzdGsK
+         7TS0HEguMvh51ecK5d/lr283SIw6gaWLX/fdtTB/YcxdURdrAMqqlND4H5PPL+/KgrPo
+         1hnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=1Bqub2fmBp5sDDaD1qf86S4AgY4tx3PoXDURHmBO2fs=;
+        b=Hl+9sVAdrHLeCMYGJoml6lTL6QEKCyJ/Wa5HvoKi7mcEkELPvtVGhP6mA7hP2zwIwW
+         Grf28AM8qv1f6CQe04cz9Y/pyKKyZimahlkatl23pIkjPadfQt6RMWIPTHPXcJsqA4A9
+         oSvasiF1q2t00Ua1pXNtqZGBEoEncbtp3/rxyWLQWW2IkmwI+i9HYcN0CwNyp8tKJPcs
+         4BX8T3U2hhV0JldHtneVSQRi0ILu7lWHw6zLOnqFBSqkCFW/wGrraTmjlgSTcoJkIAEA
+         ABF9HSke82ZJ+4C1dMo+nrj3CBvCRfpVs/gHtko1VnQ/qgNnJ0g5JqgfVpyNMkP8CBKC
+         +pZA==
+X-Gm-Message-State: AGi0PubUW23s1hiHYBoMOQiSh3uHQ6mqa71+1lFLylY+CWdoIcOqeDuv
+        RRYIJ+QDanEVl6AAZCIVqjjGV0ov4zk=
+X-Google-Smtp-Source: APiQypKsllWvQEIfZAWPOlIxgvvjFZ7mU7mCgr87FfccxBTgklfGAgjlDl2H9NQnHnYqgEAXuhkj6A==
+X-Received: by 2002:a4a:850d:: with SMTP id k13mr10024212ooh.7.1586744291922;
+        Sun, 12 Apr 2020 19:18:11 -0700 (PDT)
+Received: from [192.168.86.21] ([136.62.4.88])
+        by smtp.googlemail.com with ESMTPSA id d23sm4407607ote.70.2020.04.12.19.18.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 12 Apr 2020 19:18:11 -0700 (PDT)
+Subject: Re: v5.6 is still throwing a stack trace on boot.
+To:     Rich Felker <dalias@libc.org>
+Cc:     Linux-sh list <linux-sh@vger.kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+References: <24dbbbc2-644a-1f9e-4e82-b7b726a4ce42@landley.net>
+ <20200404000730.GE11469@brightrain.aerifal.cx>
+ <2491f2c0-14f9-a4d0-17a0-25695e25671a@landley.net>
+ <20200404005125.GF11469@brightrain.aerifal.cx>
+ <cc602220-8000-a6ba-5b7f-5b00c7faa0ff@landley.net>
+ <20200407152112.GK11469@brightrain.aerifal.cx>
+From:   Rob Landley <rob@landley.net>
+Message-ID: <06d2a875-1bdf-7748-41d1-50413e86ee8b@landley.net>
+Date:   Sun, 12 Apr 2020 21:24:05 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200407152112.GK11469@brightrain.aerifal.cx>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-The closing parenthesis is missing.
+On 4/7/20 10:21 AM, Rich Felker wrote:
+> On Tue, Apr 07, 2020 at 09:21:26AM -0500, Rob Landley wrote:
+>> On 4/3/20 7:51 PM, Rich Felker wrote:
+>>> On Fri, Apr 03, 2020 at 07:28:27PM -0500, Rob Landley wrote:
+>>>>>> ---[ end trace 76213c1325250d90 ]---
+>>>>>
+>>>>> Which hardware is this on? The qemu emulated board you're using?
+>>>>
+>>>> Yes, qemu -M r2d. Built with attached miniconf, and run via:
+>>>>
+>>>> qemu-system-sh4 -M r2d -serial null -serial mon:stdio -nographic -no-reboot \
+>>>>   -m 256 -append "panic=1 HOST=sh4 console=ttySC1 noiotrap" -kernel zImage \
+>>>>   -initrd sh4.cpio.gz
+>>>
+>>> OK. This is nbd, it's just some pedantry added in commit
+>>> 128227e7fe4087b60f1bd31f762e61237eb23790. Essentially it's complaining
+>>> that something requested zero-filled slab memory when it's about to
+>>> run a constructor to fill in the memory. The backtrace is (as usual)
+>>> somewhat bogus looking and grep isn't helping me find where it's being
+>>> called from. I'll keep looking and see if I can track it down.
+>>
+>> Did you?
 
-Fixes: bfeb022f8fe4 ("mm/memory_hotplug: add pgprot_t to mhp_params")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
----
+[crickets]
 
- arch/sh/mm/init.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+>> Also, https://marc.info/?l=linux-sh&m=158544749818664&w=2 still doesn't seem to
+>> be upstream?
+> 
+> See Geert's reply,
+> 
+> Message-ID: <CAMuHMdVm-871S5tOdQw0KbRao+L0Wg46Rk3yNRyW45zJf3qt4w@mail.gmail.com>
 
-diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
-index b9de2d4fa57e..8d2a68aea1fc 100644
---- a/arch/sh/mm/init.c
-+++ b/arch/sh/mm/init.c
-@@ -412,7 +412,7 @@ int arch_add_memory(int nid, u64 start, u64 size,
- 	unsigned long nr_pages = size >> PAGE_SHIFT;
- 	int ret;
- 
--	if (WARN_ON_ONCE(params->pgprot.pgprot != PAGE_KERNEL.pgprot)
-+	if (WARN_ON_ONCE(params->pgprot.pgprot != PAGE_KERNEL.pgprot))
- 		return -EINVAL;
- 
- 	/* We only have ZONE_NORMAL, so this is easy.. */
--- 
-2.25.1
+404 error from
+https://lkml.kernel.org/lkml/CAMuHMdVm-871S5tOdQw0KbRao+L0Wg46Rk3yNRyW45zJf3qt4w@mail.gmail.com/
 
+No idea what else I'm supposed to do with a message ID other than that. I tried
+googling for the message ID string and there were zero hits.
+
+Do you mean Geert's March 15 message forwarding the alignment issue to arnd and
+linux-arch, which predated my message cc-ing Linus before rc6 came out (I.E. not
+the memory dump issue)? Are you saying "Geert forwarded it to somebody else last
+month, therefore there's nothing to follow up on?" Because I just checked and
+still nobody's replied to it on linux-arch:
+
+  https://www.spinics.net/lists/linux-arch/
+
+I'm not sure anybody saw it. And he only forwarded them the 2/2 patch, not the
+first one.
+
+> I think the patch is correct but still don't thoroughly understand it
+> (in terms of where these functions are used and whether it preserves
+> the property that everything that needs zero-fill gets it).
+
+Do you still mean the two added align directives? If so, how is zeroing
+involved? (Because if Geert replied about the stack dump issue, it was either
+before March 1, or neither I nor the list were cc'd.)
+
+> Will follow up soon.
+
+Ok, I'll wait until -rc1 closes to send this reply...
+
+Rob
