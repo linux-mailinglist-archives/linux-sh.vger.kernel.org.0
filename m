@@ -2,89 +2,92 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 875441A6961
-	for <lists+linux-sh@lfdr.de>; Mon, 13 Apr 2020 18:05:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37E491A6994
+	for <lists+linux-sh@lfdr.de>; Mon, 13 Apr 2020 18:15:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731232AbgDMQFb (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 13 Apr 2020 12:05:31 -0400
-Received: from conssluserg-04.nifty.com ([210.131.2.83]:57608 "EHLO
-        conssluserg-04.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731231AbgDMQFa (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 13 Apr 2020 12:05:30 -0400
-Received: from mail-vs1-f45.google.com (mail-vs1-f45.google.com [209.85.217.45]) (authenticated)
-        by conssluserg-04.nifty.com with ESMTP id 03DG503n017830;
-        Tue, 14 Apr 2020 01:05:01 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-04.nifty.com 03DG503n017830
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1586793901;
-        bh=qdBXTtVXlmfInBglCB4Rk784hZBIzdkmk2OHy9zWc0E=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=ZBtq4Uel4kvwvLuoqKV+DGfHfwfnHwwgPnYDE1Bc5lDZTmlEsBGBdYtP0cd5fCbjA
-         Y+TRGr0ItNJgqw0IhBwWr39BoBFUxxNUI92XxtuBDUoOvSZkSVucpj34lDVPPG244S
-         iaO91hqJA99D5AzX7BXUce5oGIZvQ/MO8HEGWoMg0dr/Vb8ZovnT7l+hnM/bsPHsol
-         hPSdpNhwVwKgndNp5AK1Mtpm590qtscdgmzdALJW27i2uS/x+LZw7iPm6le/zgD8vp
-         m9IVrAnGx5uDESlnI4sOdqUmyHDqMMf9vgx9JGcewXUdoOoJ5IhCNJqkoFGCNyPsrs
-         uxUJKUTj515xQ==
-X-Nifty-SrcIP: [209.85.217.45]
-Received: by mail-vs1-f45.google.com with SMTP id h189so5667936vsc.13;
-        Mon, 13 Apr 2020 09:05:01 -0700 (PDT)
-X-Gm-Message-State: AGi0PuaNqwV6AEewigYB0STXYMTJqzh3aX4U0116B0VttHe75PK1u/4W
-        nPWBXAV6WGBDRMoYXqWJ99Yy9jyNtyIxcsLm7BA=
-X-Google-Smtp-Source: APiQypL4dw2znwNWubmbI3gALnJloVgNJyOQijQgQpbjdpbED+7UPbrhQzZ1L78areRXcF3hBEv+ZsbVQTNcvMp405w=
-X-Received: by 2002:a67:fa11:: with SMTP id i17mr13152238vsq.155.1586793900135;
- Mon, 13 Apr 2020 09:05:00 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200413014743.16353-1-masahiroy@kernel.org> <ef8addd0-81bb-249f-7d8f-dfa7fc032085@deltatee.com>
-In-Reply-To: <ef8addd0-81bb-249f-7d8f-dfa7fc032085@deltatee.com>
-From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Tue, 14 Apr 2020 01:04:23 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAQmbFOtsBAO2y_s9_y90UGCjXWrd-Es9mOUjgrfCELqmA@mail.gmail.com>
-Message-ID: <CAK7LNAQmbFOtsBAO2y_s9_y90UGCjXWrd-Es9mOUjgrfCELqmA@mail.gmail.com>
-Subject: Re: [PATCH] sh: fix build error in mm/init.c
-To:     Logan Gunthorpe <logang@deltatee.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        David Hildenbrand <david@redhat.com>,
-        Michal Hocko <mhocko@suse.com>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Oscar Salvador <osalvador@suse.de>,
-        Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
+        id S1731385AbgDMQP6 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 13 Apr 2020 12:15:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38346 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731324AbgDMQP5 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 13 Apr 2020 12:15:57 -0400
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F461C0A3BDC;
+        Mon, 13 Apr 2020 09:15:57 -0700 (PDT)
+Received: by mail-pj1-x1043.google.com with SMTP id z9so3970748pjd.2;
+        Mon, 13 Apr 2020 09:15:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=u4GYYbvmugu6odtFmJakra5ocWDIYsFmnxGy0u/KA6Q=;
+        b=SXfm4H/8JXs50kwYd5Wg/n358l2DlMJ/iUNTaTx35duOTQR2NcMiZTx3yhCPZU0IJP
+         bezC6enK5Lq+2yxZ41ku3+KK5xZQDecDnbrxTJQQtJSESdvxHG+Mu0xDz+9u081XZr9j
+         g03fMikwYddl7rMMQNSr1UDEcadAyUQFk4Lb6x1lrVmw4TP984S2FAbR8qU2uHazQxcg
+         R+mbBCBLoXeLrjAWesI8t95byhU17vQxxpO216i2aawrmB6kElH5Y7yNiluQUqWFA1cO
+         cIEdDQXMOAMHn7nB3vCs9EknE9ZuAOodrPrlLi0a+yYqnTTPZJyDuOs1JQN7ieAvjB3Y
+         3x+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
+        bh=u4GYYbvmugu6odtFmJakra5ocWDIYsFmnxGy0u/KA6Q=;
+        b=SSjEoNe6x/l8cFt5iI/zH9cDTKCdRM4WzftKEDdBWpfQR9VN4aTrNb1Q3QmuEYFAr6
+         6ubOQ1DH6PmoywblAqXLbqXneaDq9dOZ4dn+m/1ZCnm8LECkm4kwh4VKHDZAI13Jp1vU
+         oMafG1hlA7BrgKqo+kjFmMQcdaKd8ulAxdOZnK7hC9iOsvW8hvq3CvbpDzUoqgcNBOsY
+         XJsK66CM88yYAW+b1JpZth+zjqmA9WW/EBKgKhWU6YQblRCBL4dqgyG+m+Iso9Mn/usJ
+         VOOlTNlymp+2fY6CcnONeW6Uy7vfhxHrKUcS02VKNzTZJx59Wsv0z/p+iXmAcF4sIVCk
+         r+AQ==
+X-Gm-Message-State: AGi0Publ+CM+3W44TIQc5zZZhHMXuqCbnNErBQxZFZEyA01TuN7aPpRy
+        /jblLtkKaNg6XtmaoY7TlhIf4eUY
+X-Google-Smtp-Source: APiQypKviJljNgaorxxlGoHxdOcT17MzQq27r2qlk9HeoI/SRh+yKaeq3H7yWUsHxuYgqmenqucqYQ==
+X-Received: by 2002:a17:90a:f0d4:: with SMTP id fa20mr2055152pjb.108.1586794557064;
+        Mon, 13 Apr 2020 09:15:57 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id b16sm8902571pfb.71.2020.04.13.09.15.44
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 13 Apr 2020 09:15:44 -0700 (PDT)
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc:     Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>
+Subject: [PATCH] sh: mm: Fix build error
+Date:   Mon, 13 Apr 2020 09:15:42 -0700
+Message-Id: <20200413161542.78700-1-linux@roeck-us.net>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Tue, Apr 14, 2020 at 12:43 AM Logan Gunthorpe <logang@deltatee.com> wrote:
->
->
->
-> On 2020-04-12 7:47 p.m., Masahiro Yamada wrote:
-> > The closing parenthesis is missing.
-> >
-> > Fixes: bfeb022f8fe4 ("mm/memory_hotplug: add pgprot_t to mhp_params")
-> > Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> > ---
->
-> Oh, oops, I thought I compile checked all the arches. Must have been a
-> last minute change. I'm also surprised the kbuild robot didn't catch this.
->
-> Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
->
-> Andrew, can this be squashed into the existing patch?
+  415 |  if (WARN_ON_ONCE(params->pgprot.pgprot != PAGE_KERNEL.pgprot)
+      |     ^
+arch/sh/mm/init.c:424:1: error: expected expression before '}' token
+  424 | }
 
+Obviously never even compile tested.
 
-The offending commit is already in Linus' tree.
+Fixes: a332976e0184 ("mm/memory_hotplug: add pgprot_t to mhp_params")
+Cc: Logan Gunthorpe <logang@deltatee.com>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+---
+ arch/sh/mm/init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I was also surprised that no bot or human
-complained about this breakage before it was merged.
-
-
-
+diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
+index b9de2d4fa57e..8d2a68aea1fc 100644
+--- a/arch/sh/mm/init.c
++++ b/arch/sh/mm/init.c
+@@ -412,7 +412,7 @@ int arch_add_memory(int nid, u64 start, u64 size,
+ 	unsigned long nr_pages = size >> PAGE_SHIFT;
+ 	int ret;
+ 
+-	if (WARN_ON_ONCE(params->pgprot.pgprot != PAGE_KERNEL.pgprot)
++	if (WARN_ON_ONCE(params->pgprot.pgprot != PAGE_KERNEL.pgprot))
+ 		return -EINVAL;
+ 
+ 	/* We only have ZONE_NORMAL, so this is easy.. */
 -- 
-Best Regards
-Masahiro Yamada
+2.17.1
+
