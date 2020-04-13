@@ -1,90 +1,83 @@
 Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
-Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 73E151A32D8
-	for <lists+linux-sh@lfdr.de>; Thu,  9 Apr 2020 12:53:55 +0200 (CEST)
+Received: from vger.kernel.org (unknown [209.132.180.67])
+	by mail.lfdr.de (Postfix) with ESMTP id E50B21A6167
+	for <lists+linux-sh@lfdr.de>; Mon, 13 Apr 2020 03:58:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725972AbgDIKxt (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 9 Apr 2020 06:53:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36252 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725970AbgDIKxs (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Thu, 9 Apr 2020 06:53:48 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 29C1320857;
-        Thu,  9 Apr 2020 10:53:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586429628;
-        bh=BZVpag0qQETEDSuxALqBEW3mh5PAYg0YPSQ6u6hT+os=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=tTiZNE4MZTrKG51Y9OasNhBTM4o2bQLbPf4Wf7/YAQELzNOT+AZAkgn2K0xhT4IA2
-         HuyI4p0Y0c92dYiCkVqvymJQgjD6EbHBHAoaHwPXk/+7v+O7zifx1qUnqixV55VStn
-         4PNGjE29VSHGt8vR/xAWJjchP4WQ81ol1wBUKig8=
-Date:   Thu, 9 Apr 2020 11:53:46 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Stephen Boyd <sboyd@kernel.org>
-Cc:     Michael Turquette <mturquette@baylibre.com>,
-        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Mark Salter <msalter@redhat.com>,
-        Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Guan Xuetao <gxt@pku.edu.cn>,
-        Russell King <linux@armlinux.org.uk>,
-        Arnd Bergmann <arnd@arndb.de>,
+        id S1727078AbgDMB6M (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sun, 12 Apr 2020 21:58:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.18]:35518 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726989AbgDMB6M (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sun, 12 Apr 2020 21:58:12 -0400
+X-Greylist: delayed 200 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 12 Apr 2020 18:58:12 PDT
+Received: from condef-05.nifty.com (condef-05.nifty.com [202.248.20.70])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C2A5C0A3BE0
+        for <linux-sh@vger.kernel.org>; Sun, 12 Apr 2020 18:58:12 -0700 (PDT)
+Received: from conuserg-07.nifty.com ([10.126.8.70])by condef-05.nifty.com with ESMTP id 03D1o2qE022218
+        for <linux-sh@vger.kernel.org>; Mon, 13 Apr 2020 10:50:02 +0900
+Received: from oscar.flets-west.jp (softbank060142179096.bbtec.net [60.142.179.96]) (authenticated)
+        by conuserg-07.nifty.com with ESMTP id 03D1mGSZ015156;
+        Mon, 13 Apr 2020 10:48:16 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-07.nifty.com 03D1mGSZ015156
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1586742497;
+        bh=FZ/tcNXoAgAXq9JDrx/IBnjGSDeN1yynq2BOYQhPodU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=m+GQ4U+9S375ShJvqBCxDDx05JNyTU578Qo/sHjuxPtGXefHrISFjRK7b51bqCW0o
+         U5Fxt6J3RaTuyvZEjFJjTQFAasA+Qjvk33UUWVjaY/Bz3c+cFipnNnpxuGnDCJhLfL
+         sPCihmHbR0dK48uw3InaOVaRx9OXq3EKkKaipXlRQo8vCccScSGxQipCYPRuKvP+XK
+         NmVXacovfeh0ady1WNj9PjAkrTBwrSxbGkKLMhIxfjx1m9RV/hIi2ct59g0nu9YPRG
+         y1XVCN3X641Ipg43U1VVSXoYp/gdR0D9Ep/53LTEQo5Ari3OofuuUN2Ww5c5GL9yud
+         oG90jFJzTqPgw==
+X-Nifty-SrcIP: [60.142.179.96]
+From:   Masahiro Yamada <masahiroy@kernel.org>
+To:     Andrew Morton <akpm@linux-foundation.org>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-mips@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
-        linux-m68k@lists.linux-m68k.org,
-        linux-arm-kernel@lists.infradead.org, linux-sh@vger.kernel.org
-Subject: Re: [PATCH v2 07/10] clk: Allow the common clk framework to be
- selectable
-Message-ID: <20200409105346.GC5399@sirena.org.uk>
-References: <20200409064416.83340-1-sboyd@kernel.org>
- <20200409064416.83340-8-sboyd@kernel.org>
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        David Hildenbrand <david@redhat.com>,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Michal Hocko <mhocko@suse.com>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Oscar Salvador <osalvador@suse.de>,
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH] sh: fix build error in mm/init.c
+Date:   Mon, 13 Apr 2020 10:47:43 +0900
+Message-Id: <20200413014743.16353-1-masahiroy@kernel.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="8X7/QrJGcKSMr1RN"
-Content-Disposition: inline
-In-Reply-To: <20200409064416.83340-8-sboyd@kernel.org>
-X-Cookie: HUGH BEAUMONT died in 1982!!
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
+The closing parenthesis is missing.
 
---8X7/QrJGcKSMr1RN
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Fixes: bfeb022f8fe4 ("mm/memory_hotplug: add pgprot_t to mhp_params")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+---
 
-On Wed, Apr 08, 2020 at 11:44:13PM -0700, Stephen Boyd wrote:
-> Enable build testing and configuration control of the common clk
-> framework so that more code coverage and testing can be done on the
-> common clk framework across various architectures. This also nicely
-> removes the requirement that architectures must select the framework
-> when they don't use it in architecture code.
+ arch/sh/mm/init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Reviwed-by: Mark Brown <broonie@kernel.org>
+diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
+index b9de2d4fa57e..8d2a68aea1fc 100644
+--- a/arch/sh/mm/init.c
++++ b/arch/sh/mm/init.c
+@@ -412,7 +412,7 @@ int arch_add_memory(int nid, u64 start, u64 size,
+ 	unsigned long nr_pages = size >> PAGE_SHIFT;
+ 	int ret;
+ 
+-	if (WARN_ON_ONCE(params->pgprot.pgprot != PAGE_KERNEL.pgprot)
++	if (WARN_ON_ONCE(params->pgprot.pgprot != PAGE_KERNEL.pgprot))
+ 		return -EINVAL;
+ 
+ 	/* We only have ZONE_NORMAL, so this is easy.. */
+-- 
+2.25.1
 
---8X7/QrJGcKSMr1RN
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl6O/rkACgkQJNaLcl1U
-h9C8bAf/SJkvvbTRmpOunw3fAHei1NkJ2RUZ/Ax5l+NwzvC+fSezjkGHKH+2LVOV
-6vTimPH4EKoGc/4RRBVRSrlp20QY/mz4/7+/Ojsrfp9KsWdcH167Zd26sYP3kSy2
-8jxnHBccoWJ8B9p9YVYslrMb0+y1mjnfLOsBioILN1wa6R2vuv7/JXuu1FmaeYLl
-geaZWL7Aw8Knj421ywLqEbg57Zd7M/2ei5gI/plDWIS+UoeuPPPhsUCVkza76DOE
-pyvpA21x2ceFOmCTq0O5O2a/WlM8xwfklNLML6wx3NSS02WWiqnAbMS3sZ9Adk50
-k7m1LMdfWu/q1CQwp58kVOsZJVWZ4g==
-=+bDI
------END PGP SIGNATURE-----
-
---8X7/QrJGcKSMr1RN--
