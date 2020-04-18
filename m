@@ -2,58 +2,62 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF9041AD335
-	for <lists+linux-sh@lfdr.de>; Fri, 17 Apr 2020 01:35:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 473B81AEC63
+	for <lists+linux-sh@lfdr.de>; Sat, 18 Apr 2020 14:26:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727900AbgDPXfG (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 16 Apr 2020 19:35:06 -0400
-Received: from mail.dsns.gov.ua ([194.0.148.99]:37970 "EHLO mail.dsns.gov.ua"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725770AbgDPXfD (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Thu, 16 Apr 2020 19:35:03 -0400
-X-Greylist: delayed 9287 seconds by postgrey-1.27 at vger.kernel.org; Thu, 16 Apr 2020 19:34:56 EDT
-Received: from localhost (localhost [127.0.0.1])
-        by mail.dsns.gov.ua (Postfix) with ESMTP id 6223A1EC85AF;
-        Thu, 16 Apr 2020 23:35:36 +0300 (EEST)
-Received: from mail.dsns.gov.ua ([127.0.0.1])
-        by localhost (mail.dsns.gov.ua [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id ekdCUR6pZ0Aa; Thu, 16 Apr 2020 23:35:36 +0300 (EEST)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.dsns.gov.ua (Postfix) with ESMTP id 67C3E1EC85F9;
-        Thu, 16 Apr 2020 23:35:26 +0300 (EEST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.dsns.gov.ua 67C3E1EC85F9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dsns.gov.ua;
-        s=1E60DAC0-2607-11E9-81E6-7A77C2B36653; t=1587069326;
-        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-        h=Date:From:Message-ID:MIME-Version;
-        b=BFrHb0sdI6ttGZUrYrU3NgniYtd1aDAhnXXb2vKIb2B9styAswbm0NbzZRAHiMp0y
-         hUE3veWMbUD+qTP/VmiRFig+sJh7tgrjRSipmI8jEPDH4mLyVFQtPdyPojLkpu/SlT
-         y/CjSPHdIqozfsh/zyWU9aeO41yKuuO77HTVyT/eVGDUtLYGTijz0IeETvwB1Yur4I
-         5RegLOWC96rliENvAjVU5IoM4JfcadYa95Q959RRtGyCSnevHOMfGycVhDjkxX/p7G
-         0gUYzq9GdO73hW8YI3AV2m5dSWB1tPfsxP4FJUwoBTp88jIZZeY7uAiDenSeAUtBdj
-         PKl/BScyij7GQ==
-X-Virus-Scanned: amavisd-new at dsns.gov.ua
-Received: from mail.dsns.gov.ua ([127.0.0.1])
-        by localhost (mail.dsns.gov.ua [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id U4DcK3mdlYyf; Thu, 16 Apr 2020 23:35:26 +0300 (EEST)
-Received: from mail.dsns.gov.ua (localhost [127.0.0.1])
-        by mail.dsns.gov.ua (Postfix) with ESMTP id 9BAF81EC8118;
-        Thu, 16 Apr 2020 23:35:15 +0300 (EEST)
-Date:   Thu, 16 Apr 2020 23:35:15 +0300 (EEST)
-From:   Saleem Netanyahu <duchenko@dsns.gov.ua>
-Reply-To: Saleem Netanyahu <saleemnetu@gmail.com>
-Message-ID: <1255292802.718114.1587069315574.JavaMail.zimbra@dsns.gov.ua>
-Subject: Hey, how are u, can we talk?
+        id S1725879AbgDRM0k (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sat, 18 Apr 2020 08:26:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40562 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725862AbgDRM0j (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sat, 18 Apr 2020 08:26:39 -0400
+Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D1C6C061A0C
+        for <linux-sh@vger.kernel.org>; Sat, 18 Apr 2020 05:26:38 -0700 (PDT)
+Received: by mail-il1-x144.google.com with SMTP id x2so3619967ilp.13
+        for <linux-sh@vger.kernel.org>; Sat, 18 Apr 2020 05:26:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=p3sU6zSwJ79jr5/8rkQFPSxzE+uN6TkyFs4yZFeQ03Q=;
+        b=dyXza5dTTubkmo+PWuNv3+uEwm7CjKBfRiN+Us6M0kMto7XZuHyo26sFLpavcFfRNH
+         Ss5J90+tcGMD1JHsyJ6+zlDu83Fsut9cWsBq4jl98byY1YsaQlEATSLJzMiceY6v4bnk
+         sLLzY8sLvCjTMYE6MrmaU5Vg7+0QFDETHEsZWqO4OZs3/920PT89EBTT6rjJTrXiVTS/
+         JBtMWmmsmt+mDFM9VLuZgfwWvRIcqTylLOM4yzsIb7VPps4FMEzjmI59BJM4AQkEFOeX
+         +0q8ila9zHuGXVWPmA+Jv79DWCKr/7GmODZjQM9CIMAkvq6kBWtRbp+WbOpsBrf3YL/E
+         DydA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=p3sU6zSwJ79jr5/8rkQFPSxzE+uN6TkyFs4yZFeQ03Q=;
+        b=MzRiyc4x49UJVS3rbdW5rup6Q15rCuzZkktJeVjSNUdeLhpqbjMjKng/gSYFevmqU9
+         ULR+g0Eu9PtvqNzOvNm47GTdcuKBn6RiJAsL6VelLMJO0+fiYK9ZujjclYslcDBhGboG
+         0us+4Qnr/vrmQc4+FhNfIZ2RisJdfGvQ7lEgCdQTHPTMpD9kkZn0f3SPXu3vkmK3r0u9
+         y+FrdlPq1B0UVvgX3u3dTatN3pqTG4ESfeondvRqYF2Fxw7Bs+YqcV32pNpDj27uPfGH
+         DZvr5BprZZZJm7Qh1RxFchr6Z1LrBLbWg/2FCy/4sFFB0UApNJa1gYS7fhjXnqVQfhnq
+         kjqA==
+X-Gm-Message-State: AGi0PuZSIB4earwjuXqgnKoAykPh6QfUzalYGuD5VflFnb+1AtEkdWNG
+        VcTPNAN/of/3NLJ+juQhbN1pTCSI1Xm0cYrhzn0=
+X-Google-Smtp-Source: APiQypKE+Svsz7ynRJUEBFJRzHDSnVd8ryBr5p8aCoAeN24Ng5OXBIb6XP+nF5QZ8T+UhfjBPpKAP6RXl6IzbtwnvOY=
+X-Received: by 2002:a92:cbd1:: with SMTP id s17mr6897780ilq.154.1587212796486;
+ Sat, 18 Apr 2020 05:26:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [45.82.223.36, 172.69.54.54]
-X-Mailer: Zimbra 8.8.15_GA_3918 (zclient/8.8.15_GA_3918)
-Thread-Index: oV9MZN6+Sh4gFPdsGziQ2IngcJhATw==
-Thread-Topic: Hey, how are u, can we talk?
-To:     unlisted-recipients:; (no To-header on input)
+Received: by 2002:a4f:ae4c:0:0:0:0:0 with HTTP; Sat, 18 Apr 2020 05:26:36
+ -0700 (PDT)
+Reply-To: advocategeorgeleviesq@gmail.com
+From:   Levi Brown <barristerjamesmicheal@gmail.com>
+Date:   Sat, 18 Apr 2020 13:26:36 +0100
+Message-ID: <CAMQm6RAsCKRjFR1EBdX1ihhFjWaP+Noz7a2DPiqeD0OXA74VoA@mail.gmail.com>
+Subject: Re:
+To:     advocategeorgeleviesq@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
+LS0gDQrjgYLjgarjgZ/jgajoqbHjgZfjgZ/jgYTjgafjgZnjgIIg56eB44Gu5Lul5YmN44Gu44Oh
+44O844Or44KS5Y+X44GR5Y+W44KK44G+44GX44Gf44GL77yfDQo=
