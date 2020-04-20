@@ -2,34 +2,33 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C6D731B0EF3
-	for <lists+linux-sh@lfdr.de>; Mon, 20 Apr 2020 16:55:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2E941B0F52
+	for <lists+linux-sh@lfdr.de>; Mon, 20 Apr 2020 17:09:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726838AbgDTOzO (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 20 Apr 2020 10:55:14 -0400
-Received: from mout.kundenserver.de ([212.227.17.13]:38477 "EHLO
+        id S1727020AbgDTPJT (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 20 Apr 2020 11:09:19 -0400
+Received: from mout.kundenserver.de ([212.227.126.134]:33771 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726102AbgDTOzN (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 20 Apr 2020 10:55:13 -0400
-Received: from mail-qv1-f51.google.com ([209.85.219.51]) by
- mrelayeu.kundenserver.de (mreue108 [212.227.15.145]) with ESMTPSA (Nemesis)
- id 1MCKJw-1jZrEY0cAU-009PoS; Mon, 20 Apr 2020 16:55:12 +0200
-Received: by mail-qv1-f51.google.com with SMTP id p13so4773811qvt.12;
-        Mon, 20 Apr 2020 07:55:11 -0700 (PDT)
-X-Gm-Message-State: AGi0Pubxz03kPh4DKVHMED0LQ1anagflpz6GCD1agmXV6pU0T5ZmnJnt
-        ieeRN4oDcwUZ054MhgYlh5r9E2VhZWyN4knRvGI=
-X-Google-Smtp-Source: APiQypKWrHVYOKBMKrwP3X81L+YYkEVR4lL90xIhItw0MwavntIxfWMqFxQTBi3BwHurb3fl60VCjHkTdMkxYN7WaX8=
-X-Received: by 2002:a0c:eb11:: with SMTP id j17mr15324382qvp.197.1587394510979;
- Mon, 20 Apr 2020 07:55:10 -0700 (PDT)
+        with ESMTP id S1726748AbgDTPJS (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 20 Apr 2020 11:09:18 -0400
+Received: from mail-qt1-f180.google.com ([209.85.160.180]) by
+ mrelayeu.kundenserver.de (mreue010 [212.227.15.129]) with ESMTPSA (Nemesis)
+ id 1MSLAe-1jolyG1rNA-00Sdja; Mon, 20 Apr 2020 17:09:16 +0200
+Received: by mail-qt1-f180.google.com with SMTP id s30so8728005qth.2;
+        Mon, 20 Apr 2020 08:09:16 -0700 (PDT)
+X-Gm-Message-State: AGi0PuY3z8D16zKoWUD4YVPM+iyj+k1LVIvV+OUtnVYjaA39ULZVS5yE
+        fGpt8ftaLogAq3qRxhKIjow6BwsS1MWO+M/AlV8=
+X-Google-Smtp-Source: APiQypJgseXmlO6GHKcMOD3zsvuToKgCjFz6eeo4chliJJ+LnwdpDCUCjr2uKYzQRrYo6R5GA9ERvuoEBEzqxVkv29Y=
+X-Received: by 2002:ac8:2bce:: with SMTP id n14mr5618911qtn.18.1587395355149;
+ Mon, 20 Apr 2020 08:09:15 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200420123844.3998746-1-arnd@arndb.de> <20200420123844.3998746-2-arnd@arndb.de>
- <CAMuHMdVpMP1NrXSO=4MJRpkXVgbuahvbZGVaAy3YJ2Oew9kGAQ@mail.gmail.com>
-In-Reply-To: <CAMuHMdVpMP1NrXSO=4MJRpkXVgbuahvbZGVaAy3YJ2Oew9kGAQ@mail.gmail.com>
+References: <20200420123844.3998746-1-arnd@arndb.de> <CAMuHMdUZR9A+nCYL_uUOJt48FQnJTJ9eMwWUuV-Z0UWJZ8SaSA@mail.gmail.com>
+In-Reply-To: <CAMuHMdUZR9A+nCYL_uUOJt48FQnJTJ9eMwWUuV-Z0UWJZ8SaSA@mail.gmail.com>
 From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Mon, 20 Apr 2020 16:54:54 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a1gestyLni0Jem56=u6u=StN2VzSi_2osqRVSkGfO5wYw@mail.gmail.com>
-Message-ID: <CAK8P3a1gestyLni0Jem56=u6u=StN2VzSi_2osqRVSkGfO5wYw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] sh: remove unused sh5 files
+Date:   Mon, 20 Apr 2020 17:08:58 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a2y4n-jv3eNWW4q__YP=QA7UDuybs4nBwdTuiqWm247Tg@mail.gmail.com>
+Message-ID: <CAK8P3a2y4n-jv3eNWW4q__YP=QA7UDuybs4nBwdTuiqWm247Tg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] sh: remove sh5 support
 To:     Geert Uytterhoeven <geert@linux-m68k.org>
 Cc:     Linux-sh list <linux-sh@vger.kernel.org>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
@@ -38,51 +37,129 @@ Cc:     Linux-sh list <linux-sh@vger.kernel.org>,
         Al Viro <viro@zeniv.linux.org.uk>,
         Magnus Damm <magnus.damm@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:wUUMv9mVyE75zmzWJSie0TFjua/tjOlRvoEqYUXsc3QzDh7OqAU
- ABHnyH32Bzq8qokp5u2XMwzQeyatcOO5HPSuf/13vFaGjs1mNAdpkugZE1NWgQHvRhu2Ae5
- VeWnzMeu5wDtq/iEYxe6B5sj1RsMe0d8OYojzNiXBYGXLZ6e7yHQQy8VCHWH9Xh6v/uquBZ
- JeZnBQrwyflrpG6LJzbYg==
+X-Provags-ID: V03:K1:K0FNXlbtXhDJYQno5K5L8jeEwJIrm2WxH8RgAIO5FZWELRYRGtN
+ APx6kiZrV8Qj/f+nUBcEE3BTMjihf3MLusHcMmyXDC4l5wc4eitrTOWQRseIU41KFxRdsFe
+ hUgae+wAhC51FljF56shldTh62uRaIvGXhQBWZAVUfpB4okzsuF8b4kaoYTp2sS/HamroT1
+ GeAUlXDcxV8H2kPAHeBig==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:VGAvSjaEaCY=:Yv5IyT77mom2S1+9WGJP0Z
- Pw6LTdZxe7iOyl3I9a5CZNKViaBkw8XM+7UMFYPFUmAvuKVJDZ0LlXhHR/BhafjDlSEtAdXfR
- 15kaZU8JjqksbO7SWssRII925vjBKmruFj5R0MTfRblmDZPQFIhmaebsBruLy9rj+x/1Hf1ZP
- CVer9zGRcFtpMt6F4PXLqld24mnbQeWkGKvEzL0F051OfNTSWknT9p2nXH2/rbC3Oy733/VLP
- BrXc2cOXBC0YwOQJUe/DrEjVUK4zOC3KHm/niqNRLYUCyXpdxlivUImALCHHHiKS1socwq+YM
- sHbxdDwdN7V21gr/dK9IuXHf9BCAyUSNB2cDtJiw1uIQUzLXOatUGKCl7j2wn5sRYvtmcAZeh
- M66eYlckDPjH2tfaS2Ldt9gl89KC4t+WL5wH7Evw+akX4aqpYWjSdAucBkuT0/B5Y7PDRFbwi
- jYpdyVwqK9+scbU+YmAZ0xmhloZT95JbjBrlkXeIa0oCShfUtnPz74dfXMj3S6es+qfDwnF2d
- wMTz2xFk8x5AxtPbHcweVVXNFBIrviD4qJvwyhtUWDgBF2fbiyXew5NU/pg35xEJU1MfsS6Oh
- WeMdtcEdi90XOlSxNYZo2bQ3kNbwYdUIbERdBjSGNgIvP2PpHJcdec81ys/W9q+1z7NlPP0tU
- AEZc0aW+1L0dC81m76rNX5j1zEWGGdKtWOne0lb7gszxqa1nuoe3SaQAx7RHbt2A9JbxChM5i
- 5q++LI38gEkZXaPvYfofAcYPq/LzkE4J3gs9TaoxHv5PUImGc6e8q3ufo8m2o5U7r/3ZvI/Fe
- usEY184Nr2+PSpBlDQFPj1VF1tcDouDo7UluEXRYpPkU6HVKRQ=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:urC7Rm9uIhA=:BdHT/5sokzOpk/ze7DDZfr
+ 8GjCVmtbmj559dHAZa8paq3Dy24r82QXm3d807d6Ekxy6AQd/4gUtDiD05eeEwjRAmqtS2sMh
+ QdW3H6h+2cmdRT1cK/Q9pW2abH43e8PnIHHiRUaUWUzAHlttH8jNxQg4N3WfJsPHUHrbgnCRb
+ evLDrPstXa43hY5R44s9GGRVoXs9GCVe3P0hR76U75ZUhbJntmRgTeRga1wesaYVZzqvFxRkR
+ FQd8TyKXT7WtBfFTqioOMSAuiNCu5PqTL3y1F3Prb6RZ5NZcaYxoIQmWTIDqhVdAQ76S1o6la
+ upp4RJ68hdnqyQQyFuYblr9e6gOeV6CQeaA300ez3Ld5XIDIO/Ju4C3skcWRvA/a9YTz8Iip0
+ kVvIONVHOlLTDAHnWJHhqxzuyYGF+noifDq+jC7Vnl1ms5RrJxosy54CisbonJ/pGEC6S0toz
+ RYIx7rT8KEEE1XuvESMaCj1p7gL+JkSKRE2dxLSVh5dUQ40wLA3Z/Z+8X5GU4wSmUowMoYyQs
+ ds1pK2p6ykRLEFg8zknfpsF5FUSVo1g/rQaDf42XiCeKwq590BBT5LBX133g/hBdkg+SGbxeJ
+ BT2dtVW63Mf1v+jIk7fCx8qyvUlRFJZp5ZAk5Cwl36YsgTpeiiJjq7/y4irokWycQF/+lh9lj
+ q6Ls2ks5cm8nKuN713gNKBv69Tw4sgGgXU0yr7vQGmYrCvfAXiCjEMSLHD7F3fo8kdorVgyqx
+ 7+5SEddf63C3RfbIOUACo8624KAMD50++PeyMdWLRo72Dbul89iU/T3YnA+Xs7aFSncZIqowj
+ JlctqlWyTo/2nEOiHxqLzEwqFn/BC3xfEmIjG6xlR52qvHzudM=
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Mon, Apr 20, 2020 at 4:45 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+On Mon, Apr 20, 2020 at 4:40 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
 >
 > Hi Arnd,
 >
-> On Mon, Apr 20, 2020 at 2:39 PM Arnd Bergmann <arnd@arndb.de> wrote:
-> > None of these files are used now that sh5 has been
-> > disabled, so they can be completely removed.
+> On Mon, Apr 20, 2020 at 2:40 PM Arnd Bergmann <arnd@arndb.de> wrote:
+> > sh5 never became a product and has probably never really worked.
+> >
+> > Remove it by recursively deleting all associated Kconfig options
+> > and all corresponding files.
 >
 > Thanks a lot!
 >
+> > For review purposes, this leaves out the files that can now be
+> > removed, in particular
+> >
+> >  arch/sh/drivers/pci/*-sh5.c
+> >  arch/sh/include/asm/*_64.h
+> >  arch/sh/include/uapi/asm/*_64.h
+> >  arch/sh/include/cpu-sh5/*
+> >  arch/sh/kernel/cpu/sh5/*
+> >  arch/sh/lib64/*
+> >  arch/sh/mm/*-sh5.c
+> >
 > > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 >
 > Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 >
-> The following can be removed, too:
->     arch/sh/boot/compressed/head_64.S
->     arch/sh/mm/extable_64.c
->     arch/sh/mm/tlbex_64.c
->     arch/sh/mm/tlbflush_64.c
+> A few nits below...
+>
+> > --- a/arch/sh/Kconfig
+> > +++ b/arch/sh/Kconfig
+> > @@ -62,7 +62,7 @@ config SUPERH
+> >           <http://www.linux-sh.org/>.
+> >
+> >  config SUPERH32
+>
+> Why keep the SUPERH32 symbol?
+> Because you forgot to clean a few files?
 
-Thanks, added this to the patch now, along with the corresponding
-Makefile changes I missed as well. I left the definition of $(BITS)
-in the Makefile, but removed all uses of it.
+It seemed simpler this way, but I can remove it as well.
 
-       Arnd
+>     arch/sh/include/asm/bl_bit.h:#ifdef CONFIG_SUPERH32
+>     arch/sh/include/asm/cache_insns.h:#ifdef CONFIG_SUPERH32
+>     arch/sh/include/asm/checksum.h:#ifdef CONFIG_SUPERH32
+
+Ah, I had removed these at first when I renamed the *_32.h over
+those files, but then decided to not do that, to keep the patch
+easier to review.
+
+> > --- a/arch/sh/include/asm/vmlinux.lds.h
+> > +++ b/arch/sh/include/asm/vmlinux.lds.h
+> > @@ -15,12 +15,6 @@
+> >  #define DWARF_EH_FRAME
+> >  #endif
+> >
+> > -#ifdef CONFIG_SUPERH64
+> > -#define EXTRA_TEXT             \
+> > -       *(.text64)              \
+> > -       *(.text..SHmedia32)
+> > -#else
+> >  #define EXTRA_TEXT
+> > -#endif
+>
+> You might remove the empty definition, too, as you removed the sole user...
+
+Right, I planned to remove that one and forgot.
+
+> > --- a/arch/sh/kernel/vmlinux.lds.S
+> > +++ b/arch/sh/kernel/vmlinux.lds.S
+>
+> > @@ -28,14 +21,13 @@ SECTIONS
+> >
+> >         _text = .;              /* Text and read-only data */
+> >
+> > -       .empty_zero_page : AT(ADDR(.empty_zero_page) - LOAD_OFFSET) {
+> > +       .empty_zero_page : AT(ADDR(.empty_zero_page)) {
+> >                 *(.empty_zero_page)
+> >         } = 0
+> >
+> > -       .text : AT(ADDR(.text) - LOAD_OFFSET) {
+> > +       .text : AT(ADDR(.text)) {
+> >                 HEAD_TEXT
+> >                 TEXT_TEXT
+> > -               EXTRA_TEXT
+>
+> ... here.
+>
+> >                 SCHED_TEXT
+> >                 CPUIDLE_TEXT
+> >                 LOCK_TEXT
+>
+> I think at least some of the following should be cleant, too:
+>
+> arch/sh/include/asm/elf.h:#ifdef __SH5__
+> arch/sh/include/uapi/asm/posix_types.h:# ifdef __SH5__
+> arch/sh/include/uapi/asm/swab.h:#ifdef __SH5__
+> arch/sh/include/uapi/asm/swab.h:#ifdef __SH5__
+> arch/sh/include/uapi/asm/unistd.h:# ifdef __SH5__
+> tools/arch/sh/include/asm/barrier.h:#if defined(__SH4A__) || defined(__SH5__)
+
+Good catch, thanks!
+
+        Arnd
