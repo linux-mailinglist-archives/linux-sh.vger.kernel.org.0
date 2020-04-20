@@ -2,40 +2,40 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 432081B0EB7
-	for <lists+linux-sh@lfdr.de>; Mon, 20 Apr 2020 16:42:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D931D1B0ECB
+	for <lists+linux-sh@lfdr.de>; Mon, 20 Apr 2020 16:45:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725865AbgDTOmq (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 20 Apr 2020 10:42:46 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:35492 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725971AbgDTOmp (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 20 Apr 2020 10:42:45 -0400
-Received: by mail-ot1-f66.google.com with SMTP id e20so8306941otl.2;
-        Mon, 20 Apr 2020 07:42:44 -0700 (PDT)
+        id S1726061AbgDTOps (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 20 Apr 2020 10:45:48 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:43862 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725971AbgDTOpr (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 20 Apr 2020 10:45:47 -0400
+Received: by mail-ot1-f67.google.com with SMTP id g14so8286572otg.10;
+        Mon, 20 Apr 2020 07:45:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=/0iPR1O3qunbIhZVQ4co+p81u1gdnBbCUAcTKszG3gQ=;
-        b=S7CWDe32yK2gUxYmCEC7wpzlK9bwOKfblkwswhUxzmlI+ww+gja/SXeir47SkNQG08
-         n5ZmC/bxclqmhdBajvCowPAbqVnpBD/qiLCSM9sgtxKSlJyzJydyUi40tZs+Bxo9FB2r
-         sdkvmcjZZ50y6TRU5SOKdyCrK7JCNmKbzWAqclfNgBENZ9Wj1MMh0yqM9RNC8h7vhIp3
-         Sbl+riuYnD5B8M+pnulveoBX2NUIPbZ4fkF86rstyk0Dvp8FYAIH+U5+cFxmkaL/rDh0
-         0Tvr6ejyTEvxOQcTyiDuSKhC8YT3NbzBr0yPJF4co/MV91tFXdPehsyE+56kwYUwk+mj
-         T0Pg==
-X-Gm-Message-State: AGi0PuaDSVth7U6waw6NJ1DyEFiAZkLetIu5RKUbxPPEQdvtyWAygtT5
-        /zsYjKiSv0nYqUNxIklj0GwBYMk7mlKcNdF7xWs=
-X-Google-Smtp-Source: APiQypJVZhEWlt61sSw6aMlHMo7uq4tg6FD+GTCFw6LUo5Dk0IkGTpzkprVW9qCB/iAUZbr73lbcHAWqiO3zQJBTGVU=
-X-Received: by 2002:a9d:7d85:: with SMTP id j5mr6982682otn.107.1587393763564;
- Mon, 20 Apr 2020 07:42:43 -0700 (PDT)
+        bh=aP14/hLIQEtKrRiPb3jxBvvF9Jrfe8E9/W9LdvCgbPk=;
+        b=BKmifzH/0hmVw2mQBaOtz3Tft7uk/iA7M4vWyTfRYk6kERI6GoP21D24aScPWWbliB
+         PhLqdec/rsWnXgDaD2xGjWKlkPP6R4JkbXeMq6VcZASGJWCupDQ+EiMkxsoQ5YQSiqgL
+         JUhUkGCfsd7F0hMr8jnIfTlCepeNdW0U6Ok4QQ7c99ohP2Qd+sq41iEUjiqxR3UXYqDY
+         ZV2161VNZJPTuycXp209JZhcozWmmz6AiY2th7GsdLdHvzWJiwgrDbtlH4g1KDObSLXj
+         RzdbCXNZthLttriT4ot0dnt6bWqnh6mfv6uX3S8tm3G2IVu5cOOi+l14ymSDd1ShOJjb
+         U01w==
+X-Gm-Message-State: AGi0PubzQQcpXjMAc3vbdGosfmvhnAejZvS1zSPdFYEOTgiDvJUi8Vct
+        QUI0bstRwy2pmUxwTGURaOuGk6lnrzp6/4VdoNI=
+X-Google-Smtp-Source: APiQypIduQRGj+wrIUt89zm5p/icNmheSWQWaAYOzV+rB5jsX8bn3z9HLLXKUExd9BVA+QO5FehRvP7Gjqz+pwhJqZU=
+X-Received: by 2002:a9d:7d85:: with SMTP id j5mr6993456otn.107.1587393946834;
+ Mon, 20 Apr 2020 07:45:46 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200420123844.3998746-1-arnd@arndb.de> <CAMuHMdUZR9A+nCYL_uUOJt48FQnJTJ9eMwWUuV-Z0UWJZ8SaSA@mail.gmail.com>
-In-Reply-To: <CAMuHMdUZR9A+nCYL_uUOJt48FQnJTJ9eMwWUuV-Z0UWJZ8SaSA@mail.gmail.com>
+References: <20200420123844.3998746-1-arnd@arndb.de> <20200420123844.3998746-2-arnd@arndb.de>
+In-Reply-To: <20200420123844.3998746-2-arnd@arndb.de>
 From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 20 Apr 2020 16:42:32 +0200
-Message-ID: <CAMuHMdUWZ9SG_x_tEctMUTDt754kOATDTJbem0Ai-94EO8c0ZA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] sh: remove sh5 support
+Date:   Mon, 20 Apr 2020 16:45:35 +0200
+Message-ID: <CAMuHMdVpMP1NrXSO=4MJRpkXVgbuahvbZGVaAy3YJ2Oew9kGAQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] sh: remove unused sh5 files
 To:     Arnd Bergmann <arnd@arndb.de>
 Cc:     Linux-sh list <linux-sh@vger.kernel.org>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
@@ -51,33 +51,21 @@ X-Mailing-List: linux-sh@vger.kernel.org
 
 Hi Arnd,
 
-On Mon, Apr 20, 2020 at 4:40 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> On Mon, Apr 20, 2020 at 2:40 PM Arnd Bergmann <arnd@arndb.de> wrote:
-> > sh5 never became a product and has probably never really worked.
-> >
-> > Remove it by recursively deleting all associated Kconfig options
-> > and all corresponding files.
->
-> Thanks a lot!
->
-> > For review purposes, this leaves out the files that can now be
-> > removed, in particular
-> >
-> >  arch/sh/drivers/pci/*-sh5.c
-> >  arch/sh/include/asm/*_64.h
-> >  arch/sh/include/uapi/asm/*_64.h
-> >  arch/sh/include/cpu-sh5/*
-> >  arch/sh/kernel/cpu/sh5/*
-> >  arch/sh/lib64/*
-> >  arch/sh/mm/*-sh5.c
-> >
-> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->
-> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
->
-> A few nits below...
+On Mon, Apr 20, 2020 at 2:39 PM Arnd Bergmann <arnd@arndb.de> wrote:
+> None of these files are used now that sh5 has been
+> disabled, so they can be completely removed.
 
-And you forgot to remove the tlbex_64 stuff from arch/sh/mm/Makefile.
+Thanks a lot!
+
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+
+The following can be removed, too:
+    arch/sh/boot/compressed/head_64.S
+    arch/sh/mm/extable_64.c
+    arch/sh/mm/tlbex_64.c
+    arch/sh/mm/tlbflush_64.c
 
 Gr{oetje,eeting}s,
 
