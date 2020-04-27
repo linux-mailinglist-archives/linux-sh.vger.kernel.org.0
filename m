@@ -2,141 +2,62 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 90D231B8B85
-	for <lists+linux-sh@lfdr.de>; Sun, 26 Apr 2020 05:01:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B5561BA2B0
+	for <lists+linux-sh@lfdr.de>; Mon, 27 Apr 2020 13:41:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726119AbgDZDB3 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sat, 25 Apr 2020 23:01:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59150 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726092AbgDZDB2 (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Sat, 25 Apr 2020 23:01:28 -0400
-Received: from localhost.localdomain (c-73-231-172-41.hsd1.ca.comcast.net [73.231.172.41])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6969B206D4;
-        Sun, 26 Apr 2020 03:01:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587870086;
-        bh=tCSwWc8iRTvfzhr9Bpi0vaaHrDRBHLwWGG3vKGlFHqg=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=UVpTWp7EJhgRsQXBhfo6AT4VrUdy1nNy8nOq/LfihYfu1NC4LJc05Iz8GAX1ZT5f3
-         axlF830cN9T/YdFik2zo+N3qO2F4mins96Mu5bgI3K/fB5ghL5mkLmCLUuWklYIKG9
-         HZl62/U2hyOlgj8km6aRA/b/nX2GmC3gaq8w7s7A=
-Date:   Sat, 25 Apr 2020 20:01:24 -0700
-From:   Andrew Morton <akpm@linux-foundation.org>
-To:     Anshuman Khandual <anshuman.khandual@arm.com>
-Cc:     linux-mm@kvack.org, Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>, x86@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] mm/hugetlb: Introduce
- HAVE_ARCH_CLEAR_HUGEPAGE_FLAGS
-Message-Id: <20200425200124.20d0c75fcaef05d062d3667c@linux-foundation.org>
-In-Reply-To: <87d37591-caa2-b82b-392a-3a29b2c7e9a6@arm.com>
-References: <1586864670-21799-1-git-send-email-anshuman.khandual@arm.com>
-        <1586864670-21799-4-git-send-email-anshuman.khandual@arm.com>
-        <20200425175511.7a68efb5e2f4436fe0328c1d@linux-foundation.org>
-        <87d37591-caa2-b82b-392a-3a29b2c7e9a6@arm.com>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        id S1727116AbgD0Llq (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 27 Apr 2020 07:41:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36086 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727012AbgD0Llh (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 27 Apr 2020 07:41:37 -0400
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A882CC03C1A6
+        for <linux-sh@vger.kernel.org>; Mon, 27 Apr 2020 04:41:35 -0700 (PDT)
+Received: by mail-pf1-x443.google.com with SMTP id d184so8894723pfd.4
+        for <linux-sh@vger.kernel.org>; Mon, 27 Apr 2020 04:41:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=F+HbPvxQnRBlqBFKy/zn6110uxUPAWY6eSsMY6+ckPY=;
+        b=uI1U3pP4FazEZaTfkDGgaf1Qyb1hL6AlgZB9tozzlJtw0tc2p0xAeW9BNdbY4A2XuL
+         JYn8lE6gg3HqjBgRaTT8CTSOLDZ9E79yDyBM0EGnWldSdHyzrk+BT/7frJGn/PAhMIrE
+         VCZdq7yfljhgiOOYhIeLP2AIIFXvLFMREe3IREMgf/Wimn5okrCaqK4gkS0+n2Tqfq3c
+         EFYh4cYLyK3nIET0YOm2adzDe5W5QN3hsgSvwW72euh+PRPDs3oxC82+7cfg/ZGTOz8/
+         eTagf6SblJMWIJeJ59y/zg3//EVOq9RPByBfKkQCDUJB6vE62XJLcx9qUgZNIxoYrz8S
+         JAeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=F+HbPvxQnRBlqBFKy/zn6110uxUPAWY6eSsMY6+ckPY=;
+        b=MRt2NyWiUmchqdqanWT6wz21RXHrC4idGZeewLSAqUAscQn8tRNndCXDPwJ4vNYboD
+         dXOdUi0guuXa3b3G1a/JY7hwI4CH7rdZ1Wn4IdDk58lfVQYUq5G91uA8Wz14LnR1ArKC
+         u7UeC7Kuv1/FIWaisoKF2GEf1/x2/5Zh2ibZxT4pEVpO9awkwh0paP3LZGS7GVyJRhhl
+         gm19Do315E2UdzVKeWnDuXcJERG/GKUt1CINidytdvTvmwszLZnZWrU4UteGEK//he7G
+         Binvzs9v9X+uvVDiWH2dZ9/CYRYJTh7gt/hFG6h7dQpRrD+qEI4q/xa7e5XAt/ufHtLT
+         V5gg==
+X-Gm-Message-State: AGi0PuYAKjh9O6Q4QvE8ovAm/4OlbVTZ5LWaFbfgAN3gDKg50lo7zEdi
+        /3OHCi4VUnUbfw938Cu0Z7CVMnnvvhwL8/Yp1GRkh1lBVKU=
+X-Google-Smtp-Source: APiQypJWdjzUZMbeRoAX94bUJV0IgwyoF5kUG7iPo3CBzKxW8lStFNsM/6tz3An/TyzRuH2Qw14DtavsVumw6JVLls0=
+X-Received: by 2002:a6b:7d4a:: with SMTP id d10mr4072296ioq.70.1587987694042;
+ Mon, 27 Apr 2020 04:41:34 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a5d:8f89:0:0:0:0:0 with HTTP; Mon, 27 Apr 2020 04:41:33
+ -0700 (PDT)
+Reply-To: convy0090@gmail.com
+From:   Ruben CONVY <andrewboccc@gmail.com>
+Date:   Mon, 27 Apr 2020 12:41:33 +0100
+Message-ID: <CAHVC0+Ag87TMCmfNNwWbxXOFxn5166q8GG5wEfPjwtixj9=EXQ@mail.gmail.com>
+Subject: Why continued silence 2
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Sun, 26 Apr 2020 08:13:17 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
-
-> 
-> 
-> On 04/26/2020 06:25 AM, Andrew Morton wrote:
-> > On Tue, 14 Apr 2020 17:14:30 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
-> > 
-> >> There are multiple similar definitions for arch_clear_hugepage_flags() on
-> >> various platforms. This introduces HAVE_ARCH_CLEAR_HUGEPAGE_FLAGS for those
-> >> platforms that need to define their own arch_clear_hugepage_flags() while
-> >> also providing a generic fallback definition for others to use. This help
-> >> reduce code duplication.
-> >>
-> >> ...
-> >>
-> >> --- a/include/linux/hugetlb.h
-> >> +++ b/include/linux/hugetlb.h
-> >> @@ -544,6 +544,10 @@ static inline int is_hugepage_only_range(struct mm_struct *mm,
-> >>  }
-> >>  #endif
-> >>  
-> >> +#ifndef HAVE_ARCH_CLEAR_HUGEPAGE_FLAGS
-> >> +static inline void arch_clear_hugepage_flags(struct page *page) { }
-> >> +#endif
-> >> +
-> >>  #ifndef arch_make_huge_pte
-> >>  static inline pte_t arch_make_huge_pte(pte_t entry, struct vm_area_struct *vma,
-> >>  				       struct page *page, int writable)
-> > 
-> > This is the rather old-school way of doing it.  The Linus-suggested way is
-> > 
-> > #ifndef arch_clear_hugepage_flags
-> > static inline void arch_clear_hugepage_flags(struct page *page)
-> > {
-> > }
-> > #define arch_clear_hugepage_flags arch_clear_hugepage_flags
-> 
-> Do we need that above line here ? Is not that implicit.
-
-It depends if other header files want to test whether
-arch_clear_hugepage_flags is already defined.  If the header heorarchy
-is well-defined and working properly, they shouldn't need to, because
-we're reliably indluding the relevant arch header before (or early
-within) include/linux/hugetlb.h.
-
-It would be nice if
-
-#define arch_clear_hugepage_flags arch_clear_hugepage_flags
-#define arch_clear_hugepage_flags arch_clear_hugepage_flags
-
-were to generate an compiler error but it doesn't.  If it did we could
-detect these incorrect inclusion orders.
-
-> > #endif
-> > 
-> > And the various arch headers do
-> > 
-> > static inline void arch_clear_hugepage_flags(struct page *page)
-> > {
-> > 	<some implementation>
-> > }
-> > #define arch_clear_hugepage_flags arch_clear_hugepage_flags
-> > 
-> > It's a small difference - mainly to avoid adding two variables to the
-> > overall namespace where one would do.
-> 
-> Understood, will change and resend.
-
-That's OK - I've queued up that fix.
+Did you receive my previous email regarding your family inheritance?
+Reply strictly through: convy0090@gmail.com
+Best Regards,
+Ruben CONVY
