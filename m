@@ -2,62 +2,62 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 175211BB611
-	for <lists+linux-sh@lfdr.de>; Tue, 28 Apr 2020 07:52:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79FC21BB638
+	for <lists+linux-sh@lfdr.de>; Tue, 28 Apr 2020 08:11:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726284AbgD1Fwu (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 28 Apr 2020 01:52:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37830 "EHLO
+        id S1726309AbgD1GLV (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 28 Apr 2020 02:11:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725792AbgD1Fwt (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 28 Apr 2020 01:52:49 -0400
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66173C03C1A9
-        for <linux-sh@vger.kernel.org>; Mon, 27 Apr 2020 22:52:49 -0700 (PDT)
-Received: by mail-lf1-x143.google.com with SMTP id l11so15844390lfc.5
-        for <linux-sh@vger.kernel.org>; Mon, 27 Apr 2020 22:52:49 -0700 (PDT)
+        by vger.kernel.org with ESMTP id S1726333AbgD1GLU (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 28 Apr 2020 02:11:20 -0400
+Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com [IPv6:2a00:1450:4864:20::142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D9C1C03C1A9
+        for <linux-sh@vger.kernel.org>; Mon, 27 Apr 2020 23:11:19 -0700 (PDT)
+Received: by mail-lf1-x142.google.com with SMTP id j14so15870912lfg.9
+        for <linux-sh@vger.kernel.org>; Mon, 27 Apr 2020 23:11:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=3FFyhFGwSR5hCCAOzKWLB8ijhIIWqMIumwJnODZevkI=;
-        b=iPpk6l/jcA1BeDumj4n6myfu973lYILM4XQEUj2U9UO9NMB5cveMhC0qpE7+ppX0Bl
-         NwwXr3ZGwsusuav6BpzkvqFgO+dDUQglvmVXTDQ34IUs8a2xp5D4asH6xNcUEEJimtrk
-         4mtm5HgQpZnnJB3kKT+YlVYWlQz4UCEN0OFbe/rh+0C7PyKRYbDsrVajTzK6hSclaXf9
-         o1Q7WzNZJ0dH3MybAy06ZSF5gjc5YwjwPRYVGKunKe3DPdG91fHg0qpIwDWdOtTqhqnc
-         iqMeT2xCdTZTQFZQroCmrRgQNoR1D0MlyHpyegg+Vs7bRSY3iiysohCImS46eC/xpdrW
-         JKcw==
+        bh=fjR2WXsg1WuSqX8WD5c+nhnalPJJVRAV+Xn9CSGG1bY=;
+        b=cdP0uVyDLEuTHWB46kef943mTKZiv/Grb+3pidmYUxbnYjhqmBibE45csv9aQ88lot
+         AJ3IDfIwUFyKZ0ltlC/7Xz/eIBrBQ9fKuiYosWuO9jxHiT7plltOgrcHcyVpxe7QmbFJ
+         +/ZAj1QUE0+7MbjnRNVVxQdmpxWa3++ZAydGa9ZaoAwMf5FQMxsgbkOQjpNYPiBk1sY+
+         4yiGOkjuYSnheFG1MggDO6unAQSkGnM4raGCF4V8kQa2tBeFbthnB+CXJOmDktWBOEtl
+         eTb5TN7/Nnq4dr6LqUU6zAA7IbwWt3mzS4YUp1+NK/1MBrYrdLqkTHc4pCWe0R/ARh+9
+         +0pA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=3FFyhFGwSR5hCCAOzKWLB8ijhIIWqMIumwJnODZevkI=;
-        b=YnIIKGYIlPXTKb0kN80wADtl71PnVPSx5HZONrsjWkIFbL4XwRoPNUAmaeqWNPTBU6
-         7AByqYifALztZHIynO7zZqriqQqbX2QevYNM/RLIcI7Ny8P5AKBKveUYi6vBpm5Pwkcj
-         pxSVrg2MCaZwgysNXNM/yTKIkO1k/YIrpANYdAY+N4sRWOQjP3mj+xCjZDuRR9kGYm7g
-         CHd4vzTgw2OrFaF9HZw02xdIHlX2+ZLlMLxs7j/cZTKrpiJXZdMqYXcsK4YJ50JE1vXg
-         Y94j/lweuu5AySZULAzfail444HLX0ijQV2NnDIjRCLvxYPvPo/8N5G16g2oKe7FONuz
-         TJ4g==
-X-Gm-Message-State: AGi0PuYOL16UjGP+4DKmDXiYbnWhnsAuaTyNgaet+Y3hS+hqD876YRWx
-        gJpLmfCOfSRiKC0ypRqXvap3i/rjwGqFXh/Jj/Nwkw==
-X-Google-Smtp-Source: APiQypLsGvxVV4G5Cnrl0vPMdgLPCcQHgc3r4oAY763aqzMS5nENJMiQ8OSQP6fW4gw42184cs8u8oZQg2fi/pBykaA=
-X-Received: by 2002:ac2:5dc6:: with SMTP id x6mr17919772lfq.108.1588053167164;
- Mon, 27 Apr 2020 22:52:47 -0700 (PDT)
+        bh=fjR2WXsg1WuSqX8WD5c+nhnalPJJVRAV+Xn9CSGG1bY=;
+        b=p0v+LmsgKF5RI6COxJHmOYVez0jfzI5RnIfaDDDqtRBfBHgvxtcU3v8gRjhefHGZec
+         pfhBrcVyh3fGooIwtVlUpOQdMBdtAM/9VEdHs2+vXLvNUzqU25Fyx6635n35U31IFZ6n
+         K+Agr4fPMhDnYLzk4iGkLvsFaNVEajussjEtpunBbbr3w3iADLDopyPBZyc0lYlY0frS
+         wHy7Lb2UgyjJY1oDp8MH2J3vr8P6YcKjUytJzZeZEzq5+4hSW4z/ZWs/UpMbejiafBEk
+         w7BGpRgV4Tasrwvan+qbnEeIV+/jC/vPZtMAv1vYOp0m6V3hS88nLwxfjzwI2cWHOpB0
+         fKxQ==
+X-Gm-Message-State: AGi0PublaodzK3d0XHuj9GttLTUqpPgTp17KqM5J45n02kmvbsAWqBsw
+        2vuCXPkrZRz53mOB3/F0mek4zr1mzNMWz2+kHF2UsA==
+X-Google-Smtp-Source: APiQypLIie/TYTkh1e9E9TFpjYomoyBZT+NMzXY2V+G8zBhTAdtjDWAqu5o9w5HGdoenyRP931MOYycHK/t36nWbs+Q=
+X-Received: by 2002:a19:e04a:: with SMTP id g10mr17744131lfj.164.1588054277719;
+ Mon, 27 Apr 2020 23:11:17 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200428032745.133556-1-jannh@google.com> <20200428032745.133556-3-jannh@google.com>
- <CAHk-=wjSYTpTH0X8EcGGJD84tsJS62BN3tC6NfzmjvXdSkFVxg@mail.gmail.com>
-In-Reply-To: <CAHk-=wjSYTpTH0X8EcGGJD84tsJS62BN3tC6NfzmjvXdSkFVxg@mail.gmail.com>
+References: <20200428032745.133556-1-jannh@google.com> <20200428032745.133556-6-jannh@google.com>
+ <CAHk-=wgBNSQhH1gyjo+Z2NFy4tOQnBQB4rra-jh+3XTpOjnThQ@mail.gmail.com>
+In-Reply-To: <CAHk-=wgBNSQhH1gyjo+Z2NFy4tOQnBQB4rra-jh+3XTpOjnThQ@mail.gmail.com>
 From:   Jann Horn <jannh@google.com>
-Date:   Tue, 28 Apr 2020 07:52:20 +0200
-Message-ID: <CAG48ez0Nz8Bnty2aKdsUeMoXkjc_Bcxr+EcStZ7LBTOgRt1mrQ@mail.gmail.com>
-Subject: Re: [PATCH 2/5] coredump: Fix handling of partial writes in dump_emit()
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Alexander Viro <viro@zeniv.linux.org.uk>
+Date:   Tue, 28 Apr 2020 08:10:51 +0200
+Message-ID: <CAG48ez3kLgXQBOnSJJ+XuYpM__XnKc_AqJMoiPBhFbTdmoWxag@mail.gmail.com>
+Subject: Re: [PATCH 5/5] mm/gup: Take mmap_sem in get_dump_page()
+To:     Linus Torvalds <torvalds@linux-foundation.org>
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
         Christoph Hellwig <hch@lst.de>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Linux-MM <linux-mm@kvack.org>,
         linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
         "Eric W . Biederman" <ebiederm@xmission.com>,
         Oleg Nesterov <oleg@redhat.com>,
         Russell King <linux@armlinux.org.uk>,
@@ -74,29 +74,42 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Tue, Apr 28, 2020 at 5:36 AM Linus Torvalds
+On Tue, Apr 28, 2020 at 5:50 AM Linus Torvalds
 <torvalds@linux-foundation.org> wrote:
 > On Mon, Apr 27, 2020 at 8:28 PM Jann Horn <jannh@google.com> wrote:
 > >
-> > After a partial write, we have to update the input buffer pointer.
+> > Properly take the mmap_sem before calling into the GUP code from
+> > get_dump_page(); and play nice, allowing __get_user_pages_locked() to drop
+> > the mmap_sem if it has to sleep.
 >
-> Interesting. It seems this partial write case never triggers (except
-> for actually killing the core-dump).
+> This makes my skin crawl.
 >
-> Or did you find a case where it actually matters?
+> The only reason for this all is that page cache flushing.
 >
-> Your fix is obviously correct, but it also makes me go "that function
-> clearly never actually worked for partial writes, maybe we shouldn't
-> even bother?"
+> My gut feeling is that it should be done by get_user_pages() anyway,
+> since all the other users presumably want it to be coherent in the
+> cache.
+>
+> And in fact, looking at __get_user_pages(), it already does that
+>
+>                 if (pages) {
+>                         pages[i] = page;
+>                         flush_anon_page(vma, page, start);
+>                         flush_dcache_page(page);
+>                         ctx.page_mask = 0;
+>                 }
+>
+> and I think that the get_dump_page() logic is unnecessary to begin with.
 
-Hmm, yeah... I can't really think of cases where write handlers can
-spuriously return early without having a pending signal, and a second
-write is likely to succeed... I just know that there are some things
-that are notorious for returning short *reads* (e.g. pipes, sockets,
-/proc/$pid/maps).
+Ah! And even though flush_cache_page() is broader than
+flush_dcache_page(), that's actually unnecessary, right? Since the
+kernel only wants to read from the page, and therefore e.g. the icache
+is irrelevant?
 
-Al's commit message refers to pipes specifically; but even at commit
-2507a4fbd48a, I don't actually see where pipe_write() could return a
-short write without a page allocation failure or something like that.
+Yay! :) I did think this was a bit gnarly, and it's nice to know that
+this can be simplified.
 
-So maybe you're right and we should just get rid of it...
+(And now I'm going to avert my eyes from the GUP code before I start
+thinking too hard about how much it sucks that FOLL_LONGTERM doesn't
+drop the mmap_sem across the access and how much I dislike the whole
+idea of FOLL_LONGTERM in general...)
