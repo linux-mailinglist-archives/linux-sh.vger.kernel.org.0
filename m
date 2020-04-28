@@ -2,62 +2,140 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B5561BA2B0
-	for <lists+linux-sh@lfdr.de>; Mon, 27 Apr 2020 13:41:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A7FF1BB491
+	for <lists+linux-sh@lfdr.de>; Tue, 28 Apr 2020 05:28:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727116AbgD0Llq (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 27 Apr 2020 07:41:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36086 "EHLO
+        id S1726411AbgD1D17 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 27 Apr 2020 23:27:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727012AbgD0Llh (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 27 Apr 2020 07:41:37 -0400
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A882CC03C1A6
-        for <linux-sh@vger.kernel.org>; Mon, 27 Apr 2020 04:41:35 -0700 (PDT)
-Received: by mail-pf1-x443.google.com with SMTP id d184so8894723pfd.4
-        for <linux-sh@vger.kernel.org>; Mon, 27 Apr 2020 04:41:35 -0700 (PDT)
+        with ESMTP id S1726272AbgD1D17 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 27 Apr 2020 23:27:59 -0400
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31088C09B050
+        for <linux-sh@vger.kernel.org>; Mon, 27 Apr 2020 20:27:59 -0700 (PDT)
+Received: by mail-yb1-xb49.google.com with SMTP id e2so23053210ybm.19
+        for <linux-sh@vger.kernel.org>; Mon, 27 Apr 2020 20:27:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=F+HbPvxQnRBlqBFKy/zn6110uxUPAWY6eSsMY6+ckPY=;
-        b=uI1U3pP4FazEZaTfkDGgaf1Qyb1hL6AlgZB9tozzlJtw0tc2p0xAeW9BNdbY4A2XuL
-         JYn8lE6gg3HqjBgRaTT8CTSOLDZ9E79yDyBM0EGnWldSdHyzrk+BT/7frJGn/PAhMIrE
-         VCZdq7yfljhgiOOYhIeLP2AIIFXvLFMREe3IREMgf/Wimn5okrCaqK4gkS0+n2Tqfq3c
-         EFYh4cYLyK3nIET0YOm2adzDe5W5QN3hsgSvwW72euh+PRPDs3oxC82+7cfg/ZGTOz8/
-         eTagf6SblJMWIJeJ59y/zg3//EVOq9RPByBfKkQCDUJB6vE62XJLcx9qUgZNIxoYrz8S
-         JAeA==
+        d=google.com; s=20161025;
+        h=date:message-id:mime-version:subject:from:to:cc;
+        bh=u+G4hEDBCMfTTINsEe1rRLbmDctcZioKYhqJKU0a/to=;
+        b=KS7OZjdt/sKvdslTKy6L/T6sE7YdAFI7rtNbHDh37qyDWlr6BYYTbLkiyvmD0nU0Vg
+         PRRFYjaV7UbuK8P97MQGc1kQlBkhSW5m1ljSw8YwuhdjhF7jXweNqaFbkY9Plz6Wl1j4
+         osppM2gxoE4Yrgh4n66OgZ3JsEY6l1ff2OMDXWcjzIlhM9kTGJ4VqWohzV1FRAHXNefl
+         ZYwNdvb4LAg5HEbG7ldnRs7JPffDElIHozrCI8WkjzJY+A19nzvQ5AN+xrhkWxSSzafL
+         O46PyHQSSBOenRmN3cTUjh1IJpeaEsSCOrwDvLioHY9vH6+s/1WzYSsDqeo2yVlPtFEk
+         +EUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=F+HbPvxQnRBlqBFKy/zn6110uxUPAWY6eSsMY6+ckPY=;
-        b=MRt2NyWiUmchqdqanWT6wz21RXHrC4idGZeewLSAqUAscQn8tRNndCXDPwJ4vNYboD
-         dXOdUi0guuXa3b3G1a/JY7hwI4CH7rdZ1Wn4IdDk58lfVQYUq5G91uA8Wz14LnR1ArKC
-         u7UeC7Kuv1/FIWaisoKF2GEf1/x2/5Zh2ibZxT4pEVpO9awkwh0paP3LZGS7GVyJRhhl
-         gm19Do315E2UdzVKeWnDuXcJERG/GKUt1CINidytdvTvmwszLZnZWrU4UteGEK//he7G
-         Binvzs9v9X+uvVDiWH2dZ9/CYRYJTh7gt/hFG6h7dQpRrD+qEI4q/xa7e5XAt/ufHtLT
-         V5gg==
-X-Gm-Message-State: AGi0PuYAKjh9O6Q4QvE8ovAm/4OlbVTZ5LWaFbfgAN3gDKg50lo7zEdi
-        /3OHCi4VUnUbfw938Cu0Z7CVMnnvvhwL8/Yp1GRkh1lBVKU=
-X-Google-Smtp-Source: APiQypJWdjzUZMbeRoAX94bUJV0IgwyoF5kUG7iPo3CBzKxW8lStFNsM/6tz3An/TyzRuH2Qw14DtavsVumw6JVLls0=
-X-Received: by 2002:a6b:7d4a:: with SMTP id d10mr4072296ioq.70.1587987694042;
- Mon, 27 Apr 2020 04:41:34 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a5d:8f89:0:0:0:0:0 with HTTP; Mon, 27 Apr 2020 04:41:33
- -0700 (PDT)
-Reply-To: convy0090@gmail.com
-From:   Ruben CONVY <andrewboccc@gmail.com>
-Date:   Mon, 27 Apr 2020 12:41:33 +0100
-Message-ID: <CAHVC0+Ag87TMCmfNNwWbxXOFxn5166q8GG5wEfPjwtixj9=EXQ@mail.gmail.com>
-Subject: Why continued silence 2
-To:     undisclosed-recipients:;
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+        bh=u+G4hEDBCMfTTINsEe1rRLbmDctcZioKYhqJKU0a/to=;
+        b=lKdYyHVH8FVWrEBxBLTgQZ4nxFEqrKnyALtkI4MFUkRXhwYZauY3sJXDXP9yJol6BD
+         MmWMZv2pxPls3pI+jbXmm61SrYkyl0dNEFWQTMnl0XELO1alJi4z/cTAX66k2Dji9ShJ
+         JjQTYuYNJ4cCAAfMJVzoW3U68wsmeAjM31U/2sGnzFEdRfiKc8TlCgaGfzgcXYTo1gji
+         7oVM2Vlkv7ucau9Po+h4U8+6wEww6DefEcNVOKmhYZ4MB+gUpiJse0JDVR28ecJf0UBr
+         7r8Q8EhE36V+qKY/T9CxHGFoEUkDCQsPswsOcwtE6Prnyw1lYfU2tCrd/eRBDl9zxgDh
+         ZtAQ==
+X-Gm-Message-State: AGi0PuZRSJQ2pO+u9x0ex1wAxIZyzb6TyhZ9PoYsF4rcQAeXgdWBOuFi
+        EMzjQb76RAokncW9ih/3WuFz7GLzkQ==
+X-Google-Smtp-Source: APiQypK6jqWOuNTokUNhG2QCt7A5zcXYd6+OoLGYxMDdl4Pak6sHqzfYvRIQd9LB/iLqowxAAwDHJLlsNA==
+X-Received: by 2002:a25:afd0:: with SMTP id d16mr42901934ybj.441.1588044478270;
+ Mon, 27 Apr 2020 20:27:58 -0700 (PDT)
+Date:   Tue, 28 Apr 2020 05:27:40 +0200
+Message-Id: <20200428032745.133556-1-jannh@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.26.2.303.gf8c07b1a785-goog
+Subject: [PATCH 0/5] Fix ELF / FDPIC ELF core dumping, and use mmap_sem
+ properly in there
+From:   Jann Horn <jannh@google.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Christoph Hellwig <hch@lst.de>, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        "Eric W . Biederman" <ebiederm@xmission.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Russell King <linux@armlinux.org.uk>,
+        linux-arm-kernel@lists.infradead.org,
+        Mark Salter <msalter@redhat.com>,
+        Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
+        linux-c6x-dev@linux-c6x.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Did you receive my previous email regarding your family inheritance?
-Reply strictly through: convy0090@gmail.com
-Best Regards,
-Ruben CONVY
+At the moment, we have that rather ugly mmget_still_valid() helper to
+work around <https://crbug.com/project-zero/1790>: ELF core dumping
+doesn't take the mmap_sem while traversing the task's VMAs, and if
+anything (like userfaultfd) then remotely messes with the VMA tree,
+fireworks ensue. So at the moment we use mmget_still_valid() to bail
+out in any writers that might be operating on a remote mm's VMAs.
+
+With this series, I'm trying to get rid of the need for that as
+cleanly as possible.
+In particular, I want to avoid holding the mmap_sem across unbounded
+sleeps.
+
+
+Patches 1, 2 and 3 are relatively unrelated cleanups in the core
+dumping code.
+
+Patches 4 and 5 implement the main change: Instead of repeatedly
+accessing the VMA list with sleeps in between, we snapshot it at the
+start with proper locking, and then later we just use our copy of
+the VMA list. This ensures that the kernel won't crash, that VMA
+metadata in the coredump is consistent even in the presence of
+concurrent modifications, and that any virtual addresses that aren't
+being concurrently modified have their contents show up in the core
+dump properly.
+
+The disadvantage of this approach is that we need a bit more memory
+during core dumping for storing metadata about all VMAs.
+
+After this series has landed, we should be able to rip out
+mmget_still_valid().
+
+
+Testing done so far:
+
+ - Creating a simple core dump on X86-64 still works.
+ - The created coredump on X86-64 opens in GDB, and both the stack and the
+   exectutable look vaguely plausible.
+ - 32-bit ARM compiles with FDPIC support, both with MMU and !MMU config.
+
+I'm CCing some folks from the architectures that use FDPIC in case
+anyone wants to give this a spin.
+
+
+This series is based on
+<https://lore.kernel.org/linux-fsdevel/20200427200626.1622060-1-hch@lst.de/>
+(Christoph Hellwig's "remove set_fs calls from the coredump code v4").
+
+Jann Horn (5):
+  binfmt_elf_fdpic: Stop using dump_emit() on user pointers on !MMU
+  coredump: Fix handling of partial writes in dump_emit()
+  coredump: Refactor page range dumping into common helper
+  binfmt_elf, binfmt_elf_fdpic: Use a VMA list snapshot
+  mm/gup: Take mmap_sem in get_dump_page()
+
+ fs/binfmt_elf.c          | 170 ++++++++++++---------------------------
+ fs/binfmt_elf_fdpic.c    | 106 +++++++++---------------
+ fs/coredump.c            | 102 +++++++++++++++++++++++
+ include/linux/coredump.h |  12 +++
+ mm/gup.c                 |  69 +++++++++-------
+ 5 files changed, 243 insertions(+), 216 deletions(-)
+
+
+base-commit: 6a8b55ed4056ea5559ebe4f6a4b247f627870d4c
+prerequisite-patch-id: c0a20b414eebc48fe0a8ca570b05de34c7980396
+prerequisite-patch-id: 51973b8db0fa4b114e0c3fd8936b634d9d5061c5
+prerequisite-patch-id: 0e1e8de282ca6d458dc6cbdc6b6ec5879edd8a05
+prerequisite-patch-id: d5ee749c4d3a22ec80bd0dd88aadf89aeb569db8
+prerequisite-patch-id: 46ce14e59e98e212a1eca0aef69c6dcdb62b8242
+-- 
+2.26.2.303.gf8c07b1a785-goog
+
