@@ -2,115 +2,152 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 467411BEA9C
-	for <lists+linux-sh@lfdr.de>; Wed, 29 Apr 2020 23:57:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DB801BEC62
+	for <lists+linux-sh@lfdr.de>; Thu, 30 Apr 2020 01:03:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726852AbgD2V5C (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 29 Apr 2020 17:57:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47214 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726554AbgD2V5C (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 29 Apr 2020 17:57:02 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:3201:214:fdff:fe10:1be6])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64BC2C03C1AE;
-        Wed, 29 Apr 2020 14:57:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=JhIri9Htg0/sN4w6AP/QH7wGRCJsnU/YBI0zvtCnrSE=; b=lcgeCqTdF0/C0XnarY+tI1cLA
-        aTp5plAUZgVFOpQPCrwnTtLwHs8XQhIGrDDx+4JmRdD5VmjaNjo3kqPh/BRBwYRi0ULZSpSwWY0mW
-        TrgemlMVjy5uQmTWtkwO2jv40d3R3lIxts3PSghFetSH2TbL4JnhiGlJwhTroVW/CX7SpjTyhrZpn
-        X/Ez408/p4adJYNff4cxI3KCA5uQPjgzUfuiEZ4LI1/jdP1WfABKNM6VQy8G4/iB464EHLhHoNUBC
-        marQIPhja3Ndlo+onDkpOu7bNy8Fc8qEEX+yBrHUbV6/UqmfyOGOxXHgP9SDfhe6A2l8poddWJOzu
-        YD58Ko3aw==;
-Received: from shell.armlinux.org.uk ([2002:4e20:1eda:1:5054:ff:fe00:4ec]:51674)
-        by pandora.armlinux.org.uk with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.90_1)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1jTugs-0001oF-Rn; Wed, 29 Apr 2020 22:56:27 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1jTugm-0001S9-Ad; Wed, 29 Apr 2020 22:56:20 +0100
-Date:   Wed, 29 Apr 2020 22:56:20 +0100
-From:   Russell King - ARM Linux admin <linux@armlinux.org.uk>
-To:     Jann Horn <jannh@google.com>, Nicolas Pitre <nico@fluxnic.net>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Christoph Hellwig <hch@lst.de>, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+        id S1726852AbgD2XDv (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 29 Apr 2020 19:03:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57610 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726481AbgD2XDu (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 29 Apr 2020 19:03:50 -0400
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48AA6C03C1AE
+        for <linux-sh@vger.kernel.org>; Wed, 29 Apr 2020 16:03:50 -0700 (PDT)
+Received: by mail-lj1-x241.google.com with SMTP id l19so4426158lje.10
+        for <linux-sh@vger.kernel.org>; Wed, 29 Apr 2020 16:03:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ur9jfHYBxvOMHwCSyzgCuO4pNPy1puU85FIa2ankgiI=;
+        b=DrKHR3jwpIzSm+/wrDYjisbgySATaGLQu0oa0TojG2F2InX9rTKCVNl6/HZqurU3pj
+         UJIyVXdxk5hO/DdTXuKDLWUrdoodxV3U8YTqMXkuAyOg5qLHqAdR8oZRRYrFIzlXyC4k
+         sCR1zfwZ36sLzjhZCni2LVoS/XzTKFMv0dEak=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ur9jfHYBxvOMHwCSyzgCuO4pNPy1puU85FIa2ankgiI=;
+        b=oKsrgRgrt5VUmpgk1b/4wl4H2BB/zc88AQoU79IjDZpPo1DZcLcSGUzt+5UtaPrKc5
+         p5Oqoxd2cM03sv37vZlJd8JSPHkbp4Cu1edBlIXJjhvmzTTzE2ovv7hvfgnaeETl3wuU
+         9m78Z+n5V6YF10j+gRXw49wXIwmtmQQKhcBCEYfHom/b21IZ2EmXeXcw4Uez0AzQtWxj
+         o1quEL4US6qB/w0Z7LW3gZ9hMsvU3G2HFCQlotUS6O+GZfUK8ZKz3Hzm+YKBu/qsmvxL
+         UU+ABWrstnpD1/nW/iuzfojvJbpV2Zg0IkUxFlpNSN6GnwelvowPHWWAiBM7iDLm4Uej
+         YcEA==
+X-Gm-Message-State: AGi0PubTMEm+ltRmSS4G58NscdqCfaRJ6FAOcyW6OmrVAJ+fS1WP5wVD
+        HdO6g8slbkvRbrk1UI2lAiIXvP3DXp4=
+X-Google-Smtp-Source: APiQypLlPeW8xzMkNyHs4jgcZoxfRAEgqdv6/aDz/JX5N6UtbGzC0e9Nic6e2g1U0gSLmA0i/RG4eQ==
+X-Received: by 2002:a2e:994a:: with SMTP id r10mr315935ljj.105.1588201427117;
+        Wed, 29 Apr 2020 16:03:47 -0700 (PDT)
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com. [209.85.167.43])
+        by smtp.gmail.com with ESMTPSA id l25sm2474948lfh.71.2020.04.29.16.03.45
+        for <linux-sh@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 29 Apr 2020 16:03:46 -0700 (PDT)
+Received: by mail-lf1-f43.google.com with SMTP id t11so3143582lfe.4
+        for <linux-sh@vger.kernel.org>; Wed, 29 Apr 2020 16:03:45 -0700 (PDT)
+X-Received: by 2002:a19:240a:: with SMTP id k10mr119932lfk.30.1588201425482;
+ Wed, 29 Apr 2020 16:03:45 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200429214954.44866-1-jannh@google.com> <20200429215620.GM1551@shell.armlinux.org.uk>
+In-Reply-To: <20200429215620.GM1551@shell.armlinux.org.uk>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed, 29 Apr 2020 16:03:29 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wgpoEr33NJwQ+hqK1dz3Rs9jSw+BGotsSdt2Kb3HqLV7A@mail.gmail.com>
+Message-ID: <CAHk-=wgpoEr33NJwQ+hqK1dz3Rs9jSw+BGotsSdt2Kb3HqLV7A@mail.gmail.com>
+Subject: Re: [PATCH v2 0/5] Fix ELF / FDPIC ELF core dumping, and use mmap_sem
+ properly in there
+To:     Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Greg Ungerer <gerg@linux-m68k.org>
+Cc:     Jann Horn <jannh@google.com>, Nicolas Pitre <nico@fluxnic.net>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Christoph Hellwig <hch@lst.de>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux-MM <linux-mm@kvack.org>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
         Alexander Viro <viro@zeniv.linux.org.uk>,
         "Eric W . Biederman" <ebiederm@xmission.com>,
         Oleg Nesterov <oleg@redhat.com>,
-        linux-arm-kernel@lists.infradead.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
         Mark Salter <msalter@redhat.com>,
         Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
         linux-c6x-dev@linux-c6x.org,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org
-Subject: Re: [PATCH v2 0/5] Fix ELF / FDPIC ELF core dumping, and use
- mmap_sem properly in there
-Message-ID: <20200429215620.GM1551@shell.armlinux.org.uk>
-References: <20200429214954.44866-1-jannh@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200429214954.44866-1-jannh@google.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        Rich Felker <dalias@libc.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Wed, Apr 29, 2020 at 11:49:49PM +0200, Jann Horn wrote:
-> At the moment, we have that rather ugly mmget_still_valid() helper to
-> work around <https://crbug.com/project-zero/1790>: ELF core dumping
-> doesn't take the mmap_sem while traversing the task's VMAs, and if
-> anything (like userfaultfd) then remotely messes with the VMA tree,
-> fireworks ensue. So at the moment we use mmget_still_valid() to bail
-> out in any writers that might be operating on a remote mm's VMAs.
-> 
-> With this series, I'm trying to get rid of the need for that as
-> cleanly as possible.
-> In particular, I want to avoid holding the mmap_sem across unbounded
-> sleeps.
-> 
-> 
-> Patches 1, 2 and 3 are relatively unrelated cleanups in the core
-> dumping code.
-> 
-> Patches 4 and 5 implement the main change: Instead of repeatedly
-> accessing the VMA list with sleeps in between, we snapshot it at the
-> start with proper locking, and then later we just use our copy of
-> the VMA list. This ensures that the kernel won't crash, that VMA
-> metadata in the coredump is consistent even in the presence of
-> concurrent modifications, and that any virtual addresses that aren't
-> being concurrently modified have their contents show up in the core
-> dump properly.
-> 
-> The disadvantage of this approach is that we need a bit more memory
-> during core dumping for storing metadata about all VMAs.
-> 
-> After this series has landed, we should be able to rip out
-> mmget_still_valid().
-> 
-> 
-> Testing done so far:
-> 
->  - Creating a simple core dump on X86-64 still works.
->  - The created coredump on X86-64 opens in GDB, and both the stack and the
->    exectutable look vaguely plausible.
->  - 32-bit ARM compiles with FDPIC support, both with MMU and !MMU config.
-> 
-> I'm CCing some folks from the architectures that use FDPIC in case
-> anyone wants to give this a spin.
+On Wed, Apr 29, 2020 at 2:57 PM Russell King - ARM Linux admin
+<linux@armlinux.org.uk> wrote:
+>
+> I've never had any reason to use FDPIC, and I don't have any binaries
+> that would use it.  Nicolas Pitre added ARM support, so I guess he
+> would be the one to talk to about it.  (Added Nicolas.)
 
-I've never had any reason to use FDPIC, and I don't have any binaries
-that would use it.  Nicolas Pitre added ARM support, so I guess he
-would be the one to talk to about it.  (Added Nicolas.)
+While we're at it, is there anybody who knows binfmt_flat?
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTC broadband for 0.8mile line in suburbia: sync at 10.2Mbps down 587kbps up
+It might be Nicolas too.
+
+binfmt_flat doesn't do core-dumping, but it has some other oddities.
+In particular, I'd like to bring sanity to the installation of the new
+creds, and all the _normal_ binfmt cases do it largely close together
+with setup_new_exec().
+
+binfmt_flat is doing odd things. It's doing this:
+
+        /* Flush all traces of the currently running executable */
+        if (id == 0) {
+                ret = flush_old_exec(bprm);
+                if (ret)
+                        goto err;
+
+                /* OK, This is the point of no return */
+                set_personality(PER_LINUX_32BIT);
+                setup_new_exec(bprm);
+        }
+
+in load_flat_file() - which is also used to loading _libraries_. Where
+it makes no sense at all.
+
+It does the
+
+        install_exec_creds(bprm);
+
+in load_flat_binary() (which makes more sense: that is only for actual
+binary loading, no library case).
+
+I would _like_ for every binfmt loader to do
+
+        /* Flush all traces of the currently running executable */
+        retval = flush_old_exec(bprm);
+        if (retval)
+                return retval;
+
+   .. possibly set up personalities here ..
+
+        setup_new_exec(bprm);
+        install_exec_creds(bprm);
+
+all together, and at least merge 'setup_new_exec()' with 'install_exec_creds()'.
+
+And I think all the binfmt handlers would be ok with that, but the
+flat one in particular is really oddly set up.
+
+*Particularly* with that flush_old_exec/setup_new_exec() being done by
+the same routine that is also loading libraries (and called from
+'calc_reloc()' from binary loading too).
+
+Adding Greg Ungerer for m68knommu. Can somebody sort out why that
+flush_old_exec/setup_new_exec() isn't in load_flat_binary() like
+install_exec_creds() is?
+
+Most of that file goes back to pre-git days. And most of the commits
+since are not so much about binfmt_flat, as they are about cleanups or
+changes elsewhere where binfmt_flat was just a victim.
+
+               Linus
