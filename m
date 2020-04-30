@@ -2,65 +2,29 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 74A621C0330
-	for <lists+linux-sh@lfdr.de>; Thu, 30 Apr 2020 18:55:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D4441C05EB
+	for <lists+linux-sh@lfdr.de>; Thu, 30 Apr 2020 21:10:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726350AbgD3Qyt (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 30 Apr 2020 12:54:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55410 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726272AbgD3Qyt (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 30 Apr 2020 12:54:49 -0400
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24334C035495
-        for <linux-sh@vger.kernel.org>; Thu, 30 Apr 2020 09:54:49 -0700 (PDT)
-Received: by mail-lj1-x242.google.com with SMTP id j3so61354ljg.8
-        for <linux-sh@vger.kernel.org>; Thu, 30 Apr 2020 09:54:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=jusIkjp3Dz4is1PZPLtprnCAT5bOhq5lF7YlVU3AWyQ=;
-        b=K/L1x2WLoEDVhKcajWjRfk8di4UnhY9fQ857BctryF99FXnh8lvm/+FMFP7To9VzLC
-         Oeh5Zl2gS6/3rwg+PAIfEpUDm0vFKxb3sBkuIMd/j+tdM33ErRljDKSRox35DyrhVqQy
-         cxTvpJRHT1GSdzAq5WmfU86CiiQNmQ4AcXgOg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=jusIkjp3Dz4is1PZPLtprnCAT5bOhq5lF7YlVU3AWyQ=;
-        b=EWV/l8I3ZHKosgAR/937dshtDgyLN2oWNls7VUq9bWFGOViuHtz87+Nrf4tx0g1G1J
-         1Qc9rxdPVBzI40ZJO6CsnBUDfJ25RvVCqeczjnpn4r/VGMJfRdjygWimonlC4ZVj3JGS
-         EsGCWH/qXsTj2LRYEbeC/qGaemeydNVNtNPMP6athU1XqSky8rgmr+SrdV2gdWTYV7kd
-         eJTDSCWBSykjC2+m35tUoMocOZ8wi510lSeMK+hAyoIC16ZIsIz1kcaT6BGAiIhsU+mV
-         NhNhL7GGNLWYETwlOaWi7gMBtBi3T04UZNnuXBiOl5Pa8jnwudIq512gxzZuk7rIjj/y
-         D3+w==
-X-Gm-Message-State: AGi0PubNNWwd7FlbU8YGjmFx4Fbxw57O+Jr5DsR1GueWuDaKIPemxFSz
-        dm3XmEV4t6FfKPmmuOyep0WQZ1gKjkE=
-X-Google-Smtp-Source: APiQypL8nAsZYlzkXL7khXYCO+Dj9dj4ZTUUMDYx+vlbHLYQFJNl6/ojxgC/6UeShf810bvYuPGbgg==
-X-Received: by 2002:a2e:8645:: with SMTP id i5mr163388ljj.56.1588265686978;
-        Thu, 30 Apr 2020 09:54:46 -0700 (PDT)
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com. [209.85.167.43])
-        by smtp.gmail.com with ESMTPSA id t8sm161418lfe.25.2020.04.30.09.54.45
-        for <linux-sh@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Apr 2020 09:54:46 -0700 (PDT)
-Received: by mail-lf1-f43.google.com with SMTP id b24so1819349lfp.7
-        for <linux-sh@vger.kernel.org>; Thu, 30 Apr 2020 09:54:45 -0700 (PDT)
-X-Received: by 2002:a05:6512:405:: with SMTP id u5mr2728777lfk.192.1588265685113;
- Thu, 30 Apr 2020 09:54:45 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200429214954.44866-1-jannh@google.com> <20200429215620.GM1551@shell.armlinux.org.uk>
- <CAHk-=wgpoEr33NJwQ+hqK1dz3Rs9jSw+BGotsSdt2Kb3HqLV7A@mail.gmail.com> <31196268-2ff4-7a1d-e9df-6116e92d2190@linux-m68k.org>
-In-Reply-To: <31196268-2ff4-7a1d-e9df-6116e92d2190@linux-m68k.org>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Thu, 30 Apr 2020 09:54:28 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjau_zmdLaFDLcY3xnqiFaC7VZDXnnzFG9QDHL4kqStYQ@mail.gmail.com>
-Message-ID: <CAHk-=wjau_zmdLaFDLcY3xnqiFaC7VZDXnnzFG9QDHL4kqStYQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/5] Fix ELF / FDPIC ELF core dumping, and use mmap_sem
- properly in there
-To:     Greg Ungerer <gerg@linux-m68k.org>
-Cc:     Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        id S1726814AbgD3TKj (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 30 Apr 2020 15:10:39 -0400
+Received: from out01.mta.xmission.com ([166.70.13.231]:58196 "EHLO
+        out01.mta.xmission.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726487AbgD3TKj (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 30 Apr 2020 15:10:39 -0400
+Received: from in01.mta.xmission.com ([166.70.13.51])
+        by out01.mta.xmission.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.90_1)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1jUEZk-0000zA-Oa; Thu, 30 Apr 2020 13:10:24 -0600
+Received: from ip68-227-160-95.om.om.cox.net ([68.227.160.95] helo=x220.xmission.com)
+        by in01.mta.xmission.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.87)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1jUEZj-0004x2-MM; Thu, 30 Apr 2020 13:10:24 -0600
+From:   ebiederm@xmission.com (Eric W. Biederman)
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Greg Ungerer <gerg@linux-m68k.org>,
+        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
         Jann Horn <jannh@google.com>, Nicolas Pitre <nico@fluxnic.net>,
         Andrew Morton <akpm@linux-foundation.org>,
         Christoph Hellwig <hch@lst.de>,
@@ -68,7 +32,6 @@ Cc:     Russell King - ARM Linux admin <linux@armlinux.org.uk>,
         Linux-MM <linux-mm@kvack.org>,
         linux-fsdevel <linux-fsdevel@vger.kernel.org>,
         Alexander Viro <viro@zeniv.linux.org.uk>,
-        "Eric W . Biederman" <ebiederm@xmission.com>,
         Oleg Nesterov <oleg@redhat.com>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
         Mark Salter <msalter@redhat.com>,
@@ -77,67 +40,141 @@ Cc:     Russell King - ARM Linux admin <linux@armlinux.org.uk>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>,
         Linux-sh list <linux-sh@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+References: <20200429214954.44866-1-jannh@google.com>
+        <20200429215620.GM1551@shell.armlinux.org.uk>
+        <CAHk-=wgpoEr33NJwQ+hqK1dz3Rs9jSw+BGotsSdt2Kb3HqLV7A@mail.gmail.com>
+        <31196268-2ff4-7a1d-e9df-6116e92d2190@linux-m68k.org>
+        <CAHk-=wjau_zmdLaFDLcY3xnqiFaC7VZDXnnzFG9QDHL4kqStYQ@mail.gmail.com>
+Date:   Thu, 30 Apr 2020 14:07:06 -0500
+In-Reply-To: <CAHk-=wjau_zmdLaFDLcY3xnqiFaC7VZDXnnzFG9QDHL4kqStYQ@mail.gmail.com>
+        (Linus Torvalds's message of "Thu, 30 Apr 2020 09:54:28 -0700")
+Message-ID: <87imhgyeqt.fsf@x220.int.ebiederm.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-XM-SPF: eid=1jUEZj-0004x2-MM;;;mid=<87imhgyeqt.fsf@x220.int.ebiederm.org>;;;hst=in01.mta.xmission.com;;;ip=68.227.160.95;;;frm=ebiederm@xmission.com;;;spf=neutral
+X-XM-AID: U2FsdGVkX1+M59kbFeatkOUeTsajPIqn7fwIqzhVK08=
+X-SA-Exim-Connect-IP: 68.227.160.95
+X-SA-Exim-Mail-From: ebiederm@xmission.com
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on sa05.xmission.com
+X-Spam-Level: *
+X-Spam-Status: No, score=1.5 required=8.0 tests=ALL_TRUSTED,BAYES_50,
+        DCC_CHECK_NEGATIVE,T_TM2_M_HEADER_IN_MSG,T_TooManySym_01,
+        T_TooManySym_02,T_XMDrugObfuBody_00,XMSubLong autolearn=disabled
+        version=3.4.2
+X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4987]
+        *  0.7 XMSubLong Long Subject
+        *  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
+        * -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
+        *      [sa05 1397; Body=1 Fuz1=1 Fuz2=1]
+        *  0.0 T_TooManySym_01 4+ unique symbols in subject
+        *  0.0 T_TooManySym_02 5+ unique symbols in subject
+        *  1.0 T_XMDrugObfuBody_00 obfuscated drug references
+X-Spam-DCC: XMission; sa05 1397; Body=1 Fuz1=1 Fuz2=1 
+X-Spam-Combo: *;Linus Torvalds <torvalds@linux-foundation.org>
+X-Spam-Relay-Country: 
+X-Spam-Timing: total 556 ms - load_scoreonly_sql: 0.05 (0.0%),
+        signal_user_changed: 11 (1.9%), b_tie_ro: 9 (1.7%), parse: 1.41 (0.3%),
+         extract_message_metadata: 20 (3.7%), get_uri_detail_list: 2.7 (0.5%),
+        tests_pri_-1000: 19 (3.4%), tests_pri_-950: 1.76 (0.3%),
+        tests_pri_-900: 1.31 (0.2%), tests_pri_-90: 225 (40.4%), check_bayes:
+        216 (38.9%), b_tokenize: 11 (2.1%), b_tok_get_all: 10 (1.8%),
+        b_comp_prob: 2.6 (0.5%), b_tok_touch_all: 189 (33.9%), b_finish: 0.94
+        (0.2%), tests_pri_0: 263 (47.3%), check_dkim_signature: 0.52 (0.1%),
+        check_dkim_adsp: 2.2 (0.4%), poll_dns_idle: 0.80 (0.1%), tests_pri_10:
+        1.93 (0.3%), tests_pri_500: 8 (1.4%), rewrite_mail: 0.00 (0.0%)
+Subject: Re: [PATCH v2 0/5] Fix ELF / FDPIC ELF core dumping, and use mmap_sem properly in there
+X-Spam-Flag: No
+X-SA-Exim-Version: 4.2.1 (built Thu, 05 May 2016 13:38:54 -0600)
+X-SA-Exim-Scanned: Yes (on in01.mta.xmission.com)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Thu, Apr 30, 2020 at 7:10 AM Greg Ungerer <gerg@linux-m68k.org> wrote:
+Linus Torvalds <torvalds@linux-foundation.org> writes:
+
+> On Thu, Apr 30, 2020 at 7:10 AM Greg Ungerer <gerg@linux-m68k.org> wrote:
+
+>> > Most of that file goes back to pre-git days. And most of the commits
+>> > since are not so much about binfmt_flat, as they are about cleanups or
+>> > changes elsewhere where binfmt_flat was just a victim.
+>>
+>> I'll have a look at this.
 >
-> > in load_flat_file() - which is also used to loading _libraries_. Where
-> > it makes no sense at all.
+> Thanks.
 >
-> I haven't looked at the shared lib support in there for a long time,
-> but I thought that "id" is only 0 for the actual final program.
-> Libraries have a slot or id number associated with them.
-
-Yes, that was my assumption, but looking at the code, it really isn't
-obvious that that is the case at all.
-
-'id' gets calculated from fields that very much look like they could
-be zero (eg by taking the top bits from another random field).
-
-> > Most of that file goes back to pre-git days. And most of the commits
-> > since are not so much about binfmt_flat, as they are about cleanups or
-> > changes elsewhere where binfmt_flat was just a victim.
+>> Quick hack test shows moving setup_new_exec(bprm) to be just before
+>> install_exec_creds(bprm) works fine for the static binaries case.
+>> Doing the flush_old_exec(bprm) there too crashed out - I'll need to
+>> dig into that to see why.
 >
-> I'll have a look at this.
+> Just moving setup_new_exec() would at least allow us to then join the
+> two together, and just say "setup_new_exec() does the credential
+> installation too".
 
-Thanks.
+But it is only half a help if we allow failure points between
+flush_old_exec and install_exec_creds.
 
-> Quick hack test shows moving setup_new_exec(bprm) to be just before
-> install_exec_creds(bprm) works fine for the static binaries case.
-> Doing the flush_old_exec(bprm) there too crashed out - I'll need to
-> dig into that to see why.
+Greg do things work acceptably if install_exec_creds is moved to right
+after setup_new_exec? (patch below)
 
-Just moving setup_new_exec() would at least allow us to then join the
-two together, and just say "setup_new_exec() does the credential
-installation too".
+Looking at the code in load_flat_file after setup_new_exec it looks like
+the kinds of things that in binfmt_elf.c we do after install_exec_creds
+(aka vm_map).  So I think we want install_exec_creds sooner, instead
+of setup_new_exec later.
 
-So to some degree, that's the important one.
+> But if it's true that nobody really uses the odd flat library support
+> any more and there are no testers, maybe we should consider ripping it
+> out...
 
-But that flush_old_exec() does look odd in load_flat_file(). It's not
-like anything but executing a binary should flush the old exec.
-Certainly not loading a library, however odd that flat library code
-is.
+I looked a little deeper and there is another reason to think about
+ripping out the flat library loader.  The code is recursive, and
+supports a maximum of 4 shared libraries in the entire system.
 
-My _guess_ is that the reason for this is that "load_flat_file()" also
-does a lot of verification of the file and does that whole "return
--ENOEXEC if the file format isn't right". So we don't want to flush
-the old exec before that is done, but we obviously also don't want to
-flush the old exec after we've actually loaded the new one into
-memory..
+load_flat_binary
+	load_flat_file
+        	calc_reloc
+                	load_flat_shared_libary
+                        	load_flat_file
+                                	....
 
-So the location of flush_old_exec() makes that kind of sense, but it
-would have made it better if that flat file support had a clear
-separation of "check the file" from "load the file".
+I am mystified with what kind of system can survive with a grand total
+of 4 shared libaries.  I think my a.out slackware system that I ran on
+my i486 had more shared libraries.
 
-Oh well. As mentioned, the whole "at least put setup_new_exec() and
-install_exec_creds() together" is the bigger thing.
+Having read just a bit more it is definitely guaranteed (by the code)
+that the first time load_flat_file is called id 0 will be used (aka id 0
+is guaranteed to be the binary), and the ids 1, 2, 3 and 4 will only be
+used if a relocation includes that id to reference an external shared
+library.  That part of the code is drop dead simple.
 
-But if it's true that nobody really uses the odd flat library support
-any more and there are no testers, maybe we should consider ripping it
-out...
+---
 
-                Linus
+This is what I was thinking about applying.
+
+diff --git a/fs/binfmt_flat.c b/fs/binfmt_flat.c
+index 831a2b25ba79..1a1d1fcb893f 100644
+--- a/fs/binfmt_flat.c
++++ b/fs/binfmt_flat.c
+@@ -541,6 +541,7 @@ static int load_flat_file(struct linux_binprm *bprm,
+ 		/* OK, This is the point of no return */
+ 		set_personality(PER_LINUX_32BIT);
+ 		setup_new_exec(bprm);
++		install_exec_creds(bprm);
+ 	}
+ 
+ 	/*
+@@ -963,8 +964,6 @@ static int load_flat_binary(struct linux_binprm *bprm)
+ 		}
+ 	}
+ 
+-	install_exec_creds(bprm);
+-
+ 	set_binfmt(&flat_format);
+ 
+ #ifdef CONFIG_MMU
+
+
