@@ -2,27 +2,55 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A97D31C1162
-	for <lists+linux-sh@lfdr.de>; Fri,  1 May 2020 13:16:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C3F01C1D8C
+	for <lists+linux-sh@lfdr.de>; Fri,  1 May 2020 21:03:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728513AbgEALQu (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 1 May 2020 07:16:50 -0400
-Received: from out03.mta.xmission.com ([166.70.13.233]:53452 "EHLO
-        out03.mta.xmission.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728485AbgEALQu (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 1 May 2020 07:16:50 -0400
-Received: from in02.mta.xmission.com ([166.70.13.52])
-        by out03.mta.xmission.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.90_1)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1jUTeu-0007G0-HZ; Fri, 01 May 2020 05:16:44 -0600
-Received: from ip68-227-160-95.om.om.cox.net ([68.227.160.95] helo=x220.xmission.com)
-        by in02.mta.xmission.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.87)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1jUTet-0006Wp-Mr; Fri, 01 May 2020 05:16:44 -0600
-From:   ebiederm@xmission.com (Eric W. Biederman)
-To:     Greg Ungerer <gerg@linux-m68k.org>
+        id S1730481AbgEATDz (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 1 May 2020 15:03:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46918 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1730241AbgEATDz (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 1 May 2020 15:03:55 -0400
+Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com [IPv6:2607:f8b0:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10CA8C08E859
+        for <linux-sh@vger.kernel.org>; Fri,  1 May 2020 12:03:55 -0700 (PDT)
+Received: by mail-ot1-x341.google.com with SMTP id g14so3309143otg.10
+        for <linux-sh@vger.kernel.org>; Fri, 01 May 2020 12:03:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=landley-net.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=dV5C6Mdo+d2z1U4ixXFwa14iL+t03v6nPukDTsNC/Pw=;
+        b=rZ0wZNpFKPj00rZsGXQ/OEy65W5RTZI1U2mldKOKzrK3O8YxNmuwVKAmgNGlrMSPJh
+         dQ3h/11zRchfbBtSsQytLXthXnqjbswFFdOTKhvnJz2vylobGQeZ+LFvJofa3n+r2q6h
+         dCWQyfMflvlzhIlaKHECXHUiyMqYb5bOSgYxPZbKUIJ6kUtcquH4lk62KWBOPOZ0l2ly
+         3GJhN0ZjLbVF5/vkNCtpBlDafYpeOL+d8ft0arZhky+HvLzbqIp0tD5btouJClcvo4hf
+         7MIo2rkjDqc6lk3WUSAmT2r4xYoI+Vso+T69h2J6g+m95bxiajkPrGm0RbCSU1AKatT5
+         HKQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=dV5C6Mdo+d2z1U4ixXFwa14iL+t03v6nPukDTsNC/Pw=;
+        b=gntNe1fjO285/qNALkHGqixBXsMeXLrIVtyqTd8mkqsHAnLsclNXGvKjwLOS4MSl/n
+         i2uBO3fkKB8TsdRqRVLrtyGhYVO73vPPBCNyk/2cGLOTtQhPmvFmBxFhwOzQlOwllqnD
+         0PSFtAecUKMesHyJbRzgQyyEF5gpuMr7gz3tGqCO2mz+wTiH23oajo9XjESMFrw9k6RB
+         cDrMUEjqlSUVm/MofGlaYUON9t8AgdXgF+WhGj/XaiqVvE0lFS1YAoOHjmI1sqSWO8s+
+         G936AhCRiwOgTFmFbjt9VS+eNh+jNLgtuGxFnceTR7j1du+SxTGWpSJ80RamoL/ZW2xF
+         l3bw==
+X-Gm-Message-State: AGi0PuYdRXN/du/B/l8A7IyM5cksXyJ5t4P4v2aTm1UiRtCYxLNKVn6a
+        zPkwNxESb61/YbfrcnCwMq3zqbYXOSRPNA==
+X-Google-Smtp-Source: APiQypLpF0Ox0IO/qISGXS4LdidPlSkHRJysHJEBrOjiMzScpLoC5A3dEhhOSPrJ9hvlNYHsOmtChQ==
+X-Received: by 2002:a05:6830:20d9:: with SMTP id z25mr4236191otq.254.1588359834043;
+        Fri, 01 May 2020 12:03:54 -0700 (PDT)
+Received: from [192.168.86.21] ([136.62.4.88])
+        by smtp.gmail.com with ESMTPSA id c26sm1024801otl.49.2020.05.01.12.03.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 01 May 2020 12:03:53 -0700 (PDT)
+Subject: Re: [PATCH v2 0/5] Fix ELF / FDPIC ELF core dumping, and use mmap_sem
+ properly in there
+To:     Greg Ungerer <gerg@linux-m68k.org>, Rich Felker <dalias@libc.org>
 Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Russell King - ARM Linux admin <linux@armlinux.org.uk>,
         Jann Horn <jannh@google.com>, Nicolas Pitre <nico@fluxnic.net>,
@@ -32,123 +60,85 @@ Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Linux-MM <linux-mm@kvack.org>,
         linux-fsdevel <linux-fsdevel@vger.kernel.org>,
         Alexander Viro <viro@zeniv.linux.org.uk>,
+        "Eric W . Biederman" <ebiederm@xmission.com>,
         Oleg Nesterov <oleg@redhat.com>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
         Mark Salter <msalter@redhat.com>,
         Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
         linux-c6x-dev@linux-c6x.org,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
         Linux-sh list <linux-sh@vger.kernel.org>
 References: <20200429214954.44866-1-jannh@google.com>
-        <20200429215620.GM1551@shell.armlinux.org.uk>
-        <CAHk-=wgpoEr33NJwQ+hqK1dz3Rs9jSw+BGotsSdt2Kb3HqLV7A@mail.gmail.com>
-        <31196268-2ff4-7a1d-e9df-6116e92d2190@linux-m68k.org>
-        <CAHk-=wjau_zmdLaFDLcY3xnqiFaC7VZDXnnzFG9QDHL4kqStYQ@mail.gmail.com>
-        <87imhgyeqt.fsf@x220.int.ebiederm.org>
-        <9dd76936-0009-31e4-d869-f64d01886642@linux-m68k.org>
-Date:   Fri, 01 May 2020 06:13:24 -0500
-In-Reply-To: <9dd76936-0009-31e4-d869-f64d01886642@linux-m68k.org> (Greg
-        Ungerer's message of "Fri, 1 May 2020 15:44:03 +1000")
-Message-ID: <87wo5vx60b.fsf@x220.int.ebiederm.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+ <20200429215620.GM1551@shell.armlinux.org.uk>
+ <CAHk-=wgpoEr33NJwQ+hqK1dz3Rs9jSw+BGotsSdt2Kb3HqLV7A@mail.gmail.com>
+ <31196268-2ff4-7a1d-e9df-6116e92d2190@linux-m68k.org>
+ <20200430145123.GE21576@brightrain.aerifal.cx>
+ <6dd187b4-1958-fc40-73c4-3de53ed69a1e@linux-m68k.org>
+From:   Rob Landley <rob@landley.net>
+Message-ID: <cff13fb7-5045-4afd-e1d3-58af99d81d5a@landley.net>
+Date:   Fri, 1 May 2020 14:09:56 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-XM-SPF: eid=1jUTet-0006Wp-Mr;;;mid=<87wo5vx60b.fsf@x220.int.ebiederm.org>;;;hst=in02.mta.xmission.com;;;ip=68.227.160.95;;;frm=ebiederm@xmission.com;;;spf=neutral
-X-XM-AID: U2FsdGVkX18Ja6ZhJX6gmVl5+uqwyRJT9MkgBLIzECc=
-X-SA-Exim-Connect-IP: 68.227.160.95
-X-SA-Exim-Mail-From: ebiederm@xmission.com
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on sa04.xmission.com
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=8.0 tests=ALL_TRUSTED,BAYES_50,
-        DCC_CHECK_NEGATIVE,T_TM2_M_HEADER_IN_MSG,T_TooManySym_01,
-        T_TooManySym_02,XMSubLong autolearn=disabled version=3.4.2
-X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4972]
-        *  0.7 XMSubLong Long Subject
-        *  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
-        * -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
-        *      [sa04 1397; Body=1 Fuz1=1 Fuz2=1]
-        *  0.0 T_TooManySym_02 5+ unique symbols in subject
-        *  0.0 T_TooManySym_01 4+ unique symbols in subject
-X-Spam-DCC: XMission; sa04 1397; Body=1 Fuz1=1 Fuz2=1 
-X-Spam-Combo: ;Greg Ungerer <gerg@linux-m68k.org>
-X-Spam-Relay-Country: 
-X-Spam-Timing: total 439 ms - load_scoreonly_sql: 0.06 (0.0%),
-        signal_user_changed: 11 (2.6%), b_tie_ro: 10 (2.2%), parse: 1.55
-        (0.4%), extract_message_metadata: 23 (5.3%), get_uri_detail_list: 2.5
-        (0.6%), tests_pri_-1000: 22 (5.1%), tests_pri_-950: 1.67 (0.4%),
-        tests_pri_-900: 1.32 (0.3%), tests_pri_-90: 68 (15.6%), check_bayes:
-        67 (15.2%), b_tokenize: 11 (2.4%), b_tok_get_all: 8 (1.9%),
-        b_comp_prob: 2.8 (0.6%), b_tok_touch_all: 41 (9.4%), b_finish: 0.93
-        (0.2%), tests_pri_0: 291 (66.2%), check_dkim_signature: 0.83 (0.2%),
-        check_dkim_adsp: 3.1 (0.7%), poll_dns_idle: 0.81 (0.2%), tests_pri_10:
-        3.9 (0.9%), tests_pri_500: 10 (2.3%), rewrite_mail: 0.00 (0.0%)
-Subject: Re: [PATCH v2 0/5] Fix ELF / FDPIC ELF core dumping, and use mmap_sem properly in there
-X-Spam-Flag: No
-X-SA-Exim-Version: 4.2.1 (built Thu, 05 May 2016 13:38:54 -0600)
-X-SA-Exim-Scanned: Yes (on in02.mta.xmission.com)
+In-Reply-To: <6dd187b4-1958-fc40-73c4-3de53ed69a1e@linux-m68k.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Greg Ungerer <gerg@linux-m68k.org> writes:
+On 5/1/20 1:00 AM, Greg Ungerer wrote:
+>> This sounds correct. My understanding of FLAT shared library support
+>> is that it's really bad and based on having preassigned slot indices
+>> for each library on the system, and a global array per-process to give
+>> to data base address for each library. Libraries are compiled to know
+>> their own slot numbers so that they just load from fixed_reg[slot_id]
+>> to get what's effectively their GOT pointer.
 
-> On 1/5/20 5:07 am, Eric W. Biederman wrote:
->> Linus Torvalds <torvalds@linux-foundation.org> writes:
->>
->>> On Thu, Apr 30, 2020 at 7:10 AM Greg Ungerer <gerg@linux-m68k.org> wrote:
->>
->>>>> Most of that file goes back to pre-git days. And most of the commits
->>>>> since are not so much about binfmt_flat, as they are about cleanups or
->>>>> changes elsewhere where binfmt_flat was just a victim.
->>>>
->>>> I'll have a look at this.
->>>
->>> Thanks.
->>>
->>>> Quick hack test shows moving setup_new_exec(bprm) to be just before
->>>> install_exec_creds(bprm) works fine for the static binaries case.
->>>> Doing the flush_old_exec(bprm) there too crashed out - I'll need to
->>>> dig into that to see why.
->>>
->>> Just moving setup_new_exec() would at least allow us to then join the
->>> two together, and just say "setup_new_exec() does the credential
->>> installation too".
->>
->> But it is only half a help if we allow failure points between
->> flush_old_exec and install_exec_creds.
->>
->> Greg do things work acceptably if install_exec_creds is moved to right
->> after setup_new_exec? (patch below)
->
-> Yes, confirmed. Worked fine with that patch applied.
+fdpic is to elf what binflt is to a.out, and a.out shared libraries were never
+pretty. Or easy.
 
-Good.  Thank you.
+>> I'm not sure if anybody has actually used this in over a decade. Last
+>> time I looked the tooling appeared broken, but in this domain lots of
+>> users have forked private tooling that's not publicly available or at
+>> least not publicly indexed, so it's hard to say for sure.
+> 
+> Be at least 12 or 13 years since I last had a working shared library
+> build for m68knommu. I have not bothered with it since then, not that I
+> even used it much when it worked. Seemed more pain than it was worth.
 
-That is what we need for other cleanups.  All three of those together.
+Shared libraries worked fine with fdpic on sh2 last I checked, it's basically
+just ELF PIC with the ability to move the 4 segments (text/rodata/bss/data)
+independently of each other. (4 base pointers, no waiting.)
 
->> This is what I was thinking about applying.
->>
->> diff --git a/fs/binfmt_flat.c b/fs/binfmt_flat.c
->> index 831a2b25ba79..1a1d1fcb893f 100644
->> --- a/fs/binfmt_flat.c
->> +++ b/fs/binfmt_flat.c
->> @@ -541,6 +541,7 @@ static int load_flat_file(struct linux_binprm *bprm,
->>   		/* OK, This is the point of no return */
->>   		set_personality(PER_LINUX_32BIT);
->>   		setup_new_exec(bprm);
->> +		install_exec_creds(bprm);
->>   	}
->>     	/*
->> @@ -963,8 +964,6 @@ static int load_flat_binary(struct linux_binprm *bprm)
->>   		}
->>   	}
->>   -	install_exec_creds(bprm);
->> -
->>   	set_binfmt(&flat_format);
->>     #ifdef CONFIG_MMU
+I don't think I've _ever_ used shared binflt libraries. I left myself
+breadcrumbs back when I was wrestling with that stuff:
 
-Eric
+  https://landley.net/notes-2014.html#07-12-2014
+
+But it looks like that last time I touched anything using elf2flt was:
+
+  https://landley.net/notes-2018.html#08-05-2018
+
+And that was just because arm's fdpic support stayed out of tree for years so I
+dug up binflt and gave it another go. (It sucked so much I wound up building
+static pie for cortex-m, taking the efficiency hit, and moving on. Running pie
+binaries on nommu _works_, it's just incredibly inefficient. Since the writeable
+and readable segments of the ELF are all relative to the same single base
+pointer, you can't share the read-only parts of the binaries without address
+remapping, so if you launch 4 instances of PIE bash on nommu you've loaded 4
+instances of the bash text and rodata, and of course none of it can even be
+demand faulted. In theory shared libraries _do_ help there but I hit some ld.so
+bug and didn't want to debug a half-assed solution, so big hammer and moved on
+until arm fdpic got merged and fixed it _properly_...)
+
+Rob
+
+P.S. The reason for binflt is bare metal hardware engineers who are conceptually
+uncomfortable with software love them, because it's as close to "objcopy -O
+binary" as they can get. Meanwhile on j-core we've had an 8k ROM boot loader
+that loads vmlinux images and does the ELF relocations for 5 years now, and ever
+since the switch to device tree that's our _only_ way to feed a dtb to the
+kernel without statically linking it in, so it's ELF all the way down for us.
