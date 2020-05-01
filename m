@@ -2,57 +2,26 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B370D1C08C1
-	for <lists+linux-sh@lfdr.de>; Thu, 30 Apr 2020 23:07:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDBA11C0DDA
+	for <lists+linux-sh@lfdr.de>; Fri,  1 May 2020 07:44:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725844AbgD3VHJ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 30 Apr 2020 17:07:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38922 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726701AbgD3VHJ (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 30 Apr 2020 17:07:09 -0400
-Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com [IPv6:2607:f8b0:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AAF9C08E859
-        for <linux-sh@vger.kernel.org>; Thu, 30 Apr 2020 14:07:09 -0700 (PDT)
-Received: by mail-oi1-x243.google.com with SMTP id o24so977270oic.0
-        for <linux-sh@vger.kernel.org>; Thu, 30 Apr 2020 14:07:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=landley-net.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=Y0BHfY++8ymwoFsyQG3f2a5F1M5FJigDreAt8/y9wkw=;
-        b=tT/RHF/bfPnesXqFK6JRHF+/fL7TDEmxW2tMH4v+nGg1wDgnRcU5rKSFkUGLbHazAh
-         sn9+u/EMiquXspfC2UFxr9W2jqoSZSaLda3L7b3hzX+oPSu0gd8P8x1QrH3VGLm02C2C
-         +s4OMCohXuqTaeY0tssIradw6kYxEW9PsJwfBj4gPy1U66MYcQf7DncO6ljoe+lk5jvU
-         fKnVvytwK6V0wNiaFIWTLhP7C2dzeakwoRCc3lSBWMr3v2MOLe2j3gf80/t/ARVNw99j
-         on5eko7k+LRuZjwBgwTw7HxQuWXx22H4hy3vhQrNPmMiXk/Ns5dhIpdqZL0xyj8TkFQ6
-         0vow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=Y0BHfY++8ymwoFsyQG3f2a5F1M5FJigDreAt8/y9wkw=;
-        b=unGeKAsmL3tTGfLJb89GKj8AeRk74kJvsqZZXY7PhSbdehlWxsuEAuuqKLtN6lks1D
-         yVMdbboqI35Yxl8b0TCBHjSDTe8nCXcP8bW/qEnsHhHw5N+NVA/R6OHBr7HSmbR65qjl
-         UBeUyW9Hy9MIFyHSzU2+SRTlbwItDkb0IHhJLHKqqDyJ9WZmldSlkPM0xTz0JIHzYf6M
-         raffeSZphxeVCM0oGq9LwIXRrZPuwQDhSfLIj3xTtO60zavN3mSTXqDrA4rJBBjLR+ga
-         gmaXvqfX+N0e7VC2qjQMT/+MbfarkHNxmI//KSvER/VbY0YVUodXtogxcn1iCFKAyqVQ
-         Kl8Q==
-X-Gm-Message-State: AGi0PuaN2wa1epT+SmfWgVC/0S0eBttAwq2ZLPN5h3OHXfhj099OQcBJ
-        zUYQVmJaA7MCHy00Stt1PtALeFLd+nIc7A==
-X-Google-Smtp-Source: APiQypIF07p8WMlOqZkR0BZmdYjCNv2JY6o4DDmIm1Lcv4/Fio2GvfUcSL2SHecf2CFgmirguuRxAg==
-X-Received: by 2002:aca:438b:: with SMTP id q133mr799994oia.148.1588280828409;
-        Thu, 30 Apr 2020 14:07:08 -0700 (PDT)
-Received: from [192.168.86.21] ([136.62.4.88])
-        by smtp.gmail.com with ESMTPSA id v9sm268330oib.56.2020.04.30.14.07.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Apr 2020 14:07:07 -0700 (PDT)
+        id S1728118AbgEAFo2 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 1 May 2020 01:44:28 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53134 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726452AbgEAFo2 (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Fri, 1 May 2020 01:44:28 -0400
+Received: from [10.44.0.192] (unknown [103.48.210.53])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id DEAF820731;
+        Fri,  1 May 2020 05:44:20 +0000 (UTC)
+From:   Greg Ungerer <gerg@linux-m68k.org>
 Subject: Re: [PATCH v2 0/5] Fix ELF / FDPIC ELF core dumping, and use mmap_sem
  properly in there
-To:     Rich Felker <dalias@libc.org>, Greg Ungerer <gerg@linux-m68k.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+To:     "Eric W. Biederman" <ebiederm@xmission.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Russell King - ARM Linux admin <linux@armlinux.org.uk>,
         Jann Horn <jannh@google.com>, Nicolas Pitre <nico@fluxnic.net>,
         Andrew Morton <akpm@linux-foundation.org>,
         Christoph Hellwig <hch@lst.de>,
@@ -60,27 +29,27 @@ Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Linux-MM <linux-mm@kvack.org>,
         linux-fsdevel <linux-fsdevel@vger.kernel.org>,
         Alexander Viro <viro@zeniv.linux.org.uk>,
-        "Eric W . Biederman" <ebiederm@xmission.com>,
         Oleg Nesterov <oleg@redhat.com>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
         Mark Salter <msalter@redhat.com>,
         Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
         linux-c6x-dev@linux-c6x.org,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
         Linux-sh list <linux-sh@vger.kernel.org>
 References: <20200429214954.44866-1-jannh@google.com>
  <20200429215620.GM1551@shell.armlinux.org.uk>
  <CAHk-=wgpoEr33NJwQ+hqK1dz3Rs9jSw+BGotsSdt2Kb3HqLV7A@mail.gmail.com>
  <31196268-2ff4-7a1d-e9df-6116e92d2190@linux-m68k.org>
- <20200430145123.GE21576@brightrain.aerifal.cx>
-From:   Rob Landley <rob@landley.net>
-Message-ID: <34688b36-4fdf-0c71-77cc-f98e6b9962df@landley.net>
-Date:   Thu, 30 Apr 2020 16:13:10 -0500
+ <CAHk-=wjau_zmdLaFDLcY3xnqiFaC7VZDXnnzFG9QDHL4kqStYQ@mail.gmail.com>
+ <87imhgyeqt.fsf@x220.int.ebiederm.org>
+Message-ID: <9dd76936-0009-31e4-d869-f64d01886642@linux-m68k.org>
+Date:   Fri, 1 May 2020 15:44:03 +1000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-In-Reply-To: <20200430145123.GE21576@brightrain.aerifal.cx>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <87imhgyeqt.fsf@x220.int.ebiederm.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-sh-owner@vger.kernel.org
@@ -88,25 +57,110 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 4/30/20 9:51 AM, Rich Felker wrote:
-> This sounds correct. My understanding of FLAT shared library support
-> is that it's really bad and based on having preassigned slot indices
-> for each library on the system, and a global array per-process to give
-> to data base address for each library. Libraries are compiled to know
-> their own slot numbers so that they just load from fixed_reg[slot_id]
-> to get what's effectively their GOT pointer.
+
+On 1/5/20 5:07 am, Eric W. Biederman wrote:
+> Linus Torvalds <torvalds@linux-foundation.org> writes:
 > 
-> I'm not sure if anybody has actually used this in over a decade. Last
-> time I looked the tooling appeared broken, but in this domain lots of
-> users have forked private tooling that's not publicly available or at
-> least not publicly indexed, so it's hard to say for sure.
+>> On Thu, Apr 30, 2020 at 7:10 AM Greg Ungerer <gerg@linux-m68k.org> wrote:
+> 
+>>>> Most of that file goes back to pre-git days. And most of the commits
+>>>> since are not so much about binfmt_flat, as they are about cleanups or
+>>>> changes elsewhere where binfmt_flat was just a victim.
+>>>
+>>> I'll have a look at this.
+>>
+>> Thanks.
+>>
+>>> Quick hack test shows moving setup_new_exec(bprm) to be just before
+>>> install_exec_creds(bprm) works fine for the static binaries case.
+>>> Doing the flush_old_exec(bprm) there too crashed out - I'll need to
+>>> dig into that to see why.
+>>
+>> Just moving setup_new_exec() would at least allow us to then join the
+>> two together, and just say "setup_new_exec() does the credential
+>> installation too".
+> 
+> But it is only half a help if we allow failure points between
+> flush_old_exec and install_exec_creds.
+> 
+> Greg do things work acceptably if install_exec_creds is moved to right
+> after setup_new_exec? (patch below)
 
-Lots of people in this area are also still using 10 year old tools because it
-breaks every time they upgrade.
+Yes, confirmed. Worked fine with that patch applied.
 
-Heck, nommu support for architectures musl doesn't support yet is _explicitly_
-the main thing keeping uClibc alive:
 
-  https://www.openwall.com/lists/musl/2015/05/30/1
+> Looking at the code in load_flat_file after setup_new_exec it looks like
+> the kinds of things that in binfmt_elf.c we do after install_exec_creds
+> (aka vm_map).  So I think we want install_exec_creds sooner, instead
+> of setup_new_exec later.
+> 
+>> But if it's true that nobody really uses the odd flat library support
+>> any more and there are no testers, maybe we should consider ripping it
+>> out...
+> 
+> I looked a little deeper and there is another reason to think about
+> ripping out the flat library loader.  The code is recursive, and
+> supports a maximum of 4 shared libraries in the entire system.
+> 
+> load_flat_binary
+> 	load_flat_file
+>          	calc_reloc
+>                  	load_flat_shared_libary
+>                          	load_flat_file
+>                                  	....
+> 
+> I am mystified with what kind of system can survive with a grand total
+> of 4 shared libaries.  I think my a.out slackware system that I ran on
+> my i486 had more shared libraries.
 
-Rob
+The kind of embedded systems that were built with this stuff 20 years
+ago didn't have lots of applications and libraries. I think we found
+back then that most of your savings were from making libc shared.
+Less significant gains from making other libraries shared. And there
+was a bit of extra pain in setting them up with the shared library
+code generation options (that had to be unique for each one).
+
+The whole mechanism is a bit of hack, and there was a few other
+limitations with the way it worked (I don't recall what they were
+right now).
+
+I am definitely in favor of removing it.
+
+Regards
+Greg
+
+
+
+> Having read just a bit more it is definitely guaranteed (by the code)
+> that the first time load_flat_file is called id 0 will be used (aka id 0
+> is guaranteed to be the binary), and the ids 1, 2, 3 and 4 will only be
+> used if a relocation includes that id to reference an external shared
+> library.  That part of the code is drop dead simple.
+> 
+> ---
+> 
+> This is what I was thinking about applying.
+> 
+> diff --git a/fs/binfmt_flat.c b/fs/binfmt_flat.c
+> index 831a2b25ba79..1a1d1fcb893f 100644
+> --- a/fs/binfmt_flat.c
+> +++ b/fs/binfmt_flat.c
+> @@ -541,6 +541,7 @@ static int load_flat_file(struct linux_binprm *bprm,
+>   		/* OK, This is the point of no return */
+>   		set_personality(PER_LINUX_32BIT);
+>   		setup_new_exec(bprm);
+> +		install_exec_creds(bprm);
+>   	}
+>   
+>   	/*
+> @@ -963,8 +964,6 @@ static int load_flat_binary(struct linux_binprm *bprm)
+>   		}
+>   	}
+>   
+> -	install_exec_creds(bprm);
+> -
+>   	set_binfmt(&flat_format);
+>   
+>   #ifdef CONFIG_MMU
+> 
+> 
