@@ -2,143 +2,84 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C3F01C1D8C
-	for <lists+linux-sh@lfdr.de>; Fri,  1 May 2020 21:03:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5749D1C22E9
+	for <lists+linux-sh@lfdr.de>; Sat,  2 May 2020 06:27:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730481AbgEATDz (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 1 May 2020 15:03:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46918 "EHLO
+        id S1726463AbgEBE13 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sat, 2 May 2020 00:27:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730241AbgEATDz (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 1 May 2020 15:03:55 -0400
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com [IPv6:2607:f8b0:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10CA8C08E859
-        for <linux-sh@vger.kernel.org>; Fri,  1 May 2020 12:03:55 -0700 (PDT)
-Received: by mail-ot1-x341.google.com with SMTP id g14so3309143otg.10
-        for <linux-sh@vger.kernel.org>; Fri, 01 May 2020 12:03:55 -0700 (PDT)
+        by vger.kernel.org with ESMTP id S1726058AbgEBE12 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sat, 2 May 2020 00:27:28 -0400
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6C4BC061A0C;
+        Fri,  1 May 2020 21:27:28 -0700 (PDT)
+Received: by mail-pl1-x643.google.com with SMTP id v2so4406273plp.9;
+        Fri, 01 May 2020 21:27:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=landley-net.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=dV5C6Mdo+d2z1U4ixXFwa14iL+t03v6nPukDTsNC/Pw=;
-        b=rZ0wZNpFKPj00rZsGXQ/OEy65W5RTZI1U2mldKOKzrK3O8YxNmuwVKAmgNGlrMSPJh
-         dQ3h/11zRchfbBtSsQytLXthXnqjbswFFdOTKhvnJz2vylobGQeZ+LFvJofa3n+r2q6h
-         dCWQyfMflvlzhIlaKHECXHUiyMqYb5bOSgYxPZbKUIJ6kUtcquH4lk62KWBOPOZ0l2ly
-         3GJhN0ZjLbVF5/vkNCtpBlDafYpeOL+d8ft0arZhky+HvLzbqIp0tD5btouJClcvo4hf
-         7MIo2rkjDqc6lk3WUSAmT2r4xYoI+Vso+T69h2J6g+m95bxiajkPrGm0RbCSU1AKatT5
-         HKQQ==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=+IOXl2jed4M505/IbPFpJG7XBeW1Tzf7RxiMicNF8/I=;
+        b=RApLloiAJdVFejIqkp5H8CAgghDiPFSZ4YFJoQjcCPFipTXfw/efoeQ1McWWu2sKIe
+         m3bJ7AzDsIepoIn2H0xGa71ram0oTKM0rwFRHH7rDJ2z92sDXP/WUD2W5c3/e8jJvGw9
+         zXTO2IqWqBQuPsHoUZTHTYky5gvzplN6u4VpYYYkpvewx90PPscgXYE5eIhHdIkBmrno
+         f74SFfGalFEhvskFIg73z6aasqWDwzoFGECKsXZbRcD8mo7Ky54aPxELmIyMoqfRXGKa
+         SeyqgBdoSMtWM8YeNFf2nxpEGB5AeugEqIli9us1fON96EkUbFM/3qxluqiUO0Jad7Mb
+         moJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=dV5C6Mdo+d2z1U4ixXFwa14iL+t03v6nPukDTsNC/Pw=;
-        b=gntNe1fjO285/qNALkHGqixBXsMeXLrIVtyqTd8mkqsHAnLsclNXGvKjwLOS4MSl/n
-         i2uBO3fkKB8TsdRqRVLrtyGhYVO73vPPBCNyk/2cGLOTtQhPmvFmBxFhwOzQlOwllqnD
-         0PSFtAecUKMesHyJbRzgQyyEF5gpuMr7gz3tGqCO2mz+wTiH23oajo9XjESMFrw9k6RB
-         cDrMUEjqlSUVm/MofGlaYUON9t8AgdXgF+WhGj/XaiqVvE0lFS1YAoOHjmI1sqSWO8s+
-         G936AhCRiwOgTFmFbjt9VS+eNh+jNLgtuGxFnceTR7j1du+SxTGWpSJ80RamoL/ZW2xF
-         l3bw==
-X-Gm-Message-State: AGi0PuYdRXN/du/B/l8A7IyM5cksXyJ5t4P4v2aTm1UiRtCYxLNKVn6a
-        zPkwNxESb61/YbfrcnCwMq3zqbYXOSRPNA==
-X-Google-Smtp-Source: APiQypLpF0Ox0IO/qISGXS4LdidPlSkHRJysHJEBrOjiMzScpLoC5A3dEhhOSPrJ9hvlNYHsOmtChQ==
-X-Received: by 2002:a05:6830:20d9:: with SMTP id z25mr4236191otq.254.1588359834043;
-        Fri, 01 May 2020 12:03:54 -0700 (PDT)
-Received: from [192.168.86.21] ([136.62.4.88])
-        by smtp.gmail.com with ESMTPSA id c26sm1024801otl.49.2020.05.01.12.03.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 01 May 2020 12:03:53 -0700 (PDT)
-Subject: Re: [PATCH v2 0/5] Fix ELF / FDPIC ELF core dumping, and use mmap_sem
- properly in there
-To:     Greg Ungerer <gerg@linux-m68k.org>, Rich Felker <dalias@libc.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        Jann Horn <jannh@google.com>, Nicolas Pitre <nico@fluxnic.net>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-MM <linux-mm@kvack.org>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        "Eric W . Biederman" <ebiederm@xmission.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Mark Salter <msalter@redhat.com>,
-        Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
-        linux-c6x-dev@linux-c6x.org,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Linux-sh list <linux-sh@vger.kernel.org>
-References: <20200429214954.44866-1-jannh@google.com>
- <20200429215620.GM1551@shell.armlinux.org.uk>
- <CAHk-=wgpoEr33NJwQ+hqK1dz3Rs9jSw+BGotsSdt2Kb3HqLV7A@mail.gmail.com>
- <31196268-2ff4-7a1d-e9df-6116e92d2190@linux-m68k.org>
- <20200430145123.GE21576@brightrain.aerifal.cx>
- <6dd187b4-1958-fc40-73c4-3de53ed69a1e@linux-m68k.org>
-From:   Rob Landley <rob@landley.net>
-Message-ID: <cff13fb7-5045-4afd-e1d3-58af99d81d5a@landley.net>
-Date:   Fri, 1 May 2020 14:09:56 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
-MIME-Version: 1.0
-In-Reply-To: <6dd187b4-1958-fc40-73c4-3de53ed69a1e@linux-m68k.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=+IOXl2jed4M505/IbPFpJG7XBeW1Tzf7RxiMicNF8/I=;
+        b=WW3JKTbaxv2kxNbUbJFapfyhMoWAnxrPUae8V0Gl7FxMcIwqYVXoUfuYM3UTXSxVSS
+         VZojU11AqYh83kIg4ZwkHTKYPWUvxQb+dH7ENcC9v2t/yEXWMhbp06bEKt//CfX8yimn
+         l4mJ2RfEDYWZNQwd6rMz7RIHjXa7/vo/XouURn3B+VT4qJNb/sTicUK2N3UEvzPdHTjp
+         qbQhohWTxTAaH8SnD9D3SAgO3b3V8nrYBM2zaQKSBUPT9HjCabcUsaI8VTm/M8KZmfOP
+         lG6EFgqO1ejj5TFLFLjHUSBrk8M9leoPUycOk9wHZ9Yh7oXzpWFw8Q7OtuJeV8I2cNDt
+         b9Ww==
+X-Gm-Message-State: AGi0Pub8j3IcWRI4WJlgon8mfnVXmjgoMEdBzg+Mgis4H2iXgngi1+KH
+        tXFD7mQRtwDUkKQBnRwGaV4QKm1a
+X-Google-Smtp-Source: APiQypJ8OgkFKATcOXHSRvm9m+ssuT2nkzK4cAFDpb0nnsKEDr/rivHlz3RU3tN/tjTVfhzGYFVUyA==
+X-Received: by 2002:a17:90a:d78e:: with SMTP id z14mr3731402pju.125.1588393648159;
+        Fri, 01 May 2020 21:27:28 -0700 (PDT)
+Received: from localhost.localdomain (unknown-224-80.windriver.com. [147.11.224.80])
+        by smtp.gmail.com with ESMTPSA id l30sm980021pje.34.2020.05.01.21.27.27
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Fri, 01 May 2020 21:27:27 -0700 (PDT)
+From:   Bin Meng <bmeng.cn@gmail.com>
+To:     linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Bin Meng <bin.meng@windriver.com>
+Subject: [PATCH] sh: Drop CONFIG_MTD_M25P80 in sh7757lcr_defconfig
+Date:   Fri,  1 May 2020 21:27:23 -0700
+Message-Id: <1588393643-31499-1-git-send-email-bmeng.cn@gmail.com>
+X-Mailer: git-send-email 1.7.1
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 5/1/20 1:00 AM, Greg Ungerer wrote:
->> This sounds correct. My understanding of FLAT shared library support
->> is that it's really bad and based on having preassigned slot indices
->> for each library on the system, and a global array per-process to give
->> to data base address for each library. Libraries are compiled to know
->> their own slot numbers so that they just load from fixed_reg[slot_id]
->> to get what's effectively their GOT pointer.
+From: Bin Meng <bin.meng@windriver.com>
 
-fdpic is to elf what binflt is to a.out, and a.out shared libraries were never
-pretty. Or easy.
+Drop CONFIG_MTD_M25P80 that was removed in
+commit b35b9a10362d ("mtd: spi-nor: Move m25p80 code in spi-nor.c")
 
->> I'm not sure if anybody has actually used this in over a decade. Last
->> time I looked the tooling appeared broken, but in this domain lots of
->> users have forked private tooling that's not publicly available or at
->> least not publicly indexed, so it's hard to say for sure.
-> 
-> Be at least 12 or 13 years since I last had a working shared library
-> build for m68knommu. I have not bothered with it since then, not that I
-> even used it much when it worked. Seemed more pain than it was worth.
+Signed-off-by: Bin Meng <bin.meng@windriver.com>
+---
 
-Shared libraries worked fine with fdpic on sh2 last I checked, it's basically
-just ELF PIC with the ability to move the 4 segments (text/rodata/bss/data)
-independently of each other. (4 base pointers, no waiting.)
+ arch/sh/configs/sh7757lcr_defconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-I don't think I've _ever_ used shared binflt libraries. I left myself
-breadcrumbs back when I was wrestling with that stuff:
+diff --git a/arch/sh/configs/sh7757lcr_defconfig b/arch/sh/configs/sh7757lcr_defconfig
+index 9f2aed0..1e41a04 100644
+--- a/arch/sh/configs/sh7757lcr_defconfig
++++ b/arch/sh/configs/sh7757lcr_defconfig
+@@ -36,7 +36,6 @@ CONFIG_IPV6=y
+ # CONFIG_FW_LOADER is not set
+ CONFIG_MTD=y
+ CONFIG_MTD_BLOCK=y
+-CONFIG_MTD_M25P80=y
+ CONFIG_BLK_DEV_RAM=y
+ CONFIG_SCSI=y
+ CONFIG_BLK_DEV_SD=y
+-- 
+2.7.4
 
-  https://landley.net/notes-2014.html#07-12-2014
-
-But it looks like that last time I touched anything using elf2flt was:
-
-  https://landley.net/notes-2018.html#08-05-2018
-
-And that was just because arm's fdpic support stayed out of tree for years so I
-dug up binflt and gave it another go. (It sucked so much I wound up building
-static pie for cortex-m, taking the efficiency hit, and moving on. Running pie
-binaries on nommu _works_, it's just incredibly inefficient. Since the writeable
-and readable segments of the ELF are all relative to the same single base
-pointer, you can't share the read-only parts of the binaries without address
-remapping, so if you launch 4 instances of PIE bash on nommu you've loaded 4
-instances of the bash text and rodata, and of course none of it can even be
-demand faulted. In theory shared libraries _do_ help there but I hit some ld.so
-bug and didn't want to debug a half-assed solution, so big hammer and moved on
-until arm fdpic got merged and fixed it _properly_...)
-
-Rob
-
-P.S. The reason for binflt is bare metal hardware engineers who are conceptually
-uncomfortable with software love them, because it's as close to "objcopy -O
-binary" as they can get. Meanwhile on j-core we've had an 8k ROM boot loader
-that loads vmlinux images and does the ELF relocations for 5 years now, and ever
-since the switch to device tree that's our _only_ way to feed a dtb to the
-kernel without statically linking it in, so it's ELF all the way down for us.
