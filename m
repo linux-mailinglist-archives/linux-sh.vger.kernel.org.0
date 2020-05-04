@@ -2,55 +2,42 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F5271C2498
-	for <lists+linux-sh@lfdr.de>; Sat,  2 May 2020 13:06:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1CBF1C332A
+	for <lists+linux-sh@lfdr.de>; Mon,  4 May 2020 08:54:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726900AbgEBLFw (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sat, 2 May 2020 07:05:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55018 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726741AbgEBLFw (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sat, 2 May 2020 07:05:52 -0400
-Received: from mail-yb1-xb44.google.com (mail-yb1-xb44.google.com [IPv6:2607:f8b0:4864:20::b44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0678C061A0C;
-        Sat,  2 May 2020 04:05:51 -0700 (PDT)
-Received: by mail-yb1-xb44.google.com with SMTP id v9so230688ybq.13;
-        Sat, 02 May 2020 04:05:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=DjQODkBNf8/RYh8t9ztjsCcxLdPW3ecYjs5ApkMHPaM=;
-        b=FZipQEaZRKjDoNHBlJJ5shFekNyb9zW8JSACeCww1NiBj40ZbsvExD+UAYINDsC8eb
-         CTqX2fZRipOPTyMrrIQWAiGZqkTeFS3dW5uudPoTjGIOWmekWKscQCmpvPf7/LAn1nSU
-         8nrRcMbY2mDGpLq3k2y15BzgsZimxvaC4ugPCZBdsjJMvpM5dnyOi4fOK35vLVTrW8cJ
-         4VWuJgJ9U6K+BRiaE/d5Q8cm3yuOnpz4Ru+39CWNqcHQmBieueUlDXMReg4P6CvmOexV
-         ibfehUNH/+0s1N2WBjURaoOH4TZtsP6JLuo0BffR4NwA6ov3fBB4nP6EU9t27jcLcwvW
-         ZhVw==
+        id S1727777AbgEDGyP (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 4 May 2020 02:54:15 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:46321 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726404AbgEDGyO (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 4 May 2020 02:54:14 -0400
+Received: by mail-oi1-f195.google.com with SMTP id c124so5762086oib.13;
+        Sun, 03 May 2020 23:54:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=DjQODkBNf8/RYh8t9ztjsCcxLdPW3ecYjs5ApkMHPaM=;
-        b=Eaxu6ZwWht7qOOuO3unE/icdxMoJ9nKKVPPqXpr9HpcKhj5iG/IXGtlLE+YiZytZWC
-         aB6zdz0Ex7sboRJmqbWc3lC3yKYmh7lDHPtgFEkD6QCNhIHz+n5GmJPHarKWPFbNMMsG
-         gT6edZDgtfAurwecuKhLGjOaiwPjjvWMFc7+wEwJareT+MJ/+grgQlqEsbFSJHLQ1SZS
-         f+VSnQDLLwfjSMRmcDW5iKIVroreZtHNdApXh6wy2U/wDqCGCOYWhsDdgfPcqIIlK9GS
-         CeYZWVSRWVIRdjOSE9MKX1/sojz9kRGpZJQ6Jz+0aImQ22ymg6i9IoXosSzrA/RpQSH/
-         raRw==
-X-Gm-Message-State: AGi0Pualnj9i8AXKIdlohjjAWMU2PjL2rVQEMHbhkCJH48F+ypOV6SVZ
-        s7E+QqDGMxyCFXp21BFFGZddEDMlVGXCCxcZlSA=
-X-Google-Smtp-Source: APiQypLZAySvmPVCqf1EJbPe2OgIVGiEgKhhS2c8vWg/hGf7zotof7tB0svp3etBsbPSLhIYDbUMBdFF0mT36QRqdCs=
-X-Received: by 2002:a25:d8d0:: with SMTP id p199mr13179303ybg.152.1588417551191;
- Sat, 02 May 2020 04:05:51 -0700 (PDT)
+        bh=rNhJYGrqC1Iv8sX+lYsU5bJcM7CuH+PFCYnSsocbUuE=;
+        b=GDxPr8y3Fege8zABua6wABpgchMwnzDeNaVMbdWczYsSk/cGAHZibSwpMn0YdVPhnh
+         asYzzK2HD0YYvmulm1HccAnmZb+dxAMhHPJQKPzEfFkK5ppLUJp2nx/yIewtfupbgGwa
+         u9jX4mpr0JmcRMziR+PS172GQsZan8qtm/1pZGq6KnpkTdEcfnpjHbRfQ0HMaX16+ijl
+         8symFxVqVJ6e4zJwSWKrhYf1Z4IWIwFD6Mzx4D4AZSRJOyzLuWrEgi6++vBLskgRqqOw
+         iytDZVQUjhX5ySxvUmFA0FNsRYpgy6WgqJi94clXixvO0NWcCNgfnbg45UIFpBqjJo/E
+         oSJg==
+X-Gm-Message-State: AGi0PuYHevZ6Skjqk51ZlmPyjRKo5rlm6T0POKksXZ8TC+Ie8dk4rgQP
+        NnIN2Cw+V4/WFEif16H2q4A7uz+l0gtNFjje20c=
+X-Google-Smtp-Source: APiQypLoYqLAdj2pVdtdIi+uJfM6JoKkXYRiEh9jwvyzregxGncty9VI/kBqX0d605/EMSygx99ea3o/TGk3aM73ggQ=
+X-Received: by 2002:aca:895:: with SMTP id 143mr7601323oii.153.1588575254264;
+ Sun, 03 May 2020 23:54:14 -0700 (PDT)
 MIME-Version: 1.0
-References: <1588393643-31499-1-git-send-email-bmeng.cn@gmail.com> <CAMuHMdVd3s46o5VXZqAHuQt5qYsbDMOonVWjEqd2nu8OON97Xw@mail.gmail.com>
-In-Reply-To: <CAMuHMdVd3s46o5VXZqAHuQt5qYsbDMOonVWjEqd2nu8OON97Xw@mail.gmail.com>
-From:   Bin Meng <bmeng.cn@gmail.com>
-Date:   Sat, 2 May 2020 19:05:40 +0800
-Message-ID: <CAEUhbmWjrnRLXUd3Au2f7fnZtRVgdYzMvFn-RrdOodfFq4r=Lg@mail.gmail.com>
-Subject: Re: [PATCH] sh: Drop CONFIG_MTD_M25P80 in sh7757lcr_defconfig
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
+References: <1588417483-30987-1-git-send-email-bmeng.cn@gmail.com>
+In-Reply-To: <1588417483-30987-1-git-send-email-bmeng.cn@gmail.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 4 May 2020 08:54:02 +0200
+Message-ID: <CAMuHMdXCvpLNAK3a4SsMt=TUsJAUBxO21X2sAsKiyBOgvLE+qg@mail.gmail.com>
+Subject: Re: [PATCH v2] sh: Replace CONFIG_MTD_M25P80 with CONFIG_MTD_SPI_NOR
+ in sh7757lcr_defconfig
+To:     Bin Meng <bmeng.cn@gmail.com>
 Cc:     Linux-sh list <linux-sh@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Bin Meng <bin.meng@windriver.com>
@@ -60,58 +47,23 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Geert,
+On Sat, May 2, 2020 at 1:06 PM Bin Meng <bmeng.cn@gmail.com> wrote:
+> From: Bin Meng <bin.meng@windriver.com>
+>
+> CONFIG_MTD_M25P80 was removed and replaced by CONFIG_MTD_SPI_NOR in
+> commit b35b9a10362d ("mtd: spi-nor: Move m25p80 code in spi-nor.c")
+>
+> Signed-off-by: Bin Meng <bin.meng@windriver.com>
 
-On Sat, May 2, 2020 at 6:09 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
->
-> Hi Bin,
->
-> On Sat, May 2, 2020 at 6:27 AM Bin Meng <bmeng.cn@gmail.com> wrote:
-> > From: Bin Meng <bin.meng@windriver.com>
-> >
-> > Drop CONFIG_MTD_M25P80 that was removed in
-> > commit b35b9a10362d ("mtd: spi-nor: Move m25p80 code in spi-nor.c")
-> >
-> > Signed-off-by: Bin Meng <bin.meng@windriver.com>
->
-> Thanks for your patch!
->
-> Blindly removing config options from defconfig files that haven't
-> received much love for a while is IMHO not such a good idea, as it makes
-> it harder to see what the affected platform needs, or needed.
->
-> > --- a/arch/sh/configs/sh7757lcr_defconfig
-> > +++ b/arch/sh/configs/sh7757lcr_defconfig
-> > @@ -36,7 +36,6 @@ CONFIG_IPV6=y
-> >  # CONFIG_FW_LOADER is not set
-> >  CONFIG_MTD=y
-> >  CONFIG_MTD_BLOCK=y
-> > -CONFIG_MTD_M25P80=y
-> >  CONFIG_BLK_DEV_RAM=y
-> >  CONFIG_SCSI=y
-> >  CONFIG_BLK_DEV_SD=y
->
-> MTD_SPI_NOR became a dependency for MTD_M25P80 since commit
-> 03e296f613affcc2671c1e86d8c25ecad867204e ("mtd: m25p80: use the SPI nor
-> framework") and commit e43b20619bdb6c851dd7b49cbd15e52875a785d4 ("mtd:
-> spi-nor: shorten Kconfig naming").  Hence CONFIG_MTD_SPI_NOR=y should be
-> added to avoid breaking the platform's SPI FLASH support.
->
-> Just removing CONFIG_MTD_M25P80=y from the defconfig makes this less
-> visible for someone who wants to build a kernel for this platform using
-> "make sh7757lcr_defconfig": it can no longer be seen that
-> CONFIG_MTD_M25P80=y won't be present in the resulting .config file.
->
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-Thank you for the review! Sorry I missed that.
+Gr{oetje,eeting}s,
 
-> I think the platform would be better served with a proper refresh of the
-> defconfig file.
+                        Geert
 
-I am not sure if doing a defconfig refresh should be a separate patch.
-I felt mixing the refresh with the real changes makes the code review
-a little bit hard. I just sent v2 without the refresh. Please let me
-know if it is okay.
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-Regards,
-Bin
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
