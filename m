@@ -2,110 +2,150 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C096B1C38EA
-	for <lists+linux-sh@lfdr.de>; Mon,  4 May 2020 14:08:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 598941C4C62
+	for <lists+linux-sh@lfdr.de>; Tue,  5 May 2020 04:52:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728647AbgEDMI7 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 4 May 2020 08:08:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58350 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728547AbgEDMI7 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 4 May 2020 08:08:59 -0400
-Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB3DCC061A0E;
-        Mon,  4 May 2020 05:08:58 -0700 (PDT)
-Received: by mail-lf1-x141.google.com with SMTP id h26so6517874lfg.6;
-        Mon, 04 May 2020 05:08:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=TzbFMK0GtKekycBtSo8VJeOSOQ0RJvtYJRWaPeEpP3c=;
-        b=TNBXhgt6Cn8nSRpRhR1u+5kO+M8SiVQ70L7owxHviP4rKIzWYmdw0fMILtKSMjboWk
-         SsbgNcUhUvDaOi6gi0H99o9zl0XDjx7Jqf2jC+savmqbelPlfY2OLeeG6oO90+dSaII6
-         aFelV1LHLnkkamnbva7UOXPIxuPntVlJItefvEIh1dIpIo2mNrK3Z8Qt7cQxYF2RJWqx
-         LxZCJE15438qy33LATDLFso5D0yJwV2qQXUecjnck/HBVNw3DzAOeK2CwTjQh3sPidfJ
-         QVD01g4ph2nOiPeV73tUnQ/nNCjXQqguIHu1jlIHdCD7N4zxoJe12MUZxdEqC8rH7tpo
-         yyvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=TzbFMK0GtKekycBtSo8VJeOSOQ0RJvtYJRWaPeEpP3c=;
-        b=eq/u3hz4YBcfQ+pFwpzR9fxSX1cUg2yTMKRkYJT0cPka094T0x61jqU1u2OFZMuqoW
-         3Aw44AqIkCu8hdQopBluGRnUwy5JXDS1oWr61hqqPiEg3hm3d+dUayAZA95ZSxvuba7O
-         CJkhatsFtASvfFnRGHW2PRMCk8TBS/NB1zGzbmDMHJ71OxoT16VFt8e5hOBK9nqNISJk
-         Q6hagNfHo494sZtPeHZZV53bW5NR90Xw17YUTB1uB6/5RwXDCZMZJHZoFi28hH2A20hc
-         ISLOXHfhz0ehNeHDFKmoVBMVPTXWnykdfvUyHtyCU0rqrrvH5X2K0oOeyPms/MHkzimY
-         KBOg==
-X-Gm-Message-State: AGi0PuYEpGcbwlRSmGOWcwT2zELLtVqldvSvqzL/nEPstZ0qMrlYPVnS
-        3mzM2uxeZKQX94f2YLGvQtD+o9KT0jPht82gaa0=
-X-Google-Smtp-Source: APiQypKt6GKV/iz8ojnW3UVKvprughzUaS7j4Bcwfic4aqNadL+zRXwkxmdi2a7BMaej3iC18m5Q0QUd1MCrJFIv8wM=
-X-Received: by 2002:ac2:47ee:: with SMTP id b14mr7357462lfp.91.1588594137445;
- Mon, 04 May 2020 05:08:57 -0700 (PDT)
-MIME-Version: 1.0
-References: <20191216103522.32215-1-gonsolo@gmail.com> <20191216103522.32215-2-gonsolo@gmail.com>
- <CAMuHMdVotJuotVKa3rxgR3ujCedoWM19-HhwhbTC9g6gV_EVNw@mail.gmail.com>
- <CANL0fFS81NgFBcMBdWo6OKefz04h_FeXadcau9Rkcna7Ap5PDw@mail.gmail.com>
- <CAMuHMdVtm6BGx6d+F8-Bw+fD-M-DugspLkBvCtTKGgWiPvJnSA@mail.gmail.com>
- <CANL0fFSNdzM-e=u+w0BTUqg5sQP_DuVBuJe9m0JDQnVTOPDMNQ@mail.gmail.com>
- <20191223164220.GA14394@codeblueprint.co.uk> <29b721c1-b5a7-6fc1-4471-f42109d509ed@infradead.org>
- <CANL0fFTCVj7c-EQTs1kRuOn8e++vgFw1fUTJfya12csWkJdGqA@mail.gmail.com>
-In-Reply-To: <CANL0fFTCVj7c-EQTs1kRuOn8e++vgFw1fUTJfya12csWkJdGqA@mail.gmail.com>
-From:   Gonsolo <gonsolo@gmail.com>
-Date:   Mon, 4 May 2020 14:08:46 +0200
-Message-ID: <CANL0fFQrO+kApsQd0N1+=_rPX_REBzpGf15J7Dmizb3WG1Xctw@mail.gmail.com>
-Subject: Re: [PATCH 1/1] Fix undefined reference to 'node_reclaim_distance'.
-To:     Randy Dunlap <rdunlap@infradead.org>
-Cc:     Matt Fleming <matt@codeblueprint.co.uk>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
+        id S1727854AbgEECwT (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 4 May 2020 22:52:19 -0400
+Received: from foss.arm.com ([217.140.110.172]:57846 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726516AbgEECwS (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Mon, 4 May 2020 22:52:18 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3D5C41FB;
+        Mon,  4 May 2020 19:52:17 -0700 (PDT)
+Received: from [192.168.0.129] (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 20A803F71F;
+        Mon,  4 May 2020 19:52:04 -0700 (PDT)
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH 3/3] mm/hugetlb: Introduce HAVE_ARCH_CLEAR_HUGEPAGE_FLAGS
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     linux-mm@kvack.org, Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Mike Kravetz <mike.kravetz@oracle.com>, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <1586864670-21799-1-git-send-email-anshuman.khandual@arm.com>
+ <1586864670-21799-4-git-send-email-anshuman.khandual@arm.com>
+ <20200425175511.7a68efb5e2f4436fe0328c1d@linux-foundation.org>
+ <87d37591-caa2-b82b-392a-3a29b2c7e9a6@arm.com>
+ <20200425200124.20d0c75fcaef05d062d3667c@linux-foundation.org>
+Message-ID: <21460cbc-8e9a-b956-5797-57b2e1df9fb1@arm.com>
+Date:   Tue, 5 May 2020 08:21:34 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
+MIME-Version: 1.0
+In-Reply-To: <20200425200124.20d0c75fcaef05d062d3667c@linux-foundation.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi!
 
-> Yes, it fixes the arch/sh/ build errors in my testing.
-> I don't have a failing ppc64 .config file to test.
 
-As of v5.7-rc4 this patch doesn't seem to have been applied and the
-build is still failing:
-http://kisskb.ellerman.id.au/kisskb/buildresult/14067948/
+On 04/26/2020 08:31 AM, Andrew Morton wrote:
+> On Sun, 26 Apr 2020 08:13:17 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+> 
+>>
+>>
+>> On 04/26/2020 06:25 AM, Andrew Morton wrote:
+>>> On Tue, 14 Apr 2020 17:14:30 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+>>>
+>>>> There are multiple similar definitions for arch_clear_hugepage_flags() on
+>>>> various platforms. This introduces HAVE_ARCH_CLEAR_HUGEPAGE_FLAGS for those
+>>>> platforms that need to define their own arch_clear_hugepage_flags() while
+>>>> also providing a generic fallback definition for others to use. This help
+>>>> reduce code duplication.
+>>>>
+>>>> ...
+>>>>
+>>>> --- a/include/linux/hugetlb.h
+>>>> +++ b/include/linux/hugetlb.h
+>>>> @@ -544,6 +544,10 @@ static inline int is_hugepage_only_range(struct mm_struct *mm,
+>>>>  }
+>>>>  #endif
+>>>>  
+>>>> +#ifndef HAVE_ARCH_CLEAR_HUGEPAGE_FLAGS
+>>>> +static inline void arch_clear_hugepage_flags(struct page *page) { }
+>>>> +#endif
+>>>> +
+>>>>  #ifndef arch_make_huge_pte
+>>>>  static inline pte_t arch_make_huge_pte(pte_t entry, struct vm_area_struct *vma,
+>>>>  				       struct page *page, int writable)
+>>>
+>>> This is the rather old-school way of doing it.  The Linus-suggested way is
+>>>
+>>> #ifndef arch_clear_hugepage_flags
+>>> static inline void arch_clear_hugepage_flags(struct page *page)
+>>> {
+>>> }
+>>> #define arch_clear_hugepage_flags arch_clear_hugepage_flags
+>>
+>> Do we need that above line here ? Is not that implicit.
+> 
+> It depends if other header files want to test whether
+> arch_clear_hugepage_flags is already defined.  If the header heorarchy
+> is well-defined and working properly, they shouldn't need to, because
+> we're reliably indluding the relevant arch header before (or early
+> within) include/linux/hugetlb.h.
+> 
+> It would be nice if
+> 
+> #define arch_clear_hugepage_flags arch_clear_hugepage_flags
+> #define arch_clear_hugepage_flags arch_clear_hugepage_flags
+> 
+> were to generate an compiler error but it doesn't.  If it did we could
+> detect these incorrect inclusion orders.
+> 
+>>> #endif
+>>>
+>>> And the various arch headers do
+>>>
+>>> static inline void arch_clear_hugepage_flags(struct page *page)
+>>> {
+>>> 	<some implementation>
+>>> }
+>>> #define arch_clear_hugepage_flags arch_clear_hugepage_flags
+>>>
+>>> It's a small difference - mainly to avoid adding two variables to the
+>>> overall namespace where one would do.
+>>
+>> Understood, will change and resend.
+> 
+> That's OK - I've queued up that fix.
+>
 
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index 6ec1e595b1d4..bf20e5883026 100644
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -1281,7 +1281,6 @@ static int                      sched_domains_curr_level;
-int                          sched_max_numa_distance;
-static int                   *sched_domains_numa_distance;
-static struct cpumask                ***sched_domains_numa_masks;
--int __read_mostly            node_reclaim_distance = RECLAIM_DISTANCE;
-#endif
+Hello Andrew,
 
-/*
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 4785a8a2040e..733890d913ea 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -3523,6 +3523,7 @@ bool zone_watermark_ok_safe(struct zone *z,
-unsigned int order,
-}
+I might not have searched all the relevant trees or might have just searched
+earlier than required. But I dont see these patches (or your proposed fixes)
+either in mmotm (2020-04-29-23-04) or in next-20200504. Wondering if you are
+waiting on a V2 for this series accommodating the changes you had proposed.
 
-#ifdef CONFIG_NUMA
-+int __read_mostly            node_reclaim_distance = RECLAIM_DISTANCE;
-static bool zone_allows_reclaim(struct zone *local_zone, struct zone *zone)
-{
-    return node_distance(zone_to_nid(local_zone), zone_to_nid(zone)) <=
-
--- 
-g
+- Anshuman
