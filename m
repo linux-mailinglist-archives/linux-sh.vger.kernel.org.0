@@ -2,89 +2,159 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C8DC61C9958
-	for <lists+linux-sh@lfdr.de>; Thu,  7 May 2020 20:31:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAD531C9CE1
+	for <lists+linux-sh@lfdr.de>; Thu,  7 May 2020 22:59:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728204AbgEGSb7 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 7 May 2020 14:31:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58954 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726518AbgEGSb6 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 7 May 2020 14:31:58 -0400
-Received: from mail-oi1-x22d.google.com (mail-oi1-x22d.google.com [IPv6:2607:f8b0:4864:20::22d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9C2CC05BD0A
-        for <linux-sh@vger.kernel.org>; Thu,  7 May 2020 11:31:58 -0700 (PDT)
-Received: by mail-oi1-x22d.google.com with SMTP id c12so5110688oic.1
-        for <linux-sh@vger.kernel.org>; Thu, 07 May 2020 11:31:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=landley-net.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=v9hKv5iDBOo7RWh5ZOpQ7O9Wogr6dEUvxuwgWGqhjZY=;
-        b=i8+1Qf4zlTIBxI9krKDUoNtN+l7e2MEXsdm04AMDF8cCKpyC1IUyO9yu4s3rCUmfVX
-         e8/iSTwt7fXHvieEYommrPxZfibaBu2H7+KFgEdzL0Q0g35V6XI9Vr76pvRpiDnDpw4g
-         0torWL/gWFkQRpUXOCXQhyZuwA9wAtOflSQKndBT5IZIyuEXBTEsBREBNTuyMM/vjl5o
-         jbEhUwFRRJ4+b6WVkVFDgVQBIy73MRvAVQxUuqpg5OhAUXR7ELiCHBxdw9kCo/c48S3J
-         6HVdSmD1PtwfpPvJKpdRHWdTH569EGQfEewJ3l285QL5XuI6Q8AaLngjOHvg+GqwcGg+
-         QD6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=v9hKv5iDBOo7RWh5ZOpQ7O9Wogr6dEUvxuwgWGqhjZY=;
-        b=AFmKiBGEfe9exQzr5t7pew59863i2RUwapPtDRuWHnMtR/Ex0YIDHyqSulxJPsWh/3
-         Yip8SsgfvZ40lq+oqFxxKIrHbJPPgEGc2HFoleAhwJ305PtE3ihhfb/VcstZFmdZgDMu
-         E3z4cLNvTH4dL2qtGoiI0jhBk9glfM2LbDhOKsa26klVP3YFcoQze6wpdpas3zBySWFS
-         8uGGUZPHklf4cQk63QbVKMP9eeERzcmCxAGuaI0T/uJfbuW4aRAiBBJZxQIKMdvtxlZA
-         CQynkhfRKdzZMPgDNbzhHSe0ADWfKDm9oDz7vUWcZl7lo2rP3xUXDu/WaAB2Ka0igBfD
-         L4Wg==
-X-Gm-Message-State: AGi0Pua6i9n5sCYBLl/3rPick1fgvRXPf1rAWssfpPbihfl8GI6kf5q0
-        sbpR25DroGh2QrukAoOOU/T58vgX18I=
-X-Google-Smtp-Source: APiQypLFuUSA1M7BFigStl2Ikj46vndddSIPgiOESJK6JSbrOi/vsscNG29Y+SI+uGQ/a/I5C7fjJw==
-X-Received: by 2002:aca:5391:: with SMTP id h139mr7412369oib.80.1588876317902;
-        Thu, 07 May 2020 11:31:57 -0700 (PDT)
-Received: from [192.168.86.21] ([136.62.4.88])
-        by smtp.gmail.com with ESMTPSA id 60sm1289160oth.38.2020.05.07.11.31.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 May 2020 11:31:57 -0700 (PDT)
-Subject: Re: [PATCH] [RFC] media: sh_veu: Remove driver
-To:     Geert Uytterhoeven <geert+renesas@glider.be>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Guennadi@rox.of.borg, Liakhovetski@rox.of.borg,
-        g.liakhovetski@gmx.de, Magnus Damm <magnus.damm@gmail.com>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Jacopo Mondi <jacopo@jmondi.org>
-Cc:     linux-media@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-sh@vger.kernel.org
-References: <20200507122757.30119-1-geert+renesas@glider.be>
-From:   Rob Landley <rob@landley.net>
-Message-ID: <751849c0-67f9-dcdb-3cb3-6c8155ef5d08@landley.net>
-Date:   Thu, 7 May 2020 13:38:06 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        id S1726641AbgEGU7y (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 7 May 2020 16:59:54 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:49278 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726218AbgEGU7x (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 7 May 2020 16:59:53 -0400
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 047KXEPA092959;
+        Thu, 7 May 2020 16:59:10 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 30ux6fbgv5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 07 May 2020 16:59:10 -0400
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 047KcG9Q103121;
+        Thu, 7 May 2020 16:59:09 -0400
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 30ux6fbgu5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 07 May 2020 16:59:09 -0400
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+        by ppma01fra.de.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 047KpZWI004436;
+        Thu, 7 May 2020 20:59:06 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+        by ppma01fra.de.ibm.com with ESMTP id 30s0g5cxas-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 07 May 2020 20:59:06 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 047Kx4uI50593830
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 7 May 2020 20:59:04 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 8698C4C04A;
+        Thu,  7 May 2020 20:59:04 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 01C9A4C040;
+        Thu,  7 May 2020 20:59:02 +0000 (GMT)
+Received: from linux.ibm.com (unknown [9.148.201.211])
+        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Thu,  7 May 2020 20:59:01 +0000 (GMT)
+Date:   Thu, 7 May 2020 23:59:00 +0300
+From:   Mike Rapoport <rppt@linux.ibm.com>
+To:     Vineet Gupta <Vineet.Gupta1@synopsys.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     Rich Felker <dalias@libc.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Michal Hocko <mhocko@kernel.org>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>,
+        "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "linux-c6x-dev@linux-c6x.org" <linux-c6x-dev@linux-c6x.org>,
+        Baoquan He <bhe@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+        "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
+        Helge Deller <deller@gmx.de>,
+        "x86@kernel.org" <x86@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Ley Foon Tan <ley.foon.tan@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Mike Rapoport <rppt@kernel.org>
+Subject: Re: [PATCH v2 17/20] mm: free_area_init: allow defining max_zone_pfn
+ in descending order
+Message-ID: <20200507205900.GH683243@linux.ibm.com>
+References: <20200429121126.17989-1-rppt@kernel.org>
+ <20200429121126.17989-18-rppt@kernel.org>
+ <20200503174138.GA114085@roeck-us.net>
+ <20200503184300.GA154219@roeck-us.net>
+ <20200504153901.GM14260@kernel.org>
+ <a0b20e15-fddb-aa9c-fd67-f1c8e735b4a4@synopsys.com>
+ <20200505091946.GG342687@linux.ibm.com>
+ <88b9465b-6e6d-86ca-3776-ccb7a5b60b7f@synopsys.com>
+ <20200505201522.GA683243@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <20200507122757.30119-1-geert+renesas@glider.be>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200505201522.GA683243@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
+ definitions=2020-05-07_14:2020-05-07,2020-05-07 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ adultscore=0 mlxscore=0 bulkscore=0 mlxlogscore=999 malwarescore=0
+ spamscore=0 suspectscore=5 phishscore=0 priorityscore=1501 clxscore=1015
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2005070163
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 5/7/20 7:27 AM, Geert Uytterhoeven wrote:
-> Since its inclusion in v3.9, no users of the SuperH VEU mem2mem video
-> processing driver have appeared upstream.  All VEU devices in SuperH
-> board code still bind to the "uio_pdrv_genirq" driver instead.
-> The original author marked the driver orphaned in v3.15.
+On Tue, May 05, 2020 at 11:15:22PM +0300, Mike Rapoport wrote:
+> On Tue, May 05, 2020 at 06:07:46PM +0000, Vineet Gupta wrote:
+> > On 5/5/20 2:19 AM, Mike Rapoport wrote:
 > 
-> Remove the driver; it can always be resurrected from git history when
-> needed.
+> >  - Is it not better to have the core retain the flexibility just in case
 > 
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> If the requirement to have support for 3-banks is a theoretical
+> possibility, I would prefer to adjust ARC's version of
+> arch_has_descending_max_zone_pfns() to cope with either of 2-banks
+> configuration (PAE40 and non-PAE40) and deal with the third bank when/if
+> it actually materializes.
+> 
+> > Thx,
+> > -Vineet
+> 
 
-Acked-by: Rob Landley <rob@landley.net>
+The fix below should take care of any 2-bank configurations. 
+This is vs. current mmotm.
 
-Rob
+From eb8124fb3584607d1036b7ae00c8092ae43e480d Mon Sep 17 00:00:00 2001
+From: Mike Rapoport <rppt@linux.ibm.com>
+Date: Thu, 7 May 2020 23:44:15 +0300
+Subject: [PATCH] arc: free_area_init(): take into account PAE40 mode
+
+The arch_has_descending_max_zone_pfns() does not take into account physical
+memory layout for PAE40 configuration.
+With PAE40 enabled, the HIGHMEM is actually higher than NORMAL and
+arch_has_descending_max_zone_pfns() should return false in this case.
+
+Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+---
+ arch/arc/mm/init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arc/mm/init.c b/arch/arc/mm/init.c
+index 386959bac3d2..e7bdc2ac1c87 100644
+--- a/arch/arc/mm/init.c
++++ b/arch/arc/mm/init.c
+@@ -79,7 +79,7 @@ void __init early_init_dt_add_memory_arch(u64 base, u64 size)
+ 
+ bool arch_has_descending_max_zone_pfns(void)
+ {
+-	return true;
++	return !IS_ENABLED(CONFIG_ARC_HAS_PAE40);
+ }
+ 
+ /*
+-- 
+2.26.1
+
+
+-- 
+Sincerely yours,
+Mike.
