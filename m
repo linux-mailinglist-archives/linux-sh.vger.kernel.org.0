@@ -2,183 +2,188 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 763FD1CB639
-	for <lists+linux-sh@lfdr.de>; Fri,  8 May 2020 19:44:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C8A01CBAAC
+	for <lists+linux-sh@lfdr.de>; Sat,  9 May 2020 00:25:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727772AbgEHRoO (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 8 May 2020 13:44:14 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:47428 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726797AbgEHRoN (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 8 May 2020 13:44:13 -0400
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 048HZWAC120545;
-        Fri, 8 May 2020 13:42:43 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 30vtveutta-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 08 May 2020 13:42:43 -0400
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 048HaDP7122403;
-        Fri, 8 May 2020 13:42:42 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 30vtveutsc-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 08 May 2020 13:42:42 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-        by ppma03ams.nl.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 048HeoYq020104;
-        Fri, 8 May 2020 17:42:40 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
-        by ppma03ams.nl.ibm.com with ESMTP id 30s0g5wvbw-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 08 May 2020 17:42:40 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
-        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 048HgbZm43712600
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 8 May 2020 17:42:37 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id BBCB542041;
-        Fri,  8 May 2020 17:42:37 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 6EED54203F;
-        Fri,  8 May 2020 17:42:34 +0000 (GMT)
-Received: from linux.ibm.com (unknown [9.148.202.219])
-        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-        Fri,  8 May 2020 17:42:34 +0000 (GMT)
-Date:   Fri, 8 May 2020 20:42:32 +0300
-From:   Mike Rapoport <rppt@linux.ibm.com>
-To:     Marek Szyprowski <m.szyprowski@samsung.com>
-Cc:     Mike Rapoport <rppt@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        linux-sh@vger.kernel.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
-        linux-hexagon@vger.kernel.org, Will Deacon <will@kernel.org>,
-        kvmarm@lists.cs.columbia.edu, Jonas Bonn <jonas@southpole.se>,
-        linux-arch@vger.kernel.org, Brian Cain <bcain@codeaurora.org>,
-        Marc Zyngier <maz@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Ley Foon Tan <ley.foon.tan@intel.com>,
+        id S1728128AbgEHWY6 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 8 May 2020 18:24:58 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:54558 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727082AbgEHWY5 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 8 May 2020 18:24:57 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 048MHrOh185785;
+        Fri, 8 May 2020 22:23:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=301Crul+nU3gSji5hSdljROXFIONJpvv32f+FfnQMcY=;
+ b=bb6H3noLPeAZHjR/7hyTxoDJH6VG9hCOVX5QCqiYi1+KDlvnL27ZkNF912WPqANn2fYc
+ CSJNNHPQb48mLyxlqO9fH8AbYFL2lZt4x5fVI4k1EOWAqN5PSQU+GL0e1e1eCwdX8w+3
+ ETRC6ae/Wo3e+5jfu0OYCi+R4INWjI3qMJNjdwp/n6rlVGMZ6Br44EU/75cHKFlW9Syk
+ S9iVN6OU253mMA+xTN+dQ52gifkTNpKtCG73hhismPvUksNyKhizuEA0J7A696jWW5SN
+ 2lOi2N6Fcol7v6T3v/Nf/E7q/50Sz9BlZYfYwJ1tbPUkc1GmOe9V43C1Cs5tYP+UVXkL EA== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 30vtewwfg2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 08 May 2020 22:23:20 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 048MLlag183500;
+        Fri, 8 May 2020 22:23:19 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3020.oracle.com with ESMTP id 30vtehnftv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 08 May 2020 22:23:19 +0000
+Received: from abhmp0008.oracle.com (abhmp0008.oracle.com [141.146.116.14])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 048MMcC2014403;
+        Fri, 8 May 2020 22:22:39 GMT
+Received: from [192.168.2.157] (/71.63.128.209)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 08 May 2020 15:22:38 -0700
+Subject: Re: [PATCH V3 2/3] mm/hugetlb: Define a generic fallback for
+ is_hugepage_only_range()
+To:     Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
+        akpm@linux-foundation.org
+Cc:     Russell King <linux@armlinux.org.uk>,
         Catalin Marinas <catalin.marinas@arm.com>,
-        uclinux-h8-devel@lists.sourceforge.jp,
+        Will Deacon <will@kernel.org>, Tony Luck <tony.luck@intel.com>,
         Fenghua Yu <fenghua.yu@intel.com>,
-        Arnd Bergmann <arnd@arndb.de>, kvm-ppc@vger.kernel.org,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        openrisc@lists.librecores.org, Stafford Horne <shorne@gmail.com>,
-        Guan Xuetao <gxt@pku.edu.cn>,
-        linux-arm-kernel@lists.infradead.org,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Tony Luck <tony.luck@intel.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        linux-kernel@vger.kernel.org,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
         Michael Ellerman <mpe@ellerman.id.au>,
-        nios2-dev@lists.rocketboards.org, linuxppc-dev@lists.ozlabs.org,
-        =?utf-8?Q?=C5=81ukasz?= Stelmach <l.stelmach@samsung.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: Re: [PATCH v4 02/14] arm: add support for folded p4d page tables
-Message-ID: <20200508174232.GA759899@linux.ibm.com>
-References: <20200414153455.21744-1-rppt@kernel.org>
- <20200414153455.21744-3-rppt@kernel.org>
- <CGME20200507121658eucas1p240cf4a3e0fe5c22dda5ec4f72734149f@eucas1p2.samsung.com>
- <39ba8a04-d6b5-649d-c289-0c8b27cb66c5@samsung.com>
- <20200507161155.GE683243@linux.ibm.com>
- <98229ab1-fbf8-0a89-c5d6-270c828799e7@samsung.com>
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <1588907271-11920-1-git-send-email-anshuman.khandual@arm.com>
+ <1588907271-11920-3-git-send-email-anshuman.khandual@arm.com>
+From:   Mike Kravetz <mike.kravetz@oracle.com>
+Message-ID: <9fc622e1-45ff-b79f-ebe0-35614837456c@oracle.com>
+Date:   Fri, 8 May 2020 15:22:34 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <98229ab1-fbf8-0a89-c5d6-270c828799e7@samsung.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
- definitions=2020-05-08_15:2020-05-08,2020-05-08 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 mlxscore=0
- suspectscore=1 spamscore=0 adultscore=0 bulkscore=0 priorityscore=1501
- lowpriorityscore=0 phishscore=0 malwarescore=0 clxscore=1015
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2005080144
+In-Reply-To: <1588907271-11920-3-git-send-email-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9615 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 adultscore=0
+ phishscore=0 mlxlogscore=999 bulkscore=0 malwarescore=0 spamscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2005080188
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9615 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxscore=0 mlxlogscore=999
+ malwarescore=0 spamscore=0 priorityscore=1501 lowpriorityscore=0
+ impostorscore=0 suspectscore=0 adultscore=0 clxscore=1011 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2005080188
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Fri, May 08, 2020 at 08:53:27AM +0200, Marek Szyprowski wrote:
-> Hi Mike,
+On 5/7/20 8:07 PM, Anshuman Khandual wrote:
+> There are multiple similar definitions for is_hugepage_only_range() on
+> various platforms. Lets just add it's generic fallback definition for
+> platforms that do not override. This help reduce code duplication.
 > 
-> On 07.05.2020 18:11, Mike Rapoport wrote:
-> > On Thu, May 07, 2020 at 02:16:56PM +0200, Marek Szyprowski wrote:
-> >> On 14.04.2020 17:34, Mike Rapoport wrote:
-> >>> From: Mike Rapoport <rppt@linux.ibm.com>
-> >>>
-> >>> Implement primitives necessary for the 4th level folding, add walks of p4d
-> >>> level where appropriate, and remove __ARCH_USE_5LEVEL_HACK.
-> >>>
-> >>> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> >> Today I've noticed that kexec is broken on ARM 32bit. Bisecting between
-> >> current linux-next and v5.7-rc1 pointed to this commit. I've tested this
-> >> on Odroid XU4 and Raspberry Pi4 boards. Here is the relevant log:
-> >>
-> >> # kexec --kexec-syscall -l zImage --append "$(cat /proc/cmdline)"
-> >> memory_range[0]:0x40000000..0xbe9fffff
-> >> memory_range[0]:0x40000000..0xbe9fffff
-> >> # kexec -e
-> >> kexec_core: Starting new kernel
-> >> 8<--- cut here ---
-> >> Unable to handle kernel paging request at virtual address c010f1f4
-> >> pgd = c6817793
-> >> [c010f1f4] *pgd=4000041e(bad)
-> >> Internal error: Oops: 80d [#1] PREEMPT ARM
-> >> Modules linked in:
-> >> CPU: 0 PID: 1329 Comm: kexec Tainted: G        W
-> >> 5.7.0-rc3-00127-g6cba81ed0f62 #611
-> >> Hardware name: Samsung Exynos (Flattened Device Tree)
-> >> PC is at machine_kexec+0x40/0xfc
-> > Any chance you have the debug info in this kernel?
-> > scripts/faddr2line would come handy here.
+> Cc: Russell King <linux@armlinux.org.uk>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Tony Luck <tony.luck@intel.com>
+> Cc: Fenghua Yu <fenghua.yu@intel.com>
+> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+> Cc: Helge Deller <deller@gmx.de>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Paul Walmsley <paul.walmsley@sifive.com>
+> Cc: Palmer Dabbelt <palmer@dabbelt.com>
+> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+> Cc: Vasily Gorbik <gor@linux.ibm.com>
+> Cc: Christian Borntraeger <borntraeger@de.ibm.com>
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Cc: Rich Felker <dalias@libc.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: "H. Peter Anvin" <hpa@zytor.com>
+> Cc: Mike Kravetz <mike.kravetz@oracle.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: x86@kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-ia64@vger.kernel.org
+> Cc: linux-mips@vger.kernel.org
+> Cc: linux-parisc@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-riscv@lists.infradead.org
+> Cc: linux-s390@vger.kernel.org
+> Cc: linux-sh@vger.kernel.org
+> Cc: sparclinux@vger.kernel.org
+> Cc: linux-mm@kvack.org
+> Cc: linux-arch@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
+>  arch/arm/include/asm/hugetlb.h     | 6 ------
+>  arch/arm64/include/asm/hugetlb.h   | 6 ------
+>  arch/ia64/include/asm/hugetlb.h    | 1 +
+>  arch/mips/include/asm/hugetlb.h    | 7 -------
+>  arch/parisc/include/asm/hugetlb.h  | 6 ------
+>  arch/powerpc/include/asm/hugetlb.h | 1 +
+>  arch/riscv/include/asm/hugetlb.h   | 6 ------
+>  arch/s390/include/asm/hugetlb.h    | 7 -------
+>  arch/sh/include/asm/hugetlb.h      | 6 ------
+>  arch/sparc/include/asm/hugetlb.h   | 6 ------
+>  arch/x86/include/asm/hugetlb.h     | 6 ------
+>  include/linux/hugetlb.h            | 9 +++++++++
+>  12 files changed, 11 insertions(+), 56 deletions(-)
 > 
-> # ./scripts/faddr2line --list vmlinux machine_kexec+0x40
-> machine_kexec+0x40/0xf8:
+<snip>
+> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+> index 43a1cef8f0f1..c01c0c6f7fd4 100644
+> --- a/include/linux/hugetlb.h
+> +++ b/include/linux/hugetlb.h
+> @@ -591,6 +591,15 @@ static inline unsigned int blocks_per_huge_page(struct hstate *h)
+>  
+>  #include <asm/hugetlb.h>
+>  
+> +#ifndef is_hugepage_only_range
+> +static inline int is_hugepage_only_range(struct mm_struct *mm,
+> +					unsigned long addr, unsigned long len)
+> +{
+> +	return 0;
+> +}
+> +#define is_hugepage_only_range is_hugepage_only_range
+> +#endif
+> +
+>  #ifndef arch_make_huge_pte
+>  static inline pte_t arch_make_huge_pte(pte_t entry, struct vm_area_struct *vma,
+>  				       struct page *page, int writable)
 > 
-> machine_kexec at arch/arm/kernel/machine_kexec.c:182
->   177            reboot_code_buffer = 
-> page_address(image->control_code_page);
->   178
->   179            /* Prepare parameters for reboot_code_buffer*/
->   180            set_kernel_text_rw();
->   181            kexec_start_address = image->start;
->  >182<           kexec_indirection_page = page_list;
->   183            kexec_mach_type = machine_arch_type;
->   184            kexec_boot_atags = image->arch.kernel_r2;
->   185
->   186            /* copy our kernel relocation code to the control code 
-> page */
->   187            reboot_entry = fncpy(reboot_code_buffer,
 
-Can you please try the patch below:
-
-diff --git a/arch/arm/mm/init.c b/arch/arm/mm/init.c
-index 963b5284d284..f86b3d17928e 100644
---- a/arch/arm/mm/init.c
-+++ b/arch/arm/mm/init.c
-@@ -571,7 +571,7 @@ static inline void section_update(unsigned long addr, pmdval_t mask,
- {
- 	pmd_t *pmd;
- 
--	pmd = pmd_off_k(addr);
-+	pmd = pmd_offset(pud_offset(p4d_offset(pgd_offset(mm, addr), addr), addr), addr);
- 
- #ifdef CONFIG_ARM_LPAE
- 	pmd[0] = __pmd((pmd_val(pmd[0]) & mask) | prot);
-
->  > ...
-> 
-> Best regards
-> -- 
-> Marek Szyprowski, PhD
-> Samsung R&D Institute Poland
-> 
+Did you try building without CONFIG_HUGETLB_PAGE defined?  I'm guessing
+that you need a stub for is_hugepage_only_range().  Or, perhaps add this
+to asm-generic/hugetlb.h?
 
 -- 
-Sincerely yours,
-Mike.
+Mike Kravetz
