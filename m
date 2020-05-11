@@ -2,200 +2,123 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C9581CE0A9
-	for <lists+linux-sh@lfdr.de>; Mon, 11 May 2020 18:38:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E62E1CE34F
+	for <lists+linux-sh@lfdr.de>; Mon, 11 May 2020 20:55:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730369AbgEKQhx (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 11 May 2020 12:37:53 -0400
-Received: from verein.lst.de ([213.95.11.211]:36994 "EHLO verein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730048AbgEKQhx (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Mon, 11 May 2020 12:37:53 -0400
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id C9A7568CEE; Mon, 11 May 2020 18:37:45 +0200 (CEST)
-Date:   Mon, 11 May 2020 18:37:44 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Christoph Hellwig <hch@lst.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Roman Zippel <zippel@linux-m68k.org>,
-        Jessica Yu <jeyu@kernel.org>, Michal Simek <monstr@monstr.eu>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        alpha <linux-alpha@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-c6x-dev@linux-c6x.org,
-        "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        Openrisc <openrisc@lists.librecores.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-riscv@lists.infradead.org,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        Linux-Arch <linux-arch@vger.kernel.org>,
-        Linux MM <linux-mm@kvack.org>,
-        linux-um <linux-um@lists.infradead.org>,
-        "open list:TENSILICA XTENSA PORT (xtensa)" 
-        <linux-xtensa@linux-xtensa.org>,
-        Linux FS Devel <linux-fsdevel@vger.kernel.org>
-Subject: Re: [PATCH 31/31] module: move the set_fs hack for
- flush_icache_range to m68k
-Message-ID: <20200511163744.GB32228@lst.de>
-References: <20200510075510.987823-1-hch@lst.de> <20200510075510.987823-32-hch@lst.de> <CAMuHMdU_OxNoKfO=i903kx0mgk0-i2h4u2ase3m9_dn6oFh_5g@mail.gmail.com> <20200511151120.GA28634@lst.de> <CAMuHMdW1S91i3x0unNcJnypHse7ifynGb4dZcVhJaemR3GH1Pg@mail.gmail.com>
+        id S1731199AbgEKSyl (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 11 May 2020 14:54:41 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:36664 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729319AbgEKSyk (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 11 May 2020 14:54:40 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04BIl1RS193726;
+        Mon, 11 May 2020 18:52:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=lmEoEgyjfI3GJtDHmilX9SzLNvOcuTcOvW+PKUiq8MI=;
+ b=EHSd0gyOZ6mJk8AUfljgZqe/l84M3dxdDwcVRDw3lihli7/i2Ooh9bj5w+NhMbvq+dFl
+ +FaLdDGTwvHat1D1fTX9EysW7L+8m1FqNmjnP1V9Grb4VhLqayw4Rd6B5b5ZCDBnZrfU
+ JWaJTpVkRmmbWYekhkSap850c0mJaWwjl9pi6axUTNK4z+ZIX+AX003KGJoo239cmPWE
+ oqeYy7f7nIQBOOKDabvZBLSDOUgQ6SCUSohzsOuqTGGHU+E0BbpmeZ+V/KBXTwEmpuzQ
+ IyfctIDTRsMjj+/zrpJ901i0t+bUlmAVcrTybfNsnwobMod1pi0U9lWm3kgq5X7GLtfk dg== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 30x3mbpvsc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 11 May 2020 18:52:48 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04BImDbQ039635;
+        Mon, 11 May 2020 18:52:48 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 30x69rjjya-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 11 May 2020 18:52:48 +0000
+Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04BIqcwi024982;
+        Mon, 11 May 2020 18:52:39 GMT
+Received: from [192.168.2.157] (/73.164.160.178)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 11 May 2020 11:52:37 -0700
+Subject: Re: [PATCH V3 2/3] mm/hugetlb: Define a generic fallback for
+ is_hugepage_only_range()
+To:     Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
+        akpm@linux-foundation.org
+Cc:     Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <1588907271-11920-1-git-send-email-anshuman.khandual@arm.com>
+ <1588907271-11920-3-git-send-email-anshuman.khandual@arm.com>
+ <9fc622e1-45ff-b79f-ebe0-35614837456c@oracle.com>
+ <c21ab871-da06-baf6-ba31-80b13402b8c9@arm.com>
+From:   Mike Kravetz <mike.kravetz@oracle.com>
+Message-ID: <ab931b52-1f1b-1ff3-47ee-377de3ed1a98@oracle.com>
+Date:   Mon, 11 May 2020 11:52:34 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdW1S91i3x0unNcJnypHse7ifynGb4dZcVhJaemR3GH1Pg@mail.gmail.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <c21ab871-da06-baf6-ba31-80b13402b8c9@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9618 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 malwarescore=0 adultscore=0
+ spamscore=0 suspectscore=0 mlxscore=0 mlxlogscore=999 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2005110142
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9618 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 impostorscore=0
+ mlxscore=0 suspectscore=0 bulkscore=0 mlxlogscore=999 phishscore=0
+ malwarescore=0 lowpriorityscore=0 spamscore=0 adultscore=0 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2005110142
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Mon, May 11, 2020 at 05:24:30PM +0200, Geert Uytterhoeven wrote:
-> > Btw, do you know what part of flush_icache_range relied on set_fs?
-> > Do any of the m68k maintainers have an idea how to handle that in
-> > a nicer way when we can split the implementations?
+On 5/10/20 8:14 PM, Anshuman Khandual wrote:
+> On 05/09/2020 03:52 AM, Mike Kravetz wrote:
+>> On 5/7/20 8:07 PM, Anshuman Khandual wrote:
+>>
+>> Did you try building without CONFIG_HUGETLB_PAGE defined?  I'm guessing
 > 
-> arch/m68k/mm/cache.c:virt_to_phys_slow()
+> Yes I did for multiple platforms (s390, arm64, ia64, x86, powerpc etc).
 > 
-> All instructions that look up addresses in the page tables look at the
-> source/destination function codes (SFC/DFC) to know if they have to use
-> the supervisor or user page tables.
-> So the actual implementation is the same: set_fs() merely configures
-> SFC/DFC, to select the address space to use.
+>> that you need a stub for is_hugepage_only_range().  Or, perhaps add this
+>> to asm-generic/hugetlb.h?
+>>
+> There is already a stub (include/linux/hugetlb.h) when !CONFIG_HUGETLB_PAGE.
+> 
 
-So instead of the magic instructions could we use the normal kernel
-virt to phys helpers instead of switching the addresses space?  Something
-like this patch on top of the series:
+Thanks!  I missed that stub in the existing code.  I like the removal of
+redundant code.
 
-diff --git a/arch/m68k/mm/cache.c b/arch/m68k/mm/cache.c
-index 5ecb3310e8745..5a861a14c1e69 100644
---- a/arch/m68k/mm/cache.c
-+++ b/arch/m68k/mm/cache.c
-@@ -71,47 +71,87 @@ static unsigned long virt_to_phys_slow(unsigned long vaddr)
- 	return 0;
- }
- 
--/* Push n pages at kernel virtual address and clear the icache */
--/* RZ: use cpush %bc instead of cpush %dc, cinv %ic */
--void flush_icache_user_range(unsigned long address, unsigned long endaddr)
-+static inline void coldfire_flush_icache_range(unsigned long start,
-+		unsigned long end)
- {
--	if (CPU_IS_COLDFIRE) {
--		unsigned long start, end;
--		start = address & ICACHE_SET_MASK;
--		end = endaddr & ICACHE_SET_MASK;
--		if (start > end) {
--			flush_cf_icache(0, end);
--			end = ICACHE_MAX_ADDR;
--		}
--		flush_cf_icache(start, end);
--	} else if (CPU_IS_040_OR_060) {
--		address &= PAGE_MASK;
--
--		do {
--			asm volatile ("nop\n\t"
--				      ".chip 68040\n\t"
--				      "cpushp %%bc,(%0)\n\t"
--				      ".chip 68k"
--				      : : "a" (virt_to_phys_slow(address)));
--			address += PAGE_SIZE;
--		} while (address < endaddr);
--	} else {
--		unsigned long tmp;
--		asm volatile ("movec %%cacr,%0\n\t"
--			      "orw %1,%0\n\t"
--			      "movec %0,%%cacr"
--			      : "=&d" (tmp)
--			      : "di" (FLUSH_I));
-+	start &= ICACHE_SET_MASK;
-+	end &= ICACHE_SET_MASK;
-+
-+	if (start > end) {
-+		flush_cf_icache(0, end);
-+		end = ICACHE_MAX_ADDR;
- 	}
-+	flush_cf_icache(start, end);
-+}
-+
-+static inline void mc68040_flush_icache_user_range(unsigned long start,
-+		unsigned long end)
-+{
-+	start &= PAGE_MASK;
-+
-+	do {
-+		asm volatile ("nop\n\t"
-+			      ".chip 68040\n\t"
-+			      "cpushp %%bc,(%0)\n\t"
-+			      ".chip 68k"
-+			      : : "a" (virt_to_phys_slow(start)));
-+		start += PAGE_SIZE;
-+	} while (start < end);
-+}
-+
-+static inline void mc68020_flush_icache_range(unsigned long start,
-+		unsigned long end)
-+{
-+	unsigned long tmp;
-+
-+	asm volatile ("movec %%cacr,%0\n\t"
-+		      "orw %1,%0\n\t"
-+		      "movec %0,%%cacr"
-+		      : "=&d" (tmp)
-+		      : "di" (FLUSH_I));
-+}
-+
-+void flush_icache_user_range(unsigned long start, unsigned long end)
-+{
-+	if (CPU_IS_COLDFIRE)
-+		coldfire_flush_icache_range(start, end);
-+	else if (CPU_IS_040_OR_060)
-+		mc68040_flush_icache_user_range(start, end);
-+	else
-+		mc68020_flush_icache_range(start, end);
- }
- 
--void flush_icache_range(unsigned long address, unsigned long endaddr)
-+static inline void mc68040_flush_icache_range(unsigned long start,
-+		unsigned long end)
- {
--	mm_segment_t old_fs = get_fs();
-+	start &= PAGE_MASK;
-+
-+	do {
-+		void *vaddr = (void *)start;
-+		phys_addr_t paddr;
-+
-+		if (is_vmalloc_addr(vaddr))
-+			paddr = page_to_phys(vmalloc_to_page(vaddr));
-+		else
-+			paddr = virt_to_phys(vaddr);
-+
-+		asm volatile ("nop\n\t"
-+			      ".chip 68040\n\t"
-+			      "cpushp %%bc,(%0)\n\t"
-+			      ".chip 68k"
-+			      : : "a" (paddr));
-+		start += PAGE_SIZE;
-+	} while (start < end);
-+}
- 
--	set_fs(KERNEL_DS);
--	flush_icache_user_range(address, endaddr);
--	set_fs(old_fs);
-+void flush_icache_range(unsigned long start, unsigned long end)
-+{
-+	if (CPU_IS_COLDFIRE)
-+		coldfire_flush_icache_range(start, end);
-+	else if (CPU_IS_040_OR_060)
-+		mc68040_flush_icache_range(start, end);
-+	else
-+		mc68020_flush_icache_range(start, end);
- }
- EXPORT_SYMBOL(flush_icache_range);
- 
+Acked-by: Mike Kravetz <mike.kravetz@oracle.com>
+
+-- 
+Mike Kravetz
