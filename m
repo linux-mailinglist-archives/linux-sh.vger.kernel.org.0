@@ -2,82 +2,177 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DCA391CF7B8
-	for <lists+linux-sh@lfdr.de>; Tue, 12 May 2020 16:47:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 542941D02B7
+	for <lists+linux-sh@lfdr.de>; Wed, 13 May 2020 01:00:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730287AbgELOrH (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 12 May 2020 10:47:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36974 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727099AbgELOrH (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Tue, 12 May 2020 10:47:07 -0400
-Received: from [10.44.0.192] (unknown [103.48.210.53])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5779E206A3;
-        Tue, 12 May 2020 14:46:58 +0000 (UTC)
-Subject: Re: [PATCH 29/31] binfmt_flat: use flush_icache_user_range
-To:     Christoph Hellwig <hch@lst.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Roman Zippel <zippel@linux-m68k.org>
-Cc:     Jessica Yu <jeyu@kernel.org>, Michal Simek <monstr@monstr.eu>,
-        x86@kernel.org, linux-alpha@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-c6x-dev@linux-c6x.org, linux-hexagon@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-mm@kvack.org,
-        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
-        linux-fsdevel@vger.kernel.org
-References: <20200510075510.987823-1-hch@lst.de>
- <20200510075510.987823-30-hch@lst.de>
-From:   Greg Ungerer <gerg@linux-m68k.org>
-Message-ID: <484af2c0-2450-b40a-8322-e691495c45aa@linux-m68k.org>
-Date:   Wed, 13 May 2020 00:46:55 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
-MIME-Version: 1.0
-In-Reply-To: <20200510075510.987823-30-hch@lst.de>
+        id S1731583AbgELXAb (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 12 May 2020 19:00:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33188 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731609AbgELXAa (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 12 May 2020 19:00:30 -0400
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75B9EC05BD0D
+        for <linux-sh@vger.kernel.org>; Tue, 12 May 2020 16:00:29 -0700 (PDT)
+Received: by mail-pl1-x643.google.com with SMTP id y9so3454912plk.10
+        for <linux-sh@vger.kernel.org>; Tue, 12 May 2020 16:00:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dabbelt-com.20150623.gappssmtp.com; s=20150623;
+        h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
+         :content-transfer-encoding;
+        bh=TxR+iMR41NNC8Tp0Yh5G0J9anaHo/y+mAo5OJ6FnE3w=;
+        b=YV0IEXO5IABYUMUtMWw6Y0a2xNZhYt4iDNMNdBJAdhkLz+DhDJrEb2/tely+kMRfBe
+         elzT7mfwntttCi0+nBJzpxqW1RzbdA4k2z5m0sbPhXbgm86NhUGJ6ezv1UWvqUAF6AFb
+         GwYEyZnEpPlXtS0AdB1oOMIXhoSzH1oQ3QYdKyFvf7rV9a0F5474HoxquQdEEcVsoVZk
+         mkFDvy/LaDlTuj+uY+/sZnyRH+3w/Rut2ArIzwHPIrhPI856FrWtiOC99MOqCPnAlAt1
+         y5de0EiQgDBn8VhocdW7T7X+feJnXd114pzMo7qEMcn1qfbF3zf4gbB8O6Pkx7p0q4QB
+         ZmJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
+         :mime-version:content-transfer-encoding;
+        bh=TxR+iMR41NNC8Tp0Yh5G0J9anaHo/y+mAo5OJ6FnE3w=;
+        b=ngr9IPO2UeA+PJArgLbAwopbzSy/TJOQagOAj7WJtXRL/XkwpxOb0GJtkHklKxlOww
+         UnusiU39uirEtCRP0iyOqZQFV4wJK2r9wy578m34MozbTqpioLhWtCsrriomc//fV601
+         BH3mKE4N6oe4y68VvuBg6/aiSbHEbd8cE3kJEl0sWyAUtgEnUjcPQnMhbwuNcpY6TNJ2
+         e2f7x4ZYbi/k/sC6ZVP5V8Zg4od8jCJdF6x2OgmrInlspfcjEWSyMC1cy99JaFKOCQrD
+         5p0mlD0bCj+21yN2vmCfsY99bD8Ui4Tg/4qGa4espChpgMgFcBNaL0HyR/fpuCitk3QT
+         uvbw==
+X-Gm-Message-State: AGi0PuZC0N0RNwif43CoWpMBDRDis+IDkBHUDTprfiTy2yYbfqgoM1I2
+        1B8zfryzW67JRwnoqDen24dJXA==
+X-Google-Smtp-Source: APiQypKPbiNIuzOhnfWZK3aSuAimZ6kMvjtjoB3PUVWkLgrXCsrrvonJs2vHPqxiHQA1YoMJYuJ02Q==
+X-Received: by 2002:a17:90a:2281:: with SMTP id s1mr31687737pjc.68.1589324428530;
+        Tue, 12 May 2020 16:00:28 -0700 (PDT)
+Received: from localhost (76-210-143-223.lightspeed.sntcca.sbcglobal.net. [76.210.143.223])
+        by smtp.gmail.com with ESMTPSA id w143sm12602170pfc.165.2020.05.12.16.00.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 May 2020 16:00:26 -0700 (PDT)
+Date:   Tue, 12 May 2020 16:00:26 -0700 (PDT)
+X-Google-Original-Date: Tue, 12 May 2020 15:59:50 PDT (-0700)
+Subject:     Re: [PATCH 19/31] riscv: use asm-generic/cacheflush.h
+In-Reply-To: <20200510075510.987823-20-hch@lst.de>
+CC:     akpm@linux-foundation.org, Arnd Bergmann <arnd@arndb.de>,
+        zippel@linux-m68k.org, linux-arch@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, monstr@monstr.eu, jeyu@kernel.org,
+        linux-ia64@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
+        linux-sh@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        x86@kernel.org, linux-um@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org,
+        openrisc@lists.librecores.org, linux-alpha@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+        linux-arm-kernel@lists.infradead.org
+From:   Palmer Dabbelt <palmer@dabbelt.com>
+To:     Christoph Hellwig <hch@lst.de>
+Message-ID: <mhng-8adbedbc-0f91-4291-9471-2df5eb7b802b@palmerdabbelt-glaptop1>
+Mime-Version: 1.0 (MHng)
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Christoph,
-
-On 10/5/20 5:55 pm, Christoph Hellwig wrote:
-> load_flat_file works on user addresses.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-
-Acked-by: Greg Ungerer <gerg@linux-m68k.org>
-
-Regards
-Greg
-
-
-
+On Sun, 10 May 2020 00:54:58 PDT (-0700), Christoph Hellwig wrote:
+> RISC-V needs almost no cache flushing routines of its own.  Rely on
+> asm-generic/cacheflush.h for the defaults.
+>
+> Also remove the pointless __KERNEL__ ifdef while we're at it.
 > ---
->   fs/binfmt_flat.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/fs/binfmt_flat.c b/fs/binfmt_flat.c
-> index 831a2b25ba79f..6f0aca5379da2 100644
-> --- a/fs/binfmt_flat.c
-> +++ b/fs/binfmt_flat.c
-> @@ -854,7 +854,7 @@ static int load_flat_file(struct linux_binprm *bprm,
->   #endif /* CONFIG_BINFMT_FLAT_OLD */
->   	}
->   
-> -	flush_icache_range(start_code, end_code);
-> +	flush_icache_user_range(start_code, end_code);
->   
->   	/* zero the BSS,  BRK and stack areas */
->   	if (clear_user((void __user *)(datapos + data_len), bss_len +
-> 
+>  arch/riscv/include/asm/cacheflush.h | 62 ++---------------------------
+>  1 file changed, 3 insertions(+), 59 deletions(-)
+>
+> diff --git a/arch/riscv/include/asm/cacheflush.h b/arch/riscv/include/asm/cacheflush.h
+> index c8677c75f82cb..a167b4fbdf007 100644
+> --- a/arch/riscv/include/asm/cacheflush.h
+> +++ b/arch/riscv/include/asm/cacheflush.h
+> @@ -8,65 +8,6 @@
+>
+>  #include <linux/mm.h>
+>
+> -#define ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE 0
+> -
+> -/*
+> - * The cache doesn't need to be flushed when TLB entries change when
+> - * the cache is mapped to physical memory, not virtual memory
+> - */
+> -static inline void flush_cache_all(void)
+> -{
+> -}
+> -
+> -static inline void flush_cache_mm(struct mm_struct *mm)
+> -{
+> -}
+> -
+> -static inline void flush_cache_dup_mm(struct mm_struct *mm)
+> -{
+> -}
+> -
+> -static inline void flush_cache_range(struct vm_area_struct *vma,
+> -				     unsigned long start,
+> -				     unsigned long end)
+> -{
+> -}
+> -
+> -static inline void flush_cache_page(struct vm_area_struct *vma,
+> -				    unsigned long vmaddr,
+> -				    unsigned long pfn)
+> -{
+> -}
+> -
+> -static inline void flush_dcache_mmap_lock(struct address_space *mapping)
+> -{
+> -}
+> -
+> -static inline void flush_dcache_mmap_unlock(struct address_space *mapping)
+> -{
+> -}
+> -
+> -static inline void flush_icache_page(struct vm_area_struct *vma,
+> -				     struct page *page)
+> -{
+> -}
+> -
+> -static inline void flush_cache_vmap(unsigned long start, unsigned long end)
+> -{
+> -}
+> -
+> -static inline void flush_cache_vunmap(unsigned long start, unsigned long end)
+> -{
+> -}
+> -
+> -#define copy_to_user_page(vma, page, vaddr, dst, src, len) \
+> -	do { \
+> -		memcpy(dst, src, len); \
+> -		flush_icache_user_range(vma, page, vaddr, len); \
+> -	} while (0)
+> -#define copy_from_user_page(vma, page, vaddr, dst, src, len) \
+> -	memcpy(dst, src, len)
+> -
+>  static inline void local_flush_icache_all(void)
+>  {
+>  	asm volatile ("fence.i" ::: "memory");
+> @@ -79,6 +20,7 @@ static inline void flush_dcache_page(struct page *page)
+>  	if (test_bit(PG_dcache_clean, &page->flags))
+>  		clear_bit(PG_dcache_clean, &page->flags);
+>  }
+> +#define ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE 1
+>
+>  /*
+>   * RISC-V doesn't have an instruction to flush parts of the instruction cache,
+> @@ -105,4 +47,6 @@ void flush_icache_mm(struct mm_struct *mm, bool local);
+>  #define SYS_RISCV_FLUSH_ICACHE_LOCAL 1UL
+>  #define SYS_RISCV_FLUSH_ICACHE_ALL   (SYS_RISCV_FLUSH_ICACHE_LOCAL)
+>
+> +#include <asm-generic/cacheflush.h>
+> +
+>  #endif /* _ASM_RISCV_CACHEFLUSH_H */
+
+Thanks!
+
+Reviewed-by: Palmer Dabbelt <palmerdabbelt@google.com>
+Acked-by: Palmer Dabbelt <palmerdabbelt@google.com>
+
+Were you trying to get these all in at once, or do you want me to take it into
+my tree?
