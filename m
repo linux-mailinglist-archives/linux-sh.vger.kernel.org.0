@@ -2,122 +2,84 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 75E281D85C7
-	for <lists+linux-sh@lfdr.de>; Mon, 18 May 2020 20:21:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FDDB1D975A
+	for <lists+linux-sh@lfdr.de>; Tue, 19 May 2020 15:14:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730789AbgERSVE (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 18 May 2020 14:21:04 -0400
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:24835 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2387787AbgERSU7 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 18 May 2020 14:20:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1589826057;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=bgUgYOhXHVrOhAbBYxlnYyhMzdekwGrXn9fI5GzJacU=;
-        b=LHpMJHvTqR4bS7BOLhElvkKPeYOYcOnKdUDWTIN1DiiFEuBj1Wfpg5VAxD8lGTo7Xqpq6m
-        fzJDo8yH9BGRHSZPsnBWeWIc47ShwX3Uy5323Khj9iu9hDqS3kxwPZvxz9cZKg/557JR6C
-        Mcl3BWeu/IUouc77fUatFePTVcQ61I0=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-266-kVRrudnWNEOZ64966nyy_Q-1; Mon, 18 May 2020 14:20:52 -0400
-X-MC-Unique: kVRrudnWNEOZ64966nyy_Q-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 428731005510;
-        Mon, 18 May 2020 18:20:48 +0000 (UTC)
-Received: from ovpn-115-234.rdu2.redhat.com (ovpn-115-234.rdu2.redhat.com [10.10.115.234])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 6AF23398;
-        Mon, 18 May 2020 18:20:43 +0000 (UTC)
-Message-ID: <5260142047d0339e00d4a74865c2f0b7511c89f6.camel@redhat.com>
-Subject: Re: [PATCH 10/29] c6x: use asm-generic/cacheflush.h
-From:   Mark Salter <msalter@redhat.com>
-To:     Christoph Hellwig <hch@lst.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        id S1728995AbgESNOJ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 19 May 2020 09:14:09 -0400
+Received: from mout.kundenserver.de ([212.227.17.24]:35693 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727057AbgESNOH (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 19 May 2020 09:14:07 -0400
+Received: from threadripper.lan ([149.172.98.151]) by mrelayeu.kundenserver.de
+ (mreue107 [212.227.15.145]) with ESMTPA (Nemesis) id
+ 1MLhwM-1jJMgm1Wuu-00HfcK; Tue, 19 May 2020 15:13:48 +0200
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
         Arnd Bergmann <arnd@arndb.de>,
-        Roman Zippel <zippel@linux-m68k.org>
-Cc:     linux-arch@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        Michal Simek <monstr@monstr.eu>, Jessica Yu <jeyu@kernel.org>,
-        linux-ia64@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
-        linux-sh@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        x86@kernel.org, linux-um@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org,
-        openrisc@lists.librecores.org, linux-alpha@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-        linux-arm-kernel@lists.infradead.org
-Date:   Mon, 18 May 2020 14:20:42 -0400
-In-Reply-To: <20200515143646.3857579-11-hch@lst.de>
-References: <20200515143646.3857579-1-hch@lst.de>
-         <20200515143646.3857579-11-hch@lst.de>
-Organization: Red Hat, Inc
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.2 (3.36.2-1.fc32) 
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] sh: include linux/time_types.h for sockios
+Date:   Tue, 19 May 2020 15:13:13 +0200
+Message-Id: <20200519131327.1836482-1-arnd@arndb.de>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:ZzSBkp1oHrCNIXzAF1NuoPpvoa6TIn1Nifxi2otujO89+1FUOUT
+ yRAJvNkAj23ss9X6/6RNC0OTtXqC2zBhctD2Oz1JxNJlG/aR3IJHyMcyDOVQcVqHlLS/sVa
+ Uh0eg/yWoSBj5gf6EHj0CIQSi32j8/ADRbZc3+YMN1U5B85dkYFzqtaybbXNhyvr1tBYy54
+ Z8G3sDliCi0w+3AOllvIA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:GytPdhjM1K4=:TgZKiIgJOBuOV0S/MjSmEJ
+ MZ29EINcvg6Rc9hmIf8hwo3U8JbjUysfYpqUj+RZgGvXalDGLjdIVXSp7kq2pnGY60O4T87pB
+ F4L2G4UbD5oTR+jxD+3zn5R9ZCnGcC6rJ/jUtF3CdVK0bNI/Da7nnrFxALvOym0Xoafi6f8si
+ BCrv6rcdzJoJaw2yTHrMQvjJSaExQMKFD1h0NOssN4r/InzABohqcLv+rYk38kS1LVm5rQBdn
+ 7U4mnvWZ1qSslQ2JSindWiOV3UbVfHja58EKsN22tSbxGsn2GlUXoOCzD7tbnsCTcv97b6mlw
+ FEe2bKWQCpWVEATUM8k1W6bctYqacZLMhCDUbdDV9oeBSGSI9Xl482ifBOOHb1p3nHRtbfUjx
+ CWiDnid/R/RNO7bkp6hBKUQ86nmDKNR9V51gw+rqYWQZ3qjXwZzk7LWhuXHgGMTjbH2hCFnPT
+ wogwVFe2x3wnnkPOuQnN8gqn5roca8CN1Egofx5j3HHkSSYGc3At3cA1R5LbdGDUOT9ZY2sP6
+ KORkn4q+9rdcls1WGq+EJG0/ta5Y+UvPHeOCNnwAavYQP5eEwXQyR0aOduUP5MoxE0/eAEX72
+ zodLf81N+Ee3pJDhsrnECIXTbV0DhMP94NlM6gXA+oyxkj12Tp1Q2vtIbzZAG8HRUe2VNp85v
+ eyTICJ46wtZ08xuTrJdGyeRkU+4HRl82N0ObTmvCHftRxp8xqmO3u9AChCUjHWFwL7Xh+yCYm
+ JYHR5W5IZ6R0zBjnjqrfsBbSin49mXl3LHTTlg2MWO2Z+NBqmF4VwPKts2fB4/GYGF11Uje39
+ dg0Mm7+lqNtxddbdI7+lLDaK+RMf8yGCA0mJT/Qafjs+ZHQZTM=
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Fri, 2020-05-15 at 16:36 +0200, Christoph Hellwig wrote:
-> C6x needs almost no cache flushing routines of its own.  Rely on
-> asm-generic/cacheflush.h for the defaults.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  arch/c6x/include/asm/cacheflush.h | 19 +------------------
->  1 file changed, 1 insertion(+), 18 deletions(-)
-> 
-> diff --git a/arch/c6x/include/asm/cacheflush.h b/arch/c6x/include/asm/cacheflush.h
-> index 4540b40475e6c..10922d528de6d 100644
-> --- a/arch/c6x/include/asm/cacheflush.h
-> +++ b/arch/c6x/include/asm/cacheflush.h
-> @@ -16,21 +16,6 @@
->  #include <asm/page.h>
->  #include <asm/string.h>
->  
-> -/*
-> - * virtually-indexed cache management (our cache is physically indexed)
-> - */
-> -#define flush_cache_all()			do {} while (0)
-> -#define flush_cache_mm(mm)			do {} while (0)
-> -#define flush_cache_dup_mm(mm)			do {} while (0)
-> -#define flush_cache_range(mm, start, end)	do {} while (0)
-> -#define flush_cache_page(vma, vmaddr, pfn)	do {} while (0)
-> -#define flush_cache_vmap(start, end)		do {} while (0)
-> -#define flush_cache_vunmap(start, end)		do {} while (0)
-> -#define ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE 0
-> -#define flush_dcache_page(page)			do {} while (0)
-> -#define flush_dcache_mmap_lock(mapping)		do {} while (0)
-> -#define flush_dcache_mmap_unlock(mapping)	do {} while (0)
-> -
->  /*
->   * physically-indexed cache management
->   */
-> @@ -49,14 +34,12 @@ do {								  \
->  			(unsigned long) page_address(page) + PAGE_SIZE)); \
->  } while (0)
->  
-> -
->  #define copy_to_user_page(vma, page, vaddr, dst, src, len) \
->  do {						     \
->  	memcpy(dst, src, len);			     \
->  	flush_icache_range((unsigned) (dst), (unsigned) (dst) + (len)); \
->  } while (0)
->  
-> -#define copy_from_user_page(vma, page, vaddr, dst, src, len) \
-> -	memcpy(dst, src, len)
-> +#include <asm-generic/cacheflush.h>
->  
->  #endif /* _ASM_C6X_CACHEFLUSH_H */
+Using the socket ioctls on arch/sh (and only there) causes build
+time problems when __kernel_old_timeval/__kernel_old_timespec are
+not already visible to the compiler.
 
-Acked-by: Mark Salter <msalter@redhat.com>
+Add an explict include line for the header that defines these
+structures.
 
+Reported-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Fixes: 8c709f9a0693 ("y2038: sh: remove timeval/timespec usage from headers")
+Fixes: 0768e17073dc ("net: socket: implement 64-bit timestamps")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ arch/sh/include/uapi/asm/sockios.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/sh/include/uapi/asm/sockios.h b/arch/sh/include/uapi/asm/sockios.h
+index 3da561453260..ef01ced9e169 100644
+--- a/arch/sh/include/uapi/asm/sockios.h
++++ b/arch/sh/include/uapi/asm/sockios.h
+@@ -2,6 +2,8 @@
+ #ifndef __ASM_SH_SOCKIOS_H
+ #define __ASM_SH_SOCKIOS_H
+ 
++#include <linux/time_types.h>
++
+ /* Socket-level I/O control calls. */
+ #define FIOGETOWN	_IOR('f', 123, int)
+ #define FIOSETOWN 	_IOW('f', 124, int)
+-- 
+2.26.2
 
