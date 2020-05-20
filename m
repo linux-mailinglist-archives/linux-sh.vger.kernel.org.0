@@ -2,89 +2,94 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 62BDA1DB236
-	for <lists+linux-sh@lfdr.de>; Wed, 20 May 2020 13:47:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF64A1DB754
+	for <lists+linux-sh@lfdr.de>; Wed, 20 May 2020 16:46:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726546AbgETLr4 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 20 May 2020 07:47:56 -0400
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:46138 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726224AbgETLr4 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 20 May 2020 07:47:56 -0400
-Received: by mail-oi1-f196.google.com with SMTP id b3so2597253oib.13;
-        Wed, 20 May 2020 04:47:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=hGKgEc8JFQSK2cOGhTfN/cpJyk+jh7gfz8G43N9Kzzc=;
-        b=cDXM+lI4BqskeTI+MTtD9mHJ+Zj+oT1oRrSAjHkP5bHECWbLfJ+NGxLU2AcacDs/op
-         +lI14WGTd6F+/WNoxwmilrktqjMkJ9o8W2uxptNQDESdYSTG1K3oPumwwBGnOj7HFg1I
-         RE762BJ6RvacwRfY25af6ynMiyXtseLx4D0p/gGEDW+qUjj4/unAD4GYoI9YY+d6OGXD
-         M2qZCz8AnRVNo3Dwtwr0AKTQnnHMNeh+vthp6OVoylYrDGeEfB6AXa48AJRUtxFvoyP7
-         q6YtqeTrDlLB2W5K5zP02Vtx1XXLGrKU/inYjUvb0qoRUeRaqwjqVqMxkSNMybSZkhf6
-         UzpA==
-X-Gm-Message-State: AOAM532yqDgjME3gYu4hVZqcMlf26BpAQPHG2iW935p2YBkLhk1LVRvn
-        0b2hmAxI8VtAntqeTUtebPwmH6Nr4AfiwL3Cp6dZKw==
-X-Google-Smtp-Source: ABdhPJxCwAPXRwC2Gghh4mWbgs1jlLKyh+c1OcmCEMOWi6+fZ/7AfNEOOZs8vDIeh1EJvdz0jC1m52WC6eQoJiOiAPQ=
-X-Received: by 2002:aca:210a:: with SMTP id 10mr1403518oiz.153.1589975275508;
- Wed, 20 May 2020 04:47:55 -0700 (PDT)
+        id S1726439AbgETOqh (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 20 May 2020 10:46:37 -0400
+Received: from mout.kundenserver.de ([212.227.126.187]:60025 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726832AbgETOqh (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 20 May 2020 10:46:37 -0400
+Received: from mail-qk1-f169.google.com ([209.85.222.169]) by
+ mrelayeu.kundenserver.de (mreue011 [212.227.15.129]) with ESMTPSA (Nemesis)
+ id 1M8yU2-1jfHsS43HC-00635K; Wed, 20 May 2020 16:46:35 +0200
+Received: by mail-qk1-f169.google.com with SMTP id 142so3777850qkl.6;
+        Wed, 20 May 2020 07:46:34 -0700 (PDT)
+X-Gm-Message-State: AOAM531pJVNy2rqeddo+bEaedt/o7zabkZawqZOmKGnPWqf3yFS2laIg
+        3mi7zM2cr/ReA08fgMnbnTz8uRPX2jY6hXDO60E=
+X-Google-Smtp-Source: ABdhPJypyX4heAr8jTclXxNAM/F9gqjiDJaAB+OY94A6vygzYebCNAhZrJgCDtF9wxcn3J21WQxZOGR9j7pCMgQrZhQ=
+X-Received: by 2002:a37:46c9:: with SMTP id t192mr2136041qka.3.1589985993796;
+ Wed, 20 May 2020 07:46:33 -0700 (PDT)
 MIME-Version: 1.0
 References: <20200519131327.1836482-1-arnd@arndb.de> <20200519181034.58c67eb5bea24aae24d33421@linux-foundation.org>
- <CAK8P3a281ZLKwkWCKkAdQvA6=XA4=+mKWbwEzK_BR4Uu1c5DNQ@mail.gmail.com>
-In-Reply-To: <CAK8P3a281ZLKwkWCKkAdQvA6=XA4=+mKWbwEzK_BR4Uu1c5DNQ@mail.gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 20 May 2020 13:47:44 +0200
-Message-ID: <CAMuHMdUx9zKbc7n164Gi+N9k-NhmbgXtU+Z4yZ9SvdxeCMtJKw@mail.gmail.com>
+ <CAK8P3a281ZLKwkWCKkAdQvA6=XA4=+mKWbwEzK_BR4Uu1c5DNQ@mail.gmail.com> <CAMuHMdUx9zKbc7n164Gi+N9k-NhmbgXtU+Z4yZ9SvdxeCMtJKw@mail.gmail.com>
+In-Reply-To: <CAMuHMdUx9zKbc7n164Gi+N9k-NhmbgXtU+Z4yZ9SvdxeCMtJKw@mail.gmail.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Wed, 20 May 2020 16:46:17 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a0+RWNUroSAtdVazxMV=o+FYpTX9Wvkbr5gODh4=zODkQ@mail.gmail.com>
+Message-ID: <CAK8P3a0+RWNUroSAtdVazxMV=o+FYpTX9Wvkbr5gODh4=zODkQ@mail.gmail.com>
 Subject: Re: [PATCH] sh: include linux/time_types.h for sockios
-To:     Arnd Bergmann <arnd@arndb.de>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>,
         "David S. Miller" <davem@davemloft.net>,
         John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
         Linux-sh list <linux-sh@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:b37uLIBrkCHgv4k2PH+HERQcOSyA0KYzXqw8DvcE2yw3JW2DIxe
+ Xh+X+ga+AkhCv93hrN2oMUrAkkbfYIz+38vok9RTy4bViJroDzncnfdhehHefKfWSzqubVz
+ UkZ+Y/QhIZbP9/eGDIRDrgYj1lJVRAA9kHtw3nkrzkumb6q3Pzxl+xB/fYiM1MrNBQpNZxW
+ Nk12BSgxO8MlVCLwycS2g==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Pp97+cetrdM=:WHm0MWpOr9t/XF13Oz0t7W
+ DkI/b9ZdeAIhgHeTaUxiFo3Y4KA97wNoUPlyNQ74yQ2JN7DVb8B+tj1rpBerwHl/7IUzQfgjo
+ Zds7VsfwKpm5OJwqTowgOT71tumCeeh6l2JLxcvfI4BJY2zuwOyPupfPXewVXrEYUsTkQ6RVP
+ s7LZow9wh87jK3D4JN1inhguBGlFSY3igna8Jk5e6qQz9L6D2vSF1CWuQJRMPiy7PhiyO4z2x
+ Fxt886DN7Xtw9z3vqFA5cvYYPl9NMbf7uKlRlEADAbLL76oi6L29OJAYKwzez6I/bjX2oxDTE
+ ak5tzm2V6D/1Vi/hQW1vSWkRVZ1fv6EqqxJvDA5JLOi4frFkolKf2wxkTMoILbJ+9mXYYy/ZE
+ 0lAoMZyiVtaLuDUkqH/XQeCHwpN5xDjK1OGDWD43dRA6VSDLDc3c9rJ8GSp6cVAWyQqvKnVbk
+ w/2JERyxhkndpuXQunQkllsGechjnXjc06ivRLZVHwWsavwZhhCs/26dCxB0yKONQQHYNA2+W
+ QNpbkfYDwGNK4lrSRfkqIaj//Xw7Xqvb+g7yVAEha9ZmEcIUGyN17o96jlnjEoTcrXwh46kkT
+ YoXUsRIuFohwwU3wq1eNmFrozTIcEFTVPtq34S0vdK65tzwHXAd+S0ukO6Pue0RZ57W8uXzaw
+ 3suN3vyZYrg74rtuF8s6w6pMaeBdBrKeXaWH+ZDLLMU9EXEk+hjLg2aL2U8nxi+XJBDIKe+fy
+ 0o2AOw3XEQpTvjmJ0aSNTib26JDp4FsPeJ36+LtvrGCEkPKhTzB3U65PFTFxvvhJgezPsEtdv
+ ib5Zda7WH4e/yeNfW35++HqEDXmug1PldclpKjokueokoDynfc=
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Arnd, Andrew,
-
-On Wed, May 20, 2020 at 10:32 AM Arnd Bergmann <arnd@arndb.de> wrote:
-> On Wed, May 20, 2020 at 3:10 AM Andrew Morton <akpm@linux-foundation.org> wrote:
-> > On Tue, 19 May 2020 15:13:13 +0200 Arnd Bergmann <arnd@arndb.de> wrote:
-> > > Using the socket ioctls on arch/sh (and only there) causes build
-> > > time problems when __kernel_old_timeval/__kernel_old_timespec are
-> > > not already visible to the compiler.
+On Wed, May 20, 2020 at 1:47 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> On Wed, May 20, 2020 at 10:32 AM Arnd Bergmann <arnd@arndb.de> wrote:
+> > On Wed, May 20, 2020 at 3:10 AM Andrew Morton <akpm@linux-foundation.org> wrote:
+> > > On Tue, 19 May 2020 15:13:13 +0200 Arnd Bergmann <arnd@arndb.de> wrote:
+> > > > Using the socket ioctls on arch/sh (and only there) causes build
+> > > > time problems when __kernel_old_timeval/__kernel_old_timespec are
+> > > > not already visible to the compiler.
+> > > >
+> > > > Add an explict include line for the header that defines these
+> > > > structures.
 > > >
-> > > Add an explict include line for the header that defines these
-> > > structures.
+> > > I can grab this.
 > >
-> > I can grab this.
->
-> Thanks!
->
-> > > Reported-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-> > > Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-> > > Fixes: 8c709f9a0693 ("y2038: sh: remove timeval/timespec usage from headers")
-> > > Fixes: 0768e17073dc ("net: socket: implement 64-bit timestamps")
+> > Thanks!
 > >
-> > cc:stable?
+> > > > Reported-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+> > > > Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+> > > > Fixes: 8c709f9a0693 ("y2038: sh: remove timeval/timespec usage from headers")
+> > > > Fixes: 0768e17073dc ("net: socket: implement 64-bit timestamps")
+> > >
+> > > cc:stable?
+> >
+> > Yes, I missed that.
 >
-> Yes, I missed that.
+> Doesn't matter, the stable bots will pick it up anyway, based on the Fixes tag.
 
-Doesn't matter, the stable bots will pick it up anyway, based on the Fixes tag.
+I normally prefer to be explicit, as some bug fixes may address
+something that has been caused by an earlier commit, but should not
+be backported for some reason.
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+      Arnd
