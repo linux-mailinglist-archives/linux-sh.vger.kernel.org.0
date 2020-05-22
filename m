@@ -2,99 +2,56 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E93511DB771
-	for <lists+linux-sh@lfdr.de>; Wed, 20 May 2020 16:51:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4E0A1DEC84
+	for <lists+linux-sh@lfdr.de>; Fri, 22 May 2020 17:54:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726697AbgETOvn (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 20 May 2020 10:51:43 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:39736 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726439AbgETOvn (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 20 May 2020 10:51:43 -0400
-Received: by mail-ot1-f67.google.com with SMTP id d7so2666419ote.6;
-        Wed, 20 May 2020 07:51:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=AXv+TNr2XiVo0uUaNtBITgiwBxKOFe0DS+6v0ILeFxI=;
-        b=qA2G1xYPeumIbUQMqbvCcNdTi7mS0tvAl96pvwMVp7M/lxZp+XfpBsA3BzHLw88YVo
-         DJ/tFKcOYPstuu8yVAndW3KEdtOPydhe3BavwmBPfDXCZL8oVlvHaiDsDFj83wGS8o7q
-         j9xz3rxF4RQo1TcuWVE9wtwE1SelqY0lhI1tLkCXXg9Z0MsbMcbr2lpwBUWcwuztB718
-         5lDDv4vxuHo95piBmUOUEIWORaB9L0xLcgf3a7kQXzgg4U6caqJ0s4mFkgKuKLzD/ool
-         bUOybC8IWSEBn02/F34/aSJZl1xIh/mvbvLiKbnzwpDeM4//3DtSeir86Ssud1iRLF9r
-         qOrg==
-X-Gm-Message-State: AOAM531f6FeZ0FbLoA88RjwUcP6vicvVuAvUWMxg3Tc93y1Mp6YUj4rW
-        gr/LeKqO7iwOuDt4aGeibA9QXMRgmUBFsajmU8U=
-X-Google-Smtp-Source: ABdhPJxAwRThCmkc+DNYRZR+y7CAkXfsqNOLlqLFegX9/SaGSsgCmV+X0Gmarfvoyg/1Biw+kTnPoN6/bdmDpWCv4AQ=
-X-Received: by 2002:a05:6830:18d9:: with SMTP id v25mr3214703ote.107.1589986302015;
- Wed, 20 May 2020 07:51:42 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200519131327.1836482-1-arnd@arndb.de> <20200519181034.58c67eb5bea24aae24d33421@linux-foundation.org>
- <CAK8P3a281ZLKwkWCKkAdQvA6=XA4=+mKWbwEzK_BR4Uu1c5DNQ@mail.gmail.com>
- <CAMuHMdUx9zKbc7n164Gi+N9k-NhmbgXtU+Z4yZ9SvdxeCMtJKw@mail.gmail.com> <CAK8P3a0+RWNUroSAtdVazxMV=o+FYpTX9Wvkbr5gODh4=zODkQ@mail.gmail.com>
-In-Reply-To: <CAK8P3a0+RWNUroSAtdVazxMV=o+FYpTX9Wvkbr5gODh4=zODkQ@mail.gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 20 May 2020 16:51:30 +0200
-Message-ID: <CAMuHMdWKOZMn-pMpE6MgKo1ArL701fp4ZR65sa5yGfozf7Yu4Q@mail.gmail.com>
-Subject: Re: [PATCH] sh: include linux/time_types.h for sockios
-To:     Arnd Bergmann <arnd@arndb.de>
+        id S1730647AbgEVPye (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 22 May 2020 11:54:34 -0400
+Received: from foss.arm.com ([217.140.110.172]:38594 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730137AbgEVPye (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Fri, 22 May 2020 11:54:34 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 54FBC55D;
+        Fri, 22 May 2020 08:54:33 -0700 (PDT)
+Received: from gaia (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 815553F305;
+        Fri, 22 May 2020 08:54:29 -0700 (PDT)
+Date:   Fri, 22 May 2020 16:54:27 +0100
+From:   Catalin Marinas <catalin.marinas@arm.com>
+To:     Christoph Hellwig <hch@lst.de>
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Arnd Bergmann <arnd@arndb.de>,
+        Roman Zippel <zippel@linux-m68k.org>,
+        Jessica Yu <jeyu@kernel.org>, Michal Simek <monstr@monstr.eu>,
+        x86@kernel.org, linux-alpha@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-c6x-dev@linux-c6x.org, linux-hexagon@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-mm@kvack.org,
+        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+        linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 09/29] arm64: use asm-generic/cacheflush.h
+Message-ID: <20200522155426.GI26492@gaia>
+References: <20200515143646.3857579-1-hch@lst.de>
+ <20200515143646.3857579-10-hch@lst.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200515143646.3857579-10-hch@lst.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Arnd,
+On Fri, May 15, 2020 at 04:36:26PM +0200, Christoph Hellwig wrote:
+> ARM64 needs almost no cache flushing routines of its own.  Rely on
+> asm-generic/cacheflush.h for the defaults.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-On Wed, May 20, 2020 at 4:46 PM Arnd Bergmann <arnd@arndb.de> wrote:
-> On Wed, May 20, 2020 at 1:47 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > On Wed, May 20, 2020 at 10:32 AM Arnd Bergmann <arnd@arndb.de> wrote:
-> > > On Wed, May 20, 2020 at 3:10 AM Andrew Morton <akpm@linux-foundation.org> wrote:
-> > > > On Tue, 19 May 2020 15:13:13 +0200 Arnd Bergmann <arnd@arndb.de> wrote:
-> > > > > Using the socket ioctls on arch/sh (and only there) causes build
-> > > > > time problems when __kernel_old_timeval/__kernel_old_timespec are
-> > > > > not already visible to the compiler.
-> > > > >
-> > > > > Add an explict include line for the header that defines these
-> > > > > structures.
-> > > >
-> > > > I can grab this.
-> > >
-> > > Thanks!
-> > >
-> > > > > Reported-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-> > > > > Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-> > > > > Fixes: 8c709f9a0693 ("y2038: sh: remove timeval/timespec usage from headers")
-> > > > > Fixes: 0768e17073dc ("net: socket: implement 64-bit timestamps")
-> > > >
-> > > > cc:stable?
-> > >
-> > > Yes, I missed that.
-> >
-> > Doesn't matter, the stable bots will pick it up anyway, based on the Fixes tag.
->
-> I normally prefer to be explicit, as some bug fixes may address
-> something that has been caused by an earlier commit, but should not
-> be backported for some reason.
-
-Which means that with the current "intelligent' backporting, you need a
-Not-for-stable tag instead...
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
