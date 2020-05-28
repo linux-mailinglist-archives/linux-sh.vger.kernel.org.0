@@ -2,174 +2,280 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D0DEF1E54C8
-	for <lists+linux-sh@lfdr.de>; Thu, 28 May 2020 05:47:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 874B21E56F3
+	for <lists+linux-sh@lfdr.de>; Thu, 28 May 2020 07:46:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727056AbgE1DrC (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 27 May 2020 23:47:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55336 "EHLO
+        id S1725808AbgE1FqC (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 28 May 2020 01:46:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727055AbgE1DrB (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 27 May 2020 23:47:01 -0400
-Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com [IPv6:2607:f8b0:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84C40C08C5C4
-        for <linux-sh@vger.kernel.org>; Wed, 27 May 2020 20:47:00 -0700 (PDT)
-Received: by mail-oi1-x242.google.com with SMTP id b3so23718468oib.13
-        for <linux-sh@vger.kernel.org>; Wed, 27 May 2020 20:47:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:from:to:cc:subject:in-reply-to:message-id:references
-         :user-agent:mime-version;
-        bh=2qx91aVPuFO0vUiP0/I7F3TMnsxZODsCo0wW/nZA/Ek=;
-        b=PL6zETkbGU9mqzrGsocE1HBzwqKl3IMV7yV8wFZbGm4wHOwRBD8OMMG+y5JKGvCgPi
-         vm5n3+sf1eGzsQmqX4L8++JRmCX3DzLApuWLh2lFuHx1IPNt0zVceXBi8JMZm08yMjJi
-         dgTLtqCBs6olHY2rqJsuK9NL5GyMjlA9kP/Cz6nR6Si2xwGFFoE603kc/Dr53G3rQp6S
-         gFBb+PddTEBGiaWOuBvRGs40Im9zVq8VTNmoIb/MzDf19j1pLiqnHKik2BuMsIkBrRbh
-         TYnm6OVvmQUcyWzw/IOjcAS7zNs0Q98eBrYT94efLyjDduG9AxjlXGJtnrsATHUpOImZ
-         HIag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:in-reply-to:message-id
-         :references:user-agent:mime-version;
-        bh=2qx91aVPuFO0vUiP0/I7F3TMnsxZODsCo0wW/nZA/Ek=;
-        b=ittGlSTQzOMkgUTYkxq2qRF5YBvVazvNl7wb/JXzpy6Ewnr43OqqkszLhZbTIjZZ6+
-         Yv/uMrj/TyZ0/7G4ih6bpWzf9UR31H1vVM0J5HXsYcNbtbosYUWv0Vq8MlpO/qKyW8rh
-         DBt404kjGjrpzy85aglV5JSVbDVbyhkse39XBdEh8wfg6dh7dje9nHnxw+oCxoNn6Bhm
-         brOcwlsQTQBeTycOgcF6JEcPmM2ySn9/oYbu4KfyfaEdBLKgprvqD8x0EFJ5Hl9/cWcN
-         Yf6EJfB/B1vTu1KSh1j7BWwmWqtZPB4cuzdQ8jMQVXlptt0ozxKXEurP8wPBrrAGA8rg
-         aPgQ==
-X-Gm-Message-State: AOAM531V6hjqm6+Caejnb3or+u4CNf/B0Fi0VV6e9sTr2X/PRyiFdBxM
-        dMt1JlepdcpduEqs03VC4YIHCw==
-X-Google-Smtp-Source: ABdhPJyOlEQNd0DWG0KMQ3iclWevL0B8TV/DHISOzSWHCezO7ksCSIPPniMHO6dFdL8N85bmZfl1CA==
-X-Received: by 2002:aca:d856:: with SMTP id p83mr958723oig.38.1590637619384;
-        Wed, 27 May 2020 20:46:59 -0700 (PDT)
-Received: from eggly.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id v10sm1036334oov.15.2020.05.27.20.46.55
-        (version=TLS1 cipher=ECDHE-ECDSA-AES128-SHA bits=128/128);
-        Wed, 27 May 2020 20:46:58 -0700 (PDT)
-Date:   Wed, 27 May 2020 20:46:22 -0700 (PDT)
-From:   Hugh Dickins <hughd@google.com>
-X-X-Sender: hugh@eggly.anvils
-To:     Jerome Glisse <jglisse@redhat.com>
-cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-        Huang Ying <ying.huang@intel.com>,
-        linux-kernel@vger.kernel.org,
-        Steven Capper <steve.capper@linaro.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Rabin Vincent <rabinv@axis.com>,
-        linux-arm-kernel@lists.infradead.org, rmk+kernel@arm.linux.org.uk,
-        Guo Ren <guoren@kernel.org>, linux-mips@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paulburton@kernel.org>,
-        James Hogan <jhogan@kernel.org>,
-        Ley Foon Tan <lftan@altera.com>,
-        nios2-dev@lists.rocketboards.org, linux-parisc@vger.kernel.org,
-        Helge Deller <deller@gmx.de>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, Guan Xuetao <gxt@pku.edu.cn>,
-        linux-xtensa@linux-xtensa.org, Max Filippov <jcmvbkbc@gmail.com>,
-        Chris Zankel <chris@zankel.net>
-Subject: Re: Cache flush issue with page_mapping_file() and swap back shmem
- page ?
-In-Reply-To: <20200528002033.GB1992500@redhat.com>
-Message-ID: <alpine.LSU.2.11.2005272021220.3857@eggly.anvils>
-References: <20200528002033.GB1992500@redhat.com>
-User-Agent: Alpine 2.11 (LSU 23 2013-08-11)
+        with ESMTP id S1725789AbgE1FqC (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 28 May 2020 01:46:02 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 707E7C05BD1E;
+        Wed, 27 May 2020 22:46:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=2sTn2P2JTP5NUc+UcBABqFZJJYeYAvJQCTV5sMw4FaA=; b=tSAYByXHDYVWbpPD3eGTCZ51id
+        QDXZULfiPo5HJp6La2xPcD41PDQm76GyKnJ4275rdbx5KpN9Wr2LsZRCpIB+ijPQ6/EqTzUV8e3lD
+        ztJH6MqNhcm71t18gWFpaSjwG2ANIj2aYAF7veXABHH32d8VA/lOAAC+OlYjG9qlnfBYV4rxNB0z1
+        6PVX9joR2nyQzFujZddBid6KtWrrdudQNihtEK1cxpB6Y2wlJvJ1PUpcqqFOoyjrhY6vLEwTh93tn
+        EE5bUclbXJDRqbbWV3UhpuGxRgPb/3Iq6d6B1jKtwgUs1O6wiqnDU9NoFUpCPjMs8eOejCJ5xhjTf
+        0dHAMAiA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jeBMe-0005ru-Ho; Thu, 28 May 2020 05:46:00 +0000
+Date:   Wed, 27 May 2020 22:46:00 -0700
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     linux-sh@vger.kernel.org, ysato@users.sourceforge.jp,
+        dalias@libc.org, linux-kernel@vger.kernel.org,
+        viro@zeniv.linux.org.uk, Rob Landley <rob@landley.net>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [GIT PULL] sh: remove sh5 support
+Message-ID: <20200528054600.GA29717@infradead.org>
+References: <20200424221948.1120587-1-arnd@arndb.de>
+ <20200507143552.GA28683@infradead.org>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200507143552.GA28683@infradead.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Jerome,
+[adding Linus]
 
-On Wed, 27 May 2020, Jerome Glisse wrote:
-> So any arch code which uses page_mapping_file() might get the wrong
-> answer, this function will return NULL for a swap backed page which
-> can be a shmem pages. But shmem pages can still be shared among
-> multiple process (and possibly at different virtual addresses if
-> mremap was use).
+On Thu, May 07, 2020 at 07:35:52AM -0700, Christoph Hellwig wrote:
+> Any progress on this?  I plan to resend the sh dma-mapping I've been
+> trying to get upstream for a year again, and they would conflict,
+> so I could look into rebasing them first.
+
+So for years now it has been close to and in the end impossible to
+provoke sh maintainer action.  At the same point hardware is pretty much
+long gone for the real commercial variants, and never took off for the
+open hardware nommu variant.
+
+Linus, would you ok with a 5.8 pull request to just kill off arch/sh/?
+
 > 
-> Attached is a patch that changes page_mapping_file() to return the
-> shmem mapping for swap backed shmem page. I have not tested it (no
-> way for me to test all those architecture) and i spotted this while
-> working on something else. So i hope someone can take a closer look.
-
-I'm certainly no expert on flush_dcache_page() and friends, but I'd
-be very surprised if such a problem exists, yet has gone unnoticed
-for so long.  page_mapping_file() itself is fairly new, added when
-a risk of crashing on a race with swapoff came in: but the previous
-use of page_mapping() would have suffered equally if there were such
-a cache flushinhg problem here.
-
-And I'm afraid your patch won't do anything to help if there is a
-problem: very soon after shmem calls add_to_swap_cache(), it calls
-shmem_delete_from_page_cache(), which sets page->mapping to NULL.
-
-But I can assure you that a shmem page (unlike an anon page) is never
-put into swap cache while it is mapped into userspace, and never
-mapped into userspace while it is still in swap cache: does that help?
-
-Hugh
-
-> This might be a shmem page that is in a sense a file that
-> can be mapped multiple times in different processes at
-> possibly different virtual addresses (fork + mremap). So
-> return the shmem mapping that will allow any arch code to
-> find all mappings of the page.
-> 
-> Note that even if page is not anonymous then the page might
-> have a NULL page->mapping field if it is being truncated,
-> but then it is fine as each pte poiting to the page will be
-> remove and cache flushing should be handled properly by that
-> part of the code.
-> 
-> Signed-off-by: Jerome Glisse <jglisse@redhat.com>
-> Cc: "Huang, Ying" <ying.huang@intel.com>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Mel Gorman <mgorman@techsingularity.net>
-> Cc: Russell King <linux@armlinux.org.uk>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Mike Rapoport <rppt@linux.vnet.ibm.com>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: "James E.J. Bottomley" <jejb@parisc-linux.org>
-> ---
->  mm/util.c | 18 +++++++++++++++++-
->  1 file changed, 17 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/util.c b/mm/util.c
-> index 988d11e6c17c..ec8739ab0cc3 100644
-> --- a/mm/util.c
-> +++ b/mm/util.c
-> @@ -685,8 +685,24 @@ EXPORT_SYMBOL(page_mapping);
->   */
->  struct address_space *page_mapping_file(struct page *page)
->  {
-> -	if (unlikely(PageSwapCache(page)))
-> +	if (unlikely(PageSwapCache(page))) {
-> +		/*
-> +		 * This might be a shmem page that is in a sense a file that
-> +		 * can be mapped multiple times in different processes at
-> +		 * possibly different virtual addresses (fork + mremap). So
-> +		 * return the shmem mapping that will allow any arch code to
-> +		 * find all mappings of the page.
-> +		 *
-> +		 * Note that even if page is not anonymous then the page might
-> +		 * have a NULL page->mapping field if it is being truncated,
-> +		 * but then it is fine as each pte poiting to the page will be
-> +		 * remove and cache flushing should be handled properly by that
-> +		 * part of the code.
-> +		 */
-> +		if (!PageAnon(page))
-> +			return page->mapping;
->  		return NULL;
-> +	}
->  	return page_mapping(page);
->  }
->  
-> -- 
-> 2.26.2
+> On Sat, Apr 25, 2020 at 12:19:47AM +0200, Arnd Bergmann wrote:
+> > The following changes since commit
+> > ae83d0b416db002fe95601e7f97f64b59514d936:
+> > 
+> >   Linux 5.7-rc2 (2020-04-19 14:35:30 -0700)
+> > 
+> > are available in the Git repository at:
+> > 
+> >   git://git.kernel.org:/pub/scm/linux/kernel/git/arnd/playground.git
+> > tags/sh5-remove
+> > 
+> > for you to fetch changes up to 29e36fbee3be4c13ff6881a275c86d5f68acfa23:
+> > 
+> >   sh: remove sh5 support (2020-04-24 22:20:55 +0200)
+> > 
+> > ----------------------------------------------------------------
+> > sh: remove sh5 support
+> > 
+> > At long last, this is the removal of the 64-bit sh5 port
+> > that never went into production.
+> > 
+> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> > 
+> > ----------------------------------------------------------------
+> > 
+> > v2: I should have fixed all the missing changes that Geert pointed out,
+> >     this time sending it as a pull request as the removal patch is
+> >     too big for the mailing lists, and a 'git format-patch -D' patch
+> >     is unreliable
+> > 
+> > Arnd Bergmann (1):
+> >   sh: remove sh5 support
+> > 
+> >  arch/sh/Kconfig                           |   62 +-
+> >  arch/sh/Kconfig.cpu                       |    9 -
+> >  arch/sh/Kconfig.debug                     |   13 +-
+> >  arch/sh/Makefile                          |   29 +-
+> >  arch/sh/boot/compressed/Makefile          |   12 +-
+> >  arch/sh/boot/compressed/misc.c            |    8 -
+> >  arch/sh/drivers/pci/Makefile              |    1 -
+> >  arch/sh/drivers/pci/ops-sh5.c             |   65 -
+> >  arch/sh/drivers/pci/pci-sh5.c             |  217 ---
+> >  arch/sh/drivers/pci/pci-sh5.h             |  108 --
+> >  arch/sh/include/asm/barrier.h             |    4 +-
+> >  arch/sh/include/asm/bitops.h              |   26 -
+> >  arch/sh/include/asm/bl_bit.h              |   11 +-
+> >  arch/sh/include/asm/bl_bit_64.h           |   37 -
+> >  arch/sh/include/asm/bugs.h                |    4 -
+> >  arch/sh/include/asm/cache_insns.h         |   12 +-
+> >  arch/sh/include/asm/cache_insns_64.h      |   20 -
+> >  arch/sh/include/asm/checksum.h            |    6 +-
+> >  arch/sh/include/asm/elf.h                 |   23 -
+> >  arch/sh/include/asm/extable.h             |    4 -
+> >  arch/sh/include/asm/fixmap.h              |    4 -
+> >  arch/sh/include/asm/io.h                  |    4 -
+> >  arch/sh/include/asm/irq.h                 |    3 -
+> >  arch/sh/include/asm/mmu_context.h         |   12 -
+> >  arch/sh/include/asm/mmu_context_64.h      |   75 -
+> >  arch/sh/include/asm/module.h              |    4 -
+> >  arch/sh/include/asm/page.h                |   21 +-
+> >  arch/sh/include/asm/pgtable.h             |   17 -
+> >  arch/sh/include/asm/pgtable_64.h          |  307 ----
+> >  arch/sh/include/asm/posix_types.h         |    6 +-
+> >  arch/sh/include/asm/processor.h           |   14 +-
+> >  arch/sh/include/asm/processor_64.h        |  212 ---
+> >  arch/sh/include/asm/ptrace_64.h           |   14 -
+> >  arch/sh/include/asm/string.h              |    6 +-
+> >  arch/sh/include/asm/string_64.h           |   21 -
+> >  arch/sh/include/asm/switch_to.h           |   11 +-
+> >  arch/sh/include/asm/switch_to_64.h        |   32 -
+> >  arch/sh/include/asm/syscall.h             |    6 +-
+> >  arch/sh/include/asm/syscall_64.h          |   75 -
+> >  arch/sh/include/asm/syscalls.h            |    9 +-
+> >  arch/sh/include/asm/syscalls_64.h         |   18 -
+> >  arch/sh/include/asm/thread_info.h         |    4 +-
+> >  arch/sh/include/asm/tlb.h                 |    6 +-
+> >  arch/sh/include/asm/tlb_64.h              |   68 -
+> >  arch/sh/include/asm/traps.h               |    4 -
+> >  arch/sh/include/asm/traps_64.h            |   35 -
+> >  arch/sh/include/asm/types.h               |    5 -
+> >  arch/sh/include/asm/uaccess.h             |    4 -
+> >  arch/sh/include/asm/uaccess_64.h          |   85 -
+> >  arch/sh/include/asm/unistd.h              |    6 +-
+> >  arch/sh/include/asm/user.h                |    7 -
+> >  arch/sh/include/asm/vmlinux.lds.h         |    8 -
+> >  arch/sh/include/cpu-sh5/cpu/addrspace.h   |   12 -
+> >  arch/sh/include/cpu-sh5/cpu/cache.h       |   94 -
+> >  arch/sh/include/cpu-sh5/cpu/irq.h         |  113 --
+> >  arch/sh/include/cpu-sh5/cpu/mmu_context.h |   22 -
+> >  arch/sh/include/cpu-sh5/cpu/registers.h   |  103 --
+> >  arch/sh/include/cpu-sh5/cpu/rtc.h         |    9 -
+> >  arch/sh/include/uapi/asm/posix_types.h    |    8 +-
+> >  arch/sh/include/uapi/asm/posix_types_64.h |   29 -
+> >  arch/sh/include/uapi/asm/ptrace.h         |    5 -
+> >  arch/sh/include/uapi/asm/ptrace_64.h      |   15 -
+> >  arch/sh/include/uapi/asm/sigcontext.h     |   13 -
+> >  arch/sh/include/uapi/asm/stat.h           |   61 -
+> >  arch/sh/include/uapi/asm/swab.h           |   10 -
+> >  arch/sh/include/uapi/asm/unistd.h         |    8 +-
+> >  arch/sh/include/uapi/asm/unistd_64.h      |  423 -----
+> >  arch/sh/kernel/Makefile                   |   16 +-
+> >  arch/sh/kernel/cpu/Makefile               |    1 -
+> >  arch/sh/kernel/cpu/init.c                 |    2 +-
+> >  arch/sh/kernel/cpu/irq/Makefile           |    3 +-
+> >  arch/sh/kernel/cpu/irq/intc-sh5.c         |  194 --
+> >  arch/sh/kernel/cpu/proc.c                 |    1 -
+> >  arch/sh/kernel/cpu/sh5/Makefile           |   16 -
+> >  arch/sh/kernel/cpu/sh5/clock-sh5.c        |   76 -
+> >  arch/sh/kernel/cpu/sh5/entry.S            | 2000 ---------------------
+> >  arch/sh/kernel/cpu/sh5/fpu.c              |  106 --
+> >  arch/sh/kernel/cpu/sh5/probe.c            |   72 -
+> >  arch/sh/kernel/cpu/sh5/setup-sh5.c        |  121 --
+> >  arch/sh/kernel/cpu/sh5/switchto.S         |  195 --
+> >  arch/sh/kernel/cpu/sh5/unwind.c           |  342 ----
+> >  arch/sh/kernel/head_64.S                  |  346 ----
+> >  arch/sh/kernel/irq_64.c                   |   48 -
+> >  arch/sh/kernel/module.c                   |    9 -
+> >  arch/sh/kernel/process.c                  |    2 -
+> >  arch/sh/kernel/process_64.c               |  461 -----
+> >  arch/sh/kernel/ptrace_64.c                |  576 ------
+> >  arch/sh/kernel/reboot.c                   |    6 -
+> >  arch/sh/kernel/sh_ksyms_64.c              |   51 -
+> >  arch/sh/kernel/signal_64.c                |  567 ------
+> >  arch/sh/kernel/syscalls_64.S              |  419 -----
+> >  arch/sh/kernel/traps_64.c                 |  814 ---------
+> >  arch/sh/kernel/vmlinux.lds.S              |   18 +-
+> >  arch/sh/lib64/Makefile                    |   17 -
+> >  arch/sh/lib64/copy_page.S                 |   89 -
+> >  arch/sh/lib64/copy_user_memcpy.S          |  218 ---
+> >  arch/sh/lib64/memcpy.S                    |  202 ---
+> >  arch/sh/lib64/memset.S                    |   92 -
+> >  arch/sh/lib64/panic.c                     |   15 -
+> >  arch/sh/lib64/sdivsi3.S                   |  136 --
+> >  arch/sh/lib64/strcpy.S                    |   98 -
+> >  arch/sh/lib64/strlen.S                    |   34 -
+> >  arch/sh/lib64/udelay.c                    |   49 -
+> >  arch/sh/lib64/udivdi3.S                   |  121 --
+> >  arch/sh/lib64/udivsi3.S                   |   60 -
+> >  arch/sh/mm/Kconfig                        |   16 +-
+> >  arch/sh/mm/Makefile                       |   31 +-
+> >  arch/sh/mm/cache-sh5.c                    |  621 -------
+> >  arch/sh/mm/cache.c                        |    6 -
+> >  arch/sh/mm/extable_64.c                   |   84 -
+> >  arch/sh/mm/tlb-sh5.c                      |  224 ---
+> >  arch/sh/mm/tlbex_64.c                     |  166 --
+> >  arch/sh/mm/tlbflush_64.c                  |  172 --
+> >  drivers/rtc/Kconfig                       |    2 +-
+> >  fs/Kconfig.binfmt                         |    2 +-
+> >  scripts/headers_install.sh                |    3 -
+> >  tools/arch/sh/include/asm/barrier.h       |    2 +-
+> >  117 files changed, 67 insertions(+), 11554 deletions(-)
+> >  delete mode 100644 arch/sh/drivers/pci/ops-sh5.c
+> >  delete mode 100644 arch/sh/drivers/pci/pci-sh5.c
+> >  delete mode 100644 arch/sh/drivers/pci/pci-sh5.h
+> >  delete mode 100644 arch/sh/include/asm/bl_bit_64.h
+> >  delete mode 100644 arch/sh/include/asm/cache_insns_64.h
+> >  delete mode 100644 arch/sh/include/asm/mmu_context_64.h
+> >  delete mode 100644 arch/sh/include/asm/pgtable_64.h
+> >  delete mode 100644 arch/sh/include/asm/processor_64.h
+> >  delete mode 100644 arch/sh/include/asm/ptrace_64.h
+> >  delete mode 100644 arch/sh/include/asm/string_64.h
+> >  delete mode 100644 arch/sh/include/asm/switch_to_64.h
+> >  delete mode 100644 arch/sh/include/asm/syscall_64.h
+> >  delete mode 100644 arch/sh/include/asm/syscalls_64.h
+> >  delete mode 100644 arch/sh/include/asm/tlb_64.h
+> >  delete mode 100644 arch/sh/include/asm/traps_64.h
+> >  delete mode 100644 arch/sh/include/asm/uaccess_64.h
+> >  delete mode 100644 arch/sh/include/cpu-sh5/cpu/addrspace.h
+> >  delete mode 100644 arch/sh/include/cpu-sh5/cpu/cache.h
+> >  delete mode 100644 arch/sh/include/cpu-sh5/cpu/irq.h
+> >  delete mode 100644 arch/sh/include/cpu-sh5/cpu/mmu_context.h
+> >  delete mode 100644 arch/sh/include/cpu-sh5/cpu/registers.h
+> >  delete mode 100644 arch/sh/include/cpu-sh5/cpu/rtc.h
+> >  delete mode 100644 arch/sh/include/uapi/asm/posix_types_64.h
+> >  delete mode 100644 arch/sh/include/uapi/asm/ptrace_64.h
+> >  delete mode 100644 arch/sh/include/uapi/asm/unistd_64.h
+> >  delete mode 100644 arch/sh/kernel/cpu/irq/intc-sh5.c
+> >  delete mode 100644 arch/sh/kernel/cpu/sh5/Makefile
+> >  delete mode 100644 arch/sh/kernel/cpu/sh5/clock-sh5.c
+> >  delete mode 100644 arch/sh/kernel/cpu/sh5/entry.S
+> >  delete mode 100644 arch/sh/kernel/cpu/sh5/fpu.c
+> >  delete mode 100644 arch/sh/kernel/cpu/sh5/probe.c
+> >  delete mode 100644 arch/sh/kernel/cpu/sh5/setup-sh5.c
+> >  delete mode 100644 arch/sh/kernel/cpu/sh5/switchto.S
+> >  delete mode 100644 arch/sh/kernel/cpu/sh5/unwind.c
+> >  delete mode 100644 arch/sh/kernel/head_64.S
+> >  delete mode 100644 arch/sh/kernel/irq_64.c
+> >  delete mode 100644 arch/sh/kernel/process_64.c
+> >  delete mode 100644 arch/sh/kernel/ptrace_64.c
+> >  delete mode 100644 arch/sh/kernel/sh_ksyms_64.c
+> >  delete mode 100644 arch/sh/kernel/signal_64.c
+> >  delete mode 100644 arch/sh/kernel/syscalls_64.S
+> >  delete mode 100644 arch/sh/kernel/traps_64.c
+> >  delete mode 100644 arch/sh/lib64/Makefile
+> >  delete mode 100644 arch/sh/lib64/copy_page.S
+> >  delete mode 100644 arch/sh/lib64/copy_user_memcpy.S
+> >  delete mode 100644 arch/sh/lib64/memcpy.S
+> >  delete mode 100644 arch/sh/lib64/memset.S
+> >  delete mode 100644 arch/sh/lib64/panic.c
+> >  delete mode 100644 arch/sh/lib64/sdivsi3.S
+> >  delete mode 100644 arch/sh/lib64/strcpy.S
+> >  delete mode 100644 arch/sh/lib64/strlen.S
+> >  delete mode 100644 arch/sh/lib64/udelay.c
+> >  delete mode 100644 arch/sh/lib64/udivdi3.S
+> >  delete mode 100644 arch/sh/lib64/udivsi3.S
+> >  delete mode 100644 arch/sh/mm/cache-sh5.c
+> >  delete mode 100644 arch/sh/mm/extable_64.c
+> >  delete mode 100644 arch/sh/mm/tlb-sh5.c
+> >  delete mode 100644 arch/sh/mm/tlbex_64.c
+> >  delete mode 100644 arch/sh/mm/tlbflush_64.c
+> > 
+> > -- 
+> > 2.26.0
+> > 
+> ---end quoted text---
+---end quoted text---
