@@ -2,113 +2,112 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 522D21E5C38
-	for <lists+linux-sh@lfdr.de>; Thu, 28 May 2020 11:40:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26A851E5E1E
+	for <lists+linux-sh@lfdr.de>; Thu, 28 May 2020 13:20:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728348AbgE1JkV (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 28 May 2020 05:40:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53506 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727981AbgE1JkU (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 28 May 2020 05:40:20 -0400
-Received: from mail-oo1-xc44.google.com (mail-oo1-xc44.google.com [IPv6:2607:f8b0:4864:20::c44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D047C05BD1E
-        for <linux-sh@vger.kernel.org>; Thu, 28 May 2020 02:40:20 -0700 (PDT)
-Received: by mail-oo1-xc44.google.com with SMTP id g22so5602259oop.13
-        for <linux-sh@vger.kernel.org>; Thu, 28 May 2020 02:40:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=landley-net.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=Rg/jQtOAufmv9zTXyUApJHA7GRXuqiMxXo9mtSDI+YU=;
-        b=DeK/qHOkPphL1YEJ12bOXStaEyZQMTUB3Xmk/bUN5zYAVRIY7PYOusUAyR3pRGgbFF
-         WzWbgZeGRg1FLbPgaX030YozQ1iKIZ/abEEzTzMEUBywnOoXp1iNV83f9vlzQWrLwX4E
-         PTNQKNu7jr5PSyJ5ynLEaACi1Bd+1YhxNB6uW4OXXMM9w8DCJlByt0f1WND6jsTEaqBH
-         sdm8siOyLQ/EJIM7N0t51oINAACfwkUxFOEm8cQVF91lNBsX284mPAdLKeSTVuzDA9Y6
-         pdJyIQpY+IABGaf+N9Ck0kB6zR3c/pCR4nxomnvdyHA56+IMOvtndhc3abjKZ/Asxqrt
-         yuwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=Rg/jQtOAufmv9zTXyUApJHA7GRXuqiMxXo9mtSDI+YU=;
-        b=kPfDclJBbk90PyMXj+H9u7m//Ba3X+JN/PVPWxUQaywi2BaBk0nb6hcksNOMhdOmDx
-         I7hblziQ/1SIZfxiUgTjW0mqIDN25G2UrgHrl1QnPFVImQv8Xn489UkSnU7K4c6RBXuk
-         nD+ZGgNcd7Pa25iFNr4ZGEntmI9KsQlh+eiDJvJ+mhDe4XU3/5SZOgEDxVYx8zHKSzmh
-         hrZU1ijzdQ9lK8nQdFfAqg05zo9flt+AqF5aOwGtKHBPh6m7swuQlwEqwjnUjc2mfagi
-         14S6hsyKE9D9CfIIuuFfHkDUlVmOA7QviyzJAZvtfCEXprSbvz2KRFAOMa5xXGUc3W0J
-         PUCQ==
-X-Gm-Message-State: AOAM532MtKW8muvkmoASw2kB0ScapBmkB/xSry0rY9NrIo97Bq+vB/Am
-        OtjJBw4L3xALIuB1ekXR6sOBGQ==
-X-Google-Smtp-Source: ABdhPJynq/Sf7HuCQoaXq3kTzLGkYX8RA2u9n6/Pkv/ESo8hdfhY/a6VvFAmwcHhf4r97Gr2R9yjqA==
-X-Received: by 2002:a4a:1dc5:: with SMTP id 188mr1810473oog.76.1590658818843;
-        Thu, 28 May 2020 02:40:18 -0700 (PDT)
-Received: from [192.168.86.21] ([136.62.4.88])
-        by smtp.gmail.com with ESMTPSA id a7sm1486763otf.38.2020.05.28.02.40.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 May 2020 02:40:18 -0700 (PDT)
-Subject: Re: [GIT PULL] sh: remove sh5 support
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Christoph Hellwig <hch@infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>
-Cc:     linux-sh@vger.kernel.org, ysato@users.sourceforge.jp,
-        dalias@libc.org, linux-kernel@vger.kernel.org,
-        viro@zeniv.linux.org.uk, Geert Uytterhoeven <geert@linux-m68k.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-References: <20200424221948.1120587-1-arnd@arndb.de>
- <20200507143552.GA28683@infradead.org> <20200528054600.GA29717@infradead.org>
- <67759544-b041-74af-fe95-50fca4a9ea39@physik.fu-berlin.de>
-From:   Rob Landley <rob@landley.net>
-Message-ID: <3a2164e3-08da-efea-2d58-5e230a85ccce@landley.net>
-Date:   Thu, 28 May 2020 04:40:28 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        id S2388038AbgE1LUo (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 28 May 2020 07:20:44 -0400
+Received: from us-smtp-2.mimecast.com ([207.211.31.81]:34367 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S2388310AbgE1LUn (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 28 May 2020 07:20:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1590664841;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=0pDdsaPJ9DSWTCG29xVVgPA72+92+ZpKaGKhvHYc8/o=;
+        b=cnGYK2JC5bYnTT2Pd08ImODjvO31mfBzx6DCuwCatJUslkIA68z3sN8V+SAI0uwCmF7riy
+        oZ98Ejx2vo6hC9D5lt4lZqF3Ah6wX+67qWpQUied2otSd9O0NlcXwKUJNXT0AMsTpkVBtM
+        qZOOCOQ7RFgWFcEOIQTt0/klvhEp9jc=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-357-rz4JWXClNKyU_Z2vtGkSbw-1; Thu, 28 May 2020 07:20:37 -0400
+X-MC-Unique: rz4JWXClNKyU_Z2vtGkSbw-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C3F14805730;
+        Thu, 28 May 2020 11:20:32 +0000 (UTC)
+Received: from redhat.com (ovpn-113-1.rdu2.redhat.com [10.10.113.1])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id E409A7A8B6;
+        Thu, 28 May 2020 11:20:26 +0000 (UTC)
+Date:   Thu, 28 May 2020 07:20:25 -0400
+From:   Jerome Glisse <jglisse@redhat.com>
+To:     Hugh Dickins <hughd@google.com>
+Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+        Huang Ying <ying.huang@intel.com>,
+        linux-kernel@vger.kernel.org,
+        Steven Capper <steve.capper@linaro.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Rabin Vincent <rabinv@axis.com>,
+        linux-arm-kernel@lists.infradead.org, rmk+kernel@arm.linux.org.uk,
+        Guo Ren <guoren@kernel.org>, linux-mips@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paulburton@kernel.org>,
+        James Hogan <jhogan@kernel.org>,
+        Ley Foon Tan <lftan@altera.com>,
+        nios2-dev@lists.rocketboards.org, linux-parisc@vger.kernel.org,
+        Helge Deller <deller@gmx.de>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        sparclinux@vger.kernel.org, Guan Xuetao <gxt@pku.edu.cn>,
+        linux-xtensa@linux-xtensa.org, Max Filippov <jcmvbkbc@gmail.com>,
+        Chris Zankel <chris@zankel.net>
+Subject: Re: Cache flush issue with page_mapping_file() and swap back shmem
+ page ?
+Message-ID: <20200528112025.GA10175@redhat.com>
+References: <20200528002033.GB1992500@redhat.com>
+ <alpine.LSU.2.11.2005272021220.3857@eggly.anvils>
 MIME-Version: 1.0
-In-Reply-To: <67759544-b041-74af-fe95-50fca4a9ea39@physik.fu-berlin.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <alpine.LSU.2.11.2005272021220.3857@eggly.anvils>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 5/28/20 12:55 AM, John Paul Adrian Glaubitz wrote:
-> On 5/28/20 7:46 AM, Christoph Hellwig wrote:
->> [adding Linus]
->>
->> On Thu, May 07, 2020 at 07:35:52AM -0700, Christoph Hellwig wrote:
->>> Any progress on this?  I plan to resend the sh dma-mapping I've been
->>> trying to get upstream for a year again, and they would conflict,
->>> so I could look into rebasing them first.
->>
->> So for years now it has been close to and in the end impossible to
->> provoke sh maintainer action.  At the same point hardware is pretty much
->> long gone for the real commercial variants, and never took off for the
->> open hardware nommu variant.
->>
->> Linus, would you ok with a 5.8 pull request to just kill off arch/sh/?
+On Wed, May 27, 2020 at 08:46:22PM -0700, Hugh Dickins wrote:
+> Hi Jerome,
 > 
-> We're maintaining SH in Debian so I'm interested in keeping arch/sh, but
-> I'm also let down that SH maintainers aren't that active at the moment.
+> On Wed, 27 May 2020, Jerome Glisse wrote:
+> > So any arch code which uses page_mapping_file() might get the wrong
+> > answer, this function will return NULL for a swap backed page which
+> > can be a shmem pages. But shmem pages can still be shared among
+> > multiple process (and possibly at different virtual addresses if
+> > mremap was use).
+> > 
+> > Attached is a patch that changes page_mapping_file() to return the
+> > shmem mapping for swap backed shmem page. I have not tested it (no
+> > way for me to test all those architecture) and i spotted this while
+> > working on something else. So i hope someone can take a closer look.
 > 
-> I do know that Yoshinori Sato has a tree where he takes patches and sends
-> PRs from time to time, but I have no idea what is going on.
+> I'm certainly no expert on flush_dcache_page() and friends, but I'd
+> be very surprised if such a problem exists, yet has gone unnoticed
+> for so long.  page_mapping_file() itself is fairly new, added when
+> a risk of crashing on a race with swapoff came in: but the previous
+> use of page_mapping() would have suffered equally if there were such
+> a cache flushinhg problem here.
+> 
+> And I'm afraid your patch won't do anything to help if there is a
+> problem: very soon after shmem calls add_to_swap_cache(), it calls
+> shmem_delete_from_page_cache(), which sets page->mapping to NULL.
+> 
+> But I can assure you that a shmem page (unlike an anon page) is never
+> put into swap cache while it is mapped into userspace, and never
+> mapped into userspace while it is still in swap cache: does that help?
+> 
 
-There are still people who care about the architecture and try to get fixes in:
+You are right i missed/forgot the part where shmem is never swapcache
+and mapped at the same time, thus page_mapping_file() can return NULL
+for those as they can no longer have alias mapping.
 
-  https://www.spinics.net/lists/linux-sh/msg56844.html
+Thank you Hugh
+Jérôme
 
-Alas, I haven't had better luck getting Rich's attention, and I say that as
-someone who has his phone number.
-
-It met Sato-san for lunch once years ago, but he lives in Tokyo and english is
-not his first language. I was under the impression he became co-maintainer to
-show Rich the ropes of maintainership and to answer obscure architectural
-questions, not because he was volunteering for significantly more work. Rich was
-supposed to be load bearing.
-
-I don't really have the domain expertise to do it myself... :(
-
-Rob
