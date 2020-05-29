@@ -2,31 +2,31 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CEDDC1E803D
-	for <lists+linux-sh@lfdr.de>; Fri, 29 May 2020 16:31:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7F581E8050
+	for <lists+linux-sh@lfdr.de>; Fri, 29 May 2020 16:35:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726898AbgE2ObE (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 29 May 2020 10:31:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40694 "EHLO
+        id S1726549AbgE2OfW (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 29 May 2020 10:35:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726849AbgE2ObE (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 29 May 2020 10:31:04 -0400
+        with ESMTP id S1726849AbgE2OfV (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 29 May 2020 10:35:21 -0400
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0195C03E969;
-        Fri, 29 May 2020 07:31:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4898BC03E969;
+        Fri, 29 May 2020 07:35:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
         :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
         Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=XTnvGZJIVjNvDrfvXclleyvv4O+Zxe+kI/ZFLnMJ4Vo=; b=dXqlPyJ7K0M2v+EOauabZoPh23
-        tVWzkxbadbvc5sxfKgq9dNP2PkVlctAGVdCbNFm4YIdv1Ypuidk5y+VjrB0xuSt9OL2Xitg1tkkBM
-        lQOBYL7UVzL0ZRmJ7aLdV7RLJjfpZt9P+o5HF6GdkTeQ+AJADAMdQV36vcFjW48RtrlihEdkhJlxn
-        8tMiIp8zn4Yn56rGB8WKlp/C1dEO2C9zWLa3WLlR0eI7xtnfwl0rZz5MnEuCwyXrv3MkpLeyBjH81
-        G11c3mUPafZt+Erm1mdigcKcIcW6QviYYJUD7ck9yCRFHb+yO3EZgfUgcMySzehbJG4tJkOdCU43r
-        2I0de/pg==;
+        bh=eotZInlRHpN85VcSCrKjyPgUPm24so4mrB7VDMd4spg=; b=b/01V9h7i0Ky/455ye/bNJS4nz
+        /SBaLDsFxGWGk3pq0Td7IPNIlKXZOyOHRiS3h2vwxS61xVmjwG7lwo2dIeUPbwoULNR5tdyfOYY5X
+        VW6EKSuVJGfH+vquqGObUp3T70vuSsKWrjO6z4K/9dz7Yb73iznaY+0qEv9YChw29+PofoXGJEN5e
+        fVMZL0eefL38sVAtLCaF0KB5Q3zmBUnHtXVMczLmdOt6wkCv+RyE0PbFv2ETgm0V1EjvEpRM1ZApf
+        Yw5XILO1CMI35vnBAlPCC6H9BucGtca+WLUDCRCgwVaV0jqFpZjKnVlFSuOavCfprWyAjN5tU3VSZ
+        bD58wMtw==;
 Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jeg2G-0000jR-00; Fri, 29 May 2020 14:31:00 +0000
-Date:   Fri, 29 May 2020 07:30:59 -0700
+        id 1jeg6N-0003SQ-NS; Fri, 29 May 2020 14:35:15 +0000
+Date:   Fri, 29 May 2020 07:35:15 -0700
 From:   Christoph Hellwig <hch@infradead.org>
 To:     Rich Felker <dalias@libc.org>
 Cc:     Christoph Hellwig <hch@infradead.org>,
@@ -36,29 +36,58 @@ Cc:     Christoph Hellwig <hch@infradead.org>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
         Linus Torvalds <torvalds@linux-foundation.org>
 Subject: Re: [GIT PULL] sh: remove sh5 support
-Message-ID: <20200529143059.GA25475@infradead.org>
+Message-ID: <20200529143515.GB25475@infradead.org>
 References: <20200424221948.1120587-1-arnd@arndb.de>
  <20200507143552.GA28683@infradead.org>
  <20200528054600.GA29717@infradead.org>
  <20200528161416.GY1079@brightrain.aerifal.cx>
+ <20200528221450.GF1079@brightrain.aerifal.cx>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200528161416.GY1079@brightrain.aerifal.cx>
+In-Reply-To: <20200528221450.GF1079@brightrain.aerifal.cx>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Thu, May 28, 2020 at 12:14:16PM -0400, Rich Felker wrote:
-> It is in active use. Please do not act on such a request. I would be
-> much quicker to ack things that actually need ack if I weren't CC'd on
-> hundreds of random non-arch-specific changes that don't need it, but I
-> understand that's how the kernel process works. If there are things
-> that need ack please feel free to ping.
-> 
-> Note that I specifically acked and requested the sh5 removal.
+On Thu, May 28, 2020 at 06:14:51PM -0400, Rich Felker wrote:
+> To follow up, I see that there was a patch series of yours (3/24) I
+> missed ack'ing fairly recently. At first glance it looks good.
 
-But you did not actually pick it up - because of that it still isn't
-in linux-next and thus most likely will miss Linux 5.8.
+Well, I need a formal ACK, or even better have the arch maintainer
+pick it up, as that is how development is normally supposed to work.
+
+> In general, most of the patches I see are things that the linux-sh
+> list and myself end up cc'd on that are only tangentially related to
+> arch/sh or even not related at all. In that case I normally trust
+> other maintainers familiar with the cross-arch changes being made that
+> the small arch/sh part of the change is ok if the broader change is
+> abstractly ok.
+
+FYI, if you want to reduce the amount of crap you get Cced on, you can
+add yourself to .get_maintainer.ignore file in the kernel tree, as
+that at least removes a lot of the pass by cleanups found from git
+log.
+
+> Part of why I really disliked the "just kill it all" response to this
+> thread is that the sh5 removal is specifically for the sake of making
+> the arch more maintainable. That, along with forward-porting Sato's
+> SH4 device tree patches (I've tried this but ran into problems, and
+> need some help with it), has long been on my agenda for the arch, to
+> reduce (and ultimately eliminate) the amount of legacy "only on
+> arch/sh" stuff left so that it's not a burden on other maintainers and
+> contributors. Seeing sentiment along the lines of "why don't you just
+> remove it all while you're at it?" as a response is disheartening and
+> also dismissive of Arnd's work making the sh5 removal happen.
+
+We had the discussion before and things like the sh5 removal and
+device tree switch came out of it.  But since then exactly nothing
+has happened - the arch code is still pretty much unmaintained and
+impossible to get a review for.  No one expects super quick responses
+for a legacy architecture, but if there is no way to get feedback
+or patches queued up while the code keeps on bitrotting the architecture
+is effectively dead.  I have no personal problem with the sh hardware,
+but if we want a Linux port to survive it will need at least a minimum
+amount of active maintainance.
