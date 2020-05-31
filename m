@@ -2,29 +2,30 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EF581E96B5
-	for <lists+linux-sh@lfdr.de>; Sun, 31 May 2020 11:54:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 651C31E96C3
+	for <lists+linux-sh@lfdr.de>; Sun, 31 May 2020 11:59:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725912AbgEaJyl (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sun, 31 May 2020 05:54:41 -0400
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:47137 "EHLO
+        id S1727119AbgEaJ7S (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sun, 31 May 2020 05:59:18 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:51311 "EHLO
         outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725813AbgEaJyl (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sun, 31 May 2020 05:54:41 -0400
+        by vger.kernel.org with ESMTP id S1725813AbgEaJ7S (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sun, 31 May 2020 05:59:18 -0400
 Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
           by outpost.zedat.fu-berlin.de (Exim 4.93)
           with esmtps (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
           (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1jfKfu-002lid-IC; Sun, 31 May 2020 11:54:38 +0200
+          id 1jfKkN-002mYg-NO; Sun, 31 May 2020 11:59:15 +0200
 Received: from x4d0db28b.dyn.telefonica.de ([77.13.178.139] helo=[192.168.1.7])
           by inpost2.zedat.fu-berlin.de (Exim 4.93)
           with esmtpsa (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
           (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1jfKfu-003bYm-BR; Sun, 31 May 2020 11:54:38 +0200
+          id 1jfKkN-003cTg-GU; Sun, 31 May 2020 11:59:15 +0200
 Subject: Re: [PATCH] sh: Implement __get_user_u64() required for 64-bit
  get_user()
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 To:     Geert Uytterhoeven <geert@linux-m68k.org>
 Cc:     Linux-sh list <linux-sh@vger.kernel.org>,
         Rich Felker <dalias@libc.org>,
@@ -34,7 +35,7 @@ Cc:     Linux-sh list <linux-sh@vger.kernel.org>,
 References: <20200529174540.4189874-1-glaubitz@physik.fu-berlin.de>
  <20200529174540.4189874-2-glaubitz@physik.fu-berlin.de>
  <CAMuHMdWG1wudoBP0EK8FiEj1BMEoL3r5oqJMUEbt2rqRU2gQpw@mail.gmail.com>
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+ <ba354e30-82ab-68c2-0771-2489463c9279@physik.fu-berlin.de>
 Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  mQINBE3JE9wBEADMrYGNfz3oz6XLw9XcWvuIxIlPWoTyw9BxTicfGAv0d87wngs9U+d52t/R
  EggPePf34gb7/k8FBY1IgyxnZEB5NxUb1WtW0M3GUxpPx6gBZqOm7SK1ZW3oSORw+T7Aezl3
@@ -79,12 +80,12 @@ Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  jEF9ImTPcYZpw5vhdyPwBdXW2lSjV3EAqknWujRgcsm84nycuJnImwJptR481EWmtuH6ysj5
  YhRVGbQPfdsjVUQfZdRdkEv4CZ90pdscBi1nRqcqANtzC+WQFwekDzk2lGqNRDg56s+q0KtY
  scOkTAZQGVpD/8AaLH4v1w==
-Message-ID: <ba354e30-82ab-68c2-0771-2489463c9279@physik.fu-berlin.de>
-Date:   Sun, 31 May 2020 11:54:37 +0200
+Message-ID: <2ad089c1-75cf-0986-c40f-c7f3f8fd6ead@physik.fu-berlin.de>
+Date:   Sun, 31 May 2020 11:59:14 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <CAMuHMdWG1wudoBP0EK8FiEj1BMEoL3r5oqJMUEbt2rqRU2gQpw@mail.gmail.com>
+In-Reply-To: <ba354e30-82ab-68c2-0771-2489463c9279@physik.fu-berlin.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -95,23 +96,25 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Geert!
-
-On 5/31/20 11:52 AM, Geert Uytterhoeven wrote:
-> As this is the 64-bit variant, I think this single move should be
-> replaced by a double move:
+On 5/31/20 11:54 AM, John Paul Adrian Glaubitz wrote:
+> Hi Geert!
 > 
->        "mov  #0,%R1\n\t" \
->        "mov  #0,%S1\n\t" \
+> On 5/31/20 11:52 AM, Geert Uytterhoeven wrote:
+>> As this is the 64-bit variant, I think this single move should be
+>> replaced by a double move:
+>>
+>>        "mov  #0,%R1\n\t" \
+>>        "mov  #0,%S1\n\t" \
+>>
+>> Same for the big endian version below.
+>>
+>> Disclaimer: uncompiled, untested, no SH assembler expert.
 > 
-> Same for the big endian version below.
-> 
-> Disclaimer: uncompiled, untested, no SH assembler expert.
+> Right, this makes sense. I'll send a new patch shortly.
 
-Right, this makes sense. I'll send a new patch shortly.
+Hmm, this change is not the case for __put_user_asm() vs. __put_user_u64().
 
-As for the assembler review, I'll ask Yutaka Niibe who is a friend of mine
-and one of the original SuperH wizards ;).
+But I have to admit, I don't know what the part below "3:\n\t" is for.
 
 Adrian
 
