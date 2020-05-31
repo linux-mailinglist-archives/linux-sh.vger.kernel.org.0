@@ -2,41 +2,36 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA2831E9631
-	for <lists+linux-sh@lfdr.de>; Sun, 31 May 2020 10:03:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2206D1E96A4
+	for <lists+linux-sh@lfdr.de>; Sun, 31 May 2020 11:43:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726020AbgEaIDW (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sun, 31 May 2020 04:03:22 -0400
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:53705 "EHLO
+        id S1726020AbgEaJnG (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sun, 31 May 2020 05:43:06 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:55155 "EHLO
         outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725898AbgEaIDW (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sun, 31 May 2020 04:03:22 -0400
+        by vger.kernel.org with ESMTP id S1725912AbgEaJnG (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sun, 31 May 2020 05:43:06 -0400
 Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
           by outpost.zedat.fu-berlin.de (Exim 4.93)
           with esmtps (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
           (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1jfIw8-002PxI-1a; Sun, 31 May 2020 10:03:16 +0200
+          id 1jfKUh-002jTD-1G; Sun, 31 May 2020 11:43:03 +0200
 Received: from x4d0db28b.dyn.telefonica.de ([77.13.178.139] helo=[192.168.1.7])
           by inpost2.zedat.fu-berlin.de (Exim 4.93)
           with esmtpsa (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
           (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1jfIw7-003Mno-NW; Sun, 31 May 2020 10:03:15 +0200
-Subject: Re: [GIT PULL] sh: remove sh5 support
-To:     Rob Landley <rob@landley.net>, Rich Felker <dalias@libc.org>,
-        Christoph Hellwig <hch@infradead.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, linux-sh@vger.kernel.org,
-        ysato@users.sourceforge.jp, linux-kernel@vger.kernel.org,
-        viro@zeniv.linux.org.uk, Geert Uytterhoeven <geert@linux-m68k.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-References: <20200424221948.1120587-1-arnd@arndb.de>
- <20200507143552.GA28683@infradead.org> <20200528054600.GA29717@infradead.org>
- <20200528161416.GY1079@brightrain.aerifal.cx>
- <20200529143059.GA25475@infradead.org>
- <20200529175335.GK1079@brightrain.aerifal.cx>
- <e86e1d78-9597-811a-da0e-42a910b0c9fe@physik.fu-berlin.de>
- <8b4ff7fe-c10c-fc8e-72bc-88ef69bdb2b4@landley.net>
+          id 1jfKUg-003ZiM-Q2; Sun, 31 May 2020 11:43:02 +0200
+Subject: Re: [PATCH] sh: fixup strncpy()
+To:     Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Karl Nasrallah <knnspeed@aol.com>
+Cc:     Linux-SH <linux-sh@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
+References: <8736dijdit.wl-kuninori.morimoto.gx@renesas.com>
+ <87zhfqhyuf.wl-kuninori.morimoto.gx@renesas.com>
 From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  mQINBE3JE9wBEADMrYGNfz3oz6XLw9XcWvuIxIlPWoTyw9BxTicfGAv0d87wngs9U+d52t/R
@@ -82,12 +77,12 @@ Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  jEF9ImTPcYZpw5vhdyPwBdXW2lSjV3EAqknWujRgcsm84nycuJnImwJptR481EWmtuH6ysj5
  YhRVGbQPfdsjVUQfZdRdkEv4CZ90pdscBi1nRqcqANtzC+WQFwekDzk2lGqNRDg56s+q0KtY
  scOkTAZQGVpD/8AaLH4v1w==
-Message-ID: <eea4f39c-23d4-d435-a770-652d71268f34@physik.fu-berlin.de>
-Date:   Sun, 31 May 2020 10:03:13 +0200
+Message-ID: <b1336fcf-8b04-e16c-420c-ed7e766fef12@physik.fu-berlin.de>
+Date:   Sun, 31 May 2020 11:43:02 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <8b4ff7fe-c10c-fc8e-72bc-88ef69bdb2b4@landley.net>
+In-Reply-To: <87zhfqhyuf.wl-kuninori.morimoto.gx@renesas.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -98,34 +93,38 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 5/31/20 5:20 AM, Rob Landley wrote:
-> On 5/30/20 3:08 AM, John Paul Adrian Glaubitz wrote:
->> On 5/29/20 7:53 PM, Rich Felker wrote:
->>> Frustratingly, I _still_ don't have an official tree on kernel.org for
->>> the purpose of being the canonical place for linux-next to pull from,
->>> due to policies around pgp keys and nobody following up on signing
->>> mine. This is all really silly since there are ridiculously many
->>> independent channels I could cryptographically validate identity
->>> through with vanishing probability that they're all compromised. For
->>> the time being I'll reactivate my repo on git.musl-libc.org.
->>
->> May I suggest to pick up these patches, for example? There might be
->> more I missed, but getting these merged should already help a lot with
->> the clean-up of arch/sh.
+Hi Kuninori!
+
+On 12/18/19 8:33 AM, Kuninori Morimoto wrote:
+> From: Karl Nasrallah <knnspeed@aol.com>
 > 
-> Does that include the 2 fixes to build with current binutils I made puppy eyes
-> about last -rc7 (in march)?
+> Current SH will get below warning at strncpy()
 > 
-> https://marc.info/?l=linux-sh&m=158544749818664&w=2
-Yes, listed as "[PATCH 1/2] arch/sh: vmlinux.scr".
+> In file included from ${LINUX}/arch/sh/include/asm/string.h:3,
+>                  from ${LINUX}/include/linux/string.h:20,
+>                  from ${LINUX}/include/linux/bitmap.h:9,
+>                  from ${LINUX}/include/linux/nodemask.h:95,
+>                  from ${LINUX}/include/linux/mmzone.h:17,
+>                  from ${LINUX}/include/linux/gfp.h:6,
+>                  from ${LINUX}/innclude/linux/slab.h:15,
+>                  from ${LINUX}/linux/drivers/mmc/host/vub300.c:38:
+> ${LINUX}/drivers/mmc/host/vub300.c: In function 'new_system_port_status':
+> ${LINUX}/arch/sh/include/asm/string_32.h:51:42: warning: array subscript\
+>   80 is above array bounds of 'char[26]' [-Warray-bounds]
+>    : "0" (__dest), "1" (__src), "r" (__src+__n)
+>                                      ~~~~~^~~~
+> 
+> This patch fixup it
+> 
+> Signed-off-by: Karl Nasrallah <knnspeed@aol.com>
+> Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-@Rich: Do you think you can merge all those fixes in your local tree within
-       the next days and send a PR to Linus?
+I very much appreciated your SH fixes as I am still maintaining a SuperH
+port in Debian.
 
-Otherwise, I can volunteer to become a third maintainer for arch/sh as I have
-the hardware for testing and can accept patches and send PRs.
-
-We shouldn't let contributors to arch/sh wait for too long.
+Since I don't want your fixes to fall off the table, you can ask Andrew
+Morton to pick up your patches which is apparently the normal path to
+choose when the original maintainers are currently not available.
 
 Adrian
 
