@@ -2,153 +2,104 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1F581EACD5
-	for <lists+linux-sh@lfdr.de>; Mon,  1 Jun 2020 20:41:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C26491EB02A
+	for <lists+linux-sh@lfdr.de>; Mon,  1 Jun 2020 22:27:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729578AbgFASkm (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 1 Jun 2020 14:40:42 -0400
-Received: from brightrain.aerifal.cx ([216.12.86.13]:37864 "EHLO
-        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731298AbgFASNC (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 1 Jun 2020 14:13:02 -0400
-Date:   Mon, 1 Jun 2020 14:13:00 -0400
-From:   Rich Felker <dalias@libc.org>
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     Christoph Hellwig <hch@infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>, linux-sh@vger.kernel.org,
-        ysato@users.sourceforge.jp, linux-kernel@vger.kernel.org,
-        viro@zeniv.linux.org.uk, Rob Landley <rob@landley.net>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [GIT PULL] sh: remove sh5 support
-Message-ID: <20200601181259.GV1079@brightrain.aerifal.cx>
-References: <20200424221948.1120587-1-arnd@arndb.de>
- <20200507143552.GA28683@infradead.org>
- <20200528054600.GA29717@infradead.org>
- <20200528161416.GY1079@brightrain.aerifal.cx>
- <20200529143059.GA25475@infradead.org>
- <20200529175335.GK1079@brightrain.aerifal.cx>
- <e86e1d78-9597-811a-da0e-42a910b0c9fe@physik.fu-berlin.de>
+        id S1727959AbgFAU0N (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 1 Jun 2020 16:26:13 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:34471 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726944AbgFAU0N (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 1 Jun 2020 16:26:13 -0400
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.93)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <mkarcher@zedat.fu-berlin.de>)
+          id 1jfr0b-0028M4-7d; Mon, 01 Jun 2020 22:26:09 +0200
+Received: from webmail1.zedat.fu-berlin.de ([130.133.4.91] helo=webmail.zedat.fu-berlin.de)
+          by inpost2.zedat.fu-berlin.de (Exim 4.93)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+          (envelope-from <mkarcher@zedat.fu-berlin.de>)
+          id 1jfr0a-000TkQ-S2; Mon, 01 Jun 2020 22:26:09 +0200
+Received: from 92.201.26.143
+        (ZEDAT-Webmail authenticated user mkarcher)
+        by webmail.zedat.fu-berlin.de with HTTP;
+        Mon, 1 Jun 2020 22:26:09 +0200
+Message-ID: <50235.92.201.26.143.1591043169.webmail@webmail.zedat.fu-berlin.de>
+In-Reply-To: <20200601165700.GU1079@brightrain.aerifal.cx>
+References: <20200529174540.4189874-1-glaubitz@physik.fu-berlin.de>
+    <20200529174540.4189874-2-glaubitz@physik.fu-berlin.de>
+    <CAMuHMdWG1wudoBP0EK8FiEj1BMEoL3r5oqJMUEbt2rqRU2gQpw@mail.gmail.com>
+    <ba354e30-82ab-68c2-0771-2489463c9279@physik.fu-berlin.de>
+    <2ad089c1-75cf-0986-c40f-c7f3f8fd6ead@physik.fu-berlin.de>
+    <CAMuHMdXzje-qFH=pGoouSuXTZYf4NvnzbaYxTm_boMek-DbWMg@mail.gmail.com>
+    <20200601030300.GT1079@brightrain.aerifal.cx>
+    <CAMuHMdUmpLRyYTPO8LPtOyYtraQ77XZqYy9=8cUiWphmpvczmg@mail.gmail.com>
+    <fbfca28d-217d-4857-a010-8c6e277db67c@physik.fu-berlin.de>
+    <20200601165700.GU1079@brightrain.aerifal.cx>
+Date:   Mon, 1 Jun 2020 22:26:09 +0200
+Subject: Re: [PATCH] sh: Implement __get_user_u64() required for 64-bit
+ get_user()
+From:   "Michael Karcher" <michael.karcher@fu-berlin.de>
+To:     "Rich Felker" <dalias@libc.org>
+Cc:     "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>,
+        "Geert Uytterhoeven" <geert@linux-m68k.org>,
+        "Linux-sh list" <linux-sh@vger.kernel.org>,
+        "Yoshinori Sato" <ysato@users.sourceforge.jp>,
+        "Michael Karcher" <kernel@mkarcher.dialup.fu-berlin.de>,
+        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>
+User-Agent: ZEDAT-Webmail
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e86e1d78-9597-811a-da0e-42a910b0c9fe@physik.fu-berlin.de>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+Content-Type: text/plain;charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: 130.133.4.91
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Sat, May 30, 2020 at 10:08:09AM +0200, John Paul Adrian Glaubitz wrote:
-> On 5/29/20 7:53 PM, Rich Felker wrote:
-> > Frustratingly, I _still_ don't have an official tree on kernel.org for
-> > the purpose of being the canonical place for linux-next to pull from,
-> > due to policies around pgp keys and nobody following up on signing
-> > mine. This is all really silly since there are ridiculously many
-> > independent channels I could cryptographically validate identity
-> > through with vanishing probability that they're all compromised. For
-> > the time being I'll reactivate my repo on git.musl-libc.org.
-> 
-> May I suggest to pick up these patches, for example? There might be
-> more I missed, but getting these merged should already help a lot with
-> the clean-up of arch/sh.
+Rich Felker schrieb:
+>> >> Can I propose a different solution? For archs where there isn't
+>> >> actually any 64-bit load or store instruction, does it make sense to
+>> >> be writing asm just to do two 32-bit loads/stores, especially when
+>> >> this code is not in a hot path?
+>> > Yes, that's an option, too.
+>> That's the solution that Michael Karcher suggested to me as an
+>> alternative when I talked to him off-list.
 
-This was really helpful, but one thing that would make it easier if
-you have any more to list is including message-ids rather than (or in
-addition to) marc.info links. I had to go through and reverse them all
-to message-ids (or at least subjects) to find the patches from my
-mailbox to git-am.
+There is a functional argument agains using get_user_32 twice, which I
+overlooked in my private reply to Adrian. If any of the loads fail, we do
+not only want err to be set to -EFAULT (which will happen), but we also
+want a 64-bit zero as result. If one 32-bit read faults, but the other one
+works, we would get -EFAULT together with 32 valid data bits, and 32 zero
+bits.
 
-> > [RESEND PATCH v2] sh: sh4a: Bring back tmu3_device early device
-> > https://marc.info/?l=linux-sh&m=159061283109675&w=2
+I continue to elaborate on my performance remark, ignoring this functional
+difference (which is a good reason to not just use two 32-bit accesses,
+much more so than the performance "issue").
 
-OK.
+> I don't have an objection to doing it the way you've proposed, but I
+> don't think there's any performance distinction or issue with the two
+> invocations.
 
-> > [PATCH] sh: Drop CONFIG_MTD_M25P80 in sh7757lcr_defconfig
-> > https://marc.info/?l=linux-sh&m=158839364811658&w=2
-> 
-> > [PATCH v2] sh: Replace CONFIG_MTD_M25P80 with CONFIG_MTD_SPI_NOR in sh7757lcr_defconfig
-> > https://marc.info/?l=linux-sh&m=158841749817761&w=2
+Assuming we don't need two exception table entries (put_user_64 currently
+uses only one, maybe it's wrong), using put_user_32 twice creates an extra
+unneeded exception table entry, which will "bloat" the exception table.
+That table is most likely accessed by a binary search algorithm, so the
+performance loss is marginal, though. Also a bigger table size is
+cache-unfriendly. (Again, this is likely marginal again, as binary search
+is already extremely cache-unfriendly).
 
-Doesn't the second one here replace the first?
+A similar argument can be made for the exception handler. Even if we need
+two entries in the exception table, so the first paragraph does not apply,
+the two entries in the exception table can share the same exception
+handler (clear the whole 64-bit destination to zero, set -EFAULT, jump
+past both load instructions), so that part of (admittedly cold) kernel
+code can get some instructios shorter.
 
-> > [PATCH 1/1] sh: remove sh5 support
-> > https://marc.info/?l=linux-sh&m=158776683125080&w=2
 
-I'm trying to figure out how to apply this since it was generated with
--D and git-am maliciously rejects it for that reason with an arcane
-error message.
+Regards,
+  Michael Karcher
 
-> > sh/mm: Fix a build failure via adding a missing bracket
-> > https://marc.info/?l=linux-sh&m=158736532105299&w=2
-
-Already upstream.
-
-> > [PATCH 1/2] arch/sh: vmlinux.scr
-> > https://marc.info/?l=linux-sh&m=158429470120959&w=2
-
-OK.
-
-> > [PATCH] sh: configs: Cleanup old Kconfig IO scheduler options
-> > https://marc.info/?l=linux-sh&m=158195850120215&w=2
-
-OK.
-
-> > [PATCH resend 0/3] SH: compile fixup patches
-> > https://marc.info/?l=linux-renesas-soc&m=157948330821790&w=2
-> > https://marc.info/?l=linux-sh&m=157852970316892&w=2
-> > https://marc.info/?l=linux-sh&m=157852984016938&w=2
-
-OK.
-
-> > [PATCH][repost] sh: clkfwk: remove r8/r16/r32
-> > https://marc.info/?l=linux-renesas-soc&m=157852973916903&w=2
-
-This one had objections by Geert that called for a v2, and was
-teplaced by:
-
-> > [PATCH] sh: clk: Fix discarding const qualifier warning
-> > https://marc.info/?l=linux-sh&m=157839999010776&w=2
-
-But this still had objections that the definitions on all archs should
-be fixed for const correctness. It looks like that patch series is
-still bouncing around; should I apply the SH part of it now?
-
-> > [PATCH next] sh: remove call to memset after dma_alloc_coherent
-> > https://marc.info/?l=linux-sh&m=157793031102356&w=2
-
-Can anyone confirm that this is correct/safe?
-
-> > [PATCH] sh: use generic strncpy()
-> > https://marc.info/?l=linux-renesas-soc&m=157664657013309&w=2
-
-Can you fill me in on the status of this? It looks like you were
-following it. The subject says "use generic strncpy" but it's updating
-the asm, and I think there are problems with the proposed asm.
-
-> > [PATCH v2] SH: Convert ins[bwl]/outs[bwl] macros to inline functions
-> > https://marc.info/?l=linux-sh&m=157656907716201&w=2
-
-OK.
-
-> > [PATCH v2] SH: Convert iounmap() macros to inline functions
-> > https://marc.info/?l=linux-sh&m=157656903716172&w=2
-
-OK.
-
-> > [PATCH v2] sh: add missing DECLARE_EXPORT() for __ashiftrt_r4_xx
-> > https://marc.info/?l=linux-sh&m=157619891030685&w=2
-
-OK.
-
-> > [PATCH] sh: add missing EXPORT_SYMBOL() for __delay
-> > https://marc.info/?l=linux-kernel&m=157611811927852&w=2
-
-OK.
-
-> > [PATCH] sh: kgdb: Mark expected switch fall-throughs
-> > https://marc.info/?l=linux-sh&m=157241987926081&w=2
-
-This is already upstream.
-
-Rich
