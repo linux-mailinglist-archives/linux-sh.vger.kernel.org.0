@@ -2,75 +2,97 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE7BD1E9BD8
-	for <lists+linux-sh@lfdr.de>; Mon,  1 Jun 2020 04:55:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E1E41E9BE6
+	for <lists+linux-sh@lfdr.de>; Mon,  1 Jun 2020 05:03:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727061AbgFACzV (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sun, 31 May 2020 22:55:21 -0400
-Received: from brightrain.aerifal.cx ([216.12.86.13]:36524 "EHLO
+        id S1727056AbgFADDE (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sun, 31 May 2020 23:03:04 -0400
+Received: from brightrain.aerifal.cx ([216.12.86.13]:36540 "EHLO
         brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726555AbgFACzV (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sun, 31 May 2020 22:55:21 -0400
-Date:   Sun, 31 May 2020 22:55:15 -0400
+        with ESMTP id S1726860AbgFADDE (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sun, 31 May 2020 23:03:04 -0400
+Date:   Sun, 31 May 2020 23:03:01 -0400
 From:   Rich Felker <dalias@libc.org>
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     Rob Landley <rob@landley.net>,
-        Christoph Hellwig <hch@infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>, linux-sh@vger.kernel.org,
-        ysato@users.sourceforge.jp, linux-kernel@vger.kernel.org,
-        viro@zeniv.linux.org.uk, Geert Uytterhoeven <geert@linux-m68k.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [GIT PULL] sh: remove sh5 support
-Message-ID: <20200601025514.GS1079@brightrain.aerifal.cx>
-References: <20200424221948.1120587-1-arnd@arndb.de>
- <20200507143552.GA28683@infradead.org>
- <20200528054600.GA29717@infradead.org>
- <20200528161416.GY1079@brightrain.aerifal.cx>
- <20200529143059.GA25475@infradead.org>
- <20200529175335.GK1079@brightrain.aerifal.cx>
- <e86e1d78-9597-811a-da0e-42a910b0c9fe@physik.fu-berlin.de>
- <8b4ff7fe-c10c-fc8e-72bc-88ef69bdb2b4@landley.net>
- <eea4f39c-23d4-d435-a770-652d71268f34@physik.fu-berlin.de>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] sh: Implement __get_user_u64() required for 64-bit
+ get_user()
+Message-ID: <20200601030300.GT1079@brightrain.aerifal.cx>
+References: <20200529174540.4189874-1-glaubitz@physik.fu-berlin.de>
+ <20200529174540.4189874-2-glaubitz@physik.fu-berlin.de>
+ <CAMuHMdWG1wudoBP0EK8FiEj1BMEoL3r5oqJMUEbt2rqRU2gQpw@mail.gmail.com>
+ <ba354e30-82ab-68c2-0771-2489463c9279@physik.fu-berlin.de>
+ <2ad089c1-75cf-0986-c40f-c7f3f8fd6ead@physik.fu-berlin.de>
+ <CAMuHMdXzje-qFH=pGoouSuXTZYf4NvnzbaYxTm_boMek-DbWMg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <eea4f39c-23d4-d435-a770-652d71268f34@physik.fu-berlin.de>
+In-Reply-To: <CAMuHMdXzje-qFH=pGoouSuXTZYf4NvnzbaYxTm_boMek-DbWMg@mail.gmail.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Sun, May 31, 2020 at 10:03:13AM +0200, John Paul Adrian Glaubitz wrote:
-> On 5/31/20 5:20 AM, Rob Landley wrote:
-> > On 5/30/20 3:08 AM, John Paul Adrian Glaubitz wrote:
-> >> On 5/29/20 7:53 PM, Rich Felker wrote:
-> >>> Frustratingly, I _still_ don't have an official tree on kernel.org for
-> >>> the purpose of being the canonical place for linux-next to pull from,
-> >>> due to policies around pgp keys and nobody following up on signing
-> >>> mine. This is all really silly since there are ridiculously many
-> >>> independent channels I could cryptographically validate identity
-> >>> through with vanishing probability that they're all compromised. For
-> >>> the time being I'll reactivate my repo on git.musl-libc.org.
-> >>
-> >> May I suggest to pick up these patches, for example? There might be
-> >> more I missed, but getting these merged should already help a lot with
-> >> the clean-up of arch/sh.
-> > 
-> > Does that include the 2 fixes to build with current binutils I made puppy eyes
-> > about last -rc7 (in march)?
-> > 
-> > https://marc.info/?l=linux-sh&m=158544749818664&w=2
-> Yes, listed as "[PATCH 1/2] arch/sh: vmlinux.scr".
+On Sun, May 31, 2020 at 12:43:11PM +0200, Geert Uytterhoeven wrote:
+> Hi Adrian,
 > 
-> @Rich: Do you think you can merge all those fixes in your local tree within
->        the next days and send a PR to Linus?
+> On Sun, May 31, 2020 at 11:59 AM John Paul Adrian Glaubitz
+> <glaubitz@physik.fu-berlin.de> wrote:
+> > On 5/31/20 11:54 AM, John Paul Adrian Glaubitz wrote:
+> > > On 5/31/20 11:52 AM, Geert Uytterhoeven wrote:
+> > >> As this is the 64-bit variant, I think this single move should be
+> > >> replaced by a double move:
+> > >>
+> > >>        "mov  #0,%R1\n\t" \
+> > >>        "mov  #0,%S1\n\t" \
+> > >>
+> > >> Same for the big endian version below.
+> > >>
+> > >> Disclaimer: uncompiled, untested, no SH assembler expert.
+> > >
+> > > Right, this makes sense. I'll send a new patch shortly.
+> >
+> > Hmm, this change is not the case for __put_user_asm() vs. __put_user_u64().
+> > But I have to admit, I don't know what the part below "3:\n\t" is for.
 > 
-> Otherwise, I can volunteer to become a third maintainer for arch/sh as I have
-> the hardware for testing and can accept patches and send PRs.
+> It's part of the exception handling, in case the passed (userspace) pointer
+> points to an inaccessible address, and triggers an exception.
 > 
-> We shouldn't let contributors to arch/sh wait for too long.
+> For an invalid store, nothing is done, besides returning -EFAULT.
+> Hence there's no "mov #0, %1\n\t" in the put_user case.
+> For an invalid load, the data is replaced by zero, and -EFAULT is returned.
+> 
+> > +__asm__ __volatile__( \
+> > +       "1:\n\t" \
+> > +       "mov.l  %2,%R1\n\t" \
+> > +       "mov.l  %T2,%S1\n\t" \
+> > +       "2:\n" \
+> 
+> (reordering the two sections for easier explanation)
+> 
+> > +       ".section       __ex_table,\"a\"\n\t" \
+> > +       ".long  1b, 3b\n\t" \
+> 
+> In case an exception happens for the instruction at 1b, jump to 3b.
+> 
+> Note that the m68k version has two entries here: one for each half of
+> the 64-bit access[*].
+> I don't know if that is really needed (and thus SH needs it, too), or if
+> the exception code handles subsequent instructions automatically.
 
-Yes, I'll try to get my tree ready for next/PR use tomorrow.
+Can I propose a different solution? For archs where there isn't
+actually any 64-bit load or store instruction, does it make sense to
+be writing asm just to do two 32-bit loads/stores, especially when
+this code is not in a hot path?
+
+What about just having the 64-bit versions call the corresponding
+32-bit version twice? (Ideally this would even be arch-generic and
+could replace the m68k asm.) It would return EFAULT if either of the
+32-bit calls did.
 
 Rich
