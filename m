@@ -2,38 +2,44 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 952B71E9FDC
-	for <lists+linux-sh@lfdr.de>; Mon,  1 Jun 2020 10:15:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C18471E9FE1
+	for <lists+linux-sh@lfdr.de>; Mon,  1 Jun 2020 10:16:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727124AbgFAIPG (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 1 Jun 2020 04:15:06 -0400
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:51439 "EHLO
+        id S1725972AbgFAIQM (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 1 Jun 2020 04:16:12 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:45311 "EHLO
         outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726142AbgFAIPG (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 1 Jun 2020 04:15:06 -0400
+        by vger.kernel.org with ESMTP id S1725886AbgFAIQM (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 1 Jun 2020 04:16:12 -0400
 Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
           by outpost.zedat.fu-berlin.de (Exim 4.93)
           with esmtps (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
           (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1jffb5-003TZ8-1w; Mon, 01 Jun 2020 10:15:03 +0200
+          id 1jffc5-003Tq1-L8; Mon, 01 Jun 2020 10:16:05 +0200
 Received: from x4d0bb5f7.dyn.telefonica.de ([77.11.181.247] helo=[192.168.1.7])
           by inpost2.zedat.fu-berlin.de (Exim 4.93)
           with esmtpsa (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
           (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1jffb4-002gAO-RO; Mon, 01 Jun 2020 10:15:03 +0200
-Subject: Re: [PATCH] sh: fixup strncpy()
-To:     Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Karl Nasrallah <knnspeed@aol.com>,
-        Linux-SH <linux-sh@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
-References: <8736dijdit.wl-kuninori.morimoto.gx@renesas.com>
- <87zhfqhyuf.wl-kuninori.morimoto.gx@renesas.com>
- <b1336fcf-8b04-e16c-420c-ed7e766fef12@physik.fu-berlin.de>
- <87eeqzzn4m.wl-kuninori.morimoto.gx@renesas.com>
+          id 1jffc5-002gdY-E1; Mon, 01 Jun 2020 10:16:05 +0200
+Subject: Re: [GIT PULL] sh: remove sh5 support
+To:     Rich Felker <dalias@libc.org>
+Cc:     Rob Landley <rob@landley.net>,
+        Christoph Hellwig <hch@infradead.org>,
+        Arnd Bergmann <arnd@arndb.de>, linux-sh@vger.kernel.org,
+        ysato@users.sourceforge.jp, linux-kernel@vger.kernel.org,
+        viro@zeniv.linux.org.uk, Geert Uytterhoeven <geert@linux-m68k.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+References: <20200424221948.1120587-1-arnd@arndb.de>
+ <20200507143552.GA28683@infradead.org> <20200528054600.GA29717@infradead.org>
+ <20200528161416.GY1079@brightrain.aerifal.cx>
+ <20200529143059.GA25475@infradead.org>
+ <20200529175335.GK1079@brightrain.aerifal.cx>
+ <e86e1d78-9597-811a-da0e-42a910b0c9fe@physik.fu-berlin.de>
+ <8b4ff7fe-c10c-fc8e-72bc-88ef69bdb2b4@landley.net>
+ <eea4f39c-23d4-d435-a770-652d71268f34@physik.fu-berlin.de>
+ <20200601025514.GS1079@brightrain.aerifal.cx>
 From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  mQINBE3JE9wBEADMrYGNfz3oz6XLw9XcWvuIxIlPWoTyw9BxTicfGAv0d87wngs9U+d52t/R
@@ -79,12 +85,12 @@ Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  jEF9ImTPcYZpw5vhdyPwBdXW2lSjV3EAqknWujRgcsm84nycuJnImwJptR481EWmtuH6ysj5
  YhRVGbQPfdsjVUQfZdRdkEv4CZ90pdscBi1nRqcqANtzC+WQFwekDzk2lGqNRDg56s+q0KtY
  scOkTAZQGVpD/8AaLH4v1w==
-Message-ID: <2d4ac135-3fed-a526-daf5-81d3b51197ed@physik.fu-berlin.de>
-Date:   Mon, 1 Jun 2020 10:15:02 +0200
+Message-ID: <10dd17a1-974e-241e-bf84-53bd1ea70675@physik.fu-berlin.de>
+Date:   Mon, 1 Jun 2020 10:16:03 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <87eeqzzn4m.wl-kuninori.morimoto.gx@renesas.com>
+In-Reply-To: <20200601025514.GS1079@brightrain.aerifal.cx>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -95,39 +101,12 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Kuninori!
+Hi Rich!
 
-On 6/1/20 1:43 AM, Kuninori Morimoto wrote:
->> Since I don't want your fixes to fall off the table, you can ask Andrew
->> Morton to pick up your patches which is apparently the normal path to
->> choose when the original maintainers are currently not available.
-> 
-> Actually, I had been posted it to Andrew many times [1],
-> but nothing happened.
+On 6/1/20 4:55 AM, Rich Felker wrote:
+> Yes, I'll try to get my tree ready for next/PR use tomorrow.
 
-Okay, that's unfortunate.
-
-> And according to [2], it seems SH maintainers are still working,
-> thus, normal path is still them.
-
-Yes, Rich seems to be back on track.
-
-> I had been worked for SH before, and posted many fixup patches
-> for many times to both Andrew and SH maintainers.
-> But their are still not yet reviewd/accepted.
-> And unfortunately, it seems I'm judged as spam from SH maintainers [2].
-> So I can do nothing anymore...
-
-I really appreciate your help and I would like to see more of your fixes
-come in. Please don't be let down and let's try to get your patches
-merged.
-
-Rich has promised that he will create a new tree on his website, so I think
-your patches will be merged soon.
-
-If you have more ideas for fixes, please feel encouraged to post patches, I
-will try to help you to get all of them merged. I'm very sorry that you had
-to wait for such a long time.
+Great, really looking forward.
 
 Adrian
 
