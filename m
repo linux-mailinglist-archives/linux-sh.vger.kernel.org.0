@@ -2,92 +2,79 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BEA261EB077
-	for <lists+linux-sh@lfdr.de>; Mon,  1 Jun 2020 22:51:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC4AF1EB0C0
+	for <lists+linux-sh@lfdr.de>; Mon,  1 Jun 2020 23:12:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728593AbgFAUub (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 1 Jun 2020 16:50:31 -0400
-Received: from brightrain.aerifal.cx ([216.12.86.13]:37906 "EHLO
-        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727875AbgFAUub (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 1 Jun 2020 16:50:31 -0400
-Date:   Mon, 1 Jun 2020 16:50:29 -0400
-From:   Rich Felker <dalias@libc.org>
-To:     Michael Karcher <michael.karcher@fu-berlin.de>
+        id S1728097AbgFAVMg (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 1 Jun 2020 17:12:36 -0400
+Received: from mout.kundenserver.de ([212.227.126.187]:41885 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727959AbgFAVMg (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 1 Jun 2020 17:12:36 -0400
+Received: from mail-qt1-f172.google.com ([209.85.160.172]) by
+ mrelayeu.kundenserver.de (mreue012 [212.227.15.129]) with ESMTPSA (Nemesis)
+ id 1N30VJ-1iyiLf0kLV-013KLK; Mon, 01 Jun 2020 23:12:34 +0200
+Received: by mail-qt1-f172.google.com with SMTP id z1so8982278qtn.2;
+        Mon, 01 Jun 2020 14:12:33 -0700 (PDT)
+X-Gm-Message-State: AOAM533nA2M7X0nDNCszYQzXUCVp89iHBeSWdIULd1mVC8utIrefaarU
+        6gTBMaYCH1RBmUxZe/ZXl++W+8JEp99ko9v4VFU=
+X-Google-Smtp-Source: ABdhPJwlkHJZj6oVKbNFiO9r5IBxcZavRqQB46OFlMlJ5U6cADZ7c3bv7G5ohWFCGoIb7lBj/Snd0szOhKQRVmnLlSw=
+X-Received: by 2002:ac8:4742:: with SMTP id k2mr16568747qtp.304.1591045953016;
+ Mon, 01 Jun 2020 14:12:33 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200424221948.1120587-1-arnd@arndb.de> <20200507143552.GA28683@infradead.org>
+ <20200528054600.GA29717@infradead.org> <20200528161416.GY1079@brightrain.aerifal.cx>
+ <20200529143059.GA25475@infradead.org> <20200529175335.GK1079@brightrain.aerifal.cx>
+ <e86e1d78-9597-811a-da0e-42a910b0c9fe@physik.fu-berlin.de> <20200601181259.GV1079@brightrain.aerifal.cx>
+In-Reply-To: <20200601181259.GV1079@brightrain.aerifal.cx>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Mon, 1 Jun 2020 23:12:17 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a3=XjLvQYz2xB_1=XHFb34Q6zhAJbpJEDRUPX_r=kEBRg@mail.gmail.com>
+Message-ID: <CAK8P3a3=XjLvQYz2xB_1=XHFb34Q6zhAJbpJEDRUPX_r=kEBRg@mail.gmail.com>
+Subject: Re: [GIT PULL] sh: remove sh5 support
+To:     Rich Felker <dalias@libc.org>
 Cc:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Christoph Hellwig <hch@infradead.org>,
         Linux-sh list <linux-sh@vger.kernel.org>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] sh: Implement __get_user_u64() required for 64-bit
- get_user()
-Message-ID: <20200601205029.GW1079@brightrain.aerifal.cx>
-References: <20200529174540.4189874-2-glaubitz@physik.fu-berlin.de>
- <CAMuHMdWG1wudoBP0EK8FiEj1BMEoL3r5oqJMUEbt2rqRU2gQpw@mail.gmail.com>
- <ba354e30-82ab-68c2-0771-2489463c9279@physik.fu-berlin.de>
- <2ad089c1-75cf-0986-c40f-c7f3f8fd6ead@physik.fu-berlin.de>
- <CAMuHMdXzje-qFH=pGoouSuXTZYf4NvnzbaYxTm_boMek-DbWMg@mail.gmail.com>
- <20200601030300.GT1079@brightrain.aerifal.cx>
- <CAMuHMdUmpLRyYTPO8LPtOyYtraQ77XZqYy9=8cUiWphmpvczmg@mail.gmail.com>
- <fbfca28d-217d-4857-a010-8c6e277db67c@physik.fu-berlin.de>
- <20200601165700.GU1079@brightrain.aerifal.cx>
- <50235.92.201.26.143.1591043169.webmail@webmail.zedat.fu-berlin.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <50235.92.201.26.143.1591043169.webmail@webmail.zedat.fu-berlin.de>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Rob Landley <rob@landley.net>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:vnD1w4JIerwlVbUrWo+NrkH4+L+5V+6rEkGIinq8OlF6s3wAXtV
+ nrPCLJyZRKHNfEIFbdt/vwySKjCVMiKiBnA5a4cII6OtAw0mNUh+RyGz+p5rwPrfAwZZrKN
+ JUFdLBBAb5McBgsDozrzx01hOUXN2tHWUskOFf4zjiGyxug8TOtmd5uQUrFX6xxI2+dn7M6
+ 04P0+RDBDA9XSS7kL4vcA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:ufMYFtxDZQc=:hx3cVG0gQM4l9JYE4Hyr24
+ dHMWcbDMSjr5HDKazRI1aSMJxCDiP8vrJ+tHsrm5dvBrJUipPl7bjREhsKppBZcI8mW84j18q
+ vo676g7BH4x5fUwsGLTm62JPKQsejZ6rvXxREcScRZlT0a0E2o3d3rrxQgCaqK65vuRGo/cvW
+ ObVm3OmXN5aHqYdqPjTYo1a40gcur2b+Bu+XRgN5Jdb7omlECCf6gwjfqaLQBmH1bRN/rE25j
+ a0AW1gNN1gTwuykP8QJp10mZJFdwn1iOdm6AfDtJ9pL5mepbiQVM4PYQQioNftXxINMgqL9Oa
+ AbGNZMNlxna9mUNRfS/xMseF09CN2jlch4Ynqz3Pqxwi4J5xuKs2AMdY16C2Vr0pPLkdLMe0y
+ PDm2EI/th43Dp/t8p9xbAZydfkfIiEVAMwdfItoGF2QWtch+r4hf6mcJ+JQTDN2HUvogFpPRk
+ h8C/3wKg5zHtR6YiltX7t9G2nLoJWSaGDZKOML+GcG4IVowTDCvQgAy5cm2UWaxDoy0hjDeaD
+ V7FcJNgzg9UQjWYzDzWyAO9ox+2AChNbP+Ll+5lA0ue8YfaGju4BBqMNQFcW1D69s5A/fOcU4
+ oCuEfVfAaLvxjaN+UgyDODHFyAtRhjg1T7gBbA/miq9yPLeucy6rRyr5yIJ0mdY2zCda7uiZm
+ yAUnzkR/jCa+ElkB4I1Jj9LqNS1n81gW8bJha1yraQCo95SSUlG/Xn2421plIBoHt6ZLELOIc
+ /dAzW42p6vhiReWyG7fa6aODDE+xVPLbFABnWyW5R/8JH3dWBr01tF2j0sTt2Wvz25cZcTA3g
+ 19FBmRq1qkC1jVhImaqbJDi4D45nuMo0uBKhjaZ8FC8WxXhW1U=
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Mon, Jun 01, 2020 at 10:26:09PM +0200, Michael Karcher wrote:
-> Rich Felker schrieb:
-> >> >> Can I propose a different solution? For archs where there isn't
-> >> >> actually any 64-bit load or store instruction, does it make sense to
-> >> >> be writing asm just to do two 32-bit loads/stores, especially when
-> >> >> this code is not in a hot path?
-> >> > Yes, that's an option, too.
-> >> That's the solution that Michael Karcher suggested to me as an
-> >> alternative when I talked to him off-list.
-> 
-> There is a functional argument agains using get_user_32 twice, which I
-> overlooked in my private reply to Adrian. If any of the loads fail, we do
-> not only want err to be set to -EFAULT (which will happen), but we also
-> want a 64-bit zero as result. If one 32-bit read faults, but the other one
-> works, we would get -EFAULT together with 32 valid data bits, and 32 zero
-> bits.
+On Mon, Jun 1, 2020 at 8:13 PM Rich Felker <dalias@libc.org> wrote:
+> On Sat, May 30, 2020 at 10:08:09AM +0200, John Paul Adrian Glaubitz wrote:
+> > On 5/29/20 7:53 PM, Rich Felker wrote:
+> > > [PATCH next] sh: remove call to memset after dma_alloc_coherent
+> > > https://marc.info/?l=linux-sh&m=157793031102356&w=2
+>
+> Can anyone confirm that this is correct/safe?
 
-Indeed, if you do it that way you want to check the return value and
-set the value to 0 if either faults.
+Yes, this is safe, I checked both the API definition and the sh
+implementation in arch_dma_alloc(), which passes __GFP_ZERO.
 
-BTW I'm not sure what's supposed to happen on write if half faults
-after the other half already succeeded... Either a C approach or an
-asm approach has to consider that.
-
-> > I don't have an objection to doing it the way you've proposed, but I
-> > don't think there's any performance distinction or issue with the two
-> > invocations.
-> 
-> Assuming we don't need two exception table entries (put_user_64 currently
-> uses only one, maybe it's wrong), using put_user_32 twice creates an extra
-> unneeded exception table entry, which will "bloat" the exception table.
-> That table is most likely accessed by a binary search algorithm, so the
-> performance loss is marginal, though. Also a bigger table size is
-> cache-unfriendly. (Again, this is likely marginal again, as binary search
-> is already extremely cache-unfriendly).
-> 
-> A similar argument can be made for the exception handler. Even if we need
-> two entries in the exception table, so the first paragraph does not apply,
-> the two entries in the exception table can share the same exception
-> handler (clear the whole 64-bit destination to zero, set -EFAULT, jump
-> past both load instructions), so that part of (admittedly cold) kernel
-> code can get some instructios shorter.
-
-Indeed. I don't think it's a significant difference but if kernel
-folks do that's fine. In cases like this my personal preference is to
-err on the side of less arch-specific asm.
-
-Rich
+       Arnd
