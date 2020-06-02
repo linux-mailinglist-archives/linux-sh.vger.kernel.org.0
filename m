@@ -2,63 +2,112 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB2E11EB779
-	for <lists+linux-sh@lfdr.de>; Tue,  2 Jun 2020 10:35:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F05A01EB976
+	for <lists+linux-sh@lfdr.de>; Tue,  2 Jun 2020 12:20:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725900AbgFBIfW (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 2 Jun 2020 04:35:22 -0400
-Received: from sonic309-13.consmr.mail.bf2.yahoo.com ([74.6.129.123]:40958
-        "EHLO sonic309-13.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725835AbgFBIfV (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 2 Jun 2020 04:35:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1591086920; bh=V09D8a1N75lUFkJxVR9aVpVPFU2IfPbM8afoyzXI9EQ=; h=Date:From:Reply-To:Subject:References:From:Subject; b=GfwuZ/YOGSf76XVuNowbeu9e0HpUBJhYgBrSjLlP7AWNEZT08SOaes1ZkwX1Vq7q4RuDVYgng+2r8uBfk1kXmN8eLJlqqZ6YgGw/OeqHmNsG2h2JqST2h4d0Lxi8yjkceCRoyicTuunRDtGi3tn8SIIFle+PGbO5c/s5jfwE0wOFHWpO69LWtayg5sv/N0CYrCVCJVnK++K+TQSIdh9GHBy4Nr3v54k1hs/J9ij+9iAtUuIsAjDd5qkUd9JRzYXg0vhdkOLQ2ImHWfwZBjZI/jWB5Q8vF0IQoeA8881rgK5zb8DSdnQgSoj2B2GCPnYHgw3wAm2EngjsyRJJ3tdFxQ==
-X-YMail-OSG: cNuxTIwVM1ktlcHGcoTacO4hU86YQRDsMajp0h21rtZzGpKxpaRx15YVxO_Fjj4
- bU3Z7Rg9oclQFzY6BhJeyvYvzOVk6wd_luT5a84JkUoJGkDgIBO3b_F4Y.m7eHeCFMM.cdREhfrw
- xNd.NzsYxDi01Ahc3ztUUpsPg1ODsNBJvymCOdG1HCpWEfLGFxJiIq8YJrL7P9jNwdSAN5eRpaui
- ucCjJgJ57u.H3DdNTAAedb8lGPGXDamCEk9wpVZOM5om.Io0mGTs8E03ULyhPE0igS3l5uMd6ieD
- 6DeDB8OM1_8TOMvhYmUArxkNx0vZEXn5zAZ1VnleBcDFtMHnhnsXObeTosNnoJ9IcTCdLyjVdAl8
- WJlxGJnfB3TCPRsIRHT0bokpNXT.w.uctWpq3XzD_EMpYgZpYChXA_zzmlCc6krw0_06CfSrNcSZ
- fPUfRL9.lGVG.CqIQWAOpFwIYi57jT.hLZwPrq6iMk9mTvDdwIp33bP7xUAO8eR0fGpwY4NxQo6O
- jKLst4jn2fmKKVCwHoxNfBpufxVlKEISY9bImoykHxV3qPkD0GmHJV9MiA2F0radCo9oVyx2YMV1
- 8Gz94OO2D8ngxhhOWy5SBP1gzZ90sjze8OgQRcWZOA6HSiZ2oLk3QywmeTt5cNNo7_ehuAoXq.s8
- XqLbTf6PHcxNZwFsOlrn4fDvE8flH6Fg635lLTHaTLqQCQuS0iNZJj2XRbfv9Ar45PR.59E1haM2
- BZEGt5LFsiY31aYNbdalqgm0BOf.H3ur5M0dUAfz90qSO5qlBiMDx6jp8D5V2VosHw.5Lvgg.pIK
- bITR60FuJYu3fEfL25KzqqY.3Lsbh1nT.E3CbTxkbUyctbVlq4zoUgpTnSRPIKXgMYqB3Cm2CrFi
- Yhw4kMZ5bMNTlqU.C9mS9akNQhBJ_7Fn_DS3PDZxbayx2Wwr4v2tMBOvH_qSCGhjsnAAZRuA2IRb
- zqRhgcR8O._ycC1nEtSijE.Gk.oboRQYeeo5a_ph4H6sRqc1z.ZCgETr0TkXMVw5lrz7yAgNBGKj
- Cl4zW6clLNA9p0Pi_AiImJvT_XC_7LxbL1enqWKgkGshMxaO61WPEYTAWwclV.6cDfHPb0KV_LSE
- OagUkbK0QeW_jhpkTQ85QyGVdBRcRjxCivF_uzFS7gTkaP0WUKKCODtAKASoRe1QB83YUkv.f.Fv
- pgxAfJPF.JVQnpAzy77KZ6040BsrKy7lInFRaX97tjdHllCbgjCjWvODlWuVbH9JvFYcKEugMQOa
- 9M_8N.5xFT8jSPVltUNnnVGpOYIIKuBADZ1LZMfOfSyFCWmBRnM4Vvv9u_OgKMX84i1NRFUjinCv
- .wCA-
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.bf2.yahoo.com with HTTP; Tue, 2 Jun 2020 08:35:20 +0000
-Date:   Tue, 2 Jun 2020 08:35:19 +0000 (UTC)
-From:   Ahmed <ouedraogo.2.3.4.5@gmail.com>
-Reply-To: ouedraogoahmed@outlook.com
-Message-ID: <1969385350.905223.1591086919784@mail.yahoo.com>
-Subject: Hello
+        id S1728145AbgFBKTR (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 2 Jun 2020 06:19:17 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:51247 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726217AbgFBKTN (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 2 Jun 2020 06:19:13 -0400
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.93)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <mkarcher@zedat.fu-berlin.de>)
+          id 1jg40h-001feJ-SA; Tue, 02 Jun 2020 12:19:07 +0200
+Received: from webmail1.zedat.fu-berlin.de ([130.133.4.91] helo=webmail.zedat.fu-berlin.de)
+          by inpost2.zedat.fu-berlin.de (Exim 4.93)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+          (envelope-from <mkarcher@zedat.fu-berlin.de>)
+          id 1jg40h-002YxY-Cn; Tue, 02 Jun 2020 12:19:07 +0200
+Received: from 92.196.166.68
+        (ZEDAT-Webmail authenticated user mkarcher)
+        by webmail.zedat.fu-berlin.de with HTTP;
+        Tue, 2 Jun 2020 12:19:07 +0200
+Message-ID: <52568.92.196.166.68.1591093147.webmail@webmail.zedat.fu-berlin.de>
+In-Reply-To: <20200601205029.GW1079@brightrain.aerifal.cx>
+References: <20200529174540.4189874-2-glaubitz@physik.fu-berlin.de>
+    <CAMuHMdWG1wudoBP0EK8FiEj1BMEoL3r5oqJMUEbt2rqRU2gQpw@mail.gmail.com>
+    <ba354e30-82ab-68c2-0771-2489463c9279@physik.fu-berlin.de>
+    <2ad089c1-75cf-0986-c40f-c7f3f8fd6ead@physik.fu-berlin.de>
+    <CAMuHMdXzje-qFH=pGoouSuXTZYf4NvnzbaYxTm_boMek-DbWMg@mail.gmail.com>
+    <20200601030300.GT1079@brightrain.aerifal.cx>
+    <CAMuHMdUmpLRyYTPO8LPtOyYtraQ77XZqYy9=8cUiWphmpvczmg@mail.gmail.com>
+    <fbfca28d-217d-4857-a010-8c6e277db67c@physik.fu-berlin.de>
+    <20200601165700.GU1079@brightrain.aerifal.cx>
+    <50235.92.201.26.143.1591043169.webmail@webmail.zedat.fu-berlin.de>
+    <20200601205029.GW1079@brightrain.aerifal.cx>
+Date:   Tue, 2 Jun 2020 12:19:07 +0200
+Subject: Re: [PATCH] sh: Implement __get_user_u64() required for 64-bit
+ get_user()
+From:   "Michael Karcher" <michael.karcher@fu-berlin.de>
+To:     "Rich Felker" <dalias@libc.org>
+Cc:     "Michael Karcher" <michael.karcher@fu-berlin.de>,
+        "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>,
+        "Geert Uytterhoeven" <geert@linux-m68k.org>,
+        "Linux-sh list" <linux-sh@vger.kernel.org>,
+        "Yoshinori Sato" <ysato@users.sourceforge.jp>,
+        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>
+User-Agent: ZEDAT-Webmail
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-References: <1969385350.905223.1591086919784.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.16037 YMailNodin Mozilla/5.0 (Windows NT 6.1; rv:74.0) Gecko/20100101 Firefox/74.0
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain;charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: 130.133.4.91
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
+Rich Felker schrieb:
+>> There is a functional argument agains using get_user_32 twice, which I
+>> overlooked in my private reply to Adrian. If any of the loads fail, we
+>> do not only want err to be set to -EFAULT (which will happen), but we
+>> also want a 64-bit zero as result. If one 32-bit read faults, but the
+>> other one works, we would get -EFAULT together with 32 valid data bits,
+>> and 32 zero bits.
+> Indeed, if you do it that way you want to check the return value and
+> set the value to 0 if either faults.
 
+Indeed. And if you do *that*, the performance of the hot path is affected
+by the extra check. The performance discussion below only applied to the
+cold path, so it seems perfectly valid to disregard it in favore of better
+maintainability. On the other hand, checking the return value has a
+possibly more serious performance and size (and if you like at the
+I-Cache, size means performance) impact. When discussing size impact,
+we should keep in mind that put_user for fixed size is supposed to be
+inlined, so it's not a one-time cost, but a cost per call. On the other
+hand, though, put_user for 64-bit values on SH4 seems to be nearly never
+called, so the impact is still most likely negligible.
 
-Dear Friend,
+> BTW I'm not sure what's supposed to happen on write if half faults
+> after the other half already succeeded... Either a C approach or an
+> asm approach has to consider that.
+That's an interesting question. From a kernel developer's point of view,
+it seems like a valid view to say: "If userspace provides a bad pointer
+where the kernel has to put the data, it's a problem of userspace. The
+kernel only needs to tell userspace that the write is incomplete." This
+is different to the defensive approach used when reading from user space
+into kernel space. Here forcing the whole 64 bit to be zero makes the
+kernel itself more robust by removing strange corner cases.
 
-I know that this mail will come to you as a surprise as we have never met before, but need not to worry as I am contacting you independently of my investigation and no one is informed of this communication. I need your urgent assistance in transferring the sum of $11.3million immediately to your private account.The money has been here in our Bank lying dormant for years now without anybody coming for the claim of it.
+> Indeed. I don't think it's a significant difference but if kernel
+> folks do that's fine. In cases like this my personal preference is to
+> err on the side of less arch-specific asm.
+This is a good idea to reduce maintainance cost. I agree it's up to the
+kernel folks to decide whether:
+ - Half-zeroed reads of partially faulted 64-bit-reads are acceptable
+ - Cold error checks in the hot path to ensure full zeroing is acceptable
+ - maintainance of arch-specific asm on many 32-bit architectures is
+acceptable.
 
-I want to release the money to you as the relative to our deceased customer (the account owner) who died a long with his supposed Next Of Kin since 16th October 2005. The Banking laws here does not allow such money to stay more than 15 years, because the money will be recalled to the Bank treasury account as unclaimed fund.
+I don't want to endorse one of these three options, as I am out of the loop
+regarding kernel development priorities and philosophy, I just intend to
+point out the different options the kernel has to pick the one that fits
+best.
 
-By indicating your interest I will send you the full details on how the business will be executed.
+Regards,
+  Michael Karcher
 
-Please respond urgently and delete if you are not interested.
-
-Best Regards,
-Ahmed Ouedraogo.
