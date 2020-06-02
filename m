@@ -2,112 +2,74 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F05A01EB976
-	for <lists+linux-sh@lfdr.de>; Tue,  2 Jun 2020 12:20:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 760B01EC3AA
+	for <lists+linux-sh@lfdr.de>; Tue,  2 Jun 2020 22:28:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728145AbgFBKTR (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 2 Jun 2020 06:19:17 -0400
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:51247 "EHLO
-        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726217AbgFBKTN (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 2 Jun 2020 06:19:13 -0400
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.93)
-          with esmtps (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-          (envelope-from <mkarcher@zedat.fu-berlin.de>)
-          id 1jg40h-001feJ-SA; Tue, 02 Jun 2020 12:19:07 +0200
-Received: from webmail1.zedat.fu-berlin.de ([130.133.4.91] helo=webmail.zedat.fu-berlin.de)
-          by inpost2.zedat.fu-berlin.de (Exim 4.93)
-          with esmtps (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-          (envelope-from <mkarcher@zedat.fu-berlin.de>)
-          id 1jg40h-002YxY-Cn; Tue, 02 Jun 2020 12:19:07 +0200
-Received: from 92.196.166.68
-        (ZEDAT-Webmail authenticated user mkarcher)
-        by webmail.zedat.fu-berlin.de with HTTP;
-        Tue, 2 Jun 2020 12:19:07 +0200
-Message-ID: <52568.92.196.166.68.1591093147.webmail@webmail.zedat.fu-berlin.de>
-In-Reply-To: <20200601205029.GW1079@brightrain.aerifal.cx>
-References: <20200529174540.4189874-2-glaubitz@physik.fu-berlin.de>
-    <CAMuHMdWG1wudoBP0EK8FiEj1BMEoL3r5oqJMUEbt2rqRU2gQpw@mail.gmail.com>
-    <ba354e30-82ab-68c2-0771-2489463c9279@physik.fu-berlin.de>
-    <2ad089c1-75cf-0986-c40f-c7f3f8fd6ead@physik.fu-berlin.de>
-    <CAMuHMdXzje-qFH=pGoouSuXTZYf4NvnzbaYxTm_boMek-DbWMg@mail.gmail.com>
-    <20200601030300.GT1079@brightrain.aerifal.cx>
-    <CAMuHMdUmpLRyYTPO8LPtOyYtraQ77XZqYy9=8cUiWphmpvczmg@mail.gmail.com>
-    <fbfca28d-217d-4857-a010-8c6e277db67c@physik.fu-berlin.de>
-    <20200601165700.GU1079@brightrain.aerifal.cx>
-    <50235.92.201.26.143.1591043169.webmail@webmail.zedat.fu-berlin.de>
-    <20200601205029.GW1079@brightrain.aerifal.cx>
-Date:   Tue, 2 Jun 2020 12:19:07 +0200
-Subject: Re: [PATCH] sh: Implement __get_user_u64() required for 64-bit
- get_user()
-From:   "Michael Karcher" <michael.karcher@fu-berlin.de>
-To:     "Rich Felker" <dalias@libc.org>
-Cc:     "Michael Karcher" <michael.karcher@fu-berlin.de>,
-        "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>,
-        "Geert Uytterhoeven" <geert@linux-m68k.org>,
-        "Linux-sh list" <linux-sh@vger.kernel.org>,
-        "Yoshinori Sato" <ysato@users.sourceforge.jp>,
-        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>
-User-Agent: ZEDAT-Webmail
+        id S1727046AbgFBU2e (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 2 Jun 2020 16:28:34 -0400
+Received: from brightrain.aerifal.cx ([216.12.86.13]:38214 "EHLO
+        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726373AbgFBU2e (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 2 Jun 2020 16:28:34 -0400
+Date:   Tue, 2 Jun 2020 16:28:33 -0400
+From:   Rich Felker <dalias@libc.org>
+To:     Stephen Rothwell <sfr@canb.auug.org.au>
+Cc:     Linux Next Mailing List <linux-next@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>
+Subject: Re: linux-sh for-next reactivation
+Message-ID: <20200602202832.GA3776@brightrain.aerifal.cx>
+References: <20200602031123.GA1079@brightrain.aerifal.cx>
+ <20200602150039.780a0ac0@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain;charset=utf-8
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: 130.133.4.91
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200602150039.780a0ac0@canb.auug.org.au>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Rich Felker schrieb:
->> There is a functional argument agains using get_user_32 twice, which I
->> overlooked in my private reply to Adrian. If any of the loads fail, we
->> do not only want err to be set to -EFAULT (which will happen), but we
->> also want a 64-bit zero as result. If one 32-bit read faults, but the
->> other one works, we would get -EFAULT together with 32 valid data bits,
->> and 32 zero bits.
-> Indeed, if you do it that way you want to check the return value and
-> set the value to 0 if either faults.
+On Tue, Jun 02, 2020 at 03:00:39PM +1000, Stephen Rothwell wrote:
+> Hi Rich,
+> 
+> On Mon, 1 Jun 2020 23:11:39 -0400 Rich Felker <dalias@libc.org> wrote:
+> >
+> > Could you reactivate linux-next pull from my arch/sh for-next branch?
+> > It's where it was before, at:
+> > 
+> >     git://git.libc.org/linux-sh for-next
+> > 
+> > and has newly accepted patches ready.
+> 
+> I already have an SH tree from
+> git://git.sourceforge.jp/gitroot/uclinux-h8/linux.git#sh-next .  Should
+> I do anything with that one?
+> 
+> It currently contains:
+> 
+> $ git log --oneline origin/master..sh/sh-next 
+> a193018e5290 (sh/sh-next) sh: add missing EXPORT_SYMBOL() for __delay
+> 1d5fd6c33b04 sh: add missing DECLARE_EXPORT() for __ashiftrt_r4_xx
+> d70f1e3d5dbd Merge remote-tracking branch 'origin/master' into sh-next
+> baf58858e8b6 sh: prefer __section from compiler_attributes.h
+> 8619b5a9035a sh: Drop -Werror from kernel Makefile
+> 3a3a78124693 sh: kernel: disassemble: Mark expected switch fall-throughs
+> fb8f77490f55 sh: kernel: hw_breakpoint: Fix missing break in switch statement
+> cd10afbc932d sh: remove unneeded uapi asm-generic wrappers
+> cbfc6edb6a4a sh: use __builtin_constant_p() directly instead of IS_IMMEDIATE()
 
-Indeed. And if you do *that*, the performance of the hot path is affected
-by the extra check. The performance discussion below only applied to the
-cold path, so it seems perfectly valid to disregard it in favore of better
-maintainability. On the other hand, checking the return value has a
-possibly more serious performance and size (and if you like at the
-I-Cache, size means performance) impact. When discussing size impact,
-we should keep in mind that put_user for fixed size is supposed to be
-inlined, so it's not a one-time cost, but a cost per call. On the other
-hand, though, put_user for 64-bit values on SH4 seems to be nearly never
-called, so the impact is still most likely negligible.
+Hi Stephen,
 
-> BTW I'm not sure what's supposed to happen on write if half faults
-> after the other half already succeeded... Either a C approach or an
-> asm approach has to consider that.
-That's an interesting question. From a kernel developer's point of view,
-it seems like a valid view to say: "If userspace provides a bad pointer
-where the kernel has to put the data, it's a problem of userspace. The
-kernel only needs to tell userspace that the write is incomplete." This
-is different to the defensive approach used when reading from user space
-into kernel space. Here forcing the whole 64 bit to be zero makes the
-kernel itself more robust by removing strange corner cases.
+I completely forgot that you had the tree from our other co-maintainer
+Yoshinori Sato on the list linux-next is pulling from. Would it be
+okay to keep both? That would help with quickly identifying and
+resolving any conflicting commits and make things go more smoothly
+with two maintainers trying to be active.
 
-> Indeed. I don't think it's a significant difference but if kernel
-> folks do that's fine. In cases like this my personal preference is to
-> err on the side of less arch-specific asm.
-This is a good idea to reduce maintainance cost. I agree it's up to the
-kernel folks to decide whether:
- - Half-zeroed reads of partially faulted 64-bit-reads are acceptable
- - Cold error checks in the hot path to ensure full zeroing is acceptable
- - maintainance of arch-specific asm on many 32-bit architectures is
-acceptable.
+Let me know if this doesn't work for you and we'll figure out
+alternative arrangements.
 
-I don't want to endorse one of these three options, as I am out of the loop
-regarding kernel development priorities and philosophy, I just intend to
-point out the different options the kernel has to pick the one that fits
-best.
-
-Regards,
-  Michael Karcher
-
+Rich
