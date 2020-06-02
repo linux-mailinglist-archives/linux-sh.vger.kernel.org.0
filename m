@@ -2,105 +2,63 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A4381EB4CD
-	for <lists+linux-sh@lfdr.de>; Tue,  2 Jun 2020 07:00:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB2E11EB779
+	for <lists+linux-sh@lfdr.de>; Tue,  2 Jun 2020 10:35:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726118AbgFBFAn (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 2 Jun 2020 01:00:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55828 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725787AbgFBFAm (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 2 Jun 2020 01:00:42 -0400
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87D52C061A0E;
-        Mon,  1 Jun 2020 22:00:42 -0700 (PDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 49bfxh5c8Pz9sSc;
-        Tue,  2 Jun 2020 15:00:40 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
-        s=201702; t=1591074041;
-        bh=kLo8D05nwjnkeeDgzqHh8FHUQMdvTn0azD2tCjFkAxI=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=tykouUWwxeeeXmYSea5wtQPX4Zrdymi7sBY5ptulqrLH0IzO11ZUKx7Dxmj7buT7k
-         HjkpOLr8XKhbvbbTxvKoZHAW6PzHnX1L1RT0CdCqpxWMf+YR6SlHXrfqxn+vnWGlx0
-         1nqCWA2nK66vgW7B6kh1833hmOzbu9VNJos5TeEcrDGYe1rUyhtU8FQYClNofmonAT
-         tmdVSJqoUh7p8DJhxu0jtwljqaNk70lgbdhrcDM1PKkqvyBZBqHVR7pXGx01BaZfeb
-         6WifNbgMx9MsGKdQ/2RMNIchbMcBC9rj5djdl2gN7jcOJIkagrz/lmnwn9i/CrDEnp
-         glNxF4o+Ui8Ag==
-Date:   Tue, 2 Jun 2020 15:00:39 +1000
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Rich Felker <dalias@libc.org>
-Cc:     Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: Re: linux-sh for-next reactivation
-Message-ID: <20200602150039.780a0ac0@canb.auug.org.au>
-In-Reply-To: <20200602031123.GA1079@brightrain.aerifal.cx>
-References: <20200602031123.GA1079@brightrain.aerifal.cx>
+        id S1725900AbgFBIfW (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 2 Jun 2020 04:35:22 -0400
+Received: from sonic309-13.consmr.mail.bf2.yahoo.com ([74.6.129.123]:40958
+        "EHLO sonic309-13.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725835AbgFBIfV (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 2 Jun 2020 04:35:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1591086920; bh=V09D8a1N75lUFkJxVR9aVpVPFU2IfPbM8afoyzXI9EQ=; h=Date:From:Reply-To:Subject:References:From:Subject; b=GfwuZ/YOGSf76XVuNowbeu9e0HpUBJhYgBrSjLlP7AWNEZT08SOaes1ZkwX1Vq7q4RuDVYgng+2r8uBfk1kXmN8eLJlqqZ6YgGw/OeqHmNsG2h2JqST2h4d0Lxi8yjkceCRoyicTuunRDtGi3tn8SIIFle+PGbO5c/s5jfwE0wOFHWpO69LWtayg5sv/N0CYrCVCJVnK++K+TQSIdh9GHBy4Nr3v54k1hs/J9ij+9iAtUuIsAjDd5qkUd9JRzYXg0vhdkOLQ2ImHWfwZBjZI/jWB5Q8vF0IQoeA8881rgK5zb8DSdnQgSoj2B2GCPnYHgw3wAm2EngjsyRJJ3tdFxQ==
+X-YMail-OSG: cNuxTIwVM1ktlcHGcoTacO4hU86YQRDsMajp0h21rtZzGpKxpaRx15YVxO_Fjj4
+ bU3Z7Rg9oclQFzY6BhJeyvYvzOVk6wd_luT5a84JkUoJGkDgIBO3b_F4Y.m7eHeCFMM.cdREhfrw
+ xNd.NzsYxDi01Ahc3ztUUpsPg1ODsNBJvymCOdG1HCpWEfLGFxJiIq8YJrL7P9jNwdSAN5eRpaui
+ ucCjJgJ57u.H3DdNTAAedb8lGPGXDamCEk9wpVZOM5om.Io0mGTs8E03ULyhPE0igS3l5uMd6ieD
+ 6DeDB8OM1_8TOMvhYmUArxkNx0vZEXn5zAZ1VnleBcDFtMHnhnsXObeTosNnoJ9IcTCdLyjVdAl8
+ WJlxGJnfB3TCPRsIRHT0bokpNXT.w.uctWpq3XzD_EMpYgZpYChXA_zzmlCc6krw0_06CfSrNcSZ
+ fPUfRL9.lGVG.CqIQWAOpFwIYi57jT.hLZwPrq6iMk9mTvDdwIp33bP7xUAO8eR0fGpwY4NxQo6O
+ jKLst4jn2fmKKVCwHoxNfBpufxVlKEISY9bImoykHxV3qPkD0GmHJV9MiA2F0radCo9oVyx2YMV1
+ 8Gz94OO2D8ngxhhOWy5SBP1gzZ90sjze8OgQRcWZOA6HSiZ2oLk3QywmeTt5cNNo7_ehuAoXq.s8
+ XqLbTf6PHcxNZwFsOlrn4fDvE8flH6Fg635lLTHaTLqQCQuS0iNZJj2XRbfv9Ar45PR.59E1haM2
+ BZEGt5LFsiY31aYNbdalqgm0BOf.H3ur5M0dUAfz90qSO5qlBiMDx6jp8D5V2VosHw.5Lvgg.pIK
+ bITR60FuJYu3fEfL25KzqqY.3Lsbh1nT.E3CbTxkbUyctbVlq4zoUgpTnSRPIKXgMYqB3Cm2CrFi
+ Yhw4kMZ5bMNTlqU.C9mS9akNQhBJ_7Fn_DS3PDZxbayx2Wwr4v2tMBOvH_qSCGhjsnAAZRuA2IRb
+ zqRhgcR8O._ycC1nEtSijE.Gk.oboRQYeeo5a_ph4H6sRqc1z.ZCgETr0TkXMVw5lrz7yAgNBGKj
+ Cl4zW6clLNA9p0Pi_AiImJvT_XC_7LxbL1enqWKgkGshMxaO61WPEYTAWwclV.6cDfHPb0KV_LSE
+ OagUkbK0QeW_jhpkTQ85QyGVdBRcRjxCivF_uzFS7gTkaP0WUKKCODtAKASoRe1QB83YUkv.f.Fv
+ pgxAfJPF.JVQnpAzy77KZ6040BsrKy7lInFRaX97tjdHllCbgjCjWvODlWuVbH9JvFYcKEugMQOa
+ 9M_8N.5xFT8jSPVltUNnnVGpOYIIKuBADZ1LZMfOfSyFCWmBRnM4Vvv9u_OgKMX84i1NRFUjinCv
+ .wCA-
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.bf2.yahoo.com with HTTP; Tue, 2 Jun 2020 08:35:20 +0000
+Date:   Tue, 2 Jun 2020 08:35:19 +0000 (UTC)
+From:   Ahmed <ouedraogo.2.3.4.5@gmail.com>
+Reply-To: ouedraogoahmed@outlook.com
+Message-ID: <1969385350.905223.1591086919784@mail.yahoo.com>
+Subject: Hello
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/gsE_2=m7QKGJH_vSBhfk+y.";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+References: <1969385350.905223.1591086919784.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.16037 YMailNodin Mozilla/5.0 (Windows NT 6.1; rv:74.0) Gecko/20100101 Firefox/74.0
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
---Sig_/gsE_2=m7QKGJH_vSBhfk+y.
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
 
-Hi Rich,
 
-On Mon, 1 Jun 2020 23:11:39 -0400 Rich Felker <dalias@libc.org> wrote:
->
-> Could you reactivate linux-next pull from my arch/sh for-next branch?
-> It's where it was before, at:
->=20
->     git://git.libc.org/linux-sh for-next
->=20
-> and has newly accepted patches ready.
+Dear Friend,
 
-I already have an SH tree from
-git://git.sourceforge.jp/gitroot/uclinux-h8/linux.git#sh-next .  Should
-I do anything with that one?
+I know that this mail will come to you as a surprise as we have never met before, but need not to worry as I am contacting you independently of my investigation and no one is informed of this communication. I need your urgent assistance in transferring the sum of $11.3million immediately to your private account.The money has been here in our Bank lying dormant for years now without anybody coming for the claim of it.
 
-It currently contains:
+I want to release the money to you as the relative to our deceased customer (the account owner) who died a long with his supposed Next Of Kin since 16th October 2005. The Banking laws here does not allow such money to stay more than 15 years, because the money will be recalled to the Bank treasury account as unclaimed fund.
 
-$ git log --oneline origin/master..sh/sh-next=20
-a193018e5290 (sh/sh-next) sh: add missing EXPORT_SYMBOL() for __delay
-1d5fd6c33b04 sh: add missing DECLARE_EXPORT() for __ashiftrt_r4_xx
-d70f1e3d5dbd Merge remote-tracking branch 'origin/master' into sh-next
-baf58858e8b6 sh: prefer __section from compiler_attributes.h
-8619b5a9035a sh: Drop -Werror from kernel Makefile
-3a3a78124693 sh: kernel: disassemble: Mark expected switch fall-throughs
-fb8f77490f55 sh: kernel: hw_breakpoint: Fix missing break in switch stateme=
-nt
-cd10afbc932d sh: remove unneeded uapi asm-generic wrappers
-cbfc6edb6a4a sh: use __builtin_constant_p() directly instead of IS_IMMEDIAT=
-E()
+By indicating your interest I will send you the full details on how the business will be executed.
 
---=20
-Cheers,
-Stephen Rothwell
+Please respond urgently and delete if you are not interested.
 
---Sig_/gsE_2=m7QKGJH_vSBhfk+y.
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl7V3PcACgkQAVBC80lX
-0GyoGAf+PUHFAeyT0a8axcC/6t3R6JTTGr4Dx8bRfuVNwMviPCLt9STH6rNfTuCc
-12si3wDrMOxdGC6PQ9CTkiHHYd6uGkRrepV859eZiXhr9da6iBfBtazjDgrbA73L
-bPuYDvjbj4VppSTh7gBn2XBV0yTRkpdH4b4CBDe5CN1bLvDnmrwVen6gtPnZHJ+V
-2ho2argum7J/j5XkvpQaZIpBXtfNwoQRpbJugfUtuUu3m4zmV9vJNFs/47AUJXEF
-gVcl6YqhbKORbrEuAk7qS1TMndbCzJhEitnDFYHmyDaW6gWTuB+36bBFHqcpnStD
-alFkOAFx1Ae2VkFfn3e+ImoL3vr8mQ==
-=btR0
------END PGP SIGNATURE-----
-
---Sig_/gsE_2=m7QKGJH_vSBhfk+y.--
+Best Regards,
+Ahmed Ouedraogo.
