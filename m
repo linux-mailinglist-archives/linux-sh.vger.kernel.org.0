@@ -2,122 +2,196 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E98FB1ED682
-	for <lists+linux-sh@lfdr.de>; Wed,  3 Jun 2020 21:05:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 087641ED6E8
+	for <lists+linux-sh@lfdr.de>; Wed,  3 Jun 2020 21:30:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726086AbgFCTF0 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 3 Jun 2020 15:05:26 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35062 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725821AbgFCTFZ (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Wed, 3 Jun 2020 15:05:25 -0400
-Received: from localhost.localdomain (c-73-231-172-41.hsd1.ca.comcast.net [73.231.172.41])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E2BA820663;
-        Wed,  3 Jun 2020 19:05:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591211124;
-        bh=Q/m5m0oN16XVkE9B8qyre3sjNLjlsvtMr3faOM5/GEY=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=r0JH+r6+eneNzPkKh10OQRnG/QlntwU5Ile5RdgUbb4S95xZcMJwqqczR44dEoW5/
-         dXJbJhSARnLrJiGeqA21ANe/57CLpUdIlqiMBG6WT4nQbXPfCWGsOTxjBMHqOIWaG6
-         YrNwC3X4+y9pXx6gFBNVV3K2D741HNKSuj4FGwes=
-Date:   Wed, 3 Jun 2020 12:05:22 -0700
-From:   Andrew Morton <akpm@linux-foundation.org>
-To:     Mike Rapoport <rppt@kernel.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Brian Cain <bcain@codeaurora.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Guan Xuetao <gxt@pku.edu.cn>,
-        James Morse <james.morse@arm.com>,
-        Jonas Bonn <jonas@southpole.se>,
-        Julien Thierry <julien.thierry.kdev@gmail.com>,
-        Ley Foon Tan <ley.foon.tan@intel.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Rich Felker <dalias@libc.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Stafford Horne <shorne@gmail.com>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        id S1726195AbgFCTaj (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 3 Jun 2020 15:30:39 -0400
+Received: from rnd-relay.smtp.broadcom.com ([192.19.229.170]:51242 "EHLO
+        rnd-relay.smtp.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725821AbgFCTai (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 3 Jun 2020 15:30:38 -0400
+X-Greylist: delayed 559 seconds by postgrey-1.27 at vger.kernel.org; Wed, 03 Jun 2020 15:30:37 EDT
+Received: from mail-irv-17.broadcom.com (mail-irv-17.lvn.broadcom.net [10.75.242.48])
+        by rnd-relay.smtp.broadcom.com (Postfix) with ESMTP id 840DD30DD7D;
+        Wed,  3 Jun 2020 12:21:15 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 rnd-relay.smtp.broadcom.com 840DD30DD7D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+        s=dkimrelay; t=1591212075;
+        bh=/AQzYy/Wi51ZHDd+ThnXKaeww1EEOqsroMbykkRvvq8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=NtJkO7MeFX9UJlK8NUNrIV5R9Mx4cOS08pLbxG4NPk/I+q5/V9FpPpuH5/7NTn4h6
+         oXzIRd7IOw07qiMAAfQWzxBn0ktMI+2Y0HHNBVaAG6rqUobHv9JpcCr/2jYvZ/IP1F
+         NUugsjaWJwj9/B8MokjcNqcee5TK7Khm/EE80QP0=
+Received: from stbsrv-and-01.and.broadcom.net (stbsrv-and-01.and.broadcom.net [10.28.16.211])
+        by mail-irv-17.broadcom.com (Postfix) with ESMTP id 9DA8814008C;
+        Wed,  3 Jun 2020 12:21:11 -0700 (PDT)
+From:   Jim Quinlan <james.quinlan@broadcom.com>
+To:     linux-pci@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        bcm-kernel-feedback-list@broadcom.com, james.quinlan@broadcom.com
+Cc:     Alan Stern <stern@rowland.harvard.edu>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Arnd Bergmann <arnd@arndb.de>, Corey Minyard <minyard@acm.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        devel@driverdev.osuosl.org (open list:STAGING SUBSYSTEM),
+        devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED
+        DEVICE TREE),
+        dri-devel@lists.freedesktop.org (open list:DRM DRIVERS FOR ALLWINNER
+        A10), Florian Fainelli <f.fainelli@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        iommu@lists.linux-foundation.org (open list:IOMMU DRIVERS),
+        Jens Axboe <axboe@kernel.dk>, Joerg Roedel <jroedel@suse.de>,
+        Julien Grall <julien.grall@arm.com>,
+        linux-acpi@vger.kernel.org (open list:ACPI FOR ARM64 (ACPI/arm64)),
+        linux-arm-kernel@lists.infradead.org (moderated list:ARM PORT),
+        linux-ide@vger.kernel.org (open list:LIBATA SUBSYSTEM (Serial and
+        Parallel ATA drivers)), linux-kernel@vger.kernel.org (open list),
+        linux-media@vger.kernel.org (open list:ALLWINNER A10 CSI DRIVER),
+        linux-remoteproc@vger.kernel.org (open list:REMOTE PROCESSOR
+        (REMOTEPROC) SUBSYSTEM),
+        linux-rpi-kernel@lists.infradead.org (moderated list:BROADCOM
+        BCM2711/BCM2835 ARM ARCHITECTURE),
+        linux-sh@vger.kernel.org (open list:SUPERH),
+        linux-usb@vger.kernel.org (open list:USB SUBSYSTEM),
+        Mark Brown <broonie@kernel.org>,
+        Oliver Neukum <oneukum@suse.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Rob Herring <robh@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Saravana Kannan <saravanak@google.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Stefano Stabellini <sstabellini@kernel.org>,
         Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Tony Luck <tony.luck@intel.com>, Will Deacon <will@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        kvmarm@lists.cs.columbia.edu, kvm-ppc@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
-        uclinux-h8-devel@lists.sourceforge.jp,
-        Mike Rapoport <rppt@linux.ibm.com>
-Subject: Re: [PATCH v4 08/14] powerpc: add support for folded p4d page
- tables
-Message-Id: <20200603120522.7646d56a23088416a7d3fc1a@linux-foundation.org>
-In-Reply-To: <20200414153455.21744-9-rppt@kernel.org>
-References: <20200414153455.21744-1-rppt@kernel.org>
-        <20200414153455.21744-9-rppt@kernel.org>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH v3 00/13] PCI: brcmstb: enable PCIe for STB chips
+Date:   Wed,  3 Jun 2020 15:20:32 -0400
+Message-Id: <20200603192058.35296-1-james.quinlan@broadcom.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Tue, 14 Apr 2020 18:34:49 +0300 Mike Rapoport <rppt@kernel.org> wrote:
+v3:
+  Commit "device core: Introduce multiple dma pfn offsets"
+  Commit "arm: dma-mapping: Invoke dma offset func if needed"
+  -- The above two commits have been squashed.  More importantly,
+     the code has been modified so that the functionality for
+     multiple pfn offsets subsumes the use of dev->dma_pfn_offset.
+     In fact, dma_pfn_offset is removed and supplanted by
+     dma_pfn_offset_map, which is a pointer to an array.  The
+     more common case of a uniform offset is now handled as
+     a map with a single entry, while cases requiring multiple
+     pfn offsets use a map with multiple entries.  Code paths
+     that used to do this:
 
-> Implement primitives necessary for the 4th level folding, add walks of p4d
-> level where appropriate and replace 5level-fixup.h with pgtable-nop4d.h.
+         dev->dma_pfn_offset = mydrivers_pfn_offset;
 
-A bunch of new material just landed in linux-next/powerpc.
+     have been changed to do this:
 
-The timing is awkward!  I trust this will be going into mainline during
-this merge window?  If not, please drop it and repull after -rc1.
+         attach_uniform_dma_pfn_offset(dev, pfn_offset);
 
-arch/powerpc/mm/ptdump/ptdump.c:walk_pagetables() was a problem. 
-Here's what I ended up with - please check.
+  Commit "dt-bindings: PCI: Add bindings for more Brcmstb chips"
+  -- Add if/then clause for required props: resets, reset-names (RobH)
+  -- Change compatible list from const to enum (RobH)
+  -- Change list of u32-tuples to u64 (RobH)
 
-static void walk_pagetables(struct pg_state *st)
-{
-	unsigned int i;
-	unsigned long addr = st->start_address & PGDIR_MASK;
-	pgd_t *pgd = pgd_offset_k(addr);
+  Commit "of: Include a dev param in of_dma_get_range()"
+  -- modify of/unittests.c to add NULL param in of_dma_get_range() call.
 
-	/*
-	 * Traverse the linux pagetable structure and dump pages that are in
-	 * the hash pagetable.
-	 */
-	for (i = pgd_index(addr); i < PTRS_PER_PGD; i++, pgd++, addr += PGDIR_SIZE) {
-		p4d_t *p4d = p4d_offset(pgd, 0);
+  Commit "device core: Add ability to handle multiple dma offsets"
+  -- align comment in device.h (AndyS).
+  -- s/cpu_beg/cpu_start/ and s/dma_beg/dma_start/ in struct
+     dma_pfn_offset_region (AndyS).
 
-		if (pgd_none(*pgd) || pgd_is_leaf(*pgd))
-			note_page(st, addr, 1, p4d_val(*p4d), PGDIR_SIZE);
-		else if (is_hugepd(__hugepd(p4d_val(*p4d))))
-			walk_hugepd(st, (hugepd_t *)pgd, addr, PGDIR_SHIFT, 1);
-		else
-			/* pgd exists */
-			walk_pud(st, p4d, addr);
-	}
-}
+v2:
+Commit: "device core: Add ability to handle multiple dma offsets"
+  o Added helper func attach_dma_pfn_offset_map() in address.c (Chistoph)
+  o Helpers funcs added to __phys_to_dma() & __dma_to_phys() (Christoph)
+  o Added warning when multiple offsets are needed and !DMA_PFN_OFFSET_MAP
+  o dev->dma_pfn_map => dev->dma_pfn_offset_map
+  o s/frm/from/ for dma_pfn_offset_frm_{phys,dma}_addr() (Christoph)
+  o In device.h: s/const void */const struct dma_pfn_offset_region */
+  o removed 'unlikely' from unlikely(dev->dma_pfn_offset_map) since
+    guarded by CONFIG_DMA_PFN_OFFSET_MAP (Christoph)
+  o Since dev->dma_pfn_offset is copied in usb/core/{usb,message}.c, now
+    dev->dma_pfn_offset_map is copied as well.
+  o Merged two of the DMA commits into one (Christoph).
 
-Mike's series "mm: consolidate definitions of page table accessors"
-took quite a lot of damage as well.  Patches which needed rework as a
-result of this were:
+Commit "arm: dma-mapping: Invoke dma offset func if needed":
+  o Use helper functions instead of #if CONFIG_DMA_PFN_OFFSET
 
-powerpc-add-support-for-folded-p4d-page-tables-fix.patch
-mm-introduce-include-linux-pgtableh.patch
-mm-reorder-includes-after-introduction-of-linux-pgtableh.patch
-mm-pgtable-add-shortcuts-for-accessing-kernel-pmd-and-pte.patch
-mm-pgtable-add-shortcuts-for-accessing-kernel-pmd-and-pte-fix-2.patch
-mm-consolidate-pte_index-and-pte_offset_-definitions.patch
-mm-consolidate-pmd_index-and-pmd_offset-definitions.patch
-mm-consolidate-pud_index-and-pud_offset-definitions.patch
-mm-consolidate-pgd_index-and-pgd_offset_k-definitions.patch
+Other commits' changes:
+  o Removed need for carrying of_id var in priv (Nicolas)
+  o Commit message rewordings (Bjorn)
+  o Commit log messages filled to 75 chars (Bjorn)
+  o devm_reset_control_get_shared())
+    => devm_reset_control_get_optional_shared (Philipp)
+  o Add call to reset_control_assert() in PCIe remove routines (Philipp)
+
+v1:
+This patchset expands the usefulness of the Broadcom Settop Box PCIe
+controller by building upon the PCIe driver used currently by the
+Raspbery Pi.  Other forms of this patchset were submitted by me years
+ago and not accepted; the major sticking point was the code required
+for the DMA remapping needed for the PCIe driver to work [1].
+
+There have been many changes to the DMA and OF subsystems since that
+time, making a cleaner and less intrusive patchset possible.  This
+patchset implements a generalization of "dev->dma_pfn_offset", except
+that instead of a single scalar offset it provides for multiple
+offsets via a function which depends upon the "dma-ranges" property of
+the PCIe host controller.  This is required for proper functionality
+of the BrcmSTB PCIe controller and possibly some other devices.
+
+[1] https://lore.kernel.org/linux-arm-kernel/1516058925-46522-5-git-send-email-jim2101024@gmail.com/
+
+Jim Quinlan (13):
+  PCI: brcmstb: PCIE_BRCMSTB depends on ARCH_BRCMSTB
+  ata: ahci_brcm: Fix use of BCM7216 reset controller
+  dt-bindings: PCI: Add bindings for more Brcmstb chips
+  PCI: brcmstb: Add bcm7278 reigister info
+  PCI: brcmstb: Add suspend and resume pm_ops
+  PCI: brcmstb: Add bcm7278 PERST support
+  PCI: brcmstb: Add control of rescal reset
+  of: Include a dev param in of_dma_get_range()
+  device core: Introduce multiple dma pfn offsets
+  PCI: brcmstb: Set internal memory viewport sizes
+  PCI: brcmstb: Accommodate MSI for older chips
+  PCI: brcmstb: Set bus max burst size by chip type
+  PCI: brcmstb: Add bcm7211, bcm7216, bcm7445, bcm7278 to match list
+
+ .../bindings/pci/brcm,stb-pcie.yaml           |  58 ++-
+ arch/arm/include/asm/dma-mapping.h            |   9 +-
+ arch/arm/mach-keystone/keystone.c             |   9 +-
+ arch/sh/drivers/pci/pcie-sh7786.c             |   3 +-
+ arch/sh/kernel/dma-coherent.c                 |  17 +-
+ arch/x86/pci/sta2x11-fixup.c                  |   7 +-
+ drivers/acpi/arm64/iort.c                     |   5 +-
+ drivers/ata/ahci_brcm.c                       |  14 +-
+ drivers/gpu/drm/sun4i/sun4i_backend.c         |   7 +-
+ drivers/iommu/io-pgtable-arm.c                |   2 +-
+ .../platform/sunxi/sun4i-csi/sun4i_csi.c      |   5 +-
+ .../platform/sunxi/sun6i-csi/sun6i_csi.c      |   5 +-
+ drivers/of/address.c                          |  97 ++++-
+ drivers/of/device.c                           |  10 +-
+ drivers/of/of_private.h                       |   8 +-
+ drivers/of/unittest.c                         |   2 +-
+ drivers/pci/controller/Kconfig                |   3 +-
+ drivers/pci/controller/pcie-brcmstb.c         | 408 +++++++++++++++---
+ drivers/remoteproc/remoteproc_core.c          |   2 +-
+ .../staging/media/sunxi/cedrus/cedrus_hw.c    |   7 +-
+ drivers/usb/core/message.c                    |   4 +-
+ drivers/usb/core/usb.c                        |   2 +-
+ include/linux/device.h                        |   4 +-
+ include/linux/dma-direct.h                    |  16 +-
+ include/linux/dma-mapping.h                   |  45 ++
+ kernel/dma/coherent.c                         |  11 +-
+ 26 files changed, 631 insertions(+), 129 deletions(-)
+
+-- 
+2.17.1
 
