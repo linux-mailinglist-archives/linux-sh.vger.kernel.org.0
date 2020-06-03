@@ -2,122 +2,112 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 95ED71ECA7D
-	for <lists+linux-sh@lfdr.de>; Wed,  3 Jun 2020 09:27:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9B771ECA85
+	for <lists+linux-sh@lfdr.de>; Wed,  3 Jun 2020 09:28:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725876AbgFCH1v (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 3 Jun 2020 03:27:51 -0400
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:60873 "EHLO
-        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725275AbgFCH1v (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 3 Jun 2020 03:27:51 -0400
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.93)
-          with esmtps (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1jgNoP-003kyM-6A; Wed, 03 Jun 2020 09:27:45 +0200
-Received: from p57bd9b57.dip0.t-ipconnect.de ([87.189.155.87] helo=[192.168.178.139])
-          by inpost2.zedat.fu-berlin.de (Exim 4.93)
-          with esmtpsa (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1jgNoO-000jox-VT; Wed, 03 Jun 2020 09:27:45 +0200
-Subject: Re: [GIT PULL] sh: remove sh5 support
-To:     Rich Felker <dalias@libc.org>
-Cc:     Christoph Hellwig <hch@infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>, linux-sh@vger.kernel.org,
-        ysato@users.sourceforge.jp, linux-kernel@vger.kernel.org,
-        viro@zeniv.linux.org.uk, Rob Landley <rob@landley.net>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-References: <20200424221948.1120587-1-arnd@arndb.de>
- <20200507143552.GA28683@infradead.org> <20200528054600.GA29717@infradead.org>
- <20200528161416.GY1079@brightrain.aerifal.cx>
- <20200529143059.GA25475@infradead.org>
- <20200529175335.GK1079@brightrain.aerifal.cx>
- <e86e1d78-9597-811a-da0e-42a910b0c9fe@physik.fu-berlin.de>
- <20200601181259.GV1079@brightrain.aerifal.cx>
- <20200602013332.GY1079@brightrain.aerifal.cx>
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
- 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
- scOkTAZQGVpD/8AaLH4v1w==
-Message-ID: <14cfb973-fe9b-d201-dc23-e8974c0bcb68@physik.fu-berlin.de>
-Date:   Wed, 3 Jun 2020 09:27:43 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        id S1725867AbgFCH2l (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 3 Jun 2020 03:28:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47306 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725955AbgFCH2l (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 3 Jun 2020 03:28:41 -0400
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1330C05BD1E
+        for <linux-sh@vger.kernel.org>; Wed,  3 Jun 2020 00:28:40 -0700 (PDT)
+Received: by mail-wm1-x342.google.com with SMTP id u13so833014wml.1
+        for <linux-sh@vger.kernel.org>; Wed, 03 Jun 2020 00:28:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=vx88ON+UFkh4ABL4pG0NLQrIOYVxNTrYi/4Z1S6HqD0=;
+        b=hCrkJTJWfBUV52aVTGVpRHJG44LK/LVRSC3DY3u2dKIeMTfwevh3sU7pclJOceR8SM
+         48evXxGkiaFsg6e7/fpzqozMhwmOpCaFZw2uzkWfm2nFVhgtyMjnuRwp6ntzUjt6sjy+
+         ELpdZwAqGZ8a6l8fxksM4LCTtR1718xF85Prj80teTw6cwbO0eQvp7eEVJurhktMpnKv
+         NwpLrgOvbRhxxbWZ71U2QtBcvj+a/ZsNqHalByZJgQmhXRbwYiBK/IBw7aRv1xTE4POv
+         NKA7s1gLfclVMYxs0nMx3woJc0SmTaE3I/31vSnvgh0MdcDiuU6vyQQPcCqKbYv/Mprn
+         e77g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=vx88ON+UFkh4ABL4pG0NLQrIOYVxNTrYi/4Z1S6HqD0=;
+        b=cCt+RIkci2gYJXtEoM9HwzOJv2f6onTXlj/LpafgNw478kJUi9IRwvj4lSaw12ovbl
+         Z8xX4GCjxZz2N8V0gLCoWFQHR6tKrKk1uqi8k9JhTXcdQNHYQXXNWCMWXvVGXp6y7IDy
+         0EhycN78cenQCwkfsIU+hkcljO1suF7mKPbx8egaVQoylK78DyyDppuw4UEabalxr8JI
+         oxrSCdKomR/t8v2ZUS//qKaYT83IYo6VwqjRvBzpqgCht6lwwVbQp9HcYhA+FanDFVtj
+         RSIuXZh5LjG/JImW5oZU3CBZvE3rvKGp1YWxF7ZiSK+P+lzFbJSA2RCIT/CjAINaJ2RW
+         CpDg==
+X-Gm-Message-State: AOAM530vxXzwFYHdvq3KgvXit159+Kec/tU5CO6ZwHfzjh4w2NKmshYE
+        x+sX+FPraXo8x/PYAb4CSgHgGdmpZpdCLX/BAf0=
+X-Google-Smtp-Source: ABdhPJwRJcii4ihsd1hlwCAcfc2YY5jqPaML6a6JW8BmFYit4rHaRpk8+X+oMwLaQmDKnBAS1jcYK5b/pARdEVHi7YQ=
+X-Received: by 2002:a7b:c951:: with SMTP id i17mr7180873wml.44.1591169319225;
+ Wed, 03 Jun 2020 00:28:39 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200602013332.GY1079@brightrain.aerifal.cx>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 87.189.155.87
+Received: by 2002:a1c:7401:0:0:0:0:0 with HTTP; Wed, 3 Jun 2020 00:28:38 -0700 (PDT)
+Reply-To: anitkwas@gmail.com
+From:   "Ms. Anita Kwassou" <samolele25@gmail.com>
+Date:   Wed, 3 Jun 2020 09:28:38 +0200
+Message-ID: <CAC2D0BGOmGvCTHiSf46OQrLTG0f1M0JjNYu2-q5zS38sMvOFrQ@mail.gmail.com>
+Subject: =?UTF-8?B?0KHQutGK0L8g0L/RgNC40Y/RgtC10LssIGhlbGxv?=
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Rich!
-
-On 6/2/20 3:33 AM, Rich Felker wrote:
-> Hmm, it looks like Andrew Morton just pulled most of these into -mm,
-> apparently independently of me getting them in my for-next a few hours
-> ago, since his versions lack my signed-off-by. That's ok though, as
-> long as they go up. Some details since further action is needed on a
-> few:
-
-I thought Andrew dropped them again since he saw you become active.
-
-I can't find them in his tree.
-
-Adrian
-
--- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer - glaubitz@debian.org
-`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+0KHQutGK0L8g0L/RgNC40Y/RgtC10LssDQoNCtCf0LjRiNCwINCy0Lgg0L7RgiDQn9Cw0YDQsNCz
+0LLQsNC5INCyINC60L7QvNCw0L3QtNC40YDQvtCy0LrQsCDRgSDQvdC+0LLQsNGC0LAg0LzQuA0K
+0L/QsNGA0YLQvdGM0L7RgCDRgdC70LXQtCDRg9GB0L/QtdGI0L3QvtGC0L4g0L/RgNC10LLQtdC2
+0LTQsNC90LUg0L3QsCDRgdGA0LXQtNGB0YLQstCw0YLQsCDQsiDRgNCw0LfQvNC10YAg0L3QsCAk
+DQo1LDUg0LzQuNC70LjQvtC90LAuDQoNCtCU0LAsINC60LDQutGC0L4g0LLQuCDQutCw0LfQsNGF
+INC/0YDQtdC00LgsINC90LUg0YHRitC8INCw0LvRh9C10L0g0YfQvtCy0LXQuiDQuCDRgdGK0YnQ
+viDQvtCx0LjRh9Cw0LwNCtGA0LDQt9C/0L7Qt9C90LDQudGC0LUg0YPRgdC40LvQuNGP0YLQsCDQ
+vdCwINC90Y/QutC+0LPQviwg0LHQtdC3INC30L3QsNGH0LXQvdC40LUg0LrQsNC60YrQsiDQvNC+
+0LbQtSDQtNCwINC1INC/0YDQvtCx0LvQtdC80YrRgiwNCtCp0LUg0LLQuCDQv9C+0LzQvtC70Y8g
+0LTQsCDRgdC1INGB0LLRitGA0LbQtdGC0LUg0YEg0LzQvtGPINGB0LXQutGA0LXRgtCw0YA6DQoN
+CtCTLdC20LAg0JDQvdC40YLQsCDQmtCy0LDRgdGDDQrQldC70LXQutGC0YDQvtC90L3QsCDQv9C+
+0YnQsDogYW5pdGt3YXNAZ21haWwuY29tDQoNCtCTLdC20LAg0JDQvdC40YLQsCDRidC1INCy0Lgg
+0LjQt9C/0YDQsNGC0Lgg0L7RgdC10LzQtNC10YHQtdGCINGF0LjQu9GP0LTQuCDQtNC+0LvQsNGA
+0LAgKDgwIDAwMC4wMCDRidCw0YLRgdC60LgNCtC00L7Qu9Cw0YDQsCksINC60L7QuNGC0L4NCtGJ
+0LUg0LHRitC00LUg0L/RgNC10YXQstGK0YDQu9C10L0g0LrRitC8INCy0LDRgSDQsiDQvNC10LbQ
+tNGD0L3QsNGA0L7QtNC90LAg0LLQuNC30L7QstCwINC60LDRgNGC0LAg0LfQsCDQsdCw0L3QutC+
+0LzQsNGCLA0KDQrQlNCw0LLQsNC8INCy0Lgg0YLQvtCy0LAg0L7QsdC10LfRidC10YLQtdC90LjQ
+tSDQt9CwINCy0YHQuNGH0LrQuCDQstCw0YjQuCDQv9GA0LXQtNC40YjQvdC4INGD0YHQuNC70LjR
+jyDQuCDRgdGD0LzQsNGC0LANCtC40L3QstC10YHRgtC40YDQsNGF0YLQtSDQsiDQv9GA0L7RhtC1
+0YHQsCDQvdCwINC/0YDQtdCy0L7QtCwg0L3QviDQvdC1INC80L7QttCw0YXRgtC1INC00LAg0LfQ
+sNCy0YrRgNGI0LjRgtC1DQrRgSDQvNC10L0g0LfQsNGA0LDQtNC4INGB0YLRgNCw0YUg0Lgg0L3Q
+tdCy0LXRgNC40LUuDQoNCtCQ0Lcg0YHRitGJ0L4g0LLQuCDQtNCw0LLQsNC8INGC0LDQt9C4INC8
+0LDQu9C60LAg0YHRg9C80LAg0LrQsNGC0L4g0L/RgNC40LfQvdCw0YLQtdC70L3QvtGB0YIg0LfQ
+sCDQkdC+0LMNCtCx0LXQt9C60YDQsNC50L3QuCDQvNC40LvQvtGB0YLQuCDQtNCwINGB0LHRitC0
+0L3QsCDQsiDRgtCw0LfQuCDQvNC+0Y8g0LzQtdGH0YLQsCwg0LAg0YHRitGJ0L4g0Lgg0LfQsA0K
+0LLQvtC00LXQudC60Lgg0LzQtSDRgdC/0L7QutC+0LnQvdC+INCyINGC0LDQt9C4INGB0YLRgNCw
+0L3QsC4NCg0K0KHQstGK0YDQttC10YLQtSDRgdC1INGBINCzLdC20LAg0JDQvdC40YLQsCDQuCDQ
+vtCx0YHRitC00LXRgtC1INGBINC90LXQs9C+INC60LDQuiDQuNGB0LrQsNGC0LUg0LHQsNC90LrQ
+vtC80LDRgtCwDQrQuNC30L/RgNCw0YLQtdC90L4g0LTQviDQstCw0YEg0Lgg0YHQtSDQvtC/0LjR
+gtCw0LnRgtC1INC00LAg0LzQtSDQuNC90YTQvtGA0LzQuNGA0LDRgtC1INCy0LXQtNC90LDQs9Cw
+INGJ0L7QvCDQv9C+0LvRg9GH0LjRgtC1INC60LDRgNGC0LDRgtCwLg0KDQrQndCw0Lkt0LTQvtCx
+0YDQuCDQv9C+0LbQtdC70LDQvdC40Y8sDQrQk9C+0YHQv9C+0LTQuNC9INCh0LDQvCDQntC70LXQ
+u9C1DQoNCg0KbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1t
+bW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tDQoNCg0KRGVhciBmcmllbmQsDQoNCkkg
+YW0gd3JpdGluZyB0byB5b3UgZnJvbSBQYXJhZ3VheSBvbiBhIGJ1c2luZXNzIHRyaXAgd2l0aCBt
+eSBuZXcNCnBhcnRuZXIgYWZ0ZXIgdGhlIHN1Y2Nlc3NmdWwgdHJhbnNmZXIgb2YgdGhlIGZ1bmRz
+IGluIHRoZSBhbW91bnQgb2YgJA0KNS41IG1pbGxpb24uDQoNClllcywgYXMgSSB0b2xkIHlvdSBi
+ZWZvcmUsIEkgYW0gbm90IGEgZ3JlZWR5IHBlcnNvbiBhbmQgYWxzbyBsaWtlIHRvDQpyZWNvZ25p
+emUgdGhlIGVmZm9ydHMgb2Ygc29tZW9uZSwgbm8gbWF0dGVyIHdoYXQgbWlnaHQgYmUgdGhlIHBy
+b2JsZW0sDQpJIHdpbGwgcmVxdWVzdCB5b3UgdG8gY29udGFjdCBteSBzZWNyZXRhcnk6DQoNCk1z
+LiBBbml0YSBLd2Fzc291DQpFLU1haWw6IGFuaXRrd2FzQGdtYWlsLmNvbQ0KDQpNcy4gQW5pdGEg
+d2lsbCBzZW5kIHlvdSBFaWdodHkgVGhvdXNhbmQgZG9sbGFycyAoVVMkODAuMDAwLjAwKSB3aGlj
+aA0KaXMgYmVlbiByb2xsZWQgdG8geW91IGludG8gYW4gaW50ZXJuYXRpb25hbCBBVE0gdmlzYSBj
+YXJkLA0KDQpJIGdpdmUgeW91IHRoaXMgY29tcGVuc2F0aW9uIGZvciBhbGwgeW91ciBwYXN0IGVm
+Zm9ydHMgYW5kIHRoZSBhbW91bnQNCnlvdSBpbnZlc3RlZCBpbiB0aGUgdHJhbnNsYXRpb24gcHJv
+Y2VzcywgYnV0IHlvdSBjb3VsZG4ndCBjb21wbGV0ZQ0Kd2l0aCBtZSBiZWNhdXNlIG9mIGZlYXIg
+YW5kIGRpc2JlbGlldmUuDQoNCkkgYW0gYWxzbyBnaXZpbmcgdG8geW91IHRoaXMgc21hbGwgYW1v
+dW50IGFzIGFuIGFwcHJlY2lhdGlvbiBmb3IgR29kJ3MNCmVuZGxlc3MgbWVyY2llcyB0byBtYWtl
+IGluIHRoaXMgbXkgZHJlYW0gY29tZSB0cnVlLCBhbmQgYWxzbyBmb3INCmxlYWRpbmcgbWUgcGVh
+Y2VmdWxseSB0byB0aGlzIGNvdW50cnkuDQoNCkNvbnRhY3QgTXMuIEFuaXRhIGFuZCBkaXNjdXNz
+IHdpdGggaGltIG9uIGhvdyB5b3Ugd2FudCB0aGUgQVRNIGNhcmQNCnNlbnQgdG8geW91IGFuZCB0
+cnkgdG8gaW5mb3JtIG1lIGFzIHNvb24gYXMgeW91IHJlY2VpdmVkIHRoZSBjYXJkLg0KDQpCZXN0
+IHdpc2hlcywNCk1yLiBTYW0gT2xlbGUNCg==
