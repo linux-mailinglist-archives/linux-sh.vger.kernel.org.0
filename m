@@ -2,36 +2,44 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3634C1ECA65
-	for <lists+linux-sh@lfdr.de>; Wed,  3 Jun 2020 09:20:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95ED71ECA7D
+	for <lists+linux-sh@lfdr.de>; Wed,  3 Jun 2020 09:27:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726042AbgFCHUN (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 3 Jun 2020 03:20:13 -0400
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:39049 "EHLO
+        id S1725876AbgFCH1v (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 3 Jun 2020 03:27:51 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:60873 "EHLO
         outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725828AbgFCHUN (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 3 Jun 2020 03:20:13 -0400
+        by vger.kernel.org with ESMTP id S1725275AbgFCH1v (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 3 Jun 2020 03:27:51 -0400
 Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
           by outpost.zedat.fu-berlin.de (Exim 4.93)
           with esmtps (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
           (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1jgNh3-003huP-T1; Wed, 03 Jun 2020 09:20:09 +0200
+          id 1jgNoP-003kyM-6A; Wed, 03 Jun 2020 09:27:45 +0200
 Received: from p57bd9b57.dip0.t-ipconnect.de ([87.189.155.87] helo=[192.168.178.139])
           by inpost2.zedat.fu-berlin.de (Exim 4.93)
           with esmtpsa (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
           (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1jgNh3-000itB-Cs; Wed, 03 Jun 2020 09:20:09 +0200
-Subject: Re: [PATCH v2] sh: Implement __get_user_u64() required for 64-bit
- get_user()
-To:     linux-sh@vger.kernel.org
-Cc:     Rich Felker <dalias@libc.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
+          id 1jgNoO-000jox-VT; Wed, 03 Jun 2020 09:27:45 +0200
+Subject: Re: [GIT PULL] sh: remove sh5 support
+To:     Rich Felker <dalias@libc.org>
+Cc:     Christoph Hellwig <hch@infradead.org>,
+        Arnd Bergmann <arnd@arndb.de>, linux-sh@vger.kernel.org,
+        ysato@users.sourceforge.jp, linux-kernel@vger.kernel.org,
+        viro@zeniv.linux.org.uk, Rob Landley <rob@landley.net>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
-        linux-kernel@vger.kernel.org
-References: <20200531104715.2512247-1-glaubitz@physik.fu-berlin.de>
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+References: <20200424221948.1120587-1-arnd@arndb.de>
+ <20200507143552.GA28683@infradead.org> <20200528054600.GA29717@infradead.org>
+ <20200528161416.GY1079@brightrain.aerifal.cx>
+ <20200529143059.GA25475@infradead.org>
+ <20200529175335.GK1079@brightrain.aerifal.cx>
+ <e86e1d78-9597-811a-da0e-42a910b0c9fe@physik.fu-berlin.de>
+ <20200601181259.GV1079@brightrain.aerifal.cx>
+ <20200602013332.GY1079@brightrain.aerifal.cx>
 From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  mQINBE3JE9wBEADMrYGNfz3oz6XLw9XcWvuIxIlPWoTyw9BxTicfGAv0d87wngs9U+d52t/R
@@ -77,12 +85,12 @@ Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  jEF9ImTPcYZpw5vhdyPwBdXW2lSjV3EAqknWujRgcsm84nycuJnImwJptR481EWmtuH6ysj5
  YhRVGbQPfdsjVUQfZdRdkEv4CZ90pdscBi1nRqcqANtzC+WQFwekDzk2lGqNRDg56s+q0KtY
  scOkTAZQGVpD/8AaLH4v1w==
-Message-ID: <b6271c7a-1eaf-61d9-9eb6-061aa8a13ac8@physik.fu-berlin.de>
-Date:   Wed, 3 Jun 2020 09:20:08 +0200
+Message-ID: <14cfb973-fe9b-d201-dc23-e8974c0bcb68@physik.fu-berlin.de>
+Date:   Wed, 3 Jun 2020 09:27:43 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <20200531104715.2512247-1-glaubitz@physik.fu-berlin.de>
+In-Reply-To: <20200602013332.GY1079@brightrain.aerifal.cx>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -93,30 +101,19 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi!
+Hi Rich!
 
-On 5/31/20 12:47 PM, John Paul Adrian Glaubitz wrote:
->  Changes since v1:
->  - Replace single mov instruction for exception handling
->    in case of invalid load
+On 6/2/20 3:33 AM, Rich Felker wrote:
+> Hmm, it looks like Andrew Morton just pulled most of these into -mm,
+> apparently independently of me getting them in my for-next a few hours
+> ago, since his versions lack my signed-off-by. That's ok though, as
+> long as they go up. Some details since further action is needed on a
+> few:
 
-Yutaka Niibe has had a look at my patch and he says, we might have to add
-an entry for the fault handling of the upper word.
+I thought Andrew dropped them again since he saw you become active.
 
-Quote:
+I can't find them in his tree.
 
-> (1) I think that there is possibility that the second access to user
-> space fails (while the first access succeeds).  IIUC, it's good have
-> an entry in __ex_tables for the second access too, like:
->     ".long 1b+2, 3b\n\t"
-> I don't know if the expression "1b+2" is correct, my intention is
-> detecting the failure in the seccond access.
-
-Comments?
-
-@Sato-san: Can you comment on the patch as well?
-
-Thanks,
 Adrian
 
 -- 
