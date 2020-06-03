@@ -2,145 +2,92 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 536F11EC536
-	for <lists+linux-sh@lfdr.de>; Wed,  3 Jun 2020 00:41:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02B9A1EC607
+	for <lists+linux-sh@lfdr.de>; Wed,  3 Jun 2020 02:02:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727860AbgFBWlM (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 2 Jun 2020 18:41:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50760 "EHLO
+        id S1728187AbgFCACb (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 2 Jun 2020 20:02:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726174AbgFBWlL (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 2 Jun 2020 18:41:11 -0400
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57D4CC08C5C0;
-        Tue,  2 Jun 2020 15:41:11 -0700 (PDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 49c6TH1ztHz9sSd;
-        Wed,  3 Jun 2020 08:41:06 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
-        s=201702; t=1591137667;
-        bh=9gkMEVcoX1XzlxGPcQNJUcQc/QyIGQ5Tuk0vJfXij1g=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=IbkZM6SAfzwVHu3hVzS8hUBj5/dwl/TrBchq9e/IKdfbaoeWuRTGoNgiTNAu36LOh
-         SqXb9nBRjimZSegOly2FEGl9aRfD+KMLP5Xt4hkc2+Ll+RNFDaBWdML6Omm1kCkbGq
-         /MZZaMT2tqlgwxAN2p1qMiWB0jVJ/LLyLhH0lse8ORP5f575QpfQ4/xm2sYCvJEkKN
-         OKCAyezmgt+gRq/beeOSswSqLBb1tSiUG6UAXd/5qB73W/z7n2yz8E9PBTWpgR3F2f
-         Nz8OsASQ+S0d5cds77YlGLRHa410WkpHvLGZElaBFsvUgJngeEOzED06Pv0y4mtdAa
-         Xi9btcNc3DHIQ==
-Date:   Wed, 3 Jun 2020 08:41:05 +1000
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Rich Felker <dalias@libc.org>
-Cc:     Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: Re: linux-sh for-next reactivation
-Message-ID: <20200603084105.47bd62c5@canb.auug.org.au>
-In-Reply-To: <20200602202832.GA3776@brightrain.aerifal.cx>
-References: <20200602031123.GA1079@brightrain.aerifal.cx>
-        <20200602150039.780a0ac0@canb.auug.org.au>
-        <20200602202832.GA3776@brightrain.aerifal.cx>
+        with ESMTP id S1726267AbgFCACa (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 2 Jun 2020 20:02:30 -0400
+Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com [IPv6:2607:f8b0:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A03E7C08C5C0
+        for <linux-sh@vger.kernel.org>; Tue,  2 Jun 2020 17:02:30 -0700 (PDT)
+Received: by mail-ot1-x341.google.com with SMTP id h7so448847otr.3
+        for <linux-sh@vger.kernel.org>; Tue, 02 Jun 2020 17:02:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=OvRsMtNyIKIk7Sc8KCclbreP4Z4+OxlMjgwmceSdLLI=;
+        b=AhxCVLpcD2NOy8bX3M3EztN2lyGMo/XOhcjpNtJ41fXQUrHz1C/RixSZJyev3Gtrej
+         vg6v56UmjW0VT3YX2yWlquVm5AbqlBrxfAgHno4Gdu4xqTE0yn9x66GXm26pa8l7BmKT
+         w6ePfqeUjj06xn+V9/ThcbB5KnXGOK1zqZFBc4t8oOP8wtM/j7aPenFHXMMOOuwXhM/b
+         vDRaGQ3zkrrFoIzCH1AfwRH5zZ9WI8oGw8OrJZJ1v2Nzi7o+YvPO80wrIUox49BdB7A5
+         COB56QRYG8SrwNd7wfuNE+GN4iQ/PIguIHUSzUNVcSmq+KhAonNWgYYq5rQJWHuflAAQ
+         90zA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=OvRsMtNyIKIk7Sc8KCclbreP4Z4+OxlMjgwmceSdLLI=;
+        b=QXQX7n5wtvh/B9nHsSkLsduc6koi2Bx01WArrvI+KNyVBQnZe83Mj2InKEv9i8ahM/
+         p3LGxkcl80dJHu6B+GVRJaf1zChmwWTG3agxAcgcCGTK1zjxvD1Pj0JD18wTjCWu86a7
+         gCNg1vyYHRB2jMrhx0k633ZFdMeVck/5BRVT1FX/+KoXoFTp85mqT813eLDfz/IMTSg8
+         hvHkZNRsgVtFoK6aKTDFYLm7ZA3R+wMsaBjMw/BKEjQtIyVdoyw5RLM7W5E8ZZdt6vR0
+         q1gVkTeFMSAuokcdam9Nr1DJ7FYwxGROiQJP21AVsxh3oPSHdkDInCIg+M0cz326Sp54
+         N+Ug==
+X-Gm-Message-State: AOAM533nhozUNRthggZwMMbePbgZs27KIDY9Gc0S/hCnrZmpJdbS1zqL
+        +3mr+qKO7enT9Y0v9GTFaFK0Oxx4I+tQlPAayVc=
+X-Google-Smtp-Source: ABdhPJxdUuLJnaHYbTBfUhN8qDyFDu0LVKan2lrR6iW0hozC02u9Q+tsBKu2ChGPnq9xx6oWt0SoiZarN9exOWAUa3E=
+X-Received: by 2002:a05:6830:115:: with SMTP id i21mr1249287otp.222.1591142549709;
+ Tue, 02 Jun 2020 17:02:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/.dwtc6obdFlmLkY.lFda2yE";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Received: by 2002:a4a:a1aa:0:0:0:0:0 with HTTP; Tue, 2 Jun 2020 17:02:29 -0700 (PDT)
+Reply-To: mrsfatimakargbo@outlook.com
+From:   Mr Suleman Bello <curtismichael74@gmail.com>
+Date:   Tue, 2 Jun 2020 17:02:29 -0700
+Message-ID: <CA+A+bzd=oW8fVDJU7Ybke01YCU5CAU-9bwWnZgvtRnSbsDUHJg@mail.gmail.com>
+Subject: Can i trust you?
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
---Sig_/.dwtc6obdFlmLkY.lFda2yE
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Dear Friend,
 
-Hi Rich,
+Please i want you to read this letter very carefully and i must
+apologize for berging this message into your mail box without any
+formal introduction due to the urgency and confidential of this issue
+and i know that this message will come to you as a surprise, Please
+this is not a joke and i will not like you to joke with it.I am
+Mr.Suleman Bello, a staff in African Development Bank (A.D.B)
+Ouagadougou, Burkina faso West Africa.I discovered existing dormant
+account for years. When I discovered that there had been neither
+continuation nor withdrawals from this account for this long period
+and according to the laws and constitution guiding this banking
+institution, any unserviceable account for more than (7) seven years,
+that fund will be transferred to national treasury as unclaimed fund.
 
-On Tue, 2 Jun 2020 16:28:33 -0400 Rich Felker <dalias@libc.org> wrote:
->
-> On Tue, Jun 02, 2020 at 03:00:39PM +1000, Stephen Rothwell wrote:
-> > Hi Rich,
-> >=20
-> > On Mon, 1 Jun 2020 23:11:39 -0400 Rich Felker <dalias@libc.org> wrote: =
-=20
-> > >
-> > > Could you reactivate linux-next pull from my arch/sh for-next branch?
-> > > It's where it was before, at:
-> > >=20
-> > >     git://git.libc.org/linux-sh for-next
-> > >=20
-> > > and has newly accepted patches ready. =20
-> >=20
-> > I already have an SH tree from
-> > git://git.sourceforge.jp/gitroot/uclinux-h8/linux.git#sh-next .  Should
-> > I do anything with that one?
-> >=20
-> > It currently contains:
-> >=20
-> > $ git log --oneline origin/master..sh/sh-next=20
-> > a193018e5290 (sh/sh-next) sh: add missing EXPORT_SYMBOL() for __delay
-> > 1d5fd6c33b04 sh: add missing DECLARE_EXPORT() for __ashiftrt_r4_xx
-> > d70f1e3d5dbd Merge remote-tracking branch 'origin/master' into sh-next
-> > baf58858e8b6 sh: prefer __section from compiler_attributes.h
-> > 8619b5a9035a sh: Drop -Werror from kernel Makefile
-> > 3a3a78124693 sh: kernel: disassemble: Mark expected switch fall-throughs
-> > fb8f77490f55 sh: kernel: hw_breakpoint: Fix missing break in switch sta=
-tement
-> > cd10afbc932d sh: remove unneeded uapi asm-generic wrappers
-> > cbfc6edb6a4a sh: use __builtin_constant_p() directly instead of IS_IMME=
-DIATE() =20
->=20
-> Hi Stephen,
->=20
-> I completely forgot that you had the tree from our other co-maintainer
-> Yoshinori Sato on the list linux-next is pulling from. Would it be
-> okay to keep both? That would help with quickly identifying and
-> resolving any conflicting commits and make things go more smoothly
-> with two maintainers trying to be active.
->=20
-> Let me know if this doesn't work for you and we'll figure out
-> alternative arrangements.
+I Hoped that you will not expose or betray this trust and confident
+that i am about to extablish with you for the mutual benefit of you
+and i,I need your urgent assistance in transferring the sum of $10.5
+)million usd into your account within 7 banking days. This money has
+been dormant for years in our Bank, and The request of foreigner in
+this transaction is necessary because our late customer was a
+foreigner and a burkinabe cannot stand as next of kin to a
+foreigner.Because of the static of this transaction I want you to
+stand as the next of kin so that our bank will accord you the
+recognition and have the fund transferred to your account.
 
-Added from today (I called it "sh-rf" - if you want a different name,
-please let me know).
+Upon your response, I shall then provide you with further information
+and more deities that will help you understand the transaction. I am
+expecting your urgent response to enable me inform you on how the
+business will be executed. Please I would like you to keep this
+transaction confidential and as a top secret or delete if you are not
+interested.
 
-Thanks for adding your subsystem tree as a participant of linux-next.  As
-you may know, this is not a judgement of your code.  The purpose of
-linux-next is for integration testing and to lower the impact of
-conflicts between subsystems in the next merge window.=20
-
-You will need to ensure that the patches/commits in your tree/series have
-been:
-     * submitted under GPL v2 (or later) and include the Contributor's
-        Signed-off-by,
-     * posted to the relevant mailing list,
-     * reviewed by you (or another maintainer of your subsystem tree),
-     * successfully unit tested, and=20
-     * destined for the current or next Linux merge window.
-
-Basically, this should be just what you would send to Linus (or ask him
-to fetch).  It is allowed to be rebased if you deem it necessary.
-
---=20
-Cheers,
-Stephen Rothwell=20
-sfr@canb.auug.org.au
-
---Sig_/.dwtc6obdFlmLkY.lFda2yE
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl7W1YEACgkQAVBC80lX
-0GxVZAgAimxKIcraDpE2K87qzDmZP+oslCaTChUho1oSKmGXBvMCq4IfScsvhshQ
-Wah5+bTdRM5dzebPB21SuCvXjZhKMVI688ziityzNvLbcak1peFRyBEDhvwR433N
-uZeNGl2z+2emgidbCW9byWAxqv3d4Y2sbaGlEbeL377NzQ17yYRn9aqmuNO5MhEC
-Yp4pkKC01CTAEkSDcMaf4tzpbcs8hAJpck08MrCB7U/hOx9rWf8RU7DUJc6RT/Jk
-Xvi+cggVv5EyXrQ0290qJg+HP6b6bMj0E0rEg08wEXbv1lBmCwHimz6fYWjliEEf
-4A48Mz3ZiZStRpp2NyXK6waQCHe2Og==
-=98WM
------END PGP SIGNATURE-----
-
---Sig_/.dwtc6obdFlmLkY.lFda2yE--
+Thanks
+Mr.Suleman Bello.
