@@ -2,82 +2,89 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6028C1ECAA1
-	for <lists+linux-sh@lfdr.de>; Wed,  3 Jun 2020 09:35:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDE9F1ED031
+	for <lists+linux-sh@lfdr.de>; Wed,  3 Jun 2020 14:53:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725867AbgFCHf0 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 3 Jun 2020 03:35:26 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:44523 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725275AbgFCHf0 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 3 Jun 2020 03:35:26 -0400
-Received: by mail-ot1-f66.google.com with SMTP id e5so1100573ote.11;
-        Wed, 03 Jun 2020 00:35:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=D7JMkOvhZUqwiu+SF/Awh2jlIp2xHt9TluszajmhLw4=;
-        b=kw2QWv8B31u0abvbBHAvVs+9AZQcphbQzmdggdkyBoukg2I+NjHn9JFdubXGeH7PdC
-         ShWyq/eOUuF5V1pkdbJ3MRSzEI5D543rkl3Nvja/r0eT1tdIHL9H6rcjVekpQ+qnwb7W
-         co3KVXKu5jzrclX1IkHDHrYbEywKI6S4Tl7opMaUEEk4NFXj73S6C4ywWVA/4QP7m6Sv
-         OTNGmMlLtkZtXgx18t7WFjeX1rJ5S/GX6EIEvWBcA/aKaNWKZQsJ0XpCNGYL02vxvxRK
-         Ijh9WFwIRzzM+J43Ge9ms3RIoUmNTD5KLwoSxXq6/sa8aSM5aEzoJyi1VrJeXPJ+NygV
-         U1CQ==
-X-Gm-Message-State: AOAM5324SFNUF7dx7uNhbCsDt0geOsHpHwXeMncOqIytbmGMlLIuXwyG
-        zUvAr+BSu/1IIRUZcQh8ez9J7PhLuBJfk2V/cxcVxA==
-X-Google-Smtp-Source: ABdhPJwU2+fB3PiD4AxJMNargOcVzctUQtjcagMYjySGTXjUm3Tf3KsLK/TZQKrzdMIs7+K/adcy9MbWExNzVqyZpcM=
-X-Received: by 2002:a05:6830:141a:: with SMTP id v26mr2278620otp.250.1591169724039;
- Wed, 03 Jun 2020 00:35:24 -0700 (PDT)
+        id S1726013AbgFCMwx (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 3 Jun 2020 08:52:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41340 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725948AbgFCMww (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 3 Jun 2020 08:52:52 -0400
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4ABA4C08C5C0;
+        Wed,  3 Jun 2020 05:52:52 -0700 (PDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 49cTN22FHYz9sSc;
+        Wed,  3 Jun 2020 22:52:50 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+        s=201702; t=1591188770;
+        bh=U+VwkglKt05YbLBNtU1dwgDkEzgBXJ6rAnxyYgo5E4o=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=CDbanImMLmBPCyDWgCpMqhPZ3zoOU0lAL1tITpl00DkKTyDeyVsZF7u8i/dnjc2nX
+         lPDIFjcotWkEDR97Mz9PXZyCMXZSIUXgJ6LT1WxZKXc1WXf5x9UBEdJlsfnoaI5ODn
+         ZCuy4sK/25wro6pXq6bxPTRylZRiclI1rzZTdb5oJkYV1yhextCC0AKaE6YOJ4yCNv
+         9z501Z0golR1iuUqkCqRA1LOrHsGI5ITcu5TZoM6c5gpe2PGHPghAlZbSGaibZFS0I
+         +KyvNZnCBF+lw2I9fxQ8Ci++IA1qvA22PJdZ/UnBIGpHioGPHd1TyRI8wmsPCxZ+oV
+         7jCxoc7Q4RlHw==
+Date:   Wed, 3 Jun 2020 22:52:48 +1000
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc:     Rich Felker <dalias@libc.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>
+Subject: Re: linux-sh for-next reactivation
+Message-ID: <20200603225248.01740901@canb.auug.org.au>
+In-Reply-To: <87y2p4n12r.wl-ysato@users.sourceforge.jp>
+References: <20200602031123.GA1079@brightrain.aerifal.cx>
+ <20200602150039.780a0ac0@canb.auug.org.au>
+ <20200602202832.GA3776@brightrain.aerifal.cx>
+ <20200603084105.47bd62c5@canb.auug.org.au>
+ <87y2p4n12r.wl-ysato@users.sourceforge.jp>
 MIME-Version: 1.0
-References: <20200531104715.2512247-1-glaubitz@physik.fu-berlin.de> <b6271c7a-1eaf-61d9-9eb6-061aa8a13ac8@physik.fu-berlin.de>
-In-Reply-To: <b6271c7a-1eaf-61d9-9eb6-061aa8a13ac8@physik.fu-berlin.de>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 3 Jun 2020 09:35:12 +0200
-Message-ID: <CAMuHMdV-Par79SYe75HzJsEd2cwEDhGPK+Nj0zUD8eAy9aDj1A@mail.gmail.com>
-Subject: Re: [PATCH v2] sh: Implement __get_user_u64() required for 64-bit get_user()
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     Linux-sh list <linux-sh@vger.kernel.org>,
-        Rich Felker <dalias@libc.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; boundary="Sig_/TIvt.0mHpqZzWI2yT4MsQv4";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Adrian,
+--Sig_/TIvt.0mHpqZzWI2yT4MsQv4
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 3, 2020 at 9:20 AM John Paul Adrian Glaubitz
-<glaubitz@physik.fu-berlin.de> wrote:
-> On 5/31/20 12:47 PM, John Paul Adrian Glaubitz wrote:
-> >  Changes since v1:
-> >  - Replace single mov instruction for exception handling
-> >    in case of invalid load
+Hi Yoshinori,
+
+On Wed, 03 Jun 2020 14:57:32 +0900 Yoshinori Sato <ysato@users.sourceforge.=
+jp> wrote:
 >
-> Yutaka Niibe has had a look at my patch and he says, we might have to add
-> an entry for the fault handling of the upper word.
->
-> Quote:
->
-> > (1) I think that there is possibility that the second access to user
-> > space fails (while the first access succeeds).  IIUC, it's good have
-> > an entry in __ex_tables for the second access too, like:
-> >     ".long 1b+2, 3b\n\t"
-> > I don't know if the expression "1b+2" is correct, my intention is
-> > detecting the failure in the seccond access.
+> I only provided it temporarily.
+> Plase remove git://git.sourceforge.jp/gitroot/uclinux-h8/linux.git#sh-next
 
-So just add another numeric label, like is done on m68k.
+OK, will do.  I will also rename the sh-rf tree to sh.
 
-Gr{oetje,eeting}s,
+--=20
+Cheers,
+Stephen Rothwell
 
-                        Geert
+--Sig_/TIvt.0mHpqZzWI2yT4MsQv4
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+-----BEGIN PGP SIGNATURE-----
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl7XnSEACgkQAVBC80lX
+0GzQ0wf9ET0YopjHkh6G+ERw67pvFWuVakeEytMr0AszH4YAJhXwvAbB2svr0yeR
+21bdiSxsSF4MYAuVzutRu68H7ZL1tPuKP8sX0P0FFu8imOHiNjLMzHaoItbJjczE
+vjCCRSEWB+jg1M3EB+jg5CJMp3+6+ZJdF8rJh1geZF96tyacojFT8toeraASZoro
+8pnqfUdBDs5MJiy46ARgM4WRj/NdQdvmbLv+vHuPKWXHS4ZIbBLNh0KeXaLOk7GO
+nQj+T/logmiwfNUZs/3o+F4/DOOUkyUhbfvPtBO4C3MSMNNX3Cpf2T8n7GhkkPON
+3r8JXvxGyxyi+gO/vZ+4EfvI4cUeEw==
+=LEvm
+-----END PGP SIGNATURE-----
+
+--Sig_/TIvt.0mHpqZzWI2yT4MsQv4--
