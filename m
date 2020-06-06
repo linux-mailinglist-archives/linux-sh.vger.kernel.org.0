@@ -2,108 +2,90 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B29B1F0410
-	for <lists+linux-sh@lfdr.de>; Sat,  6 Jun 2020 02:50:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35C721F07EF
+	for <lists+linux-sh@lfdr.de>; Sat,  6 Jun 2020 18:32:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728507AbgFFAuc (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 5 Jun 2020 20:50:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49550 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728353AbgFFAuc (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Fri, 5 Jun 2020 20:50:32 -0400
-Received: from localhost.localdomain (c-73-231-172-41.hsd1.ca.comcast.net [73.231.172.41])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 75869206A2;
-        Sat,  6 Jun 2020 00:50:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591404630;
-        bh=CuRHLjTyuPunfNrv70CyULCZflgdhzPhs1cTICD3X2k=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=iMlBI540mDGXKme1TVukXUOLwM8Rd5wwZISsElK/RsPhEsrg1Pqatge8MQ/nxnxGw
-         ostJsU+3eK2bFQh7gLlQ8IKysxp6XCtWgiFdAuUe1R39qqzzGHO0GDSII6lTtMm0ql
-         3G1z4bMUsdDh+TxnTUa26vcL4W7OD22qVBzm2hsY=
-Date:   Fri, 5 Jun 2020 17:50:30 -0700
-From:   Andrew Morton <akpm@linux-foundation.org>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Rich Felker <dalias@libc.org>,
-        Christoph Hellwig <hch@infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
+        id S1727862AbgFFQcq (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sat, 6 Jun 2020 12:32:46 -0400
+Received: from brightrain.aerifal.cx ([216.12.86.13]:41716 "EHLO
+        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727989AbgFFQcq (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sat, 6 Jun 2020 12:32:46 -0400
+Date:   Sat, 6 Jun 2020 12:32:45 -0400
+From:   Rich Felker <dalias@libc.org>
+To:     Matthew Wilcox <willy@infradead.org>
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
         Rob Landley <rob@landley.net>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [GIT PULL] sh: remove sh5 support
-Message-Id: <20200605175030.feba7dc6fc1233b815c72afb@linux-foundation.org>
-In-Reply-To: <CAMuHMdVTWz33sbn2PPvcNW8KnAcNFvv31yj-z5V3VJ87Xv=tjQ@mail.gmail.com>
-References: <20200528054600.GA29717@infradead.org>
-        <20200528161416.GY1079@brightrain.aerifal.cx>
-        <20200529143059.GA25475@infradead.org>
-        <20200529175335.GK1079@brightrain.aerifal.cx>
-        <e86e1d78-9597-811a-da0e-42a910b0c9fe@physik.fu-berlin.de>
-        <20200601181259.GV1079@brightrain.aerifal.cx>
-        <20200602013332.GY1079@brightrain.aerifal.cx>
-        <0af28795-b27a-2dd9-0d0f-c2a8d4b8d512@physik.fu-berlin.de>
-        <20200605154343.GU1079@brightrain.aerifal.cx>
-        <c4900bf6-99b3-c9b9-4fd0-7f491bd46de6@physik.fu-berlin.de>
-        <20200605155954.GV1079@brightrain.aerifal.cx>
-        <25e0729d-8158-94a4-f081-ccdfa50ecb1d@physik.fu-berlin.de>
-        <CAMuHMdVTWz33sbn2PPvcNW8KnAcNFvv31yj-z5V3VJ87Xv=tjQ@mail.gmail.com>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        Linux-Arch <linux-arch@vger.kernel.org>
+Subject: Re: [PATCH] sh: remove unneeded constructor.
+Message-ID: <20200606163244.GZ1079@brightrain.aerifal.cx>
+References: <20180731051519.101249-1-ysato@users.sourceforge.jp>
+ <CAMuHMdUQReuzR=x54gnC1XdP77RrT1TaWoFFXUhUQ02A+giPqQ@mail.gmail.com>
+ <87600us5k9.wl-ysato@users.sourceforge.jp>
+ <20180804103550.GA3183@bombadil.infradead.org>
+ <CAMuHMdXsz-+zsxouaLP5tTKA46G34iAACSce+RXrD8AiiQc2+A@mail.gmail.com>
+ <20180804105149.GB3183@bombadil.infradead.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20180804105149.GB3183@bombadil.infradead.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Fri, 5 Jun 2020 20:23:07 +0200 Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-
-> Hi Adrian,
+On Sat, Aug 04, 2018 at 03:51:49AM -0700, Matthew Wilcox wrote:
+> On Sat, Aug 04, 2018 at 12:47:08PM +0200, Geert Uytterhoeven wrote:
+> > You do want to readd the __GFP_ZERO flag to the second user of PGALLOC_GFP,
+> > don't you?
 > 
-> On Fri, Jun 5, 2020 at 7:58 PM John Paul Adrian Glaubitz
-> <glaubitz@physik.fu-berlin.de> wrote:
-> > On 6/5/20 5:59 PM, Rich Felker wrote:
-> > >> Ah, sorry, I missed that. You're right, it should probably go through
-> > >> someone else's tree then.
-> > >
-> > > Do you know if it's needed to un-break sh4? If so we should push to
-> > > get whoever has jurisdiction over it to include it; otherwise I'm
-> > > indifferent.
+> I missed that!  Probably only relevant for SH-64.  But yes ... probably better
+> to make this explicit then:
 > 
-> I think the above is about the asm-generic/vmlinux.lds.h patch?
-> https://marc.info/?l=linux-sh&m=158429470221261&w=2
+> +++ b/arch/sh/mm/pgtable.c
+> @@ -2,8 +2,6 @@
+>  #include <linux/mm.h>
+>  #include <linux/slab.h>
+>  
+> -#define PGALLOC_GFP GFP_KERNEL | __GFP_ZERO
+> -
+>  static struct kmem_cache *pgd_cachep;
+>  #if PAGETABLE_LEVELS > 2
+>  static struct kmem_cache *pmd_cachep;
+> @@ -13,6 +11,7 @@ void pgd_ctor(void *x)
+>  {
+>         pgd_t *pgd = x;
+>  
+> +       memset(pgd, 0, USER_PTRS_PER_PGD * sizeof(pgd_t));
+>         memcpy(pgd + USER_PTRS_PER_PGD,
+>                swapper_pg_dir + USER_PTRS_PER_PGD,
+>                (PTRS_PER_PGD - USER_PTRS_PER_PGD) * sizeof(pgd_t));
+> @@ -32,7 +31,7 @@ void pgtable_cache_init(void)
+>  
+>  pgd_t *pgd_alloc(struct mm_struct *mm)
+>  {
+> -       return kmem_cache_alloc(pgd_cachep, PGALLOC_GFP);
+> +       return kmem_cache_alloc(pgd_cachep, GFP_KERNEL);
+>  }
+>  
+>  void pgd_free(struct mm_struct *mm, pgd_t *pgd)
+> @@ -48,7 +47,7 @@ void pud_populate(struct mm_struct *mm, pud_t *pud, pmd_t *pmd)
+>  
+>  pmd_t *pmd_alloc_one(struct mm_struct *mm, unsigned long address)
+>  {
+> -       return kmem_cache_alloc(pmd_cachep, PGALLOC_GFP);
+> +       return kmem_cache_alloc(pmd_cachep, GFP_KERNEL | __GFP_ZERO);
+>  }
+>  
+>  void pmd_free(struct mm_struct *mm, pmd_t *pmd)
 > 
-> That one falls under Arnd's jurisdiction.
-> And AFAIUC, it matters for recent binutils only? So Arnd should know.
-> 
+> --
 
-Aligning RO_AFTER_INIT_DATA is simply a no-brainer:
+I've been asked to include this in this or next pull request, and I
+think it's right to do so, but I don't have a complete patch from you.
+Can you resubmit with a commit message and signed-off-by?
 
---- a/include/asm-generic/vmlinux.lds.h~include-asm-generic-vmlinuxldsh-align-ro_after_init
-+++ a/include/asm-generic/vmlinux.lds.h
-@@ -374,6 +374,7 @@
-  */
- #ifndef RO_AFTER_INIT_DATA
- #define RO_AFTER_INIT_DATA						\
-+	. = ALIGN(8);							\
- 	__start_ro_after_init = .;					\
- 	*(.data..ro_after_init)						\
- 	JUMP_TABLE_DATA							\
-
-So I'll send this in to Linus for 5.8-rc1.  And I think I'll add a cc:stable to
-it, so people can use older kernels with newer toolchains.
-
-
-I still have a few other sh patches sitting here:
-
-https://ozlabs.org/~akpm/mmotm/broken-out/sh-clkfwk-remove-r8-r16-r32.patch
-https://ozlabs.org/~akpm/mmotm/broken-out/sh-remove-call-to-memset-after-dma_alloc_coherent.patch
-https://ozlabs.org/~akpm/mmotm/broken-out/sh-use-generic-strncpy.patch
-https://ozlabs.org/~akpm/mmotm/broken-out/sh-add-missing-export_symbol-for-__delay.patch
-
-What should I do with those?
+Rich
