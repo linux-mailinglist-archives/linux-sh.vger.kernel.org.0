@@ -2,38 +2,34 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04C331F0B1C
-	for <lists+linux-sh@lfdr.de>; Sun,  7 Jun 2020 14:34:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E9A11F0B1E
+	for <lists+linux-sh@lfdr.de>; Sun,  7 Jun 2020 14:36:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726535AbgFGMe1 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sun, 7 Jun 2020 08:34:27 -0400
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:57383 "EHLO
+        id S1726447AbgFGMge (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sun, 7 Jun 2020 08:36:34 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:57471 "EHLO
         outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726455AbgFGMe1 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sun, 7 Jun 2020 08:34:27 -0400
+        by vger.kernel.org with ESMTP id S1726455AbgFGMge (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sun, 7 Jun 2020 08:36:34 -0400
 Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
           by outpost.zedat.fu-berlin.de (Exim 4.93)
           with esmtps (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
           (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1jhuVL-0005fT-Fb; Sun, 07 Jun 2020 14:34:23 +0200
+          id 1jhuXM-00064V-Uv; Sun, 07 Jun 2020 14:36:28 +0200
 Received: from p57bd9955.dip0.t-ipconnect.de ([87.189.153.85] helo=[192.168.178.139])
           by inpost2.zedat.fu-berlin.de (Exim 4.93)
           with esmtpsa (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
           (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1jhuVL-001bsY-8y; Sun, 07 Jun 2020 14:34:23 +0200
-Subject: Re: [PATCH] sh: fixup strncpy()
-To:     Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Karl Nasrallah <knnspeed@aol.com>,
-        Linux-SH <linux-sh@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
-References: <8736dijdit.wl-kuninori.morimoto.gx@renesas.com>
- <87zhfqhyuf.wl-kuninori.morimoto.gx@renesas.com>
- <b1336fcf-8b04-e16c-420c-ed7e766fef12@physik.fu-berlin.de>
- <87eeqzzn4m.wl-kuninori.morimoto.gx@renesas.com>
+          id 1jhuXM-001c3r-OC; Sun, 07 Jun 2020 14:36:28 +0200
+Subject: Re: [PATCH v3] sh: fix inline asm strncpy()
+To:     Karl Nasrallah <knnspeed@aol.com>, ysato@users.sourceforge.jp,
+        dalias@libc.org, linux-sh@vger.kernel.org
+Cc:     kuninori.morimoto.gx@renesas.com, geert+renesas@glider.be,
+        Rich Felker <dalias@libc.org>
+References: <87v9qdyups.wl-kuninori.morimoto.gx@renesas.com>
+ <20191219031914.20457-1-knnspeed@aol.com>
 From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  mQINBE3JE9wBEADMrYGNfz3oz6XLw9XcWvuIxIlPWoTyw9BxTicfGAv0d87wngs9U+d52t/R
@@ -79,12 +75,12 @@ Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  jEF9ImTPcYZpw5vhdyPwBdXW2lSjV3EAqknWujRgcsm84nycuJnImwJptR481EWmtuH6ysj5
  YhRVGbQPfdsjVUQfZdRdkEv4CZ90pdscBi1nRqcqANtzC+WQFwekDzk2lGqNRDg56s+q0KtY
  scOkTAZQGVpD/8AaLH4v1w==
-Message-ID: <5a2219e9-6898-3b01-666e-94629f833f8a@physik.fu-berlin.de>
-Date:   Sun, 7 Jun 2020 14:34:22 +0200
+Message-ID: <a1afad68-e921-36a7-edf9-11cc23a3a222@physik.fu-berlin.de>
+Date:   Sun, 7 Jun 2020 14:36:27 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.1
 MIME-Version: 1.0
-In-Reply-To: <87eeqzzn4m.wl-kuninori.morimoto.gx@renesas.com>
+In-Reply-To: <20191219031914.20457-1-knnspeed@aol.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -95,31 +91,109 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Kuninori!
+Hi Rich!
 
-On 6/1/20 1:43 AM, Kuninori Morimoto wrote:
->> Since I don't want your fixes to fall off the table, you can ask Andrew
->> Morton to pick up your patches which is apparently the normal path to
->> choose when the original maintainers are currently not available.
-> 
-> Actually, I had been posted it to Andrew many times [1],
-> but nothing happened.
-> And according to [2], it seems SH maintainers are still working,
-> thus, normal path is still them.
-> 
-> I had been worked for SH before, and posted many fixup patches
-> for many times to both Andrew and SH maintainers.
-> But their are still not yet reviewd/accepted.
-> And unfortunately, it seems I'm judged as spam from SH maintainers [2].
-> So I can do nothing anymore...
-I think most of your patches have been merged now [1].
+I just noticed this patch that got posted without any reply.
 
-Is there any patch that we missed? If yes, please repost them to the list.
+Should we consider this patch?
 
-Thanks,
 Adrian
 
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=3b69e8b4571125bec1f77f886174fe6cab6b9d75
+On 12/19/19 4:19 AM, Karl Nasrallah wrote:
+> The SH asm strncpy() implementation does not pad arrays with null bytes
+> when the size passed in is larger than than the size of the input string
+> (e.g. if the size of a larger destination array is passed in). Under
+> certain targets, it also generates 'array boundary exceeded' warnings.
+> This patch updates the extended asm function to address both of those
+> issues, and allows strncpy() to behave as described by the strncpy()
+> manual page.
+> 
+> Signed-off-by: Karl Nasrallah <knnspeed@aol.com>
+> ---
+> 
+> Please note: This is an improved version of my prior code, tested
+> standalone with sh4-elf-gcc 9.2.0 and a Sega Dreamcast (SH7750/R-like).
+> 
+> If anyone is interested in an easier-to-read version of the assembly that
+> does not match the in-kernel style, it is included in this note:
+> 
+> static inline char *strncpy(char *__dest, const char *__src, size_t __n)
+> {
+> 	char * retval = __dest;
+> 	const char * __dest_end = __dest + __n - 1;
+> 
+> 	if(__n == 0)
+> 	{
+> 		return retval;
+> 	}
+> 
+> 	__asm__ __volatile__(
+> 	"strncpy_start:\n\t"
+> 		"mov.b @%[src]+,r0\n\t"
+> 		"mov.b r0,@%[dest]\n\t"
+> 		"cmp/eq %[dest],%[dest_end]\n\t"
+> 		"bt.s strncpy_end\n\t"
+> 		"cmp/eq #0,r0\n\t"
+> 		"bf.s strncpy_start\n\t"
+> 		"add #1,%[dest]\n\t"
+> 	"strncpy_pad:\n\t"
+> 		"mov.b r0,@%[dest]\n\t"
+> 		"cmp/eq %[dest],%[dest_end]\n\t"
+> 		"bf.s strncpy_pad\n\t"
+> 		"add #1,%[dest]\n\t"
+> 	"strncpy_end:\n\t"
+> 		: [dest] "+r" (__dest), [src] "+r" (__src)
+> 		: [dest_end] "r" (__dest_end)
+> 		: "r0","t","memory");
+> 
+> 	return retval;
+> }
+> 
+> (In maintaining the spirit of the original work, consider this piece of
+> code public domain.)
+> 
+>  arch/sh/include/asm/string_32.h | 18 ++++++++++++------
+>  1 file changed, 12 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/sh/include/asm/string_32.h b/arch/sh/include/asm/string_32.h
+> index 3558b1d7123e..7f83eaea987a 100644
+> --- a/arch/sh/include/asm/string_32.h
+> +++ b/arch/sh/include/asm/string_32.h
+> @@ -32,6 +32,7 @@ static inline char *strcpy(char *__dest, const char *__src)
+>  static inline char *strncpy(char *__dest, const char *__src, size_t __n)
+>  {
+>  	register char *__xdest = __dest;
+> +	const char *__dest_end = __dest + __n - 1;
+>  	unsigned long __dummy;
+>  
+>  	if (__n == 0)
+> @@ -41,14 +42,19 @@ static inline char *strncpy(char *__dest, const char *__src, size_t __n)
+>  		"1:\n"
+>  		"mov.b	@%1+, %2\n\t"
+>  		"mov.b	%2, @%0\n\t"
+> -		"cmp/eq	#0, %2\n\t"
+> -		"bt/s	2f\n\t"
+> -		" cmp/eq	%5,%1\n\t"
+> -		"bf/s	1b\n\t"
+> +		"cmp/eq	%0, %5\n\t"
+> +		"bt.s	3f\n\t"
+> +		" cmp/eq	#0, %2\n\t"
+> +		"bf.s	1b\n\t"
+>  		" add	#1, %0\n"
+> -		"2:"
+> +		"2:\n\t"
+> +		"mov.b	%2,	@%0\n\t"
+> +		"cmp/eq	%0,	%5\n\t"
+> +		"bf.s 2b\n\t"
+> +		" add	#1,	%0\n"
+> +		"3:"
+>  		: "=r" (__dest), "=r" (__src), "=&z" (__dummy)
+> -		: "0" (__dest), "1" (__src), "r" (__src+__n)
+> +		: "0" (__dest), "1" (__src), "r" (__dest_end)
+>  		: "memory", "t");
+>  
+>  	return __xdest;
+> 
 
 -- 
  .''`.  John Paul Adrian Glaubitz
