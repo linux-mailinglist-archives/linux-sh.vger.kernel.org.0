@@ -2,82 +2,76 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 644B41F141C
-	for <lists+linux-sh@lfdr.de>; Mon,  8 Jun 2020 10:06:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0BEE1F1613
+	for <lists+linux-sh@lfdr.de>; Mon,  8 Jun 2020 11:59:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729095AbgFHIGn (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 8 Jun 2020 04:06:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39442 "EHLO
+        id S1728745AbgFHJ7r (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 8 Jun 2020 05:59:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728956AbgFHIGn (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 8 Jun 2020 04:06:43 -0400
-Received: from baptiste.telenet-ops.be (baptiste.telenet-ops.be [IPv6:2a02:1800:120:4::f00:13])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4DA3C08C5C3
-        for <linux-sh@vger.kernel.org>; Mon,  8 Jun 2020 01:06:42 -0700 (PDT)
+        with ESMTP id S1729333AbgFHJ7r (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 8 Jun 2020 05:59:47 -0400
+Received: from michel.telenet-ops.be (michel.telenet-ops.be [IPv6:2a02:1800:110:4::f00:18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ACA5C00862E
+        for <linux-sh@vger.kernel.org>; Mon,  8 Jun 2020 02:59:44 -0700 (PDT)
 Received: from ramsan ([IPv6:2a02:1810:ac12:ed60:c85f:a5bf:b1bd:702b])
-        by baptiste.telenet-ops.be with bizsmtp
-        id oY6e2200M0R8aca01Y6ejA; Mon, 08 Jun 2020 10:06:39 +0200
+        by michel.telenet-ops.be with bizsmtp
+        id oZzi2200A0R8aca06Zziol; Mon, 08 Jun 2020 11:59:42 +0200
 Received: from rox.of.borg ([192.168.97.57])
         by ramsan with esmtp (Exim 4.90_1)
         (envelope-from <geert@linux-m68k.org>)
-        id 1jiCnm-0005zj-HL; Mon, 08 Jun 2020 10:06:38 +0200
+        id 1jiEZC-0007P0-Ak; Mon, 08 Jun 2020 11:59:42 +0200
 Received: from geert by rox.of.borg with local (Exim 4.90_1)
         (envelope-from <geert@linux-m68k.org>)
-        id 1jiCnm-0007G7-Ei; Mon, 08 Jun 2020 10:06:38 +0200
+        id 1jiEZC-0007x4-8K; Mon, 08 Jun 2020 11:59:42 +0200
 From:   Geert Uytterhoeven <geert+renesas@glider.be>
-To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "J . P . Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>
-Cc:     Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
+To:     Mark Brown <broonie@kernel.org>
+Cc:     Chris Brandt <chris.brandt@renesas.com>, linux-spi@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org, linux-sh@vger.kernel.org,
         Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH] Revert "sh: add missing EXPORT_SYMBOL() for __delay"
-Date:   Mon,  8 Jun 2020 10:06:36 +0200
-Message-Id: <20200608080636.27862-1-geert+renesas@glider.be>
+Subject: [PATCH 0/8] spi: rspi: Bit rate improvements
+Date:   Mon,  8 Jun 2020 11:59:32 +0200
+Message-Id: <20200608095940.30516-1-geert+renesas@glider.be>
 X-Mailer: git-send-email 2.17.1
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-This reverts commit d1f56f318d234fc5db230af2f3e0088f689ab3c0.
+	Hi Mark,
 
-__delay() is an internal implementation detail on several architectures.
-Drivers should not call __delay() directly, as it has non-standardized
-semantics, or may not even exist.
-Hence there is no need to export __delay() to modules.
+This patch series contains several improvements for the Renesas SPI/QSPI
+driver related to bit rate configuration.
 
-See also include/asm-generic/delay.h:
+This has been tested on RSK+RZA1 (RSPI) and R-Car M2-W/Koelsch (QSPI),
+using a scope and logic analyzer, except for the by-one divider on QSPI.
+This has not been tested on legacy SuperH, due to lack of hardware.
 
-    /* Undefined functions to get compile-time errors */
-    ...
-    extern void __delay(unsigned long loops);
+Thanks for your comments!
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
-Sorry for missing this when Adrian posted his list of mising patches.
+Geert Uytterhoeven (8):
+  spi: rspi: Remove useless .set_config_register() check
+  spi: rspi: Use requested instead of maximum bit rate
+  spi: rspi: Clean up Bit Rate Division Setting handling
+  spi: rspi: Increase bit rate accuracy on RZ/A
+  spi: rspi: Increase bit rate range for RSPI on SH
+  spi: rspi: Increase bit rate range for QSPI
+  spi: rspi: Fill in spi_transfer.effective_speed_hz
+  spi: rspi: Fill in controller speed limits
 
-References:
-[1] "Re: Build regressions/improvements in v5.4-rc2"
-    https://lore.kernel.org/r/CAMuHMdUERaoHLNKi03zCuYi7NevgBFjXrV=pt0Yy=HOeRiL25Q@mail.gmail.com/
-[2] "Re: [PATCH] sh: add missing EXPORT_SYMBOL() for __delay"
-    http://lore.kernel.org/r/CAMuHMdWb_ipn7FVHbz8=PTdGod=MW+2xHY7yuq3yJcWwNnDvcg@mail.gmail.com
----
- arch/sh/lib/delay.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/spi/spi-rspi.c | 101 ++++++++++++++++++++++++++++-------------
+ 1 file changed, 69 insertions(+), 32 deletions(-)
 
-diff --git a/arch/sh/lib/delay.c b/arch/sh/lib/delay.c
-index 540e670dbafcd826..dad8e6a54906bece 100644
---- a/arch/sh/lib/delay.c
-+++ b/arch/sh/lib/delay.c
-@@ -29,7 +29,6 @@ void __delay(unsigned long loops)
- 		: "0" (loops)
- 		: "t");
- }
--EXPORT_SYMBOL(__delay);
- 
- inline void __const_udelay(unsigned long xloops)
- {
 -- 
 2.17.1
 
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds
