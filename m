@@ -2,62 +2,95 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 24B961F198E
-	for <lists+linux-sh@lfdr.de>; Mon,  8 Jun 2020 15:01:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F39A1F1999
+	for <lists+linux-sh@lfdr.de>; Mon,  8 Jun 2020 15:04:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729111AbgFHNBK (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 8 Jun 2020 09:01:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56878 "EHLO
+        id S1729029AbgFHNEN (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 8 Jun 2020 09:04:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728799AbgFHNBJ (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 8 Jun 2020 09:01:09 -0400
+        with ESMTP id S1728245AbgFHNEN (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 8 Jun 2020 09:04:13 -0400
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C17F4C08C5C2;
-        Mon,  8 Jun 2020 06:01:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7745C08C5C2
+        for <linux-sh@vger.kernel.org>; Mon,  8 Jun 2020 06:04:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=qpXUgx7H8PGY1Q+I9yBb43nAQh19YWh36lAL/ZwXSVU=; b=uiyzKjFSiK+9fgV6zvEPw6hizp
-        obcMUF0BXowlizp+ziuE7kv4niSSFtACx2GP96MuiWSvHdJHInzUPzTqnolhbqcTBZhaUA2MWA3KE
-        DAOxAfBYgQdyfYGjUU3dxIBp24k2w2F/tVhkcg4yHqJRx6kjuL4tAFviMjduajTBaT/SZJCFXQAhI
-        1JUxPf1N+abZLCB1VBwtEvyhetJ27soqItScGzQqof4T6tOLZ9GH/cgJ1sHKNv24a0BasdqIWePWH
-        I5QCtSiDUF+QrO617kgxUwmc2b1o1hx+bzl3zqLXjSB1AuAsTkPetnj6+oIbyiV0ATxmbtKCJ8i4G
-        RfLaHf7Q==;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=aCCan8wkpGJu5TwSR306ZQjwN8XTI0pcOOcrAbNf6T8=; b=fLu+hsItXTIk6M6udVtFxYf75t
+        SFptvLJdKRheJuGbcVl/2u0kUjMCE2KD/9gv8SNFL6cnbjeoGuhJeL7OBSs1KWceL1dhqFrxJrdeh
+        58/4KK6ZWcIADqsJoXfPCccg6FJmmCHfeuIW/Vzv1R77Luvu9XyTbLVPhXGwMB736mr1OTu1Hbppr
+        /JsKxDmso9QzZgZWAH/BmaFD45fQ3PjC+TNudO9IxzW6vDGDysMC5q0Zw1tL9NCcVv5xR6c7FnPi1
+        Xlh7F2sRpjouJ7XERZh2uGFd5ST0h1DIhfoNgN65nZWhOtx0Xkbq0JZLro87ZxFiDsGBp+A7owGth
+        +9S0h9yA==;
 Received: from willy by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jiHOe-0005FF-6w; Mon, 08 Jun 2020 13:01:00 +0000
-Date:   Mon, 8 Jun 2020 06:01:00 -0700
+        id 1jiHRi-000621-Lm; Mon, 08 Jun 2020 13:04:10 +0000
 From:   Matthew Wilcox <willy@infradead.org>
-To:     Rich Felker <dalias@libc.org>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Rob Landley <rob@landley.net>,
-        Linux-Arch <linux-arch@vger.kernel.org>
-Subject: Re: [PATCH] sh: remove unneeded constructor.
-Message-ID: <20200608130100.GU19604@bombadil.infradead.org>
-References: <20180731051519.101249-1-ysato@users.sourceforge.jp>
- <CAMuHMdUQReuzR=x54gnC1XdP77RrT1TaWoFFXUhUQ02A+giPqQ@mail.gmail.com>
- <87600us5k9.wl-ysato@users.sourceforge.jp>
- <20180804103550.GA3183@bombadil.infradead.org>
- <CAMuHMdXsz-+zsxouaLP5tTKA46G34iAACSce+RXrD8AiiQc2+A@mail.gmail.com>
- <20180804105149.GB3183@bombadil.infradead.org>
- <20200606163244.GZ1079@brightrain.aerifal.cx>
+To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org
+Cc:     "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Subject: [PATCH] sh: Fix page table allocation
+Date:   Mon,  8 Jun 2020 06:04:08 -0700
+Message-Id: <20200608130408.20951-1-willy@infradead.org>
+X-Mailer: git-send-email 2.21.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200606163244.GZ1079@brightrain.aerifal.cx>
+Content-Transfer-Encoding: 8bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Sat, Jun 06, 2020 at 12:32:45PM -0400, Rich Felker wrote:
-> On Sat, Aug 04, 2018 at 03:51:49AM -0700, Matthew Wilcox wrote:
-> 
-> I've been asked to include this in this or next pull request, and I
-> think it's right to do so, but I don't have a complete patch from you.
-> Can you resubmit with a commit message and signed-off-by?
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 
-August 2018?  Things certainly move quickly in SH land ;-)  I'll send
-that along.
+The pgd kmem_cache allocation both specified __GFP_ZERO and had a
+constructor which makes no sense.  Remove __GFP_ZERO and zero the user
+parts of the pgd explicitly.
+
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+---
+ arch/sh/mm/pgtable.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/arch/sh/mm/pgtable.c b/arch/sh/mm/pgtable.c
+index 5c8f9247c3c2..cf7ce4b57359 100644
+--- a/arch/sh/mm/pgtable.c
++++ b/arch/sh/mm/pgtable.c
+@@ -2,8 +2,6 @@
+ #include <linux/mm.h>
+ #include <linux/slab.h>
+ 
+-#define PGALLOC_GFP GFP_KERNEL | __GFP_ZERO
+-
+ static struct kmem_cache *pgd_cachep;
+ #if PAGETABLE_LEVELS > 2
+ static struct kmem_cache *pmd_cachep;
+@@ -13,6 +11,7 @@ void pgd_ctor(void *x)
+ {
+ 	pgd_t *pgd = x;
+ 
++	memset(pgd, 0, USER_PTRS_PER_PGD * sizeof(pgd_t));
+ 	memcpy(pgd + USER_PTRS_PER_PGD,
+ 	       swapper_pg_dir + USER_PTRS_PER_PGD,
+ 	       (PTRS_PER_PGD - USER_PTRS_PER_PGD) * sizeof(pgd_t));
+@@ -32,7 +31,7 @@ void pgtable_cache_init(void)
+ 
+ pgd_t *pgd_alloc(struct mm_struct *mm)
+ {
+-	return kmem_cache_alloc(pgd_cachep, PGALLOC_GFP);
++	return kmem_cache_alloc(pgd_cachep, GFP_KERNEL);
+ }
+ 
+ void pgd_free(struct mm_struct *mm, pgd_t *pgd)
+@@ -48,7 +47,7 @@ void pud_populate(struct mm_struct *mm, pud_t *pud, pmd_t *pmd)
+ 
+ pmd_t *pmd_alloc_one(struct mm_struct *mm, unsigned long address)
+ {
+-	return kmem_cache_alloc(pmd_cachep, PGALLOC_GFP);
++	return kmem_cache_alloc(pmd_cachep, GFP_KERNEL | __GFP_ZERO);
+ }
+ 
+ void pmd_free(struct mm_struct *mm, pmd_t *pmd)
+-- 
+2.26.2
+
