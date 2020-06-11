@@ -2,114 +2,68 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 187671F597C
-	for <lists+linux-sh@lfdr.de>; Wed, 10 Jun 2020 18:54:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2623A1F6314
+	for <lists+linux-sh@lfdr.de>; Thu, 11 Jun 2020 09:58:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726995AbgFJQyN (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 10 Jun 2020 12:54:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57854 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726517AbgFJQyM (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 10 Jun 2020 12:54:12 -0400
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03BDDC08C5C3
-        for <linux-sh@vger.kernel.org>; Wed, 10 Jun 2020 09:54:11 -0700 (PDT)
-Received: by mail-lj1-x244.google.com with SMTP id n24so3332625lji.10
-        for <linux-sh@vger.kernel.org>; Wed, 10 Jun 2020 09:54:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=PGXejVSpqx4L2PlHIfd5JVBtSOWL/TuutZfvvE958Z8=;
-        b=ZFce94Usj6EkI4Lk9l8ZbLgBKcrOaOEIKI+lsoHoWwucoH5PaFSFEUF5nSpDfmtX/m
-         zpiTKIsyT2HuVYK0uUKJl0hfSDP//4+ueTqu4gfQUH9jmW1Fx7086RKZCkNC01IFk27w
-         7I94+DibpxplQFqh0putGbec4FKBVLxsfzedA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=PGXejVSpqx4L2PlHIfd5JVBtSOWL/TuutZfvvE958Z8=;
-        b=N6cJloMYLIaLBZyl8RAoK7Fvntmy/Nb/VcvbYvHkYmdw+gz+bXZWlKb2lt0477UYX9
-         oARulnRRAvbwm+m9dcYRrPyVSAc8ap05DC58MVxGokv/X+Sj6SlttYlWxydyjYhRQ04S
-         AVeh2HpjJTxwO9ocuELGPdkV+reinyf91pzyKGjSHootBT12K6bB3Y46EJzUxC7jJBHo
-         JENvFmFzIAJSUwKuk7bRVQM7wx3lO5i5A7yPgRcEL3Ii9F3qjB3InhpYcakxl+yyxkUQ
-         3iVrmNc0D6JZ3Fk7RDmQwj/eAtyBcAH/aGh7jdQeZTFs6QXwXCmDGj5q/w9pMtG9gxeO
-         IMmQ==
-X-Gm-Message-State: AOAM532QWNK8VhBuZLsviiSq5Z55EaCtlZkLqtSz8X1ImAYJq4lRvab9
-        Q2qG6i3UikbiTZzdRt1JzNaFkuFMls0=
-X-Google-Smtp-Source: ABdhPJy0i3Q2aN/SCdPC9/f37ULmWBbDuVL8eGOhkMqwgkMdadPY9/8cn7M4/CtgIENVuasQ4z3u3g==
-X-Received: by 2002:a05:651c:1103:: with SMTP id d3mr2398265ljo.110.1591808048591;
-        Wed, 10 Jun 2020 09:54:08 -0700 (PDT)
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com. [209.85.208.172])
-        by smtp.gmail.com with ESMTPSA id l7sm70427ljj.55.2020.06.10.09.54.05
-        for <linux-sh@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 Jun 2020 09:54:06 -0700 (PDT)
-Received: by mail-lj1-f172.google.com with SMTP id q19so3382293lji.2
-        for <linux-sh@vger.kernel.org>; Wed, 10 Jun 2020 09:54:05 -0700 (PDT)
-X-Received: by 2002:a2e:8991:: with SMTP id c17mr1979736lji.421.1591808045437;
- Wed, 10 Jun 2020 09:54:05 -0700 (PDT)
+        id S1726666AbgFKH6k (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 11 Jun 2020 03:58:40 -0400
+Received: from outpost5.zedat.fu-berlin.de ([130.133.4.89]:36077 "EHLO
+        outpost5.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726841AbgFKH6j (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 11 Jun 2020 03:58:39 -0400
+Received: from relay1.zedat.fu-berlin.de ([130.133.4.67])
+          by outpost.zedat.fu-berlin.de (Exim 4.93)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1jjI6a-000srZ-Jy; Thu, 11 Jun 2020 09:58:32 +0200
+Received: from z6.physik.fu-berlin.de ([160.45.32.137] helo=z6)
+          by relay1.zedat.fu-berlin.de (Exim 4.93)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1jjI6a-00291r-Hm; Thu, 11 Jun 2020 09:58:32 +0200
+Received: from glaubitz by z6 with local (Exim 4.94)
+        (envelope-from <glaubitz@physik.fu-berlin.de>)
+        id 1jjI6R-00COLg-3t; Thu, 11 Jun 2020 09:58:23 +0200
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To:     linux-sh@vger.kernel.org
+Cc:     Rich Felker <dalias@libc.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
+        NIIBE Yutaka <gniibe@fsij.org>, linux-kernel@vger.kernel.org
+Subject: [PATCH v3] sh: Implement __get_user_u64() required for 64-bit get_user()
+Date:   Thu, 11 Jun 2020 09:58:10 +0200
+Message-Id: <20200611075811.2949870-1-glaubitz@physik.fu-berlin.de>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-References: <20200610174811.44b94525@thinkpad>
-In-Reply-To: <20200610174811.44b94525@thinkpad>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Wed, 10 Jun 2020 09:53:49 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wgm0_0PjXaSVbrpDfgtn6UbDyWjSRnXvfdebweUYSZ+eA@mail.gmail.com>
-Message-ID: <CAHk-=wgm0_0PjXaSVbrpDfgtn6UbDyWjSRnXvfdebweUYSZ+eA@mail.gmail.com>
-Subject: Re: Possible duplicate page fault accounting on some archs after
- commit 4064b9827063
-To:     Gerald Schaefer <gerald.schaefer@de.ibm.com>
-Cc:     Peter Xu <peterx@redhat.com>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        alpha <linux-alpha@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>, linux-mips@vger.kernel.org,
-        Nick Hu <nickhu@andestech.com>,
-        Ley Foon Tan <ley.foon.tan@intel.com>,
-        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
-        linux-riscv@lists.infradead.org,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        sparclinux@vger.kernel.org,
-        linux-um <linux-um@lists.infradead.org>,
-        Guan Xuetao <gxt@pku.edu.cn>, linux-xtensa@linux-xtensa.org,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Andrea Arcangeli <aarcange@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: 160.45.32.137
+X-ZEDAT-Hint: R
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Wed, Jun 10, 2020 at 8:48 AM Gerald Schaefer
-<gerald.schaefer@de.ibm.com> wrote:
->
-> This was found by coincidence in s390 code, and a quick check showed that
-> there are quite a lot of other architectures that seem to be affected in a
-> similar way. I'm preparing a fix for s390, by moving the accounting behind
-> the retry loop, similar to x86. It is not completely straight-forward, so
-> I leave the fix for other archs to the respective maintainers.
+Hi!
 
-Hmm. I wonder if we could move the handling into  handle_mm_fault() itself.
+This is version 3 of my patch to implement __get_user_u64() for SH.
 
-It's _fairly_ trivial to do on the arch side, just as long as you
-remember to make the VM_FAULT_MAJOR bit sticky like x86 does with that
+I have asked both Yutaka Niibe and Yoshinori Sato to look over my changes and they
+both agreed that an entry in __ex_tables for the second access was missing, so I
+add the missing ".long 1b+2, 3b\n\t".
 
-        major |= fault & VM_FAULT_MAJOR;
+The changes should be correct now and will hopefully get a positive review by
+the SH maintainers.
 
-right after handle_mm_fault(). But it certainly doesn't seem like it
-would be hard to move into common code in handle_mm_fault() either, by
-just not doing the accounting if it's about to return VM_FAULT_RETRY
-or VM_FAULT_ERROR.
+Thanks,
+Adrian
 
-That said, we want that perf_sw_event() accounting too, so we'd have
-to pass in a 'struct regs *' as well. And it's not clear which way
-accounting should go for other callers of handle_mm_fault() (ie gup
-etc).
+--
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
-So I guess just having architectures fix it up individually and make
-sure they don't do it for retry conditions is the right thing to do..
 
-             Linus
