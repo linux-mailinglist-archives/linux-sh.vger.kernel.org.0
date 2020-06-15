@@ -2,68 +2,128 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 249BE1F9615
-	for <lists+linux-sh@lfdr.de>; Mon, 15 Jun 2020 14:09:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 227F61FA2DC
+	for <lists+linux-sh@lfdr.de>; Mon, 15 Jun 2020 23:34:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728510AbgFOMJs (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 15 Jun 2020 08:09:48 -0400
-Received: from smtp.asem.it ([151.1.184.197]:60888 "EHLO smtp.asem.it"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728285AbgFOMJs (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Mon, 15 Jun 2020 08:09:48 -0400
-Received: from webmail.asem.it
-        by asem.it (smtp.asem.it)
-        (SecurityGateway 6.5.2)
-        with ESMTP id SG000318019.MSG 
-        for <linux-sh@vger.kernel.org>; Mon, 15 Jun 2020 14:09:46 +0200S
-Received: from ASAS044.asem.intra (172.16.16.44) by ASAS044.asem.intra
- (172.16.16.44) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Mon, 15
- Jun 2020 14:09:45 +0200
-Received: from flavio-x.asem.intra (172.16.17.208) by ASAS044.asem.intra
- (172.16.16.44) with Microsoft SMTP Server id 15.1.1979.3 via Frontend
- Transport; Mon, 15 Jun 2020 14:09:45 +0200
-From:   Flavio Suligoi <f.suligoi@asem.it>
-To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>
-CC:     <linux-sh@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Flavio Suligoi <f.suligoi@asem.it>
-Subject: [PATCH] arch: sh: smc37c93x: fix spelling mistake
-Date:   Mon, 15 Jun 2020 14:09:40 +0200
-Message-ID: <20200615120940.12603-1-f.suligoi@asem.it>
-X-Mailer: git-send-email 2.17.1
+        id S1731513AbgFOVei (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 15 Jun 2020 17:34:38 -0400
+Received: from us-smtp-1.mimecast.com ([205.139.110.61]:25436 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726207AbgFOVeh (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 15 Jun 2020 17:34:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1592256876;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=ItwxuioZVdA5XdCXR1QbAewm4+8qdb0KbH1lb+9ehrA=;
+        b=gVPACN6xO1SeIGsjRKFWvtdrnZBydlA/xLaXlBTA9ukZGl8rrSHTnjN2uogdd2Fc4Dt43t
+        N034oGy0lR/F8iU1msOQSncDNnrtFpLzDG+Yj7bkEUSC/23fQh5XZcOAkeqq2c9/GUp5z8
+        vlzphSUVDu2xnhW42LAOptOJw/OIneY=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-444-QHKYjpEQN7umF3R6WmiWrQ-1; Mon, 15 Jun 2020 17:34:34 -0400
+X-MC-Unique: QHKYjpEQN7umF3R6WmiWrQ-1
+Received: by mail-qt1-f199.google.com with SMTP id e8so15073343qtq.22
+        for <linux-sh@vger.kernel.org>; Mon, 15 Jun 2020 14:34:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=ItwxuioZVdA5XdCXR1QbAewm4+8qdb0KbH1lb+9ehrA=;
+        b=iQsqmUTcqT9iWJLIYLUr4hCP0f/KPo1jTFDiKveSHgQWufPyiAknw3GpXQNT103gr0
+         V+uUBqlmKhEz5boIKEbdQC6ST2JS2qzPNlWSusiE5biEyzjtsZu5uPFRZF4h7uUMpxzS
+         /cb4u76BojbHJE+fHTe7Oqq2kXaelstQ+ZJvCdJmGC97bsKTPWb59xfO7rB6TsPMZFOJ
+         gGGnI6b696cLZRqRvDJuxsxWy3iJcov5rrHoxnai8PM3oHTcglyAnQuRS59DsxumYTaF
+         VqatO8kzSFcJqIKJ20IFYW6EK9PLeNpkEzADCpppfgrhk43G2uZWhgmGhy1efZ4dqx2w
+         gf8w==
+X-Gm-Message-State: AOAM533ZKtkgMhqiLgLi4dpiQvdMX+caYcYKEnSpAgV/67huhtgUaVNJ
+        Lx8f7OKPKfyLvzAuDbFub6FgKxmnsEa53u5AfpcyEUIZGP18m39ZzuKdtmC7Y8FovQjYrh8xQxR
+        rOy4T/HLdwEQIV0gBkl4=
+X-Received: by 2002:a0c:ed31:: with SMTP id u17mr25540581qvq.117.1592256874110;
+        Mon, 15 Jun 2020 14:34:34 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJz0iHGiHde51cucRTUPE7NzfM/1jQRbNlFV4ChXmFExBXup/Ay4TPRKGywEeToUwHIWcL2Psg==
+X-Received: by 2002:a0c:ed31:: with SMTP id u17mr25540552qvq.117.1592256873805;
+        Mon, 15 Jun 2020 14:34:33 -0700 (PDT)
+Received: from xz-x1 ([2607:9880:19c0:32::2])
+        by smtp.gmail.com with ESMTPSA id f30sm12961493qtb.9.2020.06.15.14.34.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Jun 2020 14:34:33 -0700 (PDT)
+Date:   Mon, 15 Jun 2020 17:34:31 -0400
+From:   Peter Xu <peterx@redhat.com>
+To:     Gerald Schaefer <gerald.schaefer@de.ibm.com>
+Cc:     linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, Michal Simek <monstr@monstr.eu>,
+        linux-mips@vger.kernel.org, Nick Hu <nickhu@andestech.com>,
+        Ley Foon Tan <ley.foon.tan@intel.com>,
+        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+        Guan Xuetao <gxt@pku.edu.cn>, linux-xtensa@linux-xtensa.org,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Andrea Arcangeli <aarcange@redhat.com>
+Subject: Re: Possible duplicate page fault accounting on some archs after
+ commit 4064b9827063
+Message-ID: <20200615213431.GC111927@xz-x1>
+References: <20200610174811.44b94525@thinkpad>
+ <20200610165023.GA67179@xz-x1>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-SGHeloLookup-Result: pass smtp.helo=webmail.asem.it (ip=172.16.16.44)
-X-SGSPF-Result: none (smtp.asem.it)
-X-SGOP-RefID: str=0001.0A09020F.5EE7650A.0016,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0 (_st=1 _vt=0 _iwf=0)
+In-Reply-To: <20200610165023.GA67179@xz-x1>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Fix typo: "triger" --> "trigger"
+On Wed, Jun 10, 2020 at 12:50:23PM -0400, Peter Xu wrote:
+> On Wed, Jun 10, 2020 at 05:48:11PM +0200, Gerald Schaefer wrote:
+> > Hi,
+> 
+> Hi, Gerald,
+> 
+> > 
+> > Some architectures have their page fault accounting code inside the fault
+> > retry loop, and rely on only going through that code once. Before commit
+> > 4064b9827063 ("mm: allow VM_FAULT_RETRY for multiple times"), that was
+> > ensured by testing for and clearing FAULT_FLAG_ALLOW_RETRY.
+> > 
+> > That commit had to remove the clearing of FAULT_FLAG_ALLOW_RETRY for all
+> > architectures, and introduced a subtle change to page fault accounting
+> > logic in the affected archs. It is now possible to go through the retry
+> > loop multiple times, and the affected archs would then account multiple
+> > page faults instead of just one.
+> > 
+> > This was found by coincidence in s390 code, and a quick check showed that
+> > there are quite a lot of other architectures that seem to be affected in a
+> > similar way. I'm preparing a fix for s390, by moving the accounting behind
+> > the retry loop, similar to x86. It is not completely straight-forward, so
+> > I leave the fix for other archs to the respective maintainers.
+> 
+> Sorry for not noticing this before.  The accounting part should definitely be
+> put at least into a check against fault_flag_allow_retry_first() to mimic what
+> was done before.  And I agree it would be even better to put it after the retry
+> logic, so if any of the page faults gets a major fault, it'll be accounted as a
+> major fault which makes more sense to me, just like what x86 is doing now with:
+> 
+> 	major |= fault & VM_FAULT_MAJOR;
+> 
+> I'm not sure what's the preference of the arch maintainers, just let me know if
+> it's preferred to use a single series to address this issue for all affected
+> archs (or the archs besides s390), then I'll do.
 
-Signed-off-by: Flavio Suligoi <f.suligoi@asem.it>
----
- arch/sh/include/asm/smc37c93x.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+To make sure this won't fall through the cracks... I'll give it a shot with a
+single series to address this issue for all archs.  Although it might not be
+easy to do accounting directly in handle_mm_fault(), it might be still a chance
+to introduce a helper so the accounting can be done in general code.
 
-diff --git a/arch/sh/include/asm/smc37c93x.h b/arch/sh/include/asm/smc37c93x.h
-index f054c30a171a..891f2f8f2fd0 100644
---- a/arch/sh/include/asm/smc37c93x.h
-+++ b/arch/sh/include/asm/smc37c93x.h
-@@ -112,8 +112,8 @@ typedef struct uart_reg {
- #define FCR_RFRES	0x0200	/* Receiver FIFO reset */
- #define FCR_TFRES	0x0400	/* Transmitter FIFO reset */
- #define FCR_DMA		0x0800	/* DMA mode select */
--#define FCR_RTL		0x4000	/* Receiver triger (LSB) */
--#define FCR_RTM		0x8000	/* Receiver triger (MSB) */
-+#define FCR_RTL		0x4000	/* Receiver trigger (LSB) */
-+#define FCR_RTM		0x8000	/* Receiver trigger (MSB) */
- 
- /* Line Control Register */
- 
+Thanks,
+
 -- 
-2.17.1
+Peter Xu
 
