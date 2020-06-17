@@ -2,68 +2,76 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CC0601FC67A
-	for <lists+linux-sh@lfdr.de>; Wed, 17 Jun 2020 08:56:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D0131FC701
+	for <lists+linux-sh@lfdr.de>; Wed, 17 Jun 2020 09:17:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725894AbgFQGzv (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 17 Jun 2020 02:55:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45330 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726313AbgFQGzu (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 17 Jun 2020 02:55:50 -0400
-Received: from michel.telenet-ops.be (michel.telenet-ops.be [IPv6:2a02:1800:110:4::f00:18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68664C0613ED
-        for <linux-sh@vger.kernel.org>; Tue, 16 Jun 2020 23:55:50 -0700 (PDT)
-Received: from ramsan ([IPv6:2a02:1810:ac12:ed20:b57b:2191:a081:571d])
-        by michel.telenet-ops.be with bizsmtp
-        id s6vm2200L1Jlgh2066vmnJ; Wed, 17 Jun 2020 08:55:47 +0200
-Received: from rox.of.borg ([192.168.97.57])
-        by ramsan with esmtp (Exim 4.90_1)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1jlRz8-0007Mk-EN; Wed, 17 Jun 2020 08:55:46 +0200
-Received: from geert by rox.of.borg with local (Exim 4.90_1)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1jlRz8-0006j6-DG; Wed, 17 Jun 2020 08:55:46 +0200
-From:   Geert Uytterhoeven <geert+renesas@glider.be>
-To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        id S1726282AbgFQHRF (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 17 Jun 2020 03:17:05 -0400
+Received: from mout.kundenserver.de ([217.72.192.73]:40227 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725894AbgFQHRF (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 17 Jun 2020 03:17:05 -0400
+Received: from mail-qt1-f175.google.com ([209.85.160.175]) by
+ mrelayeu.kundenserver.de (mreue109 [212.227.15.145]) with ESMTPSA (Nemesis)
+ id 1N6bsG-1ipZ8D2Pi2-017zvT; Wed, 17 Jun 2020 09:17:03 +0200
+Received: by mail-qt1-f175.google.com with SMTP id w90so751645qtd.8;
+        Wed, 17 Jun 2020 00:17:03 -0700 (PDT)
+X-Gm-Message-State: AOAM53130BrU9USZtErF23TQobrdR1KS1IhlnIL2ygjbrYj8neALDC/z
+        A8uQPIsed7+gr7aCQT266pufBp2IQtBJfWmU1F8=
+X-Google-Smtp-Source: ABdhPJyWa8LewoQBzabNarDH0ZTp0ECXYU14r5yxZh7G4mXnu9ldr8IzKJjlSDz5qUf/PhHXTGzsDygZ0gCOlJviwqY=
+X-Received: by 2002:ac8:7417:: with SMTP id p23mr25192754qtq.204.1592378222298;
+ Wed, 17 Jun 2020 00:17:02 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200617065539.25805-1-geert+renesas@glider.be> <20200617065539.25805-2-geert+renesas@glider.be>
+In-Reply-To: <20200617065539.25805-2-geert+renesas@glider.be>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Wed, 17 Jun 2020 09:16:46 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a05scGaz6ATu1-QkbxOsgCW8_OAGSZ0v9GRt6P3Xs5Qxg@mail.gmail.com>
+Message-ID: <CAK8P3a05scGaz6ATu1-QkbxOsgCW8_OAGSZ0v9GRt6P3Xs5Qxg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] sh: Remove SH5-based Cayman platform
+To:     Geert Uytterhoeven <geert+renesas@glider.be>
+Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>,
         Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>
-Cc:     linux-sh@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 2/2] input: i8042 - Remove special Cayman handling
-Date:   Wed, 17 Jun 2020 08:55:39 +0200
-Message-Id: <20200617065539.25805-3-geert+renesas@glider.be>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200617065539.25805-1-geert+renesas@glider.be>
-References: <20200617065539.25805-1-geert+renesas@glider.be>
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        "open list:HID CORE LAYER" <linux-input@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:gRl57bWkffm+CaqkIeMVZp0WQx49c8rLT46PvPSGZmBlzJXrdK0
+ Ql081LnA1FimtLSZ7iI+IgfvATE6DVlS1YZaXhhzuZUflS1mWfWQXj6fNGlnGcY5sfDTp/v
+ ambn7weAvywSWwV/BsSfkgqTLCk3IBDwsrKLeKNFSUiAm4ANfNr69QVn9+Z03hol3Zt0caW
+ XcLLoYCCTxgn8w6qbPklA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:PTJ70fZYDtw=:u/cDzZH6Dq+XqbOv1U7OFG
+ ensXK6wwhVrmtTWQbpZYAZ4a/SXOjDJlfhkVY1P9hkn7Qtrkx/9wUQAeMVTY//8qZ1gKqiaxt
+ 0avfe85TDnH3/qMJT9IMc+FFI3WguBQbWKhWeKd4h00Prdu4YQWVui5XVjMmW0WY7//cW7bi/
+ hqEps/m3x6Uca1y9WupW1LN9F50gqXcPD120Cc1xQ6v4iIg/RqFvta9CwTACFt03Cn2gkpmZf
+ +/DaGHhp1KMeR1h/JSGcydJgOa3cvBwaq6iIyFo7mrWtkJVvlY0bXZve1+38mIiM0aCxQWYag
+ TX3JfX1tRIYwxt1qCcceZgUu50HS6sJSII+phbtcqcLRqp5G1MvJUhtuQ+eQ0fB9kyvjhXhzM
+ l2WQowm2F+gqjMSScMMQmmnAzGTr5XrXuMTtWbYpl9UGHgr/8LaJF3HDhgLqJyZdp55lQd3O8
+ XmpD4XUshfI18DT3caqI+KExvdxrG8hLzXaGjq/TlkDMnHcQBHXMcPucCb8LXC67Omw9NMWwT
+ yL0LKjIe+/tEhrRmxJxQr8ztD7YC21R0rLvTOY71OYWoim63lnPbkSND50zZkql9GrZxCq213
+ d/JkL+eNYaa+nnNAQ2l2AJPoedDf4+9wa7EOFsf6klFqtoOu0EZB9nglBnwUgzizXDj6nH/4/
+ a2g05XG7jpGP4koO2rN3vzTPpkRUqki/KPqMXCTMKzcMTPbYsCLc6ZDEZ6ZobmBfT6WsGexv/
+ fceY+R3CYQgxv7Hu5DzFsuixTBM3AVXOLNzzi6zAJyQOozZ9A5sk/Ntt/Sv9xCOfk/kIQMCbV
+ oEhWa2j/0hCq1GtWokwQ3E7CXn5wB5ZcVQePrCJPDDw+FVd1+g=
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-As of commit 37744feebc086908 ("sh: remove sh5 support"), support for
-the SH5-based Cayman platform can no longer be selected.
+On Wed, Jun 17, 2020 at 8:55 AM Geert Uytterhoeven
+<geert+renesas@glider.be> wrote:
+>
+> Since the removal of core support for SH5, Cayman support can no longer
+> be selected.
+>
+> Fixes: 37744feebc086908 ("sh: remove sh5 support")
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
- drivers/input/serio/i8042-io.h | 2 --
- 1 file changed, 2 deletions(-)
+Good catch!
 
-diff --git a/drivers/input/serio/i8042-io.h b/drivers/input/serio/i8042-io.h
-index da0bf85321de3a77..64590b86eb37ff30 100644
---- a/drivers/input/serio/i8042-io.h
-+++ b/drivers/input/serio/i8042-io.h
-@@ -21,8 +21,6 @@
- #elif defined(__arm__)
- /* defined in include/asm-arm/arch-xxx/irqs.h */
- #include <asm/irq.h>
--#elif defined(CONFIG_SH_CAYMAN)
--#include <asm/irq.h>
- #elif defined(CONFIG_PPC)
- extern int of_i8042_kbd_irq;
- extern int of_i8042_aux_irq;
--- 
-2.17.1
+I thought I had recursively checked for all unused Kconfig symbols,
+but I somehow missed this.
 
+Acked-by: Arnd Bergmann <arnd@arndb.de>
