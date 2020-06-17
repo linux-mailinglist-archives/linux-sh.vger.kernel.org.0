@@ -2,71 +2,115 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EDEE1FC707
-	for <lists+linux-sh@lfdr.de>; Wed, 17 Jun 2020 09:17:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 905DF1FC7E9
+	for <lists+linux-sh@lfdr.de>; Wed, 17 Jun 2020 09:52:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725941AbgFQHRZ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 17 Jun 2020 03:17:25 -0400
-Received: from mout.kundenserver.de ([212.227.126.131]:51135 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725894AbgFQHRZ (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 17 Jun 2020 03:17:25 -0400
-Received: from mail-qk1-f176.google.com ([209.85.222.176]) by
- mrelayeu.kundenserver.de (mreue009 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1MTiHd-1jJf0o0ELV-00U3CK; Wed, 17 Jun 2020 09:17:23 +0200
-Received: by mail-qk1-f176.google.com with SMTP id f18so1146990qkh.1;
-        Wed, 17 Jun 2020 00:17:22 -0700 (PDT)
-X-Gm-Message-State: AOAM530dJZ6mjfBeAfS/d9WwEiJn0zfjT/FC9+5Izwiob+tpi3+bQKt4
-        b0uJ/l3kiHlxc1yOHzpx7v376OL5Fa5LYhI7YUI=
-X-Google-Smtp-Source: ABdhPJzrVFsJeqz/gwKfNe9UY0hlG+JXbQ7QhG4NYp9SSFLCcqr2pUVf2YXSUvi3MQNAKYKvvivKDhm4wQjKAZElbSM=
-X-Received: by 2002:a37:62ce:: with SMTP id w197mr5265621qkb.394.1592378241742;
- Wed, 17 Jun 2020 00:17:21 -0700 (PDT)
+        id S1726355AbgFQHwk (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 17 Jun 2020 03:52:40 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:56983 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725536AbgFQHwj (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 17 Jun 2020 03:52:39 -0400
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.93)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1jlSs8-000QO4-Fy; Wed, 17 Jun 2020 09:52:36 +0200
+Received: from p5b13afbc.dip0.t-ipconnect.de ([91.19.175.188] helo=[192.168.178.139])
+          by inpost2.zedat.fu-berlin.de (Exim 4.93)
+          with esmtpsa (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1jlSs8-000P3x-6f; Wed, 17 Jun 2020 09:52:36 +0200
+Subject: Re: [PATCH v3] sh: Implement __get_user_u64() required for 64-bit
+ get_user()
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To:     linux-sh@vger.kernel.org
+Cc:     Rich Felker <dalias@libc.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
+        NIIBE Yutaka <gniibe@fsij.org>, linux-kernel@vger.kernel.org
+References: <20200611075811.2949870-1-glaubitz@physik.fu-berlin.de>
+Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
+ 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
+ scOkTAZQGVpD/8AaLH4v1w==
+Message-ID: <54a92ee8-e35a-270f-6274-454ffb220a5a@physik.fu-berlin.de>
+Date:   Wed, 17 Jun 2020 09:52:35 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-References: <20200617065539.25805-1-geert+renesas@glider.be> <20200617065539.25805-3-geert+renesas@glider.be>
-In-Reply-To: <20200617065539.25805-3-geert+renesas@glider.be>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Wed, 17 Jun 2020 09:17:06 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a2JuoO42Jw59xrKPHEaib=kuKJ_B4_kPpgxbZAOzv_gBQ@mail.gmail.com>
-Message-ID: <CAK8P3a2JuoO42Jw59xrKPHEaib=kuKJ_B4_kPpgxbZAOzv_gBQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] input: i8042 - Remove special Cayman handling
-To:     Geert Uytterhoeven <geert+renesas@glider.be>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        "open list:HID CORE LAYER" <linux-input@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:RJKJYCkswHgeuAqOT9gUbkjT6i61thmstb/oVsYPNhSKtD9rcp7
- AizRbtCoDO4xAQhW4JKAaVGbi8y7tTvA8DbAkyRrno+K5hFifOvjckeef0xDwrvm0aUlh/3
- IdW6WoM51HRdhv1+gHPdahXw/DYStRg85tkPwIuBKz8QhvF0jk6FOM83mYI1FLhvrleFaw8
- lpFVDsiHXyPZnOcICTv+w==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:A2ARPWA6N8M=:OyZE4vE//AQWmgQi6QLCoT
- d49CRVevq4kY1BhgZhk/6Dkox9DVF/Vh3diki+WeGgDGQTPpMBUcUYlHR7HrLD3QGYBIzN/pd
- SYfN5CSUf+hsKoGQi69vgPPT4SC1pZpXd54lggwNT06ZLf2Q0m1uzEMp2XcqdWFAH5tzkENwd
- JrK4qaW/DJsoyv+uO/XOobphTwqhcO/VNUp4TTrGGO2snBTxOBYGd5+qdQ1/l9dPVaF5KeIr1
- 3KUL5YWp+u+Gv4bFNWGpyFcyTo03zHgbyhr643miGohnQ9ImTkt89cN80oJdaMYp5Jo+NWnKH
- nM9QvoS9lWSRrV3aR5YrOLE/6WAwbzNSyGep5jnjeRPT2VvdoxFoulMymyqx7wBwrwuL2NGqo
- 41EmB9KRTVf5D2o5wLRnvhx3aDgCKBvk2lvoqbwaYsQdOsPwJxRIiCsk4722/gq9+1Rf4O/cZ
- DkBe77KxmqgBfLLo/shzjbl+YR1LmJweH2cdj/uTVuri30dXi7/8rgJOC1+LfITegcC3eB5rU
- 2b+k6txBUukJamlmNJw+bsszqPcayHz+HNXMAYkcnNdEMYlOO/hfwUYgFBp6MJpqm6DwvTjtk
- XNJDDAx8ViDKjKN5P3r5DCCmsslwTKXW6sdNc89nApMpC2VbA0xqS1aql2/UPA9jW2Vqk5MO8
- cGoL6ula8AK5usoI0/XX1SA6cX6Tc7WumxCgP3cNlKcJ/Hq7a6ub4yz9whx4r7usG3GxFtVLz
- X1NCyJMAiG3mAIH3+g1+IxS6p2jHmQ0Y8QAFwbPkfgfiYVJ4eXJJ53RXopSm5+1IftHyOOix9
- Jm6faFanILFSGx31UpyW6SH7faJzvswo+j5TGROaFGNi6wgMlE=
+In-Reply-To: <20200611075811.2949870-1-glaubitz@physik.fu-berlin.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 91.19.175.188
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Wed, Jun 17, 2020 at 8:55 AM Geert Uytterhoeven
-<geert+renesas@glider.be> wrote:
->
-> As of commit 37744feebc086908 ("sh: remove sh5 support"), support for
-> the SH5-based Cayman platform can no longer be selected.
->
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> ---
+On 6/11/20 9:58 AM, John Paul Adrian Glaubitz wrote:
+> This is version 3 of my patch to implement __get_user_u64() for SH.
+> 
+> I have asked both Yutaka Niibe and Yoshinori Sato to look over my changes and they
+> both agreed that an entry in __ex_tables for the second access was missing, so I
+> add the missing ".long 1b+2, 3b\n\t".
+> 
+> The changes should be correct now and will hopefully get a positive review by
+> the SH maintainers.
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+Ping.
+
+@Rich, @Yoshinori, @Yutaka, @Michael could I get a review if you have some time?
+
+Adrian
+
+-- 
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
