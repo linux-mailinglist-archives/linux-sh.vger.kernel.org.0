@@ -2,87 +2,176 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C53CE1FCFBF
-	for <lists+linux-sh@lfdr.de>; Wed, 17 Jun 2020 16:38:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FE091FED15
+	for <lists+linux-sh@lfdr.de>; Thu, 18 Jun 2020 09:59:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726326AbgFQOhT (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 17 Jun 2020 10:37:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60348 "EHLO
+        id S1728229AbgFRH7s (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 18 Jun 2020 03:59:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726905AbgFQOgv (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 17 Jun 2020 10:36:51 -0400
+        with ESMTP id S1727964AbgFRH7q (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 18 Jun 2020 03:59:46 -0400
 Received: from andre.telenet-ops.be (andre.telenet-ops.be [IPv6:2a02:1800:120:4::f00:15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B383C061798
-        for <linux-sh@vger.kernel.org>; Wed, 17 Jun 2020 07:36:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C426C06174E
+        for <linux-sh@vger.kernel.org>; Thu, 18 Jun 2020 00:59:45 -0700 (PDT)
 Received: from ramsan ([IPv6:2a02:1810:ac12:ed20:b57b:2191:a081:571d])
         by andre.telenet-ops.be with bizsmtp
-        id sEcn220011Jlgh201EcnRF; Wed, 17 Jun 2020 16:36:47 +0200
+        id sXzh2200J1Jlgh201XzhWx; Thu, 18 Jun 2020 09:59:41 +0200
 Received: from rox.of.borg ([192.168.97.57])
         by ramsan with esmtp (Exim 4.90_1)
         (envelope-from <geert@linux-m68k.org>)
-        id 1jlZBG-0007q5-U9; Wed, 17 Jun 2020 16:36:46 +0200
+        id 1jlpSX-0001Ts-5F; Thu, 18 Jun 2020 09:59:41 +0200
 Received: from geert by rox.of.borg with local (Exim 4.90_1)
         (envelope-from <geert@linux-m68k.org>)
-        id 1jlZBG-0004mj-Sr; Wed, 17 Jun 2020 16:36:46 +0200
+        id 1jlpSX-0004H8-3A; Thu, 18 Jun 2020 09:59:41 +0200
 From:   Geert Uytterhoeven <geert+renesas@glider.be>
 To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Dmitry Safonov <0x7f454c46@gmail.com>,
-        Guenter Roeck <linux@roeck-us.net>, linux-sh@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
+Cc:     linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
         Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH v2 9/9] sh: machvec: Modernize printing of kernel messages
-Date:   Wed, 17 Jun 2020 16:36:39 +0200
-Message-Id: <20200617143639.18315-10-geert+renesas@glider.be>
+Subject: [PATCH] sh: stacktrace: Remove stacktrace_ops.stack()
+Date:   Thu, 18 Jun 2020 09:59:37 +0200
+Message-Id: <20200618075937.16391-1-geert+renesas@glider.be>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200617143639.18315-1-geert+renesas@glider.be>
-References: <20200617143639.18315-1-geert+renesas@glider.be>
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-  - Convert from printk() to pr_*(),
-  - Add missing continuations.
+The SH implementation never called stacktrace_ops.stack().
+Presumably this was copied from the x86 implementation.
+
+Hence remove the method, and all implementations (most of them are
+dummies).
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
 ---
-v2:
-  - Add Tested-by.
----
- arch/sh/kernel/machvec.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/sh/include/asm/stacktrace.h | 2 --
+ arch/sh/kernel/dumpstack.c       | 7 -------
+ arch/sh/kernel/perf_callchain.c  | 6 ------
+ arch/sh/kernel/stacktrace.c      | 7 -------
+ arch/sh/oprofile/backtrace.c     | 7 -------
+ 5 files changed, 29 deletions(-)
 
-diff --git a/arch/sh/kernel/machvec.c b/arch/sh/kernel/machvec.c
-index beadbbdb44867759..0e9fa33a9b6ab38c 100644
---- a/arch/sh/kernel/machvec.c
-+++ b/arch/sh/kernel/machvec.c
-@@ -64,10 +64,10 @@ static int __init early_parse_mv(char *from)
+diff --git a/arch/sh/include/asm/stacktrace.h b/arch/sh/include/asm/stacktrace.h
+index 50c173c0b9f56f69..4f98cdc64ec59b1c 100644
+--- a/arch/sh/include/asm/stacktrace.h
++++ b/arch/sh/include/asm/stacktrace.h
+@@ -12,8 +12,6 @@
  
- 	mvp = get_mv_byname(mv_name);
- 	if (unlikely(!mvp)) {
--		printk("Available vectors:\n\n\t'%s', ", sh_mv.mv_name);
-+		pr_info("Available vectors:\n\n\t'%s', ", sh_mv.mv_name);
- 		for_each_mv(mvp)
--			printk("'%s', ", mvp->mv_name);
--		printk("\n\n");
-+			pr_cont("'%s', ", mvp->mv_name);
-+		pr_cont("\n\n");
- 		panic("Failed to select machvec '%s' -- halting.\n",
- 		      mv_name);
- 	} else
-@@ -104,7 +104,7 @@ void __init sh_mv_setup(void)
- 			sh_mv = *(struct sh_machine_vector *)&__machvec_start;
+ struct stacktrace_ops {
+ 	void (*address)(void *data, unsigned long address, int reliable);
+-	/* On negative return stop dumping */
+-	int (*stack)(void *data, char *name);
+ };
+ 
+ void dump_trace(struct task_struct *tsk, struct pt_regs *regs,
+diff --git a/arch/sh/kernel/dumpstack.c b/arch/sh/kernel/dumpstack.c
+index 0a69588e343f7b98..758a6c89e911bc15 100644
+--- a/arch/sh/kernel/dumpstack.c
++++ b/arch/sh/kernel/dumpstack.c
+@@ -107,12 +107,6 @@ stack_reader_dump(struct task_struct *task, struct pt_regs *regs,
  	}
+ }
  
--	printk(KERN_NOTICE "Booting machvec: %s\n", get_system_type());
-+	pr_notice("Booting machvec: %s\n", get_system_type());
+-static int print_trace_stack(void *data, char *name)
+-{
+-	printk("%s <%s> ", (char *)data, name);
+-	return 0;
+-}
+-
+ /*
+  * Print one address/symbol entries per line.
+  */
+@@ -123,7 +117,6 @@ static void print_trace_address(void *data, unsigned long addr, int reliable)
+ }
  
- 	/*
- 	 * Manually walk the vec, fill in anything that the board hasn't yet
+ static const struct stacktrace_ops print_trace_ops = {
+-	.stack = print_trace_stack,
+ 	.address = print_trace_address,
+ };
+ 
+diff --git a/arch/sh/kernel/perf_callchain.c b/arch/sh/kernel/perf_callchain.c
+index 6281f2fdf9cac906..c9d3aa18732d1d49 100644
+--- a/arch/sh/kernel/perf_callchain.c
++++ b/arch/sh/kernel/perf_callchain.c
+@@ -11,11 +11,6 @@
+ #include <asm/unwinder.h>
+ #include <asm/ptrace.h>
+ 
+-static int callchain_stack(void *data, char *name)
+-{
+-	return 0;
+-}
+-
+ static void callchain_address(void *data, unsigned long addr, int reliable)
+ {
+ 	struct perf_callchain_entry_ctx *entry = data;
+@@ -25,7 +20,6 @@ static void callchain_address(void *data, unsigned long addr, int reliable)
+ }
+ 
+ static const struct stacktrace_ops callchain_ops = {
+-	.stack		= callchain_stack,
+ 	.address	= callchain_address,
+ };
+ 
+diff --git a/arch/sh/kernel/stacktrace.c b/arch/sh/kernel/stacktrace.c
+index 2950b19ad0772081..daf0b53ee066fa6d 100644
+--- a/arch/sh/kernel/stacktrace.c
++++ b/arch/sh/kernel/stacktrace.c
+@@ -15,11 +15,6 @@
+ #include <asm/ptrace.h>
+ #include <asm/stacktrace.h>
+ 
+-static int save_stack_stack(void *data, char *name)
+-{
+-	return 0;
+-}
+-
+ /*
+  * Save stack-backtrace addresses into a stack_trace buffer.
+  */
+@@ -40,7 +35,6 @@ static void save_stack_address(void *data, unsigned long addr, int reliable)
+ }
+ 
+ static const struct stacktrace_ops save_stack_ops = {
+-	.stack = save_stack_stack,
+ 	.address = save_stack_address,
+ };
+ 
+@@ -73,7 +67,6 @@ save_stack_address_nosched(void *data, unsigned long addr, int reliable)
+ }
+ 
+ static const struct stacktrace_ops save_stack_ops_nosched = {
+-	.stack = save_stack_stack,
+ 	.address = save_stack_address_nosched,
+ };
+ 
+diff --git a/arch/sh/oprofile/backtrace.c b/arch/sh/oprofile/backtrace.c
+index f1205f92631df3b9..cc16cf86cd92fabe 100644
+--- a/arch/sh/oprofile/backtrace.c
++++ b/arch/sh/oprofile/backtrace.c
+@@ -19,12 +19,6 @@
+ #include <asm/sections.h>
+ #include <asm/stacktrace.h>
+ 
+-static int backtrace_stack(void *data, char *name)
+-{
+-	/* Yes, we want all stacks */
+-	return 0;
+-}
+-
+ static void backtrace_address(void *data, unsigned long addr, int reliable)
+ {
+ 	unsigned int *depth = data;
+@@ -34,7 +28,6 @@ static void backtrace_address(void *data, unsigned long addr, int reliable)
+ }
+ 
+ static struct stacktrace_ops backtrace_ops = {
+-	.stack = backtrace_stack,
+ 	.address = backtrace_address,
+ };
+ 
 -- 
 2.17.1
 
