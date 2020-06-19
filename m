@@ -2,176 +2,121 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FE091FED15
-	for <lists+linux-sh@lfdr.de>; Thu, 18 Jun 2020 09:59:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2F152014B0
+	for <lists+linux-sh@lfdr.de>; Fri, 19 Jun 2020 18:14:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728229AbgFRH7s (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 18 Jun 2020 03:59:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51396 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727964AbgFRH7q (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 18 Jun 2020 03:59:46 -0400
-Received: from andre.telenet-ops.be (andre.telenet-ops.be [IPv6:2a02:1800:120:4::f00:15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C426C06174E
-        for <linux-sh@vger.kernel.org>; Thu, 18 Jun 2020 00:59:45 -0700 (PDT)
-Received: from ramsan ([IPv6:2a02:1810:ac12:ed20:b57b:2191:a081:571d])
-        by andre.telenet-ops.be with bizsmtp
-        id sXzh2200J1Jlgh201XzhWx; Thu, 18 Jun 2020 09:59:41 +0200
-Received: from rox.of.borg ([192.168.97.57])
-        by ramsan with esmtp (Exim 4.90_1)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1jlpSX-0001Ts-5F; Thu, 18 Jun 2020 09:59:41 +0200
-Received: from geert by rox.of.borg with local (Exim 4.90_1)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1jlpSX-0004H8-3A; Thu, 18 Jun 2020 09:59:41 +0200
-From:   Geert Uytterhoeven <geert+renesas@glider.be>
-To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>
-Cc:     linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH] sh: stacktrace: Remove stacktrace_ops.stack()
-Date:   Thu, 18 Jun 2020 09:59:37 +0200
-Message-Id: <20200618075937.16391-1-geert+renesas@glider.be>
-X-Mailer: git-send-email 2.17.1
+        id S2394396AbgFSQOB (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 19 Jun 2020 12:14:01 -0400
+Received: from us-smtp-2.mimecast.com ([205.139.110.61]:29406 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S2394390AbgFSQNo (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 19 Jun 2020 12:13:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1592583223;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=sy544NXeYcNhbxOT1ou9Gq9AWlj9fShUn5juJrQIV8c=;
+        b=ZOUwbmxF4kYLXvysuPcuZfOaW68kyWgu+nqd0vAPLVFkFxzsJmjhM4H+lftptS/BXE0nqm
+        FS17HFIhD1+8C5U+5O5L3dpxtF3rj2B6QVpNU7UednZ8fRUhEbkuCgJBHReslGcqMKVwC3
+        47Eu5FbYpAnmoniVQZQC3hIK8GdOM+g=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-340-WJVyBkAENQ2HffLnx_gKMg-1; Fri, 19 Jun 2020 12:13:41 -0400
+X-MC-Unique: WJVyBkAENQ2HffLnx_gKMg-1
+Received: by mail-qk1-f197.google.com with SMTP id x22so7505152qkj.6
+        for <linux-sh@vger.kernel.org>; Fri, 19 Jun 2020 09:13:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=sy544NXeYcNhbxOT1ou9Gq9AWlj9fShUn5juJrQIV8c=;
+        b=ojjiSrg7xET02cMWFsUXN6TKNcBgrSaUP6UKDyiprlHfb2wcugza/vPLrTREQPHpqk
+         ttwd3RIPCa5C/qxn51y1ohzENgtFOCunuSTTkLvgcTXfK9035RfEVvJxCouTlATkuU5/
+         z3zGazpvdZhf2waSEvdvnH4SCdbOHITPG34gSgmD7A4+MxUPqELQ9wd3NvIlly1s9kph
+         HXXOwVsW2at/d+RzCcOiBSfXW23ztEVXaofHNpKirEvboim3/f4EIsoNdN/FZSZm92hJ
+         4I4ijT1JkhsI5OYCPZ0ruwqichZjc9h1Se2dOCqbXbSUqC3ylZJptqmHnW6nQcchkbts
+         c5jA==
+X-Gm-Message-State: AOAM532j0t+p1svwHtjJ+rY78AH1a7xSOO7Syt8M4VW/+/2S6l87G+dY
+        7gPTk4qllVXBO2OZksEznuPENoBGznUoC891t6TNMYSN/RsczeK6CLUKmWWgKxeV4uAVyTbzZtQ
+        rINvcQ0A9xhxlvodURrE=
+X-Received: by 2002:a05:6214:134f:: with SMTP id b15mr9246750qvw.208.1592583220598;
+        Fri, 19 Jun 2020 09:13:40 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxYciDEcz+6ytfRwjREBcuIkBV9R3diCFzYltXp0h47AZIc6TyB3mcZDytKnQbnKaSsy8vd+w==
+X-Received: by 2002:a05:6214:134f:: with SMTP id b15mr9246728qvw.208.1592583220420;
+        Fri, 19 Jun 2020 09:13:40 -0700 (PDT)
+Received: from xz-x1.redhat.com ([2607:9880:19c0:32::2])
+        by smtp.gmail.com with ESMTPSA id f203sm502143qke.135.2020.06.19.09.13.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Jun 2020 09:13:39 -0700 (PDT)
+From:   Peter Xu <peterx@redhat.com>
+To:     linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Cc:     Peter Xu <peterx@redhat.com>,
+        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Andrea Arcangeli <aarcange@redhat.com>,
+        Will Deacon <will@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org
+Subject: [PATCH 19/26] mm/sh: Use general page fault accounting
+Date:   Fri, 19 Jun 2020 12:13:38 -0400
+Message-Id: <20200619161338.9714-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200619160538.8641-1-peterx@redhat.com>
+References: <20200619160538.8641-1-peterx@redhat.com>
+MIME-Version: 1.0
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-The SH implementation never called stacktrace_ops.stack().
-Presumably this was copied from the x86 implementation.
+Use the general page fault accounting by passing regs into handle_mm_fault().
+It naturally solve the issue of multiple page fault accounting when page fault
+retry happened.
 
-Hence remove the method, and all implementations (most of them are
-dummies).
-
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+CC: Yoshinori Sato <ysato@users.sourceforge.jp>
+CC: Rich Felker <dalias@libc.org>
+CC: linux-sh@vger.kernel.org
+Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- arch/sh/include/asm/stacktrace.h | 2 --
- arch/sh/kernel/dumpstack.c       | 7 -------
- arch/sh/kernel/perf_callchain.c  | 6 ------
- arch/sh/kernel/stacktrace.c      | 7 -------
- arch/sh/oprofile/backtrace.c     | 7 -------
- 5 files changed, 29 deletions(-)
+ arch/sh/mm/fault.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/arch/sh/include/asm/stacktrace.h b/arch/sh/include/asm/stacktrace.h
-index 50c173c0b9f56f69..4f98cdc64ec59b1c 100644
---- a/arch/sh/include/asm/stacktrace.h
-+++ b/arch/sh/include/asm/stacktrace.h
-@@ -12,8 +12,6 @@
+diff --git a/arch/sh/mm/fault.c b/arch/sh/mm/fault.c
+index a4e670a9c9b3..ba6f7ed570e5 100644
+--- a/arch/sh/mm/fault.c
++++ b/arch/sh/mm/fault.c
+@@ -464,22 +464,13 @@ asmlinkage void __kprobes do_page_fault(struct pt_regs *regs,
+ 	 * make sure we exit gracefully rather than endlessly redo
+ 	 * the fault.
+ 	 */
+-	fault = handle_mm_fault(vma, address, flags, NULL);
++	fault = handle_mm_fault(vma, address, flags, regs);
  
- struct stacktrace_ops {
- 	void (*address)(void *data, unsigned long address, int reliable);
--	/* On negative return stop dumping */
--	int (*stack)(void *data, char *name);
- };
+ 	if (unlikely(fault & (VM_FAULT_RETRY | VM_FAULT_ERROR)))
+ 		if (mm_fault_error(regs, error_code, address, fault))
+ 			return;
  
- void dump_trace(struct task_struct *tsk, struct pt_regs *regs,
-diff --git a/arch/sh/kernel/dumpstack.c b/arch/sh/kernel/dumpstack.c
-index 0a69588e343f7b98..758a6c89e911bc15 100644
---- a/arch/sh/kernel/dumpstack.c
-+++ b/arch/sh/kernel/dumpstack.c
-@@ -107,12 +107,6 @@ stack_reader_dump(struct task_struct *task, struct pt_regs *regs,
- 	}
- }
- 
--static int print_trace_stack(void *data, char *name)
--{
--	printk("%s <%s> ", (char *)data, name);
--	return 0;
--}
--
- /*
-  * Print one address/symbol entries per line.
-  */
-@@ -123,7 +117,6 @@ static void print_trace_address(void *data, unsigned long addr, int reliable)
- }
- 
- static const struct stacktrace_ops print_trace_ops = {
--	.stack = print_trace_stack,
- 	.address = print_trace_address,
- };
- 
-diff --git a/arch/sh/kernel/perf_callchain.c b/arch/sh/kernel/perf_callchain.c
-index 6281f2fdf9cac906..c9d3aa18732d1d49 100644
---- a/arch/sh/kernel/perf_callchain.c
-+++ b/arch/sh/kernel/perf_callchain.c
-@@ -11,11 +11,6 @@
- #include <asm/unwinder.h>
- #include <asm/ptrace.h>
- 
--static int callchain_stack(void *data, char *name)
--{
--	return 0;
--}
--
- static void callchain_address(void *data, unsigned long addr, int reliable)
- {
- 	struct perf_callchain_entry_ctx *entry = data;
-@@ -25,7 +20,6 @@ static void callchain_address(void *data, unsigned long addr, int reliable)
- }
- 
- static const struct stacktrace_ops callchain_ops = {
--	.stack		= callchain_stack,
- 	.address	= callchain_address,
- };
- 
-diff --git a/arch/sh/kernel/stacktrace.c b/arch/sh/kernel/stacktrace.c
-index 2950b19ad0772081..daf0b53ee066fa6d 100644
---- a/arch/sh/kernel/stacktrace.c
-+++ b/arch/sh/kernel/stacktrace.c
-@@ -15,11 +15,6 @@
- #include <asm/ptrace.h>
- #include <asm/stacktrace.h>
- 
--static int save_stack_stack(void *data, char *name)
--{
--	return 0;
--}
--
- /*
-  * Save stack-backtrace addresses into a stack_trace buffer.
-  */
-@@ -40,7 +35,6 @@ static void save_stack_address(void *data, unsigned long addr, int reliable)
- }
- 
- static const struct stacktrace_ops save_stack_ops = {
--	.stack = save_stack_stack,
- 	.address = save_stack_address,
- };
- 
-@@ -73,7 +67,6 @@ save_stack_address_nosched(void *data, unsigned long addr, int reliable)
- }
- 
- static const struct stacktrace_ops save_stack_ops_nosched = {
--	.stack = save_stack_stack,
- 	.address = save_stack_address_nosched,
- };
- 
-diff --git a/arch/sh/oprofile/backtrace.c b/arch/sh/oprofile/backtrace.c
-index f1205f92631df3b9..cc16cf86cd92fabe 100644
---- a/arch/sh/oprofile/backtrace.c
-+++ b/arch/sh/oprofile/backtrace.c
-@@ -19,12 +19,6 @@
- #include <asm/sections.h>
- #include <asm/stacktrace.h>
- 
--static int backtrace_stack(void *data, char *name)
--{
--	/* Yes, we want all stacks */
--	return 0;
--}
--
- static void backtrace_address(void *data, unsigned long addr, int reliable)
- {
- 	unsigned int *depth = data;
-@@ -34,7 +28,6 @@ static void backtrace_address(void *data, unsigned long addr, int reliable)
- }
- 
- static struct stacktrace_ops backtrace_ops = {
--	.stack = backtrace_stack,
- 	.address = backtrace_address,
- };
+ 	if (flags & FAULT_FLAG_ALLOW_RETRY) {
+-		if (fault & VM_FAULT_MAJOR) {
+-			tsk->maj_flt++;
+-			perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS_MAJ, 1,
+-				      regs, address);
+-		} else {
+-			tsk->min_flt++;
+-			perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS_MIN, 1,
+-				      regs, address);
+-		}
+ 		if (fault & VM_FAULT_RETRY) {
+ 			flags |= FAULT_FLAG_TRIED;
  
 -- 
-2.17.1
+2.26.2
 
