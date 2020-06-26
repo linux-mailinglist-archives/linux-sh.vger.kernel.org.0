@@ -2,65 +2,48 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 92603205225
-	for <lists+linux-sh@lfdr.de>; Tue, 23 Jun 2020 14:14:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E495620AE19
+	for <lists+linux-sh@lfdr.de>; Fri, 26 Jun 2020 10:08:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732487AbgFWMOL (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 23 Jun 2020 08:14:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33582 "EHLO
+        id S1729432AbgFZIHj (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 26 Jun 2020 04:07:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732458AbgFWMOK (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 23 Jun 2020 08:14:10 -0400
-Received: from mail-qv1-xf41.google.com (mail-qv1-xf41.google.com [IPv6:2607:f8b0:4864:20::f41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A24CFC061573
-        for <linux-sh@vger.kernel.org>; Tue, 23 Jun 2020 05:14:10 -0700 (PDT)
-Received: by mail-qv1-xf41.google.com with SMTP id t7so664970qvl.8
-        for <linux-sh@vger.kernel.org>; Tue, 23 Jun 2020 05:14:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=7fNnQnFssZCc2Jtw2cUlJB4v7zrpRiQS682aXMZO9+Q=;
-        b=n2be897+Yc7fKFG/jLUzMa7gIFhZLZAZlKA/GVYdZRNiLVKFqOKj5E50L0VMOKc/d3
-         fLc7Qh/pIfdIER1tOfWxszU8a2nf6P8zql7SEQF0RfaVjZ9w37/RQUJ6kbgjJrLUkAUp
-         655RJbDQau+7fNk1rwpIvh7K6DCNZ1IwHe5i/M4aLVzifv7uPDlUwVJuKnEy0is9Zdc+
-         RNATY82iQuQlJxK9tdsBWfIz+rdeDGGJl2qrTA97LJJIiTNrooS9fR1c6N5KrjQ9l/zK
-         u74mvfQq6E+Bd/vmHjdw7jjLqsPfiNwjSaS9tWvfim+/hPqLZnvvi6icHp4BiF7+4Oqu
-         NkgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=7fNnQnFssZCc2Jtw2cUlJB4v7zrpRiQS682aXMZO9+Q=;
-        b=ugXIx/UT0/DvY3Z3TUKhrQB/+df3mkCwiWJYmqGrOLLHYHzMpUky+N94E6TUxpo5Y7
-         sLTVE6mqfzmIj0MpjUBushBdrVdVUhJLkbDoGDbGoT2dHw4BU3pwrw5K3Hpk/MKHBRj4
-         e4XvSJR0lG5xfdpNK9L01huOxgkYePqPZzMnbXNdnO8TLw+hXO4cOgNJg5EAt0gqJkjQ
-         bfelGSFGX+6iK6YScgsCWLm9346xwXzzLfGMnRfIaVLOFrg8IkUR41lVg0ojTiS+Ap88
-         AN8V5JabvZRY5NPOLMFWFs309Q8pQzFeFQoDijFUsSwedNAwnOnT/HAOi74ebWV+hTaO
-         WSVg==
-X-Gm-Message-State: AOAM532A+gdofY8c3RRrxiKOWMjg7g3BcLDGPc8yaHTlEr9vy/CnX5QP
-        YQkAvLKJ87WxgwYFLaMy7LiamIUrBLccit1lQls=
-X-Google-Smtp-Source: ABdhPJz5cwBS1/7nUwj2sl7m/4MTraqXpG7kS76fD3g/HBs3PRwvBz8y8rTOjVbc9iDCx+QShhrq9BKnL4hSuDYX9vU=
-X-Received: by 2002:a0c:f949:: with SMTP id i9mr25654063qvo.75.1592914450007;
- Tue, 23 Jun 2020 05:14:10 -0700 (PDT)
+        with ESMTP id S1728938AbgFZIHi (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 26 Jun 2020 04:07:38 -0400
+Received: from casper.infradead.org (unknown [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93E3FC08C5C1;
+        Fri, 26 Jun 2020 01:07:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:In-Reply-To:References;
+        bh=9mvz1gMkyoGTE/uYkR0YFesaWUHN2JLoZ84hifwq/lw=; b=XrsF4PUOiNc1/K70Sby6ULuuPl
+        D69FsD9p3dOeXatDf+wL1o0s61FBVwayNyPukRevjXKRSdiPN5fKDsDYxG3IA4Q1qZAguM71tLMUW
+        7uBuYKKd/mOFCl9Urp/0pRpnikmuNwGVC4kfU1ChIugfkINn8H3cQJZ1ZmhcfODK7D8FtGtvEBYka
+        zBSkHePCl4ccNzClschPrGj/QawszWGQSWz1X7xXHf8G0EV487d4s8GGR2fEiYoKWHjdcGTsszpKd
+        pKqekbzYpGTSnqYbGnqIPZ2F97F7qAU0TUmOyFUtBMPwcE4RQrbBpuRTCB3WU17EwkANINQQ2H2pY
+        RLAN+e2A==;
+Received: from [2001:4bb8:184:76e3:2b32:1123:bea8:6121] (helo=localhost)
+        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jojOI-0007sx-5g; Fri, 26 Jun 2020 08:07:18 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>
+Cc:     linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: ioremap and dma cleanups and fixes for superh (resend)
+Date:   Fri, 26 Jun 2020 10:07:07 +0200
+Message-Id: <20200626080717.1999041-1-hch@lst.de>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Received: by 2002:ac8:47c2:0:0:0:0:0 with HTTP; Tue, 23 Jun 2020 05:14:09
- -0700 (PDT)
-Reply-To: bektery@outlook.com
-From:   YAVUZ BEKTER <bakert.jg@gmail.com>
-Date:   Tue, 23 Jun 2020 05:14:09 -0700
-Message-ID: <CAAUSuTUeXwYwUOAqBJmJm7R4c=XwJnk_AOMdP3kMu7W3ojHesw@mail.gmail.com>
-Subject: Hello.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-I am the foreign operations director of Bank of Turkey.
-My name is Mr, Yavuz. I have a sensitive investment project to discuss
-with you, please reply now.
-________________________
-Ik ben de directeur buitenlandse activiteiten van de Bank of Turkey.
-Mijn naam is meneer Yavuz. Ik moet een gevoelig investeringsproject bespreken
-met u, antwoord dan nu.
+Hi Yoshinori and Rich,
+
+can you take a look and possibly pick up the series below that untangles
+and sorts out minor issues with the sh ioremap and dma code?
