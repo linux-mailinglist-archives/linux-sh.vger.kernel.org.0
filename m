@@ -2,177 +2,142 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F52A20C55C
-	for <lists+linux-sh@lfdr.de>; Sun, 28 Jun 2020 04:16:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6813C20C68F
+	for <lists+linux-sh@lfdr.de>; Sun, 28 Jun 2020 09:00:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725913AbgF1CQb (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sat, 27 Jun 2020 22:16:31 -0400
-Received: from condef-08.nifty.com ([202.248.20.73]:60756 "EHLO
-        condef-08.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725838AbgF1CQb (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sat, 27 Jun 2020 22:16:31 -0400
-X-Greylist: delayed 702 seconds by postgrey-1.27 at vger.kernel.org; Sat, 27 Jun 2020 22:16:30 EDT
-Received: from conuserg-09.nifty.com ([10.126.8.72])by condef-08.nifty.com with ESMTP id 05S1s38n026348
-        for <linux-sh@vger.kernel.org>; Sun, 28 Jun 2020 10:54:16 +0900
-Received: from oscar.flets-west.jp (softbank126090202047.bbtec.net [126.90.202.47]) (authenticated)
-        by conuserg-09.nifty.com with ESMTP id 05S1oixP004742;
-        Sun, 28 Jun 2020 10:50:44 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-09.nifty.com 05S1oixP004742
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1593309045;
-        bh=hkY77VUGXSYac7YbrIkUecBgq7WORaGieZmySJIL5UA=;
-        h=From:To:Cc:Subject:Date:From;
-        b=ahJ3uto2fhcnzsnIdLNU74S4vUyrlAQ4RsoPaFq9zt9MQ9rNbQLVQSS7jxeu5Q8si
-         hZ34tVZRnliSC5lwB2mp+XhuUvw+20+ogpJbv2SrSVGwLunHSwliobc980NNYxgtNV
-         7KoTg5pXNDlDue+Qw95dB65tKTenO+yJoYpKMjA+pouECDFfbNgi/Gl3GphBAEx2jt
-         JIId1nbEsdrcgnMp1nLu2y0LwNlkZ7F/kd88h+53l3Wy2U7beVZi9x+0lCqdPuAiyn
-         xq4P1+iR/S7vXT/ZdlGa6TQaScQErK5xw4F96tYA3UgjBxvfSj1llEDfgf/+ZBEQh9
-         WQo1lz/K7CrLw==
-X-Nifty-SrcIP: [126.90.202.47]
-From:   Masahiro Yamada <masahiroy@kernel.org>
-To:     linux-kbuild@vger.kernel.org
+        id S1726093AbgF1HAV (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sun, 28 Jun 2020 03:00:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51372 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725975AbgF1HAM (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Sun, 28 Jun 2020 03:00:12 -0400
+Received: from kernel.org (unknown [87.71.40.38])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D042720702;
+        Sun, 28 Jun 2020 06:59:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1593327604;
+        bh=hu/tW2f/lIs0zzXJSvCrgwdLd0PRG2JIRHvUCcaAjqM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Qm3qqF3d78J/gFOwv6YVJb71itb3mymeRhGcaLrkXQY5dETAmGwNnfv+uXEMscIi2
+         mPZsATFBdJNygr2fnTWo/ejLleXfIjFaiD5KXp/1ygh8w33HlLwG0oN/C/qRCb8sbq
+         bU6JOX1KtJfeNxxfnsJIYZnBX1A1gh84k+HeVxCY=
+Date:   Sun, 28 Jun 2020 09:59:51 +0300
+From:   Mike Rapoport <rppt@kernel.org>
+To:     Matthew Wilcox <willy@infradead.org>
 Cc:     linux-kernel@vger.kernel.org,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Sami Tolvanen <samitolvanen@google.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Paul Mackerras <paulus@samba.org>,
-        Rich Felker <dalias@libc.org>,
-        Russell King <linux@armlinux.org.uk>,
+        Abdul Haleem <abdhalee@linux.vnet.ibm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Joerg Roedel <joro@8bytes.org>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
+        Stafford Horne <shorne@gmail.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
         Steven Rostedt <rostedt@goodmis.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        linux-arm-kernel@lists.infradead.org, linux-sh@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] kbuild: introduce ccflags-remove-y and asflags-remove-y
-Date:   Sun, 28 Jun 2020 10:50:41 +0900
-Message-Id: <20200628015041.1000002-1-masahiroy@kernel.org>
-X-Mailer: git-send-email 2.25.1
+        linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-mm@kvack.org, linux-parisc@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+        linuxppc-dev@lists.ozlabs.org, openrisc@lists.librecores.org,
+        sparclinux@vger.kernel.org
+Subject: Re: [PATCH 9/8] mm: Account PMD tables like PTE tables
+Message-ID: <20200628065951.GB576120@kernel.org>
+References: <20200627143453.31835-1-rppt@kernel.org>
+ <20200627184642.GF25039@casper.infradead.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200627184642.GF25039@casper.infradead.org>
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-CFLAGS_REMOVE_<file>.o works per object, that is, there is no
-convenient way to filter out flags for every object in a directory.
+On Sat, Jun 27, 2020 at 07:46:42PM +0100, Matthew Wilcox wrote:
+> We account the PTE level of the page tables to the process in order to
+> make smarter OOM decisions and help diagnose why memory is fragmented.
+> For these same reasons, we should account pages allocated for PMDs.
+> With larger process address spaces and ASLR, the number of PMDs in use
+> is higher than it used to be so the inaccuracy is starting to matter.
+> 
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-Add ccflags-remove-y and asflags-remove-y to make it easily.
+Reviewed-by: Mike Rapoport <rppt@linux.ibm.com>
 
-Use ccflags-remove-y to clean up some Makefiles.
+> ---
+>  include/linux/mm.h | 24 ++++++++++++++++++++----
+>  1 file changed, 20 insertions(+), 4 deletions(-)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index dc7b87310c10..b283e25fcffa 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -2271,7 +2271,7 @@ static inline spinlock_t *pmd_lockptr(struct mm_struct *mm, pmd_t *pmd)
+>  	return ptlock_ptr(pmd_to_page(pmd));
+>  }
+>  
+> -static inline bool pgtable_pmd_page_ctor(struct page *page)
+> +static inline bool pmd_ptlock_init(struct page *page)
+>  {
+>  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>  	page->pmd_huge_pte = NULL;
+> @@ -2279,7 +2279,7 @@ static inline bool pgtable_pmd_page_ctor(struct page *page)
+>  	return ptlock_init(page);
+>  }
+>  
+> -static inline void pgtable_pmd_page_dtor(struct page *page)
+> +static inline void pmd_ptlock_free(struct page *page)
+>  {
+>  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>  	VM_BUG_ON_PAGE(page->pmd_huge_pte, page);
+> @@ -2296,8 +2296,8 @@ static inline spinlock_t *pmd_lockptr(struct mm_struct *mm, pmd_t *pmd)
+>  	return &mm->page_table_lock;
+>  }
+>  
+> -static inline bool pgtable_pmd_page_ctor(struct page *page) { return true; }
+> -static inline void pgtable_pmd_page_dtor(struct page *page) {}
+> +static inline bool pmd_ptlock_init(struct page *page) { return true; }
+> +static inline void pmd_ptlock_free(struct page *page) {}
+>  
+>  #define pmd_huge_pte(mm, pmd) ((mm)->pmd_huge_pte)
+>  
+> @@ -2310,6 +2310,22 @@ static inline spinlock_t *pmd_lock(struct mm_struct *mm, pmd_t *pmd)
+>  	return ptl;
+>  }
+>  
+> +static inline bool pgtable_pmd_page_ctor(struct page *page)
+> +{
+> +	if (!pmd_ptlock_init(page))
+> +		return false;
+> +	__SetPageTable(page);
+> +	inc_zone_page_state(page, NR_PAGETABLE);
+> +	return true;
+> +}
+> +
+> +static inline void pgtable_pmd_page_dtor(struct page *page)
+> +{
+> +	pmd_ptlock_free(page);
+> +	__ClearPageTable(page);
+> +	dec_zone_page_state(page, NR_PAGETABLE);
+> +}
+> +
+>  /*
+>   * No scalability reason to split PUD locks yet, but follow the same pattern
+>   * as the PMD locks to make it easier if we decide to.  The VM should not be
+> -- 
+> 2.27.0
+> 
 
-Suggested-by: Sami Tolvanen <samitolvanen@google.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
----
-
- arch/arm/boot/compressed/Makefile | 6 +-----
- arch/powerpc/xmon/Makefile        | 3 +--
- arch/sh/boot/compressed/Makefile  | 5 +----
- kernel/trace/Makefile             | 4 ++--
- lib/Makefile                      | 5 +----
- scripts/Makefile.lib              | 4 ++--
- 6 files changed, 8 insertions(+), 19 deletions(-)
-
-diff --git a/arch/arm/boot/compressed/Makefile b/arch/arm/boot/compressed/Makefile
-index 00602a6fba04..3d5691b23951 100644
---- a/arch/arm/boot/compressed/Makefile
-+++ b/arch/arm/boot/compressed/Makefile
-@@ -103,13 +103,9 @@ clean-files += piggy_data lib1funcs.S ashldi3.S bswapsdi2.S hyp-stub.S
- 
- KBUILD_CFLAGS += -DDISABLE_BRANCH_PROFILING
- 
--ifeq ($(CONFIG_FUNCTION_TRACER),y)
--ORIG_CFLAGS := $(KBUILD_CFLAGS)
--KBUILD_CFLAGS = $(subst -pg, , $(ORIG_CFLAGS))
--endif
--
- ccflags-y := -fpic $(call cc-option,-mno-single-pic-base,) -fno-builtin \
- 	     -I$(obj) $(DISABLE_ARM_SSP_PER_TASK_PLUGIN)
-+ccflags-remove-$(CONFIG_FUNCTION_TRACER) += -pg
- asflags-y := -DZIMAGE
- 
- # Supply kernel BSS size to the decompressor via a linker symbol.
-diff --git a/arch/powerpc/xmon/Makefile b/arch/powerpc/xmon/Makefile
-index 89c76ca35640..55cbcdd88ac0 100644
---- a/arch/powerpc/xmon/Makefile
-+++ b/arch/powerpc/xmon/Makefile
-@@ -7,8 +7,7 @@ UBSAN_SANITIZE := n
- KASAN_SANITIZE := n
- 
- # Disable ftrace for the entire directory
--ORIG_CFLAGS := $(KBUILD_CFLAGS)
--KBUILD_CFLAGS = $(subst $(CC_FLAGS_FTRACE),,$(ORIG_CFLAGS))
-+ccflags-remove-y += $(CC_FLAGS_FTRACE)
- 
- ifdef CONFIG_CC_IS_CLANG
- # clang stores addresses on the stack causing the frame size to blow
-diff --git a/arch/sh/boot/compressed/Makefile b/arch/sh/boot/compressed/Makefile
-index ad0e2403e56f..589d2d8a573d 100644
---- a/arch/sh/boot/compressed/Makefile
-+++ b/arch/sh/boot/compressed/Makefile
-@@ -28,10 +28,7 @@ IMAGE_OFFSET	:= $(shell /bin/bash -c 'printf "0x%08x" \
- 			$(CONFIG_BOOT_LINK_OFFSET)]')
- endif
- 
--ifeq ($(CONFIG_MCOUNT),y)
--ORIG_CFLAGS := $(KBUILD_CFLAGS)
--KBUILD_CFLAGS = $(subst -pg, , $(ORIG_CFLAGS))
--endif
-+ccflags-remove-$(CONFIG_MCOUNT) += -pg
- 
- LDFLAGS_vmlinux := --oformat $(ld-bfd) -Ttext $(IMAGE_OFFSET) -e startup \
- 		   -T $(obj)/../../kernel/vmlinux.lds
-diff --git a/kernel/trace/Makefile b/kernel/trace/Makefile
-index 6575bb0a0434..7492844a8b1b 100644
---- a/kernel/trace/Makefile
-+++ b/kernel/trace/Makefile
-@@ -2,9 +2,9 @@
- 
- # Do not instrument the tracer itself:
- 
-+ccflags-remove-$(CONFIG_FUNCTION_TRACER) += $(CC_FLAGS_FTRACE)
-+
- ifdef CONFIG_FUNCTION_TRACER
--ORIG_CFLAGS := $(KBUILD_CFLAGS)
--KBUILD_CFLAGS = $(subst $(CC_FLAGS_FTRACE),,$(ORIG_CFLAGS))
- 
- # Avoid recursion due to instrumentation.
- KCSAN_SANITIZE := n
-diff --git a/lib/Makefile b/lib/Makefile
-index b1c42c10073b..b2ed4beddd68 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -3,10 +3,7 @@
- # Makefile for some libs needed in the kernel.
- #
- 
--ifdef CONFIG_FUNCTION_TRACER
--ORIG_CFLAGS := $(KBUILD_CFLAGS)
--KBUILD_CFLAGS = $(subst $(CC_FLAGS_FTRACE),,$(ORIG_CFLAGS))
--endif
-+ccflags-remove-$(CONFIG_FUNCTION_TRACER) += $(CC_FLAGS_FTRACE)
- 
- # These files are disabled because they produce lots of non-interesting and/or
- # flaky coverage that is not a function of syscall inputs. For example,
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index 99ac59c59826..5da420f13f9b 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -113,10 +113,10 @@ modfile_flags  = -DKBUILD_MODFILE=$(call stringify,$(modfile))
- 
- orig_c_flags   = $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) \
-                  $(ccflags-y) $(CFLAGS_$(target-stem).o)
--_c_flags       = $(filter-out $(CFLAGS_REMOVE_$(target-stem).o), $(orig_c_flags))
-+_c_flags       = $(filter-out $(ccflags-remove-y) $(CFLAGS_REMOVE_$(target-stem).o), $(orig_c_flags))
- orig_a_flags   = $(KBUILD_CPPFLAGS) $(KBUILD_AFLAGS) \
-                  $(asflags-y) $(AFLAGS_$(target-stem).o)
--_a_flags       = $(filter-out $(AFLAGS_REMOVE_$(target-stem).o), $(orig_a_flags))
-+_a_flags       = $(filter-out $(asflags-remove-y) $(AFLAGS_REMOVE_$(target-stem).o), $(orig_a_flags))
- _cpp_flags     = $(KBUILD_CPPFLAGS) $(cppflags-y) $(CPPFLAGS_$(target-stem).lds)
- 
- #
 -- 
-2.25.1
-
+Sincerely yours,
+Mike.
