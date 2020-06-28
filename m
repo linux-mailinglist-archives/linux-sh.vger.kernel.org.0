@@ -2,88 +2,84 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F6D320C48C
-	for <lists+linux-sh@lfdr.de>; Sun, 28 Jun 2020 00:04:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEDAA20C50C
+	for <lists+linux-sh@lfdr.de>; Sun, 28 Jun 2020 02:53:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726316AbgF0WE1 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sat, 27 Jun 2020 18:04:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50944 "EHLO
+        id S1726607AbgF1Axt (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sat, 27 Jun 2020 20:53:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725917AbgF0WE0 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sat, 27 Jun 2020 18:04:26 -0400
-Received: from mail-il1-x141.google.com (mail-il1-x141.google.com [IPv6:2607:f8b0:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7E68C061794
-        for <linux-sh@vger.kernel.org>; Sat, 27 Jun 2020 15:04:26 -0700 (PDT)
-Received: by mail-il1-x141.google.com with SMTP id k6so11403927ili.6
-        for <linux-sh@vger.kernel.org>; Sat, 27 Jun 2020 15:04:26 -0700 (PDT)
+        with ESMTP id S1725940AbgF1Axs (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sat, 27 Jun 2020 20:53:48 -0400
+Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com [IPv6:2607:f8b0:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AC85C061794
+        for <linux-sh@vger.kernel.org>; Sat, 27 Jun 2020 17:53:48 -0700 (PDT)
+Received: by mail-ot1-x343.google.com with SMTP id k15so12182862otp.8
+        for <linux-sh@vger.kernel.org>; Sat, 27 Jun 2020 17:53:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=hDm0J70xfMLbVvceQHwxPddZCp69UMTk2d0jtKg2a8s=;
-        b=N6kPulua2YSlM8imcShAj91mdG3FVs3SsXSz87fb1+u3nd7u7PFa6MKJ279dIRDWxh
-         0Ldfj86Lh7w+Xrc1R5Ac12lp/bi6BKorqLlDMWYld1qOBhdJB4N7Na0XiYaHB8nKtBEn
-         57C/Tzw6MUWAOIXcOnRxxN4MeNm7iQhU/hvtXzHXK0vqQBasxFJE8WhTf5ke+LZ6XEZm
-         /oWHd42QW3NLQJh3kf1TRlauenW2jL1Poq5HUYmLYngCGGUW3fX0WLGx3ldU3AhEukyR
-         HJCMoV5irc6uSRF+aDmFQnYTlSn+N9B5n6b9ltoSvd3dHTYHCaXSwIr77k6vqrwMxy85
-         lwfQ==
+        d=landley-net.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=nsJk0nfkSz2k8aqVeyIdgKyPII2GCP1n1XDCy7YehbI=;
+        b=F5wASf8Fri/sqqZ7S2mvoeuV0cp88s2puvIaVhgk9pu0s3AK85cOQNvQmuJFXIXbP0
+         K5O0fqTjeahCeeR4H5+T8jsxwb9p45cXU4aPr58kx3XQr0xPZfF0VGCTCRb4XXKXYzHG
+         fTn9dh/vejm9BxHLOygA1x9Ij9n1HqRbvbjyHcNJ7l7tVJnj91fp5IQOwWtatuViqJn1
+         jlQv/3C20RVn7epNlE4V/jRuilY8ncA9VhUwahS6YW7s0cm6CGLafzuTNc8N9GQwMA2D
+         79GJTsnSiE2fMqtSVkfzse8n4EY1ATIwlNMXzf5a1RBLzxpBEL68NexetNvHfFTEUh3n
+         0rmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=hDm0J70xfMLbVvceQHwxPddZCp69UMTk2d0jtKg2a8s=;
-        b=Df/cpEsyLWSSvF6ZW+yO1BEnjhVFcxfx3xdB9GQfdG1kZmYoZYtuK9QVegAiZUkBZj
-         QBjA/LzR1SLuh8OnStbT++y+i0xDBCM3eCPwKdYtvT51L3slmTR3NwqED9FnPWG1ZdSA
-         zkWRHUgh98jRahngF1xZBNg0yiYoqyyTO684oEPaCAQg8mvgZzG2j+tY14LwxgmtvDYZ
-         CPfujio0XL27Zsz1H9nOU4MhmvGZNTX62Caw5b6ieO/SIPWgw5knXlUZBt7HMB3Ju8UP
-         s6HhxrNK0EN1gjqr6Hys9Ue75jjVW+hSufXVTewl9CJNvu1EhMPzT78oasD8QoMPTvQz
-         L16Q==
-X-Gm-Message-State: AOAM532QCxLCAVMyxxtrgH+IeUitNd3LeYhVDMTAUYMIyl3OYcWFSoip
-        qJ1tSlMkq4a+gnsn88bR7JfESvJWUYG4/7GIWRbJnAVitBw=
-X-Google-Smtp-Source: ABdhPJwHv45zwmNuK/YSX2uBVAIqQ2zLOwtA+ngiZqoTP9Rs9Xn2gCCD3OWXiVcvkiJ+PU31Rp2ZvkRVy2hsrxlhX9g=
-X-Received: by 2002:a92:7749:: with SMTP id s70mr10069248ilc.259.1593295098567;
- Sat, 27 Jun 2020 14:58:18 -0700 (PDT)
+        bh=nsJk0nfkSz2k8aqVeyIdgKyPII2GCP1n1XDCy7YehbI=;
+        b=TWPdzkGwGTCxebMgOOELqIAVtC3Rq6HJFXAn+jTWL//zYii3EN3b/blNyzyGwlho9j
+         OmHF8m8mjMLpBi+kz1bLpI0lh5hIwnzYF/fQ915XmeCPrNnyYsqF6gXTwkjxkyafjlj4
+         Q5z4AwwMOItXesGG41DxQLh+lx8B+pjrLDtrsYFM6h5+RDL+rudYf79uiQMqhXyr9HZq
+         Oy3fSHR7QmcP0OkAfSxluuIjnr6+j+yaNqj6B8/grOoQY3E0A1u9WO78xrtz0CILlyP1
+         1ca34HYlt+Pu+eckH1SEiwA+7Yjnpf+iNYS1JJNjMQy8vEB8vlF9W+xDNhAqBLaDcfwq
+         gsYw==
+X-Gm-Message-State: AOAM532JPzvubjvWgSaiTpQd24ubogyOVeSRHVIGEaC6yRZrfIWA9qAd
+        0/Z8Eb/gM5HHhNkKj5BRM1bcpQ==
+X-Google-Smtp-Source: ABdhPJyBBcuzNGLXgjXTTaFdvlSaAnU4ny+EPV2T61ymbabLc9jUaNqol49OUnUhrbe5fsPKNwvoOQ==
+X-Received: by 2002:a9d:6e8a:: with SMTP id a10mr8226679otr.220.1593305628000;
+        Sat, 27 Jun 2020 17:53:48 -0700 (PDT)
+Received: from [192.168.86.21] ([136.62.4.88])
+        by smtp.gmail.com with ESMTPSA id 62sm1639011ooa.25.2020.06.27.17.53.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 27 Jun 2020 17:53:47 -0700 (PDT)
+Subject: Re: [PATCH 09/10] sh: don't allow non-coherent DMA for NOMMU
+To:     Christoph Hellwig <hch@lst.de>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>
+Cc:     linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20200626080717.1999041-1-hch@lst.de>
+ <20200626080717.1999041-10-hch@lst.de>
+From:   Rob Landley <rob@landley.net>
+Message-ID: <e908f620-62b8-f106-a1a8-9887f50216fd@landley.net>
+Date:   Sat, 27 Jun 2020 20:01:17 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Received: by 2002:a4f:4e46:0:0:0:0:0 with HTTP; Sat, 27 Jun 2020 14:58:17
- -0700 (PDT)
-From:   lookman joe <mrlookmanjoe@gmail.com>
-Date:   Sat, 27 Jun 2020 22:58:17 +0100
-Message-ID: <CAG9X5Hfvk-fmbqs9+RtHRqyUu35f9-A5+EbwjPrw9eVNH09ftg@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20200626080717.1999041-10-hch@lst.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-MONEY-GRAM TRANSFERRED PAYMENT INFO:
+On 6/26/20 3:07 AM, Christoph Hellwig wrote:
+> The code handling non-coherent DMA depends on being able to remap code
+> as non-cached.  But that can't be done without an MMU, so using this
+> option on NOMMU builds is broken.
 
-Below is the sender=E2=80=99s information
+I'm working on a nommu j-core board that's doing DMA behind the OS's back at the
+moment, which I have a todo item to teach the kernel about. The DMA does not go
+through the cache, there's currently a cache flush before looking at the result
+instead.
 
+How should this be wired up after your patch?
 
-
-1. MG. REFERENCE NO#: 36360857
-
-2. SENDER'S NAME: Johnson Williams
-
-3. AMOUNT TO PICKUP: US$10,000
-
-
-
-Go to any Money Gram office near you and pick up the payment Track the
-
-Reference Number by visiting and click the link below
-
-(https://secure.moneygram.com/embed/track) and enter the Reference
-
-Number: 36360857 and the Last Name: Williams, you will find the payment
-
-available for pickup instantly.
-
-Yours Sincerely,
-
-Mrs. Helen Marvis
-United Nations Liaison Office
-Directorate for International Payments
+Rob
