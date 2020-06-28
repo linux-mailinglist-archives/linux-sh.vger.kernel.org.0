@@ -2,84 +2,177 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CEDAA20C50C
-	for <lists+linux-sh@lfdr.de>; Sun, 28 Jun 2020 02:53:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F52A20C55C
+	for <lists+linux-sh@lfdr.de>; Sun, 28 Jun 2020 04:16:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726607AbgF1Axt (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sat, 27 Jun 2020 20:53:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48516 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725940AbgF1Axs (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sat, 27 Jun 2020 20:53:48 -0400
-Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com [IPv6:2607:f8b0:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AC85C061794
-        for <linux-sh@vger.kernel.org>; Sat, 27 Jun 2020 17:53:48 -0700 (PDT)
-Received: by mail-ot1-x343.google.com with SMTP id k15so12182862otp.8
-        for <linux-sh@vger.kernel.org>; Sat, 27 Jun 2020 17:53:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=landley-net.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=nsJk0nfkSz2k8aqVeyIdgKyPII2GCP1n1XDCy7YehbI=;
-        b=F5wASf8Fri/sqqZ7S2mvoeuV0cp88s2puvIaVhgk9pu0s3AK85cOQNvQmuJFXIXbP0
-         K5O0fqTjeahCeeR4H5+T8jsxwb9p45cXU4aPr58kx3XQr0xPZfF0VGCTCRb4XXKXYzHG
-         fTn9dh/vejm9BxHLOygA1x9Ij9n1HqRbvbjyHcNJ7l7tVJnj91fp5IQOwWtatuViqJn1
-         jlQv/3C20RVn7epNlE4V/jRuilY8ncA9VhUwahS6YW7s0cm6CGLafzuTNc8N9GQwMA2D
-         79GJTsnSiE2fMqtSVkfzse8n4EY1ATIwlNMXzf5a1RBLzxpBEL68NexetNvHfFTEUh3n
-         0rmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=nsJk0nfkSz2k8aqVeyIdgKyPII2GCP1n1XDCy7YehbI=;
-        b=TWPdzkGwGTCxebMgOOELqIAVtC3Rq6HJFXAn+jTWL//zYii3EN3b/blNyzyGwlho9j
-         OmHF8m8mjMLpBi+kz1bLpI0lh5hIwnzYF/fQ915XmeCPrNnyYsqF6gXTwkjxkyafjlj4
-         Q5z4AwwMOItXesGG41DxQLh+lx8B+pjrLDtrsYFM6h5+RDL+rudYf79uiQMqhXyr9HZq
-         Oy3fSHR7QmcP0OkAfSxluuIjnr6+j+yaNqj6B8/grOoQY3E0A1u9WO78xrtz0CILlyP1
-         1ca34HYlt+Pu+eckH1SEiwA+7Yjnpf+iNYS1JJNjMQy8vEB8vlF9W+xDNhAqBLaDcfwq
-         gsYw==
-X-Gm-Message-State: AOAM532JPzvubjvWgSaiTpQd24ubogyOVeSRHVIGEaC6yRZrfIWA9qAd
-        0/Z8Eb/gM5HHhNkKj5BRM1bcpQ==
-X-Google-Smtp-Source: ABdhPJyBBcuzNGLXgjXTTaFdvlSaAnU4ny+EPV2T61ymbabLc9jUaNqol49OUnUhrbe5fsPKNwvoOQ==
-X-Received: by 2002:a9d:6e8a:: with SMTP id a10mr8226679otr.220.1593305628000;
-        Sat, 27 Jun 2020 17:53:48 -0700 (PDT)
-Received: from [192.168.86.21] ([136.62.4.88])
-        by smtp.gmail.com with ESMTPSA id 62sm1639011ooa.25.2020.06.27.17.53.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 27 Jun 2020 17:53:47 -0700 (PDT)
-Subject: Re: [PATCH 09/10] sh: don't allow non-coherent DMA for NOMMU
-To:     Christoph Hellwig <hch@lst.de>,
+        id S1725913AbgF1CQb (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sat, 27 Jun 2020 22:16:31 -0400
+Received: from condef-08.nifty.com ([202.248.20.73]:60756 "EHLO
+        condef-08.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725838AbgF1CQb (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sat, 27 Jun 2020 22:16:31 -0400
+X-Greylist: delayed 702 seconds by postgrey-1.27 at vger.kernel.org; Sat, 27 Jun 2020 22:16:30 EDT
+Received: from conuserg-09.nifty.com ([10.126.8.72])by condef-08.nifty.com with ESMTP id 05S1s38n026348
+        for <linux-sh@vger.kernel.org>; Sun, 28 Jun 2020 10:54:16 +0900
+Received: from oscar.flets-west.jp (softbank126090202047.bbtec.net [126.90.202.47]) (authenticated)
+        by conuserg-09.nifty.com with ESMTP id 05S1oixP004742;
+        Sun, 28 Jun 2020 10:50:44 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-09.nifty.com 05S1oixP004742
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1593309045;
+        bh=hkY77VUGXSYac7YbrIkUecBgq7WORaGieZmySJIL5UA=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ahJ3uto2fhcnzsnIdLNU74S4vUyrlAQ4RsoPaFq9zt9MQ9rNbQLVQSS7jxeu5Q8si
+         hZ34tVZRnliSC5lwB2mp+XhuUvw+20+ogpJbv2SrSVGwLunHSwliobc980NNYxgtNV
+         7KoTg5pXNDlDue+Qw95dB65tKTenO+yJoYpKMjA+pouECDFfbNgi/Gl3GphBAEx2jt
+         JIId1nbEsdrcgnMp1nLu2y0LwNlkZ7F/kd88h+53l3Wy2U7beVZi9x+0lCqdPuAiyn
+         xq4P1+iR/S7vXT/ZdlGa6TQaScQErK5xw4F96tYA3UgjBxvfSj1llEDfgf/+ZBEQh9
+         WQo1lz/K7CrLw==
+X-Nifty-SrcIP: [126.90.202.47]
+From:   Masahiro Yamada <masahiroy@kernel.org>
+To:     linux-kbuild@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Sami Tolvanen <samitolvanen@google.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Paul Mackerras <paulus@samba.org>,
+        Rich Felker <dalias@libc.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Steven Rostedt <rostedt@goodmis.org>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>
-Cc:     linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200626080717.1999041-1-hch@lst.de>
- <20200626080717.1999041-10-hch@lst.de>
-From:   Rob Landley <rob@landley.net>
-Message-ID: <e908f620-62b8-f106-a1a8-9887f50216fd@landley.net>
-Date:   Sat, 27 Jun 2020 20:01:17 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        linux-arm-kernel@lists.infradead.org, linux-sh@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] kbuild: introduce ccflags-remove-y and asflags-remove-y
+Date:   Sun, 28 Jun 2020 10:50:41 +0900
+Message-Id: <20200628015041.1000002-1-masahiroy@kernel.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <20200626080717.1999041-10-hch@lst.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 6/26/20 3:07 AM, Christoph Hellwig wrote:
-> The code handling non-coherent DMA depends on being able to remap code
-> as non-cached.  But that can't be done without an MMU, so using this
-> option on NOMMU builds is broken.
+CFLAGS_REMOVE_<file>.o works per object, that is, there is no
+convenient way to filter out flags for every object in a directory.
 
-I'm working on a nommu j-core board that's doing DMA behind the OS's back at the
-moment, which I have a todo item to teach the kernel about. The DMA does not go
-through the cache, there's currently a cache flush before looking at the result
-instead.
+Add ccflags-remove-y and asflags-remove-y to make it easily.
 
-How should this be wired up after your patch?
+Use ccflags-remove-y to clean up some Makefiles.
 
-Rob
+Suggested-by: Sami Tolvanen <samitolvanen@google.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+---
+
+ arch/arm/boot/compressed/Makefile | 6 +-----
+ arch/powerpc/xmon/Makefile        | 3 +--
+ arch/sh/boot/compressed/Makefile  | 5 +----
+ kernel/trace/Makefile             | 4 ++--
+ lib/Makefile                      | 5 +----
+ scripts/Makefile.lib              | 4 ++--
+ 6 files changed, 8 insertions(+), 19 deletions(-)
+
+diff --git a/arch/arm/boot/compressed/Makefile b/arch/arm/boot/compressed/Makefile
+index 00602a6fba04..3d5691b23951 100644
+--- a/arch/arm/boot/compressed/Makefile
++++ b/arch/arm/boot/compressed/Makefile
+@@ -103,13 +103,9 @@ clean-files += piggy_data lib1funcs.S ashldi3.S bswapsdi2.S hyp-stub.S
+ 
+ KBUILD_CFLAGS += -DDISABLE_BRANCH_PROFILING
+ 
+-ifeq ($(CONFIG_FUNCTION_TRACER),y)
+-ORIG_CFLAGS := $(KBUILD_CFLAGS)
+-KBUILD_CFLAGS = $(subst -pg, , $(ORIG_CFLAGS))
+-endif
+-
+ ccflags-y := -fpic $(call cc-option,-mno-single-pic-base,) -fno-builtin \
+ 	     -I$(obj) $(DISABLE_ARM_SSP_PER_TASK_PLUGIN)
++ccflags-remove-$(CONFIG_FUNCTION_TRACER) += -pg
+ asflags-y := -DZIMAGE
+ 
+ # Supply kernel BSS size to the decompressor via a linker symbol.
+diff --git a/arch/powerpc/xmon/Makefile b/arch/powerpc/xmon/Makefile
+index 89c76ca35640..55cbcdd88ac0 100644
+--- a/arch/powerpc/xmon/Makefile
++++ b/arch/powerpc/xmon/Makefile
+@@ -7,8 +7,7 @@ UBSAN_SANITIZE := n
+ KASAN_SANITIZE := n
+ 
+ # Disable ftrace for the entire directory
+-ORIG_CFLAGS := $(KBUILD_CFLAGS)
+-KBUILD_CFLAGS = $(subst $(CC_FLAGS_FTRACE),,$(ORIG_CFLAGS))
++ccflags-remove-y += $(CC_FLAGS_FTRACE)
+ 
+ ifdef CONFIG_CC_IS_CLANG
+ # clang stores addresses on the stack causing the frame size to blow
+diff --git a/arch/sh/boot/compressed/Makefile b/arch/sh/boot/compressed/Makefile
+index ad0e2403e56f..589d2d8a573d 100644
+--- a/arch/sh/boot/compressed/Makefile
++++ b/arch/sh/boot/compressed/Makefile
+@@ -28,10 +28,7 @@ IMAGE_OFFSET	:= $(shell /bin/bash -c 'printf "0x%08x" \
+ 			$(CONFIG_BOOT_LINK_OFFSET)]')
+ endif
+ 
+-ifeq ($(CONFIG_MCOUNT),y)
+-ORIG_CFLAGS := $(KBUILD_CFLAGS)
+-KBUILD_CFLAGS = $(subst -pg, , $(ORIG_CFLAGS))
+-endif
++ccflags-remove-$(CONFIG_MCOUNT) += -pg
+ 
+ LDFLAGS_vmlinux := --oformat $(ld-bfd) -Ttext $(IMAGE_OFFSET) -e startup \
+ 		   -T $(obj)/../../kernel/vmlinux.lds
+diff --git a/kernel/trace/Makefile b/kernel/trace/Makefile
+index 6575bb0a0434..7492844a8b1b 100644
+--- a/kernel/trace/Makefile
++++ b/kernel/trace/Makefile
+@@ -2,9 +2,9 @@
+ 
+ # Do not instrument the tracer itself:
+ 
++ccflags-remove-$(CONFIG_FUNCTION_TRACER) += $(CC_FLAGS_FTRACE)
++
+ ifdef CONFIG_FUNCTION_TRACER
+-ORIG_CFLAGS := $(KBUILD_CFLAGS)
+-KBUILD_CFLAGS = $(subst $(CC_FLAGS_FTRACE),,$(ORIG_CFLAGS))
+ 
+ # Avoid recursion due to instrumentation.
+ KCSAN_SANITIZE := n
+diff --git a/lib/Makefile b/lib/Makefile
+index b1c42c10073b..b2ed4beddd68 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -3,10 +3,7 @@
+ # Makefile for some libs needed in the kernel.
+ #
+ 
+-ifdef CONFIG_FUNCTION_TRACER
+-ORIG_CFLAGS := $(KBUILD_CFLAGS)
+-KBUILD_CFLAGS = $(subst $(CC_FLAGS_FTRACE),,$(ORIG_CFLAGS))
+-endif
++ccflags-remove-$(CONFIG_FUNCTION_TRACER) += $(CC_FLAGS_FTRACE)
+ 
+ # These files are disabled because they produce lots of non-interesting and/or
+ # flaky coverage that is not a function of syscall inputs. For example,
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index 99ac59c59826..5da420f13f9b 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -113,10 +113,10 @@ modfile_flags  = -DKBUILD_MODFILE=$(call stringify,$(modfile))
+ 
+ orig_c_flags   = $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) \
+                  $(ccflags-y) $(CFLAGS_$(target-stem).o)
+-_c_flags       = $(filter-out $(CFLAGS_REMOVE_$(target-stem).o), $(orig_c_flags))
++_c_flags       = $(filter-out $(ccflags-remove-y) $(CFLAGS_REMOVE_$(target-stem).o), $(orig_c_flags))
+ orig_a_flags   = $(KBUILD_CPPFLAGS) $(KBUILD_AFLAGS) \
+                  $(asflags-y) $(AFLAGS_$(target-stem).o)
+-_a_flags       = $(filter-out $(AFLAGS_REMOVE_$(target-stem).o), $(orig_a_flags))
++_a_flags       = $(filter-out $(asflags-remove-y) $(AFLAGS_REMOVE_$(target-stem).o), $(orig_a_flags))
+ _cpp_flags     = $(KBUILD_CPPFLAGS) $(cppflags-y) $(CPPFLAGS_$(target-stem).lds)
+ 
+ #
+-- 
+2.25.1
+
