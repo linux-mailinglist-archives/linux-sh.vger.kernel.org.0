@@ -2,119 +2,116 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 967C520D64D
-	for <lists+linux-sh@lfdr.de>; Mon, 29 Jun 2020 22:05:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64A6C20D62F
+	for <lists+linux-sh@lfdr.de>; Mon, 29 Jun 2020 22:05:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731848AbgF2TS5 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 29 Jun 2020 15:18:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43348 "EHLO
+        id S1731999AbgF2TSG (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 29 Jun 2020 15:18:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731758AbgF2TOU (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 29 Jun 2020 15:14:20 -0400
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA549C08EA4D;
-        Sun, 28 Jun 2020 22:55:02 -0700 (PDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 49wGsq67rhz9sQt;
-        Mon, 29 Jun 2020 15:54:55 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
-        s=201909; t=1593410101;
-        bh=Jh0SmCOzWGYUXyeIgZMSmN1pyztkyV9tCktpTHdG1i8=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=BybM+kRzXXhESpdzgGc8v3JB79Vlzk3vA79SnZQQwaV1CyaostawEhvEsPizyn5ni
-         mjvAYZpXe9D14yRzLQkEWsiwft6LzwUmSLO89yP3t9zLEsD+h7in5CqCItOw3sUnXR
-         XR+PrHFFIh1Ruw6CrJF20kEkaITEUNaIHZC08UfgEZ8Putxpw5kSYKPHNxeYkigt4c
-         wbS4tjp+GQZq9Z2ufwA0RhBt6wAqdoTijQHNpLODJsGwpEFKRWcu7n9lm2IGDlK13B
-         k9wjzdSQGsDp4Wip6l38PVkFqw/f9pFWx+EErzZH+ebnzKJZrzt962Cws7xNX2yiy3
-         NIHL1cwW1rRiA==
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Masahiro Yamada <masahiroy@kernel.org>,
-        linux-kbuild@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Sami Tolvanen <samitolvanen@google.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Paul Mackerras <paulus@samba.org>,
-        Rich Felker <dalias@libc.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        linux-arm-kernel@lists.infradead.org, linux-sh@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] kbuild: introduce ccflags-remove-y and asflags-remove-y
-In-Reply-To: <20200628015041.1000002-1-masahiroy@kernel.org>
-References: <20200628015041.1000002-1-masahiroy@kernel.org>
-Date:   Mon, 29 Jun 2020 15:57:11 +1000
-Message-ID: <87imfa8le0.fsf@mpe.ellerman.id.au>
+        with ESMTP id S1731886AbgF2TRn (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 29 Jun 2020 15:17:43 -0400
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69549C03079F;
+        Mon, 29 Jun 2020 08:41:55 -0700 (PDT)
+Received: by mail-ot1-x344.google.com with SMTP id d4so15937212otk.2;
+        Mon, 29 Jun 2020 08:41:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=18DuSBZeLijFT5byeb07kqFnxpD8Og5k3o71uVKMsdg=;
+        b=pdqY7+o2ViXtdwzpRg7V0spv+w3RMUTM8pq1mA6PmxJQxaN+pwXkRL4gutZbEnUAKk
+         7oZWR0fNzNN95BqoUgj38z60RkoZbqe4xAnV7jSf0z2PY1Vs68uxoB44TPGrQzkJO7a0
+         Vyua6rOkYqe3j2a+SNQtf1aAGahjOQ6olRQRMR+QKVRHTqTrB26RJMcrE0bQrdpP0kxb
+         GXkekPVusG/8EahYhVxY3eQGoN00/OYTFsMlyutG2FEKFwqzG7+e2D6I98d2I2Ajzi8X
+         2phUh4VE9sJpVENYIDLD7jo8f7GkC33+xzVej1zgc1PQXMy/mwSU4BfTjAdKNWzeDASN
+         aDpQ==
+X-Gm-Message-State: AOAM532mh0D7t76EfolXynbkKGtSx7oXy9QJfDi+g7PO2w/qt/ymCT0a
+        6P7ZpiPFXLDHyBHypymp52y56QVZgAapKfX/hxQ=
+X-Google-Smtp-Source: ABdhPJyfGDnofAtWY6Vq9zQSiEjHHywgsNVHJzUbnOYeAK8rSOSVeLQNZQAOcMed2+/KO3c+bzP8Q5CiqDzs7aUNX9g=
+X-Received: by 2002:a05:6830:1451:: with SMTP id w17mr1238896otp.250.1593445314725;
+ Mon, 29 Jun 2020 08:41:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20200627143453.31835-1-rppt@kernel.org> <20200627143453.31835-2-rppt@kernel.org>
+In-Reply-To: <20200627143453.31835-2-rppt@kernel.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 29 Jun 2020 17:41:43 +0200
+Message-ID: <CAMuHMdUOrrrtKuhtWJvzKNNLXY1fx+Ym1oXGN2J_CZ7RqByGHQ@mail.gmail.com>
+Subject: Re: [PATCH 1/8] mm: remove unneeded includes of <asm/pgalloc.h>
+To:     Mike Rapoport <rppt@kernel.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Abdul Haleem <abdhalee@linux.vnet.ibm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Joerg Roedel <joro@8bytes.org>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
+        Stafford Horne <shorne@gmail.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        alpha <linux-alpha@vger.kernel.org>,
+        Linux-Arch <linux-arch@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-csky@vger.kernel.org,
+        "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        Linux MM <linux-mm@kvack.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        arcml <linux-snps-arc@lists.infradead.org>,
+        linux-um <linux-um@lists.infradead.org>,
+        "open list:TENSILICA XTENSA PORT (xtensa)" 
+        <linux-xtensa@linux-xtensa.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Openrisc <openrisc@lists.librecores.org>,
+        sparclinux <sparclinux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Masahiro Yamada <masahiroy@kernel.org> writes:
-> CFLAGS_REMOVE_<file>.o works per object, that is, there is no
-> convenient way to filter out flags for every object in a directory.
+On Sat, Jun 27, 2020 at 4:35 PM Mike Rapoport <rppt@kernel.org> wrote:
+> From: Mike Rapoport <rppt@linux.ibm.com>
 >
-> Add ccflags-remove-y and asflags-remove-y to make it easily.
+> In the most cases <asm/pgalloc.h> header is required only for allocations
+> of page table memory. Most of the .c files that include that header do not
+> use symbols declared in <asm/pgalloc.h> and do not require that header.
 >
-> Use ccflags-remove-y to clean up some Makefiles.
+> As for the other header files that used to include <asm/pgalloc.h>, it is
+> possible to move that include into the .c file that actually uses symbols
+> from <asm/pgalloc.h> and drop the include from the header file.
 >
-> Suggested-by: Sami Tolvanen <samitolvanen@google.com>
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> ---
+> The process was somewhat automated using
 >
->  arch/arm/boot/compressed/Makefile | 6 +-----
->  arch/powerpc/xmon/Makefile        | 3 +--
->  arch/sh/boot/compressed/Makefile  | 5 +----
->  kernel/trace/Makefile             | 4 ++--
->  lib/Makefile                      | 5 +----
->  scripts/Makefile.lib              | 4 ++--
->  6 files changed, 8 insertions(+), 19 deletions(-)
+>         sed -i -E '/[<"]asm\/pgalloc\.h/d' \
+>                 $(grep -L -w -f /tmp/xx \
+>                         $(git grep -E -l '[<"]asm/pgalloc\.h'))
 >
-> diff --git a/arch/powerpc/xmon/Makefile b/arch/powerpc/xmon/Makefile
-> index 89c76ca35640..55cbcdd88ac0 100644
-> --- a/arch/powerpc/xmon/Makefile
-> +++ b/arch/powerpc/xmon/Makefile
-> @@ -7,8 +7,7 @@ UBSAN_SANITIZE := n
->  KASAN_SANITIZE := n
->  
->  # Disable ftrace for the entire directory
-> -ORIG_CFLAGS := $(KBUILD_CFLAGS)
-> -KBUILD_CFLAGS = $(subst $(CC_FLAGS_FTRACE),,$(ORIG_CFLAGS))
-> +ccflags-remove-y += $(CC_FLAGS_FTRACE)
+> where /tmp/xx contains all the symbols defined in
+> arch/*/include/asm/pgalloc.h.
+>
+> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
 
-This could be:
+For the m68k part:
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
-ccflags-remove-$(CONFIG_FUNCTION_TRACER) += $(CC_FLAGS_FTRACE)
+Gr{oetje,eeting}s,
 
-Similar to kernel/trace/Makefile below.
+                        Geert
 
-I don't mind though.
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-
-cheers
-
-> diff --git a/kernel/trace/Makefile b/kernel/trace/Makefile
-> index 6575bb0a0434..7492844a8b1b 100644
-> --- a/kernel/trace/Makefile
-> +++ b/kernel/trace/Makefile
-> @@ -2,9 +2,9 @@
->  
->  # Do not instrument the tracer itself:
->  
-> +ccflags-remove-$(CONFIG_FUNCTION_TRACER) += $(CC_FLAGS_FTRACE)
-> +
->  ifdef CONFIG_FUNCTION_TRACER
-> -ORIG_CFLAGS := $(KBUILD_CFLAGS)
-> -KBUILD_CFLAGS = $(subst $(CC_FLAGS_FTRACE),,$(ORIG_CFLAGS))
->  
->  # Avoid recursion due to instrumentation.
->  KCSAN_SANITIZE := n
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
