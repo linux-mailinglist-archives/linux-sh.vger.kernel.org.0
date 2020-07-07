@@ -2,53 +2,47 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 88480216F17
-	for <lists+linux-sh@lfdr.de>; Tue,  7 Jul 2020 16:45:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7FCD216FF3
+	for <lists+linux-sh@lfdr.de>; Tue,  7 Jul 2020 17:14:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728073AbgGGOpE (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 7 Jul 2020 10:45:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54808 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727793AbgGGOpD (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 7 Jul 2020 10:45:03 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D0C6C08C5E1
-        for <linux-sh@vger.kernel.org>; Tue,  7 Jul 2020 07:45:03 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id j4so43016592wrp.10
-        for <linux-sh@vger.kernel.org>; Tue, 07 Jul 2020 07:45:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=cRi5dL4kQrmUCECuqd6eWlOROk0aWQtTVaEBXrLXt14=;
-        b=R/b1Xo7qEbzdwTncWlbC+d3clQ34dlTOrCGN1/ILLiVn4RJXQqtn858I5OVzb+avNV
-         tVZ+VU654n3B2bCYt9FINONRQqz+bKuFs0QijtWCJOoX9HwG+UNJrxZdovAQajftzTsp
-         lQGjP34g0JgjTCRZs4+TwHZ2+PqczW5VvmSO0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=cRi5dL4kQrmUCECuqd6eWlOROk0aWQtTVaEBXrLXt14=;
-        b=p4NK5IZAlnlzlGXR/oUAooNN7JEOV7XxL2YPmybw+bR8RCAtbQZvIJz3KbosXugWYy
-         I+UVW5XR3I5P+ZctPyd5AmaTTzDpS4e5QRVB6KT8H20m8lUO589cEzbLz8JmyN3wbrka
-         OjJNoZRDUgiwlgIr4an/uFBNMAsKAEb4Vq+85+twgKRqPAI1e572E8i1n364DiF+bNNu
-         +xDq2bwu4BGNhCEh5UDKmMe7gNAsR2FyexPqim/cdGYRA1SQMYBtebSirrPZbNjlTsNd
-         dbHg5OpgGw3COYmYINPQ3rVKLPonDMfHzolyFs47qH/E8xWqx9vuzkmRKtIN1jt07gxu
-         fUBw==
-X-Gm-Message-State: AOAM532SyJ9GzHpBBZB36VHlL7033DXbSRO3vmoOkFaNsYSDjT9nHPhz
-        tq6XMKB4gMfh8rrnDTtX+OqCXaO7yWgmakklSM2OTA==
-X-Google-Smtp-Source: ABdhPJyhIPa3U1bTW7UlULocCH4eT2T0NxtMN2UWRMtL2ZRIuBeALk/agL6ONyjaajr2oy9MkkK3mpYlKMLOkhB7VqA=
-X-Received: by 2002:adf:edc6:: with SMTP id v6mr54744665wro.413.1594133102091;
- Tue, 07 Jul 2020 07:45:02 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200701212155.37830-9-james.quinlan@broadcom.com> <20200707132724.GT2549@kadam>
-In-Reply-To: <20200707132724.GT2549@kadam>
-From:   Jim Quinlan <james.quinlan@broadcom.com>
-Date:   Tue, 7 Jul 2020 10:44:50 -0400
-Message-ID: <CA+-6iNwzQ0gn2KfdqNGwGjDgPT5op8bTCs6paMT7BwVmm+9vTw@mail.gmail.com>
-Subject: Re: [PATCH v6 08/12] device core: Introduce DMA range map,
- supplanting dma_pfn_offset
-To:     Dan Carpenter <dan.carpenter@oracle.com>
+        id S1728164AbgGGPNx (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 7 Jul 2020 11:13:53 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:35166 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726911AbgGGPNx (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 7 Jul 2020 11:13:53 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 067FBZpI056351;
+        Tue, 7 Jul 2020 15:13:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=U1xPFwZZZWM/dKwwlYFIgRl131Rm3+3fn4LlImCeQwI=;
+ b=GRj0Jd+R1Dkl4ulAD0eTkr0A97oC7f/4ibk2JrN3yAb42qAZ/XZAQa2PplVoPcM+hBor
+ NnJM3+vnQLksMI9+GLsTQyShAt9vinMwzyherXhD3Z6yZougZJDb5MGswuOIYQPTaLnp
+ eOwpD3RK6UKzHEBhdtuuBicCxlOQAKzRt+UjK47DU6IfTUoBx8dRwLlIOnv03iXsVo1r
+ HIiYIFd5JmeZ5GSjFnhZMnFBprk+6rHYt0muvL4D3kD8wxS3SDBtlQrbzRz3/OLTPcE0
+ jGzxzDzrbk3ajutjqyqni0Gp5+f95GxbwwTUk9dZB8iFzoAa+gjRHLwYKZ/wW+Fec/vW Kg== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 322kv6cya6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 07 Jul 2020 15:13:37 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 067F95Oq085644;
+        Tue, 7 Jul 2020 15:11:36 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 324n4rb2cu-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 07 Jul 2020 15:11:34 +0000
+Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 067FBV1q006188;
+        Tue, 7 Jul 2020 15:11:31 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 07 Jul 2020 08:11:30 -0700
+Date:   Tue, 7 Jul 2020 18:11:22 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Jim Quinlan <james.quinlan@broadcom.com>
 Cc:     kbuild@lists.01.org,
         "open list:PCI NATIVE HOST BRIDGE AND ENDPOINT DRIVERS" 
         <linux-pci@vger.kernel.org>,
@@ -62,133 +56,38 @@ Cc:     kbuild@lists.01.org,
         Hanjun Guo <guohanjun@huawei.com>,
         "open list:REMOTE PROCESSOR REMOTEPROC SUBSYSTEM" 
         <linux-remoteproc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v6 08/12] device core: Introduce DMA range map,
+ supplanting dma_pfn_offset
+Message-ID: <20200707151122.GX2571@kadam>
+References: <20200701212155.37830-9-james.quinlan@broadcom.com>
+ <20200707132724.GT2549@kadam>
+ <CA+-6iNwzQ0gn2KfdqNGwGjDgPT5op8bTCs6paMT7BwVmm+9vTw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+-6iNwzQ0gn2KfdqNGwGjDgPT5op8bTCs6paMT7BwVmm+9vTw@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9675 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0
+ mlxlogscore=999 spamscore=0 adultscore=0 malwarescore=0 suspectscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2007070113
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9675 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 bulkscore=0
+ malwarescore=0 suspectscore=0 mlxlogscore=999 phishscore=0 spamscore=0
+ priorityscore=1501 clxscore=1015 impostorscore=0 mlxscore=0 adultscore=0
+ cotscore=-2147483648 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2007070113
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Dan,
+Sorry for the noise.  Your code is correct.  I'm not 100% sure what went
+wrong.  Either the cross function database wasn't built or there is a
+bug in the published code that is fixed on my private Smatch build.  I
+will investigate.
 
-On Tue, Jul 7, 2020 at 9:27 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> Hi Jim,
->
-> url:    https://github.com/0day-ci/linux/commits/Jim-Quinlan/PCI-brcmstb-enable-PCIe-for-STB-chips/20200702-053156
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/helgaas/pci.git next
-> config: arm-randconfig-m031-20200701 (attached as .config)
-> compiler: arm-linux-gnueabi-gcc (GCC) 9.3.0
->
-> If you fix the issue, kindly add following tag as appropriate
-> Reported-by: kernel test robot <lkp@intel.com>
-> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
->
-> smatch warnings:
-> drivers/of/address.c:1012 of_dma_get_range() warn: passing zero to 'ERR_PTR'
->
-> # https://github.com/0day-ci/linux/commit/0c50b6db383883854419f10df0d79b663433f121
-> git remote add linux-review https://github.com/0day-ci/linux
-> git remote update linux-review
-> git checkout 0c50b6db383883854419f10df0d79b663433f121
-> vim +/ERR_PTR +1012 drivers/of/address.c
->
-> 18308c94723e16 Grygorii Strashko 2014-04-24   955  /**
-> 0c50b6db383883 Jim Quinlan       2020-07-01   956   * of_dma_get_range - Get DMA range info and put it into a map array
-> 18308c94723e16 Grygorii Strashko 2014-04-24   957   * @np:              device node to get DMA range info
-> 18308c94723e16 Grygorii Strashko 2014-04-24   958   *
-> 18308c94723e16 Grygorii Strashko 2014-04-24   959   * Look in bottom up direction for the first "dma-ranges" property
-> 0c50b6db383883 Jim Quinlan       2020-07-01   960   * and parse it.  Put the information into a DMA offset map array.
-> 0c50b6db383883 Jim Quinlan       2020-07-01   961   *
-> 18308c94723e16 Grygorii Strashko 2014-04-24   962   * dma-ranges format:
-> 18308c94723e16 Grygorii Strashko 2014-04-24   963   *   DMA addr (dma_addr)     : naddr cells
-> 18308c94723e16 Grygorii Strashko 2014-04-24   964   *   CPU addr (phys_addr_t)  : pna cells
-> 18308c94723e16 Grygorii Strashko 2014-04-24   965   *   size                    : nsize cells
-> 18308c94723e16 Grygorii Strashko 2014-04-24   966   *
-> 0c50b6db383883 Jim Quinlan       2020-07-01   967   * It returns -ENODEV if "dma-ranges" property was not found for this
-> 0c50b6db383883 Jim Quinlan       2020-07-01   968   * device in the DT.
-> 18308c94723e16 Grygorii Strashko 2014-04-24   969   */
-> 0c50b6db383883 Jim Quinlan       2020-07-01   970  const struct bus_dma_region *of_dma_get_range(struct device_node *np)
-> 18308c94723e16 Grygorii Strashko 2014-04-24   971  {
-> 0c50b6db383883 Jim Quinlan       2020-07-01   972       const struct bus_dma_region *map = NULL;
-> 18308c94723e16 Grygorii Strashko 2014-04-24   973       struct device_node *node = of_node_get(np);
-> 0c50b6db383883 Jim Quinlan       2020-07-01   974       struct of_range_parser parser;
-> 18308c94723e16 Grygorii Strashko 2014-04-24   975       const __be32 *ranges = NULL;
-> 951d48855d86e7 Robin Murphy      2019-07-03   976       bool found_dma_ranges = false;
-> 7a8b64d17e3581 Rob Herring       2020-02-06   977       struct of_range range;
-> 0c50b6db383883 Jim Quinlan       2020-07-01   978       int len, num_ranges = 0;
-> 0c50b6db383883 Jim Quinlan       2020-07-01   979       int ret = 0;
-> 18308c94723e16 Grygorii Strashko 2014-04-24   980
-> 951d48855d86e7 Robin Murphy      2019-07-03   981       while (node) {
-> 18308c94723e16 Grygorii Strashko 2014-04-24   982               ranges = of_get_property(node, "dma-ranges", &len);
-> 18308c94723e16 Grygorii Strashko 2014-04-24   983
-> 18308c94723e16 Grygorii Strashko 2014-04-24   984               /* Ignore empty ranges, they imply no translation required */
-> 18308c94723e16 Grygorii Strashko 2014-04-24   985               if (ranges && len > 0)
-> 18308c94723e16 Grygorii Strashko 2014-04-24   986                       break;
-> 18308c94723e16 Grygorii Strashko 2014-04-24   987
-> 951d48855d86e7 Robin Murphy      2019-07-03   988               /* Once we find 'dma-ranges', then a missing one is an error */
-> 951d48855d86e7 Robin Murphy      2019-07-03   989               if (found_dma_ranges && !ranges) {
-> 951d48855d86e7 Robin Murphy      2019-07-03   990                       ret = -ENODEV;
-> 951d48855d86e7 Robin Murphy      2019-07-03   991                       goto out;
-> 18308c94723e16 Grygorii Strashko 2014-04-24   992               }
-> 951d48855d86e7 Robin Murphy      2019-07-03   993               found_dma_ranges = true;
-> 18308c94723e16 Grygorii Strashko 2014-04-24   994
-> 951d48855d86e7 Robin Murphy      2019-07-03   995               node = of_get_next_dma_parent(node);
-> 951d48855d86e7 Robin Murphy      2019-07-03   996       }
-> 951d48855d86e7 Robin Murphy      2019-07-03   997
-> 951d48855d86e7 Robin Murphy      2019-07-03   998       if (!node || !ranges) {
-> 0d638a07d3a1e9 Rob Herring       2017-06-01   999               pr_debug("no dma-ranges found for node(%pOF)\n", np);
-> 18308c94723e16 Grygorii Strashko 2014-04-24  1000               ret = -ENODEV;
-> 18308c94723e16 Grygorii Strashko 2014-04-24  1001               goto out;
-> 18308c94723e16 Grygorii Strashko 2014-04-24  1002       }
-> 18308c94723e16 Grygorii Strashko 2014-04-24  1003
-> 7a8b64d17e3581 Rob Herring       2020-02-06  1004       of_dma_range_parser_init(&parser, node);
-> 7a8b64d17e3581 Rob Herring       2020-02-06  1005
-> 0c50b6db383883 Jim Quinlan       2020-07-01  1006       for_each_of_range(&parser, &range)
-> 0c50b6db383883 Jim Quinlan       2020-07-01  1007               num_ranges++;
-> 18308c94723e16 Grygorii Strashko 2014-04-24  1008
-> 0c50b6db383883 Jim Quinlan       2020-07-01  1009       map = dma_create_offset_map(node, num_ranges);
->                                                         ^^^
-> If this fails then "ret" is zero so the function returns NULL instead of
-> an error pointer.
+regards,
+dan carpenter
 
-I'm not sure I see what is wrong with this; perhaps my usage is
-unorthodox and has triggered this warning.   The return of
-
-        map = of_dma_get_range(....);
-
-can mean one of three things:
-
-1. Failure, ret = PTR_ERR(map) gives the errno.
-2. Success, map is a valid memory pointer   /* occurs when there are
-"dma-ranges" */
-3. Success, map is the NULL pointer and ret = PTR_ERR(map) yields  0.
-/* occurs when there are no "dma-ranges" */
-
-After calling this function I do this
-
-        ret = IS_ERR(map) ? PTR_ERR(map) : 0;
-
-which will be replaced in the next version with this:
-
-        ret = PTR_ERR_OR_ZERO(map);
-
-If ret == 0 I do the assignment
-
-        dev->dma_range_map = map;
-
-which is exactly what I want.  Please advise if action on my part is
-still required.
-
-Thanks,
-Jim Quinlan
-Broadcom STB
-
->
-> 18308c94723e16 Grygorii Strashko 2014-04-24  1010  out:
-> 18308c94723e16 Grygorii Strashko 2014-04-24  1011       of_node_put(node);
-> 0c50b6db383883 Jim Quinlan       2020-07-01 @1012       return map ? map : ERR_PTR(ret);
-> 92ea637edea36e Santosh Shilimkar 2014-04-24  1014
->
-> ---
-> 0-DAY CI Kernel Test Service, Intel Corporation
-> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
