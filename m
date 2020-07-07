@@ -2,92 +2,149 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B7FCD216FF3
-	for <lists+linux-sh@lfdr.de>; Tue,  7 Jul 2020 17:14:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18CF521786C
+	for <lists+linux-sh@lfdr.de>; Tue,  7 Jul 2020 21:58:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728164AbgGGPNx (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 7 Jul 2020 11:13:53 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:35166 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726911AbgGGPNx (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 7 Jul 2020 11:13:53 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 067FBZpI056351;
-        Tue, 7 Jul 2020 15:13:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=U1xPFwZZZWM/dKwwlYFIgRl131Rm3+3fn4LlImCeQwI=;
- b=GRj0Jd+R1Dkl4ulAD0eTkr0A97oC7f/4ibk2JrN3yAb42qAZ/XZAQa2PplVoPcM+hBor
- NnJM3+vnQLksMI9+GLsTQyShAt9vinMwzyherXhD3Z6yZougZJDb5MGswuOIYQPTaLnp
- eOwpD3RK6UKzHEBhdtuuBicCxlOQAKzRt+UjK47DU6IfTUoBx8dRwLlIOnv03iXsVo1r
- HIiYIFd5JmeZ5GSjFnhZMnFBprk+6rHYt0muvL4D3kD8wxS3SDBtlQrbzRz3/OLTPcE0
- jGzxzDzrbk3ajutjqyqni0Gp5+f95GxbwwTUk9dZB8iFzoAa+gjRHLwYKZ/wW+Fec/vW Kg== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 322kv6cya6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 07 Jul 2020 15:13:37 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 067F95Oq085644;
-        Tue, 7 Jul 2020 15:11:36 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 324n4rb2cu-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 07 Jul 2020 15:11:34 +0000
-Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 067FBV1q006188;
-        Tue, 7 Jul 2020 15:11:31 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 07 Jul 2020 08:11:30 -0700
-Date:   Tue, 7 Jul 2020 18:11:22 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Jim Quinlan <james.quinlan@broadcom.com>
-Cc:     kbuild@lists.01.org,
-        "open list:PCI NATIVE HOST BRIDGE AND ENDPOINT DRIVERS" 
-        <linux-pci@vger.kernel.org>,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        "maintainer:BROADCOM BCM7XXX ARM ARCHITECTURE" 
-        <bcm-kernel-feedback-list@broadcom.com>, lkp@intel.com,
-        kbuild-all@lists.01.org, Ulf Hansson <ulf.hansson@linaro.org>,
-        Rich Felker <dalias@libc.org>,
-        "open list:SUPERH" <linux-sh@vger.kernel.org>,
-        David Airlie <airlied@linux.ie>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        "open list:REMOTE PROCESSOR REMOTEPROC SUBSYSTEM" 
-        <linux-remoteproc@vger.kernel.org>
-Subject: Re: [PATCH v6 08/12] device core: Introduce DMA range map,
- supplanting dma_pfn_offset
-Message-ID: <20200707151122.GX2571@kadam>
-References: <20200701212155.37830-9-james.quinlan@broadcom.com>
- <20200707132724.GT2549@kadam>
- <CA+-6iNwzQ0gn2KfdqNGwGjDgPT5op8bTCs6paMT7BwVmm+9vTw@mail.gmail.com>
+        id S1727908AbgGGT6O (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 7 Jul 2020 15:58:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47230 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728409AbgGGT6N (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 7 Jul 2020 15:58:13 -0400
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15F8CC08C5E1
+        for <linux-sh@vger.kernel.org>; Tue,  7 Jul 2020 12:58:13 -0700 (PDT)
+Received: by mail-pl1-x642.google.com with SMTP id x9so3507755plr.2
+        for <linux-sh@vger.kernel.org>; Tue, 07 Jul 2020 12:58:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=VzRu+6RTYvmFttwhsiQLXCF6YnU1lg38nqV7v8N7whw=;
+        b=POB0tDdCbNVqmVQZ6yua+ndmhJsgXFLarIJRrzZHpuDGP0B1FODyoxi9lUTM/pG0IL
+         mE1dMIr/gsK64CjizChpcXywJYXY4Vfi25COfLptk3V+mFNHqoasjVtfubvV2ebCtl7a
+         czRuA5AP473VLGgnEz34EgdAlV0QOt3H67RniAnOVC2+In0mdoC9rSRvmlMzUXfZVzt4
+         xGEFUHBxADeMLVRzRAoW7/H0iSwTAcsqnlAtpK24wb/U0fEHrp7KMPF2hLocEXQ4+asp
+         047TKx7zculMEGUVbpwgiExvH3ficDy6d/Wj01wsX8chenP63N6BpBBILOJ6KcW2NDnx
+         OPSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=VzRu+6RTYvmFttwhsiQLXCF6YnU1lg38nqV7v8N7whw=;
+        b=stgF44DAwViKueYYoY7D15n8B2b4EfwLyBGNb0zjRzNfYRiDspqHuPv9ufM9JtCxnv
+         tbDYxOwlDQcPwpItbQDP3ICDIZh6h3RSOa+i34hI5IwXB8ffeBt3AmFOCX8O4Gh77pSY
+         VHwFUb8x2Q2xdqZre2x5zKaGEm2+DHNPviPbc2gO21T1J/DjrZYp4IHXu3HUDZAABWQI
+         Nz1ffFG8ZFw/xGtBkvui1D+Nv1kZ8CelKEn7aVAAoWNtFRTyZFpi6MIgErHJoFgLXRMX
+         ecxQwxbU4Ey6FZuWI5wIOcetiwH1u+wkWj6AMOwf0DSc+ilO79HH7gmCmLuIGmcMsyNI
+         Y33g==
+X-Gm-Message-State: AOAM531d9OPaBhjpvnBH6wHUdQIx2Wtuw+H/UMYU1MOE5lbK9Ach1nzo
+        0I9GrmwQW5PUaCGxiqHWN3z0CJa4/XkS+E94NhXOTw==
+X-Google-Smtp-Source: ABdhPJwAgKOW6WJkomMyOukfnt4wP2/V35sf6mYJAhQLNyaosM4LY2uIUq7rKvvPZg70NVApdINfIkTmb6+bTRJLXD0=
+X-Received: by 2002:a17:90b:1296:: with SMTP id fw22mr6086502pjb.20.1594151892296;
+ Tue, 07 Jul 2020 12:58:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+-6iNwzQ0gn2KfdqNGwGjDgPT5op8bTCs6paMT7BwVmm+9vTw@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9675 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0
- mlxlogscore=999 spamscore=0 adultscore=0 malwarescore=0 suspectscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2007070113
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9675 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 bulkscore=0
- malwarescore=0 suspectscore=0 mlxlogscore=999 phishscore=0 spamscore=0
- priorityscore=1501 clxscore=1015 impostorscore=0 mlxscore=0 adultscore=0
- cotscore=-2147483648 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2007070113
+References: <20200707092117.963394-1-masahiroy@kernel.org>
+In-Reply-To: <20200707092117.963394-1-masahiroy@kernel.org>
+From:   Brendan Higgins <brendanhiggins@google.com>
+Date:   Tue, 7 Jul 2020 12:58:01 -0700
+Message-ID: <CAFd5g46eCjZA-e4akYc1K8u29tp94gpmrAOxZ_joZ=9kJtZeuA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] kbuild: introduce ccflags-remove-y and asflags-remove-y
+To:     Masahiro Yamada <masahiroy@kernel.org>
+Cc:     linux-kbuild <linux-kbuild@vger.kernel.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Anders Roxell <anders.roxell@linaro.org>,
+        Sami Tolvanen <samitolvanen@google.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Haren Myneni <haren@us.ibm.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Kosina <jikos@kernel.org>,
+        Joe Lawrence <joe.lawrence@redhat.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Miroslav Benes <mbenes@suse.cz>,
+        Paul Mackerras <paulus@samba.org>,
+        Petr Mladek <pmladek@suse.com>, Rich Felker <dalias@libc.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Tal Gilboa <talgi@mellanox.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        KUnit Development <kunit-dev@googlegroups.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-crypto@vger.kernel.org,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:KERNEL SELFTEST FRAMEWORK" 
+        <linux-kselftest@vger.kernel.org>, linux-sh@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, live-patching@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Sorry for the noise.  Your code is correct.  I'm not 100% sure what went
-wrong.  Either the cross function database wasn't built or there is a
-bug in the published code that is fixed on my private Smatch build.  I
-will investigate.
+On Tue, Jul 7, 2020 at 2:22 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
+>
+> CFLAGS_REMOVE_<file>.o filters out flags when compiling a particular
+> object, but there is no convenient way to do that for every object in
+> a directory.
+>
+> Add ccflags-remove-y and asflags-remove-y to make it easily.
+>
+> Use ccflags-remove-y to clean up some Makefiles.
+>
+> The add/remove order works as follows:
+>
+>  [1] KBUILD_CFLAGS specifies compiler flags used globally
+>
+>  [2] ccflags-y adds compiler flags for all objects in the
+>      current Makefile
+>
+>  [3] ccflags-remove-y removes compiler flags for all objects in the
+>      current Makefile (New feature)
+>
+>  [4] CFLAGS_<file> adds compiler flags per file.
+>
+>  [5] CFLAGS_REMOVE_<file> removes compiler flags per file.
+>
+> Having [3] before [4] allows us to remove flags from most (but not all)
+> objects in the current Makefile.
+>
+> For example, kernel/trace/Makefile removes $(CC_FLAGS_FTRACE)
+> from all objects in the directory, then adds it back to
+> trace_selftest_dynamic.o and CFLAGS_trace_kprobe_selftest.o
+>
+> Please note ccflags-remove-y has no effect to the sub-directories.
+> In contrast, the previous notation got rid of compiler flags also from
+> all the sub-directories.
+>
+>   arch/arm/boot/compressed/
+>   arch/powerpc/xmon/
+>   arch/sh/
+>   kernel/trace/
+>
+> ... have no sub-directories.
+>
+>   lib/
+>
+> ... has several sub-directories.
+>
+> To keep the behavior, I added ccflags-remove-y to all Makefiles
+> in subdirectories of lib/, except:
+>
+>   lib/vdso/Makefile        - Kbuild does not descend into this Makefile
+>   lib/raid/test/Makefile   - This is not used for the kernel build
+>
+> I think commit 2464a609ded0 ("ftrace: do not trace library functions")
+> excluded too much. In later commit, I will try to remove ccflags-remove-y
+> from sub-directory Makefiles.
+>
+> Suggested-by: Sami Tolvanen <samitolvanen@google.com>
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> Acked-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+> Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
-regards,
-dan carpenter
-
+Acked-by: Brendan Higgins <brendanhiggins@google.com> (KUnit)
