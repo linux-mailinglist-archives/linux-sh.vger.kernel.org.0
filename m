@@ -2,34 +2,35 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 13FA9221151
-	for <lists+linux-sh@lfdr.de>; Wed, 15 Jul 2020 17:41:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0DEB221217
+	for <lists+linux-sh@lfdr.de>; Wed, 15 Jul 2020 18:18:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726649AbgGOPjV (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 15 Jul 2020 11:39:21 -0400
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:35041 "EHLO
+        id S1725798AbgGOQSc (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 15 Jul 2020 12:18:32 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:41355 "EHLO
         outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725835AbgGOPjT (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 15 Jul 2020 11:39:19 -0400
+        by vger.kernel.org with ESMTP id S1725770AbgGOQSc (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 15 Jul 2020 12:18:32 -0400
 Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
           by outpost.zedat.fu-berlin.de (Exim 4.93)
           with esmtps (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
           (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1jvjV5-003CrQ-RT; Wed, 15 Jul 2020 17:39:15 +0200
+          id 1jvk72-003WNQ-EM; Wed, 15 Jul 2020 18:18:28 +0200
 Received: from p57bd93f9.dip0.t-ipconnect.de ([87.189.147.249] helo=[192.168.178.139])
           by inpost2.zedat.fu-berlin.de (Exim 4.93)
           with esmtpsa (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
           (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1jvjV5-002QSz-KF; Wed, 15 Jul 2020 17:39:15 +0200
+          id 1jvk72-002YqY-5T; Wed, 15 Jul 2020 18:18:28 +0200
 Subject: Re: ioremap and dma cleanups and fixes for superh (2nd resend)
 From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 To:     Geert Uytterhoeven <geert@linux-m68k.org>
 Cc:     Rich Felker <dalias@libc.org>, Christoph Hellwig <hch@lst.de>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
         Linux-sh list <linux-sh@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>
 References: <20200714121856.955680-1-hch@lst.de>
  <b0745e43-0ff1-58f7-70d5-60b9c8b8d81b@physik.fu-berlin.de>
  <20200714155914.GA24404@brightrain.aerifal.cx>
@@ -85,8 +86,8 @@ Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  jEF9ImTPcYZpw5vhdyPwBdXW2lSjV3EAqknWujRgcsm84nycuJnImwJptR481EWmtuH6ysj5
  YhRVGbQPfdsjVUQfZdRdkEv4CZ90pdscBi1nRqcqANtzC+WQFwekDzk2lGqNRDg56s+q0KtY
  scOkTAZQGVpD/8AaLH4v1w==
-Message-ID: <f10d2711-674b-50b4-cf7a-234070b3c265@physik.fu-berlin.de>
-Date:   Wed, 15 Jul 2020 17:39:14 +0200
+Message-ID: <2df7ca7f-7e26-c916-b6ac-4ec1913fb8d7@physik.fu-berlin.de>
+Date:   Wed, 15 Jul 2020 18:18:27 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
@@ -102,52 +103,52 @@ List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
 On 7/15/20 4:37 PM, John Paul Adrian Glaubitz wrote:
+> Okay, kernel 5.0.0 does not suffer from this bug. So I should be able to bisect
+> this particular issue.
+> 
+> I'm glad I don't have to start bisecting with earlier kernels because these
+> won't build easily with my current toolchain based on gcc-9.
+> 
 > Will report once I found the bad commit that introduced the problem.
 
-git bisect lead me to a merge commit:
+Found the culprit:
 
-glaubitz@epyc:..glaubitz/linux> git bisect log
-git bisect start
-# good: [1c163f4c7b3f621efff9b28a47abb36f7378d783] Linux 5.0
-git bisect good 1c163f4c7b3f621efff9b28a47abb36f7378d783
-# bad: [7bc20f6563b4e117d61ca575427208e0eaa945b9] sh: Fix unneeded constructor in page table allocation
-git bisect bad 7bc20f6563b4e117d61ca575427208e0eaa945b9
-# bad: [eeb2045bb7d20fea0a242148059377cd0cb4a499] Merge branch '10GbE' of git://git.kernel.org/pub/scm/linux/kernel/git/jkirsher/next-queue
-git bisect bad eeb2045bb7d20fea0a242148059377cd0cb4a499
-# bad: [5ce40fd86cf155e0eefc73509343bb3eeaafa4bc] drm/amdgpu: add Arcturus chip_name for init sdma microcode
-git bisect bad 5ce40fd86cf155e0eefc73509343bb3eeaafa4bc
-# good: [8f14c99c7edaaba9c0bb1727d44db6ebf157cc61] netfilter: conntrack: limit sysctl setting for boolean options
-git bisect good 8f14c99c7edaaba9c0bb1727d44db6ebf157cc61
-# good: [dce45af5c2e9e85f22578f2f8065f225f5d11764] Merge tag 'for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/rdma/rdma
-git bisect good dce45af5c2e9e85f22578f2f8065f225f5d11764
-# bad: [60fce36afa9c77c7ccbf980c4f670f3be3651fce] mm/compaction.c: correct zone boundary handling when isolating pages from a pageblock
-git bisect bad 60fce36afa9c77c7ccbf980c4f670f3be3651fce
-# bad: [414147d99b928c574ed76e9374a5d2cb77866a29] Merge tag 'pci-v5.2-changes' of git://git.kernel.org/pub/scm/linux/kernel/git/helgaas/pci
-git bisect bad 414147d99b928c574ed76e9374a5d2cb77866a29
-# bad: [1fb3b526df3bd7647e7854915ae6b22299408baf] Merge tag 'docs-5.2a' of git://git.lwn.net/linux
-git bisect bad 1fb3b526df3bd7647e7854915ae6b22299408baf
-# bad: [ea5aee6d97fd2d4499b1eebc233861c1def70f06] Merge tag 'clk-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/clk/linux
-git bisect bad ea5aee6d97fd2d4499b1eebc233861c1def70f06
-# bad: [45182e4e1f8ac04708ca7508c51d9103f07d81ab] Merge branch 'i2c/for-5.2' of git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux
-git bisect bad 45182e4e1f8ac04708ca7508c51d9103f07d81ab
-# good: [5940d1cf9f42f67e9cc3f7df9eda39f5888d6e9e] SUNRPC: Rebalance a kref in auth_gss.c
-git bisect good 5940d1cf9f42f67e9cc3f7df9eda39f5888d6e9e
-# bad: [abde77eb5c66b2f98539c4644b54f34b7e179e6b] Merge branch 'for-5.2' of git://git.kernel.org/pub/scm/linux/kernel/git/tj/cgroup
-git bisect bad abde77eb5c66b2f98539c4644b54f34b7e179e6b
-# bad: [7664cd6e3a0b2709f04c07435e96c7c85e7d7324] Merge branch 'next-integrity' of git://git.kernel.org/pub/scm/linux/kernel/git/jmorris/linux-security
-git bisect bad 7664cd6e3a0b2709f04c07435e96c7c85e7d7324
-# good: [3e9dfc6e1e8bce62a329f1452c7eeccbac230980] orangefs: move do_readv_writev to direct_IO
-git bisect good 3e9dfc6e1e8bce62a329f1452c7eeccbac230980
-# good: [4077a0f25b001926f86d35f6236351583bada9a4] orangefs: pass slot index back to readpage.
-git bisect good 4077a0f25b001926f86d35f6236351583bada9a4
-# good: [2bfebea90dd5e8c57ae1021a5d1bb6c1057eee6d] Merge branch 'next-integrity-for-james' of git://git.kernel.org/pub/scm/linux/kernel/git/zohar/linux-integrity into next-integrity
-git bisect good 2bfebea90dd5e8c57ae1021a5d1bb6c1057eee6d
-# good: [33713cd09ccdc1e01b10d0782ae60200d4989553] orangefs: truncate before updating size
-git bisect good 33713cd09ccdc1e01b10d0782ae60200d4989553
-# bad: [882388056194d2d4c3f589b194b6bdcc47e677e8] Merge tag 'for-linus-5.2-ofs1' of git://git.kernel.org/pub/scm/linux/kernel/git/hubcap/linux
-git bisect bad 882388056194d2d4c3f589b194b6bdcc47e677e8
-# first bad commit: [882388056194d2d4c3f589b194b6bdcc47e677e8] Merge tag 'for-linus-5.2-ofs1' of git://git.kernel.org/pub/scm/linux/kernel/git/hubcap/linux
-glaubitz@epyc:..glaubitz/linux>
+c5b27a889da92f4a969d61df77bd4f79ffce57c9 is the first bad commit
+commit c5b27a889da92f4a969d61df77bd4f79ffce57c9
+Author: Peter Zijlstra <peterz@infradead.org>
+Date:   Tue Sep 4 14:45:04 2018 +0200
+
+    sh/tlb: Convert SH to generic mmu_gather
+    
+    Generic mmu_gather provides everything SH needs (range tracking and
+    cache coherency).
+    
+    No change in behavior intended.
+    
+    Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+    Cc: Andrew Morton <akpm@linux-foundation.org>
+    Cc: Andy Lutomirski <luto@kernel.org>
+    Cc: Aneesh Kumar K.V <aneesh.kumar@linux.vnet.ibm.com>
+    Cc: Borislav Petkov <bp@alien8.de>
+    Cc: Dave Hansen <dave.hansen@linux.intel.com>
+    Cc: H. Peter Anvin <hpa@zytor.com>
+    Cc: Linus Torvalds <torvalds@linux-foundation.org>
+    Cc: Nick Piggin <npiggin@gmail.com>
+    Cc: Peter Zijlstra <peterz@infradead.org>
+    Cc: Rich Felker <dalias@libc.org>
+    Cc: Rik van Riel <riel@surriel.com>
+    Cc: Thomas Gleixner <tglx@linutronix.de>
+    Cc: Will Deacon <will.deacon@arm.com>
+    Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+    Signed-off-by: Ingo Molnar <mingo@kernel.org>
+
+ arch/sh/include/asm/pgalloc.h |   9 +++
+ arch/sh/include/asm/tlb.h     | 130 +-----------------------------------------
+ 2 files changed, 10 insertions(+), 129 deletions(-)
+
+CC'ing the author (Peter Zijlstra <peterz@infradead.org>).
+
+Adrian
 
 -- 
  .''`.  John Paul Adrian Glaubitz
