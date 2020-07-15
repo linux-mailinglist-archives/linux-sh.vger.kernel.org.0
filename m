@@ -2,42 +2,43 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF0C72206C1
-	for <lists+linux-sh@lfdr.de>; Wed, 15 Jul 2020 10:07:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C31322206D0
+	for <lists+linux-sh@lfdr.de>; Wed, 15 Jul 2020 10:14:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729582AbgGOIHp (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 15 Jul 2020 04:07:45 -0400
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:35452 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729001AbgGOIHp (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 15 Jul 2020 04:07:45 -0400
-Received: by mail-oi1-f195.google.com with SMTP id k4so1576827oik.2;
-        Wed, 15 Jul 2020 01:07:44 -0700 (PDT)
+        id S1729673AbgGOIMG (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 15 Jul 2020 04:12:06 -0400
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:39717 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729609AbgGOIMF (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 15 Jul 2020 04:12:05 -0400
+Received: by mail-oi1-f194.google.com with SMTP id w17so1568947oie.6;
+        Wed, 15 Jul 2020 01:12:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Sauof/vb6IOuW55atrIP0mYmXT1gWS6elmR+jyNLUMo=;
-        b=X6pyCAhh1uyQQcgg9W67UabyVodrfEakhXcGrdMNOxcXazsK8c8M+8laceg3IVwR5q
-         UE6RYFjR2EHchBQWgzUeGVxdEpcfejficw3yHLDca3jO91fxO20VZFl5fjX7fZHLYxpX
-         AX5xvH9VACWlXbwYJJm57EURqJuyL5CmvaDtmIZqjf5FpJwBt4AtvEA8ka32QvybN/Iz
-         fbGlbNCs0InrxvqFXdPJJIcCsTu6t/u5AiEsUzlUGxegfQAJyeaT/7q5y9lyAlFlh888
-         SD65dBNEdkq08VQRruR4xvU2XgI1sjX8cPjEWgeUiu2TO4jfPfQAtJG6zSZZb0/9joVy
-         iERw==
-X-Gm-Message-State: AOAM532z96eg2QB3XgeqrSHnx/ubuPOQGazmaj+MxAUs5yBc/V66ocr/
-        YKuuDGkqkKqlZt8cDON0MvK7WJLDRi+57AZNxyU=
-X-Google-Smtp-Source: ABdhPJwC30MLdI9lpt75jtSV5lYnVApaM78G3lFeuyP6mcmrH8+ZlQaz++tx6ja+w5GVE/iXRGo/1A7PmA037nCLgec=
-X-Received: by 2002:aca:ac10:: with SMTP id v16mr6520168oie.153.1594800464032;
- Wed, 15 Jul 2020 01:07:44 -0700 (PDT)
+        bh=HLIr/bHsu0xgPfdJu86Cng7NJgjZSRi3Z8007yksKT4=;
+        b=BptyDE3tZo4SGQ7Kkr4tMIaL4b+LA7QRNXOoiDGSew0pWtokELqwhkVKmrv7av9aVb
+         /OZeGy3Hdn3xHfW+j28UrKbAz4qb20HIlrTI8jI1vYnwnej8U0LeCCtxHpCr4WtkuM8V
+         swyBztOfZOerH4ywSa6k3fSlu4FFkf+EKjwD0bXluDe8RHgoeL/Ag8W39rmySwrL8egi
+         Zoc6GHiknZ/j9YSRkyjNqso04I5IgYqL0RbYs7KfKPj4zyhoU/cOmJYIzt2/MP0a62gf
+         WewsvaAz7/ewNXj/iie4vgUqAaPLIUE2/ZL9eoq/mbadDuV7X2RUlzWhDZfbqCrWNQDA
+         54QQ==
+X-Gm-Message-State: AOAM533dUr0JwshbOBy8OzW8h/ZZ+RFrfEX7QTjNkxi5mgwWBIAFGR4u
+        LIULXVIFHzDWEzlGaI+SVhHxMC/k2qa7+bZ8iQo=
+X-Google-Smtp-Source: ABdhPJzpiyDbZuCmwFj6qnOI1cpJc3PY4hw97ZV/0NiMOzcY149LnJ7slrP077BWKalmPhu9wLzjTqHwvNc3B0i4QEY=
+X-Received: by 2002:a05:6808:64a:: with SMTP id z10mr6889533oih.54.1594800725023;
+ Wed, 15 Jul 2020 01:12:05 -0700 (PDT)
 MIME-Version: 1.0
 References: <20200714121856.955680-1-hch@lst.de> <b0745e43-0ff1-58f7-70d5-60b9c8b8d81b@physik.fu-berlin.de>
  <20200714155914.GA24404@brightrain.aerifal.cx> <8cbf2963-d0e4-0ca8-4ffe-c2057694447f@physik.fu-berlin.de>
  <011f29e6-ad71-366e-dbff-bc8471f3da60@physik.fu-berlin.de>
- <CAMuHMdUre2-fRgLP8YiwjAKN6J=m1vGhPSMMUdpof7jPJfcWuw@mail.gmail.com> <def65208-a38b-8663-492a-cae150027003@physik.fu-berlin.de>
-In-Reply-To: <def65208-a38b-8663-492a-cae150027003@physik.fu-berlin.de>
+ <CAMuHMdUre2-fRgLP8YiwjAKN6J=m1vGhPSMMUdpof7jPJfcWuw@mail.gmail.com>
+ <def65208-a38b-8663-492a-cae150027003@physik.fu-berlin.de> <b5f1853e-031d-c09d-57d2-fb4baffa01ea@physik.fu-berlin.de>
+In-Reply-To: <b5f1853e-031d-c09d-57d2-fb4baffa01ea@physik.fu-berlin.de>
 From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 15 Jul 2020 10:07:32 +0200
-Message-ID: <CAMuHMdVnj3Z2m5tQbXeGMSxxs56q+XxBkUwbw6W5ND50yK-1vQ@mail.gmail.com>
+Date:   Wed, 15 Jul 2020 10:11:54 +0200
+Message-ID: <CAMuHMdW8RtJKk3u7RWQKP2tA3AYT2rB2aqhUT1KnJ4tJwWWKDA@mail.gmail.com>
 Subject: Re: ioremap and dma cleanups and fixes for superh (2nd resend)
 To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Cc:     Rich Felker <dalias@libc.org>, Christoph Hellwig <hch@lst.de>,
@@ -52,41 +53,19 @@ X-Mailing-List: linux-sh@vger.kernel.org
 
 Hi Adrian,
 
-On Wed, Jul 15, 2020 at 9:46 AM John Paul Adrian Glaubitz
+On Wed, Jul 15, 2020 at 9:51 AM John Paul Adrian Glaubitz
 <glaubitz@physik.fu-berlin.de> wrote:
-> On 7/15/20 9:27 AM, Geert Uytterhoeven wrote:
-> >> [    5.464000] WARNING: CPU: 0 PID: 1 at mm/slab.c:2589 cache_alloc_refill+0x216/0x6a0
-> >> [    5.464000] Modules linked in:
-> >> [    5.464000]
-> >> [    5.464000] CPU: 0 PID: 1 Comm: swapper Not tainted 5.8.0-rc5-00026-g22b7a96ece82 #3
-> >> [    5.464000] PC is at cache_alloc_refill+0x216/0x6a0
-> >> [    5.464000] PR is at kmem_cache_alloc+0xd6/0x128
-> >> [    5.464000] PC  : 800ec0d2 SP  : 9f445e68 SR  : 400080f0
-> >> [    5.464000] TEA : c00c30d0
-> >> [    5.464000] R0  : 8062724c R1  : 8000fee8 R2  : 9f403540 R3  : 00000100
-> >> [    5.464000] R4  : 9f403500 R5  : 00000000 R6  : 8068d5b0 R7  : 007fffff
-> >> [    5.464000] R8  : 0000000c R9  : 9f403500 R10 : 8096fc0c R11 : 80044410
-> >> [    5.464000] R12 : 9f405060 R13 : 00000dc0 R14 : 9f445e68
-> >> [    5.464000] MACH: 10623bba MACL: 00000cc0 GBR : 2957bd58 PR  : 800ec80a
-> >> [    5.464000]
-> >> [    5.464000] Call trace:
-> >> [    5.464000]  [<(ptrval)>] _raw_spin_unlock_irqrestore+0x0/0x54
-> >> [    5.464000]  [<(ptrval)>] _raw_spin_lock_irqsave+0x0/0x44
-> >> [    5.464000]  [<(ptrval)>] kmem_cache_alloc+0xd6/0x128
-> >> [    5.464000]  [<(ptrval)>] arch_local_irq_restore+0x0/0x2c
-> >> [    5.464000]  [<(ptrval)>] __raw_spin_lock_init+0x0/0x1c
-> >> [    5.464000]  [<(ptrval)>] pgd_alloc+0x10/0x24
+> On 7/15/20 9:46 AM, John Paul Adrian Glaubitz wrote:
+> > Indeed, it does. This patch should be picked up as well.
 > >
-> > Does commit 73c348f31b63d28d ("sh: Fix unneeded constructor in page
-> > table allocation") in next-20200710 and later fix that?
+> > Kernel boots without any errors now.
 >
-> Indeed, it does. This patch should be picked up as well.
+> Btw, booting with systemd as init causes a lot of hickups which I didn't see with 3.16:
 
-It already has been picked up, as it is in linux-next.
+> [   25.184000] BUG: Bad page state in process systemd-hiberna  pfn:5d91a
 
-> Kernel boots without any errors now.
-
-Happy to hear that!
+Lemme gues: does commit 002ae7057069538a ("mm, dump_page(): do not crash
+with invalid mapping pointer") in v5.8-rc1 help?
 
 Gr{oetje,eeting}s,
 
