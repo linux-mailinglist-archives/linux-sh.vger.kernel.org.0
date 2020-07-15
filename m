@@ -2,27 +2,27 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA4E9220656
-	for <lists+linux-sh@lfdr.de>; Wed, 15 Jul 2020 09:37:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01FE022066F
+	for <lists+linux-sh@lfdr.de>; Wed, 15 Jul 2020 09:46:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729398AbgGOHhb (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 15 Jul 2020 03:37:31 -0400
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:53775 "EHLO
+        id S1729377AbgGOHqh (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 15 Jul 2020 03:46:37 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:57211 "EHLO
         outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729336AbgGOHha (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 15 Jul 2020 03:37:30 -0400
+        by vger.kernel.org with ESMTP id S1729375AbgGOHqg (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 15 Jul 2020 03:46:36 -0400
 Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
           by outpost.zedat.fu-berlin.de (Exim 4.93)
           with esmtps (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
           (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1jvbyp-003UhP-LS; Wed, 15 Jul 2020 09:37:27 +0200
+          id 1jvc7e-003YMJ-67; Wed, 15 Jul 2020 09:46:34 +0200
 Received: from p57bd93f9.dip0.t-ipconnect.de ([87.189.147.249] helo=[192.168.178.139])
           by inpost2.zedat.fu-berlin.de (Exim 4.93)
           with esmtpsa (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
           (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1jvbyp-0018lO-E8; Wed, 15 Jul 2020 09:37:27 +0200
+          id 1jvc7d-001A0j-Vv; Wed, 15 Jul 2020 09:46:34 +0200
 Subject: Re: ioremap and dma cleanups and fixes for superh (2nd resend)
 To:     Geert Uytterhoeven <geert@linux-m68k.org>
 Cc:     Rich Felker <dalias@libc.org>, Christoph Hellwig <hch@lst.de>,
@@ -80,15 +80,15 @@ Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  jEF9ImTPcYZpw5vhdyPwBdXW2lSjV3EAqknWujRgcsm84nycuJnImwJptR481EWmtuH6ysj5
  YhRVGbQPfdsjVUQfZdRdkEv4CZ90pdscBi1nRqcqANtzC+WQFwekDzk2lGqNRDg56s+q0KtY
  scOkTAZQGVpD/8AaLH4v1w==
-Message-ID: <47673a8f-cda1-4915-df20-068acfc49892@physik.fu-berlin.de>
-Date:   Wed, 15 Jul 2020 09:37:26 +0200
+Message-ID: <def65208-a38b-8663-492a-cae150027003@physik.fu-berlin.de>
+Date:   Wed, 15 Jul 2020 09:46:33 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
 In-Reply-To: <CAMuHMdUre2-fRgLP8YiwjAKN6J=m1vGhPSMMUdpof7jPJfcWuw@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Original-Sender: glaubitz@physik.fu-berlin.de
 X-Originating-IP: 87.189.147.249
 Sender: linux-sh-owner@vger.kernel.org
@@ -96,47 +96,35 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Geert!
-
 On 7/15/20 9:27 AM, Geert Uytterhoeven wrote:
-> Hi Adrian,
+>> [    5.464000] WARNING: CPU: 0 PID: 1 at mm/slab.c:2589 cache_alloc_refill+0x216/0x6a0
+>> [    5.464000] Modules linked in:
+>> [    5.464000]
+>> [    5.464000] CPU: 0 PID: 1 Comm: swapper Not tainted 5.8.0-rc5-00026-g22b7a96ece82 #3
+>> [    5.464000] PC is at cache_alloc_refill+0x216/0x6a0
+>> [    5.464000] PR is at kmem_cache_alloc+0xd6/0x128
+>> [    5.464000] PC  : 800ec0d2 SP  : 9f445e68 SR  : 400080f0
+>> [    5.464000] TEA : c00c30d0
+>> [    5.464000] R0  : 8062724c R1  : 8000fee8 R2  : 9f403540 R3  : 00000100
+>> [    5.464000] R4  : 9f403500 R5  : 00000000 R6  : 8068d5b0 R7  : 007fffff
+>> [    5.464000] R8  : 0000000c R9  : 9f403500 R10 : 8096fc0c R11 : 80044410
+>> [    5.464000] R12 : 9f405060 R13 : 00000dc0 R14 : 9f445e68
+>> [    5.464000] MACH: 10623bba MACL: 00000cc0 GBR : 2957bd58 PR  : 800ec80a
+>> [    5.464000]
+>> [    5.464000] Call trace:
+>> [    5.464000]  [<(ptrval)>] _raw_spin_unlock_irqrestore+0x0/0x54
+>> [    5.464000]  [<(ptrval)>] _raw_spin_lock_irqsave+0x0/0x44
+>> [    5.464000]  [<(ptrval)>] kmem_cache_alloc+0xd6/0x128
+>> [    5.464000]  [<(ptrval)>] arch_local_irq_restore+0x0/0x2c
+>> [    5.464000]  [<(ptrval)>] __raw_spin_lock_init+0x0/0x1c
+>> [    5.464000]  [<(ptrval)>] pgd_alloc+0x10/0x24
 > 
-> On Wed, Jul 15, 2020 at 1:14 AM John Paul Adrian Glaubitz
-> <glaubitz@physik.fu-berlin.de> wrote:
->> However, independent of Christoph's series, the kernels throws two backtraces during
->> boot which I think should require a git bisect (unless I missed a configuration option
->> as I trimmed down the kernel a bit to make sure it's not too big).
->>
->> See the traces below and let me know what you think.
-> 
->> [    1.560000] sh-sci.1: ttySC1 at MMIO 0xffeb0000 (irq = 44, base_baud = 0) is a scif
->> [    1.560000] BUG: spinlock bad magic on CPU#0, swapper/1
->> [    1.560000]  lock: sci_ports+0x1d8/0xb10, .magic: 00000000, .owner: <none>/-1, .owner_cpu: 0
-> 
-> [PATCH v1] serial: core: Initialise spin lock before use in
-> uart_configure_port()
-> https://lore.kernel.org/r/20200706140036.75524-1-andriy.shevchenko@linux.intel.com
-Yes, this patch fixes this particular problem.
+> Does commit 73c348f31b63d28d ("sh: Fix unneeded constructor in page
+> table allocation") in next-20200710 and later fix that?
 
-There is just a typo in the code which causes a build problem but it's fixed by replacing
-"uport" with "port":
+Indeed, it does. This patch should be picked up as well.
 
-  CC      kernel/module.o
-drivers/tty/serial/serial_core.c: In function ‘uart_configure_port’:
-drivers/tty/serial/serial_core.c:2385:33: error: ‘uport’ undeclared (first use in this function); did you mean ‘port’?
- 2385 |    uart_any_port_spin_lock_init(uport);
-      |                                 ^~~~~
-      |                                 port
-drivers/tty/serial/serial_core.c:2385:33: note: each undeclared identifier is reported only once for each function it appears in
-make[3]: *** [scripts/Makefile.build:280: drivers/tty/serial/serial_core.o] Error 1
-make[2]: *** [scripts/Makefile.build:497: drivers/tty/serial] Error 2
-make[1]: *** [scripts/Makefile.build:497: drivers/tty] Error 2
-make[1]: *** Waiting for unfinished jobs....
-  AR      drivers/base/firmware_loader/built-in.a
-
-Will test the other changes in a minute.
-
-Can we include the serial fix?
+Kernel boots without any errors now.
 
 Adrian
 
