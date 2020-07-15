@@ -2,112 +2,119 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D652122053F
-	for <lists+linux-sh@lfdr.de>; Wed, 15 Jul 2020 08:39:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADA8B220626
+	for <lists+linux-sh@lfdr.de>; Wed, 15 Jul 2020 09:27:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728547AbgGOGji (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 15 Jul 2020 02:39:38 -0400
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:35899 "EHLO
-        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728385AbgGOGji (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 15 Jul 2020 02:39:38 -0400
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.93)
-          with esmtps (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1jvb4p-0037dH-DN; Wed, 15 Jul 2020 08:39:35 +0200
-Received: from p57bd93f9.dip0.t-ipconnect.de ([87.189.147.249] helo=[192.168.178.139])
-          by inpost2.zedat.fu-berlin.de (Exim 4.93)
-          with esmtpsa (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1jvb4p-000xFX-6p; Wed, 15 Jul 2020 08:39:35 +0200
-Subject: Re: ioremap and dma cleanups and fixes for superh (2nd resend)
-To:     Rich Felker <dalias@libc.org>
-Cc:     Christoph Hellwig <hch@lst.de>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200714121856.955680-1-hch@lst.de>
- <b0745e43-0ff1-58f7-70d5-60b9c8b8d81b@physik.fu-berlin.de>
- <20200714155914.GA24404@brightrain.aerifal.cx>
- <8cbf2963-d0e4-0ca8-4ffe-c2057694447f@physik.fu-berlin.de>
- <011f29e6-ad71-366e-dbff-bc8471f3da60@physik.fu-berlin.de>
- <20200715031210.GD14669@brightrain.aerifal.cx>
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
- 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
- scOkTAZQGVpD/8AaLH4v1w==
-Message-ID: <a3207032-3421-e3ff-a18e-79db21bab709@physik.fu-berlin.de>
-Date:   Wed, 15 Jul 2020 08:39:34 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1729291AbgGOH1V (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 15 Jul 2020 03:27:21 -0400
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:40164 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728888AbgGOH1V (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 15 Jul 2020 03:27:21 -0400
+Received: by mail-oi1-f193.google.com with SMTP id t198so1474639oie.7;
+        Wed, 15 Jul 2020 00:27:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=yOG5hbXf9gCS3fAC+6osqlmvxreRnYDSVs3PZp8A2Sk=;
+        b=hv7p5ghhPWVZXDqjylFDkqujCrOYgof6iXyymJIXx3A6UeFOBwtt0RGH2i7Xd6xahL
+         9xzLw4gVOdzgHXS5b0ypviOG+1WBwpieui2Ax45GIpkJVscCxUCYk5hJmq5LDygxHl2A
+         hXm0N2Ni7MtiupVCoBSylQZdGG+8ttow+VLnDSX6VysZie2iRKPeKVg6Z/fsB9WflilC
+         62ASTboooaR3fzCKUXHC8wxFPbMBpHChvom5lkbNGLArD5AArobcvmTtkeIh2d93ZSvI
+         eYJ/ACIKdYNWHI2dH6D+dR3kdN1gd+Fg6eJ5MhSo/cGj+LrJjh/j6ql+gJu+RUC1yPxD
+         ovBw==
+X-Gm-Message-State: AOAM533VeF1Wbq2sQZ68IER1rB+rkL4CBK+D1aXxR+S0gNl7D8L2hZPq
+        D7wf64kk+WwIa4ERn+NyX/LJFy+mOHpRb79sWbVsGJD1ohM=
+X-Google-Smtp-Source: ABdhPJwAch/u3YbK4xUzI/NXXwiBhJyutH5sGUCIrTLZjgDyBAQItkSdXa9uWzVCUnTwfy8dDIK13opWQ8gKuhO8N1M=
+X-Received: by 2002:a05:6808:64a:: with SMTP id z10mr6792545oih.54.1594798040215;
+ Wed, 15 Jul 2020 00:27:20 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200715031210.GD14669@brightrain.aerifal.cx>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 87.189.147.249
+References: <20200714121856.955680-1-hch@lst.de> <b0745e43-0ff1-58f7-70d5-60b9c8b8d81b@physik.fu-berlin.de>
+ <20200714155914.GA24404@brightrain.aerifal.cx> <8cbf2963-d0e4-0ca8-4ffe-c2057694447f@physik.fu-berlin.de>
+ <011f29e6-ad71-366e-dbff-bc8471f3da60@physik.fu-berlin.de>
+In-Reply-To: <011f29e6-ad71-366e-dbff-bc8471f3da60@physik.fu-berlin.de>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Wed, 15 Jul 2020 09:27:08 +0200
+Message-ID: <CAMuHMdUre2-fRgLP8YiwjAKN6J=m1vGhPSMMUdpof7jPJfcWuw@mail.gmail.com>
+Subject: Re: ioremap and dma cleanups and fixes for superh (2nd resend)
+To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc:     Rich Felker <dalias@libc.org>, Christoph Hellwig <hch@lst.de>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 7/15/20 5:12 AM, Rich Felker wrote:
->> See the traces below and let me know what you think.
-> 
-> I've got a slightly earlier version (my for-next) built for qemu r2d
-> board, and don't get any such messages. Do you have a lock-debugging
-> option enabled that's catching a problem, perhaps?
+Hi Adrian,
 
-Which kernel option would be that?
+On Wed, Jul 15, 2020 at 1:14 AM John Paul Adrian Glaubitz
+<glaubitz@physik.fu-berlin.de> wrote:
+> However, independent of Christoph's series, the kernels throws two backtraces during
+> boot which I think should require a git bisect (unless I missed a configuration option
+> as I trimmed down the kernel a bit to make sure it's not too big).
+>
+> See the traces below and let me know what you think.
 
-Adrian
+> [    1.560000] sh-sci.1: ttySC1 at MMIO 0xffeb0000 (irq = 44, base_baud = 0) is a scif
+> [    1.560000] BUG: spinlock bad magic on CPU#0, swapper/1
+> [    1.560000]  lock: sci_ports+0x1d8/0xb10, .magic: 00000000, .owner: <none>/-1, .owner_cpu: 0
+
+[PATCH v1] serial: core: Initialise spin lock before use in
+uart_configure_port()
+https://lore.kernel.org/r/20200706140036.75524-1-andriy.shevchenko@linux.intel.com
+
+> [    1.560000] CPU: 0 PID: 1 Comm: swapper Not tainted 5.8.0-rc5-00026-g22b7a96ece82 #3
+> [    1.560000] Stack: (0x9f445ce8 to 0x9f446000)
+> [    1.560000] 5ce0:
+> [    1.560000]
+> [    1.560000]
+> [    1.560000] 80260daa
+> [    1.560000] 9f445cfc
+> [    1.560000] 80048fd8
+> [    1.560000] 8096c158
+> [    1.560000] 805ab908
+> [    1.560000] 8004449c
+
+Any plans to take "[PATCH v2 0/9] sh: Modernize printing of kernel messages"?
+https://lore.kernel.org/r/20200617143639.18315-1-geert+renesas@glider.be
+
+
+> [    5.464000] WARNING: CPU: 0 PID: 1 at mm/slab.c:2589 cache_alloc_refill+0x216/0x6a0
+> [    5.464000] Modules linked in:
+> [    5.464000]
+> [    5.464000] CPU: 0 PID: 1 Comm: swapper Not tainted 5.8.0-rc5-00026-g22b7a96ece82 #3
+> [    5.464000] PC is at cache_alloc_refill+0x216/0x6a0
+> [    5.464000] PR is at kmem_cache_alloc+0xd6/0x128
+> [    5.464000] PC  : 800ec0d2 SP  : 9f445e68 SR  : 400080f0
+> [    5.464000] TEA : c00c30d0
+> [    5.464000] R0  : 8062724c R1  : 8000fee8 R2  : 9f403540 R3  : 00000100
+> [    5.464000] R4  : 9f403500 R5  : 00000000 R6  : 8068d5b0 R7  : 007fffff
+> [    5.464000] R8  : 0000000c R9  : 9f403500 R10 : 8096fc0c R11 : 80044410
+> [    5.464000] R12 : 9f405060 R13 : 00000dc0 R14 : 9f445e68
+> [    5.464000] MACH: 10623bba MACL: 00000cc0 GBR : 2957bd58 PR  : 800ec80a
+> [    5.464000]
+> [    5.464000] Call trace:
+> [    5.464000]  [<(ptrval)>] _raw_spin_unlock_irqrestore+0x0/0x54
+> [    5.464000]  [<(ptrval)>] _raw_spin_lock_irqsave+0x0/0x44
+> [    5.464000]  [<(ptrval)>] kmem_cache_alloc+0xd6/0x128
+> [    5.464000]  [<(ptrval)>] arch_local_irq_restore+0x0/0x2c
+> [    5.464000]  [<(ptrval)>] __raw_spin_lock_init+0x0/0x1c
+> [    5.464000]  [<(ptrval)>] pgd_alloc+0x10/0x24
+
+Does commit 73c348f31b63d28d ("sh: Fix unneeded constructor in page
+table allocation") in next-20200710 and later fix that?
+
+Gr{oetje,eeting}s,
+
+                        Geert
 
 -- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer - glaubitz@debian.org
-`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
