@@ -2,46 +2,47 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 23A91222110
-	for <lists+linux-sh@lfdr.de>; Thu, 16 Jul 2020 13:03:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA40A22216F
+	for <lists+linux-sh@lfdr.de>; Thu, 16 Jul 2020 13:30:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726350AbgGPLDl (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 16 Jul 2020 07:03:41 -0400
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:54859 "EHLO
+        id S1726515AbgGPLaI (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 16 Jul 2020 07:30:08 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:39365 "EHLO
         outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726332AbgGPLDk (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 16 Jul 2020 07:03:40 -0400
+        by vger.kernel.org with ESMTP id S1726350AbgGPLaI (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 16 Jul 2020 07:30:08 -0400
 Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
           by outpost.zedat.fu-berlin.de (Exim 4.93)
           with esmtps (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
           (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1jw1ft-000qMG-UL; Thu, 16 Jul 2020 13:03:37 +0200
+          id 1jw25V-0011hd-AG; Thu, 16 Jul 2020 13:30:05 +0200
 Received: from p57bd93f9.dip0.t-ipconnect.de ([87.189.147.249] helo=[192.168.178.139])
           by inpost2.zedat.fu-berlin.de (Exim 4.93)
           with esmtpsa (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
           (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1jw1ft-001ENT-Nm; Thu, 16 Jul 2020 13:03:37 +0200
+          id 1jw25V-001Ij6-3Y; Thu, 16 Jul 2020 13:30:05 +0200
 Subject: Re: ioremap and dma cleanups and fixes for superh (2nd resend)
-To:     peterz@infradead.org
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Rich Felker <dalias@libc.org>, Christoph Hellwig <hch@lst.de>,
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Rich Felker <dalias@libc.org>, Christoph Hellwig <hch@lst.de>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
         Linux-sh list <linux-sh@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <def65208-a38b-8663-492a-cae150027003@physik.fu-berlin.de>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>
+References: <20200714121856.955680-1-hch@lst.de>
+ <b0745e43-0ff1-58f7-70d5-60b9c8b8d81b@physik.fu-berlin.de>
+ <20200714155914.GA24404@brightrain.aerifal.cx>
+ <8cbf2963-d0e4-0ca8-4ffe-c2057694447f@physik.fu-berlin.de>
+ <011f29e6-ad71-366e-dbff-bc8471f3da60@physik.fu-berlin.de>
+ <CAMuHMdUre2-fRgLP8YiwjAKN6J=m1vGhPSMMUdpof7jPJfcWuw@mail.gmail.com>
+ <def65208-a38b-8663-492a-cae150027003@physik.fu-berlin.de>
  <b5f1853e-031d-c09d-57d2-fb4baffa01ea@physik.fu-berlin.de>
  <CAMuHMdW8RtJKk3u7RWQKP2tA3AYT2rB2aqhUT1KnJ4tJwWWKDA@mail.gmail.com>
  <b5cd845f-7b5e-af8e-a15d-3ede7e61ced4@physik.fu-berlin.de>
  <0322def7-fc16-c805-8f2b-c88fffce2f1e@physik.fu-berlin.de>
  <2df7ca7f-7e26-c916-b6ac-4ec1913fb8d7@physik.fu-berlin.de>
- <CAMuHMdXjfq=RjJ2doR7XyQMnZUA8ccxKc7_tyUzTX29tpyZojw@mail.gmail.com>
- <20200716094039.GQ10769@hirez.programming.kicks-ass.net>
- <20200716102934.GC43129@hirez.programming.kicks-ass.net>
- <f4fcb2e7-eca3-9a70-8e32-e3bf341b62eb@physik.fu-berlin.de>
- <20200716110146.GB119549@hirez.programming.kicks-ass.net>
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  mQINBE3JE9wBEADMrYGNfz3oz6XLw9XcWvuIxIlPWoTyw9BxTicfGAv0d87wngs9U+d52t/R
  EggPePf34gb7/k8FBY1IgyxnZEB5NxUb1WtW0M3GUxpPx6gBZqOm7SK1ZW3oSORw+T7Aezl3
@@ -86,15 +87,15 @@ Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  jEF9ImTPcYZpw5vhdyPwBdXW2lSjV3EAqknWujRgcsm84nycuJnImwJptR481EWmtuH6ysj5
  YhRVGbQPfdsjVUQfZdRdkEv4CZ90pdscBi1nRqcqANtzC+WQFwekDzk2lGqNRDg56s+q0KtY
  scOkTAZQGVpD/8AaLH4v1w==
-Message-ID: <008b06d4-1edd-1610-2ee1-6ea402d06114@physik.fu-berlin.de>
-Date:   Thu, 16 Jul 2020 13:03:36 +0200
+Message-ID: <6100edfb-34b4-6828-5528-92aa8e8d214f@physik.fu-berlin.de>
+Date:   Thu, 16 Jul 2020 13:30:04 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20200716110146.GB119549@hirez.programming.kicks-ass.net>
+In-Reply-To: <2df7ca7f-7e26-c916-b6ac-4ec1913fb8d7@physik.fu-berlin.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Original-Sender: glaubitz@physik.fu-berlin.de
 X-Originating-IP: 87.189.147.249
 Sender: linux-sh-owner@vger.kernel.org
@@ -102,27 +103,66 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Peter!
-
-On 7/16/20 1:01 PM, peterz@infradead.org wrote:
->> The build fails with:
->>
->>   CC      mm/mmu_gather.o
->> mm/mmu_gather.c: In function ‘tlb_table_invalidate’:
->> mm/mmu_gather.c:180:6: error: implicit declaration of function ‘tlb_needs_table_invalidate’; did you mean ‘tlb_table_invalidate’? [-Werror=implicit-function-declaration]
->>   180 |  if (tlb_needs_table_invalidate()) {
->>       |      ^~~~~~~~~~~~~~~~~~~~~~~~~~
->>       |      tlb_table_invalidate
->> cc1: some warnings being treated as errors
->> make[1]: *** [scripts/Makefile.build:281: mm/mmu_gather.o] Error 1
->> make: *** [Makefile:1756: mm] Error 2
+On 7/15/20 6:18 PM, John Paul Adrian Glaubitz wrote:
+> Found the culprit:
 > 
-> *sigh*, thanks, I'll go dig out the local cross compiler set then.
+> c5b27a889da92f4a969d61df77bd4f79ffce57c9 is the first bad commit
+> commit c5b27a889da92f4a969d61df77bd4f79ffce57c9
+> Author: Peter Zijlstra <peterz@infradead.org>
+> Date:   Tue Sep 4 14:45:04 2018 +0200
+> 
+>     sh/tlb: Convert SH to generic mmu_gather
+>     
+>     Generic mmu_gather provides everything SH needs (range tracking and
+>     cache coherency).
+>     
+>     No change in behavior intended.
+>     
+>     Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+>     Cc: Andrew Morton <akpm@linux-foundation.org>
+>     Cc: Andy Lutomirski <luto@kernel.org>
+>     Cc: Aneesh Kumar K.V <aneesh.kumar@linux.vnet.ibm.com>
+>     Cc: Borislav Petkov <bp@alien8.de>
+>     Cc: Dave Hansen <dave.hansen@linux.intel.com>
+>     Cc: H. Peter Anvin <hpa@zytor.com>
+>     Cc: Linus Torvalds <torvalds@linux-foundation.org>
+>     Cc: Nick Piggin <npiggin@gmail.com>
+>     Cc: Peter Zijlstra <peterz@infradead.org>
+>     Cc: Rich Felker <dalias@libc.org>
+>     Cc: Rik van Riel <riel@surriel.com>
+>     Cc: Thomas Gleixner <tglx@linutronix.de>
+>     Cc: Will Deacon <will.deacon@arm.com>
+>     Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+>     Signed-off-by: Ingo Molnar <mingo@kernel.org>
+> 
+>  arch/sh/include/asm/pgalloc.h |   9 +++
+>  arch/sh/include/asm/tlb.h     | 130 +-----------------------------------------
+>  2 files changed, 10 insertions(+), 129 deletions(-)
+> 
+> CC'ing the author (Peter Zijlstra <peterz@infradead.org>).
+This is fixed by [1]:
 
-FWIW, I recommend keeping a Debian box at hand where installing the cross-compiler
-is a matter of running "apt install gcc-sh4-linux-gnu" ;-).
+sh/tlb: Fix PGTABLE_LEVELS > 2
+
+Geert reported that his SH7722-based Migo-R board failed to boot after
+commit:
+
+  c5b27a889da9 ("sh/tlb: Convert SH to generic mmu_gather")
+
+That commit fell victim to copying the wrong pattern --
+__pmd_free_tlb() used to be implemented with pmd_free().
+
+Fixes: c5b27a889da9 ("sh/tlb: Convert SH to generic mmu_gather")
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+
+I'm now running a current kernel on my SH-7785LCR with no issues.
 
 Adrian
+
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/peterz/queue.git/commit/?h=mm/tlb&id=1f19a4bf8dcb42efc278940fb81c288c346b3eda
 
 -- 
  .''`.  John Paul Adrian Glaubitz
