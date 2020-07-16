@@ -2,39 +2,39 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 01491222199
-	for <lists+linux-sh@lfdr.de>; Thu, 16 Jul 2020 13:37:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73946222225
+	for <lists+linux-sh@lfdr.de>; Thu, 16 Jul 2020 14:05:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728032AbgGPLhh (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 16 Jul 2020 07:37:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49312 "EHLO
+        id S1728397AbgGPME5 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 16 Jul 2020 08:04:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727831AbgGPLhg (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 16 Jul 2020 07:37:36 -0400
+        with ESMTP id S1728001AbgGPME5 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 16 Jul 2020 08:04:57 -0400
 Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81252C061755;
-        Thu, 16 Jul 2020 04:37:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01CE5C061755;
+        Thu, 16 Jul 2020 05:04:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-        Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-        Sender:Reply-To:Content-ID:Content-Description;
-        bh=cAxasWlZO5rbqAfbRmZjK6evk3DtyNV2CoEc2bjIOcI=; b=AEG3Xqx+k0Yz4V/dTDwOahXYvC
-        h2UnFSoC4QAKeL3tnuH00TrCnOR02Fn4rMlO2+CaFBCxsp97xS3cNW5jJI5fq86Lvpsbs2+Z9blCZ
-        zsOd/Mh7cL5tXeSeEG7bEaoUUHGllZB2FoG32b4JVIutNqJeoluBxC0MK3TKJ+EUpLW6fT8INHer1
-        JpMkxsFXj/jTUv+La/dmbhEWrqFgTv2sIah2s1HQb8S3FNCXX+8cbZjaWzND0AQqIIMikd9GNXdDe
-        h87sZSvWge9lf8iC+zkSD9EqyP2w/a8C3hxiIDD4K3ojP9vktOgtFjjqyMN2kYI/geCcEQWkAbhbi
-        xmgZVuOA==;
+        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=0BuPnT5dIJUwk1DzOp3WUgWJceui+ELcaKdkqG2qoDA=; b=Ut5wyw/K9yBsEEGWD4S/s/0YNv
+        f3/wbkjCTGcvWnsQ2/8Gt+PHIE48ZQMNuBsWpr69M914EaYQ84ysiywzQ832wgf1j24F5UhhXZ5Mu
+        hZtIe/fiVssausGAd13wVdch6tWODcyUsxhQAkSMGjWK5ho5+Nvjfis40JmskjZr23r4N49qFfOaj
+        bk0SJ7KuIHvL0c/zEfc+MiCwXWl+lOmdMvzMchpWKPBXeIl7u/lbd8uwRxklzL+nQoSBwLr3hhF22
+        3LPIEGhuEX78VldfDQiJ2XVguAAzVnUkWUF6+yQC8gWAyD2fj2yjlqlH9ITCQMby94iC6IdPfEryt
+        nKcu3iVA==;
 Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
         by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jw2CY-0004Nc-Hk; Thu, 16 Jul 2020 11:37:22 +0000
+        id 1jw2d0-0008Bg-9x; Thu, 16 Jul 2020 12:04:42 +0000
 Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 10AFE300446;
-        Thu, 16 Jul 2020 13:37:20 +0200 (CEST)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 8BCD0300446;
+        Thu, 16 Jul 2020 14:04:40 +0200 (CEST)
 Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id BD0CC234E2C20; Thu, 16 Jul 2020 13:37:20 +0200 (CEST)
-Date:   Thu, 16 Jul 2020 13:37:20 +0200
+        id 3C5F02361DC80; Thu, 16 Jul 2020 14:04:40 +0200 (CEST)
+Date:   Thu, 16 Jul 2020 14:04:40 +0200
 From:   peterz@infradead.org
 To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
@@ -43,9 +43,8 @@ Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
         Linux-sh list <linux-sh@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Subject: Re: ioremap and dma cleanups and fixes for superh (2nd resend)
-Message-ID: <20200716113720.GC119549@hirez.programming.kicks-ass.net>
-References: <CAMuHMdW8RtJKk3u7RWQKP2tA3AYT2rB2aqhUT1KnJ4tJwWWKDA@mail.gmail.com>
- <b5cd845f-7b5e-af8e-a15d-3ede7e61ced4@physik.fu-berlin.de>
+Message-ID: <20200716120440.GD43129@hirez.programming.kicks-ass.net>
+References: <b5cd845f-7b5e-af8e-a15d-3ede7e61ced4@physik.fu-berlin.de>
  <0322def7-fc16-c805-8f2b-c88fffce2f1e@physik.fu-berlin.de>
  <2df7ca7f-7e26-c916-b6ac-4ec1913fb8d7@physik.fu-berlin.de>
  <CAMuHMdXjfq=RjJ2doR7XyQMnZUA8ccxKc7_tyUzTX29tpyZojw@mail.gmail.com>
@@ -54,43 +53,26 @@ References: <CAMuHMdW8RtJKk3u7RWQKP2tA3AYT2rB2aqhUT1KnJ4tJwWWKDA@mail.gmail.com>
  <f4fcb2e7-eca3-9a70-8e32-e3bf341b62eb@physik.fu-berlin.de>
  <20200716110146.GB119549@hirez.programming.kicks-ass.net>
  <008b06d4-1edd-1610-2ee1-6ea402d06114@physik.fu-berlin.de>
+ <20200716113720.GC119549@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <008b06d4-1edd-1610-2ee1-6ea402d06114@physik.fu-berlin.de>
+In-Reply-To: <20200716113720.GC119549@hirez.programming.kicks-ass.net>
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Thu, Jul 16, 2020 at 01:03:36PM +0200, John Paul Adrian Glaubitz wrote:
-> Hi Peter!
-> 
-> On 7/16/20 1:01 PM, peterz@infradead.org wrote:
-> >> The build fails with:
-> >>
-> >>   CC      mm/mmu_gather.o
-> >> mm/mmu_gather.c: In function ‘tlb_table_invalidate’:
-> >> mm/mmu_gather.c:180:6: error: implicit declaration of function ‘tlb_needs_table_invalidate’; did you mean ‘tlb_table_invalidate’? [-Werror=implicit-function-declaration]
-> >>   180 |  if (tlb_needs_table_invalidate()) {
-> >>       |      ^~~~~~~~~~~~~~~~~~~~~~~~~~
-> >>       |      tlb_table_invalidate
-> >> cc1: some warnings being treated as errors
-> >> make[1]: *** [scripts/Makefile.build:281: mm/mmu_gather.o] Error 1
-> >> make: *** [Makefile:1756: mm] Error 2
-> > 
-> > *sigh*, thanks, I'll go dig out the local cross compiler set then.
-> 
-> FWIW, I recommend keeping a Debian box at hand where installing the cross-compiler
-> is a matter of running "apt install gcc-sh4-linux-gnu" ;-).
+On Thu, Jul 16, 2020 at 01:37:20PM +0200, peterz@infradead.org wrote:
+> $ /opt/cross/bin/sh4-linux-gcc --version
+> sh4-linux-gcc (GCC) 10.1.0
 
-I happen to have Debian on most of my machines ;-) And I used to
-crosstool build my own toolchains for a while, but these days I mostly
-just fetch them from kernel.org, since they're being kept up-to-date
-fairly often.
+$ git checkout origin/master # linus' tree
+$ mkdir sh-defconfig
+$ make O=sh-defconfig/ ARCH=sh CROSS_COMPILE=/opt/cross/bin/sh4-linux- defconfig # shx3_defconfig
+$ make O=sh-defconfig/ ARCH=sh CROSS_COMPILE=/opt/cross/bin/sh4-linux- -j80
 
-$ /opt/cross/bin/sh4-linux-gcc --version
-sh4-linux-gcc (GCC) 10.1.0
+insane stream of errors
 
 
+Help?
