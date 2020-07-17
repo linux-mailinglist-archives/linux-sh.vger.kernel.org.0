@@ -2,149 +2,98 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB71D22353A
-	for <lists+linux-sh@lfdr.de>; Fri, 17 Jul 2020 09:12:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 308AD223A0E
+	for <lists+linux-sh@lfdr.de>; Fri, 17 Jul 2020 13:14:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726101AbgGQHLx (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 17 Jul 2020 03:11:53 -0400
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:41067 "EHLO
-        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727787AbgGQHLw (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 17 Jul 2020 03:11:52 -0400
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.93)
-          with esmtps (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1jwKX7-002c4e-Qa; Fri, 17 Jul 2020 09:11:49 +0200
-Received: from p57bd93f9.dip0.t-ipconnect.de ([87.189.147.249] helo=[192.168.178.139])
-          by inpost2.zedat.fu-berlin.de (Exim 4.93)
-          with esmtpsa (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1jwKX7-00485L-K5; Fri, 17 Jul 2020 09:11:49 +0200
-To:     Rich Felker <dalias@libc.org>
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Subject: Suggested patches for merging
-Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
- 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
- scOkTAZQGVpD/8AaLH4v1w==
-Cc:     Linux-sh list <linux-sh@vger.kernel.org>
-Message-ID: <8538a950-8e21-29c7-dd0e-fa6e49e2bcef@physik.fu-berlin.de>
-Date:   Fri, 17 Jul 2020 09:11:49 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 87.189.147.249
+        id S1725932AbgGQLOf (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 17 Jul 2020 07:14:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42174 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725912AbgGQLOf (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 17 Jul 2020 07:14:35 -0400
+Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E677EC061755;
+        Fri, 17 Jul 2020 04:14:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=Subject:Cc:To:From:Date:Message-ID:
+        Sender:Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=jcoWM7ruH7eRB3PvnOjpOP2zq5Lo72OqQAXdvnfygY4=; b=CVu1uSlrWcaqMdSONPZ0wh2J+m
+        9XU1Nm+rdNYESJYcv5gA6OgeeydBg6oKgG4NWLLnbt/BpUc7+futNOAtyi9tD0JhoyXaGKHnjBlmy
+        Ckg87kJx7AebIIuKkRlkHis3qytr55CA10v6X9caZ5FjMrxcHF3XVbQCpXGRvaSsWZAFp+cHUrsRB
+        mEUTllpu1D0t0z1LNuJ0qdu3yjauQPG7I45Ku09dNCKr08eYQJ3jxYbEI2eFsoU9IMuLRUp1YrgOV
+        MNoNkpIfT0v9KMf3T2nGxsVjkveem+tlXoeroXQuzLM80lZH2RHTWPAaKLa/uxnKEv6BMPnmhymOn
+        jzZv19iw==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jwOJb-0001dZ-1F; Fri, 17 Jul 2020 11:14:07 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 0F2D8304D58;
+        Fri, 17 Jul 2020 13:14:02 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 0)
+        id A6840203D408F; Fri, 17 Jul 2020 13:14:02 +0200 (CEST)
+Message-ID: <20200717111005.024867618@infradead.org>
+User-Agent: quilt/0.66
+Date:   Fri, 17 Jul 2020 13:10:05 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Will Deacon <will@kernel.org>,
+        "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Nick Piggin <npiggin@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>
+Cc:     linux-arch@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Helge Deller <deller@gmx.de>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Paul Burton <paulburton@kernel.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Nick Hu <nickhu@andestech.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Christoph Hellwig <hch@lst.de>
+Subject: [PATCH v2 00/11] Fixup page directory freeing
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Rich!
+Hi All,
 
-After updating my SH kernel to the latest git version and applying various proposed
-patches on top, my machines runs very stable. I suggest merging the following patches:
+While fixing a silly bug on SH (patch #1), I realized that even with the
+trivial patch to restore prior behaviour, page directory freeing was still
+broken.
 
-> [PATCH 01/10] sh: remove -Werror from Makefiles
-> https://marc.info/?l=linux-sh&m=159472940531658&w=2
+The thing is, on anything SMP, freeing page directories should observe the
+exact same order as normal page freeing:
 
-> [PATCH 02/10] sh: sort the selects for SUPERH alphabetically
-> https://marc.info/?l=linux-sh&m=159472953631694&w=2
+ 1) unhook page/directory
+ 2) TLB invalidate
+ 3) free page/directory
 
-> [PATCH 03/10] sh: remove __KERNEL__ ifdefs from non-UAPI headers
-> https://marc.info/?l=linux-sh&m=159472967331732&w=2
+Without this any concurrent page-table walk could end up with a Use-after-Free.
+This is esp. trivial for anything that has software page-table walkers
+(HAVE_FAST_GUP / software TLB fill) or the hardware caches partial page-walks
+(ie. caches page directories).
 
-> [PATCH 04/10] sh: move ioremap_fixed details out of <asm/io.h>
-> https://marc.info/?l=linux-sh&m=159472980331793&w=2
+Even on UP this might give issues, since mmu_gather is preemptible these days.
+An interrupt or preempted task accessing user pages might stumble into the free
+page if the hardware caches page directories.
 
-> [PATCH 05/10] sh: move the ioremap implementation out of line
-> https://marc.info/?l=linux-sh&m=159472993031837&w=2
+So I've converted everything to always observe the above order, simply so we
+don't have to worry about it.
 
-> [PATCH 06/10] sh: don't include <asm/io_trapped.h> in <asm/io.h>
-> https://marc.info/?l=linux-sh&m=159472995331856&w=2
+If however I've been over zealous and your arch/mmu really doesn't need this
+and you're offended by this potentially superfluous code, please let me know
+and I'll replace the patch with one that adds a comment describing your
+rationale for why it is not needed.
 
-> [PATCH 07/10] sh: unexport register_trapped_io and match_trapped_io_handler
-> https://marc.info/?l=linux-sh&m=159472993331840&w=2
 
-> [PATCH 08/10] dma-mapping: consolidate the NO_DMA definition in kernel/dma/Kconfig
-> https://marc.info/?l=linux-sh&m=159472994531848&w=2
+v1: https://lkml.kernel.org/r/20191211120713.360281197@infradead.org
 
-> [PATCH 09/10] sh: don't allow non-coherent DMA for NOMMU
-> https://marc.info/?l=linux-sh&m=159472994631849&w=2
 
-> [PATCH 10/10] sh: use the generic dma coherent remap allocator
-> https://marc.info/?l=linux-sh&m=159472994631850&w=2
-
-> [PATCH] sh: Implement __get_user_u64() required for 64-bit get_user()
-> https://marc.info/?l=linux-sh&m=159186232702043&w=2
-
-> [PATCH v2 0/9] sh: Modernize printing of kernel messages
-> https://lore.kernel.org/lkml/20200617143639.18315-1-geert+renesas@glider.be/
-
-These patches fix multiple important issues on SH, but are most likely
-going in through different trees:
-
-> [PATCH v2] serial: core: Initialise spin lock before use in uart_configure_port()
-> https://lore.kernel.org/linux-serial/20200706143548.63985-1-andriy.shevchenko@linux.intel.com/
-
-> sh: Fix unneeded constructor in page table allocation
-> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?id=73c348f31b63d28d176ed290eb1aa2a648f3e51e
-> You seem to have already picked this one up?
-
-> sh/tlb: Fix PGTABLE_LEVELS > 2
-> https://git.kernel.org/pub/scm/linux/kernel/git/peterz/queue.git/commit/?h=mm/tlb&id=1f19a4bf8dcb42efc278940fb81c288c346b3eda
-
-Thanks,
-Adrian
-
--- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer - glaubitz@debian.org
-`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
