@@ -2,46 +2,30 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5783C222C03
-	for <lists+linux-sh@lfdr.de>; Thu, 16 Jul 2020 21:33:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB71D22353A
+	for <lists+linux-sh@lfdr.de>; Fri, 17 Jul 2020 09:12:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729341AbgGPTdV (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 16 Jul 2020 15:33:21 -0400
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:56825 "EHLO
+        id S1726101AbgGQHLx (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 17 Jul 2020 03:11:53 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:41067 "EHLO
         outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729148AbgGPTdV (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 16 Jul 2020 15:33:21 -0400
+        by vger.kernel.org with ESMTP id S1727787AbgGQHLw (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 17 Jul 2020 03:11:52 -0400
 Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
           by outpost.zedat.fu-berlin.de (Exim 4.93)
           with esmtps (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
           (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1jw9d8-004Aq8-9d; Thu, 16 Jul 2020 21:33:18 +0200
+          id 1jwKX7-002c4e-Qa; Fri, 17 Jul 2020 09:11:49 +0200
 Received: from p57bd93f9.dip0.t-ipconnect.de ([87.189.147.249] helo=[192.168.178.139])
           by inpost2.zedat.fu-berlin.de (Exim 4.93)
           with esmtpsa (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
           (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1jw9d8-002TPr-1p; Thu, 16 Jul 2020 21:33:18 +0200
-Subject: Re: ioremap and dma cleanups and fixes for superh (2nd resend)
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Rich Felker <dalias@libc.org>, Christoph Hellwig <hch@lst.de>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <2df7ca7f-7e26-c916-b6ac-4ec1913fb8d7@physik.fu-berlin.de>
- <CAMuHMdXjfq=RjJ2doR7XyQMnZUA8ccxKc7_tyUzTX29tpyZojw@mail.gmail.com>
- <20200716094039.GQ10769@hirez.programming.kicks-ass.net>
- <20200716102934.GC43129@hirez.programming.kicks-ass.net>
- <f4fcb2e7-eca3-9a70-8e32-e3bf341b62eb@physik.fu-berlin.de>
- <20200716110146.GB119549@hirez.programming.kicks-ass.net>
- <008b06d4-1edd-1610-2ee1-6ea402d06114@physik.fu-berlin.de>
- <20200716113720.GC119549@hirez.programming.kicks-ass.net>
- <20200716120440.GD43129@hirez.programming.kicks-ass.net>
- <a2e39d5a-77e9-3038-f117-a33353e93f34@physik.fu-berlin.de>
- <20200716192801.GU10769@hirez.programming.kicks-ass.net>
+          id 1jwKX7-00485L-K5; Fri, 17 Jul 2020 09:11:49 +0200
+To:     Rich Felker <dalias@libc.org>
 From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Subject: Suggested patches for merging
 Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  mQINBE3JE9wBEADMrYGNfz3oz6XLw9XcWvuIxIlPWoTyw9BxTicfGAv0d87wngs9U+d52t/R
  EggPePf34gb7/k8FBY1IgyxnZEB5NxUb1WtW0M3GUxpPx6gBZqOm7SK1ZW3oSORw+T7Aezl3
@@ -86,12 +70,12 @@ Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  jEF9ImTPcYZpw5vhdyPwBdXW2lSjV3EAqknWujRgcsm84nycuJnImwJptR481EWmtuH6ysj5
  YhRVGbQPfdsjVUQfZdRdkEv4CZ90pdscBi1nRqcqANtzC+WQFwekDzk2lGqNRDg56s+q0KtY
  scOkTAZQGVpD/8AaLH4v1w==
-Message-ID: <4b29e99d-b402-5b2a-9901-50bbdbe55cd8@physik.fu-berlin.de>
-Date:   Thu, 16 Jul 2020 21:33:17 +0200
+Cc:     Linux-sh list <linux-sh@vger.kernel.org>
+Message-ID: <8538a950-8e21-29c7-dd0e-fa6e49e2bcef@physik.fu-berlin.de>
+Date:   Fri, 17 Jul 2020 09:11:49 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20200716192801.GU10769@hirez.programming.kicks-ass.net>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -102,22 +86,62 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 7/16/20 9:28 PM, Peter Zijlstra wrote:
-> For some reason I had a whole bunch of junk left in my checkout and had
-> to basically: rm `git status -s | awk '{print $2}'`.
-> 
-> Sorry for the noise.
-> 
-> OK, let me go try my own patches :-)
+Hi Rich!
 
-FWIW, I just successfully built the "defconfig" configuration without any problems.
+After updating my SH kernel to the latest git version and applying various proposed
+patches on top, my machines runs very stable. I suggest merging the following patches:
 
-Looking forward for the updated patches, although the patch to fix PGTABLE_LEVELS >2
-works for me [1].
+> [PATCH 01/10] sh: remove -Werror from Makefiles
+> https://marc.info/?l=linux-sh&m=159472940531658&w=2
 
+> [PATCH 02/10] sh: sort the selects for SUPERH alphabetically
+> https://marc.info/?l=linux-sh&m=159472953631694&w=2
+
+> [PATCH 03/10] sh: remove __KERNEL__ ifdefs from non-UAPI headers
+> https://marc.info/?l=linux-sh&m=159472967331732&w=2
+
+> [PATCH 04/10] sh: move ioremap_fixed details out of <asm/io.h>
+> https://marc.info/?l=linux-sh&m=159472980331793&w=2
+
+> [PATCH 05/10] sh: move the ioremap implementation out of line
+> https://marc.info/?l=linux-sh&m=159472993031837&w=2
+
+> [PATCH 06/10] sh: don't include <asm/io_trapped.h> in <asm/io.h>
+> https://marc.info/?l=linux-sh&m=159472995331856&w=2
+
+> [PATCH 07/10] sh: unexport register_trapped_io and match_trapped_io_handler
+> https://marc.info/?l=linux-sh&m=159472993331840&w=2
+
+> [PATCH 08/10] dma-mapping: consolidate the NO_DMA definition in kernel/dma/Kconfig
+> https://marc.info/?l=linux-sh&m=159472994531848&w=2
+
+> [PATCH 09/10] sh: don't allow non-coherent DMA for NOMMU
+> https://marc.info/?l=linux-sh&m=159472994631849&w=2
+
+> [PATCH 10/10] sh: use the generic dma coherent remap allocator
+> https://marc.info/?l=linux-sh&m=159472994631850&w=2
+
+> [PATCH] sh: Implement __get_user_u64() required for 64-bit get_user()
+> https://marc.info/?l=linux-sh&m=159186232702043&w=2
+
+> [PATCH v2 0/9] sh: Modernize printing of kernel messages
+> https://lore.kernel.org/lkml/20200617143639.18315-1-geert+renesas@glider.be/
+
+These patches fix multiple important issues on SH, but are most likely
+going in through different trees:
+
+> [PATCH v2] serial: core: Initialise spin lock before use in uart_configure_port()
+> https://lore.kernel.org/linux-serial/20200706143548.63985-1-andriy.shevchenko@linux.intel.com/
+
+> sh: Fix unneeded constructor in page table allocation
+> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?id=73c348f31b63d28d176ed290eb1aa2a648f3e51e
+> You seem to have already picked this one up?
+
+> sh/tlb: Fix PGTABLE_LEVELS > 2
+> https://git.kernel.org/pub/scm/linux/kernel/git/peterz/queue.git/commit/?h=mm/tlb&id=1f19a4bf8dcb42efc278940fb81c288c346b3eda
+
+Thanks,
 Adrian
-
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/peterz/queue.git/commit/?h=mm/tlb&id=1f19a4bf8dcb42efc278940fb81c288c346b3eda
 
 -- 
  .''`.  John Paul Adrian Glaubitz
