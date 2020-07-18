@@ -2,75 +2,41 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 352E2223A4D
-	for <lists+linux-sh@lfdr.de>; Fri, 17 Jul 2020 13:22:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6E72224C70
+	for <lists+linux-sh@lfdr.de>; Sat, 18 Jul 2020 17:24:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726656AbgGQLWd (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 17 Jul 2020 07:22:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43418 "EHLO
+        id S1727926AbgGRPYh (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sat, 18 Jul 2020 11:24:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726070AbgGQLWd (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 17 Jul 2020 07:22:33 -0400
-Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD9E9C061755;
-        Fri, 17 Jul 2020 04:22:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=ScRcak3+YLnK0/Ajj7pWGryQXqgK+eh4WORPeOEWNM8=; b=DwB7iiOpiSXr/UmffzIY8qzpD/
-        FXFx40H9475zT+5+zCrE27fdFyphk7NXVgAt8lhVagq6FYHucJaVeCM4AB+2q/+yJALuLQ3ToQuLk
-        dS3HTxHoHBuJpHXWJWYA55A8MypGV2FG9XCH7O16BI5w0gFFJM4ngG7vydr5kuJNxEfcxTo1SWuQd
-        Wjf7gcaGNTRe+8IRXjVayp+MDT4u3/Z5ewHe6Stt+5l8OuPP/diriB7VuqnJZ6dPi7iyw8NG1cxmn
-        1UlwEds/dza2F7FCpqjMmUI3RSYYusNqstH2yXhc39CLXf7tIoRVFlh/JSdAeNGuwDFe/9hjBplGn
-        EsZoVHDw==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jwORW-0003Ms-0y; Fri, 17 Jul 2020 11:22:18 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 7D888307488;
-        Fri, 17 Jul 2020 13:22:16 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 1C662203D4090; Fri, 17 Jul 2020 13:22:16 +0200 (CEST)
-Date:   Fri, 17 Jul 2020 13:22:16 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Will Deacon <will@kernel.org>,
-        "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Nick Piggin <npiggin@gmail.com>
-Cc:     linux-arch@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Helge Deller <deller@gmx.de>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Paul Burton <paulburton@kernel.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Nick Hu <nickhu@andestech.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH v2 00/11] Fixup page directory freeing
-Message-ID: <20200717112216.GI10769@hirez.programming.kicks-ass.net>
-References: <20200717111005.024867618@infradead.org>
+        with ESMTP id S1726551AbgGRPYh (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sat, 18 Jul 2020 11:24:37 -0400
+X-Greylist: delayed 616 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 18 Jul 2020 08:24:36 PDT
+Received: from 151.80.89.196 (unknown [IPv6:2001:41d0:303:46d2::])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23160C0619D3;
+        Sat, 18 Jul 2020 08:24:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=click; d=offenline.biz;
+ h=Content-Type:MIME-Version:Content-Transfer-Encoding:Content-Description:Subject:To:From:Date:Reply-To:Message-ID;
+ bh=WrCb5nGko31fd5GUgjGBj5htdBM=;
+ b=KivB7bvJopap2kMJp9AS0eYkPTlU+UuM8AjvdHV7TInCQ1+lc7Jzvz11XZ2qbuubjORurXMGX5Hu
+   pUk7EufDXnStxzxwMSB4+SbkZARAFOOdEjmh59Wow8CA67Zkbjf1Nw94yvSgxCg3qs5GIM9HeGnv
+   NWbjLv9+aaRw/b0cfN8=
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200717111005.024867618@infradead.org>
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Why continued silence 2 
+To:     Recipients <info@lee.org>
+From:   "convy" <info@lee.org>
+Date:   Sat, 18 Jul 2020 15:34:40 +0100
+Reply-To: convy442121@gmail.com
+Message-ID: <0.0.7E.DD.1D65D10D564A35A.0@151.80.89.196>
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Fri, Jul 17, 2020 at 01:10:05PM +0200, Peter Zijlstra wrote:
-> Hi All,
-> 
-> While fixing a silly bug on SH (patch #1), I realized that even with the
-> trivial patch to restore prior behaviour, page directory freeing was still
-> broken.
-
-*sigh*, I got patches 1 and 2 in the 'wrong' order.
+Did you receive my previous email regarding your family inheritance?
+Reply strictly through: convy0090@gmail.com
+Best Regards,
+Ruben CONVY
