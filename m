@@ -2,40 +2,45 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 78CB7224D0C
-	for <lists+linux-sh@lfdr.de>; Sat, 18 Jul 2020 18:30:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05407226111
+	for <lists+linux-sh@lfdr.de>; Mon, 20 Jul 2020 15:38:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728025AbgGRQaO (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sat, 18 Jul 2020 12:30:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57442 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726346AbgGRQaO (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sat, 18 Jul 2020 12:30:14 -0400
-Received: from 151.80.89.196 (unknown [IPv6:2001:41d0:303:46d2::])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36508C0619D2;
-        Sat, 18 Jul 2020 09:30:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=click; d=offenline.biz;
- h=Content-Type:MIME-Version:Content-Transfer-Encoding:Content-Description:Subject:To:From:Date:Reply-To:Message-ID;
- bh=WrCb5nGko31fd5GUgjGBj5htdBM=;
- b=6N71k5xG5PyoiVngaOD9chOD/0GkwhKZ91ZkNqcFa3fY7suVU/8QYw/ABnPSRg7Zi5ocgvii2iDM
-   V9/LMjHNtZcxA2Pj0cKDXmHQte5MlnvPJooGxYGYOU4p1eWIvn8J/JF4CG9biQhABJU35vybDX5P
-   ghK31lLAwQqtw4UJIxA=
-Content-Type: text/plain; charset="iso-8859-1"
+        id S1728237AbgGTNiE (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 20 Jul 2020 09:38:04 -0400
+Received: from verein.lst.de ([213.95.11.211]:47003 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726383AbgGTNiD (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Mon, 20 Jul 2020 09:38:03 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 8AB5368BFE; Mon, 20 Jul 2020 15:38:00 +0200 (CEST)
+Date:   Mon, 20 Jul 2020 15:38:00 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc:     Rich Felker <dalias@libc.org>, Christoph Hellwig <hch@lst.de>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: ioremap and dma cleanups and fixes for superh (2nd resend)
+Message-ID: <20200720133800.GA3084@lst.de>
+References: <20200714121856.955680-1-hch@lst.de> <b0745e43-0ff1-58f7-70d5-60b9c8b8d81b@physik.fu-berlin.de> <20200714155914.GA24404@brightrain.aerifal.cx> <8cbf2963-d0e4-0ca8-4ffe-c2057694447f@physik.fu-berlin.de> <011f29e6-ad71-366e-dbff-bc8471f3da60@physik.fu-berlin.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Why continued silence 2
-To:     Recipients <info@lee.org>
-From:   "convy" <info@lee.org>
-Date:   Sat, 18 Jul 2020 17:22:51 +0100
-Reply-To: convy442121@gmail.com
-Message-ID: <0.0.9A.5EE.1D65D1FFA298BBA.0@151.80.89.196>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <011f29e6-ad71-366e-dbff-bc8471f3da60@physik.fu-berlin.de>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Did you receive my previous email regarding your family inheritance?
-Reply strictly through: convy0090@gmail.com
-Best Regards,
-Ruben CONVY
+On Wed, Jul 15, 2020 at 01:12:33AM +0200, John Paul Adrian Glaubitz wrote:
+> Hello!
+> 
+> I have applied Christoph's full series on top of Linus' tree and I can confirm that
+> the kernel boots fine on my SH-7785LCR board.
+> 
+> Thus, for the whole series of patches:
+> 
+> Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+
+Any chance we get the patches queue up while you're all sorting out
+totally independent issues?
