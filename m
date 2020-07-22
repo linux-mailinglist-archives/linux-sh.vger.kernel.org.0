@@ -2,80 +2,142 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A1ABA22A304
-	for <lists+linux-sh@lfdr.de>; Thu, 23 Jul 2020 01:21:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6E9722A2EF
+	for <lists+linux-sh@lfdr.de>; Thu, 23 Jul 2020 01:19:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730837AbgGVXVV (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 22 Jul 2020 19:21:21 -0400
-Received: from outpost17.zedat.fu-berlin.de ([130.133.4.110]:40571 "EHLO
-        outpost17.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1733242AbgGVXVV (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 22 Jul 2020 19:21:21 -0400
-X-Greylist: delayed 420 seconds by postgrey-1.27 at vger.kernel.org; Wed, 22 Jul 2020 19:21:08 EDT
-Received: from relay1.zedat.fu-berlin.de ([130.133.4.67])
+        id S1733008AbgGVXTx (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 22 Jul 2020 19:19:53 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:49889 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726447AbgGVXTw (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 22 Jul 2020 19:19:52 -0400
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
           by outpost.zedat.fu-berlin.de (Exim 4.93)
           with esmtps (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-          (envelope-from <mkarcher@physik.fu-berlin.de>)
-          id 1jyNwH-000bao-U8; Thu, 23 Jul 2020 01:14:17 +0200
-Received: from mx.physik.fu-berlin.de ([160.45.64.218])
-          by relay1.zedat.fu-berlin.de (Exim 4.93)
-          with esmtps (TLS1.2)
-          tls TLS_DHE_RSA_WITH_AES_128_CBC_SHA
-          (envelope-from <mkarcher@physik.fu-berlin.de>)
-          id 1jyNwH-001IwG-Ra; Thu, 23 Jul 2020 01:14:17 +0200
-Received: from epyc.physik.fu-berlin.de ([160.45.64.180])
-        by mx.physik.fu-berlin.de with esmtps (TLS1.2:RSA_AES_256_CBC_SHA1:256)
-        (Exim 4.80)
-        (envelope-from <mkarcher@physik.fu-berlin.de>)
-        id 1jyNwB-0002Uf-Bg; Thu, 23 Jul 2020 01:14:11 +0200
-Received: from mkarcher by epyc.physik.fu-berlin.de with local (Exim 4.94 #2 (Debian))
-        id 1jyNwB-001lBq-3K; Thu, 23 Jul 2020 01:14:11 +0200
-From:   Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
-To:     linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1jyO1b-000cjW-K8; Thu, 23 Jul 2020 01:19:47 +0200
+Received: from p57bd9e19.dip0.t-ipconnect.de ([87.189.158.25] helo=[192.168.178.139])
+          by inpost2.zedat.fu-berlin.de (Exim 4.93)
+          with esmtpsa (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1jyO1b-002XXS-DT; Thu, 23 Jul 2020 01:19:47 +0200
+Subject: Re: [PATCH 1/4] sh: Fix validation of system call number
+To:     Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
+        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
-Subject: [PATCH 4/4] sh: bring syscall_set_return_value in line with other architectures
-Date:   Thu, 23 Jul 2020 01:13:22 +0200
-Message-Id: <20200722231322.419642-4-kernel@mkarcher.dialup.fu-berlin.de>
-X-Mailer: git-send-email 2.28.0.rc1
-In-Reply-To: <20200722231322.419642-1-kernel@mkarcher.dialup.fu-berlin.de>
+        Rich Felker <dalias@libc.org>
 References: <20200722231322.419642-1-kernel@mkarcher.dialup.fu-berlin.de>
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
+ 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
+ scOkTAZQGVpD/8AaLH4v1w==
+Message-ID: <75601e2c-6631-8a98-36a0-ef58f28e50a9@physik.fu-berlin.de>
+Date:   Thu, 23 Jul 2020 01:19:46 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: 160.45.64.218
-X-ZEDAT-Hint: RV
+In-Reply-To: <20200722231322.419642-1-kernel@mkarcher.dialup.fu-berlin.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 87.189.158.25
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Other architectures expect that syscall_set_return_value gets an already
-negative value as error. That's also what kernel/seccomp.c provides.
+On 7/23/20 1:13 AM, Michael Karcher wrote:
+> The slow path for traced system call entries accessed a wrong memory
+> location to get the number of the maximum allowed system call number.
+> Renumber the numbered "local" label for the correct location to avoid
+> collisions with actual local labels.
+> 
+> Signed-off-by: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
+> ---
+>  arch/sh/kernel/entry-common.S | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/sh/kernel/entry-common.S b/arch/sh/kernel/entry-common.S
+> index 956a7a03b0c8..9bac5bbb67f3 100644
+> --- a/arch/sh/kernel/entry-common.S
+> +++ b/arch/sh/kernel/entry-common.S
+> @@ -199,7 +199,7 @@ syscall_trace_entry:
+>  	mov.l	@(OFF_R7,r15), r7   ! arg3
+>  	mov.l	@(OFF_R3,r15), r3   ! syscall_nr
+>  	!
+> -	mov.l	2f, r10			! Number of syscalls
+> +	mov.l	6f, r10			! Number of syscalls
+>  	cmp/hs	r10, r3
+>  	bf	syscall_call
+>  	mov	#-ENOSYS, r0
+> @@ -353,7 +353,7 @@ ENTRY(system_call)
+>  	tst	r9, r8
+>  	bf	syscall_trace_entry
+>  	!
+> -	mov.l	2f, r8			! Number of syscalls
+> +	mov.l	6f, r8			! Number of syscalls
+>  	cmp/hs	r8, r3
+>  	bt	syscall_badsys
+>  	!
+> @@ -392,7 +392,7 @@ syscall_exit:
+>  #if !defined(CONFIG_CPU_SH2)
+>  1:	.long	TRA
+>  #endif
+> -2:	.long	NR_syscalls
+> +6:	.long	NR_syscalls
+>  3:	.long	sys_call_table
+>  7:	.long	do_syscall_trace_enter
+>  8:	.long	do_syscall_trace_leave
+> 
 
-Signed-off-by: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
----
- arch/sh/include/asm/syscall_32.h | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 
-diff --git a/arch/sh/include/asm/syscall_32.h b/arch/sh/include/asm/syscall_32.h
-index 0b5b8e75edac..cb51a7528384 100644
---- a/arch/sh/include/asm/syscall_32.h
-+++ b/arch/sh/include/asm/syscall_32.h
-@@ -40,10 +40,7 @@ static inline void syscall_set_return_value(struct task_struct *task,
- 					    struct pt_regs *regs,
- 					    int error, long val)
- {
--	if (error)
--		regs->regs[0] = -error;
--	else
--		regs->regs[0] = val;
-+	regs->regs[0] = (long) error ?: val;
- }
- 
- static inline void syscall_get_arguments(struct task_struct *task,
 -- 
-2.28.0.rc1
-
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
