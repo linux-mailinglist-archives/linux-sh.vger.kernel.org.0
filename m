@@ -2,36 +2,32 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B49E522A2F7
-	for <lists+linux-sh@lfdr.de>; Thu, 23 Jul 2020 01:20:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB45522A31E
+	for <lists+linux-sh@lfdr.de>; Thu, 23 Jul 2020 01:31:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733149AbgGVXUm (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 22 Jul 2020 19:20:42 -0400
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:41085 "EHLO
+        id S1726447AbgGVXb5 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 22 Jul 2020 19:31:57 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:56265 "EHLO
         outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1733125AbgGVXUl (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 22 Jul 2020 19:20:41 -0400
+        by vger.kernel.org with ESMTP id S1728914AbgGVXb4 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 22 Jul 2020 19:31:56 -0400
 Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
           by outpost.zedat.fu-berlin.de (Exim 4.93)
           with esmtps (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
           (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1jyO2O-000cvn-AS; Thu, 23 Jul 2020 01:20:36 +0200
+          id 1jyODK-000fEO-JG; Thu, 23 Jul 2020 01:31:54 +0200
 Received: from p57bd9e19.dip0.t-ipconnect.de ([87.189.158.25] helo=[192.168.178.139])
           by inpost2.zedat.fu-berlin.de (Exim 4.93)
           with esmtpsa (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
           (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1jyO2O-002Xdh-3s; Thu, 23 Jul 2020 01:20:36 +0200
-Subject: Re: [PATCH 4/4] sh: bring syscall_set_return_value in line with other
- architectures
-To:     Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
-        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>
-References: <20200722231322.419642-1-kernel@mkarcher.dialup.fu-berlin.de>
- <20200722231322.419642-4-kernel@mkarcher.dialup.fu-berlin.de>
+          id 1jyODK-002Yyi-Cp; Thu, 23 Jul 2020 01:31:54 +0200
+Subject: Re: Adding support for SECCOMP_FILTER
 From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To:     Linux-sh list <linux-sh@vger.kernel.org>
+Cc:     debian-superh@lists.debian.org
+References: <32f7f7a2-a186-a3cc-0d03-e3380c0d21fc@physik.fu-berlin.de>
 Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  mQINBE3JE9wBEADMrYGNfz3oz6XLw9XcWvuIxIlPWoTyw9BxTicfGAv0d87wngs9U+d52t/R
  EggPePf34gb7/k8FBY1IgyxnZEB5NxUb1WtW0M3GUxpPx6gBZqOm7SK1ZW3oSORw+T7Aezl3
@@ -76,12 +72,12 @@ Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  jEF9ImTPcYZpw5vhdyPwBdXW2lSjV3EAqknWujRgcsm84nycuJnImwJptR481EWmtuH6ysj5
  YhRVGbQPfdsjVUQfZdRdkEv4CZ90pdscBi1nRqcqANtzC+WQFwekDzk2lGqNRDg56s+q0KtY
  scOkTAZQGVpD/8AaLH4v1w==
-Message-ID: <bfb5f986-1d49-15e4-d1e5-74408e779ffd@physik.fu-berlin.de>
-Date:   Thu, 23 Jul 2020 01:20:35 +0200
+Message-ID: <ee70ba65-e2a0-ab83-dcbd-0fb0f750a93f@physik.fu-berlin.de>
+Date:   Thu, 23 Jul 2020 01:31:53 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20200722231322.419642-4-kernel@mkarcher.dialup.fu-berlin.de>
+In-Reply-To: <32f7f7a2-a186-a3cc-0d03-e3380c0d21fc@physik.fu-berlin.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -92,34 +88,20 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 7/23/20 1:13 AM, Michael Karcher wrote:
-> Other architectures expect that syscall_set_return_value gets an already
-> negative value as error. That's also what kernel/seccomp.c provides.
-> 
-> Signed-off-by: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
-> ---
->  arch/sh/include/asm/syscall_32.h | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
-> 
-> diff --git a/arch/sh/include/asm/syscall_32.h b/arch/sh/include/asm/syscall_32.h
-> index 0b5b8e75edac..cb51a7528384 100644
-> --- a/arch/sh/include/asm/syscall_32.h
-> +++ b/arch/sh/include/asm/syscall_32.h
-> @@ -40,10 +40,7 @@ static inline void syscall_set_return_value(struct task_struct *task,
->  					    struct pt_regs *regs,
->  					    int error, long val)
->  {
-> -	if (error)
-> -		regs->regs[0] = -error;
-> -	else
-> -		regs->regs[0] = val;
-> +	regs->regs[0] = (long) error ?: val;
->  }
->  
->  static inline void syscall_get_arguments(struct task_struct *task,
-> 
+On 7/21/20 8:59 PM, John Paul Adrian Glaubitz wrote:
+> Would anyone be willing to help me to implement SECCOMP_FILTER for SH? From what
+> I can see, we just need to implement the part to add syscall filtering.
 
-Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Patches have been posted by Michael Karcher now to this list.
+
+The seccomp library code is also ready for merging, see [1].
+
+All tests pass as expected, including the live tests (with the exception
+of #51 which is broken on all 32-bit targets).
+
+Adrian
+
+> [1] https://github.com/glaubitz/libseccomp/tree/superh
 
 -- 
  .''`.  John Paul Adrian Glaubitz
