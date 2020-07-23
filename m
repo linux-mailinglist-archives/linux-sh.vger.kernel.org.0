@@ -2,32 +2,38 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC3F322AF72
-	for <lists+linux-sh@lfdr.de>; Thu, 23 Jul 2020 14:34:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C69922AFAD
+	for <lists+linux-sh@lfdr.de>; Thu, 23 Jul 2020 14:49:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726521AbgGWMef (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 23 Jul 2020 08:34:35 -0400
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:52707 "EHLO
+        id S1728066AbgGWMtv (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 23 Jul 2020 08:49:51 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:55581 "EHLO
         outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728265AbgGWMee (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 23 Jul 2020 08:34:34 -0400
+        by vger.kernel.org with ESMTP id S1726666AbgGWMtv (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 23 Jul 2020 08:49:51 -0400
 Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
           by outpost.zedat.fu-berlin.de (Exim 4.93)
           with esmtps (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
           (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1jyaQi-000Pq6-97; Thu, 23 Jul 2020 14:34:32 +0200
+          id 1jyafT-000V84-FE; Thu, 23 Jul 2020 14:49:47 +0200
 Received: from p57bd9e19.dip0.t-ipconnect.de ([87.189.158.25] helo=[192.168.178.139])
           by inpost2.zedat.fu-berlin.de (Exim 4.93)
           with esmtpsa (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
           (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1jyaQi-000CY5-1o; Thu, 23 Jul 2020 14:34:32 +0200
-Subject: Re: Suggested patches for merging
+          id 1jyafT-000F7L-8n; Thu, 23 Jul 2020 14:49:47 +0200
+Subject: Re: [PATCH] sh: clk: Fix assignment from incompatible pointer type
+ for ioreadX()
+To:     Krzysztof Kozlowski <krzk@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Geert Uytterhoeven <geert+renesas@glider.be>
+References: <20200723082017.24053-1-krzk@kernel.org>
 From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To:     Rich Felker <dalias@libc.org>
-Cc:     Linux-sh list <linux-sh@vger.kernel.org>
-References: <8538a950-8e21-29c7-dd0e-fa6e49e2bcef@physik.fu-berlin.de>
 Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  mQINBE3JE9wBEADMrYGNfz3oz6XLw9XcWvuIxIlPWoTyw9BxTicfGAv0d87wngs9U+d52t/R
  EggPePf34gb7/k8FBY1IgyxnZEB5NxUb1WtW0M3GUxpPx6gBZqOm7SK1ZW3oSORw+T7Aezl3
@@ -72,12 +78,12 @@ Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  jEF9ImTPcYZpw5vhdyPwBdXW2lSjV3EAqknWujRgcsm84nycuJnImwJptR481EWmtuH6ysj5
  YhRVGbQPfdsjVUQfZdRdkEv4CZ90pdscBi1nRqcqANtzC+WQFwekDzk2lGqNRDg56s+q0KtY
  scOkTAZQGVpD/8AaLH4v1w==
-Message-ID: <a5df1180-d440-8157-18a5-0d35afda2a6a@physik.fu-berlin.de>
-Date:   Thu, 23 Jul 2020 14:34:31 +0200
+Message-ID: <c77eb720-1ded-f9d4-fbe4-92429e81857f@physik.fu-berlin.de>
+Date:   Thu, 23 Jul 2020 14:49:46 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <8538a950-8e21-29c7-dd0e-fa6e49e2bcef@physik.fu-berlin.de>
+In-Reply-To: <20200723082017.24053-1-krzk@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -88,25 +94,36 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi!
+Hi Krzysztof!
 
-On 7/17/20 9:11 AM, John Paul Adrian Glaubitz wrote:
-> After updating my SH kernel to the latest git version and applying various proposed
-> patches on top, my machines runs very stable. I suggest merging the following patches:
+On 7/23/20 10:20 AM, Krzysztof Kozlowski wrote:
+> Maybe because it depends on commit 58c4d8659186 ("sh: clkfwk: remove
+> r8/r16/r32") which landed later?  Anyway it should go through your tree,
+> I think.
+> ---
+>  drivers/sh/clk/cpg.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/sh/clk/cpg.c b/drivers/sh/clk/cpg.c
+> index a5cacfe24a42..fd72d9088bdc 100644
+> --- a/drivers/sh/clk/cpg.c
+> +++ b/drivers/sh/clk/cpg.c
+> @@ -40,7 +40,7 @@ static int sh_clk_mstp_enable(struct clk *clk)
+>  {
+>  	sh_clk_write(sh_clk_read(clk) & ~(1 << clk->enable_bit), clk);
+>  	if (clk->status_reg) {
+> -		unsigned int (*read)(void __iomem *addr);
+> +		unsigned int (*read)(const void __iomem *addr);
+>  		int i;
+>  		void __iomem *mapped_status = (phys_addr_t)clk->status_reg -
+>  			(phys_addr_t)clk->enable_reg + clk->mapped_reg;
 
-I have collected all patches that I am currently using on my SH-7785LCR in a repository
-on github, see [1].
-
-These contain all patches by Geert, Christoph, my patch, Michael's patches and the
-two fixes by Peter Zijlstra and Matthew Wilcox.
-
-One patch by Peter Zijlstra (sh_tlb: Fix __pmd_free_tlb()) did not apply, I assume
-because it must be committed with the whole series [2].
+Is that a reverted patch, by any chance? The patch does not apply for me and looking at
+the sources, the qualifier is already "const" [1].
 
 Adrian
 
-> [1] https://github.com/glaubitz/linux/commits/sh-queue
-> [2] https://marc.info/?l=linux-mm&m=159498447020445&w=2
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/sh/clk/cpg.c#n58
 
 -- 
  .''`.  John Paul Adrian Glaubitz
