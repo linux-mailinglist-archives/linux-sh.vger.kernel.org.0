@@ -2,38 +2,38 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CFDE22C098
+	by mail.lfdr.de (Postfix) with ESMTP id 8ADDE22C099
 	for <lists+linux-sh@lfdr.de>; Fri, 24 Jul 2020 10:23:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726899AbgGXIW5 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 24 Jul 2020 04:22:57 -0400
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:58709 "EHLO
+        id S1726947AbgGXIW7 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 24 Jul 2020 04:22:59 -0400
+Received: from us-smtp-2.mimecast.com ([207.211.31.81]:53015 "EHLO
         us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726820AbgGXIWx (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 24 Jul 2020 04:22:53 -0400
+        by vger.kernel.org with ESMTP id S1726904AbgGXIW7 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 24 Jul 2020 04:22:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1595578971;
+        s=mimecast20190719; t=1595578977;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-        bh=lVgrrB2u3RkVMlRU7KdD6hpnUdQ/Fi3j0u87ZOZXuh4=;
-        b=J4ucai3DQMp0UhNDuvdnTM3ln1PVC7xJsZCUG5hZ662213DFSB51l/on+YARAOEje7LyIa
-        zarV6jiclbecO3FT1lJmNuUaHCO4VId0ow/4aVrciumrY5OyMi6tHegAKjyNX2drk21EV3
-        yISXKMHBJK9+rEKD75Zd9kgDDiqD7Io=
+        bh=wkvVIR8cYNv8+fiecoy4rbs/smgwl2WUKEd4H18tvD4=;
+        b=KuNAV9D8s8MP8lYavWbByOrn+ovW3vTeCTsfiyWETFkw4w08A/i16xtaQMmVi22J0VqhZH
+        GoBvMMrRVhlKDkmzIIzSH6pcjNW6ikoG2pFkuV0+TkIheUVlGswX7qihTVbns5ouFUbz6J
+        +kOmEnHNCco8LsJ2NNbPxerjiN4GFS8=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-334-zmud_EehM5SrJmK4yMbVxA-1; Fri, 24 Jul 2020 04:22:47 -0400
-X-MC-Unique: zmud_EehM5SrJmK4yMbVxA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+ us-mta-109-ic6yoDG9MvK9ips6WPGgYw-1; Fri, 24 Jul 2020 04:22:53 -0400
+X-MC-Unique: ic6yoDG9MvK9ips6WPGgYw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 55D3A57;
-        Fri, 24 Jul 2020 08:22:45 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 1784480183C;
+        Fri, 24 Jul 2020 08:22:51 +0000 (UTC)
 Received: from [10.36.113.94] (ovpn-113-94.ams2.redhat.com [10.36.113.94])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id AA54F10013D9;
-        Fri, 24 Jul 2020 08:22:42 +0000 (UTC)
-Subject: Re: [PATCH 2/3] sh/mm: Drop unused MAX_PHYSADDR_BITS
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 596C15FC3B;
+        Fri, 24 Jul 2020 08:22:48 +0000 (UTC)
+Subject: Re: [PATCH 3/3] sparc: Drop unused MAX_PHYSADDR_BITS
 To:     Arvind Sankar <nivedita@alum.mit.edu>, x86@kernel.org,
         Dave Hansen <dave.hansen@linux.intel.com>,
         Andy Lutomirski <luto@kernel.org>,
@@ -45,7 +45,7 @@ To:     Arvind Sankar <nivedita@alum.mit.edu>, x86@kernel.org,
 Cc:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
         linux-kernel@vger.kernel.org
 References: <20200723231544.17274-1-nivedita@alum.mit.edu>
- <20200723231544.17274-3-nivedita@alum.mit.edu>
+ <20200723231544.17274-4-nivedita@alum.mit.edu>
 From:   David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  mQINBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -92,16 +92,16 @@ Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat GmbH
-Message-ID: <f65927b5-ded7-fdd2-c7c1-c2419ded6a2c@redhat.com>
-Date:   Fri, 24 Jul 2020 10:22:41 +0200
+Message-ID: <405d44f1-9042-d22e-8478-7bc2d5f89c61@redhat.com>
+Date:   Fri, 24 Jul 2020 10:22:47 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
-In-Reply-To: <20200723231544.17274-3-nivedita@alum.mit.edu>
+In-Reply-To: <20200723231544.17274-4-nivedita@alum.mit.edu>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
@@ -112,26 +112,21 @@ On 24.07.20 01:15, Arvind Sankar wrote:
 > 
 > Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
 > ---
->  arch/sh/include/asm/sparsemem.h | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
+>  arch/sparc/include/asm/sparsemem.h | 1 -
+>  1 file changed, 1 deletion(-)
 > 
-> diff --git a/arch/sh/include/asm/sparsemem.h b/arch/sh/include/asm/sparsemem.h
-> index 4eb899751e45..084706bb8cca 100644
-> --- a/arch/sh/include/asm/sparsemem.h
-> +++ b/arch/sh/include/asm/sparsemem.h
-> @@ -5,11 +5,9 @@
->  #ifdef __KERNEL__
->  /*
->   * SECTION_SIZE_BITS		2^N: how big each section will be
-> - * MAX_PHYSADDR_BITS		2^N: how much physical address space we have
-> - * MAX_PHYSMEM_BITS		2^N: how much memory we can have in that space
-> + * MAX_PHYSMEM_BITS		2^N: how much physical address space we have
->   */
->  #define SECTION_SIZE_BITS	26
-> -#define MAX_PHYSADDR_BITS	32
->  #define MAX_PHYSMEM_BITS	32
+> diff --git a/arch/sparc/include/asm/sparsemem.h b/arch/sparc/include/asm/sparsemem.h
+> index 1dd1b61432db..aa9a676bc341 100644
+> --- a/arch/sparc/include/asm/sparsemem.h
+> +++ b/arch/sparc/include/asm/sparsemem.h
+> @@ -7,7 +7,6 @@
+>  #include <asm/page.h>
 >  
->  #endif
+>  #define SECTION_SIZE_BITS       30
+> -#define MAX_PHYSADDR_BITS       MAX_PHYS_ADDRESS_BITS
+>  #define MAX_PHYSMEM_BITS        MAX_PHYS_ADDRESS_BITS
+>  
+>  #endif /* !(__KERNEL__) */
 > 
 
 Reviewed-by: David Hildenbrand <david@redhat.com>
