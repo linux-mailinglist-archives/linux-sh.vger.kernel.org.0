@@ -2,48 +2,111 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 737BE22C935
-	for <lists+linux-sh@lfdr.de>; Fri, 24 Jul 2020 17:30:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A41E22CED2
+	for <lists+linux-sh@lfdr.de>; Fri, 24 Jul 2020 21:44:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726747AbgGXP3m (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 24 Jul 2020 11:29:42 -0400
-Received: from [125.140.134.231] ([125.140.134.231]:53505 "EHLO
-        WIN-DAONO245HJF" rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726947AbgGXP3m (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 24 Jul 2020 11:29:42 -0400
-Received: from User ([66.154.113.229]) by WIN-DAONO245HJF with Microsoft SMTPSVC(8.5.9600.16384);
-         Sat, 25 Jul 2020 00:23:35 +0900
-Reply-To: <christopherwang36@gmail.com>
-From:   "CHRISTOPHER WANG" <christopherwang36@gmail.com>
-Subject: INVESTMENT
-Date:   Fri, 24 Jul 2020 08:23:53 -0700
+        id S1726663AbgGXToZ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 24 Jul 2020 15:44:25 -0400
+Received: from brightrain.aerifal.cx ([216.12.86.13]:35642 "EHLO
+        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726651AbgGXToZ (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 24 Jul 2020 15:44:25 -0400
+Date:   Fri, 24 Jul 2020 15:44:23 -0400
+From:   Rich Felker <dalias@libc.org>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] sh: add missing EXPORT_SYMBOL() for __delay
+Message-ID: <20200724194423.GJ6949@brightrain.aerifal.cx>
+References: <87wob2clos.wl-kuninori.morimoto.gx@renesas.com>
+ <20200722023840.GA55317@roeck-us.net>
+ <20200722225239.GX14669@brightrain.aerifal.cx>
+ <fa0456c9-cef0-45e7-59d7-ad652734b1d5@roeck-us.net>
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID: <WIN-DAONO245HJFgqGM008ef917@WIN-DAONO245HJF>
-X-OriginalArrivalTime: 24 Jul 2020 15:23:36.0067 (UTC) FILETIME=[66408530:01D661CE]
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fa0456c9-cef0-45e7-59d7-ad652734b1d5@roeck-us.net>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
+On Wed, Jul 22, 2020 at 04:52:56PM -0700, Guenter Roeck wrote:
+> Rich,
+> 
+> On 7/22/20 3:52 PM, Rich Felker wrote:
+> > On Tue, Jul 21, 2020 at 07:38:40PM -0700, Guenter Roeck wrote:
+> >> On Thu, Dec 12, 2019 at 11:38:43AM +0900, Kuninori Morimoto wrote:
+> >>> From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+> >>>
+> >>> __delay() is used from kernel module.
+> >>> We need EXPORT_SYMBOL(), otherwise we will get compile error.
+> >>>
+> >>> ERROR: "__delay" [drivers/net/phy/mdio-cavium.ko] undefined!
+> >>>
+> >>> Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+> >>
+> >> I must admit that this patch completely baffles me. __delay was
+> >> already exported, only elsewhere in the file. With this patch
+> >> in place, it is exported twice, and all sh builds in -next fail
+> >> with
+> >>
+> >> In file included from include/linux/linkage.h:7,
+> >>                  from arch/sh/include/asm/bug.h:5,
+> >>                  from include/linux/bug.h:5,
+> >>                  from include/linux/thread_info.h:12,
+> >>                  from include/asm-generic/current.h:5,
+> >>                  from ./arch/sh/include/generated/asm/current.h:1,
+> >>                  from include/linux/sched.h:12,
+> >>                  from arch/sh/lib/delay.c:8:
+> >> include/linux/export.h:67:36: error: redefinition of '__ksymtab___delay'
+> >>
+> >> Guenter
+> >>
+> >>> ---
+> >>>  arch/sh/lib/delay.c | 1 +
+> >>>  1 file changed, 1 insertion(+)
+> >>>
+> >>> diff --git a/arch/sh/lib/delay.c b/arch/sh/lib/delay.c
+> >>> index dad8e6a..540e670 100644
+> >>> --- a/arch/sh/lib/delay.c
+> >>> +++ b/arch/sh/lib/delay.c
+> >>> @@ -29,6 +29,7 @@ void __delay(unsigned long loops)
+> >>>  		: "0" (loops)
+> >>>  		: "t");
+> >>>  }
+> >>> +EXPORT_SYMBOL(__delay);
+> >>>  
+> >>>  inline void __const_udelay(unsigned long xloops)
+> >>>  {
+> > 
+> > I presently have a revert of this commit in queue for next. If it's
+> > sufficiently breaking (and especially if there are other regressions
+> > that need to be fixed, see the pmd_free thing) I could try to get it
+> > in for 5.8 still but that's getting a bit late.
+> > 
+> 
+> The patch in mainline is ok. It appears that it has been applied
+> again in -next.
+> 
+> "git log --oneline v5.7.. arch/sh/lib/delay.c" on top of next-20200721
+> reports:
+> 
+> ee0e4f15dfd4 (origin/akpm) sh: add missing EXPORT_SYMBOL() for __delay
+> d1f56f318d23 sh: add missing EXPORT_SYMBOL() for __delay
+> 
+> Maybe it just needs to be dropped from the akpm tree in -next ?
 
+Could it be a bad merge or patch applied twice or something? I don't
+see how the symbol is being exported twice. The argument to revert the
+patch still seems correct.
 
-Good day,
+Looking at current linux-next, ba722ca780 from akpm is re-adding the
+patch after it gets reverted. Andrew, could you drop your copy of this
+patch? It's already upstream as of 5.8-rc1 and now just needs to be
+reverted upstream.
 
-You were recommended by a mutual associate. I write you regarding an investment of bearer bonds I made on behalf of a client. 
-
-       The investment was made in 2009 and has been under my management. The said investor is deceased. The window is now available to assign these bonds to any name or company of my choice. I have all the necessary information to achieve this within 10 banking days.
-      
-       The total value of the bond is 100million pounds sterling, in a million pound denominations.
-      
-        If you can handle this, do contact me at your earliest convenience via my email christopherwang36@gmail.com
-So we can discuss the final details Thank you.
- 
-Mr CHRISTOPHER WANG
+Rich
