@@ -2,127 +2,78 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A03D322D70F
-	for <lists+linux-sh@lfdr.de>; Sat, 25 Jul 2020 13:29:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8B4022DC57
+	for <lists+linux-sh@lfdr.de>; Sun, 26 Jul 2020 08:49:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726956AbgGYL2s (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sat, 25 Jul 2020 07:28:48 -0400
-Received: from mout.web.de ([212.227.15.14]:36503 "EHLO mout.web.de"
+        id S1726072AbgGZGtJ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sun, 26 Jul 2020 02:49:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56576 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726612AbgGYL2r (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Sat, 25 Jul 2020 07:28:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1595676482;
-        bh=tL632JoesBjA1nIjOOtilNQQx0JJmdlSdql+Vgh01R0=;
-        h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=KirK2Giuq/oI0i9/TOwFC7RXcEVUDLETNSS3bDPmLGguFu4QpmFB0EjuKG7YQfUTx
-         n77JiO1TlmZo0+HhUZ4eX2jVCRvM8NSU4hdo9vYBMBNU4BayknUHNvcgHob8NGp27H
-         SmOsXcr7SZGursUrDGx5OH6y0WmnC5AJf/W0wfQU=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.135.94.55]) by smtp.web.de (mrweb003
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0M8hxz-1kmhdp2cDb-00wBcX; Sat, 25
- Jul 2020 13:28:02 +0200
-To:     Yi Wang <wang.yi59@zte.com.cn>,
-        Liao Pingfang <liao.pingfang@zte.com.cn>,
-        linux-sh@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
+        id S1725789AbgGZGtJ (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Sun, 26 Jul 2020 02:49:09 -0400
+Received: from kernel.org (unknown [87.71.40.38])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 75253206E3;
+        Sun, 26 Jul 2020 06:49:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1595746148;
+        bh=+VYq+RbQ8frAwBD/FYSNz/CnuEVFlWBkeansQT6Isw0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=VnlF+wl9+bUq/TNkYnxiQvU10+8DdZePmQB8HlLOD5srQD5hzxcbMVkUQXaPhyFFF
+         ubgNoXgoKP6b4LmTHxJDt35YjsGrbk7+9KJGO4RXsMqnDEQ4d7G+l9Vk4e3ZykZ0lk
+         CD6P0UxTVhi2Bpq4xdOn6k8h+ASPvzyQeqEXFCbM=
+Date:   Sun, 26 Jul 2020 09:48:59 +0300
+From:   Mike Rapoport <rppt@kernel.org>
+To:     Arvind Sankar <nivedita@alum.mit.edu>
+Cc:     x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
-        Rich Felker <dalias@libc.org>,
-        Wang Liang <wang.liang82@zte.com.cn>,
-        Xue Zhihong <xue.zhihong@zte.com.cn>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: Re: [PATCH] sh: sh4: Fix reference count leak in sq_dev_add
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <12d84b44-96c8-ee11-fff8-b1a7ea6b0d7c@web.de>
-Date:   Sat, 25 Jul 2020 13:27:56 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        linux-sh@vger.kernel.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, sparclinux@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/3] Drop unused MAX_PHYSADDR_BITS
+Message-ID: <20200726064859.GA2835983@kernel.org>
+References: <20200723231544.17274-1-nivedita@alum.mit.edu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:bFIRIPpz0mwd/cEGOsK55a8GXJvnM2pc8bURK7XeKErXRWl7aJn
- +GvcuU4gLrwyL7LKdv5kRg/eIAGScGG5uMzJHwmVJen3ACg+cXpLA8r8PNreZ77AYoIF70g
- CSe40jrf0WRB6tmoNJpW2WcTbYexM4OgSz5p0nVSzpiPuDs+0FBn0xs+3GW6YCG+5PtzMb+
- fOH1wb1VzuKcH4EjsBzFw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:IhFmOiaMMh0=:/xAZbNULFM+YFruV7Bhasf
- CjrEQuyG8fc8TEQoFPuoYZlYIzBMSwECYS5Fg1FSJt6EfN2qRKpRqW/saAQr2cSuDsQ1WRz4O
- zLltHWydBtRzJtXitdcnqFoMANVUF2zusw0bItySYlWfjv77najf2OibKI71oKKq2n3uS4krA
- eWY729dko+qS2n8tnP5Wn+ZK0NA5BCPBtz2T7QqfWzzI58YFEJU0pXTs6q1XSIpYm+1/zpzbI
- XiYswl/8lpMVAJfwm2e7BnBSroOmgZaOXqRI8WccAXlZSftRPG1SqxiE1MSUDdThWHqFPczUw
- ZbH5+gZPCq2CV8hQGWDH8ZlMhfHasLRg9KRxum2zGqBze4ySjHGCPUHT+IQoo9HCTOByOECHk
- xPJbq2s6hWfy28jN18t3KxxFTBxIt8fvxrtYupiLe5+eEI7SY3tnm997cNB366J+V99GV68FT
- +vkc1FG/vdiQv/MDyNr7Az5SYXct1dVBWmGRtr3j10gC0ZB6UKrE4W/AXPoNY6fb6grRdfJ8v
- Lpy0wkMrQvZr+4rDQX1fvFlcFgGGyKtMps9/WEdx3b+wOJNaGjJNaoA1jU75QORbzpZqq5P5h
- yM4Ta5BBEtm2DKKh0o8FQCOrAIMpkOJrK6My+bMSvG8ax7/ijIEAtI2Q8qii6NuAPjg3JBSQs
- 3cH0Re5eFTqcWSN0IsXDZYLVIK9PtI52K25jDJTtIRdtEgkTuhyJU/tc/fhhei2j9VSjaAe9h
- i0MvOwpsQ3KJU3r0uAMfJDFG6y+y42kCNzjOU9NE8Z9FYNGsEWl2v01v1wGuo9S5Z/XPBKSlj
- Z7vXB4WpUPhTiTm7WvW9nntS/pJGNWMLADX9kBtxc78dlGGMpz5vCWbLTs7/e2KqcYHJiBjHM
- t9PZc8UU2cXOSTd6S8Hbe7sM/PoFQe/tNv4Hr+OL7F7XXn4cNuoAz1Jl/YDzqD/eDYnpeAHhp
- nknrn+bZ8oPP7rYp3ImWEOM5Ztd/OkBffVJqmeWnLf26K5dGIdIKYHNi3HTLkTnjIN/4KGjKX
- KAI7XKNzRW7JT02c1cyzin/bXCz2Jz0JZ+n0ZJQZ4fFCFoyuHyz2GaXJYLA85+IZFXh0UbyD3
- YApPYfmtPt3AXTJo1ITiV+c2inD+k4IBmz9gx4mZtX1HQ402LvBBqUX+SGiiUB6ozlav+4BYW
- SZEI2Ug49YFbZo5RjJwCyf6H47DMLS3Iyby7XBDS6yh6xdlapOPdwV8fVdyzcKYwsu/ysMT6s
- 964HF7j5aY0b4nuqmdHF0vo0nn2tgTtmo4RGzmQ==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200723231544.17274-1-nivedita@alum.mit.edu>
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-> kobject_init_and_add() takes reference even when it fails. If this
-> function returns an error, kobject_put() must be called to properly
-> clean up the memory associated with the object.
+On Thu, Jul 23, 2020 at 07:15:41PM -0400, Arvind Sankar wrote:
+> This #define is not used anywhere, and has the wrong value on x86_64.
+> 
+> I tried digging into the history a bit, but it seems to have been unused
+> even in the initial merge of sparsemem in v2.6.13, when it was first
+> defined.
+> 
+> Arvind Sankar (3):
+>   x86/mm: Drop unused MAX_PHYSADDR_BITS
+>   sh/mm: Drop unused MAX_PHYSADDR_BITS
+>   sparc: Drop unused MAX_PHYSADDR_BITS
 
-* An imperative wording can be preferred for the change description,
-  can't it?
+For the series
 
-* Would you like to add the tag =E2=80=9CFixes=E2=80=9D to the commit mess=
-age?
+Acked-by: Mike Rapoport <rppt@linux.ibm.com>
 
-Regards,
-Markus
+ 
+>  arch/sh/include/asm/sparsemem.h    | 4 +---
+>  arch/sparc/include/asm/sparsemem.h | 1 -
+>  arch/x86/include/asm/sparsemem.h   | 6 +-----
+>  3 files changed, 2 insertions(+), 9 deletions(-)
+> 
+> -- 
+> 2.26.2
+> 
+> 
+
+-- 
+Sincerely yours,
+Mike.
