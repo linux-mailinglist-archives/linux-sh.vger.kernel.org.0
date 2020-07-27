@@ -2,78 +2,141 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C8B4022DC57
-	for <lists+linux-sh@lfdr.de>; Sun, 26 Jul 2020 08:49:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F24A22EC89
+	for <lists+linux-sh@lfdr.de>; Mon, 27 Jul 2020 14:49:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726072AbgGZGtJ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sun, 26 Jul 2020 02:49:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56576 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725789AbgGZGtJ (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Sun, 26 Jul 2020 02:49:09 -0400
-Received: from kernel.org (unknown [87.71.40.38])
+        id S1728496AbgG0MtA (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 27 Jul 2020 08:49:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50438 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728128AbgG0Ms7 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 27 Jul 2020 08:48:59 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3D71C061794;
+        Mon, 27 Jul 2020 05:48:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Type:MIME-Version:Message-ID:
+        Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+        Content-Description:In-Reply-To:References;
+        bh=Lp/5v08SyWXAamPuAUqdz1ZhLZFu/l4VoMBD8cBUeVs=; b=VsfekhRsmI3HDR4Iwxer3bGlBW
+        DKdptTONCfY3KRGq3sXFq3KyAuBC9bKCa/hChvF6AjBMdpAlYLYFZ88YHzikineaZR9iU/rqgrulo
+        7C8JJQVLf7s6wAPh5z6+4jG4V8m7msCfjID6Pg82Uc1f9gl99qPNC+wpE24gP0XIFwxTsmLverVqY
+        xapDU5m5c3L/IppYbnKX/4DfY8orRy7MaJUJz1SgVCUMzwfxfnz/QMvwcgTIzdXb21ZFm104QZg4z
+        N0J5hwjaDPgP/TmU/OagfLN8+xKvObg/h7MNogAcu8f0PXBkZzKJdO4hyoJXXABY4mak5pHPZKI8M
+        FmEoA02Q==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1k02Yn-00084B-7N; Mon, 27 Jul 2020 12:48:53 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 75253206E3;
-        Sun, 26 Jul 2020 06:49:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595746148;
-        bh=+VYq+RbQ8frAwBD/FYSNz/CnuEVFlWBkeansQT6Isw0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=VnlF+wl9+bUq/TNkYnxiQvU10+8DdZePmQB8HlLOD5srQD5hzxcbMVkUQXaPhyFFF
-         ubgNoXgoKP6b4LmTHxJDt35YjsGrbk7+9KJGO4RXsMqnDEQ4d7G+l9Vk4e3ZykZ0lk
-         CD6P0UxTVhi2Bpq4xdOn6k8h+ASPvzyQeqEXFCbM=
-Date:   Sun, 26 Jul 2020 09:48:59 +0300
-From:   Mike Rapoport <rppt@kernel.org>
-To:     Arvind Sankar <nivedita@alum.mit.edu>
-Cc:     x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        linux-sh@vger.kernel.org,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, sparclinux@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/3] Drop unused MAX_PHYSADDR_BITS
-Message-ID: <20200726064859.GA2835983@kernel.org>
-References: <20200723231544.17274-1-nivedita@alum.mit.edu>
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id A5BA7301EE3;
+        Mon, 27 Jul 2020 14:48:52 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 8462229DBC080; Mon, 27 Jul 2020 14:48:52 +0200 (CEST)
+Date:   Mon, 27 Jul 2020 14:48:52 +0200
+From:   peterz@infradead.org
+To:     Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, x86@kernel.org,
+        linux-sh@vger.kernel.org, borntraeger@de.ibm.com,
+        jcmvbkbc@gmail.com
+Subject: [PATCH] lockdep: Fix TRACE_IRQFLAGS vs NMIs
+Message-ID: <20200727124852.GK119549@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200723231544.17274-1-nivedita@alum.mit.edu>
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Thu, Jul 23, 2020 at 07:15:41PM -0400, Arvind Sankar wrote:
-> This #define is not used anywhere, and has the wrong value on x86_64.
-> 
-> I tried digging into the history a bit, but it seems to have been unused
-> even in the initial merge of sparsemem in v2.6.13, when it was first
-> defined.
-> 
-> Arvind Sankar (3):
->   x86/mm: Drop unused MAX_PHYSADDR_BITS
->   sh/mm: Drop unused MAX_PHYSADDR_BITS
->   sparc: Drop unused MAX_PHYSADDR_BITS
 
-For the series
+Prior to commit 859d069ee1dd ("lockdep: Prepare for NMI IRQ state
+tracking") IRQ state tracking was disabled in NMIs due to nmi_enter()
+doing lockdep_off() -- with the obvious requirement that NMI entry
+call nmi_enter() before trace_hardirqs_off().
 
-Acked-by: Mike Rapoport <rppt@linux.ibm.com>
+[ afaict, PowerPC and SH violate this order on their NMI entry ]
 
+However, that commit explicitly changed lockdep_hardirqs_*() to ignore
+lockdep_off() and breaks every architecture that has irq-tracing in
+it's NMI entry that hasn't been fixed up (x86 being the only fixed one
+at this point).
+
+The reason for this change is that by ignoring lockdep_off() we can:
+
+  - get rid of 'current->lockdep_recursion' in lockdep_assert_irqs*()
+    which was going to to give header-recursion issues with the
+    seqlock rework.
+
+  - allow these lockdep_assert_*() macros to function in NMI context.
+
+Restore the previous state of things and allow an architecture to
+opt-in to the NMI IRQ tracking support, however instead of relying on
+lockdep_off(), rely on in_nmi(), both are part of nmi_enter() and so
+over-all entry ordering doesn't need to change.
+
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+---
+ arch/x86/Kconfig.debug   |    3 +++
+ kernel/locking/lockdep.c |    8 +++++++-
+ lib/Kconfig.debug        |    6 ++++++
+ 3 files changed, 16 insertions(+), 1 deletion(-)
+
+--- a/arch/x86/Kconfig.debug
++++ b/arch/x86/Kconfig.debug
+@@ -3,6 +3,9 @@
+ config TRACE_IRQFLAGS_SUPPORT
+ 	def_bool y
  
->  arch/sh/include/asm/sparsemem.h    | 4 +---
->  arch/sparc/include/asm/sparsemem.h | 1 -
->  arch/x86/include/asm/sparsemem.h   | 6 +-----
->  3 files changed, 2 insertions(+), 9 deletions(-)
-> 
-> -- 
-> 2.26.2
-> 
-> 
-
--- 
-Sincerely yours,
-Mike.
++config TRACE_IRQFLAGS_NMI_SUPPORT
++	def_bool y
++
+ config EARLY_PRINTK_USB
+ 	bool
+ 
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -3712,6 +3712,9 @@ void noinstr lockdep_hardirqs_on(unsigne
+ 	 * and not rely on hardware state like normal interrupts.
+ 	 */
+ 	if (unlikely(in_nmi())) {
++		if (!IS_ENABLED(CONFIG_TRACE_IRQFLAGS_NMI))
++			return;
++
+ 		/*
+ 		 * Skip:
+ 		 *  - recursion check, because NMI can hit lockdep;
+@@ -3773,7 +3776,10 @@ void noinstr lockdep_hardirqs_off(unsign
+ 	 * they will restore the software state. This ensures the software
+ 	 * state is consistent inside NMIs as well.
+ 	 */
+-	if (unlikely(!in_nmi() && (current->lockdep_recursion & LOCKDEP_RECURSION_MASK)))
++	if (in_nmi()) {
++		if (!IS_ENABLED(CONFIG_TRACE_IRQFLAGS_NMI))
++			return;
++	} else if (current->lockdep_recursion & LOCKDEP_RECURSION_MASK)
+ 		return;
+ 
+ 	/*
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -1325,11 +1325,17 @@ config WW_MUTEX_SELFTEST
+ endmenu # lock debugging
+ 
+ config TRACE_IRQFLAGS
++	depends on TRACE_IRQFLAGS_SUPPORT
+ 	bool
+ 	help
+ 	  Enables hooks to interrupt enabling and disabling for
+ 	  either tracing or lock debugging.
+ 
++config TRACE_IRQFLAGS_NMI
++	def_bool y
++	depends on TRACE_IRQFLAGS
++	depends on TRACE_IRQFLAGS_NMI_SUPPORT
++
+ config STACKTRACE
+ 	bool "Stack backtrace support"
+ 	depends on STACKTRACE_SUPPORT
