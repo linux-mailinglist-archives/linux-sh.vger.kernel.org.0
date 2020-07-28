@@ -2,54 +2,53 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CE182304F8
-	for <lists+linux-sh@lfdr.de>; Tue, 28 Jul 2020 10:09:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BC672307F4
+	for <lists+linux-sh@lfdr.de>; Tue, 28 Jul 2020 12:44:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727975AbgG1IJ6 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 28 Jul 2020 04:09:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33390 "EHLO
+        id S1728797AbgG1Koq (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 28 Jul 2020 06:44:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727957AbgG1IJ5 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 28 Jul 2020 04:09:57 -0400
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B5DBC061794;
-        Tue, 28 Jul 2020 01:09:57 -0700 (PDT)
-Received: by mail-pj1-x1044.google.com with SMTP id c6so4500536pje.1;
-        Tue, 28 Jul 2020 01:09:57 -0700 (PDT)
+        with ESMTP id S1728566AbgG1Koq (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 28 Jul 2020 06:44:46 -0400
+Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B836FC061794;
+        Tue, 28 Jul 2020 03:44:45 -0700 (PDT)
+Received: by mail-ed1-x543.google.com with SMTP id c2so8588299edx.8;
+        Tue, 28 Jul 2020 03:44:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=mO4UW6jhce2IwLYWJIjyNoNVa+Gr5PBQ2rV1LkhhIeA=;
-        b=bNG6JL/O5TVQki3sHfHEOfTczEIMUXR0OLqZGWSVnVXN0YvSLXQj4R1CZin1hIrLmj
-         rDRSSHKktD8YAK18dQ3Ix7Lo07yJ8erIxBxxxxqVLyUXKDeyjbkBvyU6KTuEXDNL+VQr
-         1QQzuFpqB0CYmf+5pX3A4eJDz9R/FeezQPycBuGnXY4EFLSYZVijwWE1t6E2M5B99qAH
-         FniHRX5RxN1gZw65OKCdqnG/UzIrS3ICQ278hYR6IoGyzyd6ykow+PajTtCN7ldzFD83
-         Hcz6o03i9dPHjv0yz+B7ucVCSupfsp/DKM7XkQQq14g4beE60uqTFBLLU79wWmkWweg4
-         xE4g==
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=3Jtd/NLDfEi5mS55S0K4WbnSIzqpGJbZScZKeEtsXAQ=;
+        b=rFUcMCUj2AwdC69csGGjJVjr3K/8WS4HC4QuFwZtg451Qj4L37BpO16QBPnCSOnEqP
+         0XLFh6CAcMNi+86g1xCyy/bqdVTYRHcM+S9kEIZb7EWJKKOmGB7fGMyBy9goHLKaJvij
+         l3J//FegCgxfC20hSO+SeOOi0ojcNdANd874jllkW9bgWXdBSGjDZ+KKsJ5ItnWu5ElM
+         TutsV7Y/UWKyR2rEXX1BEUlxaWMHKF0PMaSsOZWNK/0D0ZH9xxW9nIbDP8AygACtKk6q
+         SuVbplxJKZehbky/ztC2U7bihOneNjqjj52Fn1yyk39lDMDQeAEZqoI3viUUxFXSv5vl
+         9XJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=mO4UW6jhce2IwLYWJIjyNoNVa+Gr5PBQ2rV1LkhhIeA=;
-        b=iKbMqv6YWFfTuQyp7LJGhYnHsT7VISK/ULa68hwOyFUZI/8BDvhjrTMntvHOyAhDX4
-         UynKhAIJxwNiSXzNkFYp9E/GcRGLfyKXv2A7lVy8936IjWzzNF44XcisMb6IcKP2rL1M
-         ba3qj5ONlWNertiHBRm8KTIjMBjBocdNSSuOpsWKSGLPBHbo50DY3YUd6BX7+bKEqTrC
-         Ht51HhDDxhNQDotRTCLm9rjvL3zBmGOuVlXUdmTCU65DPAcCGEGdbs88oLpFR64hEZgM
-         DCJ1+I+bAMi8ySkhYONeVzPUaisUoBFYTXkHv5YycxyaqxfS56oAoZFmFYsqR0oFhMzy
-         7QiA==
-X-Gm-Message-State: AOAM533neudT2JA6Nl4ernTNisviKdbOXElKFmdL60zeWfA5qp27R35M
-        hcLkeZiVaZitgDHBJ6PcWz6FUQVmul333YbMd9I=
-X-Google-Smtp-Source: ABdhPJwl2tr9ClL3asn7D0daWCLxpbWcicGBHl3RglmUadciWpYNtKvtb4F0xzOXS215QqSA9z2se3QNEhc8iGYlMEA=
-X-Received: by 2002:a17:90a:8918:: with SMTP id u24mr3082134pjn.7.1595923796912;
- Tue, 28 Jul 2020 01:09:56 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200728051153.1590-1-rppt@kernel.org> <20200728051153.1590-4-rppt@kernel.org>
-In-Reply-To: <20200728051153.1590-4-rppt@kernel.org>
-From:   Max Filippov <jcmvbkbc@gmail.com>
-Date:   Tue, 28 Jul 2020 01:09:45 -0700
-Message-ID: <CAMo8Bf+VKHmAm1GV=0D9Um2mpsxjnwp9WrAJq_eKW1MK+_8r6g@mail.gmail.com>
-Subject: Re: [PATCH 03/15] arm, xtensa: simplify initialization of high memory pages
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=3Jtd/NLDfEi5mS55S0K4WbnSIzqpGJbZScZKeEtsXAQ=;
+        b=ZSQUTmefeWtLK+CEQ054R8zMjwmMr1kQGHV//SrV/Y7NrFrRJ4LYlseGfoN/hq3CMG
+         I8GvY7tiADo4UFH7Is3XoHqXnHo/DvY1E4xdG8kI5X92lzDEg624ps0HiRRY6FjAQdo1
+         IdZjS0135VXkU7hpgT8x2Q1QSC3ceQkZ6/8g+BJezbXSo+KU/3BhgJirmIqHSHwaIheD
+         9hUvgz+0qewAIgFn0bZBTtEMyBT5kyOJnGsyAQZgYlhE8h2YDAKRsYfjuMdhTDmSPpy3
+         TJTUWePl+6L4iEHGGhEU9iwwQmNHPKbuxNGnpykm8Nu27GRT4TsyvefzlxZ+sgA5r5F6
+         K1DA==
+X-Gm-Message-State: AOAM5320ckPRT4QDJ4QrsdqQf3JNcI55zxYPlDM3R9GhQb13GjHrfS/b
+        BBdHsWr5QRCXwQoFBbH/UIg=
+X-Google-Smtp-Source: ABdhPJztizS2/FT37W5GVOnd6egL7RbIXP7ubjCB3LMqpraJ3F9fNNOV7TQhtwANWplTQvf13TbOQg==
+X-Received: by 2002:aa7:dd15:: with SMTP id i21mr12013673edv.153.1595933084517;
+        Tue, 28 Jul 2020 03:44:44 -0700 (PDT)
+Received: from gmail.com (54033286.catv.pool.telekom.hu. [84.3.50.134])
+        by smtp.gmail.com with ESMTPSA id cf10sm460841ejb.4.2020.07.28.03.44.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Jul 2020 03:44:43 -0700 (PDT)
+Date:   Tue, 28 Jul 2020 12:44:40 +0200
+From:   Ingo Molnar <mingo@kernel.org>
 To:     Mike Rapoport <rppt@kernel.org>
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
         Andy Lutomirski <luto@kernel.org>,
@@ -60,6 +59,7 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         Ingo Molnar <mingo@redhat.com>,
         Marek Szyprowski <m.szyprowski@samsung.com>,
+        Max Filippov <jcmvbkbc@gmail.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Michal Simek <monstr@monstr.eu>,
         Mike Rapoport <rppt@linux.ibm.com>,
@@ -75,45 +75,48 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>,
         clang-built-linux@googlegroups.com,
         iommu@lists.linux-foundation.org,
         linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
-        LKML <linux-kernel@vger.kernel.org>, linux-mips@vger.kernel.org,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        linux-riscv@lists.infradead.org,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        "open list:SUPERH" <linux-sh@vger.kernel.org>,
-        "open list:TENSILICA XTENSA PORT (xtensa)" 
-        <linux-xtensa@linux-xtensa.org>, linuxppc-dev@lists.ozlabs.org,
-        openrisc@lists.librecores.org,
-        "open list:SPARC + UltraSPAR..." <sparclinux@vger.kernel.org>,
-        "moderated list:H8/300 ARCHITECTURE" 
-        <uclinux-h8-devel@lists.sourceforge.jp>,
-        "maintainer:X86 ARCHITECTURE..." <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-mm@kvack.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, linuxppc-dev@lists.ozlabs.org,
+        openrisc@lists.librecores.org, sparclinux@vger.kernel.org,
+        uclinux-h8-devel@lists.sourceforge.jp, x86@kernel.org
+Subject: Re: [PATCH 14/15] x86/numa: remove redundant iteration over
+ memblock.reserved
+Message-ID: <20200728104440.GA222284@gmail.com>
+References: <20200728051153.1590-1-rppt@kernel.org>
+ <20200728051153.1590-15-rppt@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200728051153.1590-15-rppt@kernel.org>
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Mon, Jul 27, 2020 at 10:12 PM Mike Rapoport <rppt@kernel.org> wrote:
->
+
+* Mike Rapoport <rppt@kernel.org> wrote:
+
 > From: Mike Rapoport <rppt@linux.ibm.com>
->
-> The function free_highpages() in both arm and xtensa essentially open-code
-> for_each_free_mem_range() loop to detect high memory pages that were not
-> reserved and that should be initialized and passed to the buddy allocator.
->
-> Replace open-coded implementation of for_each_free_mem_range() with usage
-> of memblock API to simplify the code.
->
+> 
+> numa_clear_kernel_node_hotplug() function first traverses numa_meminfo
+> regions to set node ID in memblock.reserved and than traverses
+> memblock.reserved to update reserved_nodemask to include node IDs that were
+> set in the first loop.
+> 
+> Remove redundant traversal over memblock.reserved and update
+> reserved_nodemask while iterating over numa_meminfo.
+> 
 > Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
 > ---
->  arch/arm/mm/init.c    | 48 +++++++------------------------------
->  arch/xtensa/mm/init.c | 55 ++++++++-----------------------------------
->  2 files changed, 18 insertions(+), 85 deletions(-)
+>  arch/x86/mm/numa.c | 26 ++++++++++----------------
+>  1 file changed, 10 insertions(+), 16 deletions(-)
 
-For the xtensa part:
-Reviewed-by: Max Filippov <jcmvbkbc@gmail.com>
-Tested-by: Max Filippov <jcmvbkbc@gmail.com>
+I suspect you'd like to carry this in the -mm tree?
 
--- 
-Thanks.
--- Max
+Acked-by: Ingo Molnar <mingo@kernel.org>
+
+Thanks,
+
+	Ingo
