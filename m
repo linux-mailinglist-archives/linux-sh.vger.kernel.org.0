@@ -2,63 +2,64 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 69FC7230041
-	for <lists+linux-sh@lfdr.de>; Tue, 28 Jul 2020 05:35:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A9D323011D
+	for <lists+linux-sh@lfdr.de>; Tue, 28 Jul 2020 07:12:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727792AbgG1Dfe (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 27 Jul 2020 23:35:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47488 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727941AbgG1Dfd (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 27 Jul 2020 23:35:33 -0400
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B7AEC061794;
-        Mon, 27 Jul 2020 20:35:33 -0700 (PDT)
-Received: by mail-pl1-x642.google.com with SMTP id b9so9187552plx.6;
-        Mon, 27 Jul 2020 20:35:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=dzevChhDu0zkNDnE+D6pyyVrpyllVR2c9oWvZ6O+SdA=;
-        b=fMcS1wbL9TMbstUJO2nAlUpAcmqUR+PhCpjLJOWT0sR8n5XXRbC9sv/L+BRGQMTYX9
-         DhyhzyBgLq3WyXVMtMSoMUjauW9o0/pLmDyUYdpJe9dJ2OV9xGYeIDtwh4TL24WlxSlM
-         gcnJBjObGA3EV2yMkwGGB87W/IrYJNrwfWDUguPd7q/EmcD6ypy3ZnwIXgc4Gn9cruvk
-         GsH720QkcwgubHpt9SjEiqKcy5kMEfwg4T3fkpJdQkcwPoZQ9WuT2UsYYzjTs8W+HXkg
-         FwjeC+/5ABjDVxxTpcr+qA4Bv5ZG6aBfcKpQcLRZLTph3BPI/vc8BNoIMkySPyADFq93
-         u6JQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=dzevChhDu0zkNDnE+D6pyyVrpyllVR2c9oWvZ6O+SdA=;
-        b=TIgLRSp0nczUPC8dK+ie7L3p0sksD9kT6hxJ2P9aQlL2u8iD2UvZk7mYIlaftqXD5R
-         O2izyZNtrJrXTrK46qR64LNPvxuG75mpRCd+9+WRUmP5tjS6OWaYWKLO4XB+SICvOAL2
-         R/TLU563EU5BiNQL88SiWPj6oPlVYsxWe/tH+ZBC945ZEpJSVmRKA0agKKZQcKQyvuhB
-         LpKIBYAhAM0059v0+hElRz2UMEMJqI6BrF8em3W7YbK06yYRRnddQbWNdrZiVMO4rYHq
-         cjpRLUT2qXf/FPJIsIpXoN4UAVMapFDp391U1DiGd1o6NMZzWJdAWY2oa3vhVueROCNk
-         6DVA==
-X-Gm-Message-State: AOAM532bo5+j6P9+lp42uexkPm31+a92vBnGDw5d092z45q6YrRu2ZI4
-        S/nEAOsnK7gD8ZsHkw4nqFN8XaVS
-X-Google-Smtp-Source: ABdhPJxxOxzM2SLKd9ZcqOTFJhzmIuEoRXh4oj6u2JKpZU5DaAQV9jKU21jPNjRdgMs+dAhghdR0pQ==
-X-Received: by 2002:a17:90a:4fa2:: with SMTP id q31mr2476162pjh.178.1595907332741;
-        Mon, 27 Jul 2020 20:35:32 -0700 (PDT)
-Received: from bobo.ozlabs.ibm.com (110-174-173-27.tpgi.com.au. [110.174.173.27])
-        by smtp.gmail.com with ESMTPSA id r4sm998707pji.37.2020.07.27.20.35.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jul 2020 20:35:32 -0700 (PDT)
-From:   Nicholas Piggin <npiggin@gmail.com>
-To:     linux-arch@vger.kernel.org
-Cc:     Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, Arnd Bergmann <arnd@arndb.de>,
+        id S1726407AbgG1FMO (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 28 Jul 2020 01:12:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33608 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726251AbgG1FMO (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Tue, 28 Jul 2020 01:12:14 -0400
+Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 799682070A;
+        Tue, 28 Jul 2020 05:12:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1595913133;
+        bh=SiunFkOH1KIyW1NC3iO0mc1YnQ8vPMqtL902CN9Sglg=;
+        h=From:To:Cc:Subject:Date:From;
+        b=zUj8Ky/ISJogZYImW1cerS7gxpsJPyD/s5COPLWHq2m806d7LS+KeFmOjturCkeKD
+         HrFFBTdERy4l0XPM2jQi1NdsS/0AEv/DNIDcsxWU/Hw8p6tUQjHHE7reUbZz0w1jhv
+         yHsh8/Ni8CjiRR1lxOFECz5g0SlMvzBSWjQUZxXU=
+From:   Mike Rapoport <rppt@kernel.org>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Andy Lutomirski <luto@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michal Simek <monstr@monstr.eu>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Stafford Horne <shorne@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Will Deacon <will@kernel.org>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org
-Subject: [PATCH 19/24] sh: use asm-generic/mmu_context.h for no-op implementations
-Date:   Tue, 28 Jul 2020 13:34:00 +1000
-Message-Id: <20200728033405.78469-20-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20200728033405.78469-1-npiggin@gmail.com>
-References: <20200728033405.78469-1-npiggin@gmail.com>
+        clang-built-linux@googlegroups.com,
+        iommu@lists.linux-foundation.org,
+        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-mm@kvack.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, linuxppc-dev@lists.ozlabs.org,
+        openrisc@lists.librecores.org, sparclinux@vger.kernel.org,
+        uclinux-h8-devel@lists.sourceforge.jp, x86@kernel.org
+Subject: [PATCH 00/15] memblock: seasonal cleaning^w cleanup
+Date:   Tue, 28 Jul 2020 08:11:38 +0300
+Message-Id: <20200728051153.1590-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-sh-owner@vger.kernel.org
@@ -66,58 +67,84 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: linux-sh@vger.kernel.org
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/sh/include/asm/mmu_context.h    | 5 ++---
- arch/sh/include/asm/mmu_context_32.h | 9 ---------
- 2 files changed, 2 insertions(+), 12 deletions(-)
+From: Mike Rapoport <rppt@linux.ibm.com>
 
-diff --git a/arch/sh/include/asm/mmu_context.h b/arch/sh/include/asm/mmu_context.h
-index 9470d17c71c2..ce40147d4a7d 100644
---- a/arch/sh/include/asm/mmu_context.h
-+++ b/arch/sh/include/asm/mmu_context.h
-@@ -85,6 +85,7 @@ static inline void get_mmu_context(struct mm_struct *mm, unsigned int cpu)
-  * Initialize the context related info for a new mm_struct
-  * instance.
-  */
-+#define init_new_context init_new_context
- static inline int init_new_context(struct task_struct *tsk,
- 				   struct mm_struct *mm)
- {
-@@ -121,9 +122,7 @@ static inline void switch_mm(struct mm_struct *prev,
- 			activate_context(next, cpu);
- }
- 
--#define activate_mm(prev, next)		switch_mm((prev),(next),NULL)
--#define deactivate_mm(tsk,mm)		do { } while (0)
--#define enter_lazy_tlb(mm,tsk)		do { } while (0)
-+#include <asm-generic/mmu_context.h>
- 
- #else
- 
-diff --git a/arch/sh/include/asm/mmu_context_32.h b/arch/sh/include/asm/mmu_context_32.h
-index 71bf12ef1f65..bc5034fa6249 100644
---- a/arch/sh/include/asm/mmu_context_32.h
-+++ b/arch/sh/include/asm/mmu_context_32.h
-@@ -2,15 +2,6 @@
- #ifndef __ASM_SH_MMU_CONTEXT_32_H
- #define __ASM_SH_MMU_CONTEXT_32_H
- 
--/*
-- * Destroy context related info for an mm_struct that is about
-- * to be put to rest.
-- */
--static inline void destroy_context(struct mm_struct *mm)
--{
--	/* Do nothing */
--}
--
- #ifdef CONFIG_CPU_HAS_PTEAEX
- static inline void set_asid(unsigned long asid)
- {
+Hi,
+
+These patches simplify several uses of memblock iterators and hide some of
+the memblock implementation details from the rest of the system.
+
+The patches are on top of v5.8-rc7 + cherry-pick of "mm/sparse: cleanup the
+code surrounding memory_present()" [1] from mmotm tree.
+
+[1] http://lkml.kernel.org/r/20200712083130.22919-1-rppt@kernel.org 
+
+Mike Rapoport (15):
+  KVM: PPC: Book3S HV: simplify kvm_cma_reserve()
+  dma-contiguous: simplify cma_early_percent_memory()
+  arm, xtensa: simplify initialization of high memory pages
+  arm64: numa: simplify dummy_numa_init()
+  h8300, nds32, openrisc: simplify detection of memory extents
+  powerpc: fadamp: simplify fadump_reserve_crash_area()
+  riscv: drop unneeded node initialization
+  mircoblaze: drop unneeded NUMA and sparsemem initializations
+  memblock: make for_each_memblock_type() iterator private
+  memblock: make memblock_debug and related functionality private
+  memblock: reduce number of parameters in for_each_mem_range()
+  arch, mm: replace for_each_memblock() with for_each_mem_pfn_range()
+  arch, drivers: replace for_each_membock() with for_each_mem_range()
+  x86/numa: remove redundant iteration over memblock.reserved
+  memblock: remove 'type' parameter from for_each_memblock()
+
+ .clang-format                            |  1 +
+ arch/arm/kernel/setup.c                  | 18 +++++---
+ arch/arm/mm/init.c                       | 59 +++++-------------------
+ arch/arm/mm/mmu.c                        | 39 ++++++----------
+ arch/arm/mm/pmsa-v7.c                    | 20 ++++----
+ arch/arm/mm/pmsa-v8.c                    | 17 ++++---
+ arch/arm/xen/mm.c                        |  7 +--
+ arch/arm64/kernel/machine_kexec_file.c   |  6 +--
+ arch/arm64/kernel/setup.c                |  2 +-
+ arch/arm64/mm/init.c                     | 11 ++---
+ arch/arm64/mm/kasan_init.c               |  8 ++--
+ arch/arm64/mm/mmu.c                      | 11 ++---
+ arch/arm64/mm/numa.c                     | 15 +++---
+ arch/c6x/kernel/setup.c                  |  9 ++--
+ arch/h8300/kernel/setup.c                |  8 ++--
+ arch/microblaze/mm/init.c                | 24 ++--------
+ arch/mips/cavium-octeon/dma-octeon.c     | 12 ++---
+ arch/mips/kernel/setup.c                 | 31 ++++++-------
+ arch/mips/netlogic/xlp/setup.c           |  2 +-
+ arch/nds32/kernel/setup.c                |  8 +---
+ arch/openrisc/kernel/setup.c             |  9 +---
+ arch/openrisc/mm/init.c                  |  8 ++--
+ arch/powerpc/kernel/fadump.c             | 58 ++++++++---------------
+ arch/powerpc/kvm/book3s_hv_builtin.c     | 11 +----
+ arch/powerpc/mm/book3s64/hash_utils.c    | 16 +++----
+ arch/powerpc/mm/book3s64/radix_pgtable.c | 11 ++---
+ arch/powerpc/mm/kasan/kasan_init_32.c    |  8 ++--
+ arch/powerpc/mm/mem.c                    | 33 +++++++------
+ arch/powerpc/mm/numa.c                   |  7 +--
+ arch/powerpc/mm/pgtable_32.c             |  8 ++--
+ arch/riscv/mm/init.c                     | 33 ++++---------
+ arch/riscv/mm/kasan_init.c               | 10 ++--
+ arch/s390/kernel/crash_dump.c            |  8 ++--
+ arch/s390/kernel/setup.c                 | 31 ++++++++-----
+ arch/s390/mm/page-states.c               |  6 +--
+ arch/s390/mm/vmem.c                      | 16 ++++---
+ arch/sh/mm/init.c                        |  9 ++--
+ arch/sparc/mm/init_64.c                  | 12 ++---
+ arch/x86/mm/numa.c                       | 26 ++++-------
+ arch/xtensa/mm/init.c                    | 55 ++++------------------
+ drivers/bus/mvebu-mbus.c                 | 12 ++---
+ drivers/s390/char/zcore.c                |  9 ++--
+ include/linux/memblock.h                 | 45 +++++++++---------
+ kernel/dma/contiguous.c                  | 11 +----
+ mm/memblock.c                            | 28 +++++++----
+ mm/page_alloc.c                          | 11 ++---
+ mm/sparse.c                              | 10 ++--
+ 47 files changed, 324 insertions(+), 485 deletions(-)
+
 -- 
-2.23.0
+2.26.2
 
