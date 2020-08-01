@@ -2,94 +2,142 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 718D323487C
-	for <lists+linux-sh@lfdr.de>; Fri, 31 Jul 2020 17:29:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAED223519F
+	for <lists+linux-sh@lfdr.de>; Sat,  1 Aug 2020 12:19:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387577AbgGaP3N (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 31 Jul 2020 11:29:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59842 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387575AbgGaP3L (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 31 Jul 2020 11:29:11 -0400
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B947C06174A
-        for <linux-sh@vger.kernel.org>; Fri, 31 Jul 2020 08:29:11 -0700 (PDT)
-Received: by mail-ed1-x543.google.com with SMTP id q4so19412469edv.13
-        for <linux-sh@vger.kernel.org>; Fri, 31 Jul 2020 08:29:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=3k2Qozw9K7T3ULHctZF2uRyGbKqkev5Yvd3i8BwLL6Q=;
-        b=rU/7m59TNeq5RpPtiUF/ooEfv7y67ob0BFihzDNxqzyOmEpsLDWpdRWM7a1Ta8diX9
-         7/KmEpDzjGcJg/Pwvj5CJyOTsZLukJCMCLa8+AoMszs4qJ2ovqLeTB8tvugBUABNICT+
-         eDx8T4FKQBB7a3AF6wXJM4aILfpBArYOrJuEN4lkQy4uwl9e0jQGD8SXyeGbMZNORy2L
-         yAShufuKVBs3/3TERLOxaa0ePPEogNjB9YElAimeP98Z0X7DEawjgep2fVgs0yc7Su75
-         36fuiJkQisHXPKWkagRGrmyt7j/f6VdTzQ17F84MaIPjL3U9bAoqmxQ5O1LyXMSuNHUw
-         J1DA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=3k2Qozw9K7T3ULHctZF2uRyGbKqkev5Yvd3i8BwLL6Q=;
-        b=Zw43eiBQZ32caj7lXvXkMHFsFOX+6SG+LZPA2e5mBLroDR1YvH7IZy7nTvTdzv4AUo
-         NXI+0dZRkYeQmU0J5fNHnAhMPGonAS0WFYmwNn4/UtQVCJqbbA6VzDLKBo1DeSRDL14c
-         IZxk7are3UrTM3Q0DBPBbx8eruSp5G7KW3V1FU6jy7dPjADk9etjwsxZBh4CxWbUs6HF
-         VUYWq1KLRdjztZUWrw26uAJcbnWW6FHQ2LFNG4JHXqFnGTU0WfkyusKP8fHsMXIzQF/O
-         DKYflr23+Swrc7/W+iY3ZNP+Y1LGOqWmft3uR7vXrRTbCt9fotxtRlXQIhxJ4oh6y1zg
-         b5fA==
-X-Gm-Message-State: AOAM530mFJ68i5akQh6LtMYALymT5O4K7Y1emvZmdFKMd7UsXanmm7jy
-        U52n4+9AjziirtHP54PIsPRacMEjh4oSsXKa1tiM3w==
-X-Google-Smtp-Source: ABdhPJz0P/lPp3nduBpCI463CmMAzDxLqlASXNACZIK8CQVQjVPCG9CcO/+9HjqSM/KyFs+VY+csHhR3WhxQTYkaNqE=
-X-Received: by 2002:a50:d51e:: with SMTP id u30mr2058575edi.296.1596209349842;
- Fri, 31 Jul 2020 08:29:09 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200709020629.91671-1-justin.he@arm.com>
-In-Reply-To: <20200709020629.91671-1-justin.he@arm.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Fri, 31 Jul 2020 08:28:58 -0700
-Message-ID: <CAPcyv4iqkuzyU_u+VW1nsaK7tiy+HJtUxLtgAxtfX0aXXcKhfA@mail.gmail.com>
-Subject: Re: [PATCH v3 0/6] Fix and enable pmem as RAM device on arm64
-To:     Jia He <justin.he@arm.com>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
+        id S1728814AbgHAKTL (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sat, 1 Aug 2020 06:19:11 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43666 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726888AbgHAKTL (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Sat, 1 Aug 2020 06:19:11 -0400
+Received: from kernel.org (unknown [87.70.91.42])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5ED692087C;
+        Sat,  1 Aug 2020 10:18:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1596277150;
+        bh=jQD0i2dEJRPR8dDJK6vZOAFdpUe2Ho5YLvcSFtENhXg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=BOX5CM31age4ZqR8WpA9Tu6Sib3TWB8q0axiVZJ9476Af21jQMyZgnRXNsbolGSGn
+         pWpwQlO3I1Ym/ZhVqWnuEZ70zJ8p8UgBgfsl0uitfuYMEFBB9GFeRHX0dU8VC7876G
+         1GC7zC28lCBEAGXT18VZfRnXSGNcrY6WFAZx7Yv0=
+Date:   Sat, 1 Aug 2020 13:18:54 +0300
+From:   Mike Rapoport <rppt@kernel.org>
+To:     Michael Ellerman <mpe@ellerman.id.au>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
         Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        David Hildenbrand <david@redhat.com>, X86 ML <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Baoquan He <bhe@redhat.com>,
-        Chuhong Yuan <hslester96@gmail.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Michal Simek <monstr@monstr.eu>,
         Mike Rapoport <rppt@linux.ibm.com>,
-        Logan Gunthorpe <logang@deltatee.com>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Hocko <mhocko@suse.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-ia64@vger.kernel.org, Linux-sh <linux-sh@vger.kernel.org>,
-        linux-nvdimm <linux-nvdimm@lists.01.org>,
-        Linux MM <linux-mm@kvack.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Kaly Xin <Kaly.Xin@arm.com>
-Content-Type: text/plain; charset="UTF-8"
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Stafford Horne <shorne@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Will Deacon <will@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        clang-built-linux@googlegroups.com,
+        iommu@lists.linux-foundation.org,
+        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-mm@kvack.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, linuxppc-dev@lists.ozlabs.org,
+        openrisc@lists.librecores.org, sparclinux@vger.kernel.org,
+        uclinux-h8-devel@lists.sourceforge.jp, x86@kernel.org,
+        Hari Bathini <hbathini@in.ibm.com>
+Subject: Re: [PATCH 06/15] powerpc: fadamp: simplify
+ fadump_reserve_crash_area()
+Message-ID: <20200801101854.GD534153@kernel.org>
+References: <20200728051153.1590-1-rppt@kernel.org>
+ <20200728051153.1590-7-rppt@kernel.org>
+ <87d04d5hda.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87d04d5hda.fsf@mpe.ellerman.id.au>
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Wed, Jul 8, 2020 at 7:06 PM Jia He <justin.he@arm.com> wrote:
->
-> This fixies a few issues when I tried to enable pmem as RAM device on arm64.
+On Thu, Jul 30, 2020 at 10:15:13PM +1000, Michael Ellerman wrote:
+> Mike Rapoport <rppt@kernel.org> writes:
+> > From: Mike Rapoport <rppt@linux.ibm.com>
+> >
+> > fadump_reserve_crash_area() reserves memory from a specified base address
+> > till the end of the RAM.
+> >
+> > Replace iteration through the memblock.memory with a single call to
+> > memblock_reserve() with appropriate  that will take care of proper memory
+>                                      ^
+>                                      parameters?
+> > reservation.
+> >
+> > Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> > ---
+> >  arch/powerpc/kernel/fadump.c | 20 +-------------------
+> >  1 file changed, 1 insertion(+), 19 deletions(-)
+> 
+> I think this looks OK to me, but I don't have a setup to test it easily.
+> I've added Hari to Cc who might be able to.
+> 
+> But I'll give you an ack in the hope that it works :)
 
-What NVDIMM bus driver is being used in this case? The ACPI NFIT
-driver? I'm just looking to see if currently deployed
-phys_to_target_node() is sufficient, or if this is coming in a new
-driver?
+Actually, I did some digging in the git log and the traversal was added
+there on purpose by the commit b71a693d3db3 ("powerpc/fadump: exclude
+memory holes while reserving memory in second kernel")
+Presuming this is still reqruired I'm going to drop this patch and will
+simply replace for_each_memblock() with for_each_mem_range() in v2.
+ 
+> Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+> 
+> 
+> > diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+> > index 78ab9a6ee6ac..2446a61e3c25 100644
+> > --- a/arch/powerpc/kernel/fadump.c
+> > +++ b/arch/powerpc/kernel/fadump.c
+> > @@ -1658,25 +1658,7 @@ int __init fadump_reserve_mem(void)
+> >  /* Preserve everything above the base address */
+> >  static void __init fadump_reserve_crash_area(u64 base)
+> >  {
+> > -	struct memblock_region *reg;
+> > -	u64 mstart, msize;
+> > -
+> > -	for_each_memblock(memory, reg) {
+> > -		mstart = reg->base;
+> > -		msize  = reg->size;
+> > -
+> > -		if ((mstart + msize) < base)
+> > -			continue;
+> > -
+> > -		if (mstart < base) {
+> > -			msize -= (base - mstart);
+> > -			mstart = base;
+> > -		}
+> > -
+> > -		pr_info("Reserving %lluMB of memory at %#016llx for preserving crash data",
+> > -			(msize >> 20), mstart);
+> > -		memblock_reserve(mstart, msize);
+> > -	}
+> > +	memblock_reserve(base, memblock_end_of_DRAM() - base);
+> >  }
+> >  
+> >  unsigned long __init arch_reserved_kernel_pages(void)
+> > -- 
+> > 2.26.2
+
+-- 
+Sincerely yours,
+Mike.
