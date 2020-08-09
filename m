@@ -2,27 +2,27 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CFDB23F2D3
-	for <lists+linux-sh@lfdr.de>; Fri,  7 Aug 2020 20:35:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9551E23FE92
+	for <lists+linux-sh@lfdr.de>; Sun,  9 Aug 2020 15:37:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725934AbgHGSfs (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 7 Aug 2020 14:35:48 -0400
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:50553 "EHLO
+        id S1726175AbgHINhV (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sun, 9 Aug 2020 09:37:21 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:50001 "EHLO
         outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725893AbgHGSfs (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 7 Aug 2020 14:35:48 -0400
+        by vger.kernel.org with ESMTP id S1726009AbgHINhV (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sun, 9 Aug 2020 09:37:21 -0400
 Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
           by outpost.zedat.fu-berlin.de (Exim 4.93)
           with esmtps (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
           (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1k47DW-003fQt-7k; Fri, 07 Aug 2020 20:35:46 +0200
-Received: from x590c94cd.dyn.telefonica.de ([89.12.148.205] helo=[192.168.1.10])
+          id 1k4lVm-003E1e-LT; Sun, 09 Aug 2020 15:37:18 +0200
+Received: from p57bd93c4.dip0.t-ipconnect.de ([87.189.147.196] helo=[192.168.178.139])
           by inpost2.zedat.fu-berlin.de (Exim 4.93)
           with esmtpsa (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
           (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1k47DW-000yYe-15; Fri, 07 Aug 2020 20:35:46 +0200
+          id 1k4lVm-0036se-Ei; Sun, 09 Aug 2020 15:37:18 +0200
 Subject: Re: Pull Request for 5.9
 To:     Rich Felker <dalias@libc.org>
 Cc:     Linux-sh list <linux-sh@vger.kernel.org>
@@ -73,36 +73,58 @@ Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  jEF9ImTPcYZpw5vhdyPwBdXW2lSjV3EAqknWujRgcsm84nycuJnImwJptR481EWmtuH6ysj5
  YhRVGbQPfdsjVUQfZdRdkEv4CZ90pdscBi1nRqcqANtzC+WQFwekDzk2lGqNRDg56s+q0KtY
  scOkTAZQGVpD/8AaLH4v1w==
-Message-ID: <8ef2d5fc-4796-538a-215d-834d5a07a22f@physik.fu-berlin.de>
-Date:   Fri, 7 Aug 2020 20:35:44 +0200
+Message-ID: <7ac6117a-fc51-ad6b-11b3-a4a8eed3a781@physik.fu-berlin.de>
+Date:   Sun, 9 Aug 2020 15:37:16 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
 In-Reply-To: <20200807183442.GB3265@brightrain.aerifal.cx>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 89.12.148.205
+X-Originating-IP: 87.189.147.196
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 8/7/20 8:34 PM, Rich Felker wrote:
-> On Fri, Aug 07, 2020 at 09:36:07AM +0200, John Paul Adrian Glaubitz wrote:
->> Hi Rich!
->>
->> Any chance you can send the pull request to Linus for 5.9?
->>
->> I would like to see my get_user() patch merged as otherwise libsecomp upstream
->> won't allow me to open the PR to get the userland changes merged for SECCOMP
->> support.
-> 
-> Yep, it's on my todo for this week. I'll try to get to it today. Does
-> everything in next look good to you?
+Hi Rich!
 
-I haven't done testing on next yet, but I will do that by Sunday - at latest.
+Building -next on SH is currently broken:
+
+make[1]: 'include/generated/machtypes.h' is up to date.
+  CALL    scripts/checksyscalls.sh
+<stdin>:1511:2: warning: #warning syscall clone3 not implemented [-Wcpp]
+  CALL    scripts/atomic/check-atomics.sh
+  CHK     include/generated/compile.h
+  CC      arch/sh/kernel/ptrace_32.o
+arch/sh/kernel/ptrace_32.c:168:5: error: conflicting types for ‘fpregs_get’
+  168 | int fpregs_get(struct task_struct *target,
+      |     ^~~~~~~~~~
+In file included from arch/sh/kernel/ptrace_32.c:31:
+./arch/sh/include/asm/fpu.h:40:12: note: previous declaration of ‘fpregs_get’ was here
+   40 | extern int fpregs_get(struct task_struct *target,
+      |            ^~~~~~~~~~
+make[1]: *** [scripts/Makefile.build:283: arch/sh/kernel/ptrace_32.o] Error 1
+make: *** [Makefile:1789: arch/sh/kernel] Error 2
+
+This regression was introduced by:
+
+commit 3399d90ce63edf7439900db50b5c02aa822f190b
+Author: Al Viro <viro@zeniv.linux.org.uk>
+Date:   Tue Jun 16 00:54:51 2020 -0400
+
+    sh: convert to ->regset_get()
+
+    NB: there's a direct call of fpregs_get() left in dump_fpu().
+    To be taken out once we convert ELF_FDPIC to use of regset.
+
+    Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+
+ arch/sh/kernel/process_32.c |  5 ++---
+ arch/sh/kernel/ptrace_32.c  | 48 ++++++++++-----------------------------------
+ 2 files changed, 12 insertions(+), 41 deletions(-)
 
 Adrian
 
