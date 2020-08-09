@@ -2,33 +2,32 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9551E23FE92
-	for <lists+linux-sh@lfdr.de>; Sun,  9 Aug 2020 15:37:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA3E123FE96
+	for <lists+linux-sh@lfdr.de>; Sun,  9 Aug 2020 15:39:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726175AbgHINhV (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sun, 9 Aug 2020 09:37:21 -0400
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:50001 "EHLO
+        id S1726200AbgHINjz (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sun, 9 Aug 2020 09:39:55 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:47895 "EHLO
         outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726009AbgHINhV (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sun, 9 Aug 2020 09:37:21 -0400
+        by vger.kernel.org with ESMTP id S1726009AbgHINjy (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sun, 9 Aug 2020 09:39:54 -0400
 Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
           by outpost.zedat.fu-berlin.de (Exim 4.93)
           with esmtps (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
           (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1k4lVm-003E1e-LT; Sun, 09 Aug 2020 15:37:18 +0200
+          id 1k4lYF-003EPB-NZ; Sun, 09 Aug 2020 15:39:51 +0200
 Received: from p57bd93c4.dip0.t-ipconnect.de ([87.189.147.196] helo=[192.168.178.139])
           by inpost2.zedat.fu-berlin.de (Exim 4.93)
           with esmtpsa (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
           (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1k4lVm-0036se-Ei; Sun, 09 Aug 2020 15:37:18 +0200
-Subject: Re: Pull Request for 5.9
-To:     Rich Felker <dalias@libc.org>
-Cc:     Linux-sh list <linux-sh@vger.kernel.org>
-References: <16a9b527-e05c-dcac-86bd-b79be140c053@physik.fu-berlin.de>
- <20200807183442.GB3265@brightrain.aerifal.cx>
+          id 1k4lYF-00379l-HC; Sun, 09 Aug 2020 15:39:51 +0200
+To:     Al Viro <viro@zeniv.linux.org.uk>
+Cc:     Rich Felker <dalias@libc.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>
 From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Subject: "sh: convert to ->regset_get()" breaks linux-sh build
 Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  mQINBE3JE9wBEADMrYGNfz3oz6XLw9XcWvuIxIlPWoTyw9BxTicfGAv0d87wngs9U+d52t/R
  EggPePf34gb7/k8FBY1IgyxnZEB5NxUb1WtW0M3GUxpPx6gBZqOm7SK1ZW3oSORw+T7Aezl3
@@ -73,12 +72,11 @@ Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  jEF9ImTPcYZpw5vhdyPwBdXW2lSjV3EAqknWujRgcsm84nycuJnImwJptR481EWmtuH6ysj5
  YhRVGbQPfdsjVUQfZdRdkEv4CZ90pdscBi1nRqcqANtzC+WQFwekDzk2lGqNRDg56s+q0KtY
  scOkTAZQGVpD/8AaLH4v1w==
-Message-ID: <7ac6117a-fc51-ad6b-11b3-a4a8eed3a781@physik.fu-berlin.de>
-Date:   Sun, 9 Aug 2020 15:37:16 +0200
+Message-ID: <9c2d391c-6463-398e-95a1-8f238d739340@physik.fu-berlin.de>
+Date:   Sun, 9 Aug 2020 15:39:50 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20200807183442.GB3265@brightrain.aerifal.cx>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
@@ -89,9 +87,11 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Rich!
+Hi Al!
 
-Building -next on SH is currently broken:
+I just tried building Linux next for SH to test it on my SH7785LCR board
+but the build is currently broken due to a regression introduced by your
+change to convert SH to ->regset_get():
 
 make[1]: 'include/generated/machtypes.h' is up to date.
   CALL    scripts/checksyscalls.sh
