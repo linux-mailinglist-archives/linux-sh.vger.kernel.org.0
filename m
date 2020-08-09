@@ -2,119 +2,81 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F277423FF93
-	for <lists+linux-sh@lfdr.de>; Sun,  9 Aug 2020 19:45:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E68E323FFDB
+	for <lists+linux-sh@lfdr.de>; Sun,  9 Aug 2020 21:22:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726296AbgHIRpR (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sun, 9 Aug 2020 13:45:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35176 "EHLO
+        id S1726291AbgHITWR (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sun, 9 Aug 2020 15:22:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726234AbgHIRpR (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sun, 9 Aug 2020 13:45:17 -0400
-Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [IPv6:2002:c35c:fd02::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFD68C061756
-        for <linux-sh@vger.kernel.org>; Sun,  9 Aug 2020 10:45:16 -0700 (PDT)
-Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1k4pNc-00ChW4-Ll; Sun, 09 Aug 2020 17:45:08 +0000
-Date:   Sun, 9 Aug 2020 18:45:08 +0100
-From:   Al Viro <viro@zeniv.linux.org.uk>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
+        with ESMTP id S1726289AbgHITWR (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sun, 9 Aug 2020 15:22:17 -0400
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A50CAC061756
+        for <linux-sh@vger.kernel.org>; Sun,  9 Aug 2020 12:22:16 -0700 (PDT)
+Received: by mail-lj1-x241.google.com with SMTP id w25so7313975ljo.12
+        for <linux-sh@vger.kernel.org>; Sun, 09 Aug 2020 12:22:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=xc+Z+0lsHKSAn5QFQ32TjlYE4pcyYc/9qjSRlqBK+g8=;
+        b=E296t1eWcYSGF3gH+4bFJTtB+NdTGY3gBmPSUExO/KnpAA4RUD1q6K5qDaHE7dIFiE
+         rT2EFMmfOFLD5aY7MBl4GP4+ii6AOPjZFGGsdnz8py87zLp2RPy4gZjt5xb8FtMSIXkd
+         AeCGRym3WTkVJyJ9Mu/0ScpKSTlHKlQqZm4zc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=xc+Z+0lsHKSAn5QFQ32TjlYE4pcyYc/9qjSRlqBK+g8=;
+        b=dB0ZRUsBrQDY/8ylaGfTJp6EFwKWuh3GITVPqH9yMRazQea7citaYzQHX51s9vBba/
+         Xybp6tnP53FgNfHBFdteklxZHnFFqjf1kJlbjkx5pdwNxxLGpDsUUoSoM+L03MtL5Lzy
+         q6ZVIpoFUpVl5a0rjqzpHNLoZsY4mzybVyDoDi8B76/0rJjgwLMNIJVl3AztWHzZTUjM
+         tDG3Vw27N7Z2ZDNuHjtKG2eRA34kAxCsCFSjS3+R9sLepnlMoU3BS6AZ0KmvLgq2amqn
+         6Bp+ttcQvQ2GZSomFHwhkAN5AfSaURT4WwRYuJ02wWz6nKgSE169sKKl/NeHOQ8PMx2k
+         vy6w==
+X-Gm-Message-State: AOAM532bVAZ9OETkU2ykLYCYyT6Wv9nGvxvzrNQKtcvM31dfH+MRLu5f
+        DUVmxLwUA27vLtLpjHdfYoRRzKALe78=
+X-Google-Smtp-Source: ABdhPJx63JXjB0TKh2sCnbOzcSkCB25ApLojFMIEphr/BS0HEXExtBOpEgNv2a7UZ4OghW6wIP8h9g==
+X-Received: by 2002:a2e:3802:: with SMTP id f2mr9520960lja.212.1597000934811;
+        Sun, 09 Aug 2020 12:22:14 -0700 (PDT)
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com. [209.85.167.49])
+        by smtp.gmail.com with ESMTPSA id 5sm9392057lfz.35.2020.08.09.12.22.13
+        for <linux-sh@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 09 Aug 2020 12:22:14 -0700 (PDT)
+Received: by mail-lf1-f49.google.com with SMTP id j22so3608160lfm.2
+        for <linux-sh@vger.kernel.org>; Sun, 09 Aug 2020 12:22:13 -0700 (PDT)
+X-Received: by 2002:a19:c206:: with SMTP id l6mr11270363lfc.152.1597000933418;
+ Sun, 09 Aug 2020 12:22:13 -0700 (PDT)
+MIME-Version: 1.0
+References: <9c2d391c-6463-398e-95a1-8f238d739340@physik.fu-berlin.de>
+ <20200809161438.GZ1236603@ZenIV.linux.org.uk> <20200809174508.GA3026725@ZenIV.linux.org.uk>
+In-Reply-To: <20200809174508.GA3026725@ZenIV.linux.org.uk>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Sun, 9 Aug 2020 12:21:57 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wi1ocV0dk=DXLgT01Eqg0Xnm65Hfq44=8p5yPu8=jrt5A@mail.gmail.com>
+Message-ID: <CAHk-=wi1ocV0dk=DXLgT01Eqg0Xnm65Hfq44=8p5yPu8=jrt5A@mail.gmail.com>
+Subject: Re: [regression fix] Re: "sh: convert to ->regset_get()" breaks
+ linux-sh build
+To:     Al Viro <viro@zeniv.linux.org.uk>
 Cc:     Rich Felker <dalias@libc.org>,
         Linux-sh list <linux-sh@vger.kernel.org>,
         John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Subject: [regression fix] Re: "sh: convert to ->regset_get()" breaks linux-sh
- build
-Message-ID: <20200809174508.GA3026725@ZenIV.linux.org.uk>
-References: <9c2d391c-6463-398e-95a1-8f238d739340@physik.fu-berlin.de>
- <20200809161438.GZ1236603@ZenIV.linux.org.uk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200809161438.GZ1236603@ZenIV.linux.org.uk>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Sun, Aug 09, 2020 at 05:14:38PM +0100, Al Viro wrote:
+On Sun, Aug 9, 2020 at 10:45 AM Al Viro <viro@zeniv.linux.org.uk> wrote:
+>
+> FWIW, there are several ways to handle that.  One is to pull vfs.git#fixes -
+> that's the first commit of #regset.followups.  Another is to cherry-pick
+> the same.  And the minimal fix would be the subset of that commit as below.
+> Linus, what would you prefer?
 
-> What the... oh, I see.
-> 
-> Commit in the regset followup series has fixed that, with bisect hazard unnoticed.
-> And since only the followups have not gone in, bisect hazard has turned into
-> a mainline breakage ;/
-> 
-> Sorry about that.  FWIW, the commit in question is this; all per-architecture
-> parts in it are mutually independent, but I'll probably just send this one
-> to Linus - no point splitting it up.
+Mind just sending me a proper pull request for the fixes branch with
+that one commit?
 
-FWIW, there are several ways to handle that.  One is to pull vfs.git#fixes -
-that's the first commit of #regset.followups.  Another is to cherry-pick
-the same.  And the minimal fix would be the subset of that commit as below.
-Linus, what would you prefer?
-
-sh: kill unused dump_fpu() instance
-
-dead code now that fdpic has switched to regset coredumps.
- 
-Fixes: 3399d90ce63e "sh: convert to ->regset_get()"
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
----
-diff --git a/arch/sh/include/asm/fpu.h b/arch/sh/include/asm/fpu.h
-index 43cfaf929aa7..04584be8986c 100644
---- a/arch/sh/include/asm/fpu.h
-+++ b/arch/sh/include/asm/fpu.h
-@@ -37,11 +37,6 @@ struct user_regset;
- extern int do_fpu_inst(unsigned short, struct pt_regs *);
- extern int init_fpu(struct task_struct *);
- 
--extern int fpregs_get(struct task_struct *target,
--		      const struct user_regset *regset,
--		      unsigned int pos, unsigned int count,
--		      void *kbuf, void __user *ubuf);
--
- static inline void __unlazy_fpu(struct task_struct *tsk, struct pt_regs *regs)
- {
- 	if (task_thread_info(tsk)->status & TS_USEDFPU) {
-diff --git a/arch/sh/kernel/process_32.c b/arch/sh/kernel/process_32.c
-index 6ab397bc47ed..7a59a63560c5 100644
---- a/arch/sh/kernel/process_32.c
-+++ b/arch/sh/kernel/process_32.c
-@@ -93,24 +93,6 @@ void release_thread(struct task_struct *dead_task)
- 	/* do nothing */
- }
- 
--/* Fill in the fpu structure for a core dump.. */
--int dump_fpu(struct pt_regs *regs, elf_fpregset_t *fpu)
--{
--	int fpvalid = 0;
--
--#if defined(CONFIG_SH_FPU)
--	struct task_struct *tsk = current;
--
--	fpvalid = !!tsk_used_math(tsk);
--	if (fpvalid)
--		fpvalid = !fpregs_get(tsk, NULL,
--				      (struct membuf){fpu, sizeof(*fpu)});
--#endif
--
--	return fpvalid;
--}
--EXPORT_SYMBOL(dump_fpu);
--
- asmlinkage void ret_from_fork(void);
- asmlinkage void ret_from_kernel_thread(void);
- 
-diff --git a/arch/sh/kernel/ptrace_32.c b/arch/sh/kernel/ptrace_32.c
-index 5c93bdb6c41a..609b7c917e6e 100644
---- a/arch/sh/kernel/ptrace_32.c
-+++ b/arch/sh/kernel/ptrace_32.c
-@@ -165,7 +165,7 @@ static int genregs_set(struct task_struct *target,
- }
- 
- #ifdef CONFIG_SH_FPU
--int fpregs_get(struct task_struct *target,
-+static int fpregs_get(struct task_struct *target,
- 	       const struct user_regset *regset,
- 	       struct membuf to)
- {
+               Linus
