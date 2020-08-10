@@ -2,37 +2,34 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E6BDF23FFF4
-	for <lists+linux-sh@lfdr.de>; Sun,  9 Aug 2020 22:26:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF611240668
+	for <lists+linux-sh@lfdr.de>; Mon, 10 Aug 2020 15:07:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726296AbgHIU07 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sun, 9 Aug 2020 16:26:59 -0400
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:37163 "EHLO
+        id S1726797AbgHJNHB (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 10 Aug 2020 09:07:01 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:39149 "EHLO
         outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726101AbgHIU06 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sun, 9 Aug 2020 16:26:58 -0400
+        by vger.kernel.org with ESMTP id S1726821AbgHJNHA (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 10 Aug 2020 09:07:00 -0400
 Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
           by outpost.zedat.fu-berlin.de (Exim 4.93)
           with esmtps (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
           (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1k4ruC-000JvM-Cl; Sun, 09 Aug 2020 22:26:56 +0200
+          id 1k57Vy-000BZK-9e; Mon, 10 Aug 2020 15:06:58 +0200
 Received: from p57bd93c4.dip0.t-ipconnect.de ([87.189.147.196] helo=[192.168.178.139])
           by inpost2.zedat.fu-berlin.de (Exim 4.93)
           with esmtpsa (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
           (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1k4ruC-0040QF-63; Sun, 09 Aug 2020 22:26:56 +0200
-Subject: Re: [regression fix] Re: "sh: convert to ->regset_get()" breaks
- linux-sh build
-To:     Al Viro <viro@zeniv.linux.org.uk>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Rich Felker <dalias@libc.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>
-References: <9c2d391c-6463-398e-95a1-8f238d739340@physik.fu-berlin.de>
- <20200809161438.GZ1236603@ZenIV.linux.org.uk>
- <20200809174508.GA3026725@ZenIV.linux.org.uk>
+          id 1k57Vy-002x4I-2z; Mon, 10 Aug 2020 15:06:58 +0200
+Subject: Re: Pull Request for 5.9
 From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To:     Rich Felker <dalias@libc.org>
+Cc:     Linux-sh list <linux-sh@vger.kernel.org>
+References: <16a9b527-e05c-dcac-86bd-b79be140c053@physik.fu-berlin.de>
+ <20200807183442.GB3265@brightrain.aerifal.cx>
+ <8ef2d5fc-4796-538a-215d-834d5a07a22f@physik.fu-berlin.de>
 Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  mQINBE3JE9wBEADMrYGNfz3oz6XLw9XcWvuIxIlPWoTyw9BxTicfGAv0d87wngs9U+d52t/R
  EggPePf34gb7/k8FBY1IgyxnZEB5NxUb1WtW0M3GUxpPx6gBZqOm7SK1ZW3oSORw+T7Aezl3
@@ -77,12 +74,12 @@ Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  jEF9ImTPcYZpw5vhdyPwBdXW2lSjV3EAqknWujRgcsm84nycuJnImwJptR481EWmtuH6ysj5
  YhRVGbQPfdsjVUQfZdRdkEv4CZ90pdscBi1nRqcqANtzC+WQFwekDzk2lGqNRDg56s+q0KtY
  scOkTAZQGVpD/8AaLH4v1w==
-Message-ID: <8b71cdde-ad2a-e770-b2db-c0b5950994f8@physik.fu-berlin.de>
-Date:   Sun, 9 Aug 2020 22:26:54 +0200
+Message-ID: <937d5c16-f9bc-1bee-5f67-18746b3eddb5@physik.fu-berlin.de>
+Date:   Mon, 10 Aug 2020 15:06:56 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20200809174508.GA3026725@ZenIV.linux.org.uk>
+In-Reply-To: <8ef2d5fc-4796-538a-215d-834d5a07a22f@physik.fu-berlin.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -93,99 +90,30 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Al!
+Hi Rich!
 
-On 8/9/20 7:45 PM, Al Viro wrote:
-> On Sun, Aug 09, 2020 at 05:14:38PM +0100, Al Viro wrote:
-> 
->> What the... oh, I see.
+On 8/7/20 8:35 PM, John Paul Adrian Glaubitz wrote:
+> On 8/7/20 8:34 PM, Rich Felker wrote:
+>> On Fri, Aug 07, 2020 at 09:36:07AM +0200, John Paul Adrian Glaubitz wrote:
+>>> Hi Rich!
+>>>
+>>> Any chance you can send the pull request to Linus for 5.9?
+>>>
+>>> I would like to see my get_user() patch merged as otherwise libsecomp upstream
+>>> won't allow me to open the PR to get the userland changes merged for SECCOMP
+>>> support.
 >>
->> Commit in the regset followup series has fixed that, with bisect hazard unnoticed.
->> And since only the followups have not gone in, bisect hazard has turned into
->> a mainline breakage ;/
->>
->> Sorry about that.  FWIW, the commit in question is this; all per-architecture
->> parts in it are mutually independent, but I'll probably just send this one
->> to Linus - no point splitting it up.
+>> Yep, it's on my todo for this week. I'll try to get to it today. Does
+>> everything in next look good to you?
 > 
-> FWIW, there are several ways to handle that.  One is to pull vfs.git#fixes -
-> that's the first commit of #regset.followups.  Another is to cherry-pick
-> the same.  And the minimal fix would be the subset of that commit as below.
-> Linus, what would you prefer?
-> 
-> sh: kill unused dump_fpu() instance
-> 
-> dead code now that fdpic has switched to regset coredumps.
->  
-> Fixes: 3399d90ce63e "sh: convert to ->regset_get()"
-> Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-> ---
-> diff --git a/arch/sh/include/asm/fpu.h b/arch/sh/include/asm/fpu.h
-> index 43cfaf929aa7..04584be8986c 100644
-> --- a/arch/sh/include/asm/fpu.h
-> +++ b/arch/sh/include/asm/fpu.h
-> @@ -37,11 +37,6 @@ struct user_regset;
->  extern int do_fpu_inst(unsigned short, struct pt_regs *);
->  extern int init_fpu(struct task_struct *);
->  
-> -extern int fpregs_get(struct task_struct *target,
-> -		      const struct user_regset *regset,
-> -		      unsigned int pos, unsigned int count,
-> -		      void *kbuf, void __user *ubuf);
-> -
->  static inline void __unlazy_fpu(struct task_struct *tsk, struct pt_regs *regs)
->  {
->  	if (task_thread_info(tsk)->status & TS_USEDFPU) {
-> diff --git a/arch/sh/kernel/process_32.c b/arch/sh/kernel/process_32.c
-> index 6ab397bc47ed..7a59a63560c5 100644
-> --- a/arch/sh/kernel/process_32.c
-> +++ b/arch/sh/kernel/process_32.c
-> @@ -93,24 +93,6 @@ void release_thread(struct task_struct *dead_task)
->  	/* do nothing */
->  }
->  
-> -/* Fill in the fpu structure for a core dump.. */
-> -int dump_fpu(struct pt_regs *regs, elf_fpregset_t *fpu)
-> -{
-> -	int fpvalid = 0;
-> -
-> -#if defined(CONFIG_SH_FPU)
-> -	struct task_struct *tsk = current;
-> -
-> -	fpvalid = !!tsk_used_math(tsk);
-> -	if (fpvalid)
-> -		fpvalid = !fpregs_get(tsk, NULL,
-> -				      (struct membuf){fpu, sizeof(*fpu)});
-> -#endif
-> -
-> -	return fpvalid;
-> -}
-> -EXPORT_SYMBOL(dump_fpu);
-> -
->  asmlinkage void ret_from_fork(void);
->  asmlinkage void ret_from_kernel_thread(void);
->  
-> diff --git a/arch/sh/kernel/ptrace_32.c b/arch/sh/kernel/ptrace_32.c
-> index 5c93bdb6c41a..609b7c917e6e 100644
-> --- a/arch/sh/kernel/ptrace_32.c
-> +++ b/arch/sh/kernel/ptrace_32.c
-> @@ -165,7 +165,7 @@ static int genregs_set(struct task_struct *target,
->  }
->  
->  #ifdef CONFIG_SH_FPU
-> -int fpregs_get(struct task_struct *target,
-> +static int fpregs_get(struct task_struct *target,
->  	       const struct user_regset *regset,
->  	       struct membuf to)
->  {
-> 
+> I haven't done testing on next yet, but I will do that by Sunday - at latest.
 
-Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+From my side, everything is fine now. Al has sent a PR to Linus fixing the
+one issue I found in -next. So I think you can send out the PR now.
 
-This fixes the linux-next build on SH for me and also produces a bootable kernel image
-which boots without any issues on my SH7785LCR.
+Then we can sort through the other patches for SH which might have not been
+picked up through any of the other trees yet.
 
-Thanks,
 Adrian
 
 -- 
