@@ -2,122 +2,184 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AF611240668
-	for <lists+linux-sh@lfdr.de>; Mon, 10 Aug 2020 15:07:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 995AD241527
+	for <lists+linux-sh@lfdr.de>; Tue, 11 Aug 2020 05:06:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726797AbgHJNHB (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 10 Aug 2020 09:07:01 -0400
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:39149 "EHLO
-        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726821AbgHJNHA (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 10 Aug 2020 09:07:00 -0400
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.93)
-          with esmtps (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1k57Vy-000BZK-9e; Mon, 10 Aug 2020 15:06:58 +0200
-Received: from p57bd93c4.dip0.t-ipconnect.de ([87.189.147.196] helo=[192.168.178.139])
-          by inpost2.zedat.fu-berlin.de (Exim 4.93)
-          with esmtpsa (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1k57Vy-002x4I-2z; Mon, 10 Aug 2020 15:06:58 +0200
-Subject: Re: Pull Request for 5.9
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To:     Rich Felker <dalias@libc.org>
-Cc:     Linux-sh list <linux-sh@vger.kernel.org>
-References: <16a9b527-e05c-dcac-86bd-b79be140c053@physik.fu-berlin.de>
- <20200807183442.GB3265@brightrain.aerifal.cx>
- <8ef2d5fc-4796-538a-215d-834d5a07a22f@physik.fu-berlin.de>
-Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
- mQINBE3JE9wBEADMrYGNfz3oz6XLw9XcWvuIxIlPWoTyw9BxTicfGAv0d87wngs9U+d52t/R
- EggPePf34gb7/k8FBY1IgyxnZEB5NxUb1WtW0M3GUxpPx6gBZqOm7SK1ZW3oSORw+T7Aezl3
- Zq4Nr4Nptqx7fnLpXfRDs5iYO/GX8WuL8fkGS/gIXtxKewd0LkTlb6jq9KKq8qn8/BN5YEKq
- JlM7jsENyA5PIe2npN3MjEg6p+qFrmrzJRuFjjdf5vvGfzskrXCAKGlNjMMA4TgZvugOFmBI
- /iSyV0IOaj0uKhes0ZNX+lQFrOB4j6I5fTBy7L/T3W/pCWo3wVkknNYa8TDYT73oIZ7Aimv+
- k7OzRfnxsSOAZT8Re1Yt8mvzr6FHVFjr/VdyTtO5JgQZ6LEmvo4Ro+2ByBmCHORCQ0NJhD1U
- 3avjGfvfslG999W0WEZLTeaGkBAN1yG/1bgGAytQQkD9NsVXqBy7S3LVv9bB844ysW5Aj1nv
- tgIz14E2WL8rbpfjJMXi7B5ha6Lxf3rFOgxpr6ZoEn+bGG4hmrO+/ReA4SerfMqwSTnjZsZv
- xMJsx2B9c8DaZE8GsA4I6lsihbJmXhw8i7Cta8Dx418wtEbXhL6m/UEk60O7QD1VBgGqDMnJ
- DFSlvKa9D+tZde/kHSNmQmLLzxtDbNgBgmR0jUlmxirijnm8bwARAQABtFRKb2huIFBhdWwg
- QWRyaWFuIEdsYXViaXR6IChGcmVpZSBVbml2ZXJzaXRhZXQgQmVybGluKSA8Z2xhdWJpdHpA
- cGh5c2lrLmZ1LWJlcmxpbi5kZT6JAlEEEwEIADsCGwMFCwkIBwMFFQoJCAsFFgIDAQACHgEC
- F4AWIQRi/4p1hOApVpVGAAZ0Jjs39bX5EwUCWhQoUgIZAQAKCRB0Jjs39bX5Ez/ID/98r9c4
- WUSgOHVPSMVcOVziMOi+zPWfF1OhOXW+atpTM4LSSp66196xOlDFHOdNNmO6kxckXAX9ptvp
- Bc0mRxa7OrC168fKzqR7P75eTsJnVaOu+uI/vvgsbUIosYdkkekCxDAbYCUwmzNotIspnFbx
- iSPMNrpw7Ud/yQkS9TDYeXnrZDhBp7p5+naWCD/yMvh7yVCA4Ea8+xDVoX+kjv6EHJrwVupO
- pMa39cGs2rKYZbWTazcflKH+bXG3FHBrwh9XRjA6A1CTeC/zTVNgGF6wvw/qT2x9tS7WeeZ1
- jvBCJub2cb07qIfuvxXiGcYGr+W4z9GuLCiWsMmoff/Gmo1aeMZDRYKLAZLGlEr6zkYh1Abt
- iz0YLqIYVbZAnf8dCjmYhuwPq77IeqSjqUqI2Cb0oOOlwRKVWDlqAeo0Bh8DrvZvBAojJf4H
- nQZ/pSz0yaRed/0FAmkVfV+1yR6BtRXhkRF6NCmguSITC96IzE26C6n5DBb43MR7Ga/mof4M
- UufnKADNG4qz57CBwENHyx6ftWJeWZNdRZq10o0NXuCJZf/iulHCWS/hFOM5ygfONq1Vsj2Z
- DSWvVpSLj+Ufd2QnmsnrCr1ZGcl72OC24AmqFWJY+IyReHWpuABEVZVeVDQooJ0K4yqucmrF
- R7HyH7oZGgR0CgYHCI+9yhrXHrQpyLkCDQRNyRQuARAArCaWhVbMXw9iHmMH0BN/TuSmeKtV
- h/+QOT5C5Uw+XJ3A+OHr9rB+SpndJEcDIhv70gLrpEuloXhZI9VYazfTv6lrkCZObXq/NgDQ
- Mnu+9E/E/PE9irqnZZOMWpurQRh41MibRii0iSr+AH2IhRL6CN2egZID6f93Cdu7US53ZqIx
- bXoguqGB2CK115bcnsswMW9YiVegFA5J9dAMsCI9/6M8li+CSYICi9gq0LdpODdsVfaxmo4+
- xYFdXoDN33b8Yyzhbh/I5gtVIRpfL+Yjfk8xAsfz78wzifSDckSB3NGPAXvs6HxKc50bvf+P
- 6t2tLpmB/KrpozlZazq16iktY97QulyEY9JWCiEgDs6EKb4wTx+lUe4yS9eo95cBV+YlL+BX
- kJSAMyxgSOy35BeBaeUSIrYqfHpbNn6/nidwDhg/nxyJs8mPlBvHiCLwotje2AhtYndDEhGQ
- KEtEaMQEhDi9MsCGHe+00QegCv3FRveHwzGphY1YlRItLjF4TcFz1SsHn30e7uLTDe/pUMZU
- Kd1xU73WWr0NlWG1g49ITyaBpwdv/cs/RQ5laYYeivnag81TcPCDbTm7zXiwo53aLQOZj4u3
- gSQvAUhgYTQUstMdkOMOn0PSIpyVAq3zrEFEYf7bNSTcdGrgwCuCBe4DgI3Vu4LOoAeI428t
- 2dj1K1EAEQEAAYkCHwQYAQgACQUCTckULgIbDAAKCRB0Jjs39bX5E683EAC1huywL4BlxTj7
- FTm7FiKd5/KEH5/oaxLQN26mn8yRkP/L3xwiqXxdd0hnrPyUe8mUOrSg7KLMul+pSRxPgaHA
- xt1I1hQZ30cJ1j/SkDIV2ImSf75Yzz5v72fPiYLq9+H3qKZwrgof9yM/s0bfsSX/GWyFatvo
- Koo+TgrE0rmtQw82vv7/cbDAYceQm1bRB8Nr8agPyGXYcjohAj7NJcra4hnu1wUw3yD05p/B
- Rntv7NvPWV3Oo7DKCWIS4RpEd6I6E+tN3GCePqROeK1nDv+FJWLkyvwLigfNaCLro6/292YK
- VMdBISNYN4s6IGPrXGGvoDwo9RVo6kBhlYEfg6+2eaPCwq40IVfKbYNwLLB2MR2ssL4yzmDo
- OR3rQFDPj+QcDvH4/0gCQ+qRpYATIegS8zU5xQ8nPL8lba9YNejaOMzw8RB80g+2oPOJ3Wzx
- oMsmw8taUmd9TIw/bJ2VO1HniiJUGUXCqoeg8homvBOQ0PmWAWIwjC6nf6CIuIM4Egu2I5Kl
- jEF9ImTPcYZpw5vhdyPwBdXW2lSjV3EAqknWujRgcsm84nycuJnImwJptR481EWmtuH6ysj5
- YhRVGbQPfdsjVUQfZdRdkEv4CZ90pdscBi1nRqcqANtzC+WQFwekDzk2lGqNRDg56s+q0KtY
- scOkTAZQGVpD/8AaLH4v1w==
-Message-ID: <937d5c16-f9bc-1bee-5f67-18746b3eddb5@physik.fu-berlin.de>
-Date:   Mon, 10 Aug 2020 15:06:56 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1727900AbgHKDGL (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 10 Aug 2020 23:06:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58570 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727064AbgHKDGL (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 10 Aug 2020 23:06:11 -0400
+Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com [IPv6:2a00:1450:4864:20::142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5D34C06174A
+        for <linux-sh@vger.kernel.org>; Mon, 10 Aug 2020 20:06:10 -0700 (PDT)
+Received: by mail-lf1-x142.google.com with SMTP id i80so5830035lfi.13
+        for <linux-sh@vger.kernel.org>; Mon, 10 Aug 2020 20:06:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=lAgPe7LYxrHND6axLhyzWgoGWJo7W6UM/7KYKZFAicY=;
+        b=Vt/xx+6qknXNsAC24DXedJ+8lw2kZx476DKnzqwxqQHYmJ/b+vSOJ6uzjOOga0I6Pr
+         9KJ8nvtVaX/cYg14ek3e5Prb2+LHlU5eogRzmyaTtuSoIydVzMVTUSVQWLYvUV6XSFCF
+         gTQaoglRLjuiQYYad1i7Ky+S6jrDOMpFBu0XZspeQyMFPfMtSHSPL3J6j63TuSbtHa37
+         +L4QJvsOShc6cHCqwJubi8QLmUtIbE3+iA9jtZvfyfWCtZeIA0tUsZ5FrGt8bCCgA0u2
+         Oq+Id6wDp61B1gJ0CKJntpsULkprxmjKMo5RN2SmtSQFISDi+GEDmKNI6p/WnG6lwjAY
+         MZ1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=lAgPe7LYxrHND6axLhyzWgoGWJo7W6UM/7KYKZFAicY=;
+        b=hzAi9skN3NLdI1/ZThDifUqeay5T8N0lY4kFAZ10M+54t/37VTO979izSHlpz2j603
+         RIgwYy7lJeSPxLVFqeHs2XSnsQnwJXpcF+PvEm34ZmcKWJiaxoSTdEns3XtdHPVDJuX/
+         xrOs0oadNBjMRI5t97sgnElscywnZzHnqW0gnpplamLeGiQz5qWWynBfRiRWUsyqPm0S
+         fgGb+IK/lY5HRLyfQugqiASBonY8Uo7V+s6jCgunDF/r1yaFSK2CY9ZkFFsufLQk2LnH
+         sCTgSA2WlR4d6HMrX17ZfKEtdclvnOGPwgh+NHBoJesGC3AIy/HalN30gvHYTcAQ8X3N
+         h/nQ==
+X-Gm-Message-State: AOAM533Qw6pko5nQg7Zgzt1hjPvMU3bme6hi0xSH8kEt93oQL8G4JOQE
+        2L8wGvC4+e0eYJdGlO8TEXvHbb4OyIe2q3LgKLcXqw==
+X-Google-Smtp-Source: ABdhPJwmgkeAByVMl8IHzTNel+UQSvrkal3Iy/3KmtsWbDWQJpZEQt6WukV/7ph1+nZ7ZkmIlZpzPGBYM79Tc1xCHnA=
+X-Received: by 2002:ac2:5f48:: with SMTP id 8mr2044815lfz.157.1597115168800;
+ Mon, 10 Aug 2020 20:06:08 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <8ef2d5fc-4796-538a-215d-834d5a07a22f@physik.fu-berlin.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 87.189.147.196
+References: <20200429214954.44866-1-jannh@google.com> <20200429214954.44866-2-jannh@google.com>
+ <20200505104805.GA17400@lst.de> <CAG48ez3F70-UXwdHmO4CnR0bAForn-SBtstW5WAYjcrLFwS_9A@mail.gmail.com>
+ <20200505121557.GA24052@lst.de>
+In-Reply-To: <20200505121557.GA24052@lst.de>
+From:   Jann Horn <jannh@google.com>
+Date:   Tue, 11 Aug 2020 05:05:42 +0200
+Message-ID: <CAG48ez3ssZLqGC_Jy1su93wieCtvaxEtVw43skiXcKFHEMhp5A@mail.gmail.com>
+Subject: Re: [PATCH v2 1/5] binfmt_elf_fdpic: Stop using dump_emit() on user
+ pointers on !MMU
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        kernel list <linux-kernel@vger.kernel.org>,
+        Linux-MM <linux-mm@kvack.org>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        "Eric W . Biederman" <ebiederm@xmission.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Mark Salter <msalter@redhat.com>,
+        Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
+        linux-c6x-dev@linux-c6x.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Rich!
+On Tue, May 5, 2020 at 2:15 PM Christoph Hellwig <hch@lst.de> wrote:
+> On Tue, May 05, 2020 at 01:42:12PM +0200, Jann Horn wrote:
+> > On Tue, May 5, 2020 at 12:48 PM Christoph Hellwig <hch@lst.de> wrote:
+> > > On Wed, Apr 29, 2020 at 11:49:50PM +0200, Jann Horn wrote:
+> > > > dump_emit() is for kernel pointers, and VMAs describe userspace memory.
+> > > > Let's be tidy here and avoid accessing userspace pointers under KERNEL_DS,
+> > > > even if it probably doesn't matter much on !MMU systems - especially given
+> > > > that it looks like we can just use the same get_dump_page() as on MMU if
+> > > > we move it out of the CONFIG_MMU block.
+> > >
+> > > Looks sensible.  Did you get a chance to test this with a nommu setup?
+> >
+> > Nope. Do you happen to have a recommendation for a convenient
+> > environment I can use with QEMU, or something like that? I'm guessing
+> > that just running a standard armel Debian userspace with a !mmu ARM
+> > kernel wouldn't work so well?
+>
+> Nommu generally needs special userspace either using uclibc-ng or musl.
+> When I did the RISC-V nommu work I used buildroot for my root file
+> systems.  We haven't gotten elffdpic to work on RISC-V yet, so I can't
+> use that setup for testing, but it should support ARM as well.
 
-On 8/7/20 8:35 PM, John Paul Adrian Glaubitz wrote:
-> On 8/7/20 8:34 PM, Rich Felker wrote:
->> On Fri, Aug 07, 2020 at 09:36:07AM +0200, John Paul Adrian Glaubitz wrote:
->>> Hi Rich!
->>>
->>> Any chance you can send the pull request to Linus for 5.9?
->>>
->>> I would like to see my get_user() patch merged as otherwise libsecomp upstream
->>> won't allow me to open the PR to get the userland changes merged for SECCOMP
->>> support.
->>
->> Yep, it's on my todo for this week. I'll try to get to it today. Does
->> everything in next look good to you?
-> 
-> I haven't done testing on next yet, but I will do that by Sunday - at latest.
+I've finally gotten around to testing this, and discovered that I
+actually had to change something in the patch - thanks for asking me
+to test this.
 
-From my side, everything is fine now. Al has sent a PR to Linus fixing the
-one issue I found in -next. So I think you can send out the PR now.
 
-Then we can sort through the other patches for SH which might have not been
-picked up through any of the other trees yet.
 
-Adrian
+Some notes on running ARM nommu testing:
 
--- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer - glaubitz@debian.org
-`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+I ended up running QEMU with "-machine versatilepb". To make that
+work, I applied this patch:
+<https://github.com/buildroot/buildroot/blob/master/board/qemu/arm-versatile/patches/linux/versatile-nommu.patch>
+A couple of directories up, there are also a README and a kernel
+config for that.
+
+Note that the emulated harddrive of this board doesn't seem to work,
+because it's connected via PCI, and nommu generally can't use PCI; but
+you can boot from initramfs, and you can copy files from/to the host
+with netcat, since the emulated network card does work. (To avoid
+having to bring up the interface from userspace, you can use
+"ip=10.0.2.1::10.0.2.2:255.255.255.0" on the kernel cmdline if the
+corresponding feature is enabled in the kernel config.)
+
+The first trouble I ran into with trying to run FDPIC userspace (based
+on musl) was that Linux has support for running ARM userspace in
+"26-bit mode", which is some ARM feature from the dark ages, with no
+support in QEMU; and while normally Linux only tries to enable that
+thing when the binary explicitly requires it, the FDPIC path isn't
+wired up to the appropriate personality logic properly, and so you get
+a spectacular explosion, where eventually the kernel oopses with a
+message about how it's trying to load an invalid value into CPSR
+because first the kernel tries to return to 26-bit mode, and then,
+through some mysterious spooky action at a distance, the kernel
+(AFAICS) ends up trying to do a syscall return with the stack pointer
+pointing somewhere in the middle of the kernel stack (and not where
+the entry register frame is).
+
+Anyway, my hacky workaround for that is:
+
+diff --git a/arch/arm/include/asm/processor.h b/arch/arm/include/asm/processor.h
+index b9241051e5cb..d5aa409e366c 100644
+--- a/arch/arm/include/asm/processor.h
++++ b/arch/arm/include/asm/processor.h
+@@ -70,7 +70,7 @@ static inline void
+arch_thread_struct_whitelist(unsigned long *offset,
+        if (current->personality & ADDR_LIMIT_32BIT)                    \
+                regs->ARM_cpsr = USR_MODE;                              \
+        else                                                            \
+-               regs->ARM_cpsr = USR26_MODE;                            \
++               { WARN(1, "setting USR26_MODE"); regs->ARM_cpsr = USR_MODE; } \
+        if (elf_hwcap & HWCAP_THUMB && pc & 1)                          \
+                regs->ARM_cpsr |= PSR_T_BIT;                            \
+        regs->ARM_cpsr |= PSR_ENDSTATE;                                 \
+
+
+Next up: Early on in the libc startup code, musl aborts execution by
+intentionally executing an undefined instruction in
+__set_thread_area(), because it can't figure out any working
+implementation of atomic cmpxchg. For the MMU case, there is a kuser
+helper (what x86 would call vsyscall); but for NOMMU ARM, no working
+implementation exists. So I gave up on musl and went with uclibc-ng
+(built via buildroot) instead, since uclibc-ng has support for
+compiling out thread support.
+
+
+Annoyingly, buildroot doesn't support FDPIC (at least not for nommu
+ARM). So I ended up telling it to build a small FLAT userspace, and
+used a standard ARM toolchain to build a tiny static PIE ELF binary
+with no reliance on libc (the FDPIC loader can actually load normal
+ELF mostly fine as long as it's PIE, at the cost of having to
+duplicate the text section for every instance) - luckily I didn't need
+the ELF binary to actually do anything complicated, and so working
+without any libc was tolerable:
+
+arm-linux-gnueabi-gcc-10 -fPIC -c -o test_crash.o test_crash.c
+arm-linux-gnueabi-ld -pie --no-dynamic-linker -o test_crash test_crash.o
+
+
+Next fun part: gdb-multiarch doesn't seem to be able to open FDPIC
+core dumps properly - none of the register status is available. I took
+apart the core dump before and after the patch in a hex editor,
+though, and it seems to have all the expected stuff in it. I'm
+guessing that maybe GDB got thrown off by struct elf_prstatus having a
+different layout if the core dump was generated on nommu? GDB's
+elf32_arm_nabi_grok_prstatus() seems to only handle the struct size
+for the non-FDPIC struct.
