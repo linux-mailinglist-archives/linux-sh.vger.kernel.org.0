@@ -2,157 +2,74 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9190B243F93
-	for <lists+linux-sh@lfdr.de>; Thu, 13 Aug 2020 22:03:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D22B72443A0
+	for <lists+linux-sh@lfdr.de>; Fri, 14 Aug 2020 04:53:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726574AbgHMUDB (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 13 Aug 2020 16:03:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37342 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726384AbgHMUDB (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 13 Aug 2020 16:03:01 -0400
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60B59C061757;
-        Thu, 13 Aug 2020 13:03:01 -0700 (PDT)
-Received: by mail-pl1-x644.google.com with SMTP id z20so3107929plo.6;
-        Thu, 13 Aug 2020 13:03:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=rVxj8isGcYg2kSrB/8odI4mBvo5lkZ3mbyPx7lehTCk=;
-        b=IAr6fIwwzTiZGKClZ9Pe3JtoUQo7mOnpW92ti6GtjfPYl8G85HlKzWg+9jyEKkzYmg
-         kxZZcTpnNA6KG9DrEJ6HSERqxUymq37PbGGSPsibYe8g4sw1dF5gBuyrpPIaHMLq1lWw
-         8fIWFd4IKC2ivK+pnnjqbX3+ullwDICSRbSSX/b6jQjwGiFlznQFhOtBn0x3GhkqgWO4
-         UNTagKuvGQqXo1D9KbX4Aw8+1BCdURdIEERU2yKlTfVrfEDNxF43hdVrMD30xCR2M87V
-         KRJ89cH0J9QAzUjm4si8yi2nxN4OrOLs1G+aMS51PUU9n3a5df0VdWvF5S3g9tnD90xl
-         RkOA==
+        id S1726567AbgHNCxG (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 13 Aug 2020 22:53:06 -0400
+Received: from mail-io1-f71.google.com ([209.85.166.71]:51912 "EHLO
+        mail-io1-f71.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726564AbgHNCxG (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 13 Aug 2020 22:53:06 -0400
+Received: by mail-io1-f71.google.com with SMTP id p12so5360942iom.18
+        for <linux-sh@vger.kernel.org>; Thu, 13 Aug 2020 19:53:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :mime-version:content-disposition:user-agent;
-        bh=rVxj8isGcYg2kSrB/8odI4mBvo5lkZ3mbyPx7lehTCk=;
-        b=tR+9GZuZiMKckE55mUMAUCls/J1hZPjOn0NmSSjNbL0IHAKCyZUIJ7lAm0qHl/GJk9
-         rr6jHuNzTOgWf4PoPhJFc4dRnAo43xo0zgr0grz8hbmIu+w+wSCATdignPlPSKac5VS7
-         9k3Bq8CjDYFW/06pcZ6gDjlYBLfQ0fgdylbrT53C/TINRGlL6xmRg8tVkqiLfB5Fl3Bz
-         raV9onsweJbaQR3EYGnLPW0hFJA67AuBNE9VYeScUOMrv6Zv1I6JxU0zy+VH75ZYke9T
-         oL+20cjXoZswfd9S3CPW6T8XevFfMBy57Ff5QyPOJYvNP7BIzv0+TP8bDHp6z24/+5fA
-         YsPQ==
-X-Gm-Message-State: AOAM533zrbjTESWNAUvblyR7VlSgHHx+GsyKDAzxjyaOJ1hHHcsAyaUC
-        U4HhwTwiwdPZXoIu94+dgfFFWI5d
-X-Google-Smtp-Source: ABdhPJzT5s+nsEuvDNCSpqijl5yQ813fK1jGKafJsya9S2oQHL/1Q2WbdqxQ1G35qqtR8Zr6jWCUzA==
-X-Received: by 2002:a17:902:6b41:: with SMTP id g1mr5322293plt.108.1597348980886;
-        Thu, 13 Aug 2020 13:03:00 -0700 (PDT)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id 8sm6127359pjx.14.2020.08.13.13.02.59
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 13 Aug 2020 13:03:00 -0700 (PDT)
-Date:   Thu, 13 Aug 2020 13:02:59 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Ingo Molnar <mingo@kernel.org>, Rich Felker <dalias@libc.org>,
-        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] locking/seqlock, headers: Untangle the spaghetti monster
-Message-ID: <20200813200258.GA113946@roeck-us.net>
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=HxfLWIdBAiPbucnwPKF3cZxaVC8QuNU2YTSLpVJCUKw=;
+        b=ikUW6CjaHj6e11Ohu1mO3ud0gQxNWUxoImWicHtvN+Nc9EJ7rKe0YNCkGO4BW2R/or
+         OytUfqH8K2sWlYb6Idny5nidBVog7UivcyYUgdwdUmei7ce5VM6OgvU8Y8gCQ+MSWOlD
+         ++mb82FRnZoqJyjjBH0wbCB4J3FciKI8dWSKWlKz1XErfRQXGFgBq3v2Ke/DIh8F0VTf
+         urPERcwvxBf2mL7pl0/mwvt0EM1usbBEDZ+jVxE43YcIbwagp6VECu/1NFkduCLJBdqA
+         xYjuEYzesqA3ZV3E2K16kKZ4v8ZSluPANaDAEujE8DUsrNZlbT3yJDqbpTByiRjxfjVf
+         WFZQ==
+X-Gm-Message-State: AOAM531nxcq/btQMdLDnCcqafe1hb8z0S/4jawjiuyI79/LVzvZHYl0g
+        d8mbdpQKkYGSNG2VBvty9vOm8G+YZJ+Yp3EnyD2zJvrVEm/S
+X-Google-Smtp-Source: ABdhPJzryMeKOZ496e+GJ+LGFENqZB41wF2qyZpZxNTovBIXHQqXhdpw9rzntoAMQSMpzfINa/YRJDaIms05Hc/ZO6OshxSkwVFv
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Received: by 2002:a92:dd04:: with SMTP id n4mr789973ilm.70.1597373585198;
+ Thu, 13 Aug 2020 19:53:05 -0700 (PDT)
+Date:   Thu, 13 Aug 2020 19:53:05 -0700
+In-Reply-To: <000000000000735f5205a5b02279@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000001e967a05accd8573@google.com>
+Subject: Re: BUG: unable to handle kernel paging request in fl_dump_key
+From:   syzbot <syzbot+9c1be56e9317b795e874@syzkaller.appspotmail.com>
+To:     benh@kernel.crashing.org, dalias@libc.org, davem@davemloft.net,
+        jhogan@kernel.org, jhs@mojatatu.com, jiri@mellanox.com,
+        jiri@resnulli.us, kuba@kernel.org, linux-kernel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-sh@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        mpe@ellerman.id.au, netdev@vger.kernel.org, paul.burton@mips.com,
+        paulus@samba.org, ralf@linux-mips.org, shuah@kernel.org,
+        syzkaller-bugs@googlegroups.com, xiyou.wangcong@gmail.com,
+        ysato@users.sourceforge.jp
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Thu, Aug 06, 2020 at 02:35:11PM +0200, Peter Zijlstra wrote:
-> By using lockdep_assert_*() from seqlock.h, the spaghetti monster
-> attacked.
-> 
-> Attack back by reducing seqlock.h dependencies from two key high level headers:
-> 
->  - <linux/seqlock.h>:               -Remove <linux/ww_mutex.h>
->  - <linux/time.h>:                  -Remove <linux/seqlock.h>
->  - <linux/sched.h>:                 +Add    <linux/seqlock.h>
-> 
-> The price was to add it to sched.h ...
-> 
-> Core header fallout, we add direct header dependencies instead of gaining them
-> parasitically from higher level headers:
-> 
->  - <linux/dynamic_queue_limits.h>:  +Add <asm/bug.h>
->  - <linux/hrtimer.h>:               +Add <linux/seqlock.h>
->  - <linux/ktime.h>:                 +Add <asm/bug.h>
->  - <linux/lockdep.h>:               +Add <linux/smp.h>
->  - <linux/sched.h>:                 +Add <linux/seqlock.h>
->  - <linux/videodev2.h>:             +Add <linux/kernel.h>
-> 
-> Arch headers fallout:
-> 
->  - PARISC: <asm/timex.h>:           +Add <asm/special_insns.h>
->  - SH:     <asm/io.h>:              +Add <asm/page.h>
->  - SPARC:  <asm/timer_64.h>:        +Add <uapi/asm/asi.h>
->  - SPARC:  <asm/vvar.h>:            +Add <asm/processor.h>, <asm/barrier.h>
->                                     -Remove <linux/seqlock.h>
->  - X86:    <asm/fixmap.h>:          +Add <asm/pgtable_types.h>
->                                     -Remove <asm/acpi.h>
-> 
-> There's also a bunch of parasitic header dependency fallout in .c files, not listed
-> separately.
-> 
-> [ mingo: Extended the changelog, split up & fixed the original patch. ]
-> 
-> Co-developed-by: Ingo Molnar <mingo@kernel.org>
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Signed-off-by: Ingo Molnar <mingo@kernel.org>
+syzbot has bisected this issue to:
 
-Building sh:defconfig ... failed
---------------
-Error log:
-<stdin>:1511:2: warning: #warning syscall clone3 not implemented [-Wcpp]
-In file included from include/linux/spinlock.h:318,
-                 from arch/sh/include/asm/smp.h:11,
-                 from include/linux/smp.h:82,
-                 from include/linux/lockdep.h:14,
-                 from include/linux/rcupdate.h:29,
-                 from include/linux/init_task.h:5,
-                 from init/init_task.c:2:
-include/linux/spinlock_api_smp.h: In function '__raw_spin_trylock':
-include/linux/spinlock_api_smp.h:90:3: error: implicit declaration of function 'spin_acquire'; did you mean 'xchg_acquire'? [-Werror=implicit-function-declaration]
-   90 |   spin_acquire(&lock->dep_map, 0, 1, _RET_IP_);
-      |   ^~~~~~~~~~~~
-      |   xchg_acquire
-include/linux/spinlock_api_smp.h:90:21: error: 'raw_spinlock_t' {aka 'struct raw_spinlock'} has no member named 'dep_map'
-   90 |   spin_acquire(&lock->dep_map, 0, 1, _RET_IP_);
+commit a51486266c3ba8e035a47fa96df67f274fe0c7d0
+Author: Jiri Pirko <jiri@mellanox.com>
+Date:   Sat Jun 15 09:03:49 2019 +0000
 
-and many more. Bisect log attached.
+    net: sched: remove NET_CLS_IND config option
 
-Guenter
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=17463509900000
+start commit:   1ca0fafd tcp: md5: allow changing MD5 keys in all socket s..
+git tree:       net
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=14c63509900000
+console output: https://syzkaller.appspot.com/x/log.txt?x=10c63509900000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=bf3aec367b9ab569
+dashboard link: https://syzkaller.appspot.com/bug?extid=9c1be56e9317b795e874
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1062a40b100000
 
----
-# bad: [dc06fe51d26efc100ac74121607c01a454867c91] Merge tag 'rtc-5.9' of git://git.kernel.org/pub/scm/linux/kernel/git/abelloni/linux
-# good: [96e3f3c16b7aedcd71502ccfc5778dddfc2e7b15] Merge tag 'thermal-v5.9-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/thermal/linux
-git bisect start 'HEAD' '96e3f3c16b7a'
-# good: [32663c78c10f80df90b832de0428a6cb98a64e9a] Merge tag 'trace-v5.9' of git://git.kernel.org/pub/scm/linux/kernel/git/rostedt/linux-trace
-git bisect good 32663c78c10f80df90b832de0428a6cb98a64e9a
-# bad: [3a5139f1c5bb76d69756fb8f13fffa173e261153] cma: don't quit at first error when activating reserved areas
-git bisect bad 3a5139f1c5bb76d69756fb8f13fffa173e261153
-# good: [8d3e09b43312991c503478bf0f5f99e92c23ccf1] Merge branch 'fixes' of git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs
-git bisect good 8d3e09b43312991c503478bf0f5f99e92c23ccf1
-# bad: [97d052ea3fa853b9aabcc4baca1a605cb1188611] Merge tag 'locking-urgent-2020-08-10' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
-git bisect bad 97d052ea3fa853b9aabcc4baca1a605cb1188611
-# good: [4bcf69e57063c9b1b15df1a293c969e80a1c97e6] Merge branch 'for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/dtor/input
-git bisect good 4bcf69e57063c9b1b15df1a293c969e80a1c97e6
-# good: [1f0b067b6e4927f06f5ffaea8eccdf722e563819] f2fs: compress: disable compression mount option if compression is off
-git bisect good 1f0b067b6e4927f06f5ffaea8eccdf722e563819
-# good: [13c01139b17163c9b2aa543a9c39f8bbc875b625] x86/headers: Remove APIC headers from <asm/smp.h>
-git bisect good 13c01139b17163c9b2aa543a9c39f8bbc875b625
-# good: [e28c02b94f9e039beeb5c75198caf6e17b66c520] gfs2: When gfs2_dirty_inode gets a glock error, dump the glock
-git bisect good e28c02b94f9e039beeb5c75198caf6e17b66c520
-# good: [163c3e3dc0ddcea3edac51612fced13c597f37dc] Merge tag 'for-linus-5.9-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/rw/ubifs
-git bisect good 163c3e3dc0ddcea3edac51612fced13c597f37dc
-# good: [828add774f0d2bf930cdeca6c982c1fbcdd846bb] f2fs: prepare a waiter before entering io_schedule
-git bisect good 828add774f0d2bf930cdeca6c982c1fbcdd846bb
-# bad: [0cd39f4600ed4de859383018eb10f0f724900e1b] locking/seqlock, headers: Untangle the spaghetti monster
-git bisect bad 0cd39f4600ed4de859383018eb10f0f724900e1b
-# good: [b3545192e2b4647234254c5122f8cbfddbcbdaa0] locking, arch/ia64: Reduce <asm/smp.h> header dependencies by moving XTP bits into the new <asm/xtp.h> header
-git bisect good b3545192e2b4647234254c5122f8cbfddbcbdaa0
-# first bad commit: [0cd39f4600ed4de859383018eb10f0f724900e1b] locking/seqlock, headers: Untangle the spaghetti monster
+Reported-by: syzbot+9c1be56e9317b795e874@syzkaller.appspotmail.com
+Fixes: a51486266c3b ("net: sched: remove NET_CLS_IND config option")
+
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
