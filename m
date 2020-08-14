@@ -2,74 +2,109 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D22B72443A0
-	for <lists+linux-sh@lfdr.de>; Fri, 14 Aug 2020 04:53:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C3B9244848
+	for <lists+linux-sh@lfdr.de>; Fri, 14 Aug 2020 12:50:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726567AbgHNCxG (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 13 Aug 2020 22:53:06 -0400
-Received: from mail-io1-f71.google.com ([209.85.166.71]:51912 "EHLO
-        mail-io1-f71.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726564AbgHNCxG (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 13 Aug 2020 22:53:06 -0400
-Received: by mail-io1-f71.google.com with SMTP id p12so5360942iom.18
-        for <linux-sh@vger.kernel.org>; Thu, 13 Aug 2020 19:53:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=HxfLWIdBAiPbucnwPKF3cZxaVC8QuNU2YTSLpVJCUKw=;
-        b=ikUW6CjaHj6e11Ohu1mO3ud0gQxNWUxoImWicHtvN+Nc9EJ7rKe0YNCkGO4BW2R/or
-         OytUfqH8K2sWlYb6Idny5nidBVog7UivcyYUgdwdUmei7ce5VM6OgvU8Y8gCQ+MSWOlD
-         ++mb82FRnZoqJyjjBH0wbCB4J3FciKI8dWSKWlKz1XErfRQXGFgBq3v2Ke/DIh8F0VTf
-         urPERcwvxBf2mL7pl0/mwvt0EM1usbBEDZ+jVxE43YcIbwagp6VECu/1NFkduCLJBdqA
-         xYjuEYzesqA3ZV3E2K16kKZ4v8ZSluPANaDAEujE8DUsrNZlbT3yJDqbpTByiRjxfjVf
-         WFZQ==
-X-Gm-Message-State: AOAM531nxcq/btQMdLDnCcqafe1hb8z0S/4jawjiuyI79/LVzvZHYl0g
-        d8mbdpQKkYGSNG2VBvty9vOm8G+YZJ+Yp3EnyD2zJvrVEm/S
-X-Google-Smtp-Source: ABdhPJzryMeKOZ496e+GJ+LGFENqZB41wF2qyZpZxNTovBIXHQqXhdpw9rzntoAMQSMpzfINa/YRJDaIms05Hc/ZO6OshxSkwVFv
+        id S1727828AbgHNKuB (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 14 Aug 2020 06:50:01 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:52607 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727064AbgHNKt6 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 14 Aug 2020 06:49:58 -0400
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.93)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1k6XHK-000iAo-QQ; Fri, 14 Aug 2020 12:49:42 +0200
+Received: from x590ee367.dyn.telefonica.de ([89.14.227.103] helo=[192.168.1.10])
+          by inpost2.zedat.fu-berlin.de (Exim 4.93)
+          with esmtpsa (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1k6XHK-000eDb-JT; Fri, 14 Aug 2020 12:49:42 +0200
+Subject: Re: Ping: Pull Request for 5.9
+To:     Rob Landley <rob@landley.net>, Rich Felker <dalias@libc.org>
+Cc:     Linux-sh list <linux-sh@vger.kernel.org>
+References: <b9ea23ec-4925-aee6-07a8-571971a42194@physik.fu-berlin.de>
+ <4900b0a5-dcd2-bd56-e4fa-c8522fc3e776@landley.net>
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
+ 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
+ scOkTAZQGVpD/8AaLH4v1w==
+Message-ID: <d0c84870-7754-d19c-136f-54022cca9886@physik.fu-berlin.de>
+Date:   Fri, 14 Aug 2020 12:49:41 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-X-Received: by 2002:a92:dd04:: with SMTP id n4mr789973ilm.70.1597373585198;
- Thu, 13 Aug 2020 19:53:05 -0700 (PDT)
-Date:   Thu, 13 Aug 2020 19:53:05 -0700
-In-Reply-To: <000000000000735f5205a5b02279@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000001e967a05accd8573@google.com>
-Subject: Re: BUG: unable to handle kernel paging request in fl_dump_key
-From:   syzbot <syzbot+9c1be56e9317b795e874@syzkaller.appspotmail.com>
-To:     benh@kernel.crashing.org, dalias@libc.org, davem@davemloft.net,
-        jhogan@kernel.org, jhs@mojatatu.com, jiri@mellanox.com,
-        jiri@resnulli.us, kuba@kernel.org, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-sh@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        mpe@ellerman.id.au, netdev@vger.kernel.org, paul.burton@mips.com,
-        paulus@samba.org, ralf@linux-mips.org, shuah@kernel.org,
-        syzkaller-bugs@googlegroups.com, xiyou.wangcong@gmail.com,
-        ysato@users.sourceforge.jp
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <4900b0a5-dcd2-bd56-e4fa-c8522fc3e776@landley.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 89.14.227.103
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-syzbot has bisected this issue to:
+On 8/14/20 12:57 PM, Rob Landley wrote:
+> On 8/12/20 5:55 AM, John Paul Adrian Glaubitz wrote:
+>> Hi Rich!
+>>
+>> Any chances you can send the PR for 5.9 to Linus this week?
+> 
+> I spoke to him on the phone wednesday evening and he said he was working on it,
+> but then I spoke to him on the phone a week earlier and he said he was working
+> on it then too.
+> 
+> *shrug* I've been pulling daily to see if it got merged. No luck yet...
 
-commit a51486266c3ba8e035a47fa96df67f274fe0c7d0
-Author: Jiri Pirko <jiri@mellanox.com>
-Date:   Sat Jun 15 09:03:49 2019 +0000
+The merge window will be closing soonish ...
 
-    net: sched: remove NET_CLS_IND config option
-
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=17463509900000
-start commit:   1ca0fafd tcp: md5: allow changing MD5 keys in all socket s..
-git tree:       net
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=14c63509900000
-console output: https://syzkaller.appspot.com/x/log.txt?x=10c63509900000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=bf3aec367b9ab569
-dashboard link: https://syzkaller.appspot.com/bug?extid=9c1be56e9317b795e874
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1062a40b100000
-
-Reported-by: syzbot+9c1be56e9317b795e874@syzkaller.appspotmail.com
-Fixes: a51486266c3b ("net: sched: remove NET_CLS_IND config option")
-
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+-- 
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
