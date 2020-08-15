@@ -2,35 +2,36 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D07FC24556A
-	for <lists+linux-sh@lfdr.de>; Sun, 16 Aug 2020 04:03:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F291624556B
+	for <lists+linux-sh@lfdr.de>; Sun, 16 Aug 2020 04:03:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728132AbgHPCDr (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sat, 15 Aug 2020 22:03:47 -0400
+        id S1729466AbgHPCDu (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sat, 15 Aug 2020 22:03:50 -0400
 Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:45047 "EHLO
         outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727824AbgHPCDr (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sat, 15 Aug 2020 22:03:47 -0400
+        by vger.kernel.org with ESMTP id S1727824AbgHPCDu (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sat, 15 Aug 2020 22:03:50 -0400
 Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
           by outpost.zedat.fu-berlin.de (Exim 4.93)
           with esmtps (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
           (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1k6tcR-002iCZ-RX; Sat, 15 Aug 2020 12:40:59 +0200
-Received: from x590cbf25.dyn.telefonica.de ([89.12.191.37] helo=[192.168.1.10])
+          id 1k72j7-000MRX-TY; Sat, 15 Aug 2020 22:24:29 +0200
+Received: from p57ae5336.dip0.t-ipconnect.de ([87.174.83.54] helo=[192.168.178.23])
           by inpost2.zedat.fu-berlin.de (Exim 4.93)
           with esmtpsa (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
           (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1k6tcR-0049Ke-Jx; Sat, 15 Aug 2020 12:40:59 +0200
+          id 1k72j7-001RLd-MM; Sat, 15 Aug 2020 22:24:29 +0200
 Subject: Re: Ping: Pull Request for 5.9
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 To:     Rich Felker <dalias@libc.org>
 Cc:     Linux-sh list <linux-sh@vger.kernel.org>,
         Geert Uytterhoeven <geert@linux-m68k.org>
 References: <b9ea23ec-4925-aee6-07a8-571971a42194@physik.fu-berlin.de>
  <6ad2b6e9-cd0c-5d31-1183-37fdfe2d3ff1@physik.fu-berlin.de>
  <20200815021754.GR3265@brightrain.aerifal.cx>
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+ <66205dc3-0193-9aad-b0c6-01d49655f8d3@physik.fu-berlin.de>
 Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  mQINBE3JE9wBEADMrYGNfz3oz6XLw9XcWvuIxIlPWoTyw9BxTicfGAv0d87wngs9U+d52t/R
  EggPePf34gb7/k8FBY1IgyxnZEB5NxUb1WtW0M3GUxpPx6gBZqOm7SK1ZW3oSORw+T7Aezl3
@@ -75,40 +76,39 @@ Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  jEF9ImTPcYZpw5vhdyPwBdXW2lSjV3EAqknWujRgcsm84nycuJnImwJptR481EWmtuH6ysj5
  YhRVGbQPfdsjVUQfZdRdkEv4CZ90pdscBi1nRqcqANtzC+WQFwekDzk2lGqNRDg56s+q0KtY
  scOkTAZQGVpD/8AaLH4v1w==
-Message-ID: <66205dc3-0193-9aad-b0c6-01d49655f8d3@physik.fu-berlin.de>
-Date:   Sat, 15 Aug 2020 12:40:58 +0200
+Message-ID: <1c81600d-1007-1c5e-eb8b-cd355c1275ff@physik.fu-berlin.de>
+Date:   Sat, 15 Aug 2020 22:24:28 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.11.0
 MIME-Version: 1.0
-In-Reply-To: <20200815021754.GR3265@brightrain.aerifal.cx>
+In-Reply-To: <66205dc3-0193-9aad-b0c6-01d49655f8d3@physik.fu-berlin.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 89.12.191.37
+X-Originating-IP: 87.174.83.54
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 8/15/20 4:17 AM, Rich Felker wrote:
->> Would it be possible to include Geert's fix for the IDE interface
->> of the LANDISK USL-5P devices [1]?
+Hi Rich!
+
+On 8/15/20 12:40 PM, John Paul Adrian Glaubitz wrote:
+> On 8/15/20 4:17 AM, Rich Felker wrote:
+>>> Would it be possible to include Geert's fix for the IDE interface
+>>> of the LANDISK USL-5P devices [1]?
+>>
+>> Yep, I'm preparing the pull request and was just about to ask if it
+>> should be included. Anything else not in next already that should be?
 > 
-> Yep, I'm preparing the pull request and was just about to ask if it
-> should be included. Anything else not in next already that should be?
+> Great.
+> 
+> Let me check out your -next tree and see what we already have.
+Just had a look and also compiled and test-ran the kernel from for-next
+on my SH7785LCR system. Works fine and all known issues are fixed.
 
-Great.
-
-Let me check out your -next tree and see what we already have.
-
-In any case, it should be Geert's patches to clean up printing
-kernel messages, the 10 fixes by Christoph, Michael's patch for
-SECCOMP, my patch and Matthew's patch to fix the unneeded constructor.
-
-I'll compare your tree and linux-next if we're missing anything.
-
-@Geert: What about that patch to fix the serial interface on LANDISK?
+So, from my side it's a go ahead ;-).
 
 Adrian
 
