@@ -2,67 +2,96 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EE1F2456B4
-	for <lists+linux-sh@lfdr.de>; Sun, 16 Aug 2020 10:34:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93B7F245814
+	for <lists+linux-sh@lfdr.de>; Sun, 16 Aug 2020 16:31:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728664AbgHPIex (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sun, 16 Aug 2020 04:34:53 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:44467 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726708AbgHPIew (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sun, 16 Aug 2020 04:34:52 -0400
-Received: by mail-ot1-f65.google.com with SMTP id h22so11058016otq.11
-        for <linux-sh@vger.kernel.org>; Sun, 16 Aug 2020 01:34:51 -0700 (PDT)
+        id S1726162AbgHPObt (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sun, 16 Aug 2020 10:31:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57152 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726904AbgHPOa5 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sun, 16 Aug 2020 10:30:57 -0400
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27051C06137B
+        for <linux-sh@vger.kernel.org>; Sun, 16 Aug 2020 07:28:39 -0700 (PDT)
+Received: by mail-wm1-x32a.google.com with SMTP id g75so11860118wme.4
+        for <linux-sh@vger.kernel.org>; Sun, 16 Aug 2020 07:28:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=Duxa+mmNF3T3C2WDKsmzowR2OzvdY892XFjTPp0RWRI=;
+        b=NAKDDu3zYGlp6/1rTFA3zLXzfLNUWElMFpld1DGXTqZ3f2C1G5vMMGgQBtzYdv61gR
+         j0gW2VjYzcAEQEK9JcrA+yGSHFEXNhE9RNkaz3uxkanP37gacJrIVytgT7/c7zGkA2Dy
+         XJB3L8ToVDoWAD9Rvm7U849RIrxncLk9xI9S/Uu5ZGT/cXsim2IUQmYeZsKFSBsv6kJT
+         3kDR9KLYjND6JPpx0YTAndrQaTelzP3558OkivI4ykhj79/nak1F6z80uX1/EQIXmTKV
+         I+kUa6Zt2XAbNuMItIuLndMdaWWyo32PYvWKoOywYCMLUV2UDlYdbpJ66arhF+MiPCa0
+         yMKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=dnehVfwEdHFEdLJ9GboYMJf7h32BUmzH1CqLIb5M+RQ=;
-        b=Yv3/ZqfHPpGLp85OJt+JHkuP4rCgB2w98FW2mV64LELu1eIFCAQvAyc3KToT0D/3DE
-         IzWdPMoE/wuT/+hJLEntxTmOsaFWm49bu4coCfDftsCAiInDvdrsEJLhNVmAVHG9PKp8
-         +ThedJQDiZC619m9Erg6UZqfClfpuyaGtiXg+xhDut0liGrFq5pzokLs8TeD0l5+vxkH
-         iTF4qfwdrTFd4z8Bqsdd8DfgKzJfcDRXOytjmXWuIfDYMH7XJ/8TLeGeW4wiMGOYwdtW
-         NP7JE3fhYB1qtL0Kf8PNJ/bdteWH13R6vMkUhIPX5QK1VRklBtBDUUeVtQm+dwq5vv80
-         mPFA==
-X-Gm-Message-State: AOAM532iqTEHiYjLVuKDzV72RgSEj7fvGoAE//rRpyyY9QzfuFYIQHFn
-        ToWp3AvcnvIV2mVl+xPDVtFqd8TUerKfuOL1Lx4zmo+H
-X-Google-Smtp-Source: ABdhPJyNfwgzxP06fT+FS69hCqHmNkyoRh6zzep7gzpo4r/vDtgHqHWQA3CZTNpkE9pGNzLBBUAoMTBHT4eaz9GYmbk=
-X-Received: by 2002:a9d:7d8c:: with SMTP id j12mr7665692otn.250.1597566891474;
- Sun, 16 Aug 2020 01:34:51 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=Duxa+mmNF3T3C2WDKsmzowR2OzvdY892XFjTPp0RWRI=;
+        b=BO9ptHwYBBa7dSt2U/2G06abePdm0F77yulJiQ4mQetbmx+59nCun7ljE+8DznZygs
+         8KajiKUvI+UkUG6cYfDdrhxRYTCH8KJu392IZq8/pRxYku7sxGJqIy/EfkUDlO9gSbsk
+         yZDXNTurqSlsBl1fuXw1JgB7rcdZiCEDuG1SOQRj8v4e+Fk2IyO+e2IIndljnm3UqnEo
+         zEGlgUycJTpjabzJta/KO3diO6sMCTSHgHZEpVUUOoWrHSTwatnB1rEmGy0wm7hRG+XN
+         qKD4N6qphfnh8LsnaG+EJEqCIqpAQxBKUPvv435SHd22NmbcCJvrYr1jBUbmnH1JB/vn
+         rb9A==
+X-Gm-Message-State: AOAM53331qNKPybEl4Y9dSmPbikl5meoLcNfF23DhRRPtEtGbEngje1X
+        nw0jgKesUokkVuWihP7ggG8njEMQdXL7aqQFO26m94gLuv4=
+X-Google-Smtp-Source: ABdhPJydZZ8FQlFGmrB/EDLy0Z8gH5X03F6EFXypW4K1vf8iv94WhLhI3iwPKgeJEaRZZocHWED4lUmYPOBkTFPeX+4=
+X-Received: by 2002:a1c:a1c7:: with SMTP id k190mr10461870wme.1.1597588111746;
+ Sun, 16 Aug 2020 07:28:31 -0700 (PDT)
 MIME-Version: 1.0
-References: <b9ea23ec-4925-aee6-07a8-571971a42194@physik.fu-berlin.de>
- <6ad2b6e9-cd0c-5d31-1183-37fdfe2d3ff1@physik.fu-berlin.de>
- <20200815021754.GR3265@brightrain.aerifal.cx> <66205dc3-0193-9aad-b0c6-01d49655f8d3@physik.fu-berlin.de>
-In-Reply-To: <66205dc3-0193-9aad-b0c6-01d49655f8d3@physik.fu-berlin.de>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Sun, 16 Aug 2020 10:34:40 +0200
-Message-ID: <CAMuHMdVunSe+2OPg3kSaeLoX-AUOWqHHNb=8AZi1x2DhNOeQeA@mail.gmail.com>
-Subject: Re: Ping: Pull Request for 5.9
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     Rich Felker <dalias@libc.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>
+Received: by 2002:a5d:6cd3:0:0:0:0:0 with HTTP; Sun, 16 Aug 2020 07:28:30
+ -0700 (PDT)
+Reply-To: sctnld11170@tlen.pl
+From:   "Mr. Scott Donald" <confianzayrentabilidad@gmail.com>
+Date:   Sun, 16 Aug 2020 07:28:30 -0700
+Message-ID: <CANrrfX7wwL97G=jb--8nb9jH8oRO8T90L6NGSfg1HfnzMyyHcw@mail.gmail.com>
+Subject: Hello, Please
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Adrian,
+--=20
+Dear Friend,
 
-On Sat, Aug 15, 2020 at 12:41 PM John Paul Adrian Glaubitz
-<glaubitz@physik.fu-berlin.de> wrote:
-> @Geert: What about that patch to fix the serial interface on LANDISK?
+I'm Mr. Scott Donald a Successful businessMan dealing with
+Exportation, I got your mail contact through search to let you know my
+intension and my Ugly Situation Am a dying Man here in Los Angeles
+California Hospital Bed in (USA), I Lost my Wife and my only Daughter
+for Covid-19 and I also have a problem in my Health and I can die
+anytime I Know,
 
-It's a fix for serial parity handling for SCIF, and thus not really needed for
-a serial console.    No need to worry, as it's already in.
+I have a project that I am about to hand over to you. and I already
+instructed the Bankia S.A. Madrid, Spain(BSA) to transfer my fund sum
+of =C2=A33,7M GBP. Equivalent to =E2=82=AC4,077,033.91 EUR, to you as to en=
+able you
+to give 50% of this fund to Charitable Home in your State and take 50%
+don't think otherwise and why would anybody send someone you barely
+know to help you deliver a message, help me do this for the happiness
+of my soul and for God to mercy me and my Family and give Us a good
+place.
 
-Gr{oetje,eeting}s,
+please, do as I said there was someone from your State that I deeply
+love so very very much and I miss her so badly I have no means to
+reach any Charitable Home there. that is why I go for a personal
+search of the Country and State and I got your mail contact through
+search to let you know my Bitterness and please, help me is getting
+Dark I ask my Doctor to help me keep you notice failure for me to
+reach you in person Your urgent Response, here is my Doctor Whats-app
+Number for urgent notice +13019692737
 
-                        Geert
+Hope To Hear From You. I'm sending this email to you for the second
+time yet no response from you.
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+My Regards.
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Mr. Scott Donald
+CEO
