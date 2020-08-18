@@ -2,106 +2,175 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 89C8D2488CF
-	for <lists+linux-sh@lfdr.de>; Tue, 18 Aug 2020 17:12:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20B8C248998
+	for <lists+linux-sh@lfdr.de>; Tue, 18 Aug 2020 17:21:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727817AbgHRPME (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 18 Aug 2020 11:12:04 -0400
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:46630 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727086AbgHRPL7 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 18 Aug 2020 11:11:59 -0400
-Received: by mail-ot1-f68.google.com with SMTP id v6so16482419ota.13;
-        Tue, 18 Aug 2020 08:11:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6kmcrv3AWgeL5GASuumHID1J80/7f/2Nd8wXtc+yqsk=;
-        b=Qw7YpYmkimNsRV2kR9VPobBgYBx1Ku5BrR8aWxhr+qImMy5HZLwYvdH/q9Vo9m3QJh
-         TjPW0yNK6LEEfImOnnJGk/MgzVx8prcykDOqH5EA3xrYwg1QudRLY3+eNwgzKS4XskrM
-         JjHVpHIUqmwo3BRXn6JsSLMTuQs4uDZUUpXf9V2zn9IHkXfQf0/KYDVXhPkTWJxKqWtx
-         gFEUwrMmZP5rHjpXL517jxAz4yg65oDvc1huCqTnq7/W1ARoCdHcHm/I9g//rG/HDKNy
-         jmwFJfeEE18WYLr67XLaFGyYhGcEeNi2U0QZh2KMOU5K+I+5sYlMDNfPVH/dKsEvSXmY
-         MFOA==
-X-Gm-Message-State: AOAM533B/phgYmr3WiQfKInXEYwkIqwhwQ+3EF4d1vjkziRWOynDKuKz
-        toVcVqUup/bYyi0X8Mo+liKDB0UKrysgovAdvVIhO/4G
-X-Google-Smtp-Source: ABdhPJyCJEiEzbOVS0E0L0rs0hzE6iVl1bOVVFiVv37MJJcP/TMt57Xw4eyPHeYzFEfLyNQfXy6VZozkUSHg8HpL0Og=
-X-Received: by 2002:a9d:1b62:: with SMTP id l89mr14982071otl.145.1597763517415;
- Tue, 18 Aug 2020 08:11:57 -0700 (PDT)
+        id S1727935AbgHRPQ4 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 18 Aug 2020 11:16:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40118 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726718AbgHRPQt (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Tue, 18 Aug 2020 11:16:49 -0400
+Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 140422054F;
+        Tue, 18 Aug 2020 15:16:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1597763808;
+        bh=pWqW8YgLG90UU3p8BWQ4xo9QKFARTHRes7KpRDQutEY=;
+        h=From:To:Cc:Subject:Date:From;
+        b=mZ4Dw/78TkBwbT4zckybu8GS6IeYljCyckNW7F7V9LPqkH0uP6lZLns364B8ofjDq
+         g40MFxNJ9gEv01k6pNkEpjYOvmf4wvbJAjpvy8rkOX3Ub/pu7s4r9Q//DEwKnW4wz3
+         DIa8FLdmh9cooXoz1dI6BSyEhKPCYBl/+8BDlFOg=
+From:   Mike Rapoport <rppt@kernel.org>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Andy Lutomirski <luto@kernel.org>, Baoquan He <bhe@redhat.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christoph Hellwig <hch@lst.de>, Daniel Axtens <dja@axtens.net>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Emil Renner Berthing <kernel@esmil.dk>,
+        Ingo Molnar <mingo@redhat.com>,
+        Hari Bathini <hbathini@linux.ibm.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michal Simek <monstr@monstr.eu>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Stafford Horne <shorne@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Will Deacon <will@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        clang-built-linux@googlegroups.com,
+        iommu@lists.linux-foundation.org, linux-arch@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-mm@kvack.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, linuxppc-dev@lists.ozlabs.org,
+        openrisc@lists.librecores.org, sparclinux@vger.kernel.org,
+        uclinux-h8-devel@lists.sourceforge.jp, x86@kernel.org
+Subject: [PATCH v3 00/17] memblock: seasonal cleaning^w cleanup
+Date:   Tue, 18 Aug 2020 18:16:17 +0300
+Message-Id: <20200818151634.14343-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-References: <1585333048-31828-1-git-send-email-kazuhiro.fujita.jg@renesas.com>
- <CAMuHMdW+u5r6zyxFJsVzj21BYDrKCr=Q6Ojk5VeN+mkhvXX9Jw@mail.gmail.com>
- <OSBPR01MB3590E3D12546BC6711CEB542AAC80@OSBPR01MB3590.jpnprd01.prod.outlook.com>
- <CAMuHMdXmfQ0x7mCZ-E7OPQFv2z-=mFDT20hJ2_JKax=OePB8eA@mail.gmail.com>
- <CA+V-a8vPn_z_j1Vwr_1F=dCw8H=g5UMWvWxgRqBeVR7dzHPz8Q@mail.gmail.com>
- <CAMuHMdWc9q9NjQuAuy5M=v_x=i8XxVg5JZHswjvPsgNzhHfO0w@mail.gmail.com>
- <CAMuHMdUyV58t3eihBJv2xex5gW1Oef37Jo3FHoJstU=SspmpHA@mail.gmail.com>
- <CAMuHMdU0EiQuk_bWx1yrmbBTXg8mL-PeN2=P61xQ5Ucb5QmYYg@mail.gmail.com>
- <OSBPR01MB50485F5DA2F82E455DCA6B56AA5E0@OSBPR01MB5048.jpnprd01.prod.outlook.com>
- <b384543f-c80d-aa63-63a6-1b5dbc47885d@landley.net>
-In-Reply-To: <b384543f-c80d-aa63-63a6-1b5dbc47885d@landley.net>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 18 Aug 2020 17:11:46 +0200
-Message-ID: <CAMuHMdXH03ec-F8JC7L7mobLddhoUEbdEuOtdDHvMDsR+WJWPg@mail.gmail.com>
-Subject: SCI on R2D+ (was: Re: [PATCH] serial: sh-sci: Make sure status
- register SCxSR is read in correct sequence)
-To:     Rob Landley <rob@landley.net>
-Cc:     Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Linux-sh list <linux-sh@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Rob,
+From: Mike Rapoport <rppt@linux.ibm.com>
 
-On Mon, Aug 17, 2020 at 5:09 AM Rob Landley <rob@landley.net> wrote:
-> On 8/16/20 11:22 AM, Prabhakar Mahadev Lad wrote:
-> >> FTR, I gave it a try on the SH7751R-based I-O DATA USL-5P aka Landisk:
-> >> SCIF is affected, and fixed by commit 3dc4db3662366306 ("serial: sh-sci:
-> >> Make sure status register SCxSR is read in correct sequence").
-> >>
-> > Thank you Geert.
-> >
-> > Cheers,
-> > Prabhakar
->
-> Did we ever figure out how to get linux to talk to the _first_ serial port on
-> the qemu-system-sh4 r2d board? I'm still doing:
->
->   qemu-system-sh4 -M r2d -serial null -serial mon:stdio
->
-> Because I can only get a working console on the _second_ serial port. (SCI vs
-> SCIF I think?)
+Hi,
 
-Because the SCI is wired to an SPI bus?
-See:
-    arch/sh/boards/mach-r2d/setup.c:spi_sh_sci_device()
-    arch/sh/kernel/cpu/sh4/setup-sh7750.c:plat_early_device_setup()
+These patches simplify several uses of memblock iterators and hide some of
+the memblock implementation details from the rest of the system.
 
-To enable support for that:
-    CONFIG_SPI=y
-    CONFIG_SPI_SH_SCI=y
-    CONFIG_RTC_CLASS=y
-    CONFIG_RTC_DRV_R9701=y
+The patches are on top of v5.9-rc1
 
-However, QEMU doesn't support that mode:
+v3 changes:
+* rebase on v5.9-rc1, as the result this required some non-trivial changes
+  in patches 10 and 16. I didn't add Baoquan's Reviewed-by to theses
+  patches, but I keept Thomas and Miguel
+* Add Acked-by from Thomas and Miguel as there were changes in MIPS and
+  only trivial changes in .clang-format
+* Added Reviewed-by from Baoquan except for the patches 10 and 16
+* Fixed misc build errors and warnings reported by kbuild bot
+* Updated PowerPC KVM reservation size (patch 2), as per Daniel's comment
 
-    rtc-r9701 spi0.0: cannot read RTC register
+v2 changes:
+* replace for_each_memblock() with two versions, one for memblock.memory
+  and another one for memblock.reserved
+* fix overzealous cleanup of powerpc fadamp: keep the traversal over the
+  memblocks, but use better suited iterators
+* don't remove traversal over memblock.reserved in x86 numa cleanup but
+  replace for_each_memblock() with new for_each_reserved_mem_region()
+* simplify ramdisk and crash kernel allocations on x86
+* drop more redundant and unused code: __next_reserved_mem_region() and
+  memblock_mem_size()
+* add description of numa initialization fix on arm64 (thanks Jonathan)
+* add Acked and Reviewed tags
 
-Couldn't try on the remote physical R2D+. Will try when it becomes available
-again...
+Mike Rapoport (17):
+  KVM: PPC: Book3S HV: simplify kvm_cma_reserve()
+  dma-contiguous: simplify cma_early_percent_memory()
+  arm, xtensa: simplify initialization of high memory pages
+  arm64: numa: simplify dummy_numa_init()
+  h8300, nds32, openrisc: simplify detection of memory extents
+  riscv: drop unneeded node initialization
+  mircoblaze: drop unneeded NUMA and sparsemem initializations
+  memblock: make for_each_memblock_type() iterator private
+  memblock: make memblock_debug and related functionality private
+  memblock: reduce number of parameters in for_each_mem_range()
+  arch, mm: replace for_each_memblock() with for_each_mem_pfn_range()
+  arch, drivers: replace for_each_membock() with for_each_mem_range()
+  x86/setup: simplify initrd relocation and reservation
+  x86/setup: simplify reserve_crashkernel()
+  memblock: remove unused memblock_mem_size()
+  memblock: implement for_each_reserved_mem_region() using
+    __next_mem_region()
+  memblock: use separate iterators for memory and reserved regions
 
-Gr{oetje,eeting}s,
-
-                        Geert
+ .clang-format                            |  5 +-
+ arch/arm/kernel/setup.c                  | 18 +++--
+ arch/arm/mm/init.c                       | 59 +++------------
+ arch/arm/mm/mmu.c                        | 39 ++++------
+ arch/arm/mm/pmsa-v7.c                    | 23 +++---
+ arch/arm/mm/pmsa-v8.c                    | 17 ++---
+ arch/arm/xen/mm.c                        |  7 +-
+ arch/arm64/kernel/machine_kexec_file.c   |  6 +-
+ arch/arm64/kernel/setup.c                |  4 +-
+ arch/arm64/mm/init.c                     | 11 +--
+ arch/arm64/mm/kasan_init.c               | 10 +--
+ arch/arm64/mm/mmu.c                      | 11 +--
+ arch/arm64/mm/numa.c                     | 15 ++--
+ arch/c6x/kernel/setup.c                  |  9 ++-
+ arch/h8300/kernel/setup.c                |  8 +-
+ arch/microblaze/mm/init.c                | 21 ++----
+ arch/mips/cavium-octeon/dma-octeon.c     | 12 +--
+ arch/mips/kernel/setup.c                 | 31 ++++----
+ arch/mips/netlogic/xlp/setup.c           |  2 +-
+ arch/nds32/kernel/setup.c                |  8 +-
+ arch/openrisc/kernel/setup.c             |  9 +--
+ arch/openrisc/mm/init.c                  |  8 +-
+ arch/powerpc/kernel/fadump.c             | 57 +++++++-------
+ arch/powerpc/kexec/file_load_64.c        | 16 ++--
+ arch/powerpc/kvm/book3s_hv_builtin.c     | 12 +--
+ arch/powerpc/mm/book3s64/hash_utils.c    | 16 ++--
+ arch/powerpc/mm/book3s64/radix_pgtable.c | 10 +--
+ arch/powerpc/mm/kasan/kasan_init_32.c    |  8 +-
+ arch/powerpc/mm/mem.c                    | 33 ++++----
+ arch/powerpc/mm/numa.c                   |  7 +-
+ arch/powerpc/mm/pgtable_32.c             |  8 +-
+ arch/riscv/mm/init.c                     | 36 +++------
+ arch/riscv/mm/kasan_init.c               | 10 +--
+ arch/s390/kernel/setup.c                 | 27 ++++---
+ arch/s390/mm/page-states.c               |  6 +-
+ arch/s390/mm/vmem.c                      |  7 +-
+ arch/sh/mm/init.c                        |  9 +--
+ arch/sparc/mm/init_64.c                  | 12 +--
+ arch/x86/kernel/setup.c                  | 56 +++++---------
+ arch/x86/mm/numa.c                       |  2 +-
+ arch/xtensa/mm/init.c                    | 55 +++-----------
+ drivers/bus/mvebu-mbus.c                 | 12 +--
+ drivers/irqchip/irq-gic-v3-its.c         |  2 +-
+ include/linux/memblock.h                 | 88 +++++++++++++---------
+ kernel/dma/contiguous.c                  | 11 +--
+ mm/memblock.c                            | 95 ++++++++++--------------
+ mm/page_alloc.c                          | 11 ++-
+ mm/sparse.c                              | 10 +--
+ 48 files changed, 387 insertions(+), 562 deletions(-)
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.26.2
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
