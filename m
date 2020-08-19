@@ -2,149 +2,58 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 31B9B24990E
-	for <lists+linux-sh@lfdr.de>; Wed, 19 Aug 2020 11:10:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F921249BC0
+	for <lists+linux-sh@lfdr.de>; Wed, 19 Aug 2020 13:29:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726794AbgHSJJ7 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 19 Aug 2020 05:09:59 -0400
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:37021 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726110AbgHSJJ7 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 19 Aug 2020 05:09:59 -0400
-Received: by mail-oi1-f196.google.com with SMTP id e6so20419563oii.4;
-        Wed, 19 Aug 2020 02:09:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=FVTm4vOQa6whaO6/eSa1Eurslvl1A1eOKwJkxD7vXBA=;
-        b=bbOe2pfhAYKaIEx1TZ5StoSvQNy1SJL9xlBYmHXMYE1n8+VbdVy0CaEepnhY9CthV4
-         bc/3rEMYRT0IYtKhaFG/nUcpqX2DGPbYGiTdHVWtcIYzjzbMSKrPHDOvC1xPv5+RR3FD
-         0H3jxyYh9IXOgRkil3+8VZAHlBy2/i5hS0dH2w909ukU270oj/ufuM+a5MEymgBXhL+J
-         m/hWTgy671BpRi/g9fzyrYefmWrM8PV1ns9dpKA9UKT6gjXMSVQaVvxDKx67LaRz7g+t
-         jYugkALnwDkhHgQ6Ld/YkUc0Y5204x4iGrVTco0JK0aO2h5HUBVsUOco8duKubgvcPU9
-         vjHA==
-X-Gm-Message-State: AOAM533kgYZZOD9XPeRK79uaw/xd7miqSJlMC+7QzJzIQfGjB1IRDNZW
-        5aBTdQXGv/eacKOznRRpvtpuxgHbnT9hPNiiALU=
-X-Google-Smtp-Source: ABdhPJxyGbLLdSKygv338P0ucHbVhbsigkU92H4n7j5pDNgFNKYLZ3l1ljDOI6l+kVwT0Pzok6VbA6cs0AK3L0NN3LI=
-X-Received: by 2002:aca:4b54:: with SMTP id y81mr2633865oia.54.1597828198046;
- Wed, 19 Aug 2020 02:09:58 -0700 (PDT)
+        id S1727926AbgHSL2s (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 19 Aug 2020 07:28:48 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:9776 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728106AbgHSL2d (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Wed, 19 Aug 2020 07:28:33 -0400
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 65B808222144AFFC17C0;
+        Wed, 19 Aug 2020 19:28:32 +0800 (CST)
+Received: from huawei.com (10.175.113.133) by DGGEMS409-HUB.china.huawei.com
+ (10.3.19.209) with Microsoft SMTP Server id 14.3.487.0; Wed, 19 Aug 2020
+ 19:28:27 +0800
+From:   Wang Hai <wanghai38@huawei.com>
+To:     <ysato@users.sourceforge.jp>, <dalias@libc.org>,
+        <linux-sh@vger.kernel.org>
+CC:     <linux-kernel@vger.kernel.org>
+Subject: [PATCH -next] sh: mach-sh03: remove duplicate include
+Date:   Wed, 19 Aug 2020 19:26:17 +0800
+Message-ID: <20200819112617.6015-1-wanghai38@huawei.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-References: <20200819030511.1114-1-liambeguin@gmail.com>
-In-Reply-To: <20200819030511.1114-1-liambeguin@gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 19 Aug 2020 11:09:46 +0200
-Message-ID: <CAMuHMdVYeAqLHuW2fjQk7HQbnGJhY7YJcksMddn_6Cp61cd-AQ@mail.gmail.com>
-Subject: Re: [PATCH 1/1] sh: add support for cmpxchg on u8 and u16 pointers
-To:     Liam Beguin <liambeguin@gmail.com>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kernel test robot <lkp@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-Originating-IP: [10.175.113.133]
+X-CFilter-Loop: Reflected
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Liam,
+Remove linux/rtc.h which is included more than once
 
-On Wed, Aug 19, 2020 at 5:07 AM Liam Beguin <liambeguin@gmail.com> wrote:
-> The kernel test bot reported[1] that using set_mask_bits on a u8 causes
-> the following issue on SuperH:
->
->     >> ERROR: modpost: "__cmpxchg_called_with_bad_pointer" [drivers/phy/ti/phy-tusb1210.ko] undefined!
->
-> Add support for cmpxchg on u8 and u16 pointers.
->
-> [1] https://lore.kernel.org/patchwork/patch/1288894/#1485536
->
-> Reported-by: kernel test robot <lkp@intel.com>
-> Signed-off-by: Liam Beguin <liambeguin@gmail.com>
-> ---
->
-> Hi,
->
-> This was reported by the kernel test bot on an architecture I can't
-> really test on. I was only able to make sure the build succeeds, but
-> nothing more.
-> This patch is based on the __cmpxchg_u32 impletmentation and seems
-> incomplete based on the different cmpxchg headers I can find.
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Wang Hai <wanghai38@huawei.com>
+---
+ arch/sh/boards/mach-sh03/rtc.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Indeed. This version is suitable for non-SMP machines only.
-BTW, it looks like this version can be replaced by the one in asm-generic?
-
->
-> Do these function need to be impletmented in each header
-> simulataneously?
-
-Yes, we need them for all variants.
-
->  arch/sh/include/asm/cmpxchg-irq.h | 27 +++++++++++++++++++++++++++
->  arch/sh/include/asm/cmpxchg.h     |  5 +++--
->  2 files changed, 30 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/sh/include/asm/cmpxchg-irq.h b/arch/sh/include/asm/cmpxchg-irq.h
-> index 07d3e7f08389..918c4153a930 100644
-> --- a/arch/sh/include/asm/cmpxchg-irq.h
-> +++ b/arch/sh/include/asm/cmpxchg-irq.h
-> @@ -51,4 +51,31 @@ static inline unsigned long __cmpxchg_u32(volatile int *m, unsigned long old,
->         return retval;
->  }
->
-> +static inline unsigned long __cmpxchg_u16(volatile u16 *m, unsigned long old,
-> +       unsigned long new)
-> +{
-> +       u16 retval;
-> +       unsigned long flags;
-> +
-> +       local_irq_save(flags);
-> +       retval = *m;
-> +       if (retval == old)
-> +               *m = new;
-> +       local_irq_restore(flags);
-> +       return (unsigned long)retval;
-> +}
-> +
-> +static inline unsigned long __cmpxchg_u8(volatile u8 *m, unsigned long old,
-> +       unsigned long new)
-> +{
-> +       u8 retval;
-> +       unsigned long flags;
-> +
-> +       local_irq_save(flags);
-> +       retval = *m;
-> +       if (retval == old)
-> +               *m = new;
-> +       local_irq_restore(flags);
-> +       return (unsigned long)retval;
-> +}
->  #endif /* __ASM_SH_CMPXCHG_IRQ_H */
-> diff --git a/arch/sh/include/asm/cmpxchg.h b/arch/sh/include/asm/cmpxchg.h
-> index e9501d85c278..7d65d0fd1665 100644
-> --- a/arch/sh/include/asm/cmpxchg.h
-> +++ b/arch/sh/include/asm/cmpxchg.h
-> @@ -56,8 +56,9 @@ static inline unsigned long __cmpxchg(volatile void * ptr, unsigned long old,
->                 unsigned long new, int size)
->  {
->         switch (size) {
-> -       case 4:
-> -               return __cmpxchg_u32(ptr, old, new);
-> +       case 4: return __cmpxchg_u32((int *)ptr, old, new);
-> +       case 2: return __cmpxchg_u16((u16 *)ptr, old, new);
-> +       case 1: return __cmpxchg_u8((u8 *)ptr, old, new);
->         }
->         __cmpxchg_called_with_bad_pointer();
->         return old;
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
+diff --git a/arch/sh/boards/mach-sh03/rtc.c b/arch/sh/boards/mach-sh03/rtc.c
+index 8b23ed7c201c..165e2ccaab4d 100644
+--- a/arch/sh/boards/mach-sh03/rtc.c
++++ b/arch/sh/boards/mach-sh03/rtc.c
+@@ -14,7 +14,6 @@
+ #include <linux/rtc.h>
+ #include <linux/spinlock.h>
+ #include <linux/io.h>
+-#include <linux/rtc.h>
+ #include <linux/platform_device.h>
+ 
+ #define RTC_BASE	0xb0000000
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.17.1
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
