@@ -2,108 +2,139 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B97124A08B
-	for <lists+linux-sh@lfdr.de>; Wed, 19 Aug 2020 15:50:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2FF924A6DA
+	for <lists+linux-sh@lfdr.de>; Wed, 19 Aug 2020 21:24:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728509AbgHSNuY (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 19 Aug 2020 09:50:24 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:35359 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728548AbgHSNuY (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 19 Aug 2020 09:50:24 -0400
-Received: by mail-ot1-f65.google.com with SMTP id 93so19103997otx.2;
-        Wed, 19 Aug 2020 06:50:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ltWJt4HdLmLy75qog/vuWz53dqbAkrcied3ipKYJOts=;
-        b=bVmck4MJWRgHrDbCdf3RFLXkq+Orq0ysSqmvqqeFkP4tAf9NiBoSMWNmRr8q3pt1x9
-         my6bow/lmgMTSE4NKfCN0Kk7N4eISsRdUjarIPgK3/AqE9xy0i1x9/urZ6fB1SN7lKCY
-         9ZMVdakuurWaIKyxb4BZi+0oq3b+wm6jLpaa8OziSM71os6QwVlaSkMLhF2rQBnFXERP
-         7DeawOcdmXmi+oTNv9LnwlwTJ8by2rIpSwQ38cpvgQs7BkAIlomS9Dk4LZ5UyEBr51Oc
-         nbZwWHeaf20mMbPndUfDy3V4CPVcF9dWgyE91xRUcKY73802kXM4pWKjG/6L7ig0WjZN
-         mL9g==
-X-Gm-Message-State: AOAM531fxhR151swEvKSdSD4jDj0YcWlWIDSM8r8slrznGTO2rY7rY4F
-        5h60I4QCG0gVAPHmDautOUGOl8INHCeU3pvKla5pGwvT
-X-Google-Smtp-Source: ABdhPJzIFo9ftVZ5exRaJgb85LrLFmcU/cyPWegojIrEVqvJP7c+174rQwTKYLYBC6FPf08eWpDqlfCWQ+IWdAotbRQ=
-X-Received: by 2002:a9d:1b62:: with SMTP id l89mr18095280otl.145.1597845022803;
- Wed, 19 Aug 2020 06:50:22 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAMuHMdVYeAqLHuW2fjQk7HQbnGJhY7YJcksMddn_6Cp61cd-AQ@mail.gmail.com>
- <C510813DTTYI.1PZXLO9Y2FRLM@atris>
-In-Reply-To: <C510813DTTYI.1PZXLO9Y2FRLM@atris>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 19 Aug 2020 15:50:11 +0200
-Message-ID: <CAMuHMdWAeccfEbZ=7MFgR=2SyC_1zRNGXG5G6VL5qY=d0HW37A@mail.gmail.com>
-Subject: Re: [PATCH 1/1] sh: add support for cmpxchg on u8 and u16 pointers
-To:     Liam Beguin <liambeguin@gmail.com>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kernel test robot <lkp@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+        id S1726816AbgHSTYI (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 19 Aug 2020 15:24:08 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34292 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726646AbgHSTYI (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Wed, 19 Aug 2020 15:24:08 -0400
+Received: from localhost.localdomain (c-73-231-172-41.hsd1.ca.comcast.net [73.231.172.41])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9402E2078D;
+        Wed, 19 Aug 2020 19:24:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1597865047;
+        bh=6hhM8PiKqrI8OznN19QgLRQ0zl2av/Rwj0VbHVeg6TI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=GeI8lPtKHV2olB+n1d/AHlFuCQdtbzjHW+ZeY/rUdgLakHkOt9wUYAnS0FY5DAaBS
+         I2RN/QPVX1NYA77mL4Gju2LBembz/syr0lV3QTr54MfcpA1iUpBgt41tqO0dgw0etA
+         mFQuuqulIWY5wbe9fNPxiTsAazhpzTtzhltFAhpw=
+Date:   Wed, 19 Aug 2020 12:24:05 -0700
+From:   Andrew Morton <akpm@linux-foundation.org>
+To:     Mike Rapoport <rppt@kernel.org>
+Cc:     Andy Lutomirski <luto@kernel.org>, Baoquan He <bhe@redhat.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christoph Hellwig <hch@lst.de>, Daniel Axtens <dja@axtens.net>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Emil Renner Berthing <kernel@esmil.dk>,
+        Ingo Molnar <mingo@redhat.com>,
+        Hari Bathini <hbathini@linux.ibm.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michal Simek <monstr@monstr.eu>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Stafford Horne <shorne@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Will Deacon <will@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        clang-built-linux@googlegroups.com,
+        iommu@lists.linux-foundation.org, linux-arch@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-mm@kvack.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, linuxppc-dev@lists.ozlabs.org,
+        openrisc@lists.librecores.org, sparclinux@vger.kernel.org,
+        uclinux-h8-devel@lists.sourceforge.jp, x86@kernel.org
+Subject: Re: [PATCH v3 09/17] memblock: make memblock_debug and related
+ functionality private
+Message-Id: <20200819122405.88e9719e86ac7c3c44b4db32@linux-foundation.org>
+In-Reply-To: <20200818151634.14343-10-rppt@kernel.org>
+References: <20200818151634.14343-1-rppt@kernel.org>
+        <20200818151634.14343-10-rppt@kernel.org>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Liam,
+On Tue, 18 Aug 2020 18:16:26 +0300 Mike Rapoport <rppt@kernel.org> wrote:
 
-On Wed, Aug 19, 2020 at 3:34 PM Liam Beguin <liambeguin@gmail.com> wrote:
-> On Wed Aug 19, 2020 at 5:09 AM EDT, Geert Uytterhoeven wrote:
-> > On Wed, Aug 19, 2020 at 5:07 AM Liam Beguin <liambeguin@gmail.com>
-> > wrote:
-> > > The kernel test bot reported[1] that using set_mask_bits on a u8 causes
-> > > the following issue on SuperH:
-> > >
-> > >     >> ERROR: modpost: "__cmpxchg_called_with_bad_pointer" [drivers/phy/ti/phy-tusb1210.ko] undefined!
-> > >
-> > > Add support for cmpxchg on u8 and u16 pointers.
-> > >
-> > > [1] https://lore.kernel.org/patchwork/patch/1288894/#1485536
-> > >
-> > > Reported-by: kernel test robot <lkp@intel.com>
-> > > Signed-off-by: Liam Beguin <liambeguin@gmail.com>
-> > > ---
-> > >
-> > > Hi,
-> > >
-> > > This was reported by the kernel test bot on an architecture I can't
-> > > really test on. I was only able to make sure the build succeeds, but
-> > > nothing more.
-> > > This patch is based on the __cmpxchg_u32 impletmentation and seems
-> > > incomplete based on the different cmpxchg headers I can find.
-> >
-> > Indeed. This version is suitable for non-SMP machines only.
-> > BTW, it looks like this version can be replaced by the one in
-> > asm-generic?
-> >
->
-> Thanks for your feedback I'll have a look at the asm-generic functions
-> and try to use those instead.
->
-> > >
-> > > Do these function need to be impletmented in each header
-> > > simulataneously?
-> >
-> > Yes, we need them for all variants.
-> >
->
-> Okay, I'll look into that. Would you recommend a good way to test these
-> changes?
+> From: Mike Rapoport <rppt@linux.ibm.com>
+> 
+> The only user of memblock_dbg() outside memblock was s390 setup code and it
+> is converted to use pr_debug() instead.
+> This allows to stop exposing memblock_debug and memblock_dbg() to the rest
+> of the kernel.
+> 
+> --- a/mm/memblock.c
+> +++ b/mm/memblock.c
+> @@ -137,7 +137,10 @@ struct memblock_type physmem = {
+>  	     i < memblock_type->cnt;					\
+>  	     i++, rgn = &memblock_type->regions[i])
+>  
+> -int memblock_debug __initdata_memblock;
+> +#define memblock_dbg(fmt, ...) \
+> +	if (memblock_debug) printk(KERN_INFO pr_fmt(fmt), ##__VA_ARGS__)
+> +
 
-That's gonna be harder, I'm afraid.
-Who has suitable hardware?
+checkpatch doesn't like this much.
 
-Gr{oetje,eeting}s,
+ERROR: Macros starting with if should be enclosed by a do - while loop to avoid possible if/else logic defects
+#101: FILE: mm/memblock.c:140:
++#define memblock_dbg(fmt, ...) \
++	if (memblock_debug) printk(KERN_INFO pr_fmt(fmt), ##__VA_ARGS__)
 
-                        Geert
+WARNING: Prefer [subsystem eg: netdev]_info([subsystem]dev, ... then dev_info(dev, ... then pr_info(...  to printk(KERN_INFO ...
+#102: FILE: mm/memblock.c:141:
++	if (memblock_debug) printk(KERN_INFO pr_fmt(fmt), ##__VA_ARGS__)
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+ERROR: trailing statements should be on next line
+#102: FILE: mm/memblock.c:141:
++	if (memblock_debug) printk(KERN_INFO pr_fmt(fmt), ##__VA_ARGS__)
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+
+The first one is significant:
+
+	if (foo)
+		memblock_dbg(...);
+	else
+		save_the_world();
+
+could end up inadvertently destroying the planet.
+
+This?
+
+--- a/mm/memblock.c~memblock-make-memblock_debug-and-related-functionality-private-fix
++++ a/mm/memblock.c
+@@ -137,8 +137,11 @@ struct memblock_type physmem = {
+ 	     i < memblock_type->cnt;					\
+ 	     i++, rgn = &memblock_type->regions[i])
+ 
+-#define memblock_dbg(fmt, ...) \
+-	if (memblock_debug) printk(KERN_INFO pr_fmt(fmt), ##__VA_ARGS__)
++#define memblock_dbg(fmt, ...)						\
++	do {								\
++		if (memblock_debug)					\
++			pr_info(fmt, ##__VA_ARGS__);			\
++	} while (0)
+ 
+ static int memblock_debug __initdata_memblock;
+ static bool system_has_some_mirror __initdata_memblock = false;
+_
+
