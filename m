@@ -2,193 +2,108 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 72B2224A012
-	for <lists+linux-sh@lfdr.de>; Wed, 19 Aug 2020 15:35:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B97124A08B
+	for <lists+linux-sh@lfdr.de>; Wed, 19 Aug 2020 15:50:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728640AbgHSNe5 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 19 Aug 2020 09:34:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41772 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728635AbgHSNem (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 19 Aug 2020 09:34:42 -0400
-Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com [IPv6:2607:f8b0:4864:20::844])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A233DC061757;
-        Wed, 19 Aug 2020 06:34:41 -0700 (PDT)
-Received: by mail-qt1-x844.google.com with SMTP id v22so17744384qtq.8;
-        Wed, 19 Aug 2020 06:34:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:content-transfer-encoding:cc:subject:from:to:date
-         :message-id:in-reply-to;
-        bh=qLSpTi/wS0rqA92hZ8N392gIFPLza+42A+sZ/4jgGW8=;
-        b=tARFDEDu4L/h45Sv181tJOBAaGo5hWdYuKz7LbjjA7zsJNQg2liG7Jqi4H04EBqek7
-         QiOc5ial+L99+YozupYXwwnKQ83y6rl5/rwOAvCVtV21DycqJdCVt+4k2qcfgG2xgl/+
-         zNRz9P28edyMgfmW9d+MT9mKn7Wl0rWx7rHJIBumKOdxgazp58leQffXdDoFjnRp54s5
-         W/Yuq0V09tD/y+dPCHjbAI7MB62UcENQi/PeVCumtlh5WGXnwSgXIAtbV4poRRF/zlMj
-         IzkFG/MWDr9R4MIEWddtTmPPQ8LW/ukQUwLORB5M9aUQMssO2VFO62q4fR4+k5V8AY3o
-         0UCw==
+        id S1728509AbgHSNuY (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 19 Aug 2020 09:50:24 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:35359 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728548AbgHSNuY (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 19 Aug 2020 09:50:24 -0400
+Received: by mail-ot1-f65.google.com with SMTP id 93so19103997otx.2;
+        Wed, 19 Aug 2020 06:50:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:content-transfer-encoding:cc
-         :subject:from:to:date:message-id:in-reply-to;
-        bh=qLSpTi/wS0rqA92hZ8N392gIFPLza+42A+sZ/4jgGW8=;
-        b=JC2jMXnYsWDjtMuKHEmUe75jk6ZQED+pH1c4iI8b5333wHXhE0e0ROdJPAZWM/Fr/y
-         fl47L6J4++kRzvddejzUHZ6Vf/evwPC5noJriZl+r4zLJQPX+wNOoqdfr0m7aKiJR75a
-         7Ou13jEQ7KcwE1ZbXmSbUllpMiEBj4G+wJb0vuHSarq1GPCRMuc5InCOS4KBMzRUJDb8
-         Dp+jdrUK+IJQHMzcDCDg4TijNwtZWHXBZcE2gqww3zCNHVkUw1s5eSW03jBdYJu/3WuL
-         rzCbKkS0XoRBlyIB8o19sXHShmhfyDADACNx63/tJyVaLH22aO9XPP7hOtc12mHRH7CZ
-         BYSA==
-X-Gm-Message-State: AOAM5335FY7i/9BUTHveCdPs+jgOY3Hg71BKGHjMS184mqVjMPplGnyW
-        K7hciFA3F1OBqBMfSKgIrcs=
-X-Google-Smtp-Source: ABdhPJxZ6tLtod9Bd8h/Lib1oZIPTALtdhWpL9hIdLs2sjZPkZ6Uq1PB6TK3ctSFsXM6dpa/VIOEPw==
-X-Received: by 2002:ac8:6bce:: with SMTP id b14mr22359452qtt.255.1597844080873;
-        Wed, 19 Aug 2020 06:34:40 -0700 (PDT)
-Received: from localhost (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
-        by smtp.gmail.com with ESMTPSA id y26sm25829334qto.75.2020.08.19.06.34.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Aug 2020 06:34:39 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Cc:     "Yoshinori Sato" <ysato@users.sourceforge.jp>,
-        "Rich Felker" <dalias@libc.org>,
-        "Linux-sh list" <linux-sh@vger.kernel.org>,
-        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
-        "kernel test robot" <lkp@intel.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ltWJt4HdLmLy75qog/vuWz53dqbAkrcied3ipKYJOts=;
+        b=bVmck4MJWRgHrDbCdf3RFLXkq+Orq0ysSqmvqqeFkP4tAf9NiBoSMWNmRr8q3pt1x9
+         my6bow/lmgMTSE4NKfCN0Kk7N4eISsRdUjarIPgK3/AqE9xy0i1x9/urZ6fB1SN7lKCY
+         9ZMVdakuurWaIKyxb4BZi+0oq3b+wm6jLpaa8OziSM71os6QwVlaSkMLhF2rQBnFXERP
+         7DeawOcdmXmi+oTNv9LnwlwTJ8by2rIpSwQ38cpvgQs7BkAIlomS9Dk4LZ5UyEBr51Oc
+         nbZwWHeaf20mMbPndUfDy3V4CPVcF9dWgyE91xRUcKY73802kXM4pWKjG/6L7ig0WjZN
+         mL9g==
+X-Gm-Message-State: AOAM531fxhR151swEvKSdSD4jDj0YcWlWIDSM8r8slrznGTO2rY7rY4F
+        5h60I4QCG0gVAPHmDautOUGOl8INHCeU3pvKla5pGwvT
+X-Google-Smtp-Source: ABdhPJzIFo9ftVZ5exRaJgb85LrLFmcU/cyPWegojIrEVqvJP7c+174rQwTKYLYBC6FPf08eWpDqlfCWQ+IWdAotbRQ=
+X-Received: by 2002:a9d:1b62:: with SMTP id l89mr18095280otl.145.1597845022803;
+ Wed, 19 Aug 2020 06:50:22 -0700 (PDT)
+MIME-Version: 1.0
+References: <CAMuHMdVYeAqLHuW2fjQk7HQbnGJhY7YJcksMddn_6Cp61cd-AQ@mail.gmail.com>
+ <C510813DTTYI.1PZXLO9Y2FRLM@atris>
+In-Reply-To: <C510813DTTYI.1PZXLO9Y2FRLM@atris>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Wed, 19 Aug 2020 15:50:11 +0200
+Message-ID: <CAMuHMdWAeccfEbZ=7MFgR=2SyC_1zRNGXG5G6VL5qY=d0HW37A@mail.gmail.com>
 Subject: Re: [PATCH 1/1] sh: add support for cmpxchg on u8 and u16 pointers
-From:   "Liam Beguin" <liambeguin@gmail.com>
-To:     "Geert Uytterhoeven" <geert@linux-m68k.org>
-Date:   Wed, 19 Aug 2020 09:23:47 -0400
-Message-Id: <C510813DTTYI.1PZXLO9Y2FRLM@atris>
-In-Reply-To: <CAMuHMdVYeAqLHuW2fjQk7HQbnGJhY7YJcksMddn_6Cp61cd-AQ@mail.gmail.com>
+To:     Liam Beguin <liambeguin@gmail.com>
+Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        kernel test robot <lkp@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Geert,
+Hi Liam,
 
-On Wed Aug 19, 2020 at 5:09 AM EDT, Geert Uytterhoeven wrote:
-> Hi Liam,
+On Wed, Aug 19, 2020 at 3:34 PM Liam Beguin <liambeguin@gmail.com> wrote:
+> On Wed Aug 19, 2020 at 5:09 AM EDT, Geert Uytterhoeven wrote:
+> > On Wed, Aug 19, 2020 at 5:07 AM Liam Beguin <liambeguin@gmail.com>
+> > wrote:
+> > > The kernel test bot reported[1] that using set_mask_bits on a u8 causes
+> > > the following issue on SuperH:
+> > >
+> > >     >> ERROR: modpost: "__cmpxchg_called_with_bad_pointer" [drivers/phy/ti/phy-tusb1210.ko] undefined!
+> > >
+> > > Add support for cmpxchg on u8 and u16 pointers.
+> > >
+> > > [1] https://lore.kernel.org/patchwork/patch/1288894/#1485536
+> > >
+> > > Reported-by: kernel test robot <lkp@intel.com>
+> > > Signed-off-by: Liam Beguin <liambeguin@gmail.com>
+> > > ---
+> > >
+> > > Hi,
+> > >
+> > > This was reported by the kernel test bot on an architecture I can't
+> > > really test on. I was only able to make sure the build succeeds, but
+> > > nothing more.
+> > > This patch is based on the __cmpxchg_u32 impletmentation and seems
+> > > incomplete based on the different cmpxchg headers I can find.
+> >
+> > Indeed. This version is suitable for non-SMP machines only.
+> > BTW, it looks like this version can be replaced by the one in
+> > asm-generic?
+> >
 >
-> On Wed, Aug 19, 2020 at 5:07 AM Liam Beguin <liambeguin@gmail.com>
-> wrote:
-> > The kernel test bot reported[1] that using set_mask_bits on a u8 causes
-> > the following issue on SuperH:
-> >
-> >     >> ERROR: modpost: "__cmpxchg_called_with_bad_pointer" [drivers/phy=
-/ti/phy-tusb1210.ko] undefined!
-> >
-> > Add support for cmpxchg on u8 and u16 pointers.
-> >
-> > [1] https://lore.kernel.org/patchwork/patch/1288894/#1485536
-> >
-> > Reported-by: kernel test robot <lkp@intel.com>
-> > Signed-off-by: Liam Beguin <liambeguin@gmail.com>
-> > ---
-> >
-> > Hi,
-> >
-> > This was reported by the kernel test bot on an architecture I can't
-> > really test on. I was only able to make sure the build succeeds, but
-> > nothing more.
-> > This patch is based on the __cmpxchg_u32 impletmentation and seems
-> > incomplete based on the different cmpxchg headers I can find.
+> Thanks for your feedback I'll have a look at the asm-generic functions
+> and try to use those instead.
 >
-> Indeed. This version is suitable for non-SMP machines only.
-> BTW, it looks like this version can be replaced by the one in
-> asm-generic?
+> > >
+> > > Do these function need to be impletmented in each header
+> > > simulataneously?
+> >
+> > Yes, we need them for all variants.
+> >
 >
+> Okay, I'll look into that. Would you recommend a good way to test these
+> changes?
 
-Thanks for your feedback I'll have a look at the asm-generic functions
-and try to use those instead.
+That's gonna be harder, I'm afraid.
+Who has suitable hardware?
 
-> >
-> > Do these function need to be impletmented in each header
-> > simulataneously?
->
-> Yes, we need them for all variants.
->
+Gr{oetje,eeting}s,
 
-Okay, I'll look into that. Would you recommend a good way to test these
-changes?
+                        Geert
 
-> >  arch/sh/include/asm/cmpxchg-irq.h | 27 +++++++++++++++++++++++++++
-> >  arch/sh/include/asm/cmpxchg.h     |  5 +++--
-> >  2 files changed, 30 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/arch/sh/include/asm/cmpxchg-irq.h b/arch/sh/include/asm/cm=
-pxchg-irq.h
-> > index 07d3e7f08389..918c4153a930 100644
-> > --- a/arch/sh/include/asm/cmpxchg-irq.h
-> > +++ b/arch/sh/include/asm/cmpxchg-irq.h
-> > @@ -51,4 +51,31 @@ static inline unsigned long __cmpxchg_u32(volatile i=
-nt *m, unsigned long old,
-> >         return retval;
-> >  }
-> >
-> > +static inline unsigned long __cmpxchg_u16(volatile u16 *m, unsigned lo=
-ng old,
-> > +       unsigned long new)
-> > +{
-> > +       u16 retval;
-> > +       unsigned long flags;
-> > +
-> > +       local_irq_save(flags);
-> > +       retval =3D *m;
-> > +       if (retval =3D=3D old)
-> > +               *m =3D new;
-> > +       local_irq_restore(flags);
-> > +       return (unsigned long)retval;
-> > +}
-> > +
-> > +static inline unsigned long __cmpxchg_u8(volatile u8 *m, unsigned long=
- old,
-> > +       unsigned long new)
-> > +{
-> > +       u8 retval;
-> > +       unsigned long flags;
-> > +
-> > +       local_irq_save(flags);
-> > +       retval =3D *m;
-> > +       if (retval =3D=3D old)
-> > +               *m =3D new;
-> > +       local_irq_restore(flags);
-> > +       return (unsigned long)retval;
-> > +}
-> >  #endif /* __ASM_SH_CMPXCHG_IRQ_H */
-> > diff --git a/arch/sh/include/asm/cmpxchg.h b/arch/sh/include/asm/cmpxch=
-g.h
-> > index e9501d85c278..7d65d0fd1665 100644
-> > --- a/arch/sh/include/asm/cmpxchg.h
-> > +++ b/arch/sh/include/asm/cmpxchg.h
-> > @@ -56,8 +56,9 @@ static inline unsigned long __cmpxchg(volatile void *=
- ptr, unsigned long old,
-> >                 unsigned long new, int size)
-> >  {
-> >         switch (size) {
-> > -       case 4:
-> > -               return __cmpxchg_u32(ptr, old, new);
-> > +       case 4: return __cmpxchg_u32((int *)ptr, old, new);
-> > +       case 2: return __cmpxchg_u16((u16 *)ptr, old, new);
-> > +       case 1: return __cmpxchg_u8((u8 *)ptr, old, new);
-> >         }
-> >         __cmpxchg_called_with_bad_pointer();
-> >         return old;
->
-> Gr{oetje,eeting}s,
->
-> Geert
->
-> --
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 --
-> geert@linux-m68k.org
->
-> In personal conversations with technical people, I call myself a hacker.
-> But
-> when I'm talking to journalists I just say "programmer" or something
-> like that.
-> -- Linus Torvalds
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-Thanks for your time,
-Liam
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
