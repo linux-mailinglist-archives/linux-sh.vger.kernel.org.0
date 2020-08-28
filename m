@@ -2,67 +2,44 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 982C02552E6
-	for <lists+linux-sh@lfdr.de>; Fri, 28 Aug 2020 04:11:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F40225538E
+	for <lists+linux-sh@lfdr.de>; Fri, 28 Aug 2020 06:24:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728015AbgH1CLy (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 27 Aug 2020 22:11:54 -0400
-Received: from brightrain.aerifal.cx ([216.12.86.13]:47542 "EHLO
-        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726147AbgH1CLy (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 27 Aug 2020 22:11:54 -0400
-Date:   Thu, 27 Aug 2020 22:11:53 -0400
-From:   Rich Felker <dalias@libc.org>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
+        id S1726219AbgH1EYZ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 28 Aug 2020 00:24:25 -0400
+Received: from verein.lst.de ([213.95.11.211]:40822 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725774AbgH1EYZ (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Fri, 28 Aug 2020 00:24:25 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id D4C3468BEB; Fri, 28 Aug 2020 06:24:22 +0200 (CEST)
+Date:   Fri, 28 Aug 2020 06:24:22 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Rich Felker <dalias@libc.org>
+Cc:     Christoph Hellwig <hch@lst.de>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-spi@vger.kernel.org
 Subject: Re: [PATCH 09/10] sh: don't allow non-coherent DMA for NOMMU
-Message-ID: <20200828021152.GU3265@brightrain.aerifal.cx>
-References: <20200714121856.955680-1-hch@lst.de>
- <20200714121856.955680-10-hch@lst.de>
- <20200828020045.GT3265@brightrain.aerifal.cx>
+Message-ID: <20200828042422.GA29734@lst.de>
+References: <20200714121856.955680-1-hch@lst.de> <20200714121856.955680-10-hch@lst.de> <20200828020045.GT3265@brightrain.aerifal.cx> <20200828021152.GU3265@brightrain.aerifal.cx>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200828020045.GT3265@brightrain.aerifal.cx>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+In-Reply-To: <20200828021152.GU3265@brightrain.aerifal.cx>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Thu, Aug 27, 2020 at 10:00:48PM -0400, Rich Felker wrote:
-> On Tue, Jul 14, 2020 at 02:18:55PM +0200, Christoph Hellwig wrote:
-> > The code handling non-coherent DMA depends on being able to remap code
-> > as non-cached.  But that can't be done without an MMU, so using this
-> > option on NOMMU builds is broken.
-> > 
-> > Signed-off-by: Christoph Hellwig <hch@lst.de>
-> > ---
-> >  arch/sh/Kconfig | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
-> > index f8027eee08edae..337eb496c45a0a 100644
-> > --- a/arch/sh/Kconfig
-> > +++ b/arch/sh/Kconfig
-> > @@ -61,6 +61,7 @@ config SUPERH
-> >  	select MAY_HAVE_SPARSE_IRQ
-> >  	select MODULES_USE_ELF_RELA
-> >  	select NEED_SG_DMA_LENGTH
-> > +	select NO_DMA if !MMU && !DMA_COHERENT
-> >  	select NO_GENERIC_PCI_IOPORT_MAP if PCI
-> >  	select OLD_SIGACTION
-> >  	select OLD_SIGSUSPEND
-> > @@ -135,7 +136,7 @@ config DMA_COHERENT
-> >  	bool
+On Thu, Aug 27, 2020 at 10:11:53PM -0400, Rich Felker wrote:
+> > This change broke SD card support on J2 because MMC_SPI spuriously
+> > depends on HAS_DMA. It looks like it can be fixed just by removing
+> > that dependency from drivers/mmc/host/Kconfig.
 > 
-> This change broke SD card support on J2 because MMC_SPI spuriously
-> depends on HAS_DMA. It looks like it can be fixed just by removing
-> that dependency from drivers/mmc/host/Kconfig.
+> It can't. mmp_spi_probe fails with ENOMEM, probably due to trying to
+> do some DMA setup thing that's not going to be needed if the
+> underlying SPI device doesn't support/use DMA.
 
-It can't. mmp_spi_probe fails with ENOMEM, probably due to trying to
-do some DMA setup thing that's not going to be needed if the
-underlying SPI device doesn't support/use DMA.
-
-Rich
+Adding the linux-mmc and linux-spi lists, as that seems pretty odd.
