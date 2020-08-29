@@ -2,96 +2,87 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 569282563C4
-	for <lists+linux-sh@lfdr.de>; Sat, 29 Aug 2020 02:49:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81659256610
+	for <lists+linux-sh@lfdr.de>; Sat, 29 Aug 2020 10:31:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726797AbgH2Atm (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 28 Aug 2020 20:49:42 -0400
-Received: from brightrain.aerifal.cx ([216.12.86.13]:47848 "EHLO
-        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726869AbgH2Atm (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 28 Aug 2020 20:49:42 -0400
-Date:   Fri, 28 Aug 2020 20:49:39 -0400
-From:   Rich Felker <dalias@libc.org>
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
-        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: Re: [PATCH 3/4] sh: Add SECCOMP_FILTER
-Message-ID: <20200829004939.GB3265@brightrain.aerifal.cx>
-References: <20200722231322.419642-1-kernel@mkarcher.dialup.fu-berlin.de>
- <20200722231322.419642-3-kernel@mkarcher.dialup.fu-berlin.de>
- <20200828155024.GX3265@brightrain.aerifal.cx>
- <20200828163057.GY3265@brightrain.aerifal.cx>
- <82b625c2-23cb-69a4-7495-39427430c306@physik.fu-berlin.de>
- <20200828170259.GZ3265@brightrain.aerifal.cx>
+        id S1726280AbgH2Ib0 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sat, 29 Aug 2020 04:31:26 -0400
+Received: from verein.lst.de ([213.95.11.211]:44101 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726083AbgH2Ib0 (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Sat, 29 Aug 2020 04:31:26 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 0EAD668C4E; Sat, 29 Aug 2020 10:31:21 +0200 (CEST)
+Date:   Sat, 29 Aug 2020 10:31:21 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Rich Felker <dalias@libc.org>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Christoph Hellwig <hch@lst.de>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        linux-spi@vger.kernel.org
+Subject: Re: [PATCH 09/10] sh: don't allow non-coherent DMA for NOMMU
+Message-ID: <20200829083121.GA7851@lst.de>
+References: <20200714121856.955680-1-hch@lst.de> <20200714121856.955680-10-hch@lst.de> <20200828020045.GT3265@brightrain.aerifal.cx> <20200828021152.GU3265@brightrain.aerifal.cx> <20200828042422.GA29734@lst.de> <CAPDyKFrKJrUN8mJ94g0+0Vs3aT1uq9MmHWfvzcVaoA5efaYPmQ@mail.gmail.com> <20200828150942.GV3265@brightrain.aerifal.cx>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200828170259.GZ3265@brightrain.aerifal.cx>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+In-Reply-To: <20200828150942.GV3265@brightrain.aerifal.cx>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Fri, Aug 28, 2020 at 01:03:00PM -0400, Rich Felker wrote:
-> On Fri, Aug 28, 2020 at 06:38:09PM +0200, John Paul Adrian Glaubitz wrote:
-> > Hi!
-> > 
-> > On 8/28/20 6:30 PM, Rich Felker wrote:
-> > > I'm about to test a patch along these lines and will report what I
-> > > find.
-> > 
-> > Let me know when you have something to test and I will test the patch as
-> > well, making sure we're not breaking seccomp again.
+On Fri, Aug 28, 2020 at 11:09:43AM -0400, Rich Felker wrote:
+> > However, by looking at the code, one get the feeling that the DMA
+> > support is somewhat prepared to be made optional. I guess it has never
+> > been really tested, as the Kconfig option has "depends on HAS_DMA"  -
+> > and it's been like that as long as I can remember.
 > 
-> If you have a seccomp test setup, please try the following patch. I'm
-> not sure if the end result is entirely correct, but I believe it's
-> at least much closer to correct than the code was before or after
-> adding SECCOMP_FILTER.
-> 
-> 
-> diff --git a/arch/sh/kernel/entry-common.S b/arch/sh/kernel/entry-common.S
-> index ad963104d22d..0560a8054215 100644
-> --- a/arch/sh/kernel/entry-common.S
-> +++ b/arch/sh/kernel/entry-common.S
-> @@ -368,9 +368,6 @@ syscall_trace_entry:
->  	mov.l	7f, r11		! Call do_syscall_trace_enter which notifies
->  	jsr	@r11	    	! superior (will chomp R[0-7])
->  	 nop
-> -	cmp/eq	#-1, r0
-> -	bt	syscall_exit
-> -	mov.l	r0, @(OFF_R0,r15)	! Save return value
->  	!			Reload R0-R4 from kernel stack, where the
->  	!   	    	    	parent may have modified them using
->  	!   	    	    	ptrace(POKEUSR).  (Note that R0-R2 are
-> @@ -382,7 +379,7 @@ syscall_trace_entry:
->  	mov.l	@(OFF_R5,r15), r5
->  	mov.l	@(OFF_R6,r15), r6
->  	mov.l	@(OFF_R7,r15), r7   ! arg3
-> -	mov.l	@(OFF_R3,r15), r3   ! syscall_nr
-> +	mov	r0, r3              ! syscall_nr, possibly changed to -1
->  	!
->  	mov.l	6f, r10			! Number of syscalls
->  	cmp/hs	r10, r3
-> diff --git a/arch/sh/kernel/ptrace_32.c b/arch/sh/kernel/ptrace_32.c
-> index 25ccfbd02bfa..9e86cff041c7 100644
-> --- a/arch/sh/kernel/ptrace_32.c
-> +++ b/arch/sh/kernel/ptrace_32.c
-> @@ -503,7 +503,7 @@ asmlinkage long do_syscall_trace_enter(struct pt_regs *regs)
->  	audit_syscall_entry(regs->regs[3], regs->regs[4], regs->regs[5],
->  			    regs->regs[6], regs->regs[7]);
->  
-> -	return ret ?: regs->regs[0];
-> +	return ret ?: regs->regs[3];
->  }
->  
->  asmlinkage void do_syscall_trace_leave(struct pt_regs *regs)
+> It always worked on our "byte-banged" SPI controller, with no DMA
+> controller present, before Christoph's changes in this patch series,
 
-This restored my ability to use strace, and I've written and tested a
-minimal strace-like hack using SECCOMP_RET_USER_NOTIF that works as
-expected on both j2 and qemu-system-sh4, so I think the above is
-correct.
+Before that nommu sh builds provided a DMA mapping implementation
+that even worked for the streaming side (dma_map_*), but would corrupt
+data if you used dma_alloc_coherent memory to communicate with the
+device. 
 
-Rich
+> and seems to be working now (although I have some other, hopefully
+> unrelated regressions to debug) with #ifdef CONFIG_HAS_DMA around the
+> if (spi->master->dev.parent->dma_mask) block in mmc_spi_probe. That's
+> probably not the right fix though -- why isn't it checking
+> host->dma_dev instead and only attempting DMA setup if dma_dev is
+> non-null?
+
+I don't think dma_dev can be NULL right now.  dma_dev is assigned here:
+
+	if (spi->master->dev.parent->dma_mask) {
+		struct device   *dev = spi->master->dev.parent;
+
+		host->dma_dev = dev;
+
+but for any OF or real bus device dma_mask never is zero (it actually is
+a pointer), and the value of it also is initialized to 32-bit by default,
+making this effectively an "if (1) {".  The driver needs some way to
+communicate if a given device actually is DMA capable or not. Or is that
+purely a factor of the platform which would be a little strange.
+
+In which case we should do something like:
+
+
+diff --git a/drivers/mmc/host/mmc_spi.c b/drivers/mmc/host/mmc_spi.c
+index 39bb1e30c2d722..3b0cc9a70e6432 100644
+--- a/drivers/mmc/host/mmc_spi.c
++++ b/drivers/mmc/host/mmc_spi.c
+@@ -1374,7 +1374,7 @@ static int mmc_spi_probe(struct spi_device *spi)
+ 	if (!host->data)
+ 		goto fail_nobuf1;
+ 
+-	if (spi->master->dev.parent->dma_mask) {
++	if (IS_ENABLED(CONFIG_HAS_DMA)) {
+ 		struct device	*dev = spi->master->dev.parent;
+ 
+ 		host->dma_dev = dev;
