@@ -2,94 +2,178 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BAD5257A91
-	for <lists+linux-sh@lfdr.de>; Mon, 31 Aug 2020 15:33:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03C6A257AA4
+	for <lists+linux-sh@lfdr.de>; Mon, 31 Aug 2020 15:43:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727902AbgHaNdj (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 31 Aug 2020 09:33:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35972 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726858AbgHaN0l (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 31 Aug 2020 09:26:41 -0400
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DA1FC0619C3
-        for <linux-sh@vger.kernel.org>; Mon, 31 Aug 2020 06:26:21 -0700 (PDT)
-Received: by mail-lj1-x244.google.com with SMTP id y2so6705270ljc.1
-        for <linux-sh@vger.kernel.org>; Mon, 31 Aug 2020 06:26:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
-        bh=o69Nac3LLMj5CDhyPqLcnP7WGq46U4gQb9HzFdG/MvE=;
-        b=HyW5/n2KU8W3FGefd/FUm/bl6fINTQmZ8owzYdBGhP5oyAu9pJQPQCMOdYEDNFegUA
-         if9VN+pra3iBgWNYJjHcBV7T99CY2GFOcHOVU+3vJ7r2Hvzgah2ZCqHTq6bk4iv0uilM
-         xQiEPrdMcYz9cIZL++pevJSb5RdixTZAk95pbnwmQ3/GOLv8xUS1vQ8t141F6N8CgROI
-         mubb31iIEGHTmIRsfQchZCL6N1v85LnpPi/V/jmyUdodp49jy+hBMBGM/QhsUL+AVu8e
-         3Cg9SzlMyigtpwqPqg6kcnc+pElD0XMp/EB9mY9MxbJL6EWXLnnT1YiTj0+V+0DhoQI2
-         wJdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to;
-        bh=o69Nac3LLMj5CDhyPqLcnP7WGq46U4gQb9HzFdG/MvE=;
-        b=LSvjt2oY3Xm14gPJx/F51HcvOp8uPbjukExaQUt2Tq2r8rw5LQQvbKRNYhUWAQztvp
-         /Pl/Znnz4Ty1kV90JNbMKzqggrOD9WhSz1C+susrLNLg/4G+uMbMKh9qyLJA9TBe69ba
-         2D/Ebe90FfxPm3GrMju+oG51NU3NDWonHl8gu4GIOVfEcWz0Kw2arb5BbiG8Ij2mZjQC
-         2pPEkNuSlJQfI//BLG+KC7866W1Wq+gLGQgrwRrL+PhJdYVjp8wYaeVCK5jfJQPJNnHY
-         dGfQ4xvF2PaIxyLwoeKEgLESHd2njQ1Rw4Q+GG21q+D1xC/NFlEIGQZNR0VGJkySIKKH
-         6xXg==
-X-Gm-Message-State: AOAM530wYuQyJeH5SoQ3Qvk6SbgCzs2hBMs8isfn+84h7QaIIxrWJalH
-        f4tvCko7EE5ECyOLdiRDYCHQornEfMEXnFrJBug=
-X-Google-Smtp-Source: ABdhPJxEvvXnVfErpjDwHOkyCqRTciyX/SNwRaUYVOHmxIQS6MbFpht1V2v8jY7chkhk3ZxIDw/BvL8uxGOjXPjCGG8=
-X-Received: by 2002:a2e:9c86:: with SMTP id x6mr662832lji.346.1598880379026;
- Mon, 31 Aug 2020 06:26:19 -0700 (PDT)
+        id S1726446AbgHaNnv (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 31 Aug 2020 09:43:51 -0400
+Received: from brightrain.aerifal.cx ([216.12.86.13]:48480 "EHLO
+        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726384AbgHaNnu (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 31 Aug 2020 09:43:50 -0400
+Date:   Mon, 31 Aug 2020 09:43:49 -0400
+From:   Rich Felker <dalias@libc.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     linux-mmc@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+        Mark Brown <broonie@kernel.org>, linux-sh@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mmc: mmc_spi: Don't use dma mappings unless
+ CONFIG_HAS_DMA is set
+Message-ID: <20200831134348.GN3265@brightrain.aerifal.cx>
+References: <20200831131636.51502-1-ulf.hansson@linaro.org>
 MIME-Version: 1.0
-Reply-To: marie_avis12@yahoo.com
-Received: by 2002:a2e:9817:0:0:0:0:0 with HTTP; Mon, 31 Aug 2020 06:26:18
- -0700 (PDT)
-From:   Miss Maris Avis <marie.avis11@gmail.com>
-Date:   Mon, 31 Aug 2020 13:26:18 +0000
-X-Google-Sender-Auth: ENkN_TdcXF5NiFOWAHQrklZpWrk
-Message-ID: <CADTVshNj9Ztqm75AkbunLeeRTsk07qB5LsiKLoagvmiH7TvYgQ@mail.gmail.com>
-Subject: Hello
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200831131636.51502-1-ulf.hansson@linaro.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-My Dear,
+On Mon, Aug 31, 2020 at 03:16:36PM +0200, Ulf Hansson wrote:
+> The commit cd57d07b1e4e ("sh: don't allow non-coherent DMA for NOMMU") made
+> CONFIG_NO_DMA to be set for some platforms, for good reasons.
+> Consequentially, CONFIG_HAS_DMA doesn't get set, which makes the DMA
+> mapping interface to be built as stub functions.
+> 
+> For weird reasons this causes the mmc_spi driver to fail to ->probe(), as
+> it relies on the dma mappings APIs, no matter of CONFIG_HAS_DMA is set or
+> not. This is wrong, so let's fix this.
+> 
+> Fixes: cd57d07b1e4e ("sh: don't allow non-coherent DMA for NOMMU")
+> Reported-by: Rich Felker <dalias@libc.org>
+> Suggested-by: Christoph Hellwig <hch@lst.de>
+> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+> ---
+>  drivers/mmc/host/mmc_spi.c | 86 +++++++++++++++++++++++---------------
+>  1 file changed, 52 insertions(+), 34 deletions(-)
+> 
+> diff --git a/drivers/mmc/host/mmc_spi.c b/drivers/mmc/host/mmc_spi.c
+> index 39bb1e30c2d7..5055a7eb134a 100644
+> --- a/drivers/mmc/host/mmc_spi.c
+> +++ b/drivers/mmc/host/mmc_spi.c
+> @@ -1278,6 +1278,52 @@ mmc_spi_detect_irq(int irq, void *mmc)
+>  	return IRQ_HANDLED;
+>  }
+>  
+> +#ifdef CONFIG_HAS_DMA
+> +static int mmc_spi_dma_alloc(struct mmc_spi_host *host)
+> +{
+> +	struct spi_device *spi = host->spi;
+> +	struct device *dev;
+> +
+> +	if (!spi->master->dev.parent->dma_mask)
+> +		return 0;
+> +
+> +	dev = spi->master->dev.parent;
+> +
+> +	host->ones_dma = dma_map_single(dev, host->ones, MMC_SPI_BLOCKSIZE,
+> +					DMA_TO_DEVICE);
+> +	if (dma_mapping_error(dev, host->ones_dma))
+> +		return -ENOMEM;
+> +
+> +	host->data_dma = dma_map_single(dev, host->data, sizeof(*host->data),
+> +					DMA_BIDIRECTIONAL);
+> +	if (dma_mapping_error(dev, host->data_dma)) {
+> +		dma_unmap_single(dev, host->ones_dma, MMC_SPI_BLOCKSIZE,
+> +				 DMA_TO_DEVICE);
+> +		return -ENOMEM;
+> +	}
+> +
+> +	dma_sync_single_for_cpu(dev, host->data_dma, sizeof(*host->data),
+> +				DMA_BIDIRECTIONAL);
+> +
+> +	host->dma_dev = dev;
+> +	return 0;
+> +}
+> +
+> +static void mmc_spi_dma_free(struct mmc_spi_host *host)
+> +{
+> +	if (!host->dma_dev)
+> +		return;
+> +
+> +	dma_unmap_single(host->dma_dev, host->ones_dma, MMC_SPI_BLOCKSIZE,
+> +			 DMA_TO_DEVICE);
+> +	dma_unmap_single(host->dma_dev, host->data_dma,	sizeof(*host->data),
+> +			 DMA_BIDIRECTIONAL);
+> +}
+> +#else
+> +static inline mmc_spi_dma_alloc(struct mmc_spi_host *host) { return 0; }
+> +static inline void mmc_spi_dma_free(struct mmc_spi_host *host) {}
+> +#endif
+> +
+>  static int mmc_spi_probe(struct spi_device *spi)
+>  {
+>  	void			*ones;
+> @@ -1374,23 +1420,9 @@ static int mmc_spi_probe(struct spi_device *spi)
+>  	if (!host->data)
+>  		goto fail_nobuf1;
+>  
+> -	if (spi->master->dev.parent->dma_mask) {
+> -		struct device	*dev = spi->master->dev.parent;
+> -
+> -		host->dma_dev = dev;
+> -		host->ones_dma = dma_map_single(dev, ones,
+> -				MMC_SPI_BLOCKSIZE, DMA_TO_DEVICE);
+> -		if (dma_mapping_error(dev, host->ones_dma))
+> -			goto fail_ones_dma;
+> -		host->data_dma = dma_map_single(dev, host->data,
+> -				sizeof(*host->data), DMA_BIDIRECTIONAL);
+> -		if (dma_mapping_error(dev, host->data_dma))
+> -			goto fail_data_dma;
+> -
+> -		dma_sync_single_for_cpu(host->dma_dev,
+> -				host->data_dma, sizeof(*host->data),
+> -				DMA_BIDIRECTIONAL);
+> -	}
+> +	status = mmc_spi_dma_alloc(host);
+> +	if (status)
+> +		goto fail_dma;
+>  
+>  	/* setup message for status/busy readback */
+>  	spi_message_init(&host->readback);
+> @@ -1458,20 +1490,12 @@ static int mmc_spi_probe(struct spi_device *spi)
+>  fail_add_host:
+>  	mmc_remove_host(mmc);
+>  fail_glue_init:
+> -	if (host->dma_dev)
+> -		dma_unmap_single(host->dma_dev, host->data_dma,
+> -				sizeof(*host->data), DMA_BIDIRECTIONAL);
+> -fail_data_dma:
+> -	if (host->dma_dev)
+> -		dma_unmap_single(host->dma_dev, host->ones_dma,
+> -				MMC_SPI_BLOCKSIZE, DMA_TO_DEVICE);
+> -fail_ones_dma:
+> +	mmc_spi_dma_free(host);
+> +fail_dma:
+>  	kfree(host->data);
+> -
+>  fail_nobuf1:
+>  	mmc_free_host(mmc);
+>  	mmc_spi_put_pdata(spi);
+> -
+>  nomem:
+>  	kfree(ones);
+>  	return status;
+> @@ -1489,13 +1513,7 @@ static int mmc_spi_remove(struct spi_device *spi)
+>  
+>  	mmc_remove_host(mmc);
+>  
+> -	if (host->dma_dev) {
+> -		dma_unmap_single(host->dma_dev, host->ones_dma,
+> -			MMC_SPI_BLOCKSIZE, DMA_TO_DEVICE);
+> -		dma_unmap_single(host->dma_dev, host->data_dma,
+> -			sizeof(*host->data), DMA_BIDIRECTIONAL);
+> -	}
+> -
+> +	mmc_spi_dma_free(host);
+>  	kfree(host->data);
+>  	kfree(host->ones);
+>  
+> -- 
+> 2.25.1
 
-My name is Miss Marie Avis the only daughter of Mr. Gabriel Avis, my
-Father was dealing in Cocoa and Timber in this country before his
-death,  It is my pleasure to contact you for a business venture which
-I intend to establish in your country. Though I have not met with you
-before but I believe one has to risk confiding before you can succeed
-sometimes in life.
+A change to Kconfig is also needed to remove the HAS_DMA dependency.
 
-I can confide in you for my brighter future since you are a human
-being like me. There is this huge amount of Ten Million five hundred
-thousand United States dollars. ($10.500.000.00) which my late Father
-kept for me in a suspense account with one of the bank here in Abidjan
-Cote d'Ivoire before he was assassinated by unknown persons, Now I
-have decided to invest these money in your country or anywhere safe
-enough for me.
-
-I want you to help me claim this fund from the bank and have it
-transfer into your personal account in your country for investment
-purposes in your country in these areas:
-
-1). Telecommunication
-2). The transport Industry
-3). Five Star Hotel
-4). Tourism
-5). Real Estate
-
-If you can be of assistance to me I will be pleased to offer you 20%
-of the total fund.
-
-I await your soonest response.
-
-Respectfully yours,
-Miss Marie Evis
-Tel: +225597438528
+Rich
