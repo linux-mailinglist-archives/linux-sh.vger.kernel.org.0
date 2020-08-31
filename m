@@ -2,83 +2,136 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C5812569C6
-	for <lists+linux-sh@lfdr.de>; Sat, 29 Aug 2020 20:38:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2121C257878
+	for <lists+linux-sh@lfdr.de>; Mon, 31 Aug 2020 13:30:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728335AbgH2Siw (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sat, 29 Aug 2020 14:38:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34670 "EHLO
+        id S1726446AbgHaLaM (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 31 Aug 2020 07:30:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728265AbgH2Siv (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sat, 29 Aug 2020 14:38:51 -0400
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27228C061236;
-        Sat, 29 Aug 2020 11:38:51 -0700 (PDT)
-Received: by mail-wm1-x343.google.com with SMTP id c19so1762723wmd.1;
-        Sat, 29 Aug 2020 11:38:51 -0700 (PDT)
+        with ESMTP id S1726586AbgHaL3k (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 31 Aug 2020 07:29:40 -0400
+Received: from mail-vk1-xa41.google.com (mail-vk1-xa41.google.com [IPv6:2607:f8b0:4864:20::a41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DD3AC061236
+        for <linux-sh@vger.kernel.org>; Mon, 31 Aug 2020 04:29:27 -0700 (PDT)
+Received: by mail-vk1-xa41.google.com with SMTP id n7so799674vkq.5
+        for <linux-sh@vger.kernel.org>; Mon, 31 Aug 2020 04:29:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=AgHtPh7HVKajATPSPCiZDeKl34/5NzQSjixpKDrOaBQ=;
-        b=oaIeN6WKx3TMB4D1rbj4g/hNn0bgGvVMErZn+iSgtVwy91nXxTwDK4I8uxB4IE34dI
-         IVg2fP3yt5tfVIqMYaeDeaTeR9v1ole2Wybi7lIqCzUoOUpaiM7Y+yG57+cPKzO09LUB
-         LNA+A8hUwqZi629QZwFyGL/iZ7sTygWKVso+tVg286WZ/c1XFBRezZe7w/yT+tNLo64F
-         vZQjOI3fUuNA1yOqqKFdWRxzpsbFSXTMegApGDVJP6IkzAKg3SHJebjxhsjnbu7Ly/8B
-         BRI7BdLZ7N9dhsQ90e82i8JZ/SNWg8qGWcIUvLuPKmb0dMs9HmWXrT9fT1238Mc5Nppi
-         OkfQ==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=JIN710TFLeLsKqRRlGqyF1G56AtXFbXojtnB+ek7vjU=;
+        b=irsBQYiwNj1Qd8vMPMDZ4IELqeCiPeWMfkpBS3c2ZNz7mZFu5GH+I3B7C0OPEjwMVD
+         9jI1XXFeXGnU2b2vums9U5nwrWH6D0JR8+2oZUphySN+PnNxeueJzDWGnvYwt/oltfMD
+         22ZbWt8+LSAgrcF3KfEDBpLH3L3bqcmci89/GwhyaMurg6aJNkKIcnBmBAkNJinIQkY1
+         sd8lVRWhg89SyMdMugmmdByKiTxoWw4s11IaTQo1XbNMhUAko8qoNtgXLFhxi6gu+Sow
+         h1kW2Fb4raKYv6Gc7y/Bhtd4ewL/1azXQH6Gakmz1md2e2rsSKov/8PxpyaUZ9MImqDH
+         NVGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=AgHtPh7HVKajATPSPCiZDeKl34/5NzQSjixpKDrOaBQ=;
-        b=X65Wxl66k+OAC+iRWpTpqUv7/VDxFFcsunzeMeMawG6bAI6IQKdeOLZyeoYveG765d
-         bLRO0m/MutTRRZ0KH5cPAX+iJAsddqwIxxJW5mYCZ8RVCRDwlmX7kw/4iBISGYN58iiZ
-         ubXVzDGbDaoon+Pdpiq8yG3aliK1Gg+D6C1VLBuKJEQ9dPbNnQR+vN2jFlh9J8yznMHq
-         Qn8KZvtDAoMapXEIZqi3UT2BlSLbfMxCqdrzAAi0LkKPR6iyDY18AfOMRDl33cuQPI8H
-         mC5NT1LlILNEpwrA+Nyc0yIW/L0/gSnWYGtYV3m1FFi9D2T0yCvkxgD7AndhxrRf0BBZ
-         XAxw==
-X-Gm-Message-State: AOAM530xQ1+xa8uzLfSXZ/ZR78QoKvsu/vyH1L2yq3DC6iRA753Hhg9b
-        VhSEr4RrR/QPUG5JRAgcbeQ=
-X-Google-Smtp-Source: ABdhPJw6jlZVnMgVljS1Ufr9VbYYMfKfZKDzTpzFqDh5f9TAGgPGd1ywxEzlmZJOY8iZyi8BDDRWtw==
-X-Received: by 2002:a1c:6607:: with SMTP id a7mr2118309wmc.142.1598726329832;
-        Sat, 29 Aug 2020 11:38:49 -0700 (PDT)
-Received: from localhost.localdomain ([85.132.73.2])
-        by smtp.gmail.com with ESMTPSA id r7sm3119986wrr.9.2020.08.29.11.38.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 29 Aug 2020 11:38:49 -0700 (PDT)
-From:   Emin Ghuliev <eminusgh@gmail.com>
-To:     ysato@users.sourceforge.jp
-Cc:     dalias@libc.org, eminusgh@gmail.com, linux-kernel@vger.kernel.org,
-        willy@infradead.org, linux-sh@vger.kernel.org
-Subject: [PATCH] sh: use kmem_cache_zalloc instead of kmem_cache_alloc with GFP_ZERO flag
-Date:   Sat, 29 Aug 2020 18:38:38 +0000
-Message-Id: <20200829183838.10166-1-eminusgh@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=JIN710TFLeLsKqRRlGqyF1G56AtXFbXojtnB+ek7vjU=;
+        b=E7U4vwHlRYzQnO/OSbZbDLQpzcIjsC9gtNfp25dAJz1/PwoxQpOYLo/mfybweE31yk
+         fBzwLzvBX6kQnr4Ilil1+jnoUydpRqhNh0rqTUR/9NzLArHE7/55aVT5Ys8qpnDU9snL
+         SnWZxCSBrvM26Bp+YIj7Xcdx5jJl2+60eybG255KxJkPNE9LxrrLzPOtibCeepo2eGkR
+         +6w6MLg5TSu9OgopzRixB/uicxpKNI4DgppyzooBcKsadm+MV6Fs3dQZDEj5GCaWHl6A
+         tykFPLPH9HFiJ1kD9GTTfMMnmuxt3RR7SMGqCexIMz69Ii267/nVafk1VGfAa+GILymZ
+         gCzg==
+X-Gm-Message-State: AOAM5302ON6Gyyd5waH6aKjPQXnHG4TiD9VOYqVIZY2R2M8ogeHHp8C8
+        r34b61ScRvhUAVNn+VX2stn8PL/fohGItvTu1HrR3g==
+X-Google-Smtp-Source: ABdhPJw4BM3EMv3eBn1ExCUI2PJJGFIfafdTX935b2p/ZrPMqqlhkRsSr+VDzuwhyidZqSRYvMBnWkwMt12C+fZFJyw=
+X-Received: by 2002:a1f:2a48:: with SMTP id q69mr458218vkq.69.1598873366828;
+ Mon, 31 Aug 2020 04:29:26 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200714121856.955680-1-hch@lst.de> <20200714121856.955680-10-hch@lst.de>
+ <20200828020045.GT3265@brightrain.aerifal.cx> <20200828021152.GU3265@brightrain.aerifal.cx>
+ <20200828042422.GA29734@lst.de> <CAPDyKFrKJrUN8mJ94g0+0Vs3aT1uq9MmHWfvzcVaoA5efaYPmQ@mail.gmail.com>
+ <20200828150942.GV3265@brightrain.aerifal.cx> <20200829083121.GA7851@lst.de>
+In-Reply-To: <20200829083121.GA7851@lst.de>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Mon, 31 Aug 2020 13:28:50 +0200
+Message-ID: <CAPDyKFpqd2n64=i5-45nJ=acbgS0AmOK0D2rtn-1bJj2HV9pnQ@mail.gmail.com>
+Subject: Re: [PATCH 09/10] sh: don't allow non-coherent DMA for NOMMU
+To:     Christoph Hellwig <hch@lst.de>, Rich Felker <dalias@libc.org>
+Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        linux-spi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-use kmem_cache_zalloc function which does kmem_cache_alloc and zero out
-instead of manually setting kmem_cache_alloc with GFP_ZERO flag.
+On Sat, 29 Aug 2020 at 10:31, Christoph Hellwig <hch@lst.de> wrote:
+>
+> On Fri, Aug 28, 2020 at 11:09:43AM -0400, Rich Felker wrote:
+> > > However, by looking at the code, one get the feeling that the DMA
+> > > support is somewhat prepared to be made optional. I guess it has never
+> > > been really tested, as the Kconfig option has "depends on HAS_DMA"  -
+> > > and it's been like that as long as I can remember.
+> >
+> > It always worked on our "byte-banged" SPI controller, with no DMA
+> > controller present, before Christoph's changes in this patch series,
+>
+> Before that nommu sh builds provided a DMA mapping implementation
+> that even worked for the streaming side (dma_map_*), but would corrupt
+> data if you used dma_alloc_coherent memory to communicate with the
+> device.
 
-Signed-off-by: Emin Ghuliev <eminusgh@gmail.com>
----
- arch/sh/mm/pgtable.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I see.
 
-diff --git a/arch/sh/mm/pgtable.c b/arch/sh/mm/pgtable.c
-index cf7ce4b57359..6e17d921f5f5 100644
---- a/arch/sh/mm/pgtable.c
-+++ b/arch/sh/mm/pgtable.c
-@@ -47,7 +47,7 @@ void pud_populate(struct mm_struct *mm, pud_t *pud, pmd_t *pmd)
- 
- pmd_t *pmd_alloc_one(struct mm_struct *mm, unsigned long address)
- {
--	return kmem_cache_alloc(pmd_cachep, GFP_KERNEL | __GFP_ZERO);
-+	return kmem_cache_zalloc(pmd_cachep, GFP_KERNEL);
- }
- 
- void pmd_free(struct mm_struct *mm, pmd_t *pmd)
--- 
-2.17.1
+>
+> > and seems to be working now (although I have some other, hopefully
+> > unrelated regressions to debug) with #ifdef CONFIG_HAS_DMA around the
+> > if (spi->master->dev.parent->dma_mask) block in mmc_spi_probe. That's
+> > probably not the right fix though -- why isn't it checking
+> > host->dma_dev instead and only attempting DMA setup if dma_dev is
+> > non-null?
+>
+> I don't think dma_dev can be NULL right now.  dma_dev is assigned here:
+>
+>         if (spi->master->dev.parent->dma_mask) {
+>                 struct device   *dev = spi->master->dev.parent;
+>
+>                 host->dma_dev = dev;
+>
+> but for any OF or real bus device dma_mask never is zero (it actually is
+> a pointer), and the value of it also is initialized to 32-bit by default,
+> making this effectively an "if (1) {".  The driver needs some way to
+> communicate if a given device actually is DMA capable or not. Or is that
+> purely a factor of the platform which would be a little strange.
 
+Okay, thanks for clarifying things.
+
+>
+> In which case we should do something like:
+>
+>
+> diff --git a/drivers/mmc/host/mmc_spi.c b/drivers/mmc/host/mmc_spi.c
+> index 39bb1e30c2d722..3b0cc9a70e6432 100644
+> --- a/drivers/mmc/host/mmc_spi.c
+> +++ b/drivers/mmc/host/mmc_spi.c
+> @@ -1374,7 +1374,7 @@ static int mmc_spi_probe(struct spi_device *spi)
+>         if (!host->data)
+>                 goto fail_nobuf1;
+>
+> -       if (spi->master->dev.parent->dma_mask) {
+> +       if (IS_ENABLED(CONFIG_HAS_DMA)) {
+
+I guess "#ifdef CONFIG_HAS_DMA", would work as well as CONFIG_HAS_DMA
+can't be "m".
+
+I would also suggest moving the DMA setup things into a separate
+function. Then when CONFIG_HAS_DMA is unset, we can use a stub.
+
+>                 struct device   *dev = spi->master->dev.parent;
+>
+>                 host->dma_dev = dev;
+
+Let me cook a patch that we can try.
+
+Kind regards
+Uffe
