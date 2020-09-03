@@ -2,27 +2,27 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F416225BAC7
-	for <lists+linux-sh@lfdr.de>; Thu,  3 Sep 2020 08:03:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AFEF25BACE
+	for <lists+linux-sh@lfdr.de>; Thu,  3 Sep 2020 08:04:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725984AbgICGDM (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 3 Sep 2020 02:03:12 -0400
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:37115 "EHLO
+        id S1725919AbgICGEt (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 3 Sep 2020 02:04:49 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:53861 "EHLO
         outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725851AbgICGDK (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 3 Sep 2020 02:03:10 -0400
+        by vger.kernel.org with ESMTP id S1725967AbgICGEs (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 3 Sep 2020 02:04:48 -0400
 Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
           by outpost.zedat.fu-berlin.de (Exim 4.93)
           with esmtps (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
           (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1kDiKx-000ZLC-Kl; Thu, 03 Sep 2020 08:03:07 +0200
+          id 1kDiMY-000Zlf-Im; Thu, 03 Sep 2020 08:04:46 +0200
 Received: from p57bd95bc.dip0.t-ipconnect.de ([87.189.149.188] helo=[192.168.178.139])
           by inpost2.zedat.fu-berlin.de (Exim 4.93)
           with esmtpsa (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
           (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1kDiKx-0005t3-AY; Thu, 03 Sep 2020 08:03:07 +0200
+          id 1kDiMY-00065W-BR; Thu, 03 Sep 2020 08:04:46 +0200
 Subject: Re: [PATCH 3/4] sh: Add SECCOMP_FILTER
 To:     Rich Felker <dalias@libc.org>
 Cc:     Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
@@ -37,6 +37,7 @@ References: <20200722231322.419642-1-kernel@mkarcher.dialup.fu-berlin.de>
  <20200829004939.GB3265@brightrain.aerifal.cx>
  <b0e38ede-3860-eb83-615e-ad77f619a3a6@physik.fu-berlin.de>
  <20200903035603.GV3265@brightrain.aerifal.cx>
+ <20200903054617.GW3265@brightrain.aerifal.cx>
 From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  mQINBE3JE9wBEADMrYGNfz3oz6XLw9XcWvuIxIlPWoTyw9BxTicfGAv0d87wngs9U+d52t/R
@@ -82,12 +83,12 @@ Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  jEF9ImTPcYZpw5vhdyPwBdXW2lSjV3EAqknWujRgcsm84nycuJnImwJptR481EWmtuH6ysj5
  YhRVGbQPfdsjVUQfZdRdkEv4CZ90pdscBi1nRqcqANtzC+WQFwekDzk2lGqNRDg56s+q0KtY
  scOkTAZQGVpD/8AaLH4v1w==
-Message-ID: <54a4db1a-1d41-7fa2-cb74-460256d3be0d@physik.fu-berlin.de>
-Date:   Thu, 3 Sep 2020 08:03:06 +0200
+Message-ID: <c871e590-7027-0470-b112-667ec8437a25@physik.fu-berlin.de>
+Date:   Thu, 3 Sep 2020 08:04:44 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.11.0
 MIME-Version: 1.0
-In-Reply-To: <20200903035603.GV3265@brightrain.aerifal.cx>
+In-Reply-To: <20200903054617.GW3265@brightrain.aerifal.cx>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -98,39 +99,28 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Richi!
-
-On 9/3/20 5:56 AM, Rich Felker wrote:
->> Test 51-live-user_notification%%001-00001 result:   FAILURE 51-live-user_notification 5 ALLOW rc=14
+On 9/3/20 7:46 AM, Rich Felker wrote:
 > 
-> AFAICT, this test is buggy and cannot possibly work. It attempts to
-> have SYS_getpid return a 64-bit value and check that the returned
-> value matches. On 32-bit archs this will be truncated to 32 bits, but
-> the comparison in the caller still compares against the full 64-bit
-> value. I have no idea how this seemed to work before.
-
-You're actually right, I forgot about that. Michael discovered this bug as well
-and it was consequently fixed:
-
-> https://github.com/seccomp/libseccomp/commit/bee43d3e884788569860a384e6a38357785a3995
-
->> Test 58-live-tsync_notify%%001-00001 result:   FAILURE 58-live-tsync_notify 6 ALLOW rc=14
+> OK, I think I have an explanation for the mechanism of the bug, and it
+> really is a combination of the 2008 bug (confusion of r0 vs r3) and
+> the SECCOMP_FILTER commit. When the syscall_trace_entry code path is
+> in use, a syscall with argument 5 having value -1 causes
+> do_syscall_trace_enter to return -1 (because it returns regs[0], which
+> contains argument 5), which the change in entry-common.S interprets as
+> a sign to skip the syscall and jump to syscall_exit, and things blow
+> up from there. In particular, SYS_mmap2 is almost always called with
+> -1 as the 5th argument (fd), and this is even more common on nommu
+> where SYS_brk does not work.
 > 
-> This is similar to 51.
-> 
-> I think the commonality of all the failures is that they deal with
-> return values set by seccomp filters for blocked syscalls, which are
-> getting clobbered by ENOSYS from the failed syscall here. So I do need
-> to keep the code path that jumps over the actual syscall if
-> do_syscall_trace_enter returns -1, but that means
-> do_syscall_trace_enter must now be responsible for setting the return
-> value in non-seccomp failure paths.
+> I'll follow up with a new proposed patch.
 
-Same here:
+I'm not sure whether we need another revision of your first patch. Your
+previous analysis was at least right regarding the tests 51 and 58
+but those have been fixed now.
 
-> https://github.com/seccomp/libseccomp/commit/f0686d9de911e7ffcdc7364566c1d146e44657c2
+But there were two other tests failing, weren't there?
 
-Not sure about the other two tests. I can re-base and re-test.
+I have to recheck later, I just got up (it's 8 AM CEST).
 
 Adrian
 
