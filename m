@@ -2,101 +2,96 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DC3425BA9B
-	for <lists+linux-sh@lfdr.de>; Thu,  3 Sep 2020 07:48:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 017C825BAA8
+	for <lists+linux-sh@lfdr.de>; Thu,  3 Sep 2020 07:57:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726263AbgICFsI (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 3 Sep 2020 01:48:08 -0400
-Received: from brightrain.aerifal.cx ([216.12.86.13]:49122 "EHLO
+        id S1726022AbgICF5R (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 3 Sep 2020 01:57:17 -0400
+Received: from brightrain.aerifal.cx ([216.12.86.13]:49132 "EHLO
         brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725919AbgICFsH (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 3 Sep 2020 01:48:07 -0400
-Date:   Thu, 3 Sep 2020 01:48:07 -0400
+        with ESMTP id S1725851AbgICF5Q (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 3 Sep 2020 01:57:16 -0400
+Date:   Thu, 3 Sep 2020 01:57:15 -0400
 From:   Rich Felker <dalias@libc.org>
-To:     linux-sh@vger.kernel.org
-Cc:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
-        linux-kernel@vger.kernel.org,
-        Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: [PATCH] sh: fix syscall tracing
-Message-ID: <20200903054803.GX3265@brightrain.aerifal.cx>
+To:     Nicholas Piggin <npiggin@gmail.com>
+Cc:     linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, Arnd Bergmann <arnd@arndb.de>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        linux-sh@vger.kernel.org
+Subject: Re: [PATCH v3 19/23] sh: use asm-generic/mmu_context.h for no-op
+ implementations
+Message-ID: <20200903055715.GY3265@brightrain.aerifal.cx>
+References: <20200901141539.1757549-1-npiggin@gmail.com>
+ <20200901141539.1757549-20-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20200901141539.1757549-20-npiggin@gmail.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Addition of SECCOMP_FILTER exposed a longstanding bug in
-do_syscall_trace_enter, whereby r0 (the 5th argument register) was
-mistakenly used where r3 (syscall_nr) was intended. By overwriting r0
-rather than r3 with -1 when attempting to block a syscall, the
-existing code would instead have caused the syscall to execute with an
-argument clobbered.
+On Wed, Sep 02, 2020 at 12:15:35AM +1000, Nicholas Piggin wrote:
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Cc: Rich Felker <dalias@libc.org>
+> Cc: linux-sh@vger.kernel.org
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+> 
+> Please ack or nack if you object to this being mered via
+> Arnd's tree.
 
-Commit 0bb605c2c7f2b4b3 then introduced skipping of the syscall when
-do_syscall_trace_enter returns -1, so that the return value set by
-seccomp filters would not be clobbered by -ENOSYS. This eliminated the
-clobbering of the 5th argument register, but instead caused syscalls
-made with a 5th argument of -1 to be misinterpreted as a request by
-do_syscall_trace_enter to suppress the syscall.
+Acked-by: Rich Felker <dalias@libc.org>
 
-Fixes: 0bb605c2c7f2b4b3 ("sh: Add SECCOMP_FILTER")
-Fixes: ab99c733ae73cce3 ("sh: Make syscall tracer use tracehook notifiers, add TIF_NOTIFY_RESUME.")
-Signed-off-by: Rich Felker <dalias@libc.org>
----
- arch/sh/kernel/entry-common.S |  1 -
- arch/sh/kernel/ptrace_32.c    | 15 +++++----------
- 2 files changed, 5 insertions(+), 11 deletions(-)
-
-diff --git a/arch/sh/kernel/entry-common.S b/arch/sh/kernel/entry-common.S
-index ad963104d22d..91ab2607a1ff 100644
---- a/arch/sh/kernel/entry-common.S
-+++ b/arch/sh/kernel/entry-common.S
-@@ -370,7 +370,6 @@ syscall_trace_entry:
- 	 nop
- 	cmp/eq	#-1, r0
- 	bt	syscall_exit
--	mov.l	r0, @(OFF_R0,r15)	! Save return value
- 	!			Reload R0-R4 from kernel stack, where the
- 	!   	    	    	parent may have modified them using
- 	!   	    	    	ptrace(POKEUSR).  (Note that R0-R2 are
-diff --git a/arch/sh/kernel/ptrace_32.c b/arch/sh/kernel/ptrace_32.c
-index b05bf92f9c32..5281685f6ad1 100644
---- a/arch/sh/kernel/ptrace_32.c
-+++ b/arch/sh/kernel/ptrace_32.c
-@@ -455,16 +455,11 @@ long arch_ptrace(struct task_struct *child, long request,
- 
- asmlinkage long do_syscall_trace_enter(struct pt_regs *regs)
- {
--	long ret = 0;
--
- 	if (test_thread_flag(TIF_SYSCALL_TRACE) &&
--	    tracehook_report_syscall_entry(regs))
--		/*
--		 * Tracing decided this syscall should not happen.
--		 * We'll return a bogus call number to get an ENOSYS
--		 * error, but leave the original number in regs->regs[0].
--		 */
--		ret = -1L;
-+	    tracehook_report_syscall_entry(regs)) {
-+		regs->regs[0] = -ENOSYS;
-+		return -1;
-+	}
- 
- 	if (secure_computing() == -1)
- 		return -1;
-@@ -475,7 +470,7 @@ asmlinkage long do_syscall_trace_enter(struct pt_regs *regs)
- 	audit_syscall_entry(regs->regs[3], regs->regs[4], regs->regs[5],
- 			    regs->regs[6], regs->regs[7]);
- 
--	return ret ?: regs->regs[0];
-+	return 0;
- }
- 
- asmlinkage void do_syscall_trace_leave(struct pt_regs *regs)
--- 
-2.21.0
-
+> 
+>  arch/sh/include/asm/mmu_context.h    | 5 ++---
+>  arch/sh/include/asm/mmu_context_32.h | 9 ---------
+>  2 files changed, 2 insertions(+), 12 deletions(-)
+> 
+> diff --git a/arch/sh/include/asm/mmu_context.h b/arch/sh/include/asm/mmu_context.h
+> index 461b1304580b..78eef4e7d5df 100644
+> --- a/arch/sh/include/asm/mmu_context.h
+> +++ b/arch/sh/include/asm/mmu_context.h
+> @@ -84,6 +84,7 @@ static inline void get_mmu_context(struct mm_struct *mm, unsigned int cpu)
+>   * Initialize the context related info for a new mm_struct
+>   * instance.
+>   */
+> +#define init_new_context init_new_context
+>  static inline int init_new_context(struct task_struct *tsk,
+>  				   struct mm_struct *mm)
+>  {
+> @@ -120,9 +121,7 @@ static inline void switch_mm(struct mm_struct *prev,
+>  			activate_context(next, cpu);
+>  }
+>  
+> -#define activate_mm(prev, next)		switch_mm((prev),(next),NULL)
+> -#define deactivate_mm(tsk,mm)		do { } while (0)
+> -#define enter_lazy_tlb(mm,tsk)		do { } while (0)
+> +#include <asm-generic/mmu_context.h>
+>  
+>  #else
+>  
+> diff --git a/arch/sh/include/asm/mmu_context_32.h b/arch/sh/include/asm/mmu_context_32.h
+> index 71bf12ef1f65..bc5034fa6249 100644
+> --- a/arch/sh/include/asm/mmu_context_32.h
+> +++ b/arch/sh/include/asm/mmu_context_32.h
+> @@ -2,15 +2,6 @@
+>  #ifndef __ASM_SH_MMU_CONTEXT_32_H
+>  #define __ASM_SH_MMU_CONTEXT_32_H
+>  
+> -/*
+> - * Destroy context related info for an mm_struct that is about
+> - * to be put to rest.
+> - */
+> -static inline void destroy_context(struct mm_struct *mm)
+> -{
+> -	/* Do nothing */
+> -}
+> -
+>  #ifdef CONFIG_CPU_HAS_PTEAEX
+>  static inline void set_asid(unsigned long asid)
+>  {
+> -- 
+> 2.23.0
