@@ -2,112 +2,92 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 99E4325B021
-	for <lists+linux-sh@lfdr.de>; Wed,  2 Sep 2020 17:51:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7897E25B7AE
+	for <lists+linux-sh@lfdr.de>; Thu,  3 Sep 2020 02:41:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728104AbgIBPvg (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 2 Sep 2020 11:51:36 -0400
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:46752 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726814AbgIBPvf (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 2 Sep 2020 11:51:35 -0400
-Received: by mail-oi1-f195.google.com with SMTP id u126so4780867oif.13;
-        Wed, 02 Sep 2020 08:51:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6JeD4q3u5m7TYib0XXdTzqaKmJDZ9r459ZslYXgh8lw=;
-        b=R0RP1QqWC6Vl5ns9rFZZPBpOcsrxGubYGd35tp7med77+8iTPnX0Njt0CTmQiDBc95
-         XuZDr6jM8PaZ2LrBdNNNG9d2En1Kt01RfUQP7VUKx7TAWoFmZTzzgBiKhF20Qwg7mlUU
-         1/TkmMXr1G++itn360HLqRXoNJwGBd1vCogIXoFZ5XZvp1AtkfySwNnrki6YvsEAnQJU
-         KXOKimvFqqOe5PkjlTiHfsyv8StnnP6rPvR3aRgIEi5uPhl8z+bRIF7JEzNkWHJqJd9H
-         fKNVj/42by9YxO1eV/xFnSckdLkJdhsoTipbZXREOFggzTt7tC3oKZ5g0Lt6TGiB9Ook
-         2opw==
-X-Gm-Message-State: AOAM531uSrSVMDskfGkG0AlrfGNMD5S1raKkQ/khFFP/FMXOsjC8Ja6y
-        TbijvlGJiXWHLX1+oHUqxTY3D23tKR+rjs7gZK3638xx
-X-Google-Smtp-Source: ABdhPJxae6UIMdm5zyNbrXO7nReKqvFeikbvh88AnM0v5RcEpiean7ErLZWr+e2Mgvg5T/MqKiUm1LPR+XrJcw1TLSs=
-X-Received: by 2002:aca:d509:: with SMTP id m9mr2399947oig.71.1599061888397;
- Wed, 02 Sep 2020 08:51:28 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200901150438.228887-1-ulf.hansson@linaro.org>
- <20200901150654.GB30034@lst.de> <CAPDyKFqZXdtVokrDQvJAh-NzN0T2ayPD6MepemLEaDt1TRPduw@mail.gmail.com>
- <20200901154049.GA376@lst.de> <CAPDyKFqDKUG3RC241hv535CLFGEQc4b-vv0e3bexzGkDSY82Jg@mail.gmail.com>
- <20200902134418.GR3265@brightrain.aerifal.cx>
-In-Reply-To: <20200902134418.GR3265@brightrain.aerifal.cx>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 2 Sep 2020 17:51:16 +0200
-Message-ID: <CAMuHMdUiPhHtkQfcpMSA6HMvmcFyg__rSGUoHRKQfQf2N5QTYA@mail.gmail.com>
-Subject: Re: [PATCH v2] mmc: mmc_spi: Allow the driver to be built when
- CONFIG_HAS_DMA is unset
-To:     Rich Felker <dalias@libc.org>
+        id S1726892AbgICAlh (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 2 Sep 2020 20:41:37 -0400
+Received: from brightrain.aerifal.cx ([216.12.86.13]:49012 "EHLO
+        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726594AbgICAlh (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 2 Sep 2020 20:41:37 -0400
+Date:   Wed, 2 Sep 2020 20:41:35 -0400
+From:   Rich Felker <dalias@libc.org>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
 Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
         Christoph Hellwig <hch@lst.de>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
         Mark Brown <broonie@kernel.org>,
         Linux-sh list <linux-sh@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v2] mmc: mmc_spi: Allow the driver to be built when
+ CONFIG_HAS_DMA is unset
+Message-ID: <20200903004135.GT3265@brightrain.aerifal.cx>
+References: <20200901150438.228887-1-ulf.hansson@linaro.org>
+ <20200901150654.GB30034@lst.de>
+ <CAPDyKFqZXdtVokrDQvJAh-NzN0T2ayPD6MepemLEaDt1TRPduw@mail.gmail.com>
+ <20200901154049.GA376@lst.de>
+ <CAPDyKFqDKUG3RC241hv535CLFGEQc4b-vv0e3bexzGkDSY82Jg@mail.gmail.com>
+ <20200902134418.GR3265@brightrain.aerifal.cx>
+ <CAMuHMdUiPhHtkQfcpMSA6HMvmcFyg__rSGUoHRKQfQf2N5QTYA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdUiPhHtkQfcpMSA6HMvmcFyg__rSGUoHRKQfQf2N5QTYA@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Rich,
-
-On Wed, Sep 2, 2020 at 5:43 PM Rich Felker <dalias@libc.org> wrote:
-> On Wed, Sep 02, 2020 at 10:31:47AM +0200, Ulf Hansson wrote:
-> > On Tue, 1 Sep 2020 at 17:40, Christoph Hellwig <hch@lst.de> wrote:
-> > > On Tue, Sep 01, 2020 at 05:36:17PM +0200, Ulf Hansson wrote:
-> > > > > I still don't think this makes sense, as the dma_mask should always
-> > > > > be non-NULL here.
+On Wed, Sep 02, 2020 at 05:51:16PM +0200, Geert Uytterhoeven wrote:
+> Hi Rich,
+> 
+> On Wed, Sep 2, 2020 at 5:43 PM Rich Felker <dalias@libc.org> wrote:
+> > On Wed, Sep 02, 2020 at 10:31:47AM +0200, Ulf Hansson wrote:
+> > > On Tue, 1 Sep 2020 at 17:40, Christoph Hellwig <hch@lst.de> wrote:
+> > > > On Tue, Sep 01, 2020 at 05:36:17PM +0200, Ulf Hansson wrote:
+> > > > > > I still don't think this makes sense, as the dma_mask should always
+> > > > > > be non-NULL here.
+> > > > >
+> > > > > If that is the case, I wonder how the driver could even have worked without DMA.
+> > > > >
+> > > > > Because in the existing code, host->dma_dev gets assigned to
+> > > > > spi->master->dev.parent->dma_mask - which seems to turn on the DMA
+> > > > > usage in the driver.
+> > > > >
+> > > > > What am I missing?
 > > > >
-> > > > If that is the case, I wonder how the driver could even have worked without DMA.
-> > > >
-> > > > Because in the existing code, host->dma_dev gets assigned to
-> > > > spi->master->dev.parent->dma_mask - which seems to turn on the DMA
-> > > > usage in the driver.
-> > > >
-> > > > What am I missing?
+> > > > Do you know of other non-DMA users?  For SH nommu it probably worked
 > > >
-> > > Do you know of other non-DMA users?  For SH nommu it probably worked
+> > > I don't know of other non-DMA users. As I said, I wish someone could
+> > > step in and take better care of mmc_spi - as I know it's being used a
+> > > lot.
+> > >
+> > > > because SH nommu used to provide a DMA implementation that worked
+> > > > fine for streaming maps, but was completely broken for coherent
+> > > > allocation.  And this driver appears to only use the former.
+> > >
+> > > Alright, so you are saying the DMA support may potentially never have
+> > > been optional to this driver. In any case, I can remove the check in
+> > > $subject patch, as it shouldn't matter.
 > >
-> > I don't know of other non-DMA users. As I said, I wish someone could
-> > step in and take better care of mmc_spi - as I know it's being used a
-> > lot.
+> > DMA support was always optional, because even on systems where DMA is
+> > present, it doesn't necessarily mean the SPI controller uses DMA. In
+> > particular, pure bit-banged SPI via GPIOs doesn't have DMA, but has
+> > always worked. See my previous reply to Christoph about host->dma_dev
+> > for my current-best understanding of what's going on here.
 > >
-> > > because SH nommu used to provide a DMA implementation that worked
-> > > fine for streaming maps, but was completely broken for coherent
-> > > allocation.  And this driver appears to only use the former.
+> > > Anyway, let's see what Rich thinks of this. I am curious to see if the
+> > > patch works on his SH boards - as I haven't been able to test it.
 > >
-> > Alright, so you are saying the DMA support may potentially never have
-> > been optional to this driver. In any case, I can remove the check in
-> > $subject patch, as it shouldn't matter.
->
-> DMA support was always optional, because even on systems where DMA is
-> present, it doesn't necessarily mean the SPI controller uses DMA. In
-> particular, pure bit-banged SPI via GPIOs doesn't have DMA, but has
-> always worked. See my previous reply to Christoph about host->dma_dev
-> for my current-best understanding of what's going on here.
->
-> > Anyway, let's see what Rich thinks of this. I am curious to see if the
-> > patch works on his SH boards - as I haven't been able to test it.
->
-> I'll rebuild and retest just to confirm, but I already tested a
-> functionally equivalent patch that just did the #ifdef inline (rather
-> than moving the logic out to separate functions) and it worked fine.
+> > I'll rebuild and retest just to confirm, but I already tested a
+> > functionally equivalent patch that just did the #ifdef inline (rather
+> > than moving the logic out to separate functions) and it worked fine.
+> 
+> Hence, Tested-by? ;-)
 
-Hence, Tested-by? ;-)
+Confirmed that this version of the patch works too. Thus,
 
-Thanks!
+Tested-by: Rich Felker <dalias@libc.org>
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
