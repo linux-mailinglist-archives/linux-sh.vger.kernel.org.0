@@ -2,142 +2,115 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 602D5264125
-	for <lists+linux-sh@lfdr.de>; Thu, 10 Sep 2020 11:14:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10D55264305
+	for <lists+linux-sh@lfdr.de>; Thu, 10 Sep 2020 11:57:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730256AbgIJJOq (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 10 Sep 2020 05:14:46 -0400
-Received: from verein.lst.de ([213.95.11.211]:60117 "EHLO verein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727090AbgIJJOC (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Thu, 10 Sep 2020 05:14:02 -0400
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id 7F59E6736F; Thu, 10 Sep 2020 11:13:51 +0200 (CEST)
-Date:   Thu, 10 Sep 2020 11:13:51 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     Greg KH <greg@kroah.com>
-Cc:     Christoph Hellwig <hch@lst.de>, iommu@lists.linux-foundation.org,
-        Russell King <linux@armlinux.org.uk>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Jim Quinlan <james.quinlan@broadcom.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-usb@vger.kernel.org
-Subject: Re: [PATCH 3/3] dma-mapping: introduce DMA range map, supplanting
- dma_pfn_offset
-Message-ID: <20200910091351.GA25883@lst.de>
-References: <20200910054038.324517-1-hch@lst.de> <20200910054038.324517-4-hch@lst.de> <20200910075351.GA1092435@kroah.com>
+        id S1730127AbgIJJ5k (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 10 Sep 2020 05:57:40 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:44043 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730067AbgIJJzT (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 10 Sep 2020 05:55:19 -0400
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.93)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1kGJIR-000uTg-1b; Thu, 10 Sep 2020 11:55:15 +0200
+Received: from suse-laptop.physik.fu-berlin.de ([160.45.32.140])
+          by inpost2.zedat.fu-berlin.de (Exim 4.93)
+          with esmtpsa (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1kGJIQ-0038VN-SH; Thu, 10 Sep 2020 11:55:15 +0200
+Subject: Re: [PATCH] sh: fix syscall tracing
+To:     Rich Felker <dalias@libc.org>
+Cc:     linux-sh@vger.kernel.org,
+        Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
+        linux-kernel@vger.kernel.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>
+References: <20200903054803.GX3265@brightrain.aerifal.cx>
+ <e456a455-62cd-4f76-a69a-84d1e5b4d153@physik.fu-berlin.de>
+ <20200903161639.GE3265@brightrain.aerifal.cx>
+ <1a3f0f7e-f6e6-db4e-06ad-9c7d560a6265@physik.fu-berlin.de>
+ <20200907174436.GK3265@brightrain.aerifal.cx>
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
+ 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
+ scOkTAZQGVpD/8AaLH4v1w==
+Message-ID: <3b8d5e6a-38d6-6eca-a49a-69e06680ec1c@physik.fu-berlin.de>
+Date:   Thu, 10 Sep 2020 11:55:14 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200910075351.GA1092435@kroah.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <20200907174436.GK3265@brightrain.aerifal.cx>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 160.45.32.140
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Thu, Sep 10, 2020 at 09:53:51AM +0200, Greg KH wrote:
-> >  		/*
-> >  		 * Please refer to usb_alloc_dev() to see why we set
-> > -		 * dma_mask and dma_pfn_offset.
-> > +		 * dma_mask and dma_range_map.
-> >  		 */
-> >  		intf->dev.dma_mask = dev->dev.dma_mask;
-> > -		intf->dev.dma_pfn_offset = dev->dev.dma_pfn_offset;
-> > +		if (dma_direct_copy_range_map(&intf->dev, &dev->dev))
-> > +			dev_err(&dev->dev, "failed to copy DMA map\n");
+Hi Rich!
+
+On 9/7/20 7:44 PM, Rich Felker wrote:
+>> Can we still get this merged as a hotfix for 5.9?
 > 
-> We tell the user, but then just keep on running?  Is there anything that
-> we can do here?
-> 
-> If not, why not have dma_direct_copy_range_map() print out the error?
+> Yes, fixes for regressions in the same release cycle are in-scope (the
+> whole point of having -rc's). I have at least one other fix that needs
+> to go in too and was just giving it a little time to make sure
+> everything's ok now and that there are no more.
 
-At least for USB I'm pretty sure this isn't required at all.  I've been
-running with the patch below on my desktop for two days now trying all
-the usb toys I have (in addition to grepping for obvious abuses in
-the drivers).  remoteproc is a different story, but the DMA handling
-seems there is sketchy to start with..
+Let me know if there is anything else left for testing.
 
----
-From 8bae3e6833f2ca431dcfcbc8f9cced7d5e972a01 Mon Sep 17 00:00:00 2001
-From: Christoph Hellwig <hch@lst.de>
-Date: Wed, 9 Sep 2020 08:28:59 +0200
-Subject: usb: don't inherity DMA properties for USB devices
+Adrian
 
-As the comment in usb_alloc_dev correctly states, drivers can't use
-the DMA API on usb device, and at least calling dma_set_mask on them
-is highly dangerous.  Unlike what the comment states upper level drivers
-also can't really use the presence of a dma mask to check for DMA
-support, as the dma_mask is set by default for most busses.
-
-Remove the copying over of DMA information, and remove the now unused
-dma_direct_copy_range_map export.
-
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- drivers/usb/core/message.c |  7 -------
- drivers/usb/core/usb.c     | 13 -------------
- kernel/dma/direct.c        |  1 -
- 3 files changed, 21 deletions(-)
-
-diff --git a/drivers/usb/core/message.c b/drivers/usb/core/message.c
-index 935ee98e049f65..9e45732dc1d1d1 100644
---- a/drivers/usb/core/message.c
-+++ b/drivers/usb/core/message.c
-@@ -1954,13 +1954,6 @@ int usb_set_configuration(struct usb_device *dev, int configuration)
- 		intf->dev.bus = &usb_bus_type;
- 		intf->dev.type = &usb_if_device_type;
- 		intf->dev.groups = usb_interface_groups;
--		/*
--		 * Please refer to usb_alloc_dev() to see why we set
--		 * dma_mask and dma_range_map.
--		 */
--		intf->dev.dma_mask = dev->dev.dma_mask;
--		if (dma_direct_copy_range_map(&intf->dev, &dev->dev))
--			dev_err(&dev->dev, "failed to copy DMA map\n");
- 		INIT_WORK(&intf->reset_ws, __usb_queue_reset_device);
- 		intf->minor = -1;
- 		device_initialize(&intf->dev);
-diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
-index 23d451f6894d70..9b4ac4415f1a47 100644
---- a/drivers/usb/core/usb.c
-+++ b/drivers/usb/core/usb.c
-@@ -599,19 +599,6 @@ struct usb_device *usb_alloc_dev(struct usb_device *parent,
- 	dev->dev.bus = &usb_bus_type;
- 	dev->dev.type = &usb_device_type;
- 	dev->dev.groups = usb_device_groups;
--	/*
--	 * Fake a dma_mask/offset for the USB device:
--	 * We cannot really use the dma-mapping API (dma_alloc_* and
--	 * dma_map_*) for USB devices but instead need to use
--	 * usb_alloc_coherent and pass data in 'urb's, but some subsystems
--	 * manually look into the mask/offset pair to determine whether
--	 * they need bounce buffers.
--	 * Note: calling dma_set_mask() on a USB device would set the
--	 * mask for the entire HCD, so don't do that.
--	 */
--	dev->dev.dma_mask = bus->sysdev->dma_mask;
--	if (dma_direct_copy_range_map(&dev->dev, bus->sysdev))
--		dev_err(&dev->dev, "failed to copy DMA map\n");
- 	set_dev_node(&dev->dev, dev_to_node(bus->sysdev));
- 	dev->state = USB_STATE_ATTACHED;
- 	dev->lpm_disable_count = 1;
-diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-index fc815f7375e282..3af257571a3b42 100644
---- a/kernel/dma/direct.c
-+++ b/kernel/dma/direct.c
-@@ -552,4 +552,3 @@ int dma_direct_copy_range_map(struct device *to, struct device *from)
- 	to->dma_range_map = new_map;
- 	return 0;
- }
--EXPORT_SYMBOL_GPL(dma_direct_copy_range_map);
 -- 
-2.28.0
-
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
