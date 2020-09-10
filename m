@@ -2,79 +2,87 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 829EC26151C
-	for <lists+linux-sh@lfdr.de>; Tue,  8 Sep 2020 18:44:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E26B0263C99
+	for <lists+linux-sh@lfdr.de>; Thu, 10 Sep 2020 07:41:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732044AbgIHQog (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 8 Sep 2020 12:44:36 -0400
-Received: from verein.lst.de ([213.95.11.211]:53340 "EHLO verein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731773AbgIHQoU (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Tue, 8 Sep 2020 12:44:20 -0400
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id 026F868B02; Tue,  8 Sep 2020 14:20:45 +0200 (CEST)
-Date:   Tue, 8 Sep 2020 14:20:45 +0200
+        id S1727096AbgIJFln (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 10 Sep 2020 01:41:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58346 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725868AbgIJFkx (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 10 Sep 2020 01:40:53 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6C0AC061573;
+        Wed,  9 Sep 2020 22:40:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:In-Reply-To:References;
+        bh=GAlHdOT6xNBIXoRJTGjDfO8yxN+XWkHMSyYrbndYoes=; b=rXra2losZTDAUND7ZVSHxWZYp9
+        O0bLx1ptf6BcC5QeKhuW38Lf8UWBywKGkwCs/qUGI5fa6K3Wo47yLmh+ur6K/PaChoT/tGFAxhcfB
+        ub0IkMkCNn8zmoDDxv5Ga1FM9H3Llnp4yAc4H38rVR/D87e4VVNPsmj3sTrqj4NY/ll95s+l7RlB0
+        aeZms3/a23jfo8wlpZ1fWP3dtIV+nqpRDfJEM1YB/0RAcM9KRXd9eflYS3vfBKqRTkX8ewEJaAWKu
+        EB2yqu8Vmg5QAIVSz+rH5SsKaWoc/Avpgn0ZFhqfwiDyyGYPXlholm/TZWUcvLJuu7lgJQ3Z+5U2M
+        v9Uq/JMA==;
+Received: from [2001:4bb8:184:af1:d8d0:3027:a666:4c4e] (helo=localhost)
+        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kGFK2-0001sv-Sk; Thu, 10 Sep 2020 05:40:39 +0000
 From:   Christoph Hellwig <hch@lst.de>
-To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Cc:     Florian Fainelli <f.fainelli@gmail.com>,
-        Jim Quinlan <james.quinlan@broadcom.com>,
-        Christoph Hellwig <hch@lst.de>,
-        "open list:PCI NATIVE HOST BRIDGE AND ENDPOINT DRIVERS" 
-        <linux-pci@vger.kernel.org>,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+To:     iommu@lists.linux-foundation.org,
+        Russell King <linux@armlinux.org.uk>,
+        Santosh Shilimkar <ssantosh@kernel.org>
+Cc:     Jim Quinlan <james.quinlan@broadcom.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
         Robin Murphy <robin.murphy@arm.com>,
-        "maintainer:BROADCOM BCM7XXX ARM ARCHITECTURE" 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        "open list:STAGING SUBSYSTEM" <devel@driverdev.osuosl.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE" 
-        <devicetree@vger.kernel.org>,
-        "open list:DRM DRIVERS FOR ALLWINNER A10" 
-        <dri-devel@lists.freedesktop.org>, Felipe Balbi <balbi@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "open list:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
-        Joerg Roedel <jroedel@suse.de>,
-        Julien Grall <julien.grall@arm.com>,
-        "open list:ACPI FOR ARM64 (ACPI/arm64)" <linux-acpi@vger.kernel.org>,
-        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        "open list:ALLWINNER A10 CSI DRIVER" <linux-media@vger.kernel.org>,
-        "open list:REMOTE PROCESSOR (REMOTEPROC) SUBSYSTEM" 
-        <linux-remoteproc@vger.kernel.org>,
-        "moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" 
-        <linux-rpi-kernel@lists.infradead.org>,
-        "open list:SUPERH" <linux-sh@vger.kernel.org>,
-        "open list:USB SUBSYSTEM" <linux-usb@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Saravana Kannan <saravanak@google.com>,
-        Stefano Stabellini <sstabellini@kernel.org>
-Subject: Re: [PATCH v11 00/11] PCI: brcmstb: enable PCIe for STB chips
-Message-ID: <20200908122045.GA31727@lst.de>
-References: <20200824193036.6033-1-james.quinlan@broadcom.com> <b19bc982-a0c4-c6ff-d8f5-650f2b3a83c8@gmail.com> <20200827063517.GA4637@lst.de> <CA+-6iNy3U9pO0Bykzgvb9n9fcsBi6FiatLdpA1s0HgQNWZ49mg@mail.gmail.com> <20200907091649.GA6428@e121166-lin.cambridge.arm.com> <CA+-6iNzoz3pM2pJksXogeuou6wB9W-59rN-amCLERFLuY5zLMg@mail.gmail.com> <00e49acb-c659-de10-3e87-76bfd82e4a76@gmail.com> <20200908104226.GB22909@e121166-lin.cambridge.arm.com>
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-usb@vger.kernel.org
+Subject: support range based offsets in dma-direct
+Date:   Thu, 10 Sep 2020 07:40:35 +0200
+Message-Id: <20200910054038.324517-1-hch@lst.de>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200908104226.GB22909@e121166-lin.cambridge.arm.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Tue, Sep 08, 2020 at 11:42:26AM +0100, Lorenzo Pieralisi wrote:
-> > Maybe we can parallelize the PCIe driver review while the DMA changes
-> > are being worked on in Christoph's branch. Lorenzo, are you fine with
-> > the PCIe changes proper?
-> 
-> I will have a look - the main contentious point was about the DMA
-> changes - if Christoph is happy with them I am OK with them
-> too - I hope there is not anything controversial in the host
-> bridge driver itself but I will look into it.
+Hi all,
 
-I'm pretty happy with the overall shape.  Now we just need to squeeze
-out the regressions..
+this series adds range-based offsets to the dma-direct implementation.  The
+guts of the change are a patch from Jim with some modifications from me,
+but to do it nicely we need to ARM patches to prepare for it as well.
+
+Diffstat:
+ arch/arm/common/dmabounce.c                        |    2 
+ arch/arm/include/asm/dma-direct.h                  |   69 +++++++++++++++++
+ arch/arm/include/asm/dma-mapping.h                 |   70 ------------------
+ arch/arm/mach-keystone/keystone.c                  |   21 +++--
+ arch/sh/drivers/pci/pcie-sh7786.c                  |    9 +-
+ arch/x86/pci/sta2x11-fixup.c                       |    6 +
+ drivers/acpi/arm64/iort.c                          |    6 +
+ drivers/base/core.c                                |    2 
+ drivers/gpu/drm/sun4i/sun4i_backend.c              |    8 +-
+ drivers/iommu/io-pgtable-arm.c                     |    2 
+ drivers/media/platform/sunxi/sun4i-csi/sun4i_csi.c |    9 ++
+ drivers/media/platform/sunxi/sun6i-csi/sun6i_csi.c |   11 ++
+ drivers/of/address.c                               |   73 ++++++++----------
+ drivers/of/device.c                                |   44 +++++++----
+ drivers/of/of_private.h                            |   11 +-
+ drivers/of/unittest.c                              |   34 ++++++--
+ drivers/remoteproc/remoteproc_core.c               |    4 -
+ drivers/staging/media/sunxi/cedrus/cedrus_hw.c     |   10 ++
+ drivers/usb/core/message.c                         |    5 -
+ drivers/usb/core/usb.c                             |    3 
+ include/linux/device.h                             |    4 -
+ include/linux/dma-direct.h                         |   52 +++++++++++--
+ include/linux/dma-mapping.h                        |   19 ++++
+ kernel/dma/coherent.c                              |    7 -
+ kernel/dma/direct.c                                |   81 ++++++++++++++++++++-
+ 25 files changed, 373 insertions(+), 189 deletions(-)
