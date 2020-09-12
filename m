@@ -2,106 +2,108 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 938D2266801
-	for <lists+linux-sh@lfdr.de>; Fri, 11 Sep 2020 20:01:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F05D26784F
+	for <lists+linux-sh@lfdr.de>; Sat, 12 Sep 2020 08:46:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725836AbgIKSBf (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 11 Sep 2020 14:01:35 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:46044 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725794AbgIKSBd (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 11 Sep 2020 14:01:33 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08BHxNun136182;
-        Fri, 11 Sep 2020 18:01:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=K/lrGLKQLzPCde1LBeenvfV12lSqYozwSEeErGwFLx0=;
- b=p3td48CvzFQw8bp+qotx7y2XNGDz349JG2L68Ognkw/J+TLmf6hry58o/0azGGJDmM3n
- T2x07sp/D5YQGaD0JXWu/RuYc0P2QPMQfmCfhhZgy4tNbp7XB0MLpDIgzjNviZisFdwJ
- tVRbf1BuYXl9BQ68SiM4IlLykbmhWv8/LD46cuyF6W3vMasF3dL496+iLWpZHe8/PWM7
- 1CZZGbudcuqz2D48aVZZQx0LmiwLjLBM9yeRroGmg9ku5x9sA7JKbKkITdsE+m2iaNNh
- dM+YXKKldp/6uh38YsMh0M8sBrZhq8oX68S7iURwWht61uYrEshzXXCL4PiUKt28MJ4p Xw== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 33c23rfrhy-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 11 Sep 2020 18:01:00 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08BHximb049957;
-        Fri, 11 Sep 2020 18:00:59 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3030.oracle.com with ESMTP id 33dacqayvf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 11 Sep 2020 18:00:59 +0000
-Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 08BI0t3G026796;
-        Fri, 11 Sep 2020 18:00:55 GMT
-Received: from [10.74.108.237] (/10.74.108.237)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 11 Sep 2020 11:00:55 -0700
-Subject: Re: [PATCH 2/3] ARM/keystone: move the DMA offset handling under
- ifdef CONFIG_ARM_LPAE
-To:     Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        Christoph Hellwig <hch@lst.de>
-Cc:     iommu@lists.linux-foundation.org,
+        id S1725849AbgILGqd (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sat, 12 Sep 2020 02:46:33 -0400
+Received: from verein.lst.de ([213.95.11.211]:39013 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725813AbgILGqc (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Sat, 12 Sep 2020 02:46:32 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id EB2A368B02; Sat, 12 Sep 2020 08:46:24 +0200 (CEST)
+Date:   Sat, 12 Sep 2020 08:46:24 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Robin Murphy <robin.murphy@arm.com>
+Cc:     Christoph Hellwig <hch@lst.de>, iommu@lists.linux-foundation.org,
+        Russell King <linux@armlinux.org.uk>,
         Santosh Shilimkar <ssantosh@kernel.org>,
-        Jim Quinlan <james.quinlan@broadcom.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
+        devicetree@vger.kernel.org,
         Florian Fainelli <f.fainelli@gmail.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-usb@vger.kernel.org
-References: <20200910054038.324517-1-hch@lst.de>
- <20200910054038.324517-3-hch@lst.de>
- <20200911111551.GG1551@shell.armlinux.org.uk>
-From:   santosh.shilimkar@oracle.com
-Organization: Oracle Corporation
-Message-ID: <f13c72b9-9efa-7b9d-6c23-19f87b151bc4@oracle.com>
-Date:   Fri, 11 Sep 2020 11:00:52 -0700
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
- Gecko/20100101 Thunderbird/68.9.0
+        linux-sh@vger.kernel.org, Frank Rowand <frowand.list@gmail.com>,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Jim Quinlan <james.quinlan@broadcom.com>,
+        linux-pci@vger.kernel.org,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 3/3] dma-mapping: introduce DMA range map, supplanting
+ dma_pfn_offset
+Message-ID: <20200912064624.GA19260@lst.de>
+References: <20200910054038.324517-1-hch@lst.de> <20200910054038.324517-4-hch@lst.de> <011dea58-3714-3343-c055-57228be2a450@arm.com>
 MIME-Version: 1.0
-In-Reply-To: <20200911111551.GG1551@shell.armlinux.org.uk>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9741 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 malwarescore=0
- bulkscore=0 phishscore=0 adultscore=0 suspectscore=0 spamscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009110145
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9741 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 priorityscore=1501
- mlxlogscore=999 mlxscore=0 bulkscore=0 suspectscore=0 spamscore=0
- malwarescore=0 phishscore=0 lowpriorityscore=0 clxscore=1011
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009110145
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <011dea58-3714-3343-c055-57228be2a450@arm.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 9/11/20 4:15 AM, Russell King - ARM Linux admin wrote:
-> On Thu, Sep 10, 2020 at 07:40:37AM +0200, Christoph Hellwig wrote:
->> The DMA offset notifier can only be used if PHYS_OFFSET is at least
->> KEYSTONE_HIGH_PHYS_START, which can't be represented by a 32-bit
->> phys_addr_t.  Currently the code compiles fine despite that, a pending
->> change to the DMA offset handling would create a compiler warning for
->> this case.  Add an ifdef to not compile the code except for LPAE
->> configs.
-> 
-> However, to have use of the high physical offset, LPAE needs to be
-> enabled, which ensures that phys_addr_t is 64-bit.
-> 
-> I believe that DMA is non-coherent on this platform unless the high
-> physical address is used. Or something like that.
-> 
-Exactly. Higher address ranges needs to be used for DMA coherency.
+On Fri, Sep 11, 2020 at 05:12:36PM +0100, Robin Murphy wrote:
+> (apologies to Jim - I did look through one of the previous versions since I 
+> last commented and thought it looked OK, but never actually replied as 
+> such)
+>
+> On 2020-09-10 06:40, Christoph Hellwig wrote:
+>> From: Jim Quinlan <james.quinlan@broadcom.com>
+>>
+>> The new field 'dma_range_map' in struct device is used to facilitate the
+>> use of single or multiple offsets between mapping regions of cpu addrs and
+>> dma addrs.  It subsumes the role of "dev->dma_pfn_offset" which was only
+>> capable of holding a single uniform offset and had no region bounds
+>> checking.
+>>
+>> The function of_dma_get_range() has been modified so that it takes a single
+>> argument -- the device node -- and returns a map, NULL, or an error code.
+>> The map is an array that holds the information regarding the DMA regions.
+>> Each range entry contains the address offset, the cpu_start address, the
+>> dma_start address, and the size of the region.
+>>
+>> of_dma_configure() is the typical manner to set range offsets but there are
+>> a number of ad hoc assignments to "dev->dma_pfn_offset" in the kernel
+>> driver code.  These cases now invoke the function
+>> dma_attach_offset_range(dev, cpu_addr, dma_addr, size).
+>
+> This is now called dma_direct_set_offset(), right?
 
-Regards,
-Santosh
+Yes.
+
+>> +		int ret = dma_direct_set_offset(dev, KEYSTONE_HIGH_PHYS_START,
+>> +						KEYSTONE_LOW_PHYS_START,
+>> +						KEYSTONE_HIGH_PHYS_SIZE);
+>> +		dev_err(dev, "set dma_offset%08llx%s\n",
+>> +			KEYSTONE_HIGH_PHYS_START - KEYSTONE_LOW_PHYS_START,
+>> +			ret ? " failed" : "");
+>
+> FWIW I've already been thinking of some optimisations which would have the 
+> happy side-effect of removing many of these allocation failure scenarios, 
+> but at this point I reckon it's more practical to just get the current 
+> implementation landed and working.
+
+Given that no one deals or can easily deal with these failures we
+should probably take care of that.  IMHO we could just allocate a
+single static range and point all the devices to it, what would
+you think of that?
+
+>>   @@ -811,8 +812,13 @@ static int sun4i_backend_bind(struct device *dev, 
+>> struct device *master,
+>>   		 * because of an old DT, we need to set the DMA offset by hand
+>>   		 * on our device since the RAM mapping is at 0 for the DMA bus,
+>>   		 * unlike the CPU.
+>> +		 *
+>> +		 * XXX(hch): this has no business in a driver and needs to move
+>> +		 * to the device tree.
+>
+> As the context implies, this has actually grown a proper DT description of 
+> the funky interconnect layout (see 564d6fd611f9 and the linked patch 
+> series), and this is just an ugly fallback path to prevent regressions with 
+> old DTBs that are already out there. So unless you can fire up the time 
+> machine to fix those, this extra comment is really just beating a dead 
+> horse :(
+
+Well, I need to beat the dead horse to avoid having to export the
+function, which will really just bread new users.  So at the minimum
+we'd need to move the setup to platform code that is always built in.
