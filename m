@@ -2,108 +2,72 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F05D26784F
-	for <lists+linux-sh@lfdr.de>; Sat, 12 Sep 2020 08:46:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F586268628
+	for <lists+linux-sh@lfdr.de>; Mon, 14 Sep 2020 09:36:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725849AbgILGqd (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sat, 12 Sep 2020 02:46:33 -0400
-Received: from verein.lst.de ([213.95.11.211]:39013 "EHLO verein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725813AbgILGqc (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Sat, 12 Sep 2020 02:46:32 -0400
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id EB2A368B02; Sat, 12 Sep 2020 08:46:24 +0200 (CEST)
-Date:   Sat, 12 Sep 2020 08:46:24 +0200
+        id S1726053AbgINHgL (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 14 Sep 2020 03:36:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58514 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725951AbgINHgK (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 14 Sep 2020 03:36:10 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9A04C06174A;
+        Mon, 14 Sep 2020 00:36:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:In-Reply-To:References;
+        bh=C7dRzELMuzY1ti6Be4zl/P2o9CmOm3JEIs4jyyZleQw=; b=lwk02yujA1vjIelTZNfxXJy9LN
+        v7YD5PWtck3jet/c/PDtH/SmOvHL+NzTK518RPrY0A+aHSvGL4Yb8MIOAoGG3rhJ/Oiu+vNNYdbwz
+        xKV0ICUgng+ECUWVsEsca4S+8Mbode59LZh8n8hyxzw3IYN6Ps9D9XcCzLhV9ZQ+njw4qplkOp8Lb
+        EM+FMEy8jVDpnf9IVRWUBOsm/muxp94nXrEAk06uhAZew11B+2igip5eHeeSAAiF07LDs2Q3vm6qY
+        31J7KCG0vY7Zv+4Wny08jHxr0+vvKvhPWPu409qwu/N6S7hbTtkQjkwssJ1vOudtyux59KHeFK4ui
+        4AIuIf/w==;
+Received: from 089144214092.atnat0023.highway.a1.net ([89.144.214.92] helo=localhost)
+        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kHj1m-0008RI-5h; Mon, 14 Sep 2020 07:35:54 +0000
 From:   Christoph Hellwig <hch@lst.de>
-To:     Robin Murphy <robin.murphy@arm.com>
-Cc:     Christoph Hellwig <hch@lst.de>, iommu@lists.linux-foundation.org,
+To:     iommu@lists.linux-foundation.org,
         Russell King <linux@armlinux.org.uk>,
         Santosh Shilimkar <ssantosh@kernel.org>,
-        devicetree@vger.kernel.org,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        linux-sh@vger.kernel.org, Frank Rowand <frowand.list@gmail.com>,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Jim Quinlan <james.quinlan@broadcom.com>,
-        linux-pci@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Jim Quinlan <james.quinlan@broadcom.com>,
         Nathan Chancellor <natechancellor@gmail.com>,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 3/3] dma-mapping: introduce DMA range map, supplanting
- dma_pfn_offset
-Message-ID: <20200912064624.GA19260@lst.de>
-References: <20200910054038.324517-1-hch@lst.de> <20200910054038.324517-4-hch@lst.de> <011dea58-3714-3343-c055-57228be2a450@arm.com>
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Ohad Ben-Cohen <ohad@wizery.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        linux-remoteproc@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org
+Subject: support range based offsets in dma-direct v2
+Date:   Mon, 14 Sep 2020 09:33:37 +0200
+Message-Id: <20200914073343.1579578-1-hch@lst.de>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <011dea58-3714-3343-c055-57228be2a450@arm.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Fri, Sep 11, 2020 at 05:12:36PM +0100, Robin Murphy wrote:
-> (apologies to Jim - I did look through one of the previous versions since I 
-> last commented and thought it looked OK, but never actually replied as 
-> such)
->
-> On 2020-09-10 06:40, Christoph Hellwig wrote:
->> From: Jim Quinlan <james.quinlan@broadcom.com>
->>
->> The new field 'dma_range_map' in struct device is used to facilitate the
->> use of single or multiple offsets between mapping regions of cpu addrs and
->> dma addrs.  It subsumes the role of "dev->dma_pfn_offset" which was only
->> capable of holding a single uniform offset and had no region bounds
->> checking.
->>
->> The function of_dma_get_range() has been modified so that it takes a single
->> argument -- the device node -- and returns a map, NULL, or an error code.
->> The map is an array that holds the information regarding the DMA regions.
->> Each range entry contains the address offset, the cpu_start address, the
->> dma_start address, and the size of the region.
->>
->> of_dma_configure() is the typical manner to set range offsets but there are
->> a number of ad hoc assignments to "dev->dma_pfn_offset" in the kernel
->> driver code.  These cases now invoke the function
->> dma_attach_offset_range(dev, cpu_addr, dma_addr, size).
->
-> This is now called dma_direct_set_offset(), right?
+Hi all,
 
-Yes.
+this series adds range-based offsets to the dma-direct implementation.  The
+guts of the change are a patch from Jim with some modifications from me,
+but to do it nicely we need to ARM patches to prepare for it as well.
 
->> +		int ret = dma_direct_set_offset(dev, KEYSTONE_HIGH_PHYS_START,
->> +						KEYSTONE_LOW_PHYS_START,
->> +						KEYSTONE_HIGH_PHYS_SIZE);
->> +		dev_err(dev, "set dma_offset%08llx%s\n",
->> +			KEYSTONE_HIGH_PHYS_START - KEYSTONE_LOW_PHYS_START,
->> +			ret ? " failed" : "");
->
-> FWIW I've already been thinking of some optimisations which would have the 
-> happy side-effect of removing many of these allocation failure scenarios, 
-> but at this point I reckon it's more practical to just get the current 
-> implementation landed and working.
+Changes since v1:
+ - rebased on top of the latests dma-mapping for-next tree
+ - add two more trivial ARM cleanups
+ - remove the DMA property inheritance hack in usb
+ - move the remaining copy of the ranges into the remoteproc driver
+   as it should not be seen as a general API, but as a quirk for
+   remoteproc that we need to fix ASAP
 
-Given that no one deals or can easily deal with these failures we
-should probably take care of that.  IMHO we could just allocate a
-single static range and point all the devices to it, what would
-you think of that?
-
->>   @@ -811,8 +812,13 @@ static int sun4i_backend_bind(struct device *dev, 
->> struct device *master,
->>   		 * because of an old DT, we need to set the DMA offset by hand
->>   		 * on our device since the RAM mapping is at 0 for the DMA bus,
->>   		 * unlike the CPU.
->> +		 *
->> +		 * XXX(hch): this has no business in a driver and needs to move
->> +		 * to the device tree.
->
-> As the context implies, this has actually grown a proper DT description of 
-> the funky interconnect layout (see 564d6fd611f9 and the linked patch 
-> series), and this is just an ugly fallback path to prevent regressions with 
-> old DTBs that are already out there. So unless you can fire up the time 
-> machine to fix those, this extra comment is really just beating a dead 
-> horse :(
-
-Well, I need to beat the dead horse to avoid having to export the
-function, which will really just bread new users.  So at the minimum
-we'd need to move the setup to platform code that is always built in.
+Diffstat:
