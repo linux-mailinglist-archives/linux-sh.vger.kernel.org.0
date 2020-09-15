@@ -2,97 +2,118 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 36AB0269DF5
-	for <lists+linux-sh@lfdr.de>; Tue, 15 Sep 2020 07:41:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A03126A33B
+	for <lists+linux-sh@lfdr.de>; Tue, 15 Sep 2020 12:35:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726133AbgIOFla (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 15 Sep 2020 01:41:30 -0400
-Received: from verein.lst.de ([213.95.11.211]:46357 "EHLO verein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726089AbgIOFl2 (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Tue, 15 Sep 2020 01:41:28 -0400
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id BC6A26736F; Tue, 15 Sep 2020 07:41:22 +0200 (CEST)
-Date:   Tue, 15 Sep 2020 07:41:22 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc:     Christoph Hellwig <hch@lst.de>, iommu@lists.linux-foundation.org,
-        Russell King <linux@armlinux.org.uk>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jim Quinlan <james.quinlan@broadcom.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        linux-remoteproc@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
-        arnaud.pouliquen@st.com, loic.pallardy.st.com@lst.de
-Subject: Re: [PATCH 6/6] dma-mapping: introduce DMA range map, supplanting
- dma_pfn_offset
-Message-ID: <20200915054122.GA18079@lst.de>
-References: <20200914073343.1579578-1-hch@lst.de> <20200914073343.1579578-7-hch@lst.de> <20200914230147.GA3251212@xps15>
+        id S1726095AbgIOKfi (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 15 Sep 2020 06:35:38 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:48863 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726119AbgIOKfh (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 15 Sep 2020 06:35:37 -0400
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.93)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1kI8J7-000hVo-1S; Tue, 15 Sep 2020 12:35:29 +0200
+Received: from suse-laptop.physik.fu-berlin.de ([160.45.32.140])
+          by inpost2.zedat.fu-berlin.de (Exim 4.93)
+          with esmtpsa (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1kI8J6-003WLG-SW; Tue, 15 Sep 2020 12:35:28 +0200
+Subject: Re: [PATCH] sh: fix syscall tracing
+To:     Rich Felker <dalias@libc.org>, Rob Landley <rob@landley.net>
+Cc:     linux-sh@vger.kernel.org,
+        Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
+        linux-kernel@vger.kernel.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>
+References: <20200903054803.GX3265@brightrain.aerifal.cx>
+ <e456a455-62cd-4f76-a69a-84d1e5b4d153@physik.fu-berlin.de>
+ <20200903161639.GE3265@brightrain.aerifal.cx>
+ <1a3f0f7e-f6e6-db4e-06ad-9c7d560a6265@physik.fu-berlin.de>
+ <20200907174436.GK3265@brightrain.aerifal.cx>
+ <3b8d5e6a-38d6-6eca-a49a-69e06680ec1c@physik.fu-berlin.de>
+ <c0685f0b-e997-39e9-8ae9-ee22c8e74a01@landley.net>
+ <20200910133751.GE3265@brightrain.aerifal.cx>
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
+ 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
+ scOkTAZQGVpD/8AaLH4v1w==
+Message-ID: <d641f6a0-0c2d-d7ea-c5e6-b02506200bb5@physik.fu-berlin.de>
+Date:   Tue, 15 Sep 2020 12:35:28 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200914230147.GA3251212@xps15>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <20200910133751.GE3265@brightrain.aerifal.cx>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 160.45.32.140
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Mon, Sep 14, 2020 at 05:01:47PM -0600, Mathieu Poirier wrote:
+Hi Rich!
 
-[700 lines of the fullquote deleted..]
+On 9/10/20 3:37 PM, Rich Felker wrote:
+>> Which I reported to Rich on the 2nd and he had me test a one line patch fixing
+>> it (adding an extra #include) on the 3rd, but I just did a fresh pull and the
+>> j2_defconfig build still broke a week later.
+> 
+> Yes, that's presently the other regression fix I have queued for the
+> second pull request.
 
-> > +	for (r = map; r->size; r++)
-> > +		num_ranges++;
-> > +
-> > +	new_map = kmemdup(map, array_size(num_ranges + 1, sizeof(*map)),
-> > +			  GFP_KERNEL);
-> > +	if (!new_map)
-> > +		return -ENOMEM;
-> > +	to->dma_range_map = new_map;
-> > +	return 0;
-> > +}
-> > +
-> 
-> This patch seemed Ok to me but it broke the stm32 remoteproc implementation.  When
-> I tested things out function dma_coerce_mask_and_cohenrent() returns -5 and the
-> rest of the initialisation fails.  I isolated things to function dma_to_pfn()
-> [2].  In the original implementation __bus_to_pfn() returns 0xfffff and
-> dev->dma_pfn_offset is equal to 0x38000.  As such the function returns 0x137fff
-> and dma_supported() a non-zero value[3].
-> 
-> With this set function dma_to_pfn() received a face lift.  Function
-> __bus_to_pfn() still returns 0xfffff but translate_dma_to_phys() returns 0,
-> which forces dma_supported() to also return 0 and that is where the -5 (-EIO)
-> comes from.
-> 
-> Taking a futher look at translate_dma_to_phy(), @dma_addr never falls within the
-> bus_dma_region ranges and returns 0.
-> 
-> I'm suspecting an initialisation problem and if it occurred here, it will
-> likely show up elsewhere.
+Any news on this? Seems like Linus just tagged -rc5 this week.
 
-Can you try this incremental patch?
+Adrian
 
-diff --git a/include/linux/dma-direct.h b/include/linux/dma-direct.h
-index 088c97181ab146..c6b21acba7a459 100644
---- a/include/linux/dma-direct.h
-+++ b/include/linux/dma-direct.h
-@@ -46,7 +46,7 @@ static inline phys_addr_t translate_dma_to_phys(struct device *dev,
- 		if (dma_addr >= m->dma_start && dma_addr - m->dma_start < m->size)
- 			return (phys_addr_t)dma_addr + m->offset;
- 
--	return 0;
-+	return (phys_addr_t)-1;
- }
- 
- #ifdef CONFIG_ARCH_HAS_PHYS_TO_DMA
+-- 
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
