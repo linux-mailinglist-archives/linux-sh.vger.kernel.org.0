@@ -2,57 +2,57 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6057B26B7BD
-	for <lists+linux-sh@lfdr.de>; Wed, 16 Sep 2020 02:28:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 584CF26BC59
+	for <lists+linux-sh@lfdr.de>; Wed, 16 Sep 2020 08:14:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726150AbgIPA2u (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 15 Sep 2020 20:28:50 -0400
-Received: from brightrain.aerifal.cx ([216.12.86.13]:54004 "EHLO
-        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727100AbgIPA2t (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 15 Sep 2020 20:28:49 -0400
-Date:   Tue, 15 Sep 2020 20:28:45 -0400
-From:   Rich Felker <dalias@libc.org>
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     Rob Landley <rob@landley.net>, linux-sh@vger.kernel.org,
-        Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
-        linux-kernel@vger.kernel.org,
-        Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: Re: [PATCH] sh: fix syscall tracing
-Message-ID: <20200916002843.GR3265@brightrain.aerifal.cx>
-References: <20200903054803.GX3265@brightrain.aerifal.cx>
- <e456a455-62cd-4f76-a69a-84d1e5b4d153@physik.fu-berlin.de>
- <20200903161639.GE3265@brightrain.aerifal.cx>
- <1a3f0f7e-f6e6-db4e-06ad-9c7d560a6265@physik.fu-berlin.de>
- <20200907174436.GK3265@brightrain.aerifal.cx>
- <3b8d5e6a-38d6-6eca-a49a-69e06680ec1c@physik.fu-berlin.de>
- <c0685f0b-e997-39e9-8ae9-ee22c8e74a01@landley.net>
- <20200910133751.GE3265@brightrain.aerifal.cx>
- <d641f6a0-0c2d-d7ea-c5e6-b02506200bb5@physik.fu-berlin.de>
+        id S1726212AbgIPGOF (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 16 Sep 2020 02:14:05 -0400
+Received: from verein.lst.de ([213.95.11.211]:51030 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726129AbgIPGOD (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Wed, 16 Sep 2020 02:14:03 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 3122868B05; Wed, 16 Sep 2020 08:13:59 +0200 (CEST)
+Date:   Wed, 16 Sep 2020 08:13:59 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc:     Christoph Hellwig <hch@lst.de>, iommu@lists.linux-foundation.org,
+        Russell King <linux@armlinux.org.uk>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jim Quinlan <james.quinlan@broadcom.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Ohad Ben-Cohen <ohad@wizery.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        linux-remoteproc@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+        arnaud.pouliquen@st.com, loic.pallardy.st.com@lst.de
+Subject: Re: [PATCH 6/6] dma-mapping: introduce DMA range map, supplanting
+ dma_pfn_offset
+Message-ID: <20200916061359.GA8424@lst.de>
+References: <20200914073343.1579578-1-hch@lst.de> <20200914073343.1579578-7-hch@lst.de> <20200914230147.GA3251212@xps15> <20200915054122.GA18079@lst.de> <20200915195501.GA3666944@xps15>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d641f6a0-0c2d-d7ea-c5e6-b02506200bb5@physik.fu-berlin.de>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+In-Reply-To: <20200915195501.GA3666944@xps15>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-sh-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Tue, Sep 15, 2020 at 12:35:28PM +0200, John Paul Adrian Glaubitz wrote:
-> Hi Rich!
+On Tue, Sep 15, 2020 at 01:55:01PM -0600, Mathieu Poirier wrote:
+> That did the trick - the stm32 platform driver's probe() function completes and
+> the remote processor is operatinal. 
 > 
-> On 9/10/20 3:37 PM, Rich Felker wrote:
-> >> Which I reported to Rich on the 2nd and he had me test a one line patch fixing
-> >> it (adding an extra #include) on the 3rd, but I just did a fresh pull and the
-> >> j2_defconfig build still broke a week later.
-> > 
-> > Yes, that's presently the other regression fix I have queued for the
-> > second pull request.
-> 
-> Any news on this? Seems like Linus just tagged -rc5 this week.
+> That being said the value returned by function dma_to_pfn()
+> is 0x137fff in the original code and 0xfffff with your patches applied.
 
-I rebased against -rc5 and pushed for-next a couple days ago. It
-doesn't look like there are any problems so I'll proceed with the PR.
-
-Rich
+Yes, that is intentional.  The old code just applied the range and got
+an out of range offset, the new one reports the max offset.
