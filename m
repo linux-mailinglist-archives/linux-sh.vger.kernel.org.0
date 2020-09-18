@@ -2,75 +2,53 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 286FF26EEEF
-	for <lists+linux-sh@lfdr.de>; Fri, 18 Sep 2020 04:32:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 167A427039E
+	for <lists+linux-sh@lfdr.de>; Fri, 18 Sep 2020 20:00:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729547AbgIRCcA (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 17 Sep 2020 22:32:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55138 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729044AbgIRCOM (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 17 Sep 2020 22:14:12 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B82E0C06174A;
-        Thu, 17 Sep 2020 19:14:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-        MIME-Version:Date:Message-ID:Subject:From:Cc:To:Sender:Reply-To:Content-ID:
-        Content-Description:In-Reply-To:References;
-        bh=2zygmWVZoej39+C7l35XnbHqOEaCkXczwN4GbAnVcXY=; b=p4wWAcycwYnfum1OoWGuS54bKN
-        RUBksBagsiyc6QSsORgx0ljgcWDx5gQ4pbDnJM8wJs/51+bgMPj+CMB6OLgqbZIBbUuGwDIL4+2lP
-        Wjq1610pX9gTout1u75QwKszBqYHoROAhFGcXSfWC9UVpdJmud4/wrx4Wuhy96Pp8wQBfaNg+Rxdo
-        A6l8dltODV9iRbZa+2t5UxpdQa95wIhTDqLEoig8wdZqyi7ztgDHhZ/mUSlm0VcuvDgSHyH4Oa1fV
-        XwrCaOkhS2SGz/Y6qTceKa3K/yWSa7g+dpLYsZm0ruimYhyrI1wTzewpLvJCCwk+u2zX+gC/Q9Olp
-        OecYfHug==;
-Received: from [2601:1c0:6280:3f0::19c2]
-        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kJ5uZ-0001Ja-FG; Fri, 18 Sep 2020 02:14:07 +0000
-To:     LKML <linux-kernel@vger.kernel.org>,
-        Jiri Kosina <trivial@kernel.org>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH v2 RESEND +TRIVIAL] arch/sh: hyphenate Non-Uniform in Kconfig
- prompt
-Message-ID: <93d98bab-01dd-5530-9fdb-76faf8dcdd41@infradead.org>
-Date:   Thu, 17 Sep 2020 19:14:04 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+        id S1726007AbgIRSAp (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 18 Sep 2020 14:00:45 -0400
+Received: from brightrain.aerifal.cx ([216.12.86.13]:55872 "EHLO
+        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726156AbgIRSAo (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 18 Sep 2020 14:00:44 -0400
+X-Greylist: delayed 908 seconds by postgrey-1.27 at vger.kernel.org; Fri, 18 Sep 2020 14:00:44 EDT
+Date:   Fri, 18 Sep 2020 13:45:35 -0400
+From:   Rich Felker <dalias@libc.org>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Linux-sh list <linux-sh@vger.kernel.org>,
+        linux-kernel@vger.kernel.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>
+Subject: [GIT PULL] arch/sh important regression fixes 5.9
+Message-ID: <20200918174528.GY3265@brightrain.aerifal.cx>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.21 (2010-09-15)
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+The following changes since commit 856deb866d16e29bd65952e0289066f6078af773:
 
-Hyphenate Non-Uniform in the NUMA kconfig prompt.
+  Linux 5.9-rc5 (2020-09-13 16:06:00 -0700)
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: linux-sh@vger.kernel.org
-Cc: Jiri Kosina <trivial@kernel.org>
----
-v2: rebase from JAN-2020 to current.
+are available in the Git repository at:
 
- arch/sh/mm/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+  git://git.libc.org/linux-sh tags/sh-for-5.9-part2
 
---- linux-next-20200917.orig/arch/sh/mm/Kconfig
-+++ linux-next-20200917/arch/sh/mm/Kconfig
-@@ -105,7 +105,7 @@ config VSYSCALL
- 	  (the default value) say Y.
- 
- config NUMA
--	bool "Non Uniform Memory Access (NUMA) Support"
-+	bool "Non-Uniform Memory Access (NUMA) Support"
- 	depends on MMU && SYS_SUPPORTS_NUMA
- 	select ARCH_WANT_NUMA_VARIABLE_LOCALITY
- 	default n
+for you to fetch changes up to b0cfc315ff38c423a5ce9ce159bd5baa4135e688:
 
+  sh: fix syscall tracing (2020-09-13 21:22:55 -0400)
+
+----------------------------------------------------------------
+Fixes for build and function regression.
+
+----------------------------------------------------------------
+Rich Felker (2):
+      sh: remove spurious circular inclusion from asm/smp.h
+      sh: fix syscall tracing
+
+ arch/sh/include/asm/smp.h     |  1 -
+ arch/sh/kernel/entry-common.S |  1 -
+ arch/sh/kernel/ptrace_32.c    | 15 +++++----------
+ 3 files changed, 5 insertions(+), 12 deletions(-)
