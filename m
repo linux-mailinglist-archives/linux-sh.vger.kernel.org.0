@@ -2,53 +2,58 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2261B27048F
-	for <lists+linux-sh@lfdr.de>; Fri, 18 Sep 2020 21:04:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 965D427058E
+	for <lists+linux-sh@lfdr.de>; Fri, 18 Sep 2020 21:29:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726368AbgIRTEb (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 18 Sep 2020 15:04:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57028 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726367AbgIRTEa (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Fri, 18 Sep 2020 15:04:30 -0400
-Subject: Re: [GIT PULL] arch/sh important regression fixes 5.9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600455869;
-        bh=cKZKGy24nWDe5dq+vsOecV7B9iS44NqRpyX4EnfLKJ8=;
-        h=From:In-Reply-To:References:Date:To:Cc:From;
-        b=Jq06zuBR+3TCCGdUPEf5MLxD61wB9AnTlFuf5bTpu5PR2OweaiKPS9k9v/DQ05Erd
-         8kMrSZ207jxkPideKbAFqOlftPbthu5G8uTrL+XRDBY/4VIc1imgsQcMPMALZ/gvus
-         54E8Lrf7fCQ2Mx+dxQ+V/N8tM6Zbinw+UjIPRm9k=
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20200918174528.GY3265@brightrain.aerifal.cx>
-References: <20200918174528.GY3265@brightrain.aerifal.cx>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20200918174528.GY3265@brightrain.aerifal.cx>
-X-PR-Tracked-Remote: git://git.libc.org/linux-sh tags/sh-for-5.9-part2
-X-PR-Tracked-Commit-Id: b0cfc315ff38c423a5ce9ce159bd5baa4135e688
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 92ab97adeefccf375de7ebaad9d5b75d4125fe8b
-Message-Id: <160045586956.18461.7838610619987360536.pr-tracker-bot@kernel.org>
-Date:   Fri, 18 Sep 2020 19:04:29 +0000
-To:     Rich Felker <dalias@libc.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
+        id S1726187AbgIRT3p (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 18 Sep 2020 15:29:45 -0400
+Received: from brightrain.aerifal.cx ([216.12.86.13]:55898 "EHLO
+        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726157AbgIRT3p (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 18 Sep 2020 15:29:45 -0400
+Date:   Fri, 18 Sep 2020 15:29:42 -0400
+From:   Rich Felker <dalias@libc.org>
+To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc:     Rob Landley <rob@landley.net>, linux-sh@vger.kernel.org,
+        Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
         linux-kernel@vger.kernel.org,
         Yoshinori Sato <ysato@users.sourceforge.jp>
+Subject: Re: [PATCH] sh: fix syscall tracing
+Message-ID: <20200918192942.GA3265@brightrain.aerifal.cx>
+References: <20200903054803.GX3265@brightrain.aerifal.cx>
+ <e456a455-62cd-4f76-a69a-84d1e5b4d153@physik.fu-berlin.de>
+ <20200903161639.GE3265@brightrain.aerifal.cx>
+ <1a3f0f7e-f6e6-db4e-06ad-9c7d560a6265@physik.fu-berlin.de>
+ <20200907174436.GK3265@brightrain.aerifal.cx>
+ <3b8d5e6a-38d6-6eca-a49a-69e06680ec1c@physik.fu-berlin.de>
+ <c0685f0b-e997-39e9-8ae9-ee22c8e74a01@landley.net>
+ <20200910133751.GE3265@brightrain.aerifal.cx>
+ <d641f6a0-0c2d-d7ea-c5e6-b02506200bb5@physik.fu-berlin.de>
+ <20200916002843.GR3265@brightrain.aerifal.cx>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200916002843.GR3265@brightrain.aerifal.cx>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-The pull request you sent on Fri, 18 Sep 2020 13:45:35 -0400:
+On Tue, Sep 15, 2020 at 08:28:45PM -0400, Rich Felker wrote:
+> On Tue, Sep 15, 2020 at 12:35:28PM +0200, John Paul Adrian Glaubitz wrote:
+> > Hi Rich!
+> > 
+> > On 9/10/20 3:37 PM, Rich Felker wrote:
+> > >> Which I reported to Rich on the 2nd and he had me test a one line patch fixing
+> > >> it (adding an extra #include) on the 3rd, but I just did a fresh pull and the
+> > >> j2_defconfig build still broke a week later.
+> > > 
+> > > Yes, that's presently the other regression fix I have queued for the
+> > > second pull request.
+> > 
+> > Any news on this? Seems like Linus just tagged -rc5 this week.
+> 
+> I rebased against -rc5 and pushed for-next a couple days ago. It
+> doesn't look like there are any problems so I'll proceed with the PR.
 
-> git://git.libc.org/linux-sh tags/sh-for-5.9-part2
-
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/92ab97adeefccf375de7ebaad9d5b75d4125fe8b
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+It's now been merged.
