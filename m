@@ -2,58 +2,150 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 965D427058E
-	for <lists+linux-sh@lfdr.de>; Fri, 18 Sep 2020 21:29:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B1AA270A43
+	for <lists+linux-sh@lfdr.de>; Sat, 19 Sep 2020 04:52:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726187AbgIRT3p (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 18 Sep 2020 15:29:45 -0400
-Received: from brightrain.aerifal.cx ([216.12.86.13]:55898 "EHLO
-        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726157AbgIRT3p (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 18 Sep 2020 15:29:45 -0400
-Date:   Fri, 18 Sep 2020 15:29:42 -0400
-From:   Rich Felker <dalias@libc.org>
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     Rob Landley <rob@landley.net>, linux-sh@vger.kernel.org,
-        Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
-        linux-kernel@vger.kernel.org,
-        Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: Re: [PATCH] sh: fix syscall tracing
-Message-ID: <20200918192942.GA3265@brightrain.aerifal.cx>
-References: <20200903054803.GX3265@brightrain.aerifal.cx>
- <e456a455-62cd-4f76-a69a-84d1e5b4d153@physik.fu-berlin.de>
- <20200903161639.GE3265@brightrain.aerifal.cx>
- <1a3f0f7e-f6e6-db4e-06ad-9c7d560a6265@physik.fu-berlin.de>
- <20200907174436.GK3265@brightrain.aerifal.cx>
- <3b8d5e6a-38d6-6eca-a49a-69e06680ec1c@physik.fu-berlin.de>
- <c0685f0b-e997-39e9-8ae9-ee22c8e74a01@landley.net>
- <20200910133751.GE3265@brightrain.aerifal.cx>
- <d641f6a0-0c2d-d7ea-c5e6-b02506200bb5@physik.fu-berlin.de>
- <20200916002843.GR3265@brightrain.aerifal.cx>
+        id S1726469AbgISCwC (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 18 Sep 2020 22:52:02 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:13716 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726393AbgISCvm (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Fri, 18 Sep 2020 22:51:42 -0400
+Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 1BCBB63CA26479BB4EDA;
+        Sat, 19 Sep 2020 10:51:41 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
+ 14.3.487.0; Sat, 19 Sep 2020 10:51:33 +0800
+From:   Qinglang Miao <miaoqinglang@huawei.com>
+To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>
+CC:     <linux-sh@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Qinglang Miao <miaoqinglang@huawei.com>
+Subject: [PATCH -next v2] sh: mm: Convert to DEFINE_SHOW_ATTRIBUTE
+Date:   Sat, 19 Sep 2020 10:52:05 +0800
+Message-ID: <20200919025205.17667-1-miaoqinglang@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200916002843.GR3265@brightrain.aerifal.cx>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Tue, Sep 15, 2020 at 08:28:45PM -0400, Rich Felker wrote:
-> On Tue, Sep 15, 2020 at 12:35:28PM +0200, John Paul Adrian Glaubitz wrote:
-> > Hi Rich!
-> > 
-> > On 9/10/20 3:37 PM, Rich Felker wrote:
-> > >> Which I reported to Rich on the 2nd and he had me test a one line patch fixing
-> > >> it (adding an extra #include) on the 3rd, but I just did a fresh pull and the
-> > >> j2_defconfig build still broke a week later.
-> > > 
-> > > Yes, that's presently the other regression fix I have queued for the
-> > > second pull request.
-> > 
-> > Any news on this? Seems like Linus just tagged -rc5 this week.
-> 
-> I rebased against -rc5 and pushed for-next a couple days ago. It
-> doesn't look like there are any problems so I'll proceed with the PR.
+Use DEFINE_SHOW_ATTRIBUTE macro to simplify the code.
 
-It's now been merged.
+Signed-off-by: Qinglang Miao <miaoqinglang@huawei.com>
+---
+v2: based on linux-next(20200917), and can be applied to
+    mainline cleanly now.
+
+ arch/sh/mm/asids-debugfs.c | 15 ++-------------
+ arch/sh/mm/cache-debugfs.c | 15 ++-------------
+ arch/sh/mm/pmb.c           | 15 ++-------------
+ 3 files changed, 6 insertions(+), 39 deletions(-)
+
+diff --git a/arch/sh/mm/asids-debugfs.c b/arch/sh/mm/asids-debugfs.c
+index 4c1ca197e..d16d6f5ec 100644
+--- a/arch/sh/mm/asids-debugfs.c
++++ b/arch/sh/mm/asids-debugfs.c
+@@ -26,7 +26,7 @@
+ #include <asm/processor.h>
+ #include <asm/mmu_context.h>
+ 
+-static int asids_seq_show(struct seq_file *file, void *iter)
++static int asids_debugfs_show(struct seq_file *file, void *iter)
+ {
+ 	struct task_struct *p;
+ 
+@@ -48,18 +48,7 @@ static int asids_seq_show(struct seq_file *file, void *iter)
+ 	return 0;
+ }
+ 
+-static int asids_debugfs_open(struct inode *inode, struct file *file)
+-{
+-	return single_open(file, asids_seq_show, inode->i_private);
+-}
+-
+-static const struct file_operations asids_debugfs_fops = {
+-	.owner		= THIS_MODULE,
+-	.open		= asids_debugfs_open,
+-	.read		= seq_read,
+-	.llseek		= seq_lseek,
+-	.release	= single_release,
+-};
++DEFINE_SHOW_ATTRIBUTE(asids_debugfs);
+ 
+ static int __init asids_debugfs_init(void)
+ {
+diff --git a/arch/sh/mm/cache-debugfs.c b/arch/sh/mm/cache-debugfs.c
+index 17d780794..b0f185169 100644
+--- a/arch/sh/mm/cache-debugfs.c
++++ b/arch/sh/mm/cache-debugfs.c
+@@ -22,7 +22,7 @@ enum cache_type {
+ 	CACHE_TYPE_UNIFIED,
+ };
+ 
+-static int cache_seq_show(struct seq_file *file, void *iter)
++static int cache_debugfs_show(struct seq_file *file, void *iter)
+ {
+ 	unsigned int cache_type = (unsigned int)file->private;
+ 	struct cache_info *cache;
+@@ -94,18 +94,7 @@ static int cache_seq_show(struct seq_file *file, void *iter)
+ 	return 0;
+ }
+ 
+-static int cache_debugfs_open(struct inode *inode, struct file *file)
+-{
+-	return single_open(file, cache_seq_show, inode->i_private);
+-}
+-
+-static const struct file_operations cache_debugfs_fops = {
+-	.owner		= THIS_MODULE,
+-	.open		= cache_debugfs_open,
+-	.read		= seq_read,
+-	.llseek		= seq_lseek,
+-	.release	= single_release,
+-};
++DEFINE_SHOW_ATTRIBUTE(cache_debugfs);
+ 
+ static int __init cache_debugfs_init(void)
+ {
+diff --git a/arch/sh/mm/pmb.c b/arch/sh/mm/pmb.c
+index b20aba6e1..68eb7cc6e 100644
+--- a/arch/sh/mm/pmb.c
++++ b/arch/sh/mm/pmb.c
+@@ -812,7 +812,7 @@ bool __in_29bit_mode(void)
+         return (__raw_readl(PMB_PASCR) & PASCR_SE) == 0;
+ }
+ 
+-static int pmb_seq_show(struct seq_file *file, void *iter)
++static int pmb_debugfs_show(struct seq_file *file, void *iter)
+ {
+ 	int i;
+ 
+@@ -846,18 +846,7 @@ static int pmb_seq_show(struct seq_file *file, void *iter)
+ 	return 0;
+ }
+ 
+-static int pmb_debugfs_open(struct inode *inode, struct file *file)
+-{
+-	return single_open(file, pmb_seq_show, NULL);
+-}
+-
+-static const struct file_operations pmb_debugfs_fops = {
+-	.owner		= THIS_MODULE,
+-	.open		= pmb_debugfs_open,
+-	.read		= seq_read,
+-	.llseek		= seq_lseek,
+-	.release	= single_release,
+-};
++DEFINE_SHOW_ATTRIBUTE(pmb_debugfs);
+ 
+ static int __init pmb_debugfs_init(void)
+ {
+-- 
+2.23.0
+
