@@ -2,124 +2,95 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6274B272342
-	for <lists+linux-sh@lfdr.de>; Mon, 21 Sep 2020 14:02:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74B7C273640
+	for <lists+linux-sh@lfdr.de>; Tue, 22 Sep 2020 01:11:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726546AbgIUMCD (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 21 Sep 2020 08:02:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46546 "EHLO mail.kernel.org"
+        id S1728822AbgIUXLd (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 21 Sep 2020 19:11:33 -0400
+Received: from mail.rusoil.net ([188.128.114.25]:57383 "EHLO mail.rusoil.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726413AbgIUMCC (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Mon, 21 Sep 2020 08:02:02 -0400
-Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D76AD214F1;
-        Mon, 21 Sep 2020 12:01:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600689721;
-        bh=VD2smVeL5fKzX8/5BW6movD+/oc7j4uKpSXeujhYnzY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=MZhdFO9OycCcCUBnjfiGyIy/JaxKFEtv5Bu/qnbA6rGtTbl+Md/fDkO9tkdYlWS2x
-         Ue0I4niE9CV0W6Ce/vSgHT+BGftRGHA91zmiGR1w4XdB8dStZDOoXbL9hWRe+kgmcg
-         i69yLg7xhanQ5ee4QdS1Rk2Oj3rGOcpj3SLcfY48=
-Date:   Mon, 21 Sep 2020 13:01:54 +0100
-From:   Will Deacon <will@kernel.org>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Nick Piggin <npiggin@gmail.com>, linux-arch@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Helge Deller <deller@gmx.de>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Paul Burton <paulburton@kernel.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Nick Hu <nickhu@andestech.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH v2 01/11] asm-generic/tlb: Fix MMU_GATHER_TABLE_FREE
-Message-ID: <20200921120153.GE2139@willie-the-truck>
-References: <20200717111005.024867618@infradead.org>
- <20200717111349.417688532@infradead.org>
+        id S1726457AbgIUXLb (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Mon, 21 Sep 2020 19:11:31 -0400
+X-Greylist: delayed 374 seconds by postgrey-1.27 at vger.kernel.org; Mon, 21 Sep 2020 19:11:22 EDT
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.rusoil.net (Postfix) with ESMTP id 3CFBD40D5B;
+        Tue, 22 Sep 2020 04:08:14 +0500 (YEKT)
+Received: from mail.rusoil.net ([127.0.0.1])
+        by localhost (mail.rusoil.net [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id EV4tl_rVLSS7; Tue, 22 Sep 2020 04:08:13 +0500 (YEKT)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.rusoil.net (Postfix) with ESMTP id 2C0DD40CEA;
+        Tue, 22 Sep 2020 04:08:13 +0500 (YEKT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rusoil.net 2C0DD40CEA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rusoil.net;
+        s=maildkim; t=1600729693;
+        bh=6R3BgBYiA7fkqGiiNDuwPskBnpH9JXyNAW/l3ZEA+wY=;
+        h=Date:From:Message-ID:MIME-Version;
+        b=Vnjy6nBVnSTcINEW6kER3ugTxQ4KBYKS36YiGFr6YA3B4INc+KiGVhbak8MS9Qjs4
+         d1hbAool1vpcT5tqzIahdEndE3qiAPgBOX6jsmCcvHSMZhz19GFDJ1aQySn107enqY
+         lwxWqbZRY2a+BQ8VxoJh3Rpje7MgA+/fhr9SupmU=
+X-Virus-Scanned: amavisd-new at mail.rusoil.net
+Received: from mail.rusoil.net ([127.0.0.1])
+        by localhost (mail.rusoil.net [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id K7O08Fi_YWVd; Tue, 22 Sep 2020 04:08:12 +0500 (YEKT)
+Received: from mail.rusoil.net (mail.rusoil.net [172.16.7.34])
+        by mail.rusoil.net (Postfix) with ESMTP id 6147940C07;
+        Tue, 22 Sep 2020 04:08:10 +0500 (YEKT)
+Date:   Tue, 22 Sep 2020 04:08:09 +0500 (YEKT)
+From:   Blue Oak Mortgage and Loans <em@rusoil.net>
+Reply-To: Blue Oak Mortgage and Loans <info@bluelmtg.net>
+Message-ID: <2020026523.907101.1600729689731.JavaMail.zimbra@rusoil.net>
+Subject: Wir finanzieren Projekte und Unternehmen
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200717111349.417688532@infradead.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [192.210.183.69]
+X-Mailer: Zimbra 8.8.12_GA_3803 (ZimbraWebClient - FF79 (Win)/8.8.12_GA_3794)
+Thread-Index: IhGK+mMcCqn+S/Et9t28g8ApaUDaLg==
+Thread-Topic: Wir finanzieren Projekte und Unternehmen
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Fri, Jul 17, 2020 at 01:10:06PM +0200, Peter Zijlstra wrote:
-> The first MMU_GATHER_TABLE_FREE user showed a logic error in the
-> tlb_needs_table_invalidate() definition. Make sure any TABLE_FREE has
-> it defined.
 
-Could you elaborate on the logic error, please? It's difficult to see
-through all of the #ifdefs, but afaict we #error if
-tlb_needs_table_invalidate() is defined but not CONFIG_MMU_GATHER_RCU_TABLE_FREE
-with and without this patch. In other words, I'm failing to see what this
-patch changes!
 
-> Fixes: 0d6e24d430ef ("asm-generic/tlb: provide MMU_GATHER_TABLE_FREE")
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> ---
->  include/asm-generic/tlb.h |   35 +++++++++++++++++++----------------
->  1 file changed, 19 insertions(+), 16 deletions(-)
-> 
-> --- a/include/asm-generic/tlb.h
-> +++ b/include/asm-generic/tlb.h
-> @@ -172,6 +172,18 @@
->   *  various ptep_get_and_clear() functions.
->   */
->  
-> +#ifndef CONFIG_MMU_GATHER_RCU_TABLE_FREE
-> +
-> +/*
-> + * Only RCU table free can override this; otherwise the TLBI is needed to
-> + * provide existence guarantees for software walkers.
-> + */
-> +#ifdef tlb_needs_table_invalidate
-> +#error tlb_needs_table_invalidate() requires MMU_GATHER_RCU_TABLE_FREE
-> +#endif
-> +
-> +#endif /* CONFIG_MMU_GATHER_RCU_TABLE_FREE */
-> +
->  #ifdef CONFIG_MMU_GATHER_TABLE_FREE
->  
->  struct mmu_table_batch {
-> @@ -187,17 +199,6 @@ struct mmu_table_batch {
->  
->  extern void tlb_remove_table(struct mmu_gather *tlb, void *table);
->  
-> -#else /* !CONFIG_MMU_GATHER_HAVE_TABLE_FREE */
-> -
-> -/*
-> - * Without MMU_GATHER_TABLE_FREE the architecture is assumed to have page based
-> - * page directories and we can use the normal page batching to free them.
-> - */
-> -#define tlb_remove_table(tlb, page) tlb_remove_page((tlb), (page))
-> -
-> -#endif /* CONFIG_MMU_GATHER_TABLE_FREE */
-> -
-> -#ifdef CONFIG_MMU_GATHER_RCU_TABLE_FREE
->  /*
->   * This allows an architecture that does not use the linux page-tables for
->   * hardware to skip the TLBI when freeing page tables.
-> @@ -206,13 +207,15 @@ extern void tlb_remove_table(struct mmu_
->  #define tlb_needs_table_invalidate() (true)
->  #endif
->  
-> -#else
-> +#else /* !CONFIG_MMU_GATHER_HAVE_TABLE_FREE */
+Dies ist ein Newsletter von Blue Oak Mortgage and Loans. Bitte melden Sie s=
+ich ab, wenn Sie keine E-Mail mehr von uns erhalten m=C3=B6chten.
 
-While you're at it, this comment can be fixed to refer to
-CONFIG_MMU_GATHER_RCU_TABLE_FREE.
 
-Will
+Eine kurze Einf=C3=BChrung.
+
+Wir sind ein f=C3=BChrendes Finanzierungsunternehmen in Europa. Wir finanzi=
+eren Startups / etablierte Unternehmen, finanzieren Gro=C3=9Fprojekte (Bau,=
+ Landwirtschaft, Immobilien und dergleichen) zu einem niedrigen Zinssatz vo=
+n 2% pro Jahr.
+
+
+Darlehensverfahren
+
+1. Sie m=C3=BCssen das Online-Bewerbungsformular ausf=C3=BCllen und eine or=
+dnungsgem=C3=A4=C3=9F unterschriebene Kopie an uns zur=C3=BCcksenden.
+
+2. M=C3=B6glicherweise m=C3=BCssen Sie Finanzdokumente als unterst=C3=BCtze=
+nden Nachweis f=C3=BCr die F=C3=A4higkeit zur R=C3=BCckzahlung von Krediten=
+ vorlegen.
+
+3. Wenn Ihr Darlehen genehmigt wurde, m=C3=BCssen Sie eine Versicherungsgar=
+antie f=C3=BCr die Darlehenssicherheit vorlegen. Wir empfehlen eine Versich=
+erungsgesellschaft. Sie sind allein verantwortlich f=C3=BCr die Zahlung und=
+ den Erwerb der Anleihe, die als Sicherheit dienen. Die H=C3=B6he der Anlei=
+he h=C3=A4ngt von Ihrem Darlehensbetrag ab. Die Versicherungsgesellschaft w=
+ird Sie durch den Prozess f=C3=BChren. (F=C3=BCr Gro=C3=9Fprojekte)
+
+4. Ihr =C3=9Cberweisungsprozess wird eingeleitet, sobald die Versicherungsa=
+nleihe =C3=BCberpr=C3=BCft wurde. Ihr Darlehensr=C3=BCckzahlungsplan wird i=
+m NC-Darlehensvertragsformular aufgef=C3=BChrt.
+
+Wenn die Bedingungen Sie beruhigen, k=C3=B6nnen Sie uns =C3=BCber die Whats=
+App-Nummer / E-Mail kontaktieren und auch unsere Website besuchen, um weite=
+re Informationen zu erhalten. Wir freuen uns darauf, von Ihnen zu h=C3=B6re=
+n.
+
+WhatsApp: + 90-552-365-3483
+E-Mail: info@bluelmtg.net
