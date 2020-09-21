@@ -2,81 +2,124 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F64F270A36
-	for <lists+linux-sh@lfdr.de>; Sat, 19 Sep 2020 04:52:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6274B272342
+	for <lists+linux-sh@lfdr.de>; Mon, 21 Sep 2020 14:02:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726420AbgISCvt (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 18 Sep 2020 22:51:49 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:13717 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726406AbgISCvo (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Fri, 18 Sep 2020 22:51:44 -0400
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id BA0F121CB20FF9F68158;
-        Sat, 19 Sep 2020 10:51:42 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
- 14.3.487.0; Sat, 19 Sep 2020 10:51:34 +0800
-From:   Qinglang Miao <miaoqinglang@huawei.com>
-To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>
-CC:     <linux-sh@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Qinglang Miao <miaoqinglang@huawei.com>
-Subject: [PATCH -next v2] sh: intc: Convert to DEFINE_SHOW_ATTRIBUTE
-Date:   Sat, 19 Sep 2020 10:52:06 +0800
-Message-ID: <20200919025206.17729-1-miaoqinglang@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726546AbgIUMCD (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 21 Sep 2020 08:02:03 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46546 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726413AbgIUMCC (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Mon, 21 Sep 2020 08:02:02 -0400
+Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D76AD214F1;
+        Mon, 21 Sep 2020 12:01:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1600689721;
+        bh=VD2smVeL5fKzX8/5BW6movD+/oc7j4uKpSXeujhYnzY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=MZhdFO9OycCcCUBnjfiGyIy/JaxKFEtv5Bu/qnbA6rGtTbl+Md/fDkO9tkdYlWS2x
+         Ue0I4niE9CV0W6Ce/vSgHT+BGftRGHA91zmiGR1w4XdB8dStZDOoXbL9hWRe+kgmcg
+         i69yLg7xhanQ5ee4QdS1Rk2Oj3rGOcpj3SLcfY48=
+Date:   Mon, 21 Sep 2020 13:01:54 +0100
+From:   Will Deacon <will@kernel.org>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Nick Piggin <npiggin@gmail.com>, linux-arch@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Helge Deller <deller@gmx.de>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Paul Burton <paulburton@kernel.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Nick Hu <nickhu@andestech.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH v2 01/11] asm-generic/tlb: Fix MMU_GATHER_TABLE_FREE
+Message-ID: <20200921120153.GE2139@willie-the-truck>
+References: <20200717111005.024867618@infradead.org>
+ <20200717111349.417688532@infradead.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200717111349.417688532@infradead.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Use DEFINE_SHOW_ATTRIBUTE macro to simplify the code.
+On Fri, Jul 17, 2020 at 01:10:06PM +0200, Peter Zijlstra wrote:
+> The first MMU_GATHER_TABLE_FREE user showed a logic error in the
+> tlb_needs_table_invalidate() definition. Make sure any TABLE_FREE has
+> it defined.
 
-Signed-off-by: Qinglang Miao <miaoqinglang@huawei.com>
----
-v2: based on linux-next(20200917), and can be applied to
-    mainline cleanly now.
+Could you elaborate on the logic error, please? It's difficult to see
+through all of the #ifdefs, but afaict we #error if
+tlb_needs_table_invalidate() is defined but not CONFIG_MMU_GATHER_RCU_TABLE_FREE
+with and without this patch. In other words, I'm failing to see what this
+patch changes!
 
- drivers/sh/intc/virq-debugfs.c | 14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+> Fixes: 0d6e24d430ef ("asm-generic/tlb: provide MMU_GATHER_TABLE_FREE")
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> ---
+>  include/asm-generic/tlb.h |   35 +++++++++++++++++++----------------
+>  1 file changed, 19 insertions(+), 16 deletions(-)
+> 
+> --- a/include/asm-generic/tlb.h
+> +++ b/include/asm-generic/tlb.h
+> @@ -172,6 +172,18 @@
+>   *  various ptep_get_and_clear() functions.
+>   */
+>  
+> +#ifndef CONFIG_MMU_GATHER_RCU_TABLE_FREE
+> +
+> +/*
+> + * Only RCU table free can override this; otherwise the TLBI is needed to
+> + * provide existence guarantees for software walkers.
+> + */
+> +#ifdef tlb_needs_table_invalidate
+> +#error tlb_needs_table_invalidate() requires MMU_GATHER_RCU_TABLE_FREE
+> +#endif
+> +
+> +#endif /* CONFIG_MMU_GATHER_RCU_TABLE_FREE */
+> +
+>  #ifdef CONFIG_MMU_GATHER_TABLE_FREE
+>  
+>  struct mmu_table_batch {
+> @@ -187,17 +199,6 @@ struct mmu_table_batch {
+>  
+>  extern void tlb_remove_table(struct mmu_gather *tlb, void *table);
+>  
+> -#else /* !CONFIG_MMU_GATHER_HAVE_TABLE_FREE */
+> -
+> -/*
+> - * Without MMU_GATHER_TABLE_FREE the architecture is assumed to have page based
+> - * page directories and we can use the normal page batching to free them.
+> - */
+> -#define tlb_remove_table(tlb, page) tlb_remove_page((tlb), (page))
+> -
+> -#endif /* CONFIG_MMU_GATHER_TABLE_FREE */
+> -
+> -#ifdef CONFIG_MMU_GATHER_RCU_TABLE_FREE
+>  /*
+>   * This allows an architecture that does not use the linux page-tables for
+>   * hardware to skip the TLBI when freeing page tables.
+> @@ -206,13 +207,15 @@ extern void tlb_remove_table(struct mmu_
+>  #define tlb_needs_table_invalidate() (true)
+>  #endif
+>  
+> -#else
+> +#else /* !CONFIG_MMU_GATHER_HAVE_TABLE_FREE */
 
-diff --git a/drivers/sh/intc/virq-debugfs.c b/drivers/sh/intc/virq-debugfs.c
-index 9e62ba931..939915a07 100644
---- a/drivers/sh/intc/virq-debugfs.c
-+++ b/drivers/sh/intc/virq-debugfs.c
-@@ -16,7 +16,7 @@
- #include <linux/debugfs.h>
- #include "internals.h"
- 
--static int intc_irq_xlate_debug(struct seq_file *m, void *priv)
-+static int intc_irq_xlate_show(struct seq_file *m, void *priv)
- {
- 	int i;
- 
-@@ -37,17 +37,7 @@ static int intc_irq_xlate_debug(struct seq_file *m, void *priv)
- 	return 0;
- }
- 
--static int intc_irq_xlate_open(struct inode *inode, struct file *file)
--{
--	return single_open(file, intc_irq_xlate_debug, inode->i_private);
--}
--
--static const struct file_operations intc_irq_xlate_fops = {
--	.open = intc_irq_xlate_open,
--	.read = seq_read,
--	.llseek = seq_lseek,
--	.release = single_release,
--};
-+DEFINE_SHOW_ATTRIBUTE(intc_irq_xlate);
- 
- static int __init intc_irq_xlate_init(void)
- {
--- 
-2.23.0
+While you're at it, this comment can be fixed to refer to
+CONFIG_MMU_GATHER_RCU_TABLE_FREE.
 
+Will
