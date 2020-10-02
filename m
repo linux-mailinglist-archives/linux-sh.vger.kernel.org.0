@@ -2,45 +2,40 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A3D027FA86
-	for <lists+linux-sh@lfdr.de>; Thu,  1 Oct 2020 09:47:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCF38281D56
+	for <lists+linux-sh@lfdr.de>; Fri,  2 Oct 2020 23:05:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731330AbgJAHrS (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 1 Oct 2020 03:47:18 -0400
-Received: from mail2.grupovidela.com ([212.31.54.87]:47588 "EHLO
-        grupovidela.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725938AbgJAHrF (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 1 Oct 2020 03:47:05 -0400
-X-Greylist: delayed 62085 seconds by postgrey-1.27 at vger.kernel.org; Thu, 01 Oct 2020 03:47:00 EDT
-Received: from User ([94.102.54.226])
-        (user=varios@grupovidela.com mech=LOGIN bits=0)
-        by fortimail.grupovidela.com  with ESMTP id 08UEUh9R015477-08UEUh9T015477;
-        Wed, 30 Sep 2020 16:30:44 +0200
-Message-Id: <202009301430.08UEUh9R015477-08UEUh9T015477@fortimail.grupovidela.com>
-Reply-To: <fulanlan28@gmail.com>
-From:   "Mr. Fu Lan" <aitor@coacan.es>
-Subject: YOUR EARLY REPLY
-Date:   Wed, 30 Sep 2020 07:30:48 -0700
+        id S1725785AbgJBVFJ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-sh@lfdr.de>); Fri, 2 Oct 2020 17:05:09 -0400
+Received: from mail3.lapompeya.com.ar ([190.189.89.7]:22178 "EHLO
+        mail3.lapompeya.com.ar" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725283AbgJBVFI (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 2 Oct 2020 17:05:08 -0400
+X-Greylist: delayed 11714 seconds by postgrey-1.27 at vger.kernel.org; Fri, 02 Oct 2020 17:05:07 EDT
+Received: from [192.168.2.241] (80.106.241.112) by mail3.lapompeya.com.ar
+ (192.168.11.16) with Microsoft SMTP Server id 14.3.468.0; Fri, 2 Oct 2020
+ 14:49:52 -0300
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-X-FEAS-AUTH-USER: varios@grupovidela.com
-To:     unlisted-recipients:; (no To-header on input)
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Gute Nachrichten !
+To:     Recipients <chi1grant22@gmail.com>
+From:   "Mr. Marvin" <chi1grant22@gmail.com>
+Date:   Fri, 2 Oct 2020 20:49:36 +0300
+Reply-To: <marvinsims00@gmail.com>
+Message-ID: <31ebd277-b7f6-43c6-bc5d-4cff788d314c@VMMAIL2010.pompeya.local>
+Received-SPF: SoftFail (vmmail2010.pompeya.local: domain of transitioning
+ chi1grant22@gmail.com discourages use of 80.106.241.112 as permitted sender)
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-YOUR EARLY REPLY 
+Die letzten Monate waren nicht gut für Unternehmen, Institutionen und Einzelpersonen auf der ganzen Welt. Die globale Epidemie (Covid-19) hat alle finanziell erschöpft und Sie wurden nicht freigestellt. Ihr Hilferuf wurde gehört und wir sind bereit, Ihnen unsere freundliche Geste anzubieten. Sie gehören zu den 3. Chargen, die von unserem Fondsprogramm profitieren, und ich muss aufrichtig sagen, dass die 1. und 2. Charge für die von uns geleistete Hilfe dankbar ist. Sie haben erfolgreich die kumulierte Gesamtsumme von (50.000,00 USD) als Gemeinschaftsspende von Oxfam Aid erhalten. Antworten Sie zurück, um weitere Informationen und Anweisungen zur Beantragung Ihres Zuschusses zu erhalten.
 
-It is understandable that you might be a little bit apprehensive because
-you do not know me but I have a lucrative business proposal of mutual
-interest to share with you.$222,695.415.00 million United States dollars
-your earliest response will be appreciated.
-Email: fulanlan28@gmail.com
-Kind Regards,
-Mr. Fu Lan
+Denken Sie daran, immer in Sicherheit zu bleiben und soziale Distanzierung zu üben. Befolgen Sie immer die Anweisungen der örtlichen Behörden.
+
+Herr Marvin Sims,
+
+Supervisor (Oxfam Finanzabteilung)
+Oxfam International Inc
