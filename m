@@ -2,62 +2,67 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 13780284A82
-	for <lists+linux-sh@lfdr.de>; Tue,  6 Oct 2020 12:55:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAA37285D92
+	for <lists+linux-sh@lfdr.de>; Wed,  7 Oct 2020 12:52:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725942AbgJFKza (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 6 Oct 2020 06:55:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59198 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725902AbgJFKza (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 6 Oct 2020 06:55:30 -0400
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 537D8C0613D1
-        for <linux-sh@vger.kernel.org>; Tue,  6 Oct 2020 03:55:46 -0700 (PDT)
-Received: by mail-pj1-x1041.google.com with SMTP id i3so1433765pjz.4
-        for <linux-sh@vger.kernel.org>; Tue, 06 Oct 2020 03:55:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=03FxLy90dLlLdrAAQm3bmUMCLJ3zRxRqIshsWPg0LL4=;
-        b=TkT/yuufBBokd8h2BzoIWB93ui00fd28ni8qqg6tLLuXpmoaFi9R4xyj6rpUdgeGRV
-         dBtD3dBy4PumVMk3j4KD8s2bFfmNop79iBaaK6+oYelWNQIxGrAHznZejGcj9IqsGM1S
-         HXbsejAFBk9/1rC49P9LI+zscgI6jMlzSj3jPGL4zmBdoMz8Rcjp8zGVdEKs7gfC8VCb
-         ifoqdavvu1c9Ome03GibZwh5g2VcjTHOYLWtNbacVeGUOEf+p7n/RTlG7y4WSYHgcufy
-         tEhJwRIGLfnKjVcZG+bbOdLpYO76+pXCQsYLyZdg8YVE68UMACEBGaRiVD4FuhIH75iu
-         6KvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=03FxLy90dLlLdrAAQm3bmUMCLJ3zRxRqIshsWPg0LL4=;
-        b=R5zCFxoQ+Ts5OXgpvoft+KD5rOOHgSGGNCyU9DdgsDOjoWI92RxJkz8KHxcmeXPBu9
-         pX8beRqmpgDuJl8EKzlSDiMgrTte4mxcnGixOTtQo5KTntVV1Cz9hmaHTBJL6EboaROK
-         CWiNojIw0e5iwV91Lb/yMGqocVlkj7erBL9Wp8sNwO7BGL3CSlOwtmRAHydjScfVaPi/
-         ydenKdeJz4JEJFZdeWLjF6O8cvVoVhjJjPAnHVoAdNfwEPDdKPDadteQxaoP1/c97Mwk
-         eoecuWqMXZu8wurTU7O9rlzOutPAzEI/NSbp286fGEubSnrqtyBOiR6sY3X5YDGvxvrw
-         B6gg==
-X-Gm-Message-State: AOAM530Ux6zj9lfIeGUTgcSARYrrUI8AFXrAKdwfkxr7VuG+YHpamuRG
-        AjOjPuYtUO3r4n55hkv3wtOZf288jKGYqPFuvkc=
-X-Google-Smtp-Source: ABdhPJxY9Nt4tCnCIUP3YRDSAD1ONohVGSw8CrlgZt3qj/rKA/K7LdprfSGkBDvpWsj3xUcfRuHzgNbwhgON8G8PThQ=
-X-Received: by 2002:a17:90a:1149:: with SMTP id d9mr3889350pje.227.1601981745837;
- Tue, 06 Oct 2020 03:55:45 -0700 (PDT)
+        id S1728285AbgJGKwf convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-sh@lfdr.de>); Wed, 7 Oct 2020 06:52:35 -0400
+Received: from mx.metalurgs.lv ([81.198.125.103]:61402 "EHLO mx.metalurgs.lv"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726597AbgJGKwe (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Wed, 7 Oct 2020 06:52:34 -0400
+Received: from mx.metalurgs.lv (localhost [127.0.0.1])
+        by mx.metalurgs.lv (Postfix) with ESMTP id 0440466C76
+        for <linux-sh@vger.kernel.org>; Wed,  7 Oct 2020 13:52:21 +0300 (EEST)
+Received: from kas30pipe.localhost (localhost [127.0.0.1])
+        by mx.metalurgs.lv (Postfix) with ESMTP id A916166C6A
+        for <linux-sh@vger.kernel.org>; Wed,  7 Oct 2020 13:52:20 +0300 (EEST)
+Received: by mx.metalurgs.lv (Postfix, from userid 1005)
+        id 5D87866ACA; Wed,  7 Oct 2020 13:52:17 +0300 (EEST)
+Received: from [100.64.1.74] (unknown [190.15.125.55])
+        (Authenticated sender: admin)
+        by mx.metalurgs.lv (Postfix) with ESMTPA id 4251766166;
+        Wed,  7 Oct 2020 13:52:10 +0300 (EEST)
 MIME-Version: 1.0
-Received: by 2002:a05:6a10:f55b:0:0:0:0 with HTTP; Tue, 6 Oct 2020 03:55:45
- -0700 (PDT)
-Reply-To: sgtkaylam28@gmail.com
-From:   SgtKayla Manthey <baldemaimouna01@gmail.com>
-Date:   Tue, 6 Oct 2020 03:55:45 -0700
-Message-ID: <CAC5XXA6gZnw3Ag7yhurDQo1QR5Cx8ZMOC3qDqJvDSz=PtoWqng@mail.gmail.com>
-Subject: Hello,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+Content-Description: Mail message body
+To:     Recipients <financialcapability6@gmail.com>
+From:   "Mr. Hashim Bin" <financialcapability6@gmail.com>
+Date:   Wed, 07 Oct 2020 07:52:03 -0300
+Reply-To: hmurrah39@gmail.com
+X-SpamTest-Envelope-From: financialcapability6@gmail.com
+X-SpamTest-Group-ID: 00000000
+X-SpamTest-Info: Profiles 71303 [Jan 01 2015]
+X-SpamTest-Info: {TO: forged address, i.e. recipient, investors, public, etc.}
+X-SpamTest-Info: {DATE: unreal year}
+X-SpamTest-Method: none
+X-SpamTest-Rate: 55
+X-SpamTest-Status: Not detected
+X-SpamTest-Status-Extended: not_detected
+X-SpamTest-Version: SMTP-Filter Version 3.0.0 [0284], KAS30/Release
+Message-ID: <20201007105217.5D87866ACA@mx.metalurgs.lv>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Subject: Low Rate Loan./mmm,
+X-Anti-Virus: Kaspersky Anti-Virus for Linux Mail Server 5.6.39/RELEASE,
+         bases: 20140401 #7726142, check: 20201007 notchecked
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-2KrYrdmK2Kkg2LfZitio2KnYjA0K2KfYs9mF2Yog2YPYp9mK2YTYpyDZhdmGINmB2LbZhNmDINmH
-2YQg2YjYtdmE2KrZgyDYp9mE2LHYs9in2YTYqSDYp9mE2LPYp9io2YLYqdifINin2YPYqtioINmE
-2YoNCtin2YTYudmI2K/YqSDYtNmD2LHYpyDZhNmDLg0K
+Hello Dear,
+
+
+We are Base Investment Company offering Corporate and Personal Loan at 3% Interest Rate for a duration of 10Years.
+
+
+We also pay 1% commission to brokers, who introduce project owners for finance or other opportunities.
+
+
+Please get back to me if you are interested for more
+
+details.
+
+
+Yours faithfully,
+
+Hashim Murrah
