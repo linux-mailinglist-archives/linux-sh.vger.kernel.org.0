@@ -2,65 +2,68 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4841228ACA2
-	for <lists+linux-sh@lfdr.de>; Mon, 12 Oct 2020 05:50:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3DE328BC75
+	for <lists+linux-sh@lfdr.de>; Mon, 12 Oct 2020 17:41:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727418AbgJLDug (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sun, 11 Oct 2020 23:50:36 -0400
-Received: from mail.loongson.cn ([114.242.206.163]:40178 "EHLO loongson.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727396AbgJLDug (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Sun, 11 Oct 2020 23:50:36 -0400
-Received: from bogon.localdomain (unknown [113.200.148.30])
-        by mail.loongson.cn (Coremail) with SMTP id AQAAf9DxiMWB0oNf_LQcAA--.4045S2;
-        Mon, 12 Oct 2020 11:50:25 +0800 (CST)
-From:   Jinyang He <hejinyang@loongson.cn>
+        id S2390227AbgJLPlM (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 12 Oct 2020 11:41:12 -0400
+Received: from mga14.intel.com ([192.55.52.115]:17387 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2390658AbgJLPk5 (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Mon, 12 Oct 2020 11:40:57 -0400
+IronPort-SDR: lu2lKOVHXIjuGwiM/fONSfjn9x36J6yc8IYbSJrQEEewb/7HFtOHGTjXSx10RRYM3gPbJUBna+
+ gBw3SY3oifDQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9772"; a="164972682"
+X-IronPort-AV: E=Sophos;i="5.77,367,1596524400"; 
+   d="scan'208";a="164972682"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2020 08:40:55 -0700
+IronPort-SDR: wjOZCdSOf/tq3kbUFuZAePjIhnSwKzaP5YyybXQwPFmGadIGKGTWjUJRHKh+vReb5aokpd7xXm
+ swNGgRpl3uqQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,367,1596524400"; 
+   d="scan'208";a="530011339"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga005.jf.intel.com with ESMTP; 12 Oct 2020 08:40:53 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 9A94A163; Mon, 12 Oct 2020 18:40:51 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Christian Brauner <christian.brauner@ubuntu.com>
-Cc:     linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] sh: Remove unused HAVE_COPY_THREAD_TLS macro
-Date:   Mon, 12 Oct 2020 11:50:24 +0800
-Message-Id: <1602474624-3225-1-git-send-email-hejinyang@loongson.cn>
-X-Mailer: git-send-email 2.1.0
-X-CM-TRANSID: AQAAf9DxiMWB0oNf_LQcAA--.4045S2
-X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-        VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUYn7k0a2IF6w1UM7kC6x804xWl14x267AK
-        xVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGw
-        A2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26ryj
-        6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j6r4UJwA2z4x0Y4vEx4A2jsIE14v26r
-        4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26F4UJVW0owAS0I0E0xvYzxvE52x082IY
-        62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWUAwAv7V
-        C2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JMxkI
-        ecxEwVAFwVW8GwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c
-        02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_
-        Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7
-        CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6Fyj6rWUJwCI42IY6I8E87Iv67AK
-        xVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvj
-        xUIHGQDUUUU
-X-CM-SenderInfo: pkhmx0p1dqwqxorr0wxvrqhubq/
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        linux-gpio <linux-gpio@vger.kernel.org>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1] sh: Drop ARCH_NR_GPIOS definition
+Date:   Mon, 12 Oct 2020 18:40:50 +0300
+Message-Id: <20201012154050.68039-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.28.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Fixes: 	e1cc9d8d596e ("sh: switch to copy_thread_tls()")
-Signed-off-by: Jinyang He <hejinyang@loongson.cn>
+The default by generic header is the same, hence drop unnecessary definition.
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- arch/sh/Kconfig | 1 -
+ arch/sh/include/asm/gpio.h | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
-index d209271..165f291 100644
---- a/arch/sh/Kconfig
-+++ b/arch/sh/Kconfig
-@@ -30,7 +30,6 @@ config SUPERH
- 	select HAVE_ARCH_KGDB
- 	select HAVE_ARCH_SECCOMP_FILTER
- 	select HAVE_ARCH_TRACEHOOK
--	select HAVE_COPY_THREAD_TLS
- 	select HAVE_DEBUG_BUGVERBOSE
- 	select HAVE_DEBUG_KMEMLEAK
- 	select HAVE_DYNAMIC_FTRACE
+diff --git a/arch/sh/include/asm/gpio.h b/arch/sh/include/asm/gpio.h
+index 351918894e86..d643250f0a0f 100644
+--- a/arch/sh/include/asm/gpio.h
++++ b/arch/sh/include/asm/gpio.h
+@@ -16,7 +16,6 @@
+ #include <cpu/gpio.h>
+ #endif
+ 
+-#define ARCH_NR_GPIOS 512
+ #include <asm-generic/gpio.h>
+ 
+ #ifdef CONFIG_GPIOLIB
 -- 
-2.1.0
+2.28.0
 
