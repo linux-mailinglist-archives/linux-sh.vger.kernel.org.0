@@ -2,175 +2,144 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A378299110
-	for <lists+linux-sh@lfdr.de>; Mon, 26 Oct 2020 16:33:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E7BF29F13E
+	for <lists+linux-sh@lfdr.de>; Thu, 29 Oct 2020 17:22:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1783934AbgJZPds (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 26 Oct 2020 11:33:48 -0400
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:40057 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1769833AbgJZPds (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 26 Oct 2020 11:33:48 -0400
-Received: by mail-oi1-f195.google.com with SMTP id m128so10869797oig.7;
-        Mon, 26 Oct 2020 08:33:46 -0700 (PDT)
+        id S1726177AbgJ2QWg (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 29 Oct 2020 12:22:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54390 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725925AbgJ2QWg (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 29 Oct 2020 12:22:36 -0400
+Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80427C0613D2
+        for <linux-sh@vger.kernel.org>; Thu, 29 Oct 2020 09:21:43 -0700 (PDT)
+Received: by mail-io1-xd44.google.com with SMTP id z17so4101471iog.11
+        for <linux-sh@vger.kernel.org>; Thu, 29 Oct 2020 09:21:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+        h=to:from:subject:message-id:date:user-agent:mime-version
+         :content-language:content-transfer-encoding;
+        bh=dDDY2n44/yiJc9kIpA6+cCqw3kJQ8Reh+jA99UHFsq8=;
+        b=GBKRlnJAuCO6iNlq5+vk/OyxmieM7ET+VBBp+lyubNHbPf/vi9nTu0UeJ7NiIMxi5V
+         4w7/+Nym/SktFam6r/dk3fRjpIda0ZmHAKyC5LSrUGjpqLctob0A79ZPy4NJHjHYXXKm
+         ++0E+8tObwuRkLBRnfSUM5amX98tn5on5B1HKiSsjR+FW7RY/kXANwlGfYaSYS5aZ9/i
+         gj+QjcMPmHmiJUCmnUUQlKRNAypcLqmPFXmjdtYxsXnw37sPgSIKCn7PfAkFUthxA6+C
+         3LtxYi8IRN1JBB8DrCWeqHPIVVxr4iif1oi9c98Toml8ehgo4H8u3bG4lYYj56cGP7PE
+         an4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Npr8JFXnNVuOd5JBeJSU1d/jU6NcSqcvSBeX3MQnMCw=;
-        b=sH8yJaENEr9zRQqaDTeQATgawIviJucH7DkUXXsgh8DUOOgsVqXmevMa7ZuxmlFGmy
-         1ohrWmb9/tj16yPG2s5pYTUROLtqGX/V10vi7a47Jgx1G2P18lLhl/NRZoc2dtnuTq9V
-         iVyOzl5cucanZmyyOk6EuYGtLfig1zg1LplGrstjAUprL4QMyZxP9eeOtIL4T9KcASBy
-         dPAqu+c9EVn3dbX04FohmSHSW+og8a7/byFE3+GVynRI9ZrKm5Ptkr7U8K3dpMPA10ky
-         4e7T0lFGmuvfJdjGN0eTaDtE7O6PF/pANZLirGwbTY+4ntfDrCUB2bj+Nk2Z+8MEGODV
-         J7Aw==
-X-Gm-Message-State: AOAM530FuyZkAkAPmr4PIiuMp5gaI7duxLyjIIOJe72FXaJ7sHD2h1pZ
-        tIVjAA9nkCzA72riuBn4rTS73gPBeriHdAJbV4Q=
-X-Google-Smtp-Source: ABdhPJwLqZF2nUpKrvhcxyI34nr4X7bBy8icWsJGObwdQ8i/5k3Ztdf2PJq2vrTAVMJP3VVhuKLd7HTBbICac/wUeIE=
-X-Received: by 2002:aca:c490:: with SMTP id u138mr13399294oif.54.1603726426441;
- Mon, 26 Oct 2020 08:33:46 -0700 (PDT)
+        h=x-gm-message-state:to:from:subject:message-id:date:user-agent
+         :mime-version:content-language:content-transfer-encoding;
+        bh=dDDY2n44/yiJc9kIpA6+cCqw3kJQ8Reh+jA99UHFsq8=;
+        b=lrsUQfvn2pjnWnu7E1hvFnw5dTPT/+9ABPs+k7FL5jRqpMBhMF5Be5b47OcY3O/OEl
+         YF2/QSMaF+fmkbsnSifKDcDtfIdr7sBsBMyG7nwLDfnFXHaS7SyoRjm1SywfeYfw4F44
+         551eLhjSe83tZHeWDaVYLLHpDM8nhb9Ith5dr7Q91tkhDrRaQP3EhzopmHPVcz5GIPw0
+         eejgaYR9NPGOhnm9enx/BlEuDi3weQUTPb04jniL9YFAeapGAR7vxjKgLpPomjZjd9/0
+         iFxtfBwEbUXXzdVEaTFAeSj63KXUfBw7e5sWKCGXz853KQhoyA/4bsDk7NtTr3fBZQ2f
+         PWbw==
+X-Gm-Message-State: AOAM530T+6mhUUiGqTgLnEj8+qP5yCstwTCwAgTyh2tds8GghsWmL7M2
+        pT+F36p6taF4hK670+HTOptLu0uhW4LFlQ==
+X-Google-Smtp-Source: ABdhPJzaaxKsPrXgWsDzJr641iPY5j7iQv1XIu8QYvZ8/hwVuWv394V+7PV8Na/IGxQtQdE6pf7IPQ==
+X-Received: by 2002:a05:6602:22cf:: with SMTP id e15mr4046964ioe.1.1603988502630;
+        Thu, 29 Oct 2020 09:21:42 -0700 (PDT)
+Received: from [192.168.1.30] ([65.144.74.34])
+        by smtp.gmail.com with ESMTPSA id u23sm2369807iog.38.2020.10.29.09.21.42
+        for <linux-sh@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 Oct 2020 09:21:42 -0700 (PDT)
+To:     linux-sh@vger.kernel.org
+From:   Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH] sh: add support for TIF_NOTIFY_SIGNAL
+Message-ID: <5fcc82b4-89ae-3bca-10ab-6ad933565cee@kernel.dk>
+Date:   Thu, 29 Oct 2020 10:21:41 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <20200916061500.1970090-1-hch@lst.de> <20200916061500.1970090-7-hch@lst.de>
-In-Reply-To: <20200916061500.1970090-7-hch@lst.de>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 26 Oct 2020 16:33:34 +0100
-Message-ID: <CAMuHMdX9c0va_EqBw1wfD_JiVPpjiBPLzE88EmLGVLfVhECugw@mail.gmail.com>
-Subject: Re: [PATCH 6/6] dma-mapping: introduce DMA range map, supplanting dma_pfn_offset
-To:     Christoph Hellwig <hch@lst.de>,
-        Jim Quinlan <james.quinlan@broadcom.com>
-Cc:     Linux IOMMU <iommu@lists.linux-foundation.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        "open list:REMOTE PROCESSOR (REMOTEPROC) SUBSYSTEM" 
-        <linux-remoteproc@vger.kernel.org>,
-        USB list <linux-usb@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        linux-pci <linux-pci@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Marek Vasut <marek.vasut+renesas@gmail.com>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Christoph, Jim,
+Wire up TIF_NOTIFY_SIGNAL handling for sh.
 
-On Wed, Sep 16, 2020 at 8:30 AM Christoph Hellwig <hch@lst.de> wrote:
-> From: Jim Quinlan <james.quinlan@broadcom.com>
->
-> The new field 'dma_range_map' in struct device is used to facilitate the
-> use of single or multiple offsets between mapping regions of cpu addrs and
-> dma addrs.  It subsumes the role of "dev->dma_pfn_offset" which was only
-> capable of holding a single uniform offset and had no region bounds
-> checking.
->
-> The function of_dma_get_range() has been modified so that it takes a single
-> argument -- the device node -- and returns a map, NULL, or an error code.
-> The map is an array that holds the information regarding the DMA regions.
-> Each range entry contains the address offset, the cpu_start address, the
-> dma_start address, and the size of the region.
->
-> of_dma_configure() is the typical manner to set range offsets but there are
-> a number of ad hoc assignments to "dev->dma_pfn_offset" in the kernel
-> driver code.  These cases now invoke the function
-> dma_direct_set_offset(dev, cpu_addr, dma_addr, size).
->
-> Signed-off-by: Jim Quinlan <james.quinlan@broadcom.com>
-> [hch: various interface cleanups]
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> Tested-by: Nathan Chancellor <natechancellor@gmail.com>
+Cc: linux-sh@vger.kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+---
 
-Thanks for your patch, which is now commit e0d072782c734d27
-("dma-mapping: introduce DMA range map, supplanting dma_pfn_offset") in
-v5.10-rc1, and to which I have bisected a PCIe failure on R-Car M2-W
-(r8a7791/koelsch).
+5.11 has support queued up for TIF_NOTIFY_SIGNAL, see this posting
+for details:
 
-The first PCI host bridge, containing USB, probes fine:
+https://lore.kernel.org/io-uring/20201026203230.386348-1-axboe@kernel.dk/
 
- pci-rcar-gen2 ee090000.pci: host bridge /soc/pci@ee090000 ranges:
- pci-rcar-gen2 ee090000.pci:      MEM 0x00ee080000..0x00ee08ffff -> 0x00ee080000
- pci-rcar-gen2 ee090000.pci: PCI: revision 11
- pci-rcar-gen2 ee090000.pci: PCI host bridge to bus 0000:00
- pci_bus 0000:00: root bus resource [bus 00]
- pci_bus 0000:00: root bus resource [mem 0xee080000-0xee08ffff]
- pci 0000:00:00.0: [1033:0000] type 00 class 0x060000
- pci 0000:00:00.0: reg 0x10: [mem 0xee090800-0xee090bff]
- pci 0000:00:00.0: reg 0x14: [mem 0x40000000-0x7fffffff pref]
- pci 0000:00:01.0: [1033:0035] type 00 class 0x0c0310
- pci 0000:00:01.0: reg 0x10: [mem 0x00000000-0x00000fff]
- pci 0000:00:01.0: supports D1 D2
- pci 0000:00:01.0: PME# supported from D0 D1 D2 D3hot
- pci 0000:00:02.0: [1033:00e0] type 00 class 0x0c0320
- pci 0000:00:02.0: reg 0x10: [mem 0x00000000-0x000000ff]
- pci 0000:00:02.0: supports D1 D2
- pci 0000:00:02.0: PME# supported from D0 D1 D2 D3hot
- PCI: bus0: Fast back to back transfers disabled
- pci 0000:00:01.0: BAR 0: assigned [mem 0xee080000-0xee080fff]
- pci 0000:00:02.0: BAR 0: assigned [mem 0xee081000-0xee0810ff]
- pci 0000:00:01.0: enabling device (0140 -> 0142)
- pci 0000:00:02.0: enabling device (0140 -> 0142)
+As part of that work, I'm adding TIF_NOTIFY_SIGNAL support to all archs,
+as that will enable a set of cleanups once all of them support it. I'm
+happy carrying this patch if need be, or it can be funelled through the
+arch tree. Let me know.
 
-The second PCI host bridge, connected to an (empty) PCIe slot, fails:
+ arch/sh/include/asm/thread_info.h | 4 +++-
+ arch/sh/kernel/signal_32.c        | 7 +++++--
+ 2 files changed, 8 insertions(+), 3 deletions(-)
 
- pci-rcar-gen2 ee0d0000.pci: host bridge /soc/pci@ee0d0000 ranges:
- pci-rcar-gen2 ee0d0000.pci:      MEM 0x00ee0c0000..0x00ee0cffff -> 0x00ee0c0000
- pci-rcar-gen2 ee0d0000.pci: PCI: revision 11
- pci-rcar-gen2 ee0d0000.pci: PCI host bridge to bus 0001:01
- pci_bus 0001:01: root bus resource [bus 01]
- pci_bus 0001:01: root bus resource [mem 0xee0c0000-0xee0cffff]
- pci 0001:01:00.0: [1033:0000] type 00 class 0x060000
- pci 0001:01:00.0: reg 0x10: [mem 0xee0d0800-0xee0d0bff]
- pci 0001:01:00.0: reg 0x14: [mem 0x40000000-0x7fffffff pref]
- pci 0001:01:01.0: [1033:0035] type 00 class 0x0c0310
- pci 0001:01:01.0: reg 0x10: [mem 0x00000000-0x00000fff]
- pci 0001:01:01.0: supports D1 D2
- pci 0001:01:01.0: PME# supported from D0 D1 D2 D3hot
- pci 0001:01:02.0: [1033:00e0] type 00 class 0x0c0320
- pci 0001:01:02.0: reg 0x10: [mem 0x00000000-0x000000ff]
- pci 0001:01:02.0: supports D1 D2
- pci 0001:01:02.0: PME# supported from D0 D1 D2 D3hot
- PCI: bus1: Fast back to back transfers disabled
- pci 0001:01:01.0: BAR 0: assigned [mem 0xee0c0000-0xee0c0fff]
- pci 0001:01:02.0: BAR 0: assigned [mem 0xee0c1000-0xee0c10ff]
- pci 0001:01:01.0: enabling device (0140 -> 0142)
- pci 0001:01:02.0: enabling device (0140 -> 0142)
--rcar-pcie fe000000.pcie: host bridge /soc/pcie@fe000000 ranges:
--rcar-pcie fe000000.pcie:       IO 0x00fe100000..0x00fe1fffff -> 0x0000000000
--rcar-pcie fe000000.pcie:      MEM 0x00fe200000..0x00fe3fffff -> 0x00fe200000
--rcar-pcie fe000000.pcie:      MEM 0x0030000000..0x0037ffffff -> 0x0030000000
--rcar-pcie fe000000.pcie:      MEM 0x0038000000..0x003fffffff -> 0x0038000000
--rcar-pcie fe000000.pcie:   IB MEM 0x0040000000..0x00bfffffff -> 0x0040000000
--rcar-pcie fe000000.pcie:   IB MEM 0x0200000000..0x02ffffffff -> 0x0200000000
--rcar-pcie fe000000.pcie: PCIe link down
-+rcar-pcie fe000000.pcie: Adjusted size 0x0 invalid
-+rcar-pcie: probe of fe000000.pcie failed with error -22
+diff --git a/arch/sh/include/asm/thread_info.h b/arch/sh/include/asm/thread_info.h
+index 243ea5150aa0..598d0184ffea 100644
+--- a/arch/sh/include/asm/thread_info.h
++++ b/arch/sh/include/asm/thread_info.h
+@@ -105,6 +105,7 @@ extern void init_thread_xstate(void);
+ #define TIF_SYSCALL_TRACE	0	/* syscall trace active */
+ #define TIF_SIGPENDING		1	/* signal pending */
+ #define TIF_NEED_RESCHED	2	/* rescheduling necessary */
++#define TIF_NOTIFY_SIGNAL	3	/* signal notifications exist */
+ #define TIF_SINGLESTEP		4	/* singlestepping active */
+ #define TIF_SYSCALL_AUDIT	5	/* syscall auditing active */
+ #define TIF_SECCOMP		6	/* secure computing */
+@@ -116,6 +117,7 @@ extern void init_thread_xstate(void);
+ #define _TIF_SYSCALL_TRACE	(1 << TIF_SYSCALL_TRACE)
+ #define _TIF_SIGPENDING		(1 << TIF_SIGPENDING)
+ #define _TIF_NEED_RESCHED	(1 << TIF_NEED_RESCHED)
++#define _TIF_NOTIFY_SIGNAL	(1 << TIF_NOTIFY_SIGNAL)
+ #define _TIF_SINGLESTEP		(1 << TIF_SINGLESTEP)
+ #define _TIF_SYSCALL_AUDIT	(1 << TIF_SYSCALL_AUDIT)
+ #define _TIF_SECCOMP		(1 << TIF_SECCOMP)
+@@ -132,7 +134,7 @@ extern void init_thread_xstate(void);
+ #define _TIF_ALLWORK_MASK	(_TIF_SYSCALL_TRACE | _TIF_SIGPENDING      | \
+ 				 _TIF_NEED_RESCHED  | _TIF_SYSCALL_AUDIT   | \
+ 				 _TIF_SINGLESTEP    | _TIF_NOTIFY_RESUME   | \
+-				 _TIF_SYSCALL_TRACEPOINT)
++				 _TIF_SYSCALL_TRACEPOINT | _TIF_NOTIFY_SIGNAL)
+ 
+ /* work to do on interrupt/exception return */
+ #define _TIF_WORK_MASK		(_TIF_ALLWORK_MASK & ~(_TIF_SYSCALL_TRACE | \
+diff --git a/arch/sh/kernel/signal_32.c b/arch/sh/kernel/signal_32.c
+index 1add47fd31f6..8cfae5a75edb 100644
+--- a/arch/sh/kernel/signal_32.c
++++ b/arch/sh/kernel/signal_32.c
+@@ -466,7 +466,10 @@ static void do_signal(struct pt_regs *regs, unsigned int save_r0)
+ 	if (!user_mode(regs))
+ 		return;
+ 
+-	if (get_signal(&ksig)) {
++	if (ti_work & _TIF_NOTIFY_SIGNAL)
++		tracehook_notify_signal();
++
++	if ((ti_work & _TIF_SIGPENDING) && get_signal(&ksig)) {
+ 		handle_syscall_restart(save_r0, regs, &ksig.ka.sa);
+ 
+ 		/* Whee!  Actually deliver the signal.  */
+@@ -499,7 +502,7 @@ asmlinkage void do_notify_resume(struct pt_regs *regs, unsigned int save_r0,
+ 				 unsigned long thread_info_flags)
+ {
+ 	/* deal with pending signal delivery */
+-	if (thread_info_flags & _TIF_SIGPENDING)
++	if (thread_info_flags & (_TIF_SIGPENDING | _TIF_NOTIFY_SIGNAL))
+ 		do_signal(regs, save_r0);
+ 
+ 	if (thread_info_flags & _TIF_NOTIFY_RESUME)
+-- 
+2.29.0
 
-I've posted a patch "[PATCH] dma-mapping: Fix 32-bit overflow with
-CONFIG_ARM_LPAE=n"
-(https://lore.kernel.org/linux-arm-kernel/20201026152755.3738293-1-geert+renesas@glider.be/).
+-- 
+Jens Axboe
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
