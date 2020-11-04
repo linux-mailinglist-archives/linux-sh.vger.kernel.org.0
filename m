@@ -2,54 +2,53 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F0A0F2A492E
-	for <lists+linux-sh@lfdr.de>; Tue,  3 Nov 2020 16:17:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E86A2A5AF5
+	for <lists+linux-sh@lfdr.de>; Wed,  4 Nov 2020 01:20:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729481AbgKCOUr (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 3 Nov 2020 09:20:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40292 "EHLO
+        id S1729869AbgKDAQs (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 3 Nov 2020 19:16:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729240AbgKCNpQ (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 3 Nov 2020 08:45:16 -0500
-Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com [IPv6:2607:f8b0:4864:20::741])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C86AC0613D1;
-        Tue,  3 Nov 2020 05:45:16 -0800 (PST)
-Received: by mail-qk1-x741.google.com with SMTP id k9so14611729qki.6;
-        Tue, 03 Nov 2020 05:45:16 -0800 (PST)
+        with ESMTP id S1729942AbgKDALo (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 3 Nov 2020 19:11:44 -0500
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0038C0613D1
+        for <linux-sh@vger.kernel.org>; Tue,  3 Nov 2020 16:11:42 -0800 (PST)
+Received: by mail-pg1-x543.google.com with SMTP id f38so15035005pgm.2
+        for <linux-sh@vger.kernel.org>; Tue, 03 Nov 2020 16:11:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=+eMXBOnvKPM7N/Eu0cs4UA1I6FeurfdgB6uFLVTMPX8=;
-        b=WQlGQ9Jd6IJQey7nb9UMUDYsL+DEjmMTVkMHPOOrYSdV926tvA93ywvzKvPW9EdJzQ
-         xWYruju83XXsh1i6XxcvxRg6hDqU6tq8BaNfGIDHsg2pgJYtsAkvynEeGwGPRGe+ZPsx
-         biGcniO7POm0x08s1Iwq88HHNGiqadVQYcORh5b/WkN2ytRV8n2H7zXHbG9CyN36/TNs
-         CvFVpr4PvgANBbzTT2RtpSiuCEWpI/CT6RmO+Fk+zaNRO64hUzWUoNMlpPKDi4ZwlNos
-         6rRlllg7BYoJdX53s9pkkLBvkmTEqozVXkK0+PARPMrbpsjLaiSLI/uef0UWqLlg9En5
-         LfmQ==
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=NFjsAF4kgpQCHVIlKmgYN6bEVL36r1XibqsUv152D08=;
+        b=mPTbV2UhVfnJP2OoJL4D5QLosesGivMu0Yj5j7pkCrVtHA6dueaCzR1JSWWklnSxS2
+         Wgzos2joCi+Wlp8KUeVXQhCOJbK/Z4g4eTF82BJYkvr8uaU2CIt3++/EZgLF7nCLiPmR
+         RFfDgHAz/9hjV1ZrPMZTrZyKkXhcZM/AoX3+w=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=+eMXBOnvKPM7N/Eu0cs4UA1I6FeurfdgB6uFLVTMPX8=;
-        b=HaayDovTTYcLgBXGwRpwF834DWJCnWt26Nyrkv9jU0mFLzanG2jws27siHN0vFu1kL
-         VF7IUlyXKExnFbU23Seq5Ym8g3b5R5a0cqH7hTVCOiYhK8IM7h0nH/r+h6U6fhtGCUYF
-         TnhvbOEfI+CQR1R72okp0nMIiDiMOv0U1ljFYam0QfbnAEqWBX3Ib/Y2f7vmOFFejeCJ
-         sAG/NsGhV5QLm8ASVCFb6Onx6pOkFUQY/5pwzl76uXfx4ztyGxY+c06YEim8zJbZ00xH
-         B4aF6DWckYlYinuJK8g+pNVqTKusGApegVWZUgvMHgJaMFv4GG/V+sb0X679CPFof7Rp
-         Jfbw==
-X-Gm-Message-State: AOAM532hEiDGtxucYTQXXbbmODfRf6sBpMLd462RD8tJ91Hnls+OYOFH
-        96ykj+alVkdTvHkz+tJyCmE=
-X-Google-Smtp-Source: ABdhPJwPGCoGB0mzNqbRbE7eqaQrs2dVEZ+ysMN9iFWpphI5Jv582QKy4aIVAjZqImUIW48ZcJyckw==
-X-Received: by 2002:a37:6187:: with SMTP id v129mr8374191qkb.31.1604411115473;
-        Tue, 03 Nov 2020 05:45:15 -0800 (PST)
-Received: from zhuyifei1999-ThinkPad-T480.gw.illinois.edu ([2620:0:e00:400f::31])
-        by smtp.gmail.com with ESMTPSA id a206sm7356568qkb.64.2020.11.03.05.45.14
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=NFjsAF4kgpQCHVIlKmgYN6bEVL36r1XibqsUv152D08=;
+        b=GG/AdFtbZFp8Y5xq+6bjvMzc8rA6TxIn8chDMGsF2WDodIjyI4G26cuei8LUJMsBki
+         SJuRLkodEGSlJNi3pDMLyD16rhuxr53b25c7YUmEsdUIniY+Arl23qkDLwfAbS8v/IPa
+         TKsvC5S9QStDXLxq9pnqHr/r8cJga9xW5iprtIJRQ2LvV0nJuD3cqaYaRGCUaUvs6uO6
+         hSBTTutaL5VhnN6+2IM3FHa3jIWH3KL52kHh62Xqp4Jz3XG39ZTkj5D+RPQjK9Lkf47r
+         Q0NYrgw85pMtCWJu4nQrU+cGSzAsjta72YH4+Q2eKvZr2+v8qhJDTGRZQbLLiDYrPA/O
+         qG4Q==
+X-Gm-Message-State: AOAM532F0fELEAoGOehPronAxIDU7MvkrBaUFS1ocymYY8eF0HB77eT5
+        mJkJbUq9+c3Kg/liySXFcaiYRA==
+X-Google-Smtp-Source: ABdhPJybME+aS3qtjx8JuwpcYMqCGEp0y1Q8idII2QCmSunt2ifzlNcehSCk1E6c+iZLzWwdlgTh0g==
+X-Received: by 2002:a17:90a:5285:: with SMTP id w5mr1762165pjh.50.1604448702345;
+        Tue, 03 Nov 2020 16:11:42 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id j20sm118311pgl.40.2020.11.03.16.11.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2020 05:45:14 -0800 (PST)
-From:   YiFei Zhu <zhuyifei1999@gmail.com>
-To:     containers@lists.linux-foundation.org
-Cc:     YiFei Zhu <yifeifz2@illinois.edu>, linux-csky@vger.kernel.org,
+        Tue, 03 Nov 2020 16:11:41 -0800 (PST)
+Date:   Tue, 3 Nov 2020 16:11:40 -0800
+From:   Kees Cook <keescook@chromium.org>
+To:     YiFei Zhu <zhuyifei1999@gmail.com>
+Cc:     containers@lists.linux-foundation.org,
+        YiFei Zhu <yifeifz2@illinois.edu>, linux-csky@vger.kernel.org,
         linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
         linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
@@ -63,53 +62,96 @@ Cc:     YiFei Zhu <yifeifz2@illinois.edu>, linux-csky@vger.kernel.org,
         Jack Chen <jianyan2@illinois.edu>,
         Jann Horn <jannh@google.com>,
         Josep Torrellas <torrella@illinois.edu>,
-        Kees Cook <keescook@chromium.org>,
         Tianyin Xu <tyxu@illinois.edu>,
         Tobin Feldman-Fitzthum <tobin@ibm.com>,
         Tycho Andersen <tycho@tycho.pizza>,
         Valentin Rothberg <vrothber@redhat.com>,
         Will Drewry <wad@chromium.org>
-Subject: [PATCH seccomp 5/8] s390: Enable seccomp architecture tracking
-Date:   Tue,  3 Nov 2020 07:43:01 -0600
-Message-Id: <0fbe0c14d598e18effad3b648ab4808f9cd95eba.1604410035.git.yifeifz2@illinois.edu>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <cover.1604410035.git.yifeifz2@illinois.edu>
+Subject: Re: [PATCH seccomp 0/8] seccomp: add bitmap cache support on
+ remaining arches and report cache in procfs
+Message-ID: <202011031606.423EC9E@keescook>
 References: <cover.1604410035.git.yifeifz2@illinois.edu>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1604410035.git.yifeifz2@illinois.edu>
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-From: YiFei Zhu <yifeifz2@illinois.edu>
+On Tue, Nov 03, 2020 at 07:42:56AM -0600, YiFei Zhu wrote:
+> From: YiFei Zhu <yifeifz2@illinois.edu>
+> 
+> This patch series enables bitmap cache for the remaining arches with
+> SECCOMP_FILTER, other than MIPS.
+> 
+> I was unable to find any of the arches having subarch-specific NR_syscalls
+> macros, so generic NR_syscalls is used. SH's syscall_get_arch seems to
+> only have the 32-bit subarch implementation. I'm not sure if this is
+> expected.
+> 
+> This series has not been tested; I have not built all the cross compilers
+> necessary to build test, let alone run the kernel or benchmark the
+> performance, so help on making sure the bitmap cache works as expected
+> would be appreciated. The series applies on top of Kees's for-next/seccomp
+> branch.
 
-To enable seccomp constant action bitmaps, we need to have a static
-mapping to the audit architecture and system call table size. Add these
-for s390.
+Thank you! This looks good. I wonder if the different handling of little
+endian is worth solving -- I'm suspicious about powerpc's use of
+__LITTLE_ENDIAN__ vs a CONFIG, but I guess the compiler would match the
+target endian-ness. Regardless, it captures what the architectures are
+doing, and gets things standardized.
 
-Signed-off-by: YiFei Zhu <yifeifz2@illinois.edu>
----
- arch/s390/include/asm/seccomp.h | 9 +++++++++
- 1 file changed, 9 insertions(+)
+> 
+> YiFei Zhu (8):
+>   csky: Enable seccomp architecture tracking
+>   parisc: Enable seccomp architecture tracking
 
-diff --git a/arch/s390/include/asm/seccomp.h b/arch/s390/include/asm/seccomp.h
-index 795bbe0d7ca6..71d46f0ba97b 100644
---- a/arch/s390/include/asm/seccomp.h
-+++ b/arch/s390/include/asm/seccomp.h
-@@ -16,4 +16,13 @@
- 
- #include <asm-generic/seccomp.h>
- 
-+#define SECCOMP_ARCH_NATIVE		AUDIT_ARCH_S390X
-+#define SECCOMP_ARCH_NATIVE_NR		NR_syscalls
-+#define SECCOMP_ARCH_NATIVE_NAME	"s390x"
-+#ifdef CONFIG_COMPAT
-+# define SECCOMP_ARCH_COMPAT		AUDIT_ARCH_S390
-+# define SECCOMP_ARCH_COMPAT_NR		NR_syscalls
-+# define SECCOMP_ARCH_COMPAT_NAME	"s390"
-+#endif
-+
- #endif	/* _ASM_S390_SECCOMP_H */
+I don't have compilers for these.
+
+>   powerpc: Enable seccomp architecture tracking
+>   riscv: Enable seccomp architecture tracking
+>   s390: Enable seccomp architecture tracking
+
+These I can build-test immediately.
+
+>   sh: Enable seccomp architecture tracking
+>   xtensa: Enable seccomp architecture tracking
+
+These two are available in Ubuntu's cross compiler set, so I'll get them
+added to my cross-builders.
+
+>   seccomp/cache: Report cache data through /proc/pid/seccomp_cache
+
+In the meantime, I'll wait a bit to see if we can get some Acks/Reviews
+from arch maintainers. :)
+
+-Kees
+
+> 
+>  arch/Kconfig                       | 15 ++++++++
+>  arch/csky/include/asm/Kbuild       |  1 -
+>  arch/csky/include/asm/seccomp.h    | 11 ++++++
+>  arch/parisc/include/asm/Kbuild     |  1 -
+>  arch/parisc/include/asm/seccomp.h  | 22 +++++++++++
+>  arch/powerpc/include/asm/seccomp.h | 21 +++++++++++
+>  arch/riscv/include/asm/seccomp.h   | 10 +++++
+>  arch/s390/include/asm/seccomp.h    |  9 +++++
+>  arch/sh/include/asm/seccomp.h      | 10 +++++
+>  arch/xtensa/include/asm/Kbuild     |  1 -
+>  arch/xtensa/include/asm/seccomp.h  | 11 ++++++
+>  fs/proc/base.c                     |  6 +++
+>  include/linux/seccomp.h            |  7 ++++
+>  kernel/seccomp.c                   | 59 ++++++++++++++++++++++++++++++
+>  14 files changed, 181 insertions(+), 3 deletions(-)
+>  create mode 100644 arch/csky/include/asm/seccomp.h
+>  create mode 100644 arch/parisc/include/asm/seccomp.h
+>  create mode 100644 arch/xtensa/include/asm/seccomp.h
+> 
+> 
+> base-commit: 38c37e8fd3d2590c4234d8cfbc22158362f0eb04
+> --
+> 2.29.2
+
 -- 
-2.29.2
-
+Kees Cook
