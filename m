@@ -2,96 +2,129 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 931F92ABE4F
-	for <lists+linux-sh@lfdr.de>; Mon,  9 Nov 2020 15:14:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C952A2ABF79
+	for <lists+linux-sh@lfdr.de>; Mon,  9 Nov 2020 16:14:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730558AbgKIOO1 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 9 Nov 2020 09:14:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60718 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730204AbgKIOO1 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 9 Nov 2020 09:14:27 -0500
-Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3009C0613CF
-        for <linux-sh@vger.kernel.org>; Mon,  9 Nov 2020 06:14:26 -0800 (PST)
-Received: by mail-io1-xd44.google.com with SMTP id s10so9926662ioe.1
-        for <linux-sh@vger.kernel.org>; Mon, 09 Nov 2020 06:14:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=UZC4hrOtfkTcv0UvkDY810492SZaLE24k/Cz3myr5rI=;
-        b=HiXCi7NrND7hs3hOMvLEttGylcp3MxyNq/cViEHEav1uKIt9mloivw2EP5e6dk1eDx
-         nRLKWPT3Bam08oUUzwgTDzV2R4oDDigcQDVsKLL8hoXRu5PeMJegMH5XSx72dqor7Ira
-         Jbs3JP3a1gnGJhzf4EKpp4K3KmHNN4D+/zeZ/dVME/V70lO1jlyoo07hhOtuApV5Rr2j
-         NUQ5Qo8uhIZMm+WkzZfvJTfzOXzKBWKk5bELvL9qpH9I9lAiU9wxTSkci3nXd7ah/HY+
-         n/m0mIjz/xmktn1TiDs/h2oDVn3Lu32/Box5KMVEGUMf1HtwGKsYv10qZUFW6hARCbkC
-         YWPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=UZC4hrOtfkTcv0UvkDY810492SZaLE24k/Cz3myr5rI=;
-        b=UeLF4Zeb/ur9zb8Nxewo5c6na+fJVUJe3x03UV0UegYfU/X9tIsZPQibInz0bCJ+ut
-         RGkWXsQ6WHusWlVIfMtqtcT3S9FyS6ElZO8DN1eOaFLFdQp8kWdYOlR8N4nYHoT+83yU
-         MBVnwWq/OFfhQyi8RvDYstJKs8b7YcUnzCQdeow2KtBMgStoReQb9dg9blhwzPzg0w+q
-         hKfXrdUOwJPbWAb7VLeeSuSKCHt/J4XZ7mhCFObmwL9TLtkxTDWpa3cEambJXz1qQgtO
-         Fpb5FN9EDZhJPEGsL6GOBATqVxGEKCBugMBtLQp09+BLj2WuTrtOX1mvBQ6d0jU1hNDE
-         ZclA==
-X-Gm-Message-State: AOAM533EeHFtctElVam5eeaOFN2W3BgnjGDvG5kuIb4gOvtX7dWnasa/
-        4NRgD9l4Gynk8a84yVN3VT4q/g==
-X-Google-Smtp-Source: ABdhPJwOgVsxmqOREBFweXxgNKZnV7J6dkTkcqG/oUmQFg8RlMj8KUa/Lhf2TjH70oBw8FATYFiIpA==
-X-Received: by 2002:a02:3842:: with SMTP id v2mr10857956jae.50.1604931266172;
-        Mon, 09 Nov 2020 06:14:26 -0800 (PST)
-Received: from [192.168.1.30] ([65.144.74.34])
-        by smtp.gmail.com with ESMTPSA id e12sm6872951ilq.65.2020.11.09.06.14.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Nov 2020 06:14:25 -0800 (PST)
-Subject: Re: [PATCH] sh: add support for TIF_NOTIFY_SIGNAL
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     linux-sh@vger.kernel.org,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>
-References: <5fcc82b4-89ae-3bca-10ab-6ad933565cee@kernel.dk>
- <ae29ab73-ee7a-2bb7-3fd8-3037f40c1cbd@kernel.dk>
- <5611bde9-67e7-6ff6-defc-9b02ea830fac@physik.fu-berlin.de>
- <9ea14eb3-d698-5499-ba4c-c6a3c35cd8d4@kernel.dk>
- <47f79645-53b7-b11c-167a-f5721b53df02@physik.fu-berlin.de>
-From:   Jens Axboe <axboe@kernel.dk>
-Message-ID: <9d9acec6-1e8c-2d68-5dfa-d58c11cf5cc4@kernel.dk>
-Date:   Mon, 9 Nov 2020 07:14:24 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1731617AbgKIPEQ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 9 Nov 2020 10:04:16 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:41044 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1731507AbgKIPEQ (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 9 Nov 2020 10:04:16 -0500
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0A9EXJ3S007393;
+        Mon, 9 Nov 2020 10:03:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=z5oC/8a+GTxhWeb+ZbLr8Xr4K+9R59YBdDdSSh5RKRM=;
+ b=XBIiWh0WE20556srxE4tLXEI6LHTLU0XOZ47YJ+y5FuzrW6vuf5w3TIr9w02PGtl0Vm2
+ DuyXTJVwYsCISKNILJK+M1iFuUbShIE99Jq3DvQ0X1oX8LTGL34og77coACb+wK/HnCR
+ AVRIlisnmRGpjCYnFi2E9U+kSrjh53XqIuAVfOxVS9IbINjiz9ouXPIQfH7yUyevg9fc
+ 0cuNK+RY6Rh+1w1zFDzDYDLhR8XfzoI7LW78lTBKqQts2p3iPmUCCyCpGOO1FeUilMD3
+ 8ctNR0S83H168re3lA8+p6vac/432WdtO2v2czqxzZ5czK9JDYTlY7G1LjWXEnXT8HFU zQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 34q5urdbxp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 09 Nov 2020 10:03:25 -0500
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0A9EXd3B009077;
+        Mon, 9 Nov 2020 10:03:23 -0500
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 34q5urdbtv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 09 Nov 2020 10:03:23 -0500
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+        by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0A9F1mKL012969;
+        Mon, 9 Nov 2020 15:03:19 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+        by ppma04ams.nl.ibm.com with ESMTP id 34p26phjpu-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 09 Nov 2020 15:03:18 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 0A9F3Gqd55771522
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 9 Nov 2020 15:03:16 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 8080BAE055;
+        Mon,  9 Nov 2020 15:03:16 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 9050FAE051;
+        Mon,  9 Nov 2020 15:03:15 +0000 (GMT)
+Received: from osiris (unknown [9.171.58.192])
+        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Mon,  9 Nov 2020 15:03:15 +0000 (GMT)
+Date:   Mon, 9 Nov 2020 16:03:14 +0100
+From:   Heiko Carstens <hca@linux.ibm.com>
+To:     YiFei Zhu <zhuyifei1999@gmail.com>
+Cc:     containers@lists.linux-foundation.org,
+        YiFei Zhu <yifeifz2@illinois.edu>, linux-csky@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-kernel@vger.kernel.org, Aleksa Sarai <cyphar@cyphar.com>,
+        Andrea Arcangeli <aarcange@redhat.com>,
+        Andy Lutomirski <luto@amacapital.net>,
+        David Laight <David.Laight@aculab.com>,
+        Dimitrios Skarlatos <dskarlat@cs.cmu.edu>,
+        Giuseppe Scrivano <gscrivan@redhat.com>,
+        Hubertus Franke <frankeh@us.ibm.com>,
+        Jack Chen <jianyan2@illinois.edu>,
+        Jann Horn <jannh@google.com>,
+        Josep Torrellas <torrella@illinois.edu>,
+        Kees Cook <keescook@chromium.org>,
+        Tianyin Xu <tyxu@illinois.edu>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Tycho Andersen <tycho@tycho.pizza>,
+        Valentin Rothberg <vrothber@redhat.com>,
+        Will Drewry <wad@chromium.org>
+Subject: Re: [PATCH seccomp 5/8] s390: Enable seccomp architecture tracking
+Message-ID: <20201109150314.GA16690@osiris>
+References: <cover.1604410035.git.yifeifz2@illinois.edu>
+ <0fbe0c14d598e18effad3b648ab4808f9cd95eba.1604410035.git.yifeifz2@illinois.edu>
 MIME-Version: 1.0
-In-Reply-To: <47f79645-53b7-b11c-167a-f5721b53df02@physik.fu-berlin.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0fbe0c14d598e18effad3b648ab4808f9cd95eba.1604410035.git.yifeifz2@illinois.edu>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312,18.0.737
+ definitions=2020-11-09_02:2020-11-05,2020-11-09 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=859
+ bulkscore=0 malwarescore=0 priorityscore=1501 spamscore=0
+ lowpriorityscore=0 impostorscore=0 suspectscore=1 adultscore=0 mlxscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2011090098
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 11/9/20 3:59 AM, John Paul Adrian Glaubitz wrote:
-> Hi Jens!
+On Tue, Nov 03, 2020 at 07:43:01AM -0600, YiFei Zhu wrote:
+> From: YiFei Zhu <yifeifz2@illinois.edu>
 > 
-> On 11/5/20 6:15 PM, Jens Axboe wrote:
->> On 11/5/20 9:20 AM, John Paul Adrian Glaubitz wrote:
->>> Hi Jens!
->>>
->>> On 11/5/20 5:17 PM, Jens Axboe wrote:
->>>> Gentle nudge on this one.
->>>
->>> I can build- and boot-test on SH and IA64.
->>
->> That'd be great, thanks!
+> To enable seccomp constant action bitmaps, we need to have a static
+> mapping to the audit architecture and system call table size. Add these
+> for s390.
 > 
-> Sorry for the delay. I'm busy at the moment and my SH board is currently
-> building the Perl 5.32 package for Debian. Will try to test your patches
-> by tomorrow, also ia64.
+> Signed-off-by: YiFei Zhu <yifeifz2@illinois.edu>
+> ---
+>  arch/s390/include/asm/seccomp.h | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+> 
+> diff --git a/arch/s390/include/asm/seccomp.h b/arch/s390/include/asm/seccomp.h
+> index 795bbe0d7ca6..71d46f0ba97b 100644
+> --- a/arch/s390/include/asm/seccomp.h
+> +++ b/arch/s390/include/asm/seccomp.h
+> @@ -16,4 +16,13 @@
+>  
+>  #include <asm-generic/seccomp.h>
+>  
+> +#define SECCOMP_ARCH_NATIVE		AUDIT_ARCH_S390X
+> +#define SECCOMP_ARCH_NATIVE_NR		NR_syscalls
+> +#define SECCOMP_ARCH_NATIVE_NAME	"s390x"
+> +#ifdef CONFIG_COMPAT
+> +# define SECCOMP_ARCH_COMPAT		AUDIT_ARCH_S390
+> +# define SECCOMP_ARCH_COMPAT_NR		NR_syscalls
+> +# define SECCOMP_ARCH_COMPAT_NAME	"s390"
+> +#endif
+> +
 
-Thanks, both would be appreciated! Just CC'ed you on the updated patch
-for sh.
-
--- 
-Jens Axboe
-
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
