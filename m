@@ -2,73 +2,79 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A2C42AB59F
-	for <lists+linux-sh@lfdr.de>; Mon,  9 Nov 2020 11:59:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1233D2AB7ED
+	for <lists+linux-sh@lfdr.de>; Mon,  9 Nov 2020 13:12:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727791AbgKIK7M (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 9 Nov 2020 05:59:12 -0500
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:38981 "EHLO
-        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727183AbgKIK7M (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 9 Nov 2020 05:59:12 -0500
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.94)
-          with esmtps (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1kc4tC-001d7b-DU; Mon, 09 Nov 2020 11:59:10 +0100
-Received: from 87-77-186-169.mna.fu-berlin.de ([87.77.186.169])
-          by inpost2.zedat.fu-berlin.de (Exim 4.94)
-          with esmtpsa (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1kc4tC-002FXn-6K; Mon, 09 Nov 2020 11:59:10 +0100
-To:     Jens Axboe <axboe@kernel.dk>
-Cc:     linux-sh@vger.kernel.org,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>
-References: <5fcc82b4-89ae-3bca-10ab-6ad933565cee@kernel.dk>
- <ae29ab73-ee7a-2bb7-3fd8-3037f40c1cbd@kernel.dk>
- <5611bde9-67e7-6ff6-defc-9b02ea830fac@physik.fu-berlin.de>
- <9ea14eb3-d698-5499-ba4c-c6a3c35cd8d4@kernel.dk>
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Subject: Re: [PATCH] sh: add support for TIF_NOTIFY_SIGNAL
-Message-ID: <47f79645-53b7-b11c-167a-f5721b53df02@physik.fu-berlin.de>
-Date:   Mon, 9 Nov 2020 11:59:09 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+        id S1729608AbgKIMMd (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 9 Nov 2020 07:12:33 -0500
+Received: from mga17.intel.com ([192.55.52.151]:60618 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727311AbgKIMMd (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Mon, 9 Nov 2020 07:12:33 -0500
+IronPort-SDR: w2wACq/m2/A9M5VqT4epykYmcMZZ6sDm5DLJU/nO6BNuKD5h6F8+fcnXPPAbRYJk//TAn+A9A6
+ 6JFAXpbw4iXg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9799"; a="149640248"
+X-IronPort-AV: E=Sophos;i="5.77,463,1596524400"; 
+   d="scan'208";a="149640248"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2020 04:12:32 -0800
+IronPort-SDR: Ekipe2iDkRoRdWNMP2QDOb4fL2jlwXqvuCk3Q/MyXaGKaPg42KPkBjY9EqiUylmvb4kZn/nNtI
+ GvKsEv0DOQVw==
+X-IronPort-AV: E=Sophos;i="5.77,463,1596524400"; 
+   d="scan'208";a="530716991"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2020 04:12:31 -0800
+Received: from andy by smile with local (Exim 4.94)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1kc63B-005AmA-CX; Mon, 09 Nov 2020 14:13:33 +0200
+Date:   Mon, 9 Nov 2020 14:13:33 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        linux-gpio <linux-gpio@vger.kernel.org>
+Subject: Re: [PATCH v1] sh: Drop ARCH_NR_GPIOS definition
+Message-ID: <20201109121333.GC4077@smile.fi.intel.com>
+References: <20201012154050.68039-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <9ea14eb3-d698-5499-ba4c-c6a3c35cd8d4@kernel.dk>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 87.77.186.169
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201012154050.68039-1-andriy.shevchenko@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Jens!
+On Mon, Oct 12, 2020 at 06:40:50PM +0300, Andy Shevchenko wrote:
+> The default by generic header is the same, hence drop unnecessary definition.
 
-On 11/5/20 6:15 PM, Jens Axboe wrote:
-> On 11/5/20 9:20 AM, John Paul Adrian Glaubitz wrote:
->> Hi Jens!
->>
->> On 11/5/20 5:17 PM, Jens Axboe wrote:
->>> Gentle nudge on this one.
->>
->> I can build- and boot-test on SH and IA64.
+Any comment on this?
+
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  arch/sh/include/asm/gpio.h | 1 -
+>  1 file changed, 1 deletion(-)
 > 
-> That'd be great, thanks!
-
-Sorry for the delay. I'm busy at the moment and my SH board is currently
-building the Perl 5.32 package for Debian. Will try to test your patches
-by tomorrow, also ia64.
-
-Adrian
+> diff --git a/arch/sh/include/asm/gpio.h b/arch/sh/include/asm/gpio.h
+> index 351918894e86..d643250f0a0f 100644
+> --- a/arch/sh/include/asm/gpio.h
+> +++ b/arch/sh/include/asm/gpio.h
+> @@ -16,7 +16,6 @@
+>  #include <cpu/gpio.h>
+>  #endif
+>  
+> -#define ARCH_NR_GPIOS 512
+>  #include <asm-generic/gpio.h>
+>  
+>  #ifdef CONFIG_GPIOLIB
+> -- 
+> 2.28.0
+> 
 
 -- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer - glaubitz@debian.org
-`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+With Best Regards,
+Andy Shevchenko
+
 
