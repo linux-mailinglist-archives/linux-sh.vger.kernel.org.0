@@ -2,82 +2,95 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B35FF2AF69F
-	for <lists+linux-sh@lfdr.de>; Wed, 11 Nov 2020 17:34:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D4542B1D11
+	for <lists+linux-sh@lfdr.de>; Fri, 13 Nov 2020 15:24:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726664AbgKKQem (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 11 Nov 2020 11:34:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53998 "EHLO
+        id S1726611AbgKMOYQ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 13 Nov 2020 09:24:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725979AbgKKQem (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 11 Nov 2020 11:34:42 -0500
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A09BBC0613D1
-        for <linux-sh@vger.kernel.org>; Wed, 11 Nov 2020 08:34:42 -0800 (PST)
-Received: by mail-pj1-x1042.google.com with SMTP id g21so955150pjv.2
-        for <linux-sh@vger.kernel.org>; Wed, 11 Nov 2020 08:34:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=landley-net.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:references:from:message-id:date:user-agent:mime-version
-         :in-reply-to:content-language:content-transfer-encoding;
-        bh=E7tdJv/SATHNIn829RMc3Dy+9UyApMjdjMPVfkBbrsk=;
-        b=hPFx5IuHaxeJELBn8a/6FXoQzTXaA4P6tVtDUuOMW7GWbi/yCgDUL4CxbD/v/ZLoEY
-         bXoK2++cjH2Vhueb9F+BbvmMNatQ0ewQJlwl1qYaPPMSIEAjp27k2+WyOzw4KlI6gDcx
-         bYX9md2+Qj3Gt+SPwymjGN6H3BdlhJR4ODuBJolA3wI4RTCMWhvOMbzIYmAAKVUETcUs
-         vds6cOLcU/hn80WNIrGekNePOFbil8DXeRki9yUyoaH7Rd0rlchLbG2w5/ZZaBEIZGE2
-         4u2jsaraD9+VBKlMk+YxeOW4R1d89oHt7Lcjz3CTF3tQ2byluEl630iCBM9sTbHnchx/
-         6LTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=E7tdJv/SATHNIn829RMc3Dy+9UyApMjdjMPVfkBbrsk=;
-        b=O/isyaLmsHVIJPD+Ul00aP6tl1g77iJVJIL1L50uhOfYjACFaxh2MONJX2z/5zYMIv
-         ZUtFD44g5u0R7cyNLaNVF54dmy7xu49WRFepspei+pTWbIAH400NEyOhP7DjLnf7rZb/
-         AdrVN8lqujRpCQld+FiGNLihLzOKIVhQWg9wG7o8c3AhHRb/0y6nVwvfaEaq5UcBEXMp
-         7oU1hD0+EUi+OFreKKcV/9xYrN3bI/3QDQ26KJCrCFnYxdOXxuz1nsNJsqb9IoH/XPq/
-         ZBcq+wfX00GLzaNY5Cu0I9J9p+je+4B7yConeVBGuSt86o2koYMR58CFTn8MCOb81Ji1
-         gGwA==
-X-Gm-Message-State: AOAM533SQW0a5KEBugBTWb7q8/IKBQa6BLtR+vUHJoszAzxIWhIRinFS
-        eqV/yd77BKI8tVhMPGMt9BV8/Q==
-X-Google-Smtp-Source: ABdhPJzyEEZSr7GhXUEQUpmvkSfKa89fHU8pKhjajrQ6W0i7H1mIgobF6AVYHVPEtFAPv4icFmZPug==
-X-Received: by 2002:a17:90a:1d09:: with SMTP id c9mr4619291pjd.80.1605112482289;
-        Wed, 11 Nov 2020 08:34:42 -0800 (PST)
-Received: from [192.168.11.16] (softbank126112255110.biz.bbtec.net. [126.112.255.110])
-        by smtp.gmail.com with ESMTPSA id b142sm3120743pfb.186.2020.11.11.08.34.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Nov 2020 08:34:41 -0800 (PST)
-Subject: Re: [PATCH v1] sh: Drop ARCH_NR_GPIOS definition
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        with ESMTP id S1726439AbgKMOYP (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 13 Nov 2020 09:24:15 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C017EC0613D1;
+        Fri, 13 Nov 2020 06:24:15 -0800 (PST)
+Message-Id: <20201113140207.499353218@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1605277454;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=PPLSKX/xmwMFedV4IKRF5BuAJaVvtEPUqA8f9IDGXCY=;
+        b=l6bH+B8+huzeAxpMYHuCQ+BdXfK4ENMqPIutQyozeuaag6I+Pmy6ws+WrwDbEagC3owhXI
+        e4kOg45yiOiOBMpnbUwvzjw1Tlx6yx4Ye3qjtp2kB3pq0AXDAY0An3a6gQMMuvB9iI5QfZ
+        6TZbWH8hO0g2VO+IUwYA8+zv2sktar1yVgv1Xh66xRbP5r7MCuWHWzeEHg1Yb8Gaiy1nqx
+        B7O33xFns3qON2zrMoRmKB6KwXQMe40ktnUKHoQlcuNns3+6hSrP50xwIMejS/s24v7nt2
+        +SpT+tCx3yonhfxcC3z29pyyJjzqseiDZ6UACrnYcf5sbVrhUdT9ZIS6cWp21w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1605277454;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=PPLSKX/xmwMFedV4IKRF5BuAJaVvtEPUqA8f9IDGXCY=;
+        b=AtBmIxr4B4x8cNg20chnLUnH8GQLpcWJEzBvaxV/w167Qbq0G7oSGl8oTsx7v+PGYUbpun
+        UEH3CJUGQMXh0FBQ==
+Date:   Fri, 13 Nov 2020 15:02:07 +0100
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     LKML <linux-kernel@vger.kernel.org>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Paul McKenney <paulmck@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        linux-gpio <linux-gpio@vger.kernel.org>
-References: <20201012154050.68039-1-andriy.shevchenko@linux.intel.com>
- <20201109121333.GC4077@smile.fi.intel.com>
-From:   Rob Landley <rob@landley.net>
-Message-ID: <10b4dc8e-db87-3f78-3ab7-e08469b9fe55@landley.net>
-Date:   Wed, 11 Nov 2020 10:45:38 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+        Jeff Dike <jdike@addtoit.com>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        linux-um@lists.infradead.org, Russell King <linux@armlinux.org.uk>,
+        Marc Zyngier <maz@kernel.org>,
+        Valentin Schneider <valentin.schneider@arm.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>
+Subject: [patch 00/19] softirq: Cleanups and RT awareness
 MIME-Version: 1.0
-In-Reply-To: <20201109121333.GC4077@smile.fi.intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 11/9/20 6:13 AM, Andy Shevchenko wrote:
-> On Mon, Oct 12, 2020 at 06:40:50PM +0300, Andy Shevchenko wrote:
->> The default by generic header is the same, hence drop unnecessary definition.
-> 
-> Any comment on this?
-
-Acked-by: Rob Landley <rob@landley.net>
-
-It's in the stack I forwarded to Rich to look at this weekend.
-
-Rob
+UlQgcnVucyBzb2Z0aXJxIHByb2Nlc3NpbmcgYWx3YXlzIGluIHRocmVhZCBjb250ZXh0IGFuZCBp
+dCByZXF1aXJlcyB0aGF0CmJvdGggdGhlIHNvZnRpcnEgZXhlY3V0aW9uIGFuZCB0aGUgQkggZGlz
+YWJsZWQgc2VjdGlvbnMgYXJlIHByZWVtcHRpYmxlLgoKVGhpcyBpcyBhY2hpZXZlZCBieSBzZXJp
+YWxpemF0aW9uIHRocm91Z2ggcGVyIENQVSBsb2NhbCBsb2NrcyBhbmQKc3Vic3RpdHV0aW5nIGEg
+ZmV3IHBhcnRzIG9mIHRoZSBleGlzdGluZyBzb2Z0aXJxIHByb2Nlc3NpbmcgY29kZSB3aXRoCmhl
+bHBlciBmdW5jdGlvbnMuCgpUaGUgZm9sbG93aW5nIHNlcmllcyBoYXMgdHdvIHBhcnRzOgoKICAg
+IDEpIENsZWFudXAgaXJxX2NwdXN0YXRzIGFuZCBjb25zb2xpZGF0aW9uIG9mIHRoZSBwcmVlbXB0
+IGNvdW50IG1hemUKICAgICAgIHNvIHNvZnRpcnFfY291bnQoKSBhbmQgcmVsYXRlZCBwYXJ0cyBj
+YW4gYmUgc3Vic3RpdHV0ZWQgZm9yIFJUCgogICAgMikgVGhlIGFjdHVhbCBjb3JlIGltcGxlbWVu
+dGF0aW9uIGluY2x1ZGluZyB0aGUgcmVxdWlyZWQgZml4dXBzIGZvcgogICAgICAgTk9IWiwgUkNV
+IGFuZCB0YXNrbGV0cy4KClRoZSBzZXJpZXMgaXMgYWxzbyBhdmFpbGFibGUgZnJvbSBnaXQ6Cgog
+IGdpdDovL2dpdC5rZXJuZWwub3JnL3B1Yi9zY20vbGludXgva2VybmVsL2dpdC90Z2x4L2RldmVs
+LmdpdCBzb2Z0aXJxCgpUaGUgUlQgdmFyaWFudCBoYXMgc3VjZXNzZnVsbHkgYmVlbiB0ZXN0ZWQg
+aW4gdGhlIGN1cnJlbnQgNS4xMC1ydApwYXRjaGVzLiBGb3Igbm9uLVJUIGtlcm5lbHMgdGhlcmUg
+aXMgbm8gZnVuY3Rpb25hbCBjaGFuZ2UuCgpUaGFua3MsCgoJdGdseAotLS0KIGIvYXJjaC9hcm0v
+aW5jbHVkZS9hc20vaGFyZGlycS5oICAgIHwgICAxMSAKIGIvYXJjaC9hcm0vaW5jbHVkZS9hc20v
+aXJxLmggICAgICAgIHwgICAgMiAKIGIvYXJjaC9hcm02NC9pbmNsdWRlL2FzbS9oYXJkaXJxLmgg
+IHwgICAgNyAKIGIvYXJjaC9wYXJpc2MvaW5jbHVkZS9hc20vaGFyZGlycS5oIHwgICAgMSAKIGIv
+YXJjaC9zaC9pbmNsdWRlL2FzbS9oYXJkaXJxLmggICAgIHwgICAxNCAtCiBiL2FyY2gvc2gva2Vy
+bmVsL2lycS5jICAgICAgICAgICAgICB8ICAgIDIgCiBiL2FyY2gvc2gva2VybmVsL3RyYXBzLmMg
+ICAgICAgICAgICB8ICAgIDIgCiBiL2FyY2gvdW0vaW5jbHVkZS9hc20vaGFyZGlycS5oICAgICB8
+ICAgMTcgLQogYi9pbmNsdWRlL2FzbS1nZW5lcmljL2hhcmRpcnEuaCAgICAgfCAgICA2IAogYi9p
+bmNsdWRlL2xpbnV4L2JvdHRvbV9oYWxmLmggICAgICAgfCAgICA4IAogYi9pbmNsdWRlL2xpbnV4
+L2hhcmRpcnEuaCAgICAgICAgICAgfCAgICAxIAogYi9pbmNsdWRlL2xpbnV4L2ludGVycnVwdC5o
+ICAgICAgICAgfCAgIDEzIC0KIGIvaW5jbHVkZS9saW51eC9wcmVlbXB0LmggICAgICAgICAgIHwg
+ICAzNiArLS0KIGIvaW5jbHVkZS9saW51eC9yY3VwZGF0ZS5oICAgICAgICAgIHwgICAgMyAKIGIv
+aW5jbHVkZS9saW51eC9zY2hlZC5oICAgICAgICAgICAgIHwgICAgMyAKIGIva2VybmVsL3NvZnRp
+cnEuYyAgICAgICAgICAgICAgICAgIHwgIDQxMiArKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KystLS0tLS0KIGIva2VybmVsL3RpbWUvdGljay1zY2hlZC5jICAgICAgICAgIHwgICAgMiAKIGlu
+Y2x1ZGUvbGludXgvaXJxX2NwdXN0YXQuaCAgICAgICAgIHwgICAyOCAtLQogMTggZmlsZXMgY2hh
+bmdlZCwgNDA1IGluc2VydGlvbnMoKyksIDE2MyBkZWxldGlvbnMoLSkKCgoKCgoK
