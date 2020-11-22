@@ -2,92 +2,68 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F6142BC65D
-	for <lists+linux-sh@lfdr.de>; Sun, 22 Nov 2020 16:02:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A7132BFB1B
+	for <lists+linux-sh@lfdr.de>; Sun, 22 Nov 2020 22:53:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727825AbgKVO7B (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sun, 22 Nov 2020 09:59:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55588 "EHLO
+        id S1726282AbgKVVxn (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sun, 22 Nov 2020 16:53:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727817AbgKVO7B (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sun, 22 Nov 2020 09:59:01 -0500
-Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6A79C0613CF
-        for <linux-sh@vger.kernel.org>; Sun, 22 Nov 2020 06:58:59 -0800 (PST)
-Received: by mail-pg1-x529.google.com with SMTP id v21so11841301pgi.2
-        for <linux-sh@vger.kernel.org>; Sun, 22 Nov 2020 06:58:59 -0800 (PST)
+        with ESMTP id S1726198AbgKVVxn (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sun, 22 Nov 2020 16:53:43 -0500
+Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69DF7C0613CF;
+        Sun, 22 Nov 2020 13:53:41 -0800 (PST)
+Received: by mail-ej1-x643.google.com with SMTP id k9so5806784ejc.11;
+        Sun, 22 Nov 2020 13:53:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=landley-net.20150623.gappssmtp.com; s=20150623;
-        h=subject:from:to:references:message-id:date:user-agent:mime-version
-         :in-reply-to:content-language:content-transfer-encoding;
-        bh=kCKnqpS4v1c6yYr/H2VANlA8vsESB1rYjGCx5rncfR8=;
-        b=w8hh9RymH64lFx8F+tAB4aflaL4SmPk/GuLgv1/nOaiudatFgp80F/HoWWlRhuUWhV
-         qjJ1MXsNqa1qLzD/IriZjzZnexh1u85hDqjAJzXbK8ELq3B2C9A6qCNnYNJdiIsKTcSc
-         5i4tuMeRAp+11uL4H/UVbzsJQmZLxurhvSXdRzj12gC3BGrbpW22V6FlMe32pNsuWEhI
-         vZ+wrsQuVJzhSwNDfKFvf9PkJES4xkHxoOrrRP/Xr+ixTq3dwCV7YrelZ7huAorzMwZA
-         iIP6ZQc/FR/ZSKd8/IoW+5P3GeYG2iMTg8PABIH8VVa5P5DPdDABM/2RyiFxQ0Wx6szD
-         Mc0w==
+        d=gmail.com; s=20161025;
+        h=message-id:sender:from:mime-version:content-transfer-encoding
+         :content-description:subject:to:date:reply-to;
+        bh=holMzMixu6L4mPkY4KLX0AXrH3B7KLU6Q1+gVZ1hbDo=;
+        b=lGBzQfLgUQ5t6pca3ujQiH8Cp9TfqXyS1p7ZOQwUk5ZDFyozoK++oUi7Q/2xUt1AdE
+         vGq2YBtVhqky8K+YhmLHikYxmdhSxoLE1b6wpPQLlPzyMzv1ysjALwL4/xxSjur12enB
+         6MtAIR3gVVaf0d0sc65SXLgtDPAbG3r5TeNwGoErCuz/Zs0kuJ2WpEl8PiLukl8qCKoC
+         vdaXSAu+0bX6tz55Yv/w417UtIli4gTZr9sBI0Zf06aiXty+dhVPKiHf81gKrUM54g/z
+         mtIrrNt5/kie/uTSWwEQ9Ky8v6zOeUZCZqmviMtwYrVXMXJ604ZHllkmgVPj4TdVNto8
+         J53Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:from:to:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=kCKnqpS4v1c6yYr/H2VANlA8vsESB1rYjGCx5rncfR8=;
-        b=pqfB5QagaVc2qrSPg/NcHSJIYv8G3x+aX1WJDKQ6loDgBI38SQnDC0xK1viQTh8Kw8
-         laIYcTJ9p3C7LP2HmpcYw/xZOEKBUCS8KqaA1ItN0Lc2qSy6eMeA1Nc06gN4M4KJWXFy
-         KWJprWuAhXUU2LQGtzonSrm//fzLfVlK0nouUzqunodcXzOoexF40jcsHXcHQSoOpDN/
-         RwydloDo/mi8gl7mNsWSb0Rankirrnp8OpSRJ8U0Cr9gklvn+BQgQkCgTzThBw2eaRJH
-         bR2jCXA5ykQa158gSk/N5two22AjTS86La5IBLh9NAOMOdBrskAog9eSeVjLemXNh1KT
-         kIzQ==
-X-Gm-Message-State: AOAM530vObG+QvuxIbl3yKveqKyyBlCIIt2lv7nlDymLVAMPGnVQPaeO
-        Oe2L1rK2cWyZGxmUlXyYOW2eQjJqTD8taLcz
-X-Google-Smtp-Source: ABdhPJx2n7B13ERxrk/xtKZ0MVfwmUxUGGdkN9ZtNwtQY+xN/FpLU7ZZvjPQD5xn15RMh8CCEXcTCg==
-X-Received: by 2002:a63:4956:: with SMTP id y22mr24451135pgk.266.1606057138984;
-        Sun, 22 Nov 2020 06:58:58 -0800 (PST)
-Received: from [192.168.11.16] (softbank126112255110.biz.bbtec.net. [126.112.255.110])
-        by smtp.gmail.com with ESMTPSA id e8sm9366427pfj.157.2020.11.22.06.58.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 22 Nov 2020 06:58:57 -0800 (PST)
-Subject: Re: message ids
-From:   Rob Landley <rob@landley.net>
-To:     Rich Felker <dalias@libc.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>
-References: <401c48c1-ccf1-8177-d45b-eb632ba799df@landley.net>
-Message-ID: <e43e6569-99bb-4e24-e9c5-45f9c3244d86@landley.net>
-Date:   Sun, 22 Nov 2020 09:10:08 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+        h=x-gm-message-state:message-id:sender:from:mime-version
+         :content-transfer-encoding:content-description:subject:to:date
+         :reply-to;
+        bh=holMzMixu6L4mPkY4KLX0AXrH3B7KLU6Q1+gVZ1hbDo=;
+        b=bvMKRCDKcsjZBjEWctnvJ1L5SXY7rN1uhPg3dAnyYsDigWR7WufIo5sbys1lE9Xw+P
+         qlLEnlM40ZAd5VR4DBoz5s2biXFUNyoTLk7PycIkulNrQxrGVKSvefyiTS2m1UTH4dwU
+         fXnsorluWG07iLdMjHFYk3m3HsPSPv15ixM3ET1OgPN5oyf079PXHCnPRq3w9YXb1wH7
+         i1TQh5qusUlossjcThpeb3TpUQX9iH+DB0ii/PtdFM/P8kalqeFQxEHmTCR4fDHkMj62
+         2ihTQv/ujSLwfgEKM7Gf+z3T1g5EYBxJRcbYiqZZCzNZ6wpYthrzfCm8Kw+pd/2TdoR1
+         MS1w==
+X-Gm-Message-State: AOAM533Ql1P1KDI756f75Ma45P07RDqDTFaNMJRS/ecJ7LWVMADgBiHv
+        /GLRTLCKfAakwraVyci27PcWj6xLZEA=
+X-Google-Smtp-Source: ABdhPJwGlDM7UbG+y+PfZrAVRPxc1Y5gQw9jtLdNR3aUkYI3tmd1TSVRdE2XtKX1cMS1Bc62BZ7I5g==
+X-Received: by 2002:a17:906:b255:: with SMTP id ce21mr42988321ejb.137.1606082020197;
+        Sun, 22 Nov 2020 13:53:40 -0800 (PST)
+Received: from [192.168.43.48] ([197.210.35.67])
+        by smtp.gmail.com with ESMTPSA id i19sm3978482ejz.71.2020.11.22.13.53.35
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Sun, 22 Nov 2020 13:53:39 -0800 (PST)
+Message-ID: <5fbadde3.1c69fb81.9b3f2.1048@mx.google.com>
+Sender: Lena Torres <ad482289@gmail.com>
+From:   Adelina Zeuki <anglicaramose@gmail.com>
+X-Google-Original-From: "Adelina Zeuki" <  adelinazeuki@gmail.comm >
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-In-Reply-To: <401c48c1-ccf1-8177-d45b-eb632ba799df@landley.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Hello !!
+To:     Recipients <adelinazeuki@gmail.comm>
+Date:   Sun, 22 Nov 2020 21:53:29 +0000
+Reply-To: adelinazeuki@gmail.com
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 11/12/20 1:47 AM, Rob Landley wrote:
-> Message-Id: <20200917154547.139019-1-fazilyildiran@gmail.com>
-> Message-ID: <93d98bab-01dd-5530-9fdb-76faf8dcdd41@infradead.org>
-> Message-ID: <20200919025206.17729-1-miaoqinglang@huawei.com>
-> Message-Id: <20200924043139.522028-1-hch@lst.de> # does not apply with git am???
-> Message-Id: <1602474624-3225-1-git-send-email-hejinyang@loongson.cn>
-> Message-Id: <20201012154050.68039-1-andriy.shevchenko@linux.intel.com>
-> Message-Id: <1604889952-30841-1-git-send-email-wangqing@vivo.com>
-> Message-Id: <1604889303-26722-1-git-send-email-wangqing@vivo.com>
-> Message-ID: <66582445-4ec9-86d0-e286-8e21590f608a@kernel.dk>
-> Message-Id: <20201110154939.3285928-1-geert+renesas@glider.be>
-> Message-Id: <20201110155029.3286090-1-geert+renesas@glider.be>
-> 
-> I have no idea why the hch@lst.de one applies with "patch -p1" but not with
-> "git am", that's where I ran out of brain. But they all apply as patches and the
-> result boots.
+Hi dear,
 
-FYI here are the patches from this list I forwarded to Rich right after -rc3
-came out. They built in my local tree, the result booted, and I didn't spot
-obvious regressions.
-
-If anybody else wants to try them, I can put them in a -git tree or attach them
-to an email?
-
-Rob
+Can i talk with you ?
