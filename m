@@ -2,68 +2,86 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A7132BFB1B
-	for <lists+linux-sh@lfdr.de>; Sun, 22 Nov 2020 22:53:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 391632C013A
+	for <lists+linux-sh@lfdr.de>; Mon, 23 Nov 2020 09:19:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726282AbgKVVxn (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sun, 22 Nov 2020 16:53:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34340 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726198AbgKVVxn (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sun, 22 Nov 2020 16:53:43 -0500
-Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69DF7C0613CF;
-        Sun, 22 Nov 2020 13:53:41 -0800 (PST)
-Received: by mail-ej1-x643.google.com with SMTP id k9so5806784ejc.11;
-        Sun, 22 Nov 2020 13:53:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:sender:from:mime-version:content-transfer-encoding
-         :content-description:subject:to:date:reply-to;
-        bh=holMzMixu6L4mPkY4KLX0AXrH3B7KLU6Q1+gVZ1hbDo=;
-        b=lGBzQfLgUQ5t6pca3ujQiH8Cp9TfqXyS1p7ZOQwUk5ZDFyozoK++oUi7Q/2xUt1AdE
-         vGq2YBtVhqky8K+YhmLHikYxmdhSxoLE1b6wpPQLlPzyMzv1ysjALwL4/xxSjur12enB
-         6MtAIR3gVVaf0d0sc65SXLgtDPAbG3r5TeNwGoErCuz/Zs0kuJ2WpEl8PiLukl8qCKoC
-         vdaXSAu+0bX6tz55Yv/w417UtIli4gTZr9sBI0Zf06aiXty+dhVPKiHf81gKrUM54g/z
-         mtIrrNt5/kie/uTSWwEQ9Ky8v6zOeUZCZqmviMtwYrVXMXJ604ZHllkmgVPj4TdVNto8
-         J53Q==
+        id S1727702AbgKWILn (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 23 Nov 2020 03:11:43 -0500
+Received: from mail-oo1-f67.google.com ([209.85.161.67]:44073 "EHLO
+        mail-oo1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727646AbgKWILm (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 23 Nov 2020 03:11:42 -0500
+Received: by mail-oo1-f67.google.com with SMTP id i13so3750408oou.11
+        for <linux-sh@vger.kernel.org>; Mon, 23 Nov 2020 00:11:42 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:sender:from:mime-version
-         :content-transfer-encoding:content-description:subject:to:date
-         :reply-to;
-        bh=holMzMixu6L4mPkY4KLX0AXrH3B7KLU6Q1+gVZ1hbDo=;
-        b=bvMKRCDKcsjZBjEWctnvJ1L5SXY7rN1uhPg3dAnyYsDigWR7WufIo5sbys1lE9Xw+P
-         qlLEnlM40ZAd5VR4DBoz5s2biXFUNyoTLk7PycIkulNrQxrGVKSvefyiTS2m1UTH4dwU
-         fXnsorluWG07iLdMjHFYk3m3HsPSPv15ixM3ET1OgPN5oyf079PXHCnPRq3w9YXb1wH7
-         i1TQh5qusUlossjcThpeb3TpUQX9iH+DB0ii/PtdFM/P8kalqeFQxEHmTCR4fDHkMj62
-         2ihTQv/ujSLwfgEKM7Gf+z3T1g5EYBxJRcbYiqZZCzNZ6wpYthrzfCm8Kw+pd/2TdoR1
-         MS1w==
-X-Gm-Message-State: AOAM533Ql1P1KDI756f75Ma45P07RDqDTFaNMJRS/ecJ7LWVMADgBiHv
-        /GLRTLCKfAakwraVyci27PcWj6xLZEA=
-X-Google-Smtp-Source: ABdhPJwGlDM7UbG+y+PfZrAVRPxc1Y5gQw9jtLdNR3aUkYI3tmd1TSVRdE2XtKX1cMS1Bc62BZ7I5g==
-X-Received: by 2002:a17:906:b255:: with SMTP id ce21mr42988321ejb.137.1606082020197;
-        Sun, 22 Nov 2020 13:53:40 -0800 (PST)
-Received: from [192.168.43.48] ([197.210.35.67])
-        by smtp.gmail.com with ESMTPSA id i19sm3978482ejz.71.2020.11.22.13.53.35
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Sun, 22 Nov 2020 13:53:39 -0800 (PST)
-Message-ID: <5fbadde3.1c69fb81.9b3f2.1048@mx.google.com>
-Sender: Lena Torres <ad482289@gmail.com>
-From:   Adelina Zeuki <anglicaramose@gmail.com>
-X-Google-Original-From: "Adelina Zeuki" <  adelinazeuki@gmail.comm >
-Content-Type: text/plain; charset="iso-8859-1"
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=sLcuF1U5tPJBxktukhMBw/+FJHbnCMjwPuYvKHalhyk=;
+        b=hrZsqrpOUKxuDgH7rGuNNTHa73dehci2bXVEHF0til2Sn9Ip6KuaCjACKUvd0NfoaX
+         uxro2ZzHclRSFGEtr2eBMLyYIkbZxFiV5w1ycXJ1/4odsqGEwlbRG+YaIohh44sVQ0df
+         tEKGfLPu7yB1svQ702v+75PE0h55MLjBoEKvhBapi9AMQ1Kdn33zqgofadzpY49sf9lN
+         HH/Pb/mcUZWYaFDNc5aiTZpRW7EWQd5aXw8C9jwIcjq2nGF6AjTSL+X6LKCSqwCJ9zgv
+         uEZbX7sa6aauQXnJ5AV4LwJi1dIc9lSqe5X93isWfs+8x4kmA/DdcArrlDZJlBw92zvr
+         saog==
+X-Gm-Message-State: AOAM531eoIVMt8PbIhdq48FneKkr9bU/yWJ5qf/yopg9bjZUGbZy5Qb5
+        Slh3lv4dJYPoPbD+B9nd8+csZF3b/jpr6Dpr834yWP9c4JY=
+X-Google-Smtp-Source: ABdhPJzRVHZ7I6K3bw6s/TPXfmuX8eoevWGKa8ZwWeXXEgtIVGSTVE0ROzJHqdfJew3ilGOTsAnaowpkcljoNTW6gTQ=
+X-Received: by 2002:a4a:dc1:: with SMTP id 184mr646517oob.40.1606119102062;
+ Mon, 23 Nov 2020 00:11:42 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Hello !!
-To:     Recipients <adelinazeuki@gmail.comm>
-Date:   Sun, 22 Nov 2020 21:53:29 +0000
-Reply-To: adelinazeuki@gmail.com
+References: <401c48c1-ccf1-8177-d45b-eb632ba799df@landley.net> <e43e6569-99bb-4e24-e9c5-45f9c3244d86@landley.net>
+In-Reply-To: <e43e6569-99bb-4e24-e9c5-45f9c3244d86@landley.net>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 23 Nov 2020 09:11:30 +0100
+Message-ID: <CAMuHMdVJFLhJtVCv+M1zxOu2DpGi3o5GAi4VTf7OQsx_gYypeA@mail.gmail.com>
+Subject: Re: message ids
+To:     Rob Landley <rob@landley.net>
+Cc:     Rich Felker <dalias@libc.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi dear,
+Hi Rob,
 
-Can i talk with you ?
+On Sun, Nov 22, 2020 at 4:00 PM Rob Landley <rob@landley.net> wrote:
+> On 11/12/20 1:47 AM, Rob Landley wrote:
+> > Message-Id: <20200917154547.139019-1-fazilyildiran@gmail.com>
+> > Message-ID: <93d98bab-01dd-5530-9fdb-76faf8dcdd41@infradead.org>
+> > Message-ID: <20200919025206.17729-1-miaoqinglang@huawei.com>
+> > Message-Id: <20200924043139.522028-1-hch@lst.de> # does not apply with git am???
+> > Message-Id: <1602474624-3225-1-git-send-email-hejinyang@loongson.cn>
+> > Message-Id: <20201012154050.68039-1-andriy.shevchenko@linux.intel.com>
+> > Message-Id: <1604889952-30841-1-git-send-email-wangqing@vivo.com>
+> > Message-Id: <1604889303-26722-1-git-send-email-wangqing@vivo.com>
+> > Message-ID: <66582445-4ec9-86d0-e286-8e21590f608a@kernel.dk>
+> > Message-Id: <20201110154939.3285928-1-geert+renesas@glider.be>
+> > Message-Id: <20201110155029.3286090-1-geert+renesas@glider.be>
+> >
+> > I have no idea why the hch@lst.de one applies with "patch -p1" but not with
+> > "git am", that's where I ran out of brain. But they all apply as patches and the
+> > result boots.
+>
+> FYI here are the patches from this list I forwarded to Rich right after -rc3
+> came out. They built in my local tree, the result booted, and I didn't spot
+> obvious regressions.
+>
+> If anybody else wants to try them, I can put them in a -git tree or attach them
+> to an email?
+
+BTW, the modern way to refer to patches is by prepending
+"https://lore.kernel.org/r/"
+to the message IDs.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
