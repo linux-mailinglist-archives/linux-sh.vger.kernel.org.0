@@ -2,91 +2,71 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9902F2C19E7
-	for <lists+linux-sh@lfdr.de>; Tue, 24 Nov 2020 01:24:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 07D9E2C26CC
+	for <lists+linux-sh@lfdr.de>; Tue, 24 Nov 2020 14:08:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729220AbgKXAWT (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 23 Nov 2020 19:22:19 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:39356 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729147AbgKXAWS (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 23 Nov 2020 19:22:18 -0500
-From:   Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1606177336;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=6lNWG1qtA7G9hsXhDsP3MLyuLVDI6XyrC+5IMdQxT6I=;
-        b=GnsHHxDVlgVk9jhbfel6mUdbSJviiStSsYo8URmgtLjUwigsSaEnFEZVczVC9zmZx9bLsk
-        qw25m4y6TgB1ZeXycueSktHBq26BiSEIvCd2KSJIoAvJiEbG6erl60+Ikvl4P4XcIy4V0N
-        SD4BOfGbwXB6RLWXYfnoEzY4AGhaI5VpFBZJ+7omzKLIh5fuZOgox/raDnxgXngOdEAcWS
-        +23U8DIcpeANt0FBdY2n2RikNrgGZKGfW5V43WqEoyVKjm8IW1Mudr6JsWItXH+rf71ZRo
-        mlFudGebOnhpdGuFgMzmhzdimfucYMEkIW1zOzBhZax23CJRM7IiSnLdkDEDjQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1606177336;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=6lNWG1qtA7G9hsXhDsP3MLyuLVDI6XyrC+5IMdQxT6I=;
-        b=R5Nrqf5gfiZGYJaIxbHMfpdUIrkuH70SVcO+mrIvTHKAoADJPzDVJZb2ure/dUCXkzLuEJ
-        gYnuVRoafusac5DA==
-To:     Frederic Weisbecker <frederic@kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Paul McKenney <paulmck@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Arnd Bergmann <arnd@arndb.de>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
+        id S2387833AbgKXNHD (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 24 Nov 2020 08:07:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58456 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387739AbgKXNHC (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 24 Nov 2020 08:07:02 -0500
+Received: from albert.telenet-ops.be (albert.telenet-ops.be [IPv6:2a02:1800:110:4::f00:1a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28EE6C0617A6
+        for <linux-sh@vger.kernel.org>; Tue, 24 Nov 2020 05:07:01 -0800 (PST)
+Received: from ramsan.of.borg ([84.195.186.194])
+        by albert.telenet-ops.be with bizsmtp
+        id wD6y2300S4C55Sk06D6yDK; Tue, 24 Nov 2020 14:06:59 +0100
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1khY26-005R7c-7n; Tue, 24 Nov 2020 14:06:58 +0100
+Received: from geert by rox.of.borg with local (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1khY25-00BVGQ-Qd; Tue, 24 Nov 2020 14:06:57 +0100
+From:   Geert Uytterhoeven <geert+renesas@glider.be>
+To:     Thomas Gleixner <tglx@linutronix.de>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
-        Jeff Dike <jdike@addtoit.com>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        linux-um@lists.infradead.org, Russell King <linux@armlinux.org.uk>,
-        Marc Zyngier <maz@kernel.org>,
-        Valentin Schneider <valentin.schneider@arm.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>
-Subject: Re: [patch 14/19] softirq: Make softirq control and processing RT aware
-In-Reply-To: <20201124001350.GF1751@lothringen>
-References: <20201113140207.499353218@linutronix.de> <20201113141734.324061522@linutronix.de> <20201123134437.GA95787@lothringen> <87r1ojnaai.fsf@nanos.tec.linutronix.de> <20201123235801.GE1751@lothringen> <87wnyblitk.fsf@nanos.tec.linutronix.de> <20201124001350.GF1751@lothringen>
-Date:   Tue, 24 Nov 2020 01:22:16 +0100
-Message-ID: <87r1ojli2v.fsf@nanos.tec.linutronix.de>
+        Rich Felker <dalias@libc.org>
+Cc:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH] sh/irq: Add missing closing parentheses in arch_show_interrupts()
+Date:   Tue, 24 Nov 2020 14:06:56 +0100
+Message-Id: <20201124130656.2741743-1-geert+renesas@glider.be>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Frederic,
+    arch/sh/kernel/irq.c: In function ‘arch_show_interrupts’:
+    arch/sh/kernel/irq.c:47:58: error: expected ‘)’ before ‘;’ token
+       47 |   seq_printf(p, "%10u ", per_cpu(irq_stat.__nmi_count, j);
+	  |                                                          ^
 
-On Tue, Nov 24 2020 at 01:13, Frederic Weisbecker wrote:
-> On Tue, Nov 24, 2020 at 01:06:15AM +0100, Thomas Gleixner wrote:
->> Good point. Haven't thought about that. Let me have a look again.
->
-> But I'm cooking a patchset which moves account_irq_enter_time() after
-> HARDIRQ_OFFSET or SOFTIRQ_OFFSET is incremented. This will allow us to move
-> tick_irq_enter() under this layout:
->
-> 		 preempt_count_add(HARDIRQ_OFFSET)
-> 		 lockdep_hardirq_enter()
-> 		 tick_irq_enter()
-> 		 account_irq_enter_time()
->
-> This way tick_irq_enter() can be correctly handled by lockdep and we can remove
-> the nasty hack which temporarily disables softirqs around it.
->
-> And as a side effect it should also fix your issue.
->
-> I should have that ready soonish.
+Fixes: fe3f1d5d7cd3062c ("sh: Get rid of nmi_count()")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+ arch/sh/kernel/irq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sounds to good to be true :)
+diff --git a/arch/sh/kernel/irq.c b/arch/sh/kernel/irq.c
+index 5addcb2c2da0cc63..ab5f790b0cd27784 100644
+--- a/arch/sh/kernel/irq.c
++++ b/arch/sh/kernel/irq.c
+@@ -44,7 +44,7 @@ int arch_show_interrupts(struct seq_file *p, int prec)
+ 
+ 	seq_printf(p, "%*s: ", prec, "NMI");
+ 	for_each_online_cpu(j)
+-		seq_printf(p, "%10u ", per_cpu(irq_stat.__nmi_count, j);
++		seq_printf(p, "%10u ", per_cpu(irq_stat.__nmi_count, j));
+ 	seq_printf(p, "  Non-maskable interrupts\n");
+ 
+ 	seq_printf(p, "%*s: %10u\n", prec, "ERR", atomic_read(&irq_err_count));
+-- 
+2.25.1
 
-Looking forward to it!
-
-Thanks for taking care of that!
-
-       tglx
