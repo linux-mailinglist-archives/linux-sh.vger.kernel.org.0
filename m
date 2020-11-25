@@ -2,118 +2,68 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CCE932C46E5
-	for <lists+linux-sh@lfdr.de>; Wed, 25 Nov 2020 18:36:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB02D2C486A
+	for <lists+linux-sh@lfdr.de>; Wed, 25 Nov 2020 20:31:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732075AbgKYRfJ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 25 Nov 2020 12:35:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40652 "EHLO
+        id S1728224AbgKYTbu (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 25 Nov 2020 14:31:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729631AbgKYRfJ (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 25 Nov 2020 12:35:09 -0500
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25C3FC0613D4
-        for <linux-sh@vger.kernel.org>; Wed, 25 Nov 2020 09:35:09 -0800 (PST)
-Received: by mail-pf1-x42f.google.com with SMTP id w202so2974612pff.10
-        for <linux-sh@vger.kernel.org>; Wed, 25 Nov 2020 09:35:09 -0800 (PST)
+        with ESMTP id S1725776AbgKYTbu (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 25 Nov 2020 14:31:50 -0500
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBB40C0617A7;
+        Wed, 25 Nov 2020 11:31:49 -0800 (PST)
+Received: by mail-wm1-x32a.google.com with SMTP id h21so3216861wmb.2;
+        Wed, 25 Nov 2020 11:31:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=landley-net.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=BV0v+15X2FkT5Tc7Eld7ojOQSu1bWnaE02Q0w4hL2jA=;
-        b=P7clXpYpTkbTzjUDjeeySiucJwLR/4OyJZbjvZgdNQEUGjwl2o5IOVKgS75he5LHo0
-         6JO6035okSLOm+YGYKX5QE4T6DpBS56/9q5lvnRXJoMnRBONZI6sSFmNU41gUCJwL6bX
-         YBFBA7MdyQTzUuqKq8hSbSlm8vIy7hT15TBGY2zBy7EbeTPM7SX+lGQ/Aie3sFcevUpv
-         MyVU1TrA1qMRm5xEaT4Fa7+ZKk9Rqo9Kkf8A10HyK53iv9K+gt2n3I5KH2ABIrIYY5T4
-         cSCHTeDSvp+D8M46aGEcMRIPtYwjPQaNz8B9tWB84hsy2GRIO93mrRr0PXT4zHDNyFsL
-         bXww==
+        d=gmail.com; s=20161025;
+        h=message-id:from:mime-version:content-transfer-encoding
+         :content-description:subject:to:date:reply-to;
+        bh=MT4M9SX2NqdNuOObXhIV8Gtkw+yoDX+gRyJnh+feBwM=;
+        b=LNLhktrTymyOzcCMKeMtlnAOG/wDQVmVv4LZXRGkZCfAZdEfj2efcacEhzN7N3WHo+
+         VNqOpzrAfICUrK73p6x5GkCEhaIIFRl+WFGp5TDqX2wlrOZ+vleOlZVSuNHhRAzkMXhc
+         n/VI1oiAE8KqlACUMMkDi0HsDT4XOu5aPVpUP95CA6t7IPPOvPRU9fhrOJMTg7As8Du1
+         +1DJI113da47M6YXZonoVk/YgLmK8BFkeKsyMGcYYOqzCX5eonXEyzsa97/FNIEbO/r5
+         MeuB62cyneVqgBL7qY8s7aXl/1LiksKaClQphQdMZWS+go/sSPTK9kHKqCZ+2HDDjN1n
+         bPtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=BV0v+15X2FkT5Tc7Eld7ojOQSu1bWnaE02Q0w4hL2jA=;
-        b=QDxcm9T70ubYNWAdEa0lPo+VivF/hPKHDZxPlgetPZDezvzeuvem0voAQbgI+g4vxD
-         j0PuvYHNI4vuE3glyG/Gq4HtIVA8rOSLLjoF1vh87/D6RcSps0PDtDGw2yutgXKwCaOj
-         VqDWd+v4bdXKCW/DGZGKqXyvKJQjX3WLgy/yq2o9Mb2u+N9kjciy/R/nCEiEam8tt8fp
-         +xpbH0Ndkig5A4TMokdvc+9lNQ+PrGBY0YujL600XNAJN3g4twX6FUUYyTFgYNguNaD0
-         pzmwykQNz/vn4ik0+S/T0MEy3a5wItDr9XKMMtkakoTaszIHeQgwf1yk9RpeCzQXe6yi
-         W7+Q==
-X-Gm-Message-State: AOAM5324UkKqamytgFS0YzrAEkIP3jjF13fy1zwHsbMThfYxLnEPtOLz
-        yw1kHS0dDY5nKSh+uxRnLvdcZyiJWmCrYw==
-X-Google-Smtp-Source: ABdhPJxYIl8eaWz0+A1ayPioJqeo0AFpao3YZbgz+F/rFetyeXQVqI+Swe2bRVOasK90E/8VyjOo2g==
-X-Received: by 2002:a17:90b:508:: with SMTP id r8mr5297588pjz.151.1606325708285;
-        Wed, 25 Nov 2020 09:35:08 -0800 (PST)
-Received: from [192.168.8.125] (mo49-103-34-100.air.mopera.net. [49.103.34.100])
-        by smtp.gmail.com with ESMTPSA id a18sm2516739pfa.151.2020.11.25.09.35.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Nov 2020 09:35:07 -0800 (PST)
-Subject: Re: message ids
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Rich Felker <dalias@libc.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>
-References: <401c48c1-ccf1-8177-d45b-eb632ba799df@landley.net>
- <e43e6569-99bb-4e24-e9c5-45f9c3244d86@landley.net>
- <CAMuHMdVJFLhJtVCv+M1zxOu2DpGi3o5GAi4VTf7OQsx_gYypeA@mail.gmail.com>
-From:   Rob Landley <rob@landley.net>
-Message-ID: <2b4e374c-f1a3-87b3-5536-eb965b09d7ff@landley.net>
-Date:   Wed, 25 Nov 2020 11:46:21 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+        h=x-gm-message-state:message-id:from:mime-version
+         :content-transfer-encoding:content-description:subject:to:date
+         :reply-to;
+        bh=MT4M9SX2NqdNuOObXhIV8Gtkw+yoDX+gRyJnh+feBwM=;
+        b=CFgFQgJP1pmusFq1XkqTYgjemq2l+974kBxF0kcs/juN5gMaSrowIO1dPQhw3G1tRf
+         6htaB45IIibrIfRp1uAL/dFH7nQiV99CFVxpdd+yOHi9XPnx9WWMCVpnYF+mbQUPCLnW
+         tC6o6h0lHAOYf4Al5rezXo7HQmNT7wzukg7IaF73hpBX/i3fh8Yl3CeqZP67BNkIxjMI
+         r2WxQD7fYcwUCx3roJkrEd59t//ztl8HLy/2UW68vAGMVV3W0cmPc7R/BjvfjEAKHysU
+         1PWJ4CfJmID7CSXRaWDYqZYmiknKw4AnznFVdcDQF4xgU+ojicltSCO7QrWO1QRvq0/D
+         lfgQ==
+X-Gm-Message-State: AOAM533dS4Pj309wp1+1wNFUG3fbDUSt2I41X29RiErbLaBJzS3RS7rW
+        /boZZ206vh3XoozlmIQfw2OGNvl9tZk=
+X-Google-Smtp-Source: ABdhPJzwAR3ExvZNfGuo+C3loRSVFi5d0tv2rAhSna4p9UZi9EuSDg2+b4bmRxWl92xNCRSfdYcBXw==
+X-Received: by 2002:a1c:4086:: with SMTP id n128mr5638612wma.68.1606332708301;
+        Wed, 25 Nov 2020 11:31:48 -0800 (PST)
+Received: from [192.168.1.152] ([102.64.149.89])
+        by smtp.gmail.com with ESMTPSA id l16sm6067999wrx.5.2020.11.25.11.31.41
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Wed, 25 Nov 2020 11:31:47 -0800 (PST)
+Message-ID: <5fbeb123.1c69fb81.80257.d8a2@mx.google.com>
+From:   "Dailborh R." <ritundailb111@gmail.com>
+X-Google-Original-From: Dailborh R.
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-In-Reply-To: <CAMuHMdVJFLhJtVCv+M1zxOu2DpGi3o5GAi4VTf7OQsx_gYypeA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Please reply to me
+To:     Recipients <Dailborh@vger.kernel.org>
+Date:   Wed, 25 Nov 2020 19:31:30 +0000
+Reply-To: dailrrob.83@gmail.com
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 11/23/20 2:11 AM, Geert Uytterhoeven wrote:
-> Hi Rob,
-> 
-> On Sun, Nov 22, 2020 at 4:00 PM Rob Landley <rob@landley.net> wrote:
->> On 11/12/20 1:47 AM, Rob Landley wrote:
->>> Message-Id: <20200917154547.139019-1-fazilyildiran@gmail.com>
->>> Message-ID: <93d98bab-01dd-5530-9fdb-76faf8dcdd41@infradead.org>
->>> Message-ID: <20200919025206.17729-1-miaoqinglang@huawei.com>
->>> Message-Id: <20200924043139.522028-1-hch@lst.de> # does not apply with git am???
->>> Message-Id: <1602474624-3225-1-git-send-email-hejinyang@loongson.cn>
->>> Message-Id: <20201012154050.68039-1-andriy.shevchenko@linux.intel.com>
->>> Message-Id: <1604889952-30841-1-git-send-email-wangqing@vivo.com>
->>> Message-Id: <1604889303-26722-1-git-send-email-wangqing@vivo.com>
->>> Message-ID: <66582445-4ec9-86d0-e286-8e21590f608a@kernel.dk>
->>> Message-Id: <20201110154939.3285928-1-geert+renesas@glider.be>
->>> Message-Id: <20201110155029.3286090-1-geert+renesas@glider.be>
->>>
->>> I have no idea why the hch@lst.de one applies with "patch -p1" but not with
->>> "git am", that's where I ran out of brain. But they all apply as patches and the
->>> result boots.
->>
->> FYI here are the patches from this list I forwarded to Rich right after -rc3
->> came out. They built in my local tree, the result booted, and I didn't spot
->> obvious regressions.
->>
->> If anybody else wants to try them, I can put them in a -git tree or attach them
->> to an email?
-> 
-> BTW, the modern way to refer to patches is by prepending
-> "https://lore.kernel.org/r/"
-> to the message IDs.
+I'm Dailborh R. from US. I picked interest in you and I would like to know
+more about you and establish relationship with you. i will wait for
+your response. thank you.
 
-That was a grep of the saved email files because Rich asked for msgids, and then
-I forwarded the email here after 2 weeks later after repeated poking didn't get
-further action on the pending patch pile.
-
-I just did a fresh pull and git log arch/sh/boards/mach-sh03/rtc.c and the last
-time it was touched is January, despite
-
-  Message-Id: <1604889303-26722-1-git-send-email-wangqing@vivo.com>
-
-Touching that file. (And that's an obvious "remove duplicate #include" not "I
-decided not to apply this one because $TECHNICAL_REASON".)
-
-The pull I did was to a tree with all the patches applied and it didn't complain
-about conflicts, so presumably they still apply?
-
-Rob
