@@ -2,71 +2,77 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 07D9E2C26CC
-	for <lists+linux-sh@lfdr.de>; Tue, 24 Nov 2020 14:08:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E78D52C421F
+	for <lists+linux-sh@lfdr.de>; Wed, 25 Nov 2020 15:24:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387833AbgKXNHD (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 24 Nov 2020 08:07:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58456 "EHLO
+        id S1729906AbgKYOXx (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 25 Nov 2020 09:23:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387739AbgKXNHC (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 24 Nov 2020 08:07:02 -0500
-Received: from albert.telenet-ops.be (albert.telenet-ops.be [IPv6:2a02:1800:110:4::f00:1a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28EE6C0617A6
-        for <linux-sh@vger.kernel.org>; Tue, 24 Nov 2020 05:07:01 -0800 (PST)
-Received: from ramsan.of.borg ([84.195.186.194])
-        by albert.telenet-ops.be with bizsmtp
-        id wD6y2300S4C55Sk06D6yDK; Tue, 24 Nov 2020 14:06:59 +0100
-Received: from rox.of.borg ([192.168.97.57])
-        by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1khY26-005R7c-7n; Tue, 24 Nov 2020 14:06:58 +0100
-Received: from geert by rox.of.borg with local (Exim 4.93)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1khY25-00BVGQ-Qd; Tue, 24 Nov 2020 14:06:57 +0100
-From:   Geert Uytterhoeven <geert+renesas@glider.be>
-To:     Thomas Gleixner <tglx@linutronix.de>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>
-Cc:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH] sh/irq: Add missing closing parentheses in arch_show_interrupts()
-Date:   Tue, 24 Nov 2020 14:06:56 +0100
-Message-Id: <20201124130656.2741743-1-geert+renesas@glider.be>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S1729819AbgKYOXw (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 25 Nov 2020 09:23:52 -0500
+Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com [IPv6:2607:f8b0:4864:20::730])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACC44C061A4F
+        for <linux-sh@vger.kernel.org>; Wed, 25 Nov 2020 06:23:52 -0800 (PST)
+Received: by mail-qk1-x730.google.com with SMTP id q22so4698378qkq.6
+        for <linux-sh@vger.kernel.org>; Wed, 25 Nov 2020 06:23:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=PRRgtDeJ+IvmmClG2za3Gd9Kir7u7xhjXshxMoJsi+o=;
+        b=SHhPkqqhiA1qpZgiqIE1OExx/SvwtbPd1XEBHuyyO2SHkirsAOr+RQ/dQU6iARXywn
+         TP2Vwiwv8mDVB9UylQLQh1I65yQPUMUtmy08vYzSNa2aTMxdJH0ZbI+w3rWUyJnT/FAP
+         e02tnBqIz+P6rSWBaFvdHYy60bwtAoX08Ht2x0EkgSrkrezhhDf8VhO4gNcswDPXIZOz
+         VK8yawdQioMI+VyP3WZp4KAoS5g4dfCV64wi5+xDlXEFqOQ1Xfc3gTVlClzh9nSG0Unk
+         x00Fi0IwkpfPyI8/cbCtskaZK9NU5BBLfskucKg5MM97ZaX/KuqmXywHEyCa23zkbAPg
+         tqWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=PRRgtDeJ+IvmmClG2za3Gd9Kir7u7xhjXshxMoJsi+o=;
+        b=VcAR+V5kcWBo/DBIvqti4uUa414RDXpW1SyU8gBUre6NXKZHn5N9IYZtTBK1Ds0TqO
+         RYRbFSK8Fr8uUW97tVl2t+EowafGeVPsDzw9mLFwXLfwnm2z3mgSJdWesUpKI7CrDWqv
+         uGr0Fg0rPnFNM7s8oKbg54vzijKffImu2ifOTot8hpr0kjY2Tc+JW86K2FTG4eFL1AfP
+         2xr4Jsx+3gykZirI6clPtKSwk9QV00GHpp80S/0sAEgpjs7nq5BlTg2kpF+1daMw5OWm
+         PIg+CfY4a6joxEpu1cCjqQuRXd4+kzhR/blglOLuVjvSzRAjMCiwu1pyJFzOEuwgEwAR
+         sJvQ==
+X-Gm-Message-State: AOAM533wuCLr6Z7qxc6enzoZas8Po8y82ayFxnqnDpFkJe9F1ScGwe34
+        OqujM1EMw5lsibg2lMkOfa9gGq+BLYnyOMJ3jAM=
+X-Google-Smtp-Source: ABdhPJz7qPjTZU155G2hh9eCyhnS2iS2r1T97QGUfkJbW6gio9NzVBkqeRZnAiORvMaILOdWjXat/bTcJtPIhOK+iGA=
+X-Received: by 2002:a25:2c92:: with SMTP id s140mr6032043ybs.64.1606314231825;
+ Wed, 25 Nov 2020 06:23:51 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a05:7110:3250:b029:2f:4aed:a58b with HTTP; Wed, 25 Nov 2020
+ 06:23:51 -0800 (PST)
+From:   carlos tayi <tayicarlos@gmail.com>
+Date:   Wed, 25 Nov 2020 15:23:51 +0100
+Message-ID: <CADZxQ+N5zC1jKm0wmaOSp1GUEf-=qsiJ7uEx5zJSbKdqvvYLyQ@mail.gmail.com>
+Subject: =?UTF-8?Q?F=C3=9CR_IHRE_KREDITANWENDUNGEN?=
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-    arch/sh/kernel/irq.c: In function ‘arch_show_interrupts’:
-    arch/sh/kernel/irq.c:47:58: error: expected ‘)’ before ‘;’ token
-       47 |   seq_printf(p, "%10u ", per_cpu(irq_stat.__nmi_count, j);
-	  |                                                          ^
+Hallo Herr / Frau
 
-Fixes: fe3f1d5d7cd3062c ("sh: Get rid of nmi_count()")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
- arch/sh/kernel/irq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Angesichts der regelm=C3=A4=C3=9Figen Verweigerung von Kreditinstituten, Ku=
+nden
+Kredite zu gew=C3=A4hren, bieten wir unsere Kreditdienstleistungen an.
 
-diff --git a/arch/sh/kernel/irq.c b/arch/sh/kernel/irq.c
-index 5addcb2c2da0cc63..ab5f790b0cd27784 100644
---- a/arch/sh/kernel/irq.c
-+++ b/arch/sh/kernel/irq.c
-@@ -44,7 +44,7 @@ int arch_show_interrupts(struct seq_file *p, int prec)
- 
- 	seq_printf(p, "%*s: ", prec, "NMI");
- 	for_each_online_cpu(j)
--		seq_printf(p, "%10u ", per_cpu(irq_stat.__nmi_count, j);
-+		seq_printf(p, "%10u ", per_cpu(irq_stat.__nmi_count, j));
- 	seq_printf(p, "  Non-maskable interrupts\n");
- 
- 	seq_printf(p, "%*s: %10u\n", prec, "ERR", atomic_read(&irq_err_count));
--- 
-2.25.1
+Wir bieten Darlehen von 5.000 bis 17.000.000 =E2=82=AC mit einer
+2% R=C3=BCckzahlungsrate und basierend auf der f=C3=BCr Sie geeigneten
+R=C3=BCckzahlungsfrist, wenden Sie sich bitte an unsere
+Management f=C3=BCr Ihre kurz- und langfristigen Kreditanfragen
 
+Wenn Sie auch gro=C3=9Fe Projekte haben, die Investitionen erfordern,
+k=C3=B6nnen wir Sie auch mit Investoren in Kontakt bringen
+abh=C3=A4ngig von der Menge, die Sie w=C3=BCnschen
+
+F=C3=BCr alle Ihre Kredit- und Investitionsanfragen bitte
+Kontaktieren Sie unser Management
+
+financialintercreditficsarl@ficsarl.com
