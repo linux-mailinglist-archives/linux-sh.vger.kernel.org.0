@@ -2,53 +2,54 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 734472D1C9E
-	for <lists+linux-sh@lfdr.de>; Mon,  7 Dec 2020 23:04:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 640B42D1F6F
+	for <lists+linux-sh@lfdr.de>; Tue,  8 Dec 2020 01:52:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727763AbgLGWBi (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 7 Dec 2020 17:01:38 -0500
-Received: from mail.kernel.org ([198.145.29.99]:49714 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727758AbgLGWBi (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Mon, 7 Dec 2020 17:01:38 -0500
-Content-Type: text/plain; charset="utf-8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1607378457;
-        bh=ROj2E/DNz95dJeF/4hZqYnmHeYGnEnlXg8LBxRmkrTw=;
-        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=omaR4Cu98x+zL2ZGHihgajNvL70pOGbcA3YhpZfeHG95ak5Y4JhXDCm88xYBUkMGU
-         C4JGpkf+Q+pUyFjEdkodzz2+Dp8rcmN1yZFnE3YJpP8W+8X4UhkNeCBgPAuEFM9yRV
-         SkBSM/gE731bY0yi1IwrQ5//C6o7lS/S3wYkRxd7xsdWD7GaO5E7nF4XnnzYOObLIz
-         dwxaDZAbyaTdca5v2MCuV0h5F2qVBYDUfo1Q7BYQlNRM7PI3VpAmxtOIxjBOozqHB6
-         9Tbvl24NqCv5D4dJ6rIeqP17y6VrgmfRiJiNN6X7lwW4NL9ku4Jtq9hvzBWaou4Dig
-         cOE+ZzI7wHEEg==
+        id S1728913AbgLHAvm (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 7 Dec 2020 19:51:42 -0500
+Received: from vsm-gw.hyogo-dai.ac.jp ([202.244.76.12]:35013 "EHLO
+        vsm-gw.hyogo-dai.ac.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728234AbgLHAvk (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 7 Dec 2020 19:51:40 -0500
+X-Greylist: delayed 16991 seconds by postgrey-1.27 at vger.kernel.org; Mon, 07 Dec 2020 19:51:35 EST
+Received: from humans-kc.hyogo-dai.ac.jp (humans-kc.hyogo-dai.ac.jp [202.244.77.11])
+        by vsm-gw.hyogo-dai.ac.jp (Postfix) with ESMTP id DE24F1A606F;
+        Tue,  8 Dec 2020 04:09:26 +0900 (JST)
+Received: from humans-kc.hyogo-dai.ac.jp (humans-kc.hyogo-dai.ac.jp [127.0.0.1])
+        by postfix.imss71 (Postfix) with ESMTP id BC3D8382029;
+        Tue,  8 Dec 2020 04:09:26 +0900 (JST)
+Received: from hyogo-dai.ac.jp (unknown [202.244.77.11])
+        by humans-kc.hyogo-dai.ac.jp (Postfix) with SMTP id 426EA83825B;
+        Tue,  8 Dec 2020 04:09:26 +0900 (JST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20201110155029.3286090-1-geert+renesas@glider.be>
-References: <20201110155029.3286090-1-geert+renesas@glider.be>
-Subject: Re: [PATCH resend v2] sh: boards: Replace <linux/clk-provider.h> by <linux/of_clk.h>
-From:   Stephen Boyd <sboyd@kernel.org>
-Cc:     linux-sh@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-To:     Geert Uytterhoeven <geert+renesas@glider.be>,
-        Rich Felker <dalias@libc.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>
-Date:   Mon, 07 Dec 2020 14:00:56 -0800
-Message-ID: <160737845618.1580929.560371999645128087@swboyd.mtv.corp.google.com>
-User-Agent: alot/0.9.1
+Message-ID: <20201207190926.000057A2.0664@hyogo-dai.ac.jp>
+Date:   Tue, 08 Dec 2020 04:09:26 +0900
+From:   "Raymond " <hozumi@hyogo-dai.ac.jp>
+To:     <infocarferw1@aim.com>
+Reply-To: <infocarfer@aim.com>
+Subject: I am Vice Chairman of Hang Seng Bank, Dr. Raymond Chien
+         Kuo Fung I have Important Matter to Discuss with you concerning
+         my late client. Died without a NEXT OF KIN. Send me your private
+         email for full details information.
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MAILER: Active! mail
+X-TM-AS-MML: disable
+X-TM-AS-Product-Ver: IMSS-7.1.0.1808-8.2.0.1013-25446.007
+X-TM-AS-Result: No--2.951-5.0-31-10
+X-imss-scan-details: No--2.951-5.0-31-10
+X-TM-AS-User-Approved-Sender: No
+X-TMASE-MatchedRID: X41QhRrT5f5ITndh1lLRASsOycAMAhSTkCM77ifYafsBLhz6t76Ce6P0
+        clhHAFPyJA6GJqxAEzL554DD9nXlqqPFjJEFr+olfeZdJ1XsoriOub3SYcq1hJf7eAx/Ae/AbQo
+        eraIcZBRw7u01FqNA2K1Ia4IbeAdLm9ukrtqhno/rIUidklntLAP5zT0d393cymsk/wUE4hoZaR
+        NzIP3XI5u3uLPgwbAMH5RdHnhWfwyq9gpuf+A6coDeeVSgzszVDx5n520Z3eZyT7DDRtYlKaWBy
+        ZE9nSaC/rhfyjvqkZu/pNa4BidtZEMMprcbiest
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Quoting Geert Uytterhoeven (2020-11-10 07:50:29)
-> The SuperH/J2 DT platform code is not a clock provider, and just needs
-> to call of_clk_init().
->=20
-> Hence it can include <linux/of_clk.h> instead of <linux/clk-provider.h>.
->=20
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> Reviewed-by: Stephen Boyd <sboyd@kernel.org>
-> ---
+email:kraymond75@aol.com
 
-Applied to clk-next
+
+
