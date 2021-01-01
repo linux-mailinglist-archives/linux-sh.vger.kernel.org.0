@@ -2,45 +2,39 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5379A2E83E4
-	for <lists+linux-sh@lfdr.de>; Fri,  1 Jan 2021 14:52:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 941A12E83E6
+	for <lists+linux-sh@lfdr.de>; Fri,  1 Jan 2021 14:57:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727118AbhAANw1 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 1 Jan 2021 08:52:27 -0500
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:36725 "EHLO
+        id S1726798AbhAAN5U (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 1 Jan 2021 08:57:20 -0500
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:48509 "EHLO
         outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726747AbhAANw1 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 1 Jan 2021 08:52:27 -0500
+        by vger.kernel.org with ESMTP id S1726747AbhAAN5U (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 1 Jan 2021 08:57:20 -0500
 Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
           by outpost.zedat.fu-berlin.de (Exim 4.94)
           with esmtps (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
           (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1kvKqH-001d1n-CR; Fri, 01 Jan 2021 14:51:45 +0100
+          id 1kvKuz-001dkJ-B4; Fri, 01 Jan 2021 14:56:36 +0100
 Received: from p5b13a2ad.dip0.t-ipconnect.de ([91.19.162.173] helo=[192.168.178.139])
           by inpost2.zedat.fu-berlin.de (Exim 4.94)
           with esmtpsa (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
           (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1kvKqG-003BkT-KQ; Fri, 01 Jan 2021 14:51:44 +0100
-Subject: Re: [PATCH v1] sh: Drop ARCH_NR_GPIOS definition
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Rob Landley <rob@landley.net>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        linux-gpio <linux-gpio@vger.kernel.org>
-References: <20201012154050.68039-1-andriy.shevchenko@linux.intel.com>
- <20201109121333.GC4077@smile.fi.intel.com>
- <10b4dc8e-db87-3f78-3ab7-e08469b9fe55@landley.net>
- <20201228213615.GF4077@smile.fi.intel.com>
+          id 1kvKuy-003CFZ-JE; Fri, 01 Jan 2021 14:56:36 +0100
+Subject: Re: [PATCH] sh: boards: Fix the cacography in irq.c
+To:     Tang Bin <tangbin@cmss.chinamobile.com>,
+        ysato@users.sourceforge.jp, dalias@libc.org
+Cc:     linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20201119105656.11068-1-tangbin@cmss.chinamobile.com>
 From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Message-ID: <3a20bc0f-cbdf-6498-5527-e7fd53c3b84d@physik.fu-berlin.de>
-Date:   Fri, 1 Jan 2021 14:51:44 +0100
+Message-ID: <dcf1a0d9-d533-63d7-c3d9-5023fe969117@physik.fu-berlin.de>
+Date:   Fri, 1 Jan 2021 14:56:36 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.6.0
 MIME-Version: 1.0
-In-Reply-To: <20201228213615.GF4077@smile.fi.intel.com>
+In-Reply-To: <20201119105656.11068-1-tangbin@cmss.chinamobile.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -50,30 +44,32 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Andy!
-
-On 12/28/20 10:36 PM, Andy Shevchenko wrote:
-> On Wed, Nov 11, 2020 at 10:45:38AM -0600, Rob Landley wrote:
->> On 11/9/20 6:13 AM, Andy Shevchenko wrote:
->>> On Mon, Oct 12, 2020 at 06:40:50PM +0300, Andy Shevchenko wrote:
->>>> The default by generic header is the same, hence drop unnecessary definition.
->>>
->>> Any comment on this?
->>
->> Acked-by: Rob Landley <rob@landley.net>
+On 11/19/20 11:56 AM, Tang Bin wrote:
+> The world 'swtich' is wrong, so fix it.
 > 
-> Thanks!
+> Signed-off-by: Tang Bin <tangbin@cmss.chinamobile.com>
+> ---
+>  arch/sh/boards/mach-landisk/irq.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
->> It's in the stack I forwarded to Rich to look at this weekend.
+> diff --git a/arch/sh/boards/mach-landisk/irq.c b/arch/sh/boards/mach-landisk/irq.c
+> index 29b8b1f85..0b672b80c 100644
+> --- a/arch/sh/boards/mach-landisk/irq.c
+> +++ b/arch/sh/boards/mach-landisk/irq.c
+> @@ -26,8 +26,8 @@ enum {
+>  	PCI_INTD, /* PCI int D */
+>  	ATA,	  /* ATA */
+>  	FATA,	  /* CF */
+> -	POWER,	  /* Power swtich */
+> -	BUTTON,	  /* Button swtich */
+> +	POWER,	  /* Power switch */
+> +	BUTTON,	  /* Button switch */
+>  };
+>  
+>  /* Vectors for LANDISK */
 > 
-> Unfortunately I still do not see this in the latest Linux Next.
 
-Rich already mentioned that he planned to pick up any patches the next
-weeks/days.
-
-I'm currently testing all the patches recently posted for any regressions.
-
-Adrian
+Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 
 -- 
  .''`.  John Paul Adrian Glaubitz
