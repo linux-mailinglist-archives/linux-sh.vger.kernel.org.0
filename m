@@ -2,99 +2,113 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A97E3080CE
-	for <lists+linux-sh@lfdr.de>; Thu, 28 Jan 2021 22:54:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 421953085FB
+	for <lists+linux-sh@lfdr.de>; Fri, 29 Jan 2021 07:44:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231503AbhA1Vx4 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 28 Jan 2021 16:53:56 -0500
-Received: from spe8-2.ucebox.co.za ([197.242.156.207]:39142 "EHLO
-        spe8-2.ucebox.co.za" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231403AbhA1Vxw (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 28 Jan 2021 16:53:52 -0500
-X-Greylist: delayed 6124 seconds by postgrey-1.27 at vger.kernel.org; Thu, 28 Jan 2021 16:53:45 EST
-Received: from cornucopia.aserv.co.za ([154.0.175.203])
-        by spe2.ucebox.co.za with esmtps (TLSv1.2:AES128-GCM-SHA256:128)
-        (Exim 4.92)
-        (envelope-from <manornutgrovemanor@gmail.com>)
-        id 1l5Bno-0001H8-2W; Thu, 28 Jan 2021 20:14:25 +0200
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by cornucopia.aserv.co.za (Postfix) with ESMTPA id 2C01EC1250;
-        Thu, 28 Jan 2021 20:12:38 +0200 (SAST)
+        id S232207AbhA2GnJ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 29 Jan 2021 01:43:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53958 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229656AbhA2Gm5 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 29 Jan 2021 01:42:57 -0500
+Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87597C061574;
+        Thu, 28 Jan 2021 22:41:57 -0800 (PST)
+Received: by mail-io1-xd36.google.com with SMTP id p72so8197130iod.12;
+        Thu, 28 Jan 2021 22:41:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=iVAMGV92J/f/CkteAMcDz3wL9cSpiXqRvqsJUAbs4+w=;
+        b=pdaI6T09b4/35M8LZtfd5am6EJAi2hkvXoRBPVsi32LE8VBjR2dU2H7w8K9Ql8iAgf
+         VrbhUdwoVGL2ljic5eUiSCFsmaiCNtoueptBpiOAX8TLmIpI5z6pB8qdLSczv34d+Nv8
+         ZJSHqxyJgDo/rpNrzFxWaOCty38aakVFP7Gg6NzCpVwtv2hvrjgjoprP8QmvdZ1CRALU
+         xoi4Vdjt7+GltZVxJ8M5qAFeboZsNzHSZtxopPNx0cHM2nEGvt9LKCdEkZSm1R12TMPt
+         /OgMU7DX0mEN8j+431T3Mddp5jaf+1bIjJ8a/hYU8wjo8+OOE9ho17+xgpFYiKAeldfy
+         lk5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=iVAMGV92J/f/CkteAMcDz3wL9cSpiXqRvqsJUAbs4+w=;
+        b=DEz8nersf7WcMfA/jQJREYVeDRZBIH1Pk3+Nov5rEVjyG2sIKSRJD4u7NYwn41R2PE
+         uxM7OycgimJjmAd85cTKHUXeRVMmu7bEo9uNg0E6Awq1xsHOEviPBG0R7oIHyJPhhjIF
+         rtMqVcaeReaPOv6APYqqf0FiC9aZWRFlnTCPK8h3qjKt1gpPAWZQaRXj4D2UxJKq49WH
+         O2Zp2ne6JwvJo5HUp0dIV1UzwWsMI6jOU27sDG8/MMVqL99hp//WPCM6E1Cj/1VzRT9M
+         FaiBMvLzOPMQOS6+Z4BfhH4f1E08z5aMFFmMVVA2xGRwbfyqcUiiqNuaMhdILHEaquIg
+         gqLg==
+X-Gm-Message-State: AOAM530Gg6ej69XmeCtgsgsolyXQviLY8RHXw+uflt3BxsbUQ57EL8Vm
+        dFIYVVmVaDIV2moJPG0VLERq3FmZUVWeZ8HGmqM=
+X-Google-Smtp-Source: ABdhPJxBYeN3I1wdA2fWrBSBowJmYe8hGPdJD45A7zJciUI858z9CrZbB7j0UfSZvdn/5JVuocI+7v+FXFR9WB/DEtw=
+X-Received: by 2002:a6b:8f58:: with SMTP id r85mr2296622iod.132.1611902516781;
+ Thu, 28 Jan 2021 22:41:56 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Thu, 28 Jan 2021 20:12:38 +0200
-From:   Nut Grove Manor <manornutgrovemanor@gmail.com>
-To:     undisclosed-recipients:;
-Subject: Invitation To Quote
-User-Agent: Roundcube Webmail/1.4.1
-Message-ID: <bc9a5f43f3caae762f95ca676f59aca0@gmail.com>
-X-Sender: manornutgrovemanor@gmail.com
-X-Originating-IP: 154.0.175.203
-X-Afrihost-Domain: pesci.aserv.co.za
-X-Afrihost-Username: 154.0.175.203
-Authentication-Results: ucebox.co.za; auth=pass smtp.auth=154.0.175.203@pesci.aserv.co.za
-X-Afrihost-Outgoing-Class: unsure
-X-Afrihost-Outgoing-Evidence: Combined (0.71)
-X-Recommended-Action: accept
-X-Filter-ID: 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
-X-Report-Abuse-To: spam@spe1.ucebox.co.za
+References: <20210121000630.371883-1-yury.norov@gmail.com> <20210121000630.371883-5-yury.norov@gmail.com>
+ <YAlXMj7sIoPjZP3W@smile.fi.intel.com>
+In-Reply-To: <YAlXMj7sIoPjZP3W@smile.fi.intel.com>
+From:   Yury Norov <yury.norov@gmail.com>
+Date:   Thu, 28 Jan 2021 22:41:45 -0800
+Message-ID: <CAAH8bW8LSk4Jr_T0TZqfmzgXPQ4MMGJoN6OF664F+SGLYJG+Eg@mail.gmail.com>
+Subject: Re: [PATCH 4/6] lib: inline _find_next_bit() wrappers
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-m68k@lists.linux-m68k.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-sh@vger.kernel.org, linux-arch@vger.kernel.org,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, Arnd Bergmann <arnd@arndb.de>,
+        Dennis Zhou <dennis@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        David Sterba <dsterba@suse.com>,
+        Stefano Brivio <sbrivio@redhat.com>,
+        "Ma, Jianpeng" <jianpeng.ma@intel.com>,
+        Wei Yang <richard.weiyang@linux.alibaba.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Rasmus Villemoes <rasmus.villemoes@prevas.dk>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Good Day Sir
+On Thu, Jan 21, 2021 at 2:27 AM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> On Wed, Jan 20, 2021 at 04:06:28PM -0800, Yury Norov wrote:
+> > lib/find_bit.c declares five single-line wrappers for _find_next_bit().
+> > We may turn those wrappers to inline functions. It eliminates
+> > unneeded function calls and opens room for compile-time optimizations.
+>
+> ...
+>
+> > --- a/include/asm-generic/bitops/le.h
+> > +++ b/include/asm-generic/bitops/le.h
+> > @@ -4,6 +4,7 @@
+> >
+> >  #include <asm/types.h>
+> >  #include <asm/byteorder.h>
+> > +#include <asm-generic/bitops/find.h>
+>
+> I'm wondering if generic header inclusion should go before arch-dependent ones.
+>
+> ...
+>
+> > -#ifndef find_next_bit
+>
+> > -#ifndef find_next_zero_bit
+>
+> > -#if !defined(find_next_and_bit)
+>
+> > -#ifndef find_next_zero_bit_le
+>
+> > -#ifndef find_next_bit_le
+>
+> Shouldn't you leave these in new wrappers as well?
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
 
-We are please to invite you/your company to quote the following item
-listed
-below:
-
-Product/Model No: TM9653 PRESSURE REGULATOR
-Product Name:MEKO
-Qty. 30 units
-
-Compulsory,Kindly send your quotation
-for immediate approval.
-
-Kind Regards,
-Albert Bourla
-PFIZER B.V Supply Chain Manager
-Tel: +31(0)208080 880
-ADDRESS: Rivium Westlaan 142, 2909 LD
-Capelle aan den IJssel, Netherlands
+Could you please elaborate? Wrappers in find.h are protected, functions
+in lib/find_bit.c too. Maybe I misunderstood you?..
