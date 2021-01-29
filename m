@@ -2,54 +2,54 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2AF1308F72
-	for <lists+linux-sh@lfdr.de>; Fri, 29 Jan 2021 22:31:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 153C930900B
+	for <lists+linux-sh@lfdr.de>; Fri, 29 Jan 2021 23:28:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233378AbhA2V3m (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 29 Jan 2021 16:29:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46258 "EHLO
+        id S233238AbhA2W0w (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 29 Jan 2021 17:26:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233484AbhA2V3d (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 29 Jan 2021 16:29:33 -0500
+        with ESMTP id S232756AbhA2W0v (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 29 Jan 2021 17:26:51 -0500
 Received: from mail-io1-xd2e.google.com (mail-io1-xd2e.google.com [IPv6:2607:f8b0:4864:20::d2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9090EC061573;
-        Fri, 29 Jan 2021 13:28:31 -0800 (PST)
-Received: by mail-io1-xd2e.google.com with SMTP id d13so10846413ioy.4;
-        Fri, 29 Jan 2021 13:28:31 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 543BCC061573;
+        Fri, 29 Jan 2021 14:26:11 -0800 (PST)
+Received: by mail-io1-xd2e.google.com with SMTP id d81so10984044iof.3;
+        Fri, 29 Jan 2021 14:26:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=iKpEQgZS1QCYwcoVA/IcLJsT/QZzUi4/M7PsXGgpQfE=;
-        b=fMRZFK4ep5zSIRr70ydxpadj/9KtuXo9IlmMEwZ6aSBmmveC0Kz+0vmK1ixQQC/7Dj
-         qTJVh5F+GLeCkuf41AJz1lOvFQ2EKeYDkywPzv93VmDy76NGDbC4hM6Jz6JaAv04VqXj
-         5mX4Z3nEzvkJuXl4k0bGt1bMZhEByd2J0lAFiApkCUsNEORaDgcXtmoSEf/gJnGryNsm
-         M/iRbEHi03TsNCLtiy+nzqn3QJHBqCCkyszrVeY7L+A1akugY+wMl7wNM4ORmgnJxWIB
-         Dmhbg/tO6wMnLD80Bfd+NynUkV4ToUW2V5318Ycg8GVEZhEDerA5AWIemBVmvJ2iGmTR
-         VG1Q==
+        bh=hoREvCWvBJhszWnTWxhBJMWPAqucDBF6nB5BDpkHUw0=;
+        b=PIFrlF4KJnO5gnjnMTf+6tcWWFUUzJDvEix0/K3rnsowx/gLtBhDcAj+AdVuyLrslv
+         jvGJVBm25QCt5dkH7qVsV8lNNnLTJJke5psYyELACqmyS+R0ywhMp9JiBApUcp6V0aGx
+         i7uP+MPCtx/4u8dfGV4i0vs4FaByF/KNIRJNPLphu9gA82ARNkxGiGDc4CzOM6OG+Cuq
+         sNRnR6f9ZvRy2pLB/UCwSRUgDL97p0dVuPIpPSmygngIjhTaCVaxM2ibHkVH+G9Y731c
+         GT2SXTKy/8e1jXM9hn9bloxAsb7kP5nI/3Ssnf8EDEkmG6g6Pwg7RFfGJVSlRvBceamg
+         lWLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=iKpEQgZS1QCYwcoVA/IcLJsT/QZzUi4/M7PsXGgpQfE=;
-        b=JNvs1xdOwz4bZTjU8d76FaJTDCuFqt8Ri/M89MObsWr5b7BunU2L4Qxyoff5mM048G
-         IqmXrKnmsJgQ5NgSYM3CDNRCv0h9O+oQQo+h0xWbUnyYXAYlhr40mf6PkQaPnVqboAOe
-         Ipx0lmEeI/jfJ+vssvJpyeRhnts8PMWGnwmIrmx+s63CSAMOa4OyzxkSShTK+X288fh9
-         Sl32rmqRdD7vyjp/Os+SeVCT9RtXMjobAaVDHBoQVOZEwhTZyZy1knyHpbN147Ut/M2M
-         1uw1pCNVuOW/PlVV+js9NR46OPM5pMQfo7MnbGVBzi4cYCXOjXazUAOtfCvZXDqwDLhT
-         hNHw==
-X-Gm-Message-State: AOAM531UCpqNA/eYvLum2TJLXZVWbPbqcx/EPVilcjYL8B9+By2pTHvu
-        G0XNaT2QbNMkCY2PDUe+Ehtd8OGBhFWBhSCrmDQ=
-X-Google-Smtp-Source: ABdhPJxQHThyPfYaf7dcZ8ePzMFtwOJvGemJiselxNzpqvhf5JHQn1G8eLTOO/AEnjalkFd2AazRdzRyVOSIgCGs158=
-X-Received: by 2002:a05:6638:1344:: with SMTP id u4mr5560181jad.86.1611955711081;
- Fri, 29 Jan 2021 13:28:31 -0800 (PST)
+        bh=hoREvCWvBJhszWnTWxhBJMWPAqucDBF6nB5BDpkHUw0=;
+        b=CQYJid3xOm0g1U3tFcP2jY8FSH8bAca18DXq27RZbESpc0Vlt6WvuEURSYbAhD4OZT
+         yBdAGCR4G3G2Nt45Rjgd093Bqa1gECYXDoQ8y14g8WGo1CuGMSXDN8JA1DEYlw+HnRB6
+         sb4VEfHErTzhemJy2EPPyIxQ39icG9PPCas4wNednrCWbC/fdSuwkaJs3YN+Q0OKh9oJ
+         rDKf88awoFfGioyATi8/GBGUzyJyi5ctKxcMQFmhurPZpW++KL3m4uaJGrnITU2wh9c5
+         dpeAY9sYlaNOcNA2fiw+YDFvSeWovnyPccCWa/mslKFARIVxID/od/wr3AhEjoTKB5PI
+         Al0w==
+X-Gm-Message-State: AOAM531OAkZ5m3SEZTvuiZ3iOmzeo8XN+MJ354jFY4gKra36jmh1Jsmn
+        o48SCJ2ZXfkO18j49qJORj0/Ge3EdUqLpUrYm5s=
+X-Google-Smtp-Source: ABdhPJxqqRwK8JdT3GzdfxL9UlffqvYdRrEY1TO8ZEn68c1kU0+hz/UGOOIWZtWQ3ziRx80FGZlUDabpmvvs1WtZvG8=
+X-Received: by 2002:a6b:7501:: with SMTP id l1mr5068073ioh.92.1611959170750;
+ Fri, 29 Jan 2021 14:26:10 -0800 (PST)
 MIME-Version: 1.0
 References: <20210129204528.2118168-1-yury.norov@gmail.com>
  <20210129204528.2118168-4-yury.norov@gmail.com> <CAHp75VcSc=myrcvyBOkaUDguR6aPjJAFFXi2iSvmU21+1664Hw@mail.gmail.com>
 In-Reply-To: <CAHp75VcSc=myrcvyBOkaUDguR6aPjJAFFXi2iSvmU21+1664Hw@mail.gmail.com>
 From:   Yury Norov <yury.norov@gmail.com>
-Date:   Fri, 29 Jan 2021 13:28:20 -0800
-Message-ID: <CAAH8bW_Gt+0bC=S2HtR_B3cH-KGJQQaUQ0z0xn=aZCtBzy43yQ@mail.gmail.com>
+Date:   Fri, 29 Jan 2021 14:25:56 -0800
+Message-ID: <CAAH8bW8MKh7LjsJ-9jaCRoTGFKSK_0+Gh5RuzVu-sMCO76=Oxg@mail.gmail.com>
 Subject: Re: [PATCH 2/5] bits_per_long.h: introduce SMALL_CONST() macro
 To:     Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc:     linux-m68k <linux-m68k@lists.linux-m68k.org>,
@@ -93,53 +93,16 @@ On Fri, Jan 29, 2021 at 1:11 PM Andy Shevchenko
 >
 > > It should probably go to linux/kernel.h, but doing that creates circular
 > > dependencies. So put it in asm-generic/bitsperlong.h.
->
-> No, no, please leave kernel.h alone. It's already quite a mess.
->
-> And this shouldn't be in the commit message either.
->
-> ...
->
-> > -       if (small_const_nbits(nbits))
-> > +       if (SMALL_CONST(nbits - 1))
->
-> Not sure if we need to rename it.
 
-Lower case for generic macro kind of breaking the rules.
+[]
 
-Behaviour has changed too. Before it was:
-0 < VAL <= 32
-Now it's
-0 <= VAL < 32
-Which is better for generic macro.
-
-So changing the name looks reasonable to me.
-
-> ...
->
-> > --- a/include/linux/bits.h
-> > +++ b/include/linux/bits.h
-> > @@ -37,7 +37,7 @@
-> >  #define GENMASK(h, l) \
-> >         (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
-> >
-> > -#define BITS_FIRST(nr)         GENMASK(nr), 0)
-> > +#define BITS_FIRST(nr)         GENMASK((nr), 0)
->
-> How come?!
-
-git send-email wrong_dir/000*
-Will resubmit today later.
-
-> ...
->
 > > diff --git a/tools/include/asm-generic/bitsperlong.h b/tools/include/asm-generic/bitsperlong.h
 > > index 8f2283052333..432d272baf27 100644
 > > --- a/tools/include/asm-generic/bitsperlong.h
 > > +++ b/tools/include/asm-generic/bitsperlong.h
 >
 > I think a tools update would be better to have in a separate patch.
->
-> --
-> With Best Regards,
-> Andy Shevchenko
+
+Do you mean a single sync-patch for all tools/*, or doubling the
+patchset by splitting each patch
+to tools and kernel parts? Why is it any better than I have now?
