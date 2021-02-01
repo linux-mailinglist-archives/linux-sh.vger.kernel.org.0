@@ -2,64 +2,102 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E1CB530CF0C
-	for <lists+linux-sh@lfdr.de>; Tue,  2 Feb 2021 23:36:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F05D930A8F9
+	for <lists+linux-sh@lfdr.de>; Mon,  1 Feb 2021 14:44:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235895AbhBBWec (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 2 Feb 2021 17:34:32 -0500
-Received: from [20.39.40.203] ([20.39.40.203]:61037 "EHLO optinix.in"
-        rhost-flags-FAIL-FAIL-OK-OK) by vger.kernel.org with ESMTP
-        id S230091AbhBBWeU (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Tue, 2 Feb 2021 17:34:20 -0500
-dkim-signature: v=1; a=rsa-sha256; d=digitalsol.in; s=dkim;
-        c=relaxed/relaxed; q=dns/txt; h=From:Reply-To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
-        bh=wK2neTcOXNiSQ+RBxrnFed+mRrGUU/ndLGEgvo8IMCc=;
-        b=Z/qoYR5e93G/1E5Uh8tLreepyziGYShILI7fcXozE97A3DqZKBadv9kcBZBcmHZnqAUcLkt0g+COxgI6WqJ5gdfKqksQSW540KJaAE4DNiZ+EZYtErJhsiZnZCgjfp9yI8W2dpgN2EsH5zUvgVY6Bl2MWU8ziaGqy1DCXSk4DXXi+2CTtkJX9uQrf2ohPvP7bhav6zr4dJxTQjQYoopWjV3h9j7RqQq/UIXqX3VBjVDZARoXQTZUB0KN0A
-        F7X8DeijiSCFEdYkkdQwasjHi3K0B6KloKBXegK0TgQ39PHt5t2MVnmtmeZadY0DbdImfujjk25mqjLTG700JJRoTl9A==
-Received: from User (Unknown [52.231.31.5])
-        by optinix.in with ESMTP
-        ; Sat, 30 Jan 2021 02:14:15 +0000
-Message-ID: <B0CC978E-0149-4652-A2D0-17DE1F49BCC1@optinix.in>
-Reply-To: <ms.reem@yandex.com>
-From:   "Ms. Reem" <support@digitalsol.in>
-Subject: Re:read
-Date:   Sat, 30 Jan 2021 02:14:13 -0000
+        id S231657AbhBANoW (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 1 Feb 2021 08:44:22 -0500
+Received: from mga01.intel.com ([192.55.52.88]:27820 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231259AbhBANoW (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Mon, 1 Feb 2021 08:44:22 -0500
+IronPort-SDR: NzhAKCYhnQXi4XM/YUtH4pHJ+jygKZ/Eg9cKCW9tB8N3QjXczD+vw5qR+BeTYB068swyVbjcGf
+ guKV2pK7B0Rw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9881"; a="199578880"
+X-IronPort-AV: E=Sophos;i="5.79,392,1602572400"; 
+   d="scan'208";a="199578880"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2021 05:42:35 -0800
+IronPort-SDR: AfFKvMAXe7FVmvGMevF7putl5zn4hCdP5hNEoGE0ehdmlm6i979xyhx1vCzn0j5RAjUyNY0Q0z
+ RHxlfdNlD9MQ==
+X-IronPort-AV: E=Sophos;i="5.79,392,1602572400"; 
+   d="scan'208";a="358585103"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2021 05:42:30 -0800
+Received: from andy by smile with local (Exim 4.94)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1l6ZTG-0018vK-O7; Mon, 01 Feb 2021 15:42:26 +0200
+Date:   Mon, 1 Feb 2021 15:42:26 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Yury Norov <yury.norov@gmail.com>
+Cc:     linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-arch@vger.kernel.org,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, Arnd Bergmann <arnd@arndb.de>,
+        Dennis Zhou <dennis@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        David Sterba <dsterba@suse.com>,
+        Stefano Brivio <sbrivio@redhat.com>,
+        "Ma, Jianpeng" <jianpeng.ma@intel.com>,
+        Wei Yang <richard.weiyang@linux.alibaba.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Joe Perches <joe@perches.com>
+Subject: Re: [PATCH 4/8] lib: introduce BITS_{FIRST,LAST} macro
+Message-ID: <YBgFQmxh5dnPI6HL@smile.fi.intel.com>
+References: <20210130191719.7085-1-yury.norov@gmail.com>
+ <20210130191719.7085-5-yury.norov@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210130191719.7085-5-yury.norov@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hello,
+On Sat, Jan 30, 2021 at 11:17:15AM -0800, Yury Norov wrote:
+> BITMAP_{LAST,FIRST}_WORD_MASK() in linux/bitmap.h duplicates the
+> functionality of GENMASK(). The scope of there macros is wider than just
+> bitmap. This patch defines 4 new macros: BITS_FIRST(), BITS_LAST(),
+> BITS_FIRST_MASK() and BITS_LAST_MASK() in linux/bits.h on top of GENMASK()
+> and replaces BITMAP_{LAST,FIRST}_WORD_MASK() to avoid duplication and
+> increases scope of the macros.
 
-My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
-and Petroleum" also "Minister of State for International Cooperation"
-in UAE. I write to you on behalf of my other "three (3) colleagues"
-who has approved me to solicit for your "partnership in claiming of
-{us$47=Million}" from a Financial Home in Cambodia on their behalf and
-for our "Mutual Benefits".
+...
 
-The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
-deal with Cambodian/Vietnam Government within 2013/2014, however, we
-don't want our government to know about the fund. If this proposal
-interests you, let me know, by sending me an email and I will send to
-you detailed information on how this business would be successfully
-transacted. Be informed that nobody knows about the secret of this
-fund except us, and we know how to carry out the entire transaction.
-So I am compelled to ask, that you will stand on our behalf and
-receive this fund into any account that is solely controlled by you.
+>  include/linux/bitmap.h            | 27 ++++++++++++---------------
+>  include/linux/bits.h              |  6 ++++++
+>  include/linux/cpumask.h           |  8 ++++----
+>  include/linux/netdev_features.h   |  2 +-
+>  include/linux/nodemask.h          |  2 +-
+>  lib/bitmap.c                      | 26 +++++++++++++-------------
+>  lib/find_bit.c                    |  4 ++--
+>  lib/genalloc.c                    |  8 ++++----
 
-We will compensate you with 15% of the total amount involved as
-gratification for being our partner in this transaction. Reply to:
-ms.reem@yandex.com
+Answering to your reply. I meant to split the below to a separate patch.
 
-Regards,
-Ms. Reem.
+>  tools/include/linux/bitmap.h      | 20 ++++++--------------
+>  tools/include/linux/bits.h        |  6 ++++++
+>  tools/lib/bitmap.c                |  6 +++---
+>  tools/lib/find_bit.c              |  2 +-
+>  tools/testing/radix-tree/bitmap.c |  4 ++--
+
+...
+
+> +#define BITS_FIRST(nr)		GENMASK((nr), 0)
+> +#define BITS_LAST(nr)		GENMASK(BITS_PER_LONG - 1, (nr))
+> +
+> +#define BITS_FIRST_MASK(nr)	BITS_FIRST((nr) % BITS_PER_LONG)
+> +#define BITS_LAST_MASK(nr)	BITS_LAST((nr) % BITS_PER_LONG)
+
+Any pointers to the difference in generated code for popular architectures
+(x86. x86_64, arm, aarch64, ppc, ppc64)?
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
