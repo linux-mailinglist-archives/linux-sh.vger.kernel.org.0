@@ -2,68 +2,83 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7572A30DE63
-	for <lists+linux-sh@lfdr.de>; Wed,  3 Feb 2021 16:40:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BFF530DE15
+	for <lists+linux-sh@lfdr.de>; Wed,  3 Feb 2021 16:27:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234585AbhBCPhl (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 3 Feb 2021 10:37:41 -0500
-Received: from 198-20-226-115.unifiedlayer.com ([198.20.226.115]:56722 "EHLO
-        198-20-226-115.unifiedlayer.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S234512AbhBCPgR (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 3 Feb 2021 10:36:17 -0500
-X-Greylist: delayed 29383 seconds by postgrey-1.27 at vger.kernel.org; Wed, 03 Feb 2021 10:35:24 EST
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=carnivalassure.com.bd; s=default; h=Content-Transfer-Encoding:Content-Type:
-        Message-ID:Reply-To:Subject:To:From:Date:MIME-Version:Sender:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=miRpAdBSO5eDo01VDX+EK9bqGCmqMjXHS3kO16T6iWw=; b=BeRp52iTZNZnIj6Yk4q4qmVg1o
-        TGW3OyQQDqdIygbFzrOvnb1VFlTwDZeYzPg7x0gcAhNqpY+RPOU8XZPJCHVzHp7N6NMkd40+DlrAZ
-        BxMd0S46HbScvjeaenOH3+S94exP2AbS+FzziGjhE87mUv7G1Yf3DGvnuFRQOMF8rB7m0VxjRMPDd
-        55/dxUiSnVbBa0JImuQYYXUpRt83SOvMPmEy3tm7HhC6eVNF+f6Wxow3WBSbpKE+vZC1jXRKKl9C1
-        bK6OQxLWFq7P4uMl6BygkP9QC4QklVZQU7qWYFjfzBfV8UP2ROnwJjNJGJIyClrEEjRpgcDNFfVIx
-        4EKHpC7g==;
-Received: from [127.0.0.1] (port=46990 helo=dot.dotlines.com.sg)
-        by dot.dotlines.com.sg with esmtpa (Exim 4.93)
-        (envelope-from <noreply@carnivalassure.com.bd>)
-        id 1l7CVy-0005dS-7D; Wed, 03 Feb 2021 01:23:50 -0600
+        id S233185AbhBCP0W (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 3 Feb 2021 10:26:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39232 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233243AbhBCP0U (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 3 Feb 2021 10:26:20 -0500
+Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com [IPv6:2607:f8b0:4864:20::82a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52A23C0613D6;
+        Wed,  3 Feb 2021 07:25:38 -0800 (PST)
+Received: by mail-qt1-x82a.google.com with SMTP id h16so16686380qth.11;
+        Wed, 03 Feb 2021 07:25:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=DWUu8TQWR/FVJN1QtA9XEHxUBZiX9CVxwsUiUtU9XBU=;
+        b=ZmuIEjSDLiWkKN0ydU44pkP+rvcy2TK/o2M/xlcuZc/NPWfSUhqVdR1obr5bJ6KtCz
+         bwdwKq+K0zbKzJftY7aRxtRsNEKCQgdOxphL5+hrDB21OxF17DS+cy3U0lGFF4q1yjoy
+         Ug2Kk8/lRZPTjujvas3xiKc3SZ2Lf1aWl6JTcam8r1ohpjqcInqilbNfzWyVHGkPBznC
+         r6Dd0DHqu0ILQUsuzCdimSC+73b3lFrVW8UJcJ+ysHeyIJRqquUZTKAdSKvMxjtHVx2o
+         AH8sWmXEZ413upq7gSOCr+W5UhpgpM4eGfhxG7fXUtcx7UZ9zF78Y5GnX3lvbkN1VmOB
+         Ci0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=DWUu8TQWR/FVJN1QtA9XEHxUBZiX9CVxwsUiUtU9XBU=;
+        b=nYexjGaE6SIln7B4cNvkmDtgaFi2ZQ3xAwHKZezdxGIIWR7IXoqxmytCzu+Yk3G82J
+         xKYJ5OnDRQY1vdTSXMtG/pB2w6qbsoTrnONBLRSTO58CXp8gfxcVQO4wYkryjDr4chi7
+         g4deosWrhIcHCAJewYsFh+BY3a+mDBMZG4TYExkUFvM0+YxFKbgIMkOcWkagurGLWLdI
+         woDlX5KgOQ5XedLPtqvBucNS5m8pyHSH/Yvad3RbySVInLH3hjnjPpOgueKFPdJNll0S
+         04wAXeKkEHnc10HnyHRDdMv0LAVeaaITCp4DUnMwA45uOqOu1/bCxjTP58Yq8Oy1l+y4
+         Lj8w==
+X-Gm-Message-State: AOAM533pzFjzSCdxe7eZxbSlvjHzZJbSF6UuHGQZXdObWHpNdwYFPo1C
+        CrELcYHb/5kXohlwmbfaZWy1l+wOhJMtrLdg
+X-Google-Smtp-Source: ABdhPJzHRjwS3ez2QV3mK+M28cjiWptoPjo4CLIt5LzWVtS63fBqj9CeoihdEhg9C2g+rbgg1VWsYg==
+X-Received: by 2002:ac8:5a01:: with SMTP id n1mr2885885qta.107.1612365937656;
+        Wed, 03 Feb 2021 07:25:37 -0800 (PST)
+Received: from localhost.localdomain ([156.146.36.139])
+        by smtp.gmail.com with ESMTPSA id f14sm1814960qkl.76.2021.02.03.07.25.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Feb 2021 07:25:36 -0800 (PST)
+From:   Bhaskar Chowdhury <unixbhaskar@gmail.com>
+To:     ysato@users.sourceforge.jp, dalias@libc.org,
+        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     rdunlap@infradead.org, Bhaskar Chowdhury <unixbhaskar@gmail.com>
+Subject: [PATCH] arch: sh: kernel: Change to correct spelling archtecture to architecture in the file relocate_kernel.S
+Date:   Wed,  3 Feb 2021 20:55:21 +0530
+Message-Id: <20210203152521.16776-1-unixbhaskar@gmail.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Date:   Wed, 03 Feb 2021 01:23:49 -0600
-From:   Francois Pinault <noreply@carnivalassure.com.bd>
-To:     undisclosed-recipients:;
-Subject: Hello/Hallo
-Organization: Donation
-Reply-To: francoispinault1936@outlook.com
-Mail-Reply-To: francoispinault1936@outlook.com
-Message-ID: <6b70d71c493b5c027dd3ef878f38d028@carnivalassure.com.bd>
-X-Sender: noreply@carnivalassure.com.bd
-User-Agent: Roundcube Webmail/1.3.15
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
 Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - dot.dotlines.com.sg
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - carnivalassure.com.bd
-X-Get-Message-Sender-Via: dot.dotlines.com.sg: authenticated_id: noreply@carnivalassure.com.bd
-X-Authenticated-Sender: dot.dotlines.com.sg: noreply@carnivalassure.com.bd
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
+Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+---
+ arch/sh/kernel/relocate_kernel.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/arch/sh/kernel/relocate_kernel.S b/arch/sh/kernel/relocate_kernel.S
+index d9bf2b727b42..deda2f60a8f2 100644
+--- a/arch/sh/kernel/relocate_kernel.S
++++ b/arch/sh/kernel/relocate_kernel.S
+@@ -3,7 +3,7 @@
+  * relocate_kernel.S - put the kernel image in place to boot
+  * 2005.9.17 kogiidena@eggplant.ddo.jp
+  *
+- * LANDISK/sh4 is supported. Maybe, SH archtecture works well.
++ * LANDISK/sh4 is supported. Maybe, SH architecture works well.
+  *
+  * 2009-03-18 Magnus Damm - Added Kexec Jump support
+  */
+--
+2.26.2
 
--- 
-Hallo, ich bin Herr Francois Pinault, ich habe Ihnen gespendet. Sie 
-können mein Profil auf Wikipedia, Google oder Forbes überprüfen.
-
-Für Ihren Spendenanspruch und weitere Informationen kontaktieren Sie 
-mich umgehend unter francoispinault1936@outlook.com
-
-Mit freundlichen Grüßen,
-Herr Francois Pinault
