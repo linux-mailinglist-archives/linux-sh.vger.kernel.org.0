@@ -2,86 +2,67 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 23A4030E915
-	for <lists+linux-sh@lfdr.de>; Thu,  4 Feb 2021 02:00:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 73849310346
+	for <lists+linux-sh@lfdr.de>; Fri,  5 Feb 2021 04:11:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234385AbhBDA7w (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 3 Feb 2021 19:59:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50134 "EHLO
+        id S230111AbhBEDJx (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 4 Feb 2021 22:09:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234366AbhBDA7s (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 3 Feb 2021 19:59:48 -0500
-Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 321CFC0613D6;
-        Wed,  3 Feb 2021 16:59:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:To:Subject:Sender:
-        Reply-To:Cc:Content-ID:Content-Description;
-        bh=0HeVTQ+ZGeks5Sti3IrPW/lfwuJJN8fuz7nNyWizFOE=; b=Ka0djaTGy5uImi1hQ8/bXZ5s75
-        L/nwAJ23L/hV6+wWhm1MkgM5dA/TzlJmePp7DxjAUxv4d0uxeJjshKwLRS849RvuNwsrxAqt68J7o
-        5Dvw0PrwuaKW6y3gdmbCuhMKhfIZCTIc36ZG78a92xoIwllrwLQXdnXsmtX7p+JuNan4+6YplIsmb
-        sQVsFh6Ppv9+p893BkNzw1OVAA2CjcX3t3SOUxbV+JSGtm69jLeOGngVgT2EqvgnNJbivZVpDeCNt
-        Ktj8LKXvtzWMD4VlMyZ3DqfAH4rbBGoHpnnDybGDzt+ZA5+bBnyuAi02ohV+eqMNfzg4cPyDv3o9j
-        0QxN6UXg==;
-Received: from [2601:1c0:6280:3f0::aec2]
-        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1l7SzA-0005OT-2T; Thu, 04 Feb 2021 00:59:04 +0000
-Subject: Re: [PATCH V2] arch: sh: kernel: Fix a spelling archtecture to
- architecture in the file relocate_kernel.S
-To:     Bhaskar Chowdhury <unixbhaskar@gmail.com>,
-        ysato@users.sourceforge.jp, dalias@libc.org,
-        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20210204005046.21462-1-unixbhaskar@gmail.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <934fea12-0d1f-fc4c-3f73-70874fa2e2ca@infradead.org>
-Date:   Wed, 3 Feb 2021 16:59:00 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+        with ESMTP id S229692AbhBEDJw (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 4 Feb 2021 22:09:52 -0500
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BA89C0617A7;
+        Thu,  4 Feb 2021 19:08:43 -0800 (PST)
+Received: by mail-wr1-x42a.google.com with SMTP id g10so6020589wrx.1;
+        Thu, 04 Feb 2021 19:08:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=message-id:sender:from:mime-version:content-transfer-encoding
+         :content-description:subject:to:date:reply-to;
+        bh=hqf55dXwvcYwwL4sAkoYuOM6RPu6wxeec88n5sMRYiY=;
+        b=pQw1eYLSdTjZvZOdl5Cr4//Nr8eiEDw9Q2r5puuK9/fs8HR+SpI2v81B2bI/LyejfM
+         2JdjglncTUiZsvdsFPQ8KDuhkwkXoGq00ZFn7V20FbzvfRwQIrPSC1Ovu1CJn2HbT7s/
+         z9v3HtLkw2wrotlB+2/YXOH1RMnLOTdyDlQVn3xhNvzEYqSrPkNAmV1jeAr2YOJtJMwF
+         APP7Zvi0xmR5ZjxceEIEGO//K199AFUPYNo6lNU46fkbP9NVrobFA6ExkFnRlZNRK5Aq
+         E3ofGoeLajcBOgBNw+evKlDAbj/h7EDjZOGullekQuqh3el3+Tv7zGmEBWsDIGXprSSy
+         HSAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:sender:from:mime-version
+         :content-transfer-encoding:content-description:subject:to:date
+         :reply-to;
+        bh=hqf55dXwvcYwwL4sAkoYuOM6RPu6wxeec88n5sMRYiY=;
+        b=L3cdcsWRU7lYP0MvTfpH583+4oLUP2EBUZkLfXvJodl+fkxujZWC84vWwT1lNadKQN
+         83+GzffFy7ffySR9zV6kb45iBA3haZowXZzOIrp4sYIRq13AeGQ7JI6KRXEBAc2lRYeB
+         ZwUDg809/xjFTeBcgQRlo0BQQuNKoCG4hGc49xYZW7XcaLC88DrhJuSykw7RMFlyLNMa
+         WuVsjCfcvuwo1B6jwZvD6HLVORMIC26Qizt/3J/OKU1sXUrVK5Rg8/Kn1K8Xko6eS1v2
+         eFGGnJsZFV+PhRqrN6FAJQwDsxvWvfEfK8qlNWNRtMaYd0yI/vEEG6y+iVQfbh667zYS
+         U2LQ==
+X-Gm-Message-State: AOAM532C/e+7xc4MyAkv+anaVvwYzpzqSjRGDfmfHCia2XMIWpt+2dnp
+        3owvIpQd2Dnrc6rV//0xHTX5R/6DLxiOJQ==
+X-Google-Smtp-Source: ABdhPJypl7QfYrU8WT7a/sif0ddtG8fqAufMQ3cGVz0BrcCU9NLHB/GELTK9e37VHKCxGnApj+/dlw==
+X-Received: by 2002:adf:f183:: with SMTP id h3mr2550860wro.30.1612494522287;
+        Thu, 04 Feb 2021 19:08:42 -0800 (PST)
+Received: from [192.168.1.6] ([154.124.28.35])
+        by smtp.gmail.com with ESMTPSA id n9sm10836813wrq.41.2021.02.04.19.08.39
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Thu, 04 Feb 2021 19:08:41 -0800 (PST)
+Message-ID: <601cb6b9.1c69fb81.5ea54.2eaf@mx.google.com>
+Sender: Skylar Anderson <barr.markimmbayie@gmail.com>
+From:   calantha camara <sgt.andersonskylar0@gmail.com>
+X-Google-Original-From: calantha camara
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-In-Reply-To: <20210204005046.21462-1-unixbhaskar@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: hi dear
+To:     Recipients <calantha@vger.kernel.org>
+Date:   Fri, 05 Feb 2021 03:08:34 +0000
+Reply-To: calanthac20@gmail.com
+X-Mailer: cdcaafe51be8cdb99a1c85906066cad3d0e60e273541515a58395093a7c4e1f0eefb01d7fc4e6278706e9fb8c4dad093c3263345202970888b6b4d817f9e998c032e7d59
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 2/3/21 4:50 PM, Bhaskar Chowdhury wrote:
-> 
-> s/archtecture/architecture/
-> 
-> Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
-
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-
-Thanks.
-
-> ---
->  Changes from V1 :
->   Missed the changelog text,now included
-> 
->  arch/sh/kernel/relocate_kernel.S | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/sh/kernel/relocate_kernel.S b/arch/sh/kernel/relocate_kernel.S
-> index d9bf2b727b42..deda2f60a8f2 100644
-> --- a/arch/sh/kernel/relocate_kernel.S
-> +++ b/arch/sh/kernel/relocate_kernel.S
-> @@ -3,7 +3,7 @@
->   * relocate_kernel.S - put the kernel image in place to boot
->   * 2005.9.17 kogiidena@eggplant.ddo.jp
->   *
-> - * LANDISK/sh4 is supported. Maybe, SH archtecture works well.
-> + * LANDISK/sh4 is supported. Maybe, SH architecture works well.
->   *
->   * 2009-03-18 Magnus Damm - Added Kexec Jump support
->   */
-> --
-> 2.26.2
-> 
-
-
--- 
-~Randy
-
+do you speak Eglish
