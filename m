@@ -2,66 +2,83 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB879312E47
-	for <lists+linux-sh@lfdr.de>; Mon,  8 Feb 2021 11:00:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 38D033169BA
+	for <lists+linux-sh@lfdr.de>; Wed, 10 Feb 2021 16:06:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232021AbhBHKAN (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 8 Feb 2021 05:00:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39538 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231840AbhBHJyx (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 8 Feb 2021 04:54:53 -0500
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A4D5C0698E1
-        for <linux-sh@vger.kernel.org>; Mon,  8 Feb 2021 01:46:30 -0800 (PST)
-Received: by mail-pf1-x429.google.com with SMTP id 18so7215684pfz.3
-        for <linux-sh@vger.kernel.org>; Mon, 08 Feb 2021 01:46:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=z7Z/JdX0RhrlgqchmamXWMY47TIIKUp5Zm0+e0J1lMs=;
-        b=EBAN8kT/RdDTitIJIwHViEDhHzNJv4CIWk9rs6YltTkWZ458GA493YyOdSoiZ3kf2I
-         cdNbMkg2fZDvPvkuycg7WSARNJ/puPrDyOFIWKtgjChKMEIfkIP2Q2XVpBk+DA9Lhucn
-         6XQlMQaKQZVW2ZyZN5QBK8n9vbP0QwsOuCEl8YnAfifh/FxrfAzpfX38semmARrCGxh8
-         WFi+25A8lhFcplpes37lwhh0IayXXJWFPkoQ+knUplL4fyj/9WvmsAavsN2O11FqYU0q
-         sXGcgyuoksh1FLpl3IVpUWra/8A8W9zD+TSlCF6rCGoTQRx8E8R9VquYNvg3vN5bAAWe
-         XSXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=z7Z/JdX0RhrlgqchmamXWMY47TIIKUp5Zm0+e0J1lMs=;
-        b=pZxo/woQf8xKprPfaqVQ1k3/CkIJ4Vhf/W5HhIEmMHOiPOHCsMVqNJGJjsEo3VGbww
-         6LPjGJNOdCXemxPg7Lo4X8IiWHW7njrahwh5Rzc5UZYrPsFHuNNK2b/UlH8RuxjJaLtw
-         t8s8pDjwl2YWYlRNNUE9XX3OjydDFxoW/5AWq7yhIZKhvzRqUjIZCj4+KWQJt6nInLsg
-         f+htaveVk68W41AwZ0vSLNAovPO3uusU8ehYtUAglWf4EsCN8ROeWZJ8eDJedI386VZ8
-         R16JCPj8vKnSSvNZLZiVVKm4DyYfDvjSXHk3NnWDNfNR8rbqHBqB6i5VVoFc9fN9eGK1
-         ewcA==
-X-Gm-Message-State: AOAM532cn5eIBQb5Lu8OI7AqzF5OAGyb1K9Mzn+5HcR8oCCdYHpwDKpb
-        H9kOYHo3hp3KKZ0OtwwSQopIZK9OqV9ISwjCohg=
-X-Google-Smtp-Source: ABdhPJybDL+KhCvXPDIs57vnx74bKnUW7LRfIk9mtYaX6Td3ETIAJUIor6BltYlrl2tm2rDxnhIvTg/8Y9D/vq+/hVc=
-X-Received: by 2002:a63:c84a:: with SMTP id l10mr16253996pgi.159.1612777589348;
- Mon, 08 Feb 2021 01:46:29 -0800 (PST)
+        id S231180AbhBJPGh (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 10 Feb 2021 10:06:37 -0500
+Received: from mga11.intel.com ([192.55.52.93]:14915 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231559AbhBJPGg (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Wed, 10 Feb 2021 10:06:36 -0500
+IronPort-SDR: OjUBjc1I7rxLmkBhCJLhNlYmL8TrZFAX8XF/PA1AZ+t7EdyeyKWE7SRxhvqWK/al/lCN45sWdI
+ UzTFkvIHIO2w==
+X-IronPort-AV: E=McAfee;i="6000,8403,9890"; a="178576650"
+X-IronPort-AV: E=Sophos;i="5.81,168,1610438400"; 
+   d="scan'208";a="178576650"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2021 07:05:54 -0800
+IronPort-SDR: rvUTR4zO9Ac9wFCiTUQocCV13qof0FpfmL9rDz62UdS09OMAz7hT//IDYUybY1Dv4FczTQrnYI
+ RGo8Szcvv+iA==
+X-IronPort-AV: E=Sophos;i="5.81,168,1610438400"; 
+   d="scan'208";a="396736359"
+Received: from shao2-debian.sh.intel.com (HELO localhost) ([10.239.13.11])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2021 07:05:52 -0800
+From:   Rong Chen <rong.a.chen@intel.com>
+To:     Andrew Morton <akpm@linux-foundation.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>
+Cc:     linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Rong Chen <rong.a.chen@intel.com>,
+        kernel test robot <lkp@intel.com>
+Subject: [PATCH] scripts/recordmcount.pl: support big endian for ARCH sh
+Date:   Wed, 10 Feb 2021 23:04:35 +0800
+Message-Id: <20210210150435.2171567-1-rong.a.chen@intel.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <202101261118.GbbYSlHu-lkp@intel.com>
+References: <202101261118.GbbYSlHu-lkp@intel.com>
 MIME-Version: 1.0
-Received: by 2002:a17:90a:5d0a:0:0:0:0 with HTTP; Mon, 8 Feb 2021 01:46:29
- -0800 (PST)
-Reply-To: richadtomm@qq.com
-From:   "Mr.Richard Thomas" <tommiirrrch@gmail.com>
-Date:   Mon, 8 Feb 2021 01:46:29 -0800
-Message-ID: <CAGbSTZMAc0EF+BT96=ag5apRs+Aauw-A-2pin2QX1dEQy+tMew@mail.gmail.com>
-Subject: Re Thanks.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Dear Friend,
-I will be pleased if you can allow me to invest $104M Dollars in
-Estate Management,in your company or any area you best that will be
-of good profit to both of us
+The kernel test robot reported the following issue:
+    CC [M]  drivers/soc/litex/litex_soc_ctrl.o
+  sh4-linux-objcopy: Unable to change endianness of input file(s)
+  sh4-linux-ld: cannot find drivers/soc/litex/.tmp_gl_litex_soc_ctrl.o: No such file or directory
+  sh4-linux-objcopy: 'drivers/soc/litex/.tmp_mx_litex_soc_ctrl.o': No such file
 
-Please do well to respond including your information for more details.
+The problem is that the format of input file is elf32-shbig-linux,
+but sh4-linux-objcopy wants to output a file which format is elf32-sh-linux:
 
-Thanks.
-Mr.Richard Thomas
+  $ sh4-linux-objdump -d drivers/soc/litex/litex_soc_ctrl.o | grep format
+  drivers/soc/litex/litex_soc_ctrl.o:     file format elf32-shbig-linux
+
+Reported-by: kernel test robot <lkp@intel.com>
+Link: https://lore.kernel.org/linux-mm/202101261118.GbbYSlHu-lkp@intel.com
+Signed-off-by: Rong Chen <rong.a.chen@intel.com>
+---
+ scripts/recordmcount.pl | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/scripts/recordmcount.pl b/scripts/recordmcount.pl
+index 56c801502b9a..867860ea57da 100755
+--- a/scripts/recordmcount.pl
++++ b/scripts/recordmcount.pl
+@@ -265,7 +265,11 @@ if ($arch eq "x86_64") {
+ 
+     # force flags for this arch
+     $ld .= " -m shlelf_linux";
+-    $objcopy .= " -O elf32-sh-linux";
++    if ($endian eq "big") {
++        $objcopy .= " -O elf32-shbig-linux";
++    } else {
++        $objcopy .= " -O elf32-sh-linux";
++    }
+ 
+ } elsif ($arch eq "powerpc") {
+     my $ldemulation;
+-- 
+2.20.1
+
