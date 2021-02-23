@@ -2,67 +2,60 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C7563322355
-	for <lists+linux-sh@lfdr.de>; Tue, 23 Feb 2021 01:57:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5880A322A0F
+	for <lists+linux-sh@lfdr.de>; Tue, 23 Feb 2021 13:01:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230125AbhBWA46 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 22 Feb 2021 19:56:58 -0500
-Received: from brightrain.aerifal.cx ([216.12.86.13]:35734 "EHLO
-        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231607AbhBWA45 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 22 Feb 2021 19:56:57 -0500
-Date:   Mon, 22 Feb 2021 19:56:08 -0500
-From:   Rich Felker <dalias@libc.org>
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     Linux-sh list <linux-sh@vger.kernel.org>,
-        Rob Landley <rob@landley.net>,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: SH patches for 5.12
-Message-ID: <20210223005608.GB6965@brightrain.aerifal.cx>
-References: <31ba6e66-71f3-381c-076b-c9d9b0c5d264@physik.fu-berlin.de>
+        id S232760AbhBWL50 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 23 Feb 2021 06:57:26 -0500
+Received: from mail.jvpinto.com ([65.49.11.60]:54491 "EHLO mail.JVPinto.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232501AbhBWLyb (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Tue, 23 Feb 2021 06:54:31 -0500
+Received: from RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) by
+ RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) with Microsoft SMTP Server
+ (TLS) id 15.0.1497.2; Tue, 23 Feb 2021 03:52:35 -0800
+Received: from User (52.231.198.195) by RW-EXC1.JVPinto.com (172.32.1.13) with
+ Microsoft SMTP Server id 15.0.1497.2 via Frontend Transport; Tue, 23 Feb 2021
+ 03:52:20 -0800
+Reply-To: <ms.reem@yandex.com>
+From:   "Ms. Reem" <johnpinto@jvpinto.com>
+Subject: Hello okay
+Date:   Tue, 23 Feb 2021 11:52:34 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <31ba6e66-71f3-381c-076b-c9d9b0c5d264@physik.fu-berlin.de>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+Content-Type: text/plain; charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-ID: <933f089f49b04946b97b7d0f2a305064@RW-EXC1.JVPinto.com>
+To:     Undisclosed recipients:;
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Sun, Feb 21, 2021 at 10:42:52AM +0100, John Paul Adrian Glaubitz wrote:
-> Hi!
-> 
-> Could we get the following patches picked up for 5.12?
-> 
-> > - [PATCH] [sh] fix trivial misannotations
-> > - https://marc.info/?l=linux-kernel&m=160945707001399&w=2
-> >
-> > - [PATCH] sh: check return code of request_irq
-> > - https://marc.info/?l=linux-kernel&m=160867050030140&w=2
-> >
-> > - [PATCH] sh: boards: Fix the cacography in irq.c
-> > - https://marc.info/?l=linux-sh&m=160578410511403&w=2
-> >
-> > - [PATCH 1/2] sh: boot: add intermediate vmlinux.bin* to targets instead of extra-y
-> > - https://marc.info/?l=linux-kernel&m=161088234517301&w=2
-> >
-> > - [PATCH 2/2] sh: boot: avoid unneeded rebuilds under arch/sh/boot/compressed/
-> > - https://marc.info/?l=linux-kernel&m=161088245817344&w=2
-> >
-> > - [PATCH] maple: fix wrong return value of maple_bus_init().
-> > - https://marc.info/?l=linux-kernel&m=160635878212678&w=2
-> >
-> > - [PATCH] sh: kdump: add some attribute to function
-> > - https://marc.info/?l=linux-kernel&m=160758311622653&w=2
-> >
-> > - [PATCH] sh: kernel: traps: remove unused variable
-> > - https://marc.info/?l=linux-kernel&m=160760435528709&w=2
-> >
-> > - [PATCH] scripts/recordmcount.pl: support big endian for ARCH sh
-> > - https://marc.info/?l=linux-sh&m=161296964604229&w=2
+Hello,
 
-Thanks! The last one seems to be upstream already and the rest LGTM.
-I've applied them and will do some smoke checks now and then prepare
-for -next.
+My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
+and Petroleum" also "Minister of State for International Cooperation"
+in UAE. I write to you on behalf of my other "three (3) colleagues"
+who has approved me to solicit for your "partnership in claiming of
+{us$47=Million}" from a Financial Home in Cambodia on their behalf and
+for our "Mutual Benefits".
 
-Rich
+The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
+deal with Cambodian/Vietnam Government within 2013/2014, however, we
+don't want our government to know about the fund. If this proposal
+interests you, let me know, by sending me an email and I will send to
+you detailed information on how this business would be successfully
+transacted. Be informed that nobody knows about the secret of this
+fund except us, and we know how to carry out the entire transaction.
+So I am compelled to ask, that you will stand on our behalf and
+receive this fund into any account that is solely controlled by you.
+
+We will compensate you with 15% of the total amount involved as
+gratification for being our partner in this transaction. Reply to:
+ms.reem@yandex.com
+
+Regards,
+Ms. Reem.
