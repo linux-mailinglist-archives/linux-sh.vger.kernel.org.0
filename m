@@ -2,25 +2,25 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A3F8B324B31
-	for <lists+linux-sh@lfdr.de>; Thu, 25 Feb 2021 08:25:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C5C5326F65
+	for <lists+linux-sh@lfdr.de>; Sat, 27 Feb 2021 23:36:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232596AbhBYHYy (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 25 Feb 2021 02:24:54 -0500
-Received: from mail.jvpinto.com ([65.49.11.60]:34123 "EHLO mail.JVPinto.com"
+        id S230264AbhB0WfM (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sat, 27 Feb 2021 17:35:12 -0500
+Received: from mail.jvpinto.com ([65.49.11.60]:42077 "EHLO mail.JVPinto.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229566AbhBYHYd (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Thu, 25 Feb 2021 02:24:33 -0500
+        id S230001AbhB0We7 (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Sat, 27 Feb 2021 17:34:59 -0500
 Received: from RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) by
  RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) with Microsoft SMTP Server
- (TLS) id 15.0.1497.2; Wed, 24 Feb 2021 23:20:13 -0800
-Received: from User (51.13.72.83) by RW-EXC1.JVPinto.com (172.32.1.13) with
- Microsoft SMTP Server id 15.0.1497.2 via Frontend Transport; Wed, 24 Feb 2021
- 23:19:55 -0800
+ (TLS) id 15.0.1497.2; Sat, 27 Feb 2021 14:33:46 -0800
+Received: from User (52.231.198.195) by RW-EXC1.JVPinto.com (172.32.1.13) with
+ Microsoft SMTP Server id 15.0.1497.2 via Frontend Transport; Sat, 27 Feb 2021
+ 14:33:32 -0800
 Reply-To: <ms.reem@yandex.com>
 From:   "Ms. Reem" <johnpinto@jvpinto.com>
 Subject: Hello okay
-Date:   Thu, 25 Feb 2021 07:20:13 +0000
+Date:   Sat, 27 Feb 2021 22:33:46 +0000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="Windows-1251"
 Content-Transfer-Encoding: 7bit
@@ -28,7 +28,7 @@ X-Priority: 3
 X-MSMail-Priority: Normal
 X-Mailer: Microsoft Outlook Express 6.00.2600.0000
 X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID: <2bee6e9d04fe41d6afe289b4526d1e70@RW-EXC1.JVPinto.com>
+Message-ID: <837a988e66554c5d95b18ae85648d3d7@RW-EXC1.JVPinto.com>
 To:     Undisclosed recipients:;
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
