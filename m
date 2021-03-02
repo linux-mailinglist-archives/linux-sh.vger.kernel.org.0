@@ -2,62 +2,43 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AEC132B19C
-	for <lists+linux-sh@lfdr.de>; Wed,  3 Mar 2021 04:47:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 600B032B1B6
+	for <lists+linux-sh@lfdr.de>; Wed,  3 Mar 2021 04:47:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352252AbhCCDaK (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 2 Mar 2021 22:30:10 -0500
-Received: from mout.kundenserver.de ([212.227.126.133]:60931 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1449234AbhCBQQy (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 2 Mar 2021 11:16:54 -0500
-Received: from mail-oi1-f180.google.com ([209.85.167.180]) by
- mrelayeu.kundenserver.de (mreue012 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1M2Plu-1lDEon1NBG-003t4f for <linux-sh@vger.kernel.org>; Tue, 02 Mar 2021
- 15:38:27 +0100
-Received: by mail-oi1-f180.google.com with SMTP id i21so19871898oii.2
-        for <linux-sh@vger.kernel.org>; Tue, 02 Mar 2021 06:38:27 -0800 (PST)
-X-Gm-Message-State: AOAM530ctLEpj9qcfJhE5w9kpemKS4pB0Im9Tb5Dev+hRC/j5cGv+Bos
-        ox7ka9Vcoz4+8tt0ZtnzOz2CYqHt9tXc0BI50zI=
-X-Google-Smtp-Source: ABdhPJzoPYrGk8bBnJqjD82kuoC5O68yK9AIcfX+sWUw5qJtguiDhjNwmJbQD86O91PPoYXBEKUo/wDCTOIaYRLUn6Y=
-X-Received: by 2002:aca:c381:: with SMTP id t123mr3440327oif.4.1614695906100;
- Tue, 02 Mar 2021 06:38:26 -0800 (PST)
-MIME-Version: 1.0
-References: <31ba6e66-71f3-381c-076b-c9d9b0c5d264@physik.fu-berlin.de>
- <20210223005608.GB6965@brightrain.aerifal.cx> <f9de2ff4-dc47-4f4f-397a-00c84ac1e81d@physik.fu-berlin.de>
- <20210302140308.GJ32655@brightrain.aerifal.cx> <CAMuHMdXEbD13AG9m1PJVyVpg3=QUDMHG_LQuEyYc2bwrLHU-xQ@mail.gmail.com>
- <CAK8P3a1oCxj411vPQ9HiZpXBRQt3evP0o9RiFv6DPd9Ru2UHWQ@mail.gmail.com> <CAMuHMdU4t1Dek6me6crjFYqnNUUTwOwrXxwScPLc6mB35XxGbg@mail.gmail.com>
-In-Reply-To: <CAMuHMdU4t1Dek6me6crjFYqnNUUTwOwrXxwScPLc6mB35XxGbg@mail.gmail.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Tue, 2 Mar 2021 15:38:09 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a0hGKkD9YSjT9UOZdWAUrOB8wM9uMMdEzrW3-1nD7r29g@mail.gmail.com>
-Message-ID: <CAK8P3a0hGKkD9YSjT9UOZdWAUrOB8wM9uMMdEzrW3-1nD7r29g@mail.gmail.com>
-Subject: Re: SH patches for 5.12
+        id S1352261AbhCCDa2 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 2 Mar 2021 22:30:28 -0500
+Received: from brightrain.aerifal.cx ([216.12.86.13]:41156 "EHLO
+        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1579342AbhCBQrJ (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 2 Mar 2021 11:47:09 -0500
+Date:   Tue, 2 Mar 2021 09:48:05 -0500
+From:   Rich Felker <dalias@libc.org>
 To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Rich Felker <dalias@libc.org>,
+Cc:     Arnd Bergmann <arnd@arndb.de>,
         John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
         Linux-sh list <linux-sh@vger.kernel.org>,
         Rob Landley <rob@landley.net>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:fa9qdAMRj+uMQbksmiACDvNB5jMjvMqZkjmcgTOQKaQHqC1ibua
- 9OxSNI31xf3lSy62QhRKfa1T1n3t87uHdWlnHfCDrx5XU8u0Dx6etw+5urCqDWinnLHrEVU
- UeUBsrAVIN/rzLU/WqagluXpVTZ2Hh7VeX9KmE5efyYu+eaKzVPum77Rxxkg9Nl34o6BUIP
- E6alpqBS4hn3KdhxZY6vA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:5gVTZLXmtI0=:6jCPPjej+UAL3m2tD7kRHd
- fFV7R2Ip4n5fD12PnIz6krKxMc6NI28Zur5BM34esN3bHo0g3blcSWFbKy2gOCeM1cDMwRm06
- KY2iZvhNKM7TuvM9/u7gEUkoLAeRbuCTeEml2v9E68+/rYk8DSqqsfJtpVn0Ry3X/haAj4n5J
- YfSnHcTYVusgtCY/8exeXxIvKtSn/cRgPic1SwH1Mzvhhe5ZR30XIEKpMRbeTjtFavTrnFDjr
- Lm8d//3AUapVJHMWdvnargM4U5QzV8gFypfqcsdhi9drMn4mm113Z0EaTooo/r50ynJw33Ooz
- ylp1/kiFue0lfn/z9zk0H3gheJJTFIq9FeASFDI2T+FxeCRedlVgr1Hb1fMmx30kLs2beq2jj
- et3YXQmD0UKNJND9Y+1QpN/OX9r1p4hS3NyqyFw/T9oJPXZrF9tvoYCeWr/E+hNjSjRQzHVmW
- 5MspZYToBPk9T4aVumtZtr2cPHil7d9FjaZCNiug1HnM8J/lT9GhDXLxm4S3f5RycPREstAeR
- 7fJrd4Yk/oYX5dFtvwqhOTxzBOeJeVgRK3r0T2fZWrcgyzqeYEXAY7W0uA+PIWc2Q==
+Subject: Re: SH patches for 5.12
+Message-ID: <20210302144803.GK32655@brightrain.aerifal.cx>
+References: <31ba6e66-71f3-381c-076b-c9d9b0c5d264@physik.fu-berlin.de>
+ <20210223005608.GB6965@brightrain.aerifal.cx>
+ <f9de2ff4-dc47-4f4f-397a-00c84ac1e81d@physik.fu-berlin.de>
+ <20210302140308.GJ32655@brightrain.aerifal.cx>
+ <CAMuHMdXEbD13AG9m1PJVyVpg3=QUDMHG_LQuEyYc2bwrLHU-xQ@mail.gmail.com>
+ <CAK8P3a1oCxj411vPQ9HiZpXBRQt3evP0o9RiFv6DPd9Ru2UHWQ@mail.gmail.com>
+ <CAMuHMdU4t1Dek6me6crjFYqnNUUTwOwrXxwScPLc6mB35XxGbg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdU4t1Dek6me6crjFYqnNUUTwOwrXxwScPLc6mB35XxGbg@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Tue, Mar 2, 2021 at 3:33 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+On Tue, Mar 02, 2021 at 03:33:58PM +0100, Geert Uytterhoeven wrote:
+> Hi Arnd,
+> 
 > On Tue, Mar 2, 2021 at 3:27 PM Arnd Bergmann <arnd@arndb.de> wrote:
 > > On Tue, Mar 2, 2021 at 3:17 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
 > > > On Tue, Mar 2, 2021 at 3:03 PM Rich Felker <dalias@libc.org> wrote:
@@ -90,17 +71,18 @@ On Tue, Mar 2, 2021 at 3:33 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
 > >
 > > I thought these were fundamentally architecture specific. Is it even
 > > possible to declare them properly?
->
+> 
 > AFAIK their asm implementation, and if the compiler generates calls
 > to them, is architecture-specific.  The C versions are identical.
->
+> 
 > In fact we do have shared C implementations in lib/.
 > And at least __ashldi3() and __ashrdi3() are identical for SH and lib/,
 > so the latter should be used.
 
-Ah, makes sense. Anything that has an implementation in lib/ is
-probably generic anyway. I got a little confused because on ARM
-there are separate names for these based on the ABI (oabi/eabi),
-with the default version using non-generic names.
+I haven't looked at the code, but are you sure this is okay? C
+implementations of variable bitshift seem subject to the compiler
+auto-replacing them with <<n and >>n, which would then create a
+recursive definition on archs (pre-sh3 only) that don't have a barrel
+shift instruction and need the library calls.
 
-        Arnd
+Rich
