@@ -2,15 +2,15 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A173932B155
-	for <lists+linux-sh@lfdr.de>; Wed,  3 Mar 2021 04:46:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C22132B193
+	for <lists+linux-sh@lfdr.de>; Wed,  3 Mar 2021 04:46:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235230AbhCCDZi (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 2 Mar 2021 22:25:38 -0500
-Received: from brightrain.aerifal.cx ([216.12.86.13]:40998 "EHLO
+        id S1352244AbhCCD3w (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 2 Mar 2021 22:29:52 -0500
+Received: from brightrain.aerifal.cx ([216.12.86.13]:41114 "EHLO
         brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1448449AbhCBOUe (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 2 Mar 2021 09:20:34 -0500
+        with ESMTP id S1445824AbhCBQDE (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 2 Mar 2021 11:03:04 -0500
 Date:   Tue, 2 Mar 2021 09:03:09 -0500
 From:   Rich Felker <dalias@libc.org>
 To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
