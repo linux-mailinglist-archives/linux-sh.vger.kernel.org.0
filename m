@@ -2,88 +2,94 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 26C6332B149
-	for <lists+linux-sh@lfdr.de>; Wed,  3 Mar 2021 04:46:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D7E732B15A
+	for <lists+linux-sh@lfdr.de>; Wed,  3 Mar 2021 04:46:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234211AbhCCDZT (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 2 Mar 2021 22:25:19 -0500
-Received: from mail-vk1-f178.google.com ([209.85.221.178]:43172 "EHLO
-        mail-vk1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1448194AbhCBOSm (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 2 Mar 2021 09:18:42 -0500
-Received: by mail-vk1-f178.google.com with SMTP id v66so4442424vkd.10
-        for <linux-sh@vger.kernel.org>; Tue, 02 Mar 2021 06:17:42 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=YfTtIyi6vKyh3cIWCLEwCZm9DnD3dQqJgBP7oiKcusg=;
-        b=PbTzmphdMaMSGOTykyNF4ttJJKe9vH/kLd+NqJLb+OAK+Gzu/e2rX1NvDYw78OemIE
-         mknDP7icJjb+wWH7GP1EetXg1fvJvhnwkJYAj/XsLbqKwYwNZ//+onbQ7zCuiRvUTnb/
-         LwFJWIMkiWKU52sN0Eb+hhwL1+XZ5TeFZWlAaiIg2vq2/IIzfJK0StcIjLjSGOHj/ga1
-         ONOQN1UE0TJKfhnd9yiggyWg+vSIK8ZM8p83HiyHaSvTuhPNeE4MzEyH9EfqKlcxwTyw
-         /IRWdqwnOZVsAZz/LLFjOC3GxNBEsIkoRHUU6e4YM/qhgppVcIQlO8uLIP0qsSRY9OCu
-         K2nw==
-X-Gm-Message-State: AOAM533CTc6ct2adY51ncvHkD6g7lHo/LQ+2oH065j7pidKlDKXJMPOs
-        DBFY52HBvE91g5q0FY4JQWkhyyyxdhnl3JXX1+w=
-X-Google-Smtp-Source: ABdhPJxvo2Ml2NwFUj1MZTDBKjY09k4EnJnmqVSvR9DQfU6A6Z1ZjYIhqUrLpd6Fl0gpql1L0Ob1K/yL0hmxGRRzdWE=
-X-Received: by 2002:a1f:2502:: with SMTP id l2mr2118931vkl.5.1614694637142;
- Tue, 02 Mar 2021 06:17:17 -0800 (PST)
+        id S234990AbhCCD0B (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 2 Mar 2021 22:26:01 -0500
+Received: from mout.kundenserver.de ([217.72.192.73]:40069 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1384484AbhCBPFU (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 2 Mar 2021 10:05:20 -0500
+Received: from mail-ot1-f44.google.com ([209.85.210.44]) by
+ mrelayeu.kundenserver.de (mreue108 [213.165.67.113]) with ESMTPSA (Nemesis)
+ id 1MV6Bs-1lODGF0mdq-00S3Tq for <linux-sh@vger.kernel.org>; Tue, 02 Mar 2021
+ 15:27:33 +0100
+Received: by mail-ot1-f44.google.com with SMTP id w3so368147oti.8
+        for <linux-sh@vger.kernel.org>; Tue, 02 Mar 2021 06:27:32 -0800 (PST)
+X-Gm-Message-State: AOAM5335N5iQ3RNRlnO32XawYx7/WiSE03gQdhCVcOAR2Qs/tm6B9f8J
+        ZLAErtM6holI8NrNzVGNhSZvQ+hh5FktZUF3TKs=
+X-Google-Smtp-Source: ABdhPJyejjDPCDQtcMN9RqrSezjuZL2iR4FDcSK6/fB0iECjJgNdP4eO5op5lQ79rFPTVsoKRy3US3m0s26pVZ/KJjY=
+X-Received: by 2002:a9d:7f11:: with SMTP id j17mr18751458otq.251.1614695251910;
+ Tue, 02 Mar 2021 06:27:31 -0800 (PST)
 MIME-Version: 1.0
 References: <31ba6e66-71f3-381c-076b-c9d9b0c5d264@physik.fu-berlin.de>
  <20210223005608.GB6965@brightrain.aerifal.cx> <f9de2ff4-dc47-4f4f-397a-00c84ac1e81d@physik.fu-berlin.de>
- <20210302140308.GJ32655@brightrain.aerifal.cx>
-In-Reply-To: <20210302140308.GJ32655@brightrain.aerifal.cx>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 2 Mar 2021 15:17:05 +0100
-Message-ID: <CAMuHMdXEbD13AG9m1PJVyVpg3=QUDMHG_LQuEyYc2bwrLHU-xQ@mail.gmail.com>
+ <20210302140308.GJ32655@brightrain.aerifal.cx> <CAMuHMdXEbD13AG9m1PJVyVpg3=QUDMHG_LQuEyYc2bwrLHU-xQ@mail.gmail.com>
+In-Reply-To: <CAMuHMdXEbD13AG9m1PJVyVpg3=QUDMHG_LQuEyYc2bwrLHU-xQ@mail.gmail.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Tue, 2 Mar 2021 15:27:15 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a1oCxj411vPQ9HiZpXBRQt3evP0o9RiFv6DPd9Ru2UHWQ@mail.gmail.com>
+Message-ID: <CAK8P3a1oCxj411vPQ9HiZpXBRQt3evP0o9RiFv6DPd9Ru2UHWQ@mail.gmail.com>
 Subject: Re: SH patches for 5.12
-To:     Rich Felker <dalias@libc.org>
-Cc:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Rich Felker <dalias@libc.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
         Linux-sh list <linux-sh@vger.kernel.org>,
-        Rob Landley <rob@landley.net>, Arnd Bergmann <arnd@arndb.de>
+        Rob Landley <rob@landley.net>
 Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:fXNovOwwmLWZ/icNvLs5P5a/6rcrVy3YpvxaIf6X0Czy/Ugq/n+
+ RjgYZcaw1/Sd3NJnKpHINpZUN9NuXDeJfE4W2xiyrOHeqLDuOFjTq7bXCafkd3581BKFQcS
+ EfzeYzj4W0dfquhJ7Jknu756BUsov+TxEhK5wptfaCyC4sr7C9SzrJguOcNvjMhNzQpFcrp
+ QOD3v9lq27XWL5+G/GbVw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:M9Gn+V3KyB8=:R0b+xwUowKQXrGG4yDsoC/
+ 2hQiFfKp9GPsQoVpo/jB5GA8XU2v04Oz+uhN01lJJrWqSQXryjD+GLwYkIjQxhcSEjutXFsSz
+ Rn/0w0tOCQRRDnBFY4Sak2XeRxvrNf1EFE1K4tnI2y3bKm9e6xy+ate2LeM0SJwrJU5eC4Ni1
+ 4wACEn0b/ju44YNQU2SQ0wtxSHtSyCbXbBo5eWX9CxEu3oTsbMWQBZl3i5vgfy8a4JzsWrcVj
+ 0e+Uc73qbN6Mqu3GoV9tos3QArxSK5AWMk6tYxpM+LHFuoB+O425d//AtIX8WhDjFIDhRBa7o
+ 07M6u4FzK3zW7wM2Izt2az3F89u85QPECn7rxtK8Cidmc6klKP0OD2iEQGkFxQI90T2Ymw4gD
+ mOQDxVn0esABUttRtyy/CbYr1nQRiq16OQcI8YuFBkZ9dxzw7ztC3/rpffhDw
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Rich,
-
-On Tue, Mar 2, 2021 at 3:03 PM Rich Felker <dalias@libc.org> wrote:
-> On Tue, Mar 02, 2021 at 09:51:23AM +0100, John Paul Adrian Glaubitz wrote:
-> > On 2/23/21 1:56 AM, Rich Felker wrote:
-> > > Thanks! The last one seems to be upstream already and the rest LGTM.
-> > > I've applied them and will do some smoke checks now and then prepare
-> > > for -next.
+On Tue, Mar 2, 2021 at 3:17 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> On Tue, Mar 2, 2021 at 3:03 PM Rich Felker <dalias@libc.org> wrote:
+> > On Tue, Mar 02, 2021 at 09:51:23AM +0100, John Paul Adrian Glaubitz wrote:
+> > > On 2/23/21 1:56 AM, Rich Felker wrote:
+> > > > Thanks! The last one seems to be upstream already and the rest LGTM.
+> > > > I've applied them and will do some smoke checks now and then prepare
+> > > > for -next.
+> > >
+> > > Any timeline for when the PR is sent to Linus?
 > >
-> > Any timeline for when the PR is sent to Linus?
+> > They're in next but I got a warning from the bot on one (7ec713058f21)
+> > and haven't checked it in detail yet. In case you have a quick idea:
+> >
+> > [linux-next:master 11837/12788] arch/sh/boot/compressed/../../lib/ashldi3.c:6:11: warning: no previous prototype for '__ashldi3'
+> >
+> > Maybe it's just a duplicate of a warning that was already there and
+> > that should be dealt with too.
 >
-> They're in next but I got a warning from the bot on one (7ec713058f21)
-> and haven't checked it in detail yet. In case you have a quick idea:
+> I think that can be ignored safely: similar functions like __ashrdi3()
+> also lack forward declarations on SH.
 >
-> [linux-next:master 11837/12788] arch/sh/boot/compressed/../../lib/ashldi3.c:6:11: warning: no previous prototype for '__ashldi3'
+> Looks like only microblaze and powerpc do have forward declarations
+> for the gcc helpers:
+> arch/microblaze/lib/libgcc.h
+> arch/powerpc/include/asm/asm-prototypes.h
 >
-> Maybe it's just a duplicate of a warning that was already there and
-> that should be dealt with too.
+> One day we may move them to asm-generic, and start using them
+> everywhere...
 
-I think that can be ignored safely: similar functions like __ashrdi3()
-also lack forward declarations on SH.
+I thought these were fundamentally architecture specific. Is it even
+possible to declare them properly?
 
-Looks like only microblaze and powerpc do have forward declarations
-for the gcc helpers:
-arch/microblaze/lib/libgcc.h
-arch/powerpc/include/asm/asm-prototypes.h
+Note that the '-Wmissing-prototype' warning is currently not enabled
+by default, only if you use 'make W=1', or alternatively the corresponding
+sparse warning with 'make C=1'. There is however ongoing work from
+Lee Jones and others to address all W=1 warnings and then enable
+these by default.
 
-One day we may move them to asm-generic, and start using them
-everywhere...
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+       Arnd
