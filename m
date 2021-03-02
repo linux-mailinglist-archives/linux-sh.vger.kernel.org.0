@@ -2,64 +2,51 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C12132B13A
-	for <lists+linux-sh@lfdr.de>; Wed,  3 Mar 2021 04:46:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E00B032B1AE
+	for <lists+linux-sh@lfdr.de>; Wed,  3 Mar 2021 04:47:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231398AbhCCDRV (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 2 Mar 2021 22:17:21 -0500
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:41381 "EHLO
-        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1377990AbhCBIwi (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 2 Mar 2021 03:52:38 -0500
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.94)
-          with esmtps (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1lH0kX-0017cq-1K; Tue, 02 Mar 2021 09:51:25 +0100
-Received: from dynamic-089-012-163-039.89.12.pool.telefonica.de ([89.12.163.39] helo=[192.168.1.10])
-          by inpost2.zedat.fu-berlin.de (Exim 4.94)
-          with esmtpsa (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1lH0kW-003yN0-Qg; Tue, 02 Mar 2021 09:51:24 +0100
-Subject: Re: SH patches for 5.12
-To:     Rich Felker <dalias@libc.org>
+        id S1352257AbhCCDaX (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 2 Mar 2021 22:30:23 -0500
+Received: from brightrain.aerifal.cx ([216.12.86.13]:41144 "EHLO
+        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1839542AbhCBQhZ (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 2 Mar 2021 11:37:25 -0500
+Date:   Tue, 2 Mar 2021 09:03:09 -0500
+From:   Rich Felker <dalias@libc.org>
+To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Cc:     Linux-sh list <linux-sh@vger.kernel.org>,
         Rob Landley <rob@landley.net>,
         Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: SH patches for 5.12
+Message-ID: <20210302140308.GJ32655@brightrain.aerifal.cx>
 References: <31ba6e66-71f3-381c-076b-c9d9b0c5d264@physik.fu-berlin.de>
  <20210223005608.GB6965@brightrain.aerifal.cx>
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Message-ID: <f9de2ff4-dc47-4f4f-397a-00c84ac1e81d@physik.fu-berlin.de>
-Date:   Tue, 2 Mar 2021 09:51:23 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+ <f9de2ff4-dc47-4f4f-397a-00c84ac1e81d@physik.fu-berlin.de>
 MIME-Version: 1.0
-In-Reply-To: <20210223005608.GB6965@brightrain.aerifal.cx>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 89.12.163.39
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f9de2ff4-dc47-4f4f-397a-00c84ac1e81d@physik.fu-berlin.de>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi!
+On Tue, Mar 02, 2021 at 09:51:23AM +0100, John Paul Adrian Glaubitz wrote:
+> Hi!
+> 
+> On 2/23/21 1:56 AM, Rich Felker wrote:
+> > Thanks! The last one seems to be upstream already and the rest LGTM.
+> > I've applied them and will do some smoke checks now and then prepare
+> > for -next.
+> 
+> Any timeline for when the PR is sent to Linus?
 
-On 2/23/21 1:56 AM, Rich Felker wrote:
-> Thanks! The last one seems to be upstream already and the rest LGTM.
-> I've applied them and will do some smoke checks now and then prepare
-> for -next.
+They're in next but I got a warning from the bot on one (7ec713058f21)
+and haven't checked it in detail yet. In case you have a quick idea:
 
-Any timeline for when the PR is sent to Linus?
+[linux-next:master 11837/12788] arch/sh/boot/compressed/../../lib/ashldi3.c:6:11: warning: no previous prototype for '__ashldi3'
 
-Adrian
+Maybe it's just a duplicate of a warning that was already there and
+that should be dealt with too.
 
--- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer - glaubitz@debian.org
-`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
-
+Rich
