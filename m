@@ -2,75 +2,102 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 63FA232B16E
-	for <lists+linux-sh@lfdr.de>; Wed,  3 Mar 2021 04:46:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CA5132B192
+	for <lists+linux-sh@lfdr.de>; Wed,  3 Mar 2021 04:46:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234333AbhCCD0i (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 2 Mar 2021 22:26:38 -0500
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:43129 "EHLO
-        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1573848AbhCBPNq (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 2 Mar 2021 10:13:46 -0500
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.94)
-          with esmtps (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1lH64T-003pNJ-0f; Tue, 02 Mar 2021 15:32:21 +0100
-Received: from dslb-092-078-035-231.092.078.pools.vodafone-ip.de ([92.78.35.231] helo=[192.168.178.45])
-          by inpost2.zedat.fu-berlin.de (Exim 4.94)
-          with esmtpsa (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1lH64S-000cCH-QJ; Tue, 02 Mar 2021 15:32:20 +0100
-Subject: Re: SH patches for 5.12
-To:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Rich Felker <dalias@libc.org>
-Cc:     Linux-sh list <linux-sh@vger.kernel.org>,
-        Rob Landley <rob@landley.net>, Arnd Bergmann <arnd@arndb.de>
-References: <31ba6e66-71f3-381c-076b-c9d9b0c5d264@physik.fu-berlin.de>
- <20210223005608.GB6965@brightrain.aerifal.cx>
- <f9de2ff4-dc47-4f4f-397a-00c84ac1e81d@physik.fu-berlin.de>
- <20210302140308.GJ32655@brightrain.aerifal.cx>
- <CAMuHMdXEbD13AG9m1PJVyVpg3=QUDMHG_LQuEyYc2bwrLHU-xQ@mail.gmail.com>
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Message-ID: <66978ea5-dce2-0501-677d-7d10d8674bf9@physik.fu-berlin.de>
-Date:   Tue, 2 Mar 2021 15:32:20 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+        id S1352228AbhCCD3F (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 2 Mar 2021 22:29:05 -0500
+Received: from mail-yb1-f169.google.com ([209.85.219.169]:46712 "EHLO
+        mail-yb1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1351448AbhCBPsk (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 2 Mar 2021 10:48:40 -0500
+Received: by mail-yb1-f169.google.com with SMTP id h82so7361020ybc.13
+        for <linux-sh@vger.kernel.org>; Tue, 02 Mar 2021 07:47:56 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=HDdtGyn77Du57SsvPhYLRJ6/ttTCZkENrTmhSHW7aFc=;
+        b=flwWdyTb7oep69y5W6kZIlDBNIaz358f7Bc9t4DqFmoQtG7qe52OfUxJWLZuyRo3ds
+         AUOeRJ6WrQJ1N5e1p1zypavnZxkRoc4VLKwFt6Pb8js2UjKR8lk92XOSoaT1t0H0IDlW
+         tHGqJXJPRujuM6lbcZ1OfkzM5ZDmE+WwWt2ls8d1xjZ4ueMuq29McZn5Txq011OdycBi
+         g4wb9MBP0UZmI2C/G0j5/C7U7KMuAHx4THzu/cY7kFOy54sL7YXINUIAw1XMRp6YSKxm
+         081d3F6XZfGCBvyKtUOFoJ+UIGbXsEH8UyHxQiQERZ9U7KfBAyFAf7zsd346l6AaDxAQ
+         IK7A==
+X-Gm-Message-State: AOAM533OkRcxzGyf+dVL/Nz0HS+DiQun7+00mtUbtPdDcfCvBkL1h010
+        dd1btRH8pKhm8uF4VVoBLmPSldWSBFPSSBzBMT6wqMIzDjs=
+X-Google-Smtp-Source: ABdhPJwhKR9cPSMniWRwIKs0oExcycLWXPwBYEZuPCZzqbS9pExQPej7qGthEl9MCCIvfpqnUIYj6zquAwqCGegA3SA=
+X-Received: by 2002:a9f:35a1:: with SMTP id t30mr11762813uad.106.1614695650074;
+ Tue, 02 Mar 2021 06:34:10 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <CAMuHMdXEbD13AG9m1PJVyVpg3=QUDMHG_LQuEyYc2bwrLHU-xQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 92.78.35.231
+References: <31ba6e66-71f3-381c-076b-c9d9b0c5d264@physik.fu-berlin.de>
+ <20210223005608.GB6965@brightrain.aerifal.cx> <f9de2ff4-dc47-4f4f-397a-00c84ac1e81d@physik.fu-berlin.de>
+ <20210302140308.GJ32655@brightrain.aerifal.cx> <CAMuHMdXEbD13AG9m1PJVyVpg3=QUDMHG_LQuEyYc2bwrLHU-xQ@mail.gmail.com>
+ <CAK8P3a1oCxj411vPQ9HiZpXBRQt3evP0o9RiFv6DPd9Ru2UHWQ@mail.gmail.com>
+In-Reply-To: <CAK8P3a1oCxj411vPQ9HiZpXBRQt3evP0o9RiFv6DPd9Ru2UHWQ@mail.gmail.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 2 Mar 2021 15:33:58 +0100
+Message-ID: <CAMuHMdU4t1Dek6me6crjFYqnNUUTwOwrXxwScPLc6mB35XxGbg@mail.gmail.com>
+Subject: Re: SH patches for 5.12
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Rich Felker <dalias@libc.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        Rob Landley <rob@landley.net>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 3/2/21 3:17 PM, Geert Uytterhoeven wrote:
->> Maybe it's just a duplicate of a warning that was already there and
->> that should be dealt with too.
-> 
-> I think that can be ignored safely: similar functions like __ashrdi3()
-> also lack forward declarations on SH.
-> 
-> Looks like only microblaze and powerpc do have forward declarations
-> for the gcc helpers:
-> arch/microblaze/lib/libgcc.h
-> arch/powerpc/include/asm/asm-prototypes.h
-> 
-> One day we may move them to asm-generic, and start using them
-> everywhere...
+Hi Arnd,
 
-OK. Then let's send the PR for 5.12 and tackle this for 5.13?
+On Tue, Mar 2, 2021 at 3:27 PM Arnd Bergmann <arnd@arndb.de> wrote:
+> On Tue, Mar 2, 2021 at 3:17 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> > On Tue, Mar 2, 2021 at 3:03 PM Rich Felker <dalias@libc.org> wrote:
+> > > On Tue, Mar 02, 2021 at 09:51:23AM +0100, John Paul Adrian Glaubitz wrote:
+> > > > On 2/23/21 1:56 AM, Rich Felker wrote:
+> > > > > Thanks! The last one seems to be upstream already and the rest LGTM.
+> > > > > I've applied them and will do some smoke checks now and then prepare
+> > > > > for -next.
+> > > >
+> > > > Any timeline for when the PR is sent to Linus?
+> > >
+> > > They're in next but I got a warning from the bot on one (7ec713058f21)
+> > > and haven't checked it in detail yet. In case you have a quick idea:
+> > >
+> > > [linux-next:master 11837/12788] arch/sh/boot/compressed/../../lib/ashldi3.c:6:11: warning: no previous prototype for '__ashldi3'
+> > >
+> > > Maybe it's just a duplicate of a warning that was already there and
+> > > that should be dealt with too.
+> >
+> > I think that can be ignored safely: similar functions like __ashrdi3()
+> > also lack forward declarations on SH.
+> >
+> > Looks like only microblaze and powerpc do have forward declarations
+> > for the gcc helpers:
+> > arch/microblaze/lib/libgcc.h
+> > arch/powerpc/include/asm/asm-prototypes.h
+> >
+> > One day we may move them to asm-generic, and start using them
+> > everywhere...
+>
+> I thought these were fundamentally architecture specific. Is it even
+> possible to declare them properly?
 
-Adrian
+AFAIK their asm implementation, and if the compiler generates calls
+to them, is architecture-specific.  The C versions are identical.
+
+In fact we do have shared C implementations in lib/.
+And at least __ashldi3() and __ashrdi3() are identical for SH and lib/,
+so the latter should be used.
+
+Gr{oetje,eeting}s,
+
+                        Geert
 
 -- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer - glaubitz@debian.org
-`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
