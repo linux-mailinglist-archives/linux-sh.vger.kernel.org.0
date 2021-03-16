@@ -2,116 +2,46 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0628D33D352
-	for <lists+linux-sh@lfdr.de>; Tue, 16 Mar 2021 12:46:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A63CB33D40C
+	for <lists+linux-sh@lfdr.de>; Tue, 16 Mar 2021 13:41:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229623AbhCPLqL (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 16 Mar 2021 07:46:11 -0400
-Received: from mga09.intel.com ([134.134.136.24]:62753 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231286AbhCPLqB (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Tue, 16 Mar 2021 07:46:01 -0400
-IronPort-SDR: xkGZDE2WKvZmKbcnrr6NyAC+zYgZgiVAJlJDFAuHf42ObeqaALizoXT3ZIGfpH68TbVY+3GRWb
- bTUx3dBxswrg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9924"; a="189335520"
-X-IronPort-AV: E=Sophos;i="5.81,251,1610438400"; 
-   d="scan'208";a="189335520"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2021 04:46:00 -0700
-IronPort-SDR: +LO7YYVov1jwziQmA/UFHBsNWYQ330C4ddAvHBYm2cNzVFbT6szAM9/HRwrk/WbnZ5tlNYi1U6
- RoT8JaJYXmcA==
-X-IronPort-AV: E=Sophos;i="5.81,251,1610438400"; 
-   d="scan'208";a="378845401"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2021 04:45:55 -0700
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1lM891-00CwQc-Vf; Tue, 16 Mar 2021 13:45:51 +0200
-Date:   Tue, 16 Mar 2021 13:45:51 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Yury Norov <yury.norov@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-arch@vger.kernel.org, linux-sh@vger.kernel.org,
-        Alexey Klimov <aklimov@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Arnd Bergmann <arnd@arndb.de>, David Sterba <dsterba@suse.com>,
-        Dennis Zhou <dennis@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Jianpeng Ma <jianpeng.ma@intel.com>,
-        Joe Perches <joe@perches.com>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Rich Felker <dalias@libc.org>,
-        Stefano Brivio <sbrivio@redhat.com>,
-        Wei Yang <richard.weiyang@linux.alibaba.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: Re: [PATCH 13/13] MAINTAINERS: Add entry for the bitmap API
-Message-ID: <YFCabyt9pfPtoQiZ@smile.fi.intel.com>
-References: <20210316015424.1999082-1-yury.norov@gmail.com>
- <20210316015424.1999082-14-yury.norov@gmail.com>
+        id S232269AbhCPMky (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 16 Mar 2021 08:40:54 -0400
+Received: from esa1.ssilver.iphmx.com ([68.232.153.64]:17364 "EHLO
+        esa1.ssilver.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232225AbhCPMkI (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 16 Mar 2021 08:40:08 -0400
+X-Greylist: delayed 465 seconds by postgrey-1.27 at vger.kernel.org; Tue, 16 Mar 2021 08:39:48 EDT
+Message-Id: <ccb348$5n4mu@ob1.ssilver.iphmx.com>
+IronPort-SDR: S4YvXy3gD+ESiwlVrkbYyEIh6FAXPVDdcuBcDjgshG96V4u6Cglu6oj/bP1Ii7o1AS1wR7TruI
+ 1F62UEWe57IZ7wR65H/9vuwP7VqN+Aw/YYamQf3FqwGc3WX491jcy1n6kWehcUI0W+XddJ5l2G
+ 51LWC9EgzSxG5/PEx+4FpW3fhStHB5HQ6+zM2JwLYf42jP5Gv8h01/7RrYLhl4Q3VrKOVKtxiw
+ Vb4Xfjl8QdcpRQxNSUSBP1UfGlgvkFHesoPrRM7JhtIyhWbYoJVVFK5Iy6lIG9IJW9J0ms7+yD
+ IAw=
+Received: from unknown (HELO User) ([202.38.180.78])
+  by ob1.ssilver.iphmx.com with SMTP; 16 Mar 2021 07:31:56 -0500
+Reply-To: <benobi236@yahoo.com.co>
+From:   "Fred Grenville" <chiatatwah@camv.vn>
+Subject: Reply Asap!! 
+Date:   Tue, 16 Mar 2021 05:32:01 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210316015424.1999082-14-yury.norov@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Mon, Mar 15, 2021 at 06:54:24PM -0700, Yury Norov wrote:
-> Add myself as maintainer for bitmap API and Andy and Rasmus as reviewers.
-> 
-> I'm an author of current implementation of lib/find_bit and an active
-> contributor to lib/bitmap. It was spotted that there's no maintainer for
-> bitmap API. I'm willing to maintain it.
-> 
-> Signed-off-by: Yury Norov <yury.norov@gmail.com>
-> Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Acked-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> ---
->  MAINTAINERS | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 3dd20015696e..44f94cdd5a20 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -3151,6 +3151,22 @@ F:	Documentation/filesystems/bfs.rst
->  F:	fs/bfs/
->  F:	include/uapi/linux/bfs_fs.h
->  
-> +BITMAP API
-> +M:	Yury Norov <yury.norov@gmail.com>
-> +R:	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> +R:	Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> +S:	Maintained
-> +F:	include/asm-generic/bitops/find.h
-> +F:	include/linux/bitmap.h
-> +F:	lib/bitmap.c
-> +F:	lib/find_bit.c
+Good day
 
-> +F:	lib/find_find_bit_benchmark.c
+How are you today, did you receive the email I sent you three days ago? For important discussion on ( Investment ) If not please reply me back so that I will resend it again.
 
-Does this file exist?
-I guess checkpatch.pl nowadays has a MAINTAINER data base validation.
+Please confirm if you did ( u.abdulghani@yahoo.com.co ).
 
-> +F:	lib/test_bitmap.c
-> +F:	tools/include/asm-generic/bitops/find.h
-> +F:	tools/include/linux/bitmap.h
-> +F:	tools/lib/bitmap.c
-> +F:	tools/lib/find_bit.c
-> +
->  BLINKM RGB LED DRIVER
->  M:	Jan-Simon Moeller <jansimon.moeller@gmx.de>
->  S:	Maintained
-> -- 
-> 2.25.1
-> 
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Best Regards,
+Mr. Fred Grenville
