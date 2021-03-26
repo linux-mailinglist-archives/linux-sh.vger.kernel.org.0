@@ -2,174 +2,190 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A3E76348228
-	for <lists+linux-sh@lfdr.de>; Wed, 24 Mar 2021 20:50:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA08C34A884
+	for <lists+linux-sh@lfdr.de>; Fri, 26 Mar 2021 14:46:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238016AbhCXTth (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 24 Mar 2021 15:49:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35064 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237755AbhCXTtO (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 24 Mar 2021 15:49:14 -0400
-Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 624B6C061763;
-        Wed, 24 Mar 2021 12:49:14 -0700 (PDT)
-Received: by mail-qt1-x82d.google.com with SMTP id y2so16063111qtw.13;
-        Wed, 24 Mar 2021 12:49:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=HfV0wOGmQ26SsikmoIMguClgPW1zILB1cVxRdwigOiY=;
-        b=JLoTzk2WXjByHa5k7axUCaDd0QeYo8TrHLnhJq43tIc4kRg5MJn2h1u8mvJXhbohtL
-         dQqL3TinR1Aw3Fgh55PSJvsevSMBCYEEbVgJV7OWhS864XWPia+clGwwU1+reSqSVw+g
-         tpQt+s+y+3PMaXDbzs90Nb+KRLTF3lWHBla3MG4h3GsnLyqKGq96T7grQ5hmzYyT33ib
-         9ZefdiCMSwNXUEg95kWWGseSyB0Cz2ZHkgOMngBsAjznl/ER6JCzEzoZRiosYc6AIeZP
-         slDU8DbyYK6bD4N6/mBy3Qs9ZmqMfDSLt1pRo60G/b7Fxa9Yt1oLpVVS5lE3YxOGNQtB
-         A1Tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=HfV0wOGmQ26SsikmoIMguClgPW1zILB1cVxRdwigOiY=;
-        b=hwJkeUrI50qWowyYBmMcYcm8JNVhrshxj5scRNDUkqChnuhSpU3cUn5GHQ1ue6YayJ
-         cKIO82oJOzV2MJZj2f9LN8VSTAygbacFxIarZ18Yn/hPwpODsjbcsXcNMzq5xhSHsZIx
-         G0rcM0MAKaQfKlsCsRSyVBxsKXLvKrprH2rUKcRe/lIg2jlnVaryqLlrbUCPqO35/u86
-         S1syfMegzoEZ1Yl327dAt/XHDJSE18+a5+JEAOe7we5r7AUcvkSEB1ykHxyPWTEJxCuf
-         bLYHL0Kj8ghFeBtRHIuSB+9V7SVWD62KyZ5DMomWyzGvlHanqr5QpMmzlaDv80HLY40Z
-         JnGA==
-X-Gm-Message-State: AOAM533x5VKcIuftBkF4OaB9O/7owUnz9xUA2z5qgv9JeqZMMEEUmW1A
-        ov4woYdsdF4eA/CjDdaSXP9zja9qe1FP5g==
-X-Google-Smtp-Source: ABdhPJyUWElQN/siMTKHKdFWw68DH3tqryjL/puR1rebMThbAtxb4udbjBWoKwKwVtyPbz6aCSBXrw==
-X-Received: by 2002:a05:622a:114:: with SMTP id u20mr4482752qtw.317.1616615353446;
-        Wed, 24 Mar 2021 12:49:13 -0700 (PDT)
-Received: from localhost ([76.73.146.210])
-        by smtp.gmail.com with ESMTPSA id l6sm2534625qke.34.2021.03.24.12.49.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Mar 2021 12:49:12 -0700 (PDT)
-Date:   Wed, 24 Mar 2021 12:49:11 -0700
-From:   Yury Norov <yury.norov@gmail.com>
-To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc:     linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-arch@vger.kernel.org, linux-sh@vger.kernel.org,
-        Alexey Klimov <aklimov@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Arnd Bergmann <arnd@arndb.de>, David Sterba <dsterba@suse.com>,
-        Dennis Zhou <dennis@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Jianpeng Ma <jianpeng.ma@intel.com>,
-        Joe Perches <joe@perches.com>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Rich Felker <dalias@libc.org>,
-        Stefano Brivio <sbrivio@redhat.com>,
-        Wei Yang <richard.weiyang@linux.alibaba.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: Re: [PATCH 06/12] tools: sync small_const_nbits() macro with the
- kernel
-Message-ID: <20210324194911.GA18844@yury-ThinkPad>
-References: <20210321215457.588554-1-yury.norov@gmail.com>
- <20210321215457.588554-7-yury.norov@gmail.com>
- <ef470d38-073d-2c6c-f9f8-909689a52212@rasmusvillemoes.dk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ef470d38-073d-2c6c-f9f8-909689a52212@rasmusvillemoes.dk>
+        id S230299AbhCZNqB (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 26 Mar 2021 09:46:01 -0400
+Received: from pegase1.c-s.fr ([93.17.236.30]:58788 "EHLO pegase1.c-s.fr"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230083AbhCZNoz (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Fri, 26 Mar 2021 09:44:55 -0400
+Received: from localhost (mailhub1-int [192.168.12.234])
+        by localhost (Postfix) with ESMTP id 4F6NWL3t9Tz9tyyW;
+        Fri, 26 Mar 2021 14:44:46 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+        by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+        with ESMTP id kIulHNAnYVH6; Fri, 26 Mar 2021 14:44:46 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+        by pegase1.c-s.fr (Postfix) with ESMTP id 4F6NWL2lGwz9tyyV;
+        Fri, 26 Mar 2021 14:44:46 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 33E0E8B8C9;
+        Fri, 26 Mar 2021 14:44:47 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+        with ESMTP id 5JtG0C39F4IQ; Fri, 26 Mar 2021 14:44:47 +0100 (CET)
+Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id C055F8B8C7;
+        Fri, 26 Mar 2021 14:44:46 +0100 (CET)
+Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+        id 31C9867611; Fri, 26 Mar 2021 13:44:47 +0000 (UTC)
+Message-Id: <cover.1616765869.git.christophe.leroy@csgroup.eu>
+From:   Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH v3 00/17] Implement GENERIC_CMDLINE
+To:     will@kernel.org, danielwa@cisco.com, robh@kernel.org,
+        daniel@gimpelevich.san-francisco.ca.us
+Cc:     linux-arch@vger.kernel.org, devicetree@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org,
+        linux-arm-kernel@lists.infradead.org,
+        microblaze <monstr@monstr.eu>, linux-mips@vger.kernel.org,
+        nios2 <ley.foon.tan@intel.com>, openrisc@lists.librecores.org,
+        linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org,
+        x86@kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
+Date:   Fri, 26 Mar 2021 13:44:47 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Mon, Mar 22, 2021 at 09:34:47AM +0100, Rasmus Villemoes wrote:
-> On 21/03/2021 22.54, Yury Norov wrote:
-> > Move the macro from tools/include/asm-generic/bitsperlong.h
-> > to tools/include/linux/bitmap.h
-> 
-> The patch does it the other way around :)
-> 
-> > Signed-off-by: Yury Norov <yury.norov@gmail.com>
-> > ---
-> >  tools/include/asm-generic/bitsperlong.h | 3 +++
-> >  tools/include/linux/bitmap.h            | 3 ---
-> >  2 files changed, 3 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/tools/include/asm-generic/bitsperlong.h b/tools/include/asm-generic/bitsperlong.h
-> > index 8f2283052333..f530da2506cc 100644
-> > --- a/tools/include/asm-generic/bitsperlong.h
-> > +++ b/tools/include/asm-generic/bitsperlong.h
-> > @@ -18,4 +18,7 @@
-> >  #define BITS_PER_LONG_LONG 64
-> >  #endif
-> >  
-> > +#define small_const_nbits(nbits) \
-> > +	(__builtin_constant_p(nbits) && (nbits) <= BITS_PER_LONG)
-> > +
-> 
-> Well, the movement is consistent with the kernel, but shouldn't the
-> definition also be updated to exclude constant-zero-size? It's not that
-> they exist or ever have, in tools/ or kernel proper, but just if some
-> day some oddball CONFIG_ combination ends up creating such a beast, I'd
-> rather not have code like
-> 
-> +	if (small_const_nbits(size)) {
-> +		unsigned long val = *addr & GENMASK(size - 1, 0);
-> 
-> blow up at run-time.
-> 
-> Other than that (and the above commit log typo), consider the series
-> 
-> Acked-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+The purpose of this series is to improve and enhance the
+handling of kernel boot arguments.
 
-Thanks for spotting out this. The proper version of the patch is
-below.
+It is first focussed on powerpc but also extends the capability
+for other arches.
 
-Andrew, it seems everything else looks good. If so, should I resubmit
-the series, or you can pull it as is, including this patch?
+This is based on suggestion from Daniel Walker <danielwa@cisco.com>
 
-Thanks,
-Yury
+Main changes in V3:
+- Also accept destination equal to source in cmdline_build() by setting a tmp buffer in __initdata. Powerpc provides different source and destination and call __cmdline_build() directly.
+- Taken comments received from Will and Rob
+- Converted all architectures (Only tested on powerpc)
 
-From 7558697d4448f01a8ef73cd31def5d3e68b44b61 Mon Sep 17 00:00:00 2001
-From: Yury Norov <yury.norov@gmail.com>
-Date: Wed, 17 Feb 2021 20:05:05 -0800
-Subject: [PATCH] tools: sync small_const_nbits() macro with the kernel
+Christophe Leroy (17):
+  cmdline: Add generic function to build command line.
+  drivers: of: use cmdline building function
+  cmdline: Gives architectures opportunity to use generically defined
+    boot cmdline manipulation
+  powerpc: Convert to GENERIC_CMDLINE
+  arm: Convert to GENERIC_CMDLINE
+  arm64: Convert to GENERIC_CMDLINE
+  hexagon: Convert to GENERIC_CMDLINE
+  microblaze: Convert to GENERIC_CMDLINE
+  nios2: Convert to GENERIC_CMDLINE
+  openrisc: Convert to GENERIC_CMDLINE
+  riscv: Convert to GENERIC_CMDLINE
+  sh: Convert to GENERIC_CMDLINE
+  sparc: Convert to GENERIC_CMDLINE
+  xtensa: Convert to GENERIC_CMDLINE
+  x86: Convert to GENERIC_CMDLINE
+  mips: Convert to GENERIC_CMDLINE
+  cmdline: Remove CONFIG_CMDLINE_EXTEND
 
-Sync implementation with the kernel and move the macro from
-tools/include/linux/bitmap.h to tools/include/asm-generic/bitsperlong.h
+ arch/arm/Kconfig                            | 38 +-------------
+ arch/arm/kernel/atags_parse.c               | 15 ++----
+ arch/arm64/Kconfig                          | 33 +-----------
+ arch/arm64/kernel/idreg-override.c          |  9 ++--
+ arch/hexagon/Kconfig                        | 11 +---
+ arch/hexagon/kernel/setup.c                 | 10 +---
+ arch/microblaze/Kconfig                     | 24 +--------
+ arch/microblaze/configs/mmu_defconfig       |  2 +-
+ arch/microblaze/kernel/head.S               |  4 +-
+ arch/mips/Kconfig                           |  1 +
+ arch/mips/Kconfig.debug                     | 44 ----------------
+ arch/mips/configs/ar7_defconfig             |  1 -
+ arch/mips/configs/bcm47xx_defconfig         |  1 -
+ arch/mips/configs/bcm63xx_defconfig         |  1 -
+ arch/mips/configs/bmips_be_defconfig        |  1 -
+ arch/mips/configs/bmips_stb_defconfig       |  1 -
+ arch/mips/configs/capcella_defconfig        |  1 -
+ arch/mips/configs/ci20_defconfig            |  1 -
+ arch/mips/configs/cu1000-neo_defconfig      |  1 -
+ arch/mips/configs/cu1830-neo_defconfig      |  1 -
+ arch/mips/configs/e55_defconfig             |  1 -
+ arch/mips/configs/generic_defconfig         |  1 -
+ arch/mips/configs/gpr_defconfig             |  1 -
+ arch/mips/configs/loongson3_defconfig       |  1 -
+ arch/mips/configs/mpc30x_defconfig          |  1 -
+ arch/mips/configs/rt305x_defconfig          |  1 -
+ arch/mips/configs/tb0219_defconfig          |  1 -
+ arch/mips/configs/tb0226_defconfig          |  1 -
+ arch/mips/configs/tb0287_defconfig          |  1 -
+ arch/mips/configs/workpad_defconfig         |  1 -
+ arch/mips/configs/xway_defconfig            |  1 -
+ arch/mips/kernel/relocate.c                 |  4 +-
+ arch/mips/kernel/setup.c                    | 40 +--------------
+ arch/mips/pic32/pic32mzda/early_console.c   |  2 +-
+ arch/mips/pic32/pic32mzda/init.c            |  2 -
+ arch/nios2/Kconfig                          | 24 +--------
+ arch/nios2/kernel/setup.c                   | 13 ++---
+ arch/openrisc/Kconfig                       | 10 +---
+ arch/powerpc/Kconfig                        | 37 +------------
+ arch/powerpc/kernel/prom_init.c             | 17 +++---
+ arch/riscv/Kconfig                          | 44 +---------------
+ arch/riscv/kernel/setup.c                   |  5 +-
+ arch/sh/Kconfig                             | 30 +----------
+ arch/sh/configs/ap325rxa_defconfig          |  2 +-
+ arch/sh/configs/dreamcast_defconfig         |  2 +-
+ arch/sh/configs/ecovec24-romimage_defconfig |  2 +-
+ arch/sh/configs/ecovec24_defconfig          |  2 +-
+ arch/sh/configs/edosk7760_defconfig         |  2 +-
+ arch/sh/configs/espt_defconfig              |  2 +-
+ arch/sh/configs/j2_defconfig                |  2 +-
+ arch/sh/configs/kfr2r09-romimage_defconfig  |  2 +-
+ arch/sh/configs/kfr2r09_defconfig           |  2 +-
+ arch/sh/configs/lboxre2_defconfig           |  2 +-
+ arch/sh/configs/microdev_defconfig          |  2 +-
+ arch/sh/configs/migor_defconfig             |  2 +-
+ arch/sh/configs/polaris_defconfig           |  2 +-
+ arch/sh/configs/r7780mp_defconfig           |  2 +-
+ arch/sh/configs/r7785rp_defconfig           |  2 +-
+ arch/sh/configs/rsk7201_defconfig           |  2 +-
+ arch/sh/configs/rsk7203_defconfig           |  2 +-
+ arch/sh/configs/rts7751r2d1_defconfig       |  2 +-
+ arch/sh/configs/rts7751r2dplus_defconfig    |  2 +-
+ arch/sh/configs/sdk7780_defconfig           |  2 +-
+ arch/sh/configs/sdk7786_defconfig           |  2 +-
+ arch/sh/configs/se7206_defconfig            |  2 +-
+ arch/sh/configs/se7343_defconfig            |  2 +-
+ arch/sh/configs/se7712_defconfig            |  2 +-
+ arch/sh/configs/se7721_defconfig            |  2 +-
+ arch/sh/configs/se7724_defconfig            |  2 +-
+ arch/sh/configs/se7751_defconfig            |  2 +-
+ arch/sh/configs/se7780_defconfig            |  2 +-
+ arch/sh/configs/sh03_defconfig              |  2 +-
+ arch/sh/configs/sh2007_defconfig            |  2 +-
+ arch/sh/configs/sh7757lcr_defconfig         |  2 +-
+ arch/sh/configs/sh7763rdp_defconfig         |  2 +-
+ arch/sh/configs/shmin_defconfig             |  2 +-
+ arch/sh/configs/shx3_defconfig              |  2 +-
+ arch/sh/configs/titan_defconfig             |  2 +-
+ arch/sh/configs/ul2_defconfig               |  2 +-
+ arch/sh/kernel/setup.c                      | 11 +---
+ arch/sparc/Kconfig                          | 18 +------
+ arch/sparc/prom/bootstr_64.c                |  2 +-
+ arch/x86/Kconfig                            | 45 +---------------
+ arch/x86/kernel/setup.c                     | 17 +-----
+ arch/xtensa/Kconfig                         | 15 +-----
+ arch/xtensa/configs/audio_kc705_defconfig   |  1 -
+ arch/xtensa/configs/common_defconfig        |  1 -
+ arch/xtensa/configs/generic_kc705_defconfig |  1 -
+ arch/xtensa/configs/iss_defconfig           |  1 -
+ arch/xtensa/configs/nommu_kc705_defconfig   |  1 -
+ arch/xtensa/configs/smp_lx200_defconfig     |  1 -
+ arch/xtensa/configs/virt_defconfig          |  1 -
+ arch/xtensa/configs/xip_kc705_defconfig     |  1 -
+ arch/xtensa/kernel/setup.c                  | 10 +---
+ drivers/firmware/efi/libstub/x86-stub.c     | 26 +++++-----
+ drivers/of/fdt.c                            | 23 ++-------
+ include/linux/cmdline.h                     | 57 +++++++++++++++++++++
+ init/Kconfig                                | 46 +++++++++++++++++
+ 98 files changed, 209 insertions(+), 580 deletions(-)
+ create mode 100644 include/linux/cmdline.h
 
-Signed-off-by: Yury Norov <yury.norov@gmail.com>
----
- tools/include/asm-generic/bitsperlong.h | 3 +++
- tools/include/linux/bitmap.h            | 3 ---
- 2 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/tools/include/asm-generic/bitsperlong.h b/tools/include/asm-generic/bitsperlong.h
-index 8f2283052333..2093d56ddd11 100644
---- a/tools/include/asm-generic/bitsperlong.h
-+++ b/tools/include/asm-generic/bitsperlong.h
-@@ -18,4 +18,7 @@
- #define BITS_PER_LONG_LONG 64
- #endif
- 
-+#define small_const_nbits(nbits) \
-+	(__builtin_constant_p(nbits) && (nbits) <= BITS_PER_LONG && (nbits) > 0)
-+
- #endif /* __ASM_GENERIC_BITS_PER_LONG */
-diff --git a/tools/include/linux/bitmap.h b/tools/include/linux/bitmap.h
-index 4aabc23ec747..330dbf7509cc 100644
---- a/tools/include/linux/bitmap.h
-+++ b/tools/include/linux/bitmap.h
-@@ -22,9 +22,6 @@ void bitmap_clear(unsigned long *map, unsigned int start, int len);
- #define BITMAP_FIRST_WORD_MASK(start) (~0UL << ((start) & (BITS_PER_LONG - 1)))
- #define BITMAP_LAST_WORD_MASK(nbits) (~0UL >> (-(nbits) & (BITS_PER_LONG - 1)))
- 
--#define small_const_nbits(nbits) \
--	(__builtin_constant_p(nbits) && (nbits) <= BITS_PER_LONG)
--
- static inline void bitmap_zero(unsigned long *dst, unsigned int nbits)
- {
- 	if (small_const_nbits(nbits))
 -- 
-2.25.1
+2.25.0
 
