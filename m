@@ -2,48 +2,85 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 34D393602B4
-	for <lists+linux-sh@lfdr.de>; Thu, 15 Apr 2021 08:51:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65CE23602D9
+	for <lists+linux-sh@lfdr.de>; Thu, 15 Apr 2021 08:59:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231134AbhDOGwF convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-sh@lfdr.de>); Thu, 15 Apr 2021 02:52:05 -0400
-Received: from vsrv57620.customer.xenway.de ([95.129.54.190]:46286 "EHLO
-        vsrv57620.customer.xenway.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230090AbhDOGwD (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 15 Apr 2021 02:52:03 -0400
-X-Greylist: delayed 1236 seconds by postgrey-1.27 at vger.kernel.org; Thu, 15 Apr 2021 02:51:58 EDT
-Received: from [193.56.28.106] (unknown [193.56.28.106])
-        by vsrv57620.customer.xenway.de (Postfix) with ESMTPA id 613C83097B5;
-        Thu, 15 Apr 2021 08:23:44 +0200 (CEST)
-Date:   Wed, 14 Apr 2021 23:24:19 -0700
-Mime-version: 1.0
-Subject: Compliments
-From:   Christopher Quinlan QC <cqukesq@gmail.com>
-To:     Undisclosed-Recipients:;
-Message-Id: <20210414232419.UVUVQACXIIXYKI@gmail.com>
-Reply-To: cqukesq@gmail.com
-Content-type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-transfer-encoding: 8BIT
+        id S230118AbhDOG7y (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 15 Apr 2021 02:59:54 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:16921 "EHLO
+        szxga06-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229503AbhDOG7y (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 15 Apr 2021 02:59:54 -0400
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.60])
+        by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4FLVXK11HGzjYhv;
+        Thu, 15 Apr 2021 14:57:37 +0800 (CST)
+Received: from [10.174.187.224] (10.174.187.224) by
+ DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
+ 14.3.498.0; Thu, 15 Apr 2021 14:59:26 +0800
+Subject: Re: [PATCH 1/5] KVM: arm64: Divorce the perf code from oprofile
+ helpers
+To:     Marc Zyngier <maz@kernel.org>, <kvm@vger.kernel.org>,
+        <kvmarm@lists.cs.columbia.edu>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-s390@vger.kernel.org>,
+        <linux-sh@vger.kernel.org>
+References: <20210414134409.1266357-1-maz@kernel.org>
+ <20210414134409.1266357-2-maz@kernel.org>
+CC:     Rich Felker <dalias@libc.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Viresh Kumar" <viresh.kumar@linaro.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        "Arnaldo Carvalho de Melo" <acme@kernel.org>, <nathan@kernel.org>,
+        "Christian Borntraeger" <borntraeger@de.ibm.com>,
+        <kernel-team@android.com>, Will Deacon <will@kernel.org>
+From:   Keqian Zhu <zhukeqian1@huawei.com>
+Message-ID: <baa268cf-c92d-6b97-da4c-e7da2a9ccb7a@huawei.com>
+Date:   Thu, 15 Apr 2021 14:59:26 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.7.1
+MIME-Version: 1.0
+In-Reply-To: <20210414134409.1266357-2-maz@kernel.org>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.187.224]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-My name is Christopher Quinlan QC I am a solicitor at law / investment adviser to your late relative. Your late relative left behind Cash deposit in capital and investment security account along with properties, I will like to discuss with you regarding making this claim since he is related to you going by the lineage, surname and country of origin.
+Hi Marc,
 
-Please get back to me on my private email cqukesq6@gmail.com for further details.
+On 2021/4/14 21:44, Marc Zyngier wrote:
+> KVM/arm64 is the sole user of perf_num_counters(), and really
+> could do without it. Stop using the obsolete API by relying on
+> the existing probing code.
+> 
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
+> ---
+>  arch/arm64/kvm/perf.c     | 7 +------
+>  arch/arm64/kvm/pmu-emul.c | 2 +-
+>  include/kvm/arm_pmu.h     | 4 ++++
+>  3 files changed, 6 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/arm64/kvm/perf.c b/arch/arm64/kvm/perf.c
+> index 739164324afe..b8b398670ef2 100644
+> --- a/arch/arm64/kvm/perf.c
+> +++ b/arch/arm64/kvm/perf.c
+> @@ -50,12 +50,7 @@ static struct perf_guest_info_callbacks kvm_guest_cbs = {
+>  
+>  int kvm_perf_init(void)
+>  {
+> -	/*
+> -	 * Check if HW_PERF_EVENTS are supported by checking the number of
+> -	 * hardware performance counters. This could ensure the presence of
+> -	 * a physical PMU and CONFIG_PERF_EVENT is selected.
+> -	 */
+> -	if (IS_ENABLED(CONFIG_ARM_PMU) && perf_num_counters() > 0)
+> +	if (kvm_pmu_probe_pmuver() != 0xf)
+The probe() function may be called many times (kvm_arm_pmu_v3_set_attr also calls it).
+I don't know whether the first calling is enough. If so, can we use a static variable
+in it, so the following calling can return the result right away?
 
-To facilitate the process of this transaction, urgently forward to me
-Your full names,
-Telephone and fax numbers,
-Address,
-Age,
-Marital status,
-Occupation
-
-I will be expecting to hear from you.
-
-Regards
-
-Christopher Quinlan QC
-Private email cqukesq6@gmail.com
-
+Thanks,
+Keqian
