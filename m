@@ -2,84 +2,63 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AB1043739A9
-	for <lists+linux-sh@lfdr.de>; Wed,  5 May 2021 13:46:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A3A43739C3
+	for <lists+linux-sh@lfdr.de>; Wed,  5 May 2021 13:59:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232805AbhEELrV (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 5 May 2021 07:47:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57774 "EHLO
+        id S231494AbhEEMAr (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 5 May 2021 08:00:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232658AbhEELrV (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 5 May 2021 07:47:21 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C0D0C061574
-        for <linux-sh@vger.kernel.org>; Wed,  5 May 2021 04:46:24 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id w3so2353761ejc.4
-        for <linux-sh@vger.kernel.org>; Wed, 05 May 2021 04:46:24 -0700 (PDT)
+        with ESMTP id S232199AbhEEMAp (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 5 May 2021 08:00:45 -0400
+Received: from mail-il1-x142.google.com (mail-il1-x142.google.com [IPv6:2607:f8b0:4864:20::142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F48EC061574
+        for <linux-sh@vger.kernel.org>; Wed,  5 May 2021 04:59:49 -0700 (PDT)
+Received: by mail-il1-x142.google.com with SMTP id y10so1530345ilv.0
+        for <linux-sh@vger.kernel.org>; Wed, 05 May 2021 04:59:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to;
-        bh=NYtX5ZNS6ELxkThCQPIT4A3VJRTjVYEI7NyE+cGI6Zw=;
-        b=pBeP6FWQBOhxL5TK7YbDzSAUDHHyAxzXlftzNT3yvbZuO9obNlIExk6jrQ4v+YTlA5
-         QqIYGz68Rok3GuWpVJcSmbz0+Uxs0KlLAjAVreJhDj8kHGVGC49vMngfCsBsU/SxRpho
-         nf+k7656mRkCakN0YK3c991YTe742uwPWyZTPhgN9c3llnsdZuYbc3FJMeK8acvLja1T
-         /4P4Txk7WKK8zqUhEgoJsryJCvOJyRsyFMbioo/7w/nK6bEoR/u0mLrPYOp33yqf8oKd
-         tUdxp7UsMhcmsNGor7q4Czp4wYOCm7BXf5e7fsw2BIe6Wm1ElsywSAJ8UTkTEO3a9mBi
-         NmXg==
+        h=mime-version:from:date:message-id:subject:to;
+        bh=JMS2lYgPUqfZ6rolDKSDOI/c72msoJpqYKlDi7TqRwg=;
+        b=o/6H26TizS5r8tuHtvpZVMOGCwhj4LmDlpeiLKDygjci2TfaMdEpy3AqQ7aqQ40RKk
+         bMOjeyUpbKtl64KZgZqmMICWg/bfAGidjBBpDoRFNqk5yUvJ3lJmRP0nSzL14E512Exz
+         CGGZRht3+R8/vPP3gQVKwes82at204YddhnHUKjU6mCF8o/5fWOzfjyJF9lggzFmlOk/
+         zpap9iW/QebTO7ndBeIQouLx4rl9ULE1e9TpcrCZY8hVr0vU7o4a3O9s5JqOdeHURWqG
+         qTYPy1gbVGsWPmtfgUtWCcqIK3BIbiZEv7825VyU9Eq27B3KVKujwrHGRrkkGhPr7SmZ
+         Rr3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to;
-        bh=NYtX5ZNS6ELxkThCQPIT4A3VJRTjVYEI7NyE+cGI6Zw=;
-        b=sfmlqSkr0edxBWpzNOJ4xiO7jYj/uZNT1em3GH0mYJpGqq/2veJMocAJuzwRObDwEN
-         Mb+5XhPYp5bBwBdXGDVjqXH4OcSeHuFSgIjh548jwYu//C+hl4mXQZ+WRtq85p/XeMA5
-         m9pnbF1HRTUx+AQyM2YsJXuph2sdyu+7x48om/EIuOfLm8rKSvnbArJucnX/E4m1dUy5
-         u4DYLYy2jTb1luIsnxY+vRLwN18brXdFY/VsvJ9E4dXWZ7ARA6JtKLl1duckiwbDMKgl
-         R7F/Rs2qt8bmE7jg/WnosY1rw5YkAah9zT1dMo9WLxpXO11EyNWwcbdg2LruCqhS3q6N
-         fgfA==
-X-Gm-Message-State: AOAM531SstJ3SAD/mwxy084gFRFD+ZkyIPDCO3dksX6zg8kmlEvt++fM
-        0OVABsb131C1wUNEceeBgc0flc8bffjEpdHGf3w=
-X-Google-Smtp-Source: ABdhPJxE3tdsj6nbdl+0jcRKZRuDppb33fa9unp8ZdHcrY4vmyR9r77aY80J0DnsIK3jDt1gRs/rwEc0cipPSBdHx/s=
-X-Received: by 2002:a17:906:57ca:: with SMTP id u10mr4057262ejr.385.1620215183234;
- Wed, 05 May 2021 04:46:23 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=JMS2lYgPUqfZ6rolDKSDOI/c72msoJpqYKlDi7TqRwg=;
+        b=ZYo7rtngwqSQ2bsKVN6tDZjMMiqDdREiG9r2hd6grjnpimvbDR29WI/iinSn7ComX2
+         RcAjsLhPlRKeQvI45EpUaHGzah4UCvOQSAddRWRogaA+3lpOWdcKM6Q3/drqjGoUVgud
+         sz2LLsuHj7C8tjsgh3OyJkSXg1bBkg2DA4YzbgQ8ijjZ9xsCMXvYUTl1NSPEaJj4A+BO
+         3a2ZNWNk3fdAtixOaEy3p1xb5BSBbkpVmCCy+e7x1BH+tvnPsDSWR6j7cYfavMbVhBzN
+         1r/S9IUTV+8XFc/lS0H3gNNc1zNZV1OscMk/cTF0JS2FqIqcJGe+xenXxhidfD3Rro6w
+         aK4g==
+X-Gm-Message-State: AOAM532drA9ZUUqaFHlNB3m1ePnXoqIBMNvtxRjM5v77ZHc2mmJpe/4d
+        RwQA0bPWoh++RBO5iLHOgJotDjcPIvm4rl3DciU=
+X-Google-Smtp-Source: ABdhPJynnz/RzVEAfpgp58QbWGSBAqGt6PPKIZ/oU0wHMBT2So354iVVYNcyUQlcdsQ8aFy8n1SJd4nPc0ljMDXZCY0=
+X-Received: by 2002:a05:6e02:e43:: with SMTP id l3mr25782533ilk.130.1620215988155;
+ Wed, 05 May 2021 04:59:48 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a55:82da:0:b029:da:f13b:9292 with HTTP; Wed, 5 May 2021
- 04:46:22 -0700 (PDT)
-In-Reply-To: <CAHiqXmqWntmsTSbCEWqwpZ2obRaUQy9hVC4Lv8aG7zF5vWahcQ@mail.gmail.com>
-References: <CAHiqXmrT9_8z2xeZ8W8TSrbXfpqiF6ogKpjOuGcS4rxcLgEOaQ@mail.gmail.com>
- <CAHiqXmqmDTMU18jtgOVm7=CM=dbcyXWSr=1rZ2t0CKddcKMGuA@mail.gmail.com>
- <CAHiqXmrRU9_WPexiG_=ZhqGwjLe0UvCbKqQWf=YofAXihzGyuw@mail.gmail.com>
- <CAHiqXmqVYdYyigNMzK+i+cVxnSRbz6VYEC9KHhGdAbv5EaHEDg@mail.gmail.com>
- <CAHiqXmqZVDquxvPZ_QvYYkwu6nEdG6R9=ixGiBTiPMATMy5isA@mail.gmail.com>
- <CAHiqXmpDWFTzztDg65C8ooKikpAH_hL+YL4XeyzJPtoXh_VYWw@mail.gmail.com>
- <CAHiqXmoaQVhJBjo9L+vjFf52VP0vtPNbEms92kQuLj=s1ri=Qg@mail.gmail.com>
- <CAHiqXmrNa-tr+8j1n9NimiCCkLQLAk77VdeDHmFjYP+4Y+DcZw@mail.gmail.com>
- <CAHiqXmrZMAW7=wvvm-bkbrA2vbE2O1PBNetHJOb6hZ183UxShQ@mail.gmail.com>
- <CAHiqXmrJBw9Fpuq7JpZNmkS3nivC-E8fXaVMTD2ak5e4LOYd6w@mail.gmail.com>
- <CAHiqXmoUmdULNXc3n6cqiQGApf2STSc_LE5HVUYbL=sm2zRMrg@mail.gmail.com>
- <CAHiqXmoZAEQcNy0qkk0XCcpjMAqBpxOQfK1EBk_47LBH_CZikw@mail.gmail.com>
- <CAHiqXmrLkec1ceVh23frsCM7no_yDLubc_Lk+8q6G-j=LtyWgA@mail.gmail.com>
- <CAHiqXmoNVhHpYb5qAY4JMEScz9HEVanW=+eX5qcErDVPNzLs8w@mail.gmail.com>
- <CAHiqXmpVqY6uJsfgQ7UaL+72MNQ7bitdb_TTC=3eVrUwfBUU9Q@mail.gmail.com>
- <CAHiqXmoNzSyvpAaL0iJvwEhmQcO2U-vv75nXwBM-yprRTX_Wrg@mail.gmail.com>
- <CAHiqXmoDjw+ufGvYqVn0wQbWF5Wiz952yX87zv=+N6Tt6aagtA@mail.gmail.com>
- <CAHiqXmo8dK4Kmc6Mwg_8zCjifJ2=AcUF9tguSVrrMHt97Ci+vg@mail.gmail.com> <CAHiqXmqWntmsTSbCEWqwpZ2obRaUQy9hVC4Lv8aG7zF5vWahcQ@mail.gmail.com>
-From:   Dhl Express <dhlexpress.bb@gmail.com>
-Date:   Wed, 5 May 2021 04:46:22 -0700
-Message-ID: <CAHiqXmrKYERxZGqmRAyzJW+vxL5xw0eHM-M7vbOuG=hyekkSPw@mail.gmail.com>
+Received: by 2002:a92:4a06:0:0:0:0:0 with HTTP; Wed, 5 May 2021 04:59:47 -0700 (PDT)
+From:   Dhl Lometogo <dhloffice2lometogo@gmail.com>
+Date:   Wed, 5 May 2021 04:59:47 -0700
+Message-ID: <CACbfHGPd3Gk6fCRkK2XtQaw5KgyRjogrxU8n-MN3DvV67Gwwew@mail.gmail.com>
 Subject: Dhl Office
 To:     undisclosed-recipients:;
-Content-Type: multipart/mixed; boundary="000000000000756b9b05c193bee6"
+Content-Type: multipart/mixed; boundary="0000000000006f11b805c193eecb"
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
---000000000000756b9b05c193bee6
+--0000000000006f11b805c193eecb
 Content-Type: text/plain; charset="UTF-8"
 
 
 
---000000000000756b9b05c193bee6
+--0000000000006f11b805c193eecb
 Content-Type: image/png; name="DHL OFFICE .................png"
 Content-Disposition: attachment; filename="DHL OFFICE .................png"
 Content-Transfer-Encoding: base64
@@ -903,4 +882,4 @@ ALJ0HwAAsnQfAACydB8AALJ0HwAAsnQfAACydB8AALJ0HwAAsnQfAACydB8AALJ0HwAAsnQfAACy
 dB8AALJ0HwAAsnQfAACydB8AALJ0HwAAsnQfAACydB8AALJ0HwAAsnQfAACydB8AALJ0HwAAsnQf
 AACydB8AALJ0HwAAsnQfAACydB8AALJ0HwAAsnQfAACydB8AALJ0HwAAsnQfAACydB8AALJ0HwAA
 snQfAACydB8AALJ0HwAAsnQfAACitgPoa8v5EByIgwAAAABJRU5ErkJggg==
---000000000000756b9b05c193bee6--
+--0000000000006f11b805c193eecb--
