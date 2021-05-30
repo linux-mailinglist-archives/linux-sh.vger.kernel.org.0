@@ -2,75 +2,59 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7887E394BBA
-	for <lists+linux-sh@lfdr.de>; Sat, 29 May 2021 12:46:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F753394FEF
+	for <lists+linux-sh@lfdr.de>; Sun, 30 May 2021 09:21:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229818AbhE2Krx (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sat, 29 May 2021 06:47:53 -0400
-Received: from szxga03-in.huawei.com ([45.249.212.189]:2408 "EHLO
-        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229754AbhE2Kro (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sat, 29 May 2021 06:47:44 -0400
-Received: from dggemv711-chm.china.huawei.com (unknown [172.30.72.55])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4FsdRQ2Q5Cz66cm;
-        Sat, 29 May 2021 18:42:26 +0800 (CST)
-Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
- dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Sat, 29 May 2021 18:46:06 +0800
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Sat, 29 May 2021 18:46:06 +0800
-From:   Kefeng Wang <wangkefeng.wang@huawei.com>
-To:     Andrew Morton <akpm@linux-foundation.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, <linux-sh@vger.kernel.org>
-Subject: [PATCH 14/15] sh: convert to setup_initial_init_mm()
-Date:   Sat, 29 May 2021 18:55:03 +0800
-Message-ID: <20210529105504.180544-15-wangkefeng.wang@huawei.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20210529105504.180544-1-wangkefeng.wang@huawei.com>
-References: <20210529105504.180544-1-wangkefeng.wang@huawei.com>
+        id S229500AbhE3HWt (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sun, 30 May 2021 03:22:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57802 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229550AbhE3HWt (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sun, 30 May 2021 03:22:49 -0400
+Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1C6DC061574
+        for <linux-sh@vger.kernel.org>; Sun, 30 May 2021 00:21:10 -0700 (PDT)
+Received: by mail-yb1-xb2c.google.com with SMTP id r8so11915467ybb.9
+        for <linux-sh@vger.kernel.org>; Sun, 30 May 2021 00:21:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=Yf06OZ7wRPY8MKmtaErAxCAJ30Q+ZppQW5ABseJw3Z4=;
+        b=fOas/mSIxvxBcZtRDoh2fonrWzwdp02SlpgjGSKosQ9AF/IxgTq+AKp58O76MRTDWS
+         NeYeqQJKFyM0C3AVK2eNVfZN6mdSyDNAlrk01/wgpL89UzS7+IgeeICD3EHDPxNpMaf3
+         +vm0wQP18SVV7IeGGtr1uSq/q6YvGe0PUAjRLCnd1DcO7xjIq2x6vlIxqz5G1GFi7WkG
+         wpDBeg0ln/W41QW8+8naWvpoM/D1+8WKgXv5x5AhL4EFdO2/R88UDfoMeBCDqy8ppdEG
+         rxJYBjzvOF7++0rDkm+JX23ti+K/vVBQYlcY5/Ojdl23Vhc27ETJdyJAJkD/pMkQU1dI
+         pO+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=Yf06OZ7wRPY8MKmtaErAxCAJ30Q+ZppQW5ABseJw3Z4=;
+        b=ktnwhmtc0fTMGw33eKIwQg4bFGTWYA3YRy5zGQh89SJNzG0ou0USDFFj9+8deOHo1P
+         nBKslBYHA81pVjBfH0NwXA/VnQTUFy8GdlWj1UWwNO4FJ+J4wWsIAb8D+S804ybR1MgQ
+         2s09ckJMWM5x1Av+4B/+4A3CD1KEIlWH3iXaixoFdzFrhzuU7OYxwW58veaP7QwFfHqa
+         RJVtO2phYiCh0q5rd71K2XvyZiFMyx9xyx15Wyl0ABiTkuVaJ7LhkDrvdHGJS7Im1LJ7
+         fJTw6OPtMp7+IP27Qb1Q++eK/472kTucFAXhQFOLO4x2YapW0OEJjkGAX3uLS1b710EI
+         ub0A==
+X-Gm-Message-State: AOAM531S83OMfsWnLg6mG254hE2Y81MQsu9JGfHJMNtgAVvFeBOea31k
+        tRIJas0aNiRxb84T8p9AqyZ3OAML0VSV3jd2FSQ=
+X-Google-Smtp-Source: ABdhPJxTwyJM8ezmxAHYQ1zPlFqLaWy4cTtw+6p/I/x/F/64oFCgSywkIecL231Mmt7OS4SklhhxjfYnoYpJuYt5Zls=
+X-Received: by 2002:a25:d8c1:: with SMTP id p184mr17407464ybg.10.1622359269877;
+ Sun, 30 May 2021 00:21:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpemm500001.china.huawei.com (7.185.36.107)
-X-CFilter-Loop: Reflected
+Received: by 2002:a05:7000:a925:0:0:0:0 with HTTP; Sun, 30 May 2021 00:21:09
+ -0700 (PDT)
+Reply-To: fionahill578@gmail.com
+From:   Fiona Hill <abdelabd900@gmail.com>
+Date:   Sun, 30 May 2021 08:21:09 +0100
+Message-ID: <CAPMDzJkmb_RkYxPQaGhXox-wg8AA4Z9-oL6nZA6PQb_1uLZoqw@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Use setup_initial_init_mm() helper to simplify code.
-
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: linux-sh@vger.kernel.org
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
----
- arch/sh/kernel/setup.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
-
-diff --git a/arch/sh/kernel/setup.c b/arch/sh/kernel/setup.c
-index 4144be650d41..1fcb6659822a 100644
---- a/arch/sh/kernel/setup.c
-+++ b/arch/sh/kernel/setup.c
-@@ -294,10 +294,7 @@ void __init setup_arch(char **cmdline_p)
- 
- 	if (!MOUNT_ROOT_RDONLY)
- 		root_mountflags &= ~MS_RDONLY;
--	init_mm.start_code = (unsigned long) _text;
--	init_mm.end_code = (unsigned long) _etext;
--	init_mm.end_data = (unsigned long) _edata;
--	init_mm.brk = (unsigned long) _end;
-+	setup_initial_init_mm(_text, _etext, _edata, _end);
- 
- 	code_resource.start = virt_to_phys(_text);
- 	code_resource.end = virt_to_phys(_etext)-1;
 -- 
-2.26.2
-
+Hello did you received my message i send to you?
