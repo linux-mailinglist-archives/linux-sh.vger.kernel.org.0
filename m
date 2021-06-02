@@ -2,59 +2,160 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F753394FEF
-	for <lists+linux-sh@lfdr.de>; Sun, 30 May 2021 09:21:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72AC8398706
+	for <lists+linux-sh@lfdr.de>; Wed,  2 Jun 2021 12:54:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229500AbhE3HWt (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sun, 30 May 2021 03:22:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57802 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229550AbhE3HWt (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sun, 30 May 2021 03:22:49 -0400
-Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1C6DC061574
-        for <linux-sh@vger.kernel.org>; Sun, 30 May 2021 00:21:10 -0700 (PDT)
-Received: by mail-yb1-xb2c.google.com with SMTP id r8so11915467ybb.9
-        for <linux-sh@vger.kernel.org>; Sun, 30 May 2021 00:21:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=Yf06OZ7wRPY8MKmtaErAxCAJ30Q+ZppQW5ABseJw3Z4=;
-        b=fOas/mSIxvxBcZtRDoh2fonrWzwdp02SlpgjGSKosQ9AF/IxgTq+AKp58O76MRTDWS
-         NeYeqQJKFyM0C3AVK2eNVfZN6mdSyDNAlrk01/wgpL89UzS7+IgeeICD3EHDPxNpMaf3
-         +vm0wQP18SVV7IeGGtr1uSq/q6YvGe0PUAjRLCnd1DcO7xjIq2x6vlIxqz5G1GFi7WkG
-         wpDBeg0ln/W41QW8+8naWvpoM/D1+8WKgXv5x5AhL4EFdO2/R88UDfoMeBCDqy8ppdEG
-         rxJYBjzvOF7++0rDkm+JX23ti+K/vVBQYlcY5/Ojdl23Vhc27ETJdyJAJkD/pMkQU1dI
-         pO+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=Yf06OZ7wRPY8MKmtaErAxCAJ30Q+ZppQW5ABseJw3Z4=;
-        b=ktnwhmtc0fTMGw33eKIwQg4bFGTWYA3YRy5zGQh89SJNzG0ou0USDFFj9+8deOHo1P
-         nBKslBYHA81pVjBfH0NwXA/VnQTUFy8GdlWj1UWwNO4FJ+J4wWsIAb8D+S804ybR1MgQ
-         2s09ckJMWM5x1Av+4B/+4A3CD1KEIlWH3iXaixoFdzFrhzuU7OYxwW58veaP7QwFfHqa
-         RJVtO2phYiCh0q5rd71K2XvyZiFMyx9xyx15Wyl0ABiTkuVaJ7LhkDrvdHGJS7Im1LJ7
-         fJTw6OPtMp7+IP27Qb1Q++eK/472kTucFAXhQFOLO4x2YapW0OEJjkGAX3uLS1b710EI
-         ub0A==
-X-Gm-Message-State: AOAM531S83OMfsWnLg6mG254hE2Y81MQsu9JGfHJMNtgAVvFeBOea31k
-        tRIJas0aNiRxb84T8p9AqyZ3OAML0VSV3jd2FSQ=
-X-Google-Smtp-Source: ABdhPJxTwyJM8ezmxAHYQ1zPlFqLaWy4cTtw+6p/I/x/F/64oFCgSywkIecL231Mmt7OS4SklhhxjfYnoYpJuYt5Zls=
-X-Received: by 2002:a25:d8c1:: with SMTP id p184mr17407464ybg.10.1622359269877;
- Sun, 30 May 2021 00:21:09 -0700 (PDT)
+        id S231376AbhFBKzo (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 2 Jun 2021 06:55:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38344 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229745AbhFBKzm (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Wed, 2 Jun 2021 06:55:42 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A7462613B8;
+        Wed,  2 Jun 2021 10:53:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1622631239;
+        bh=y04Os44exMBIW1Oj5as14/40OpMcFnf5BYhM91VeMF8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=IEhFtfyiZrWl3O/lHICDDnQPCxbhh7le0oxMDdcE956zeFwuutavFE98cPQhAN3Tb
+         MS+0z8cAJdIWUVI8O3sVG0JRS++QBslPsnJw+3KBzPzOGqhfnDKfhgG2E3lQUvkQgb
+         U4HK86IALTVpok5dJHV5FJGv2u/pAI2+NR6w1EN3dv0kQ5VybgSLkvF/RWYfHfO8ld
+         oSmL9cAeen9wXpQhbHyPbH7rQ2tDffpLdnha53qaZPiC2WS7D2aeJaOw5ziEvrDUkZ
+         bz6vOk8nu9D6FUv1Ys08o5AILZj7Ue07McpXaWjgeCnhhfBDjcYc5GYcVel/pE6Mxt
+         wIIpWqcVnlJmQ==
+From:   Mike Rapoport <rppt@kernel.org>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Matt Turner <mattst88@gmail.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Vineet Gupta <vgupta@synopsys.com>, kexec@lists.infradead.org,
+        linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-mm@kvack.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org
+Subject: [PATCH 0/9] Remove DISCINTIGMEM memory model
+Date:   Wed,  2 Jun 2021 13:53:39 +0300
+Message-Id: <20210602105348.13387-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Received: by 2002:a05:7000:a925:0:0:0:0 with HTTP; Sun, 30 May 2021 00:21:09
- -0700 (PDT)
-Reply-To: fionahill578@gmail.com
-From:   Fiona Hill <abdelabd900@gmail.com>
-Date:   Sun, 30 May 2021 08:21:09 +0100
-Message-ID: <CAPMDzJkmb_RkYxPQaGhXox-wg8AA4Z9-oL6nZA6PQb_1uLZoqw@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
+From: Mike Rapoport <rppt@linux.ibm.com>
+
+Hi,
+
+SPARSEMEM memory model was supposed to entirely replace DISCONTIGMEM a
+(long) while ago. The last architectures that used DISCONTIGMEM were
+updated to use other memory models in v5.11 and it is about the time to
+entirely remove DISCONTIGMEM from the kernel.
+
+This set removes DISCONTIGMEM from alpha, arc and m68k, simplifies memory
+model selection in mm/Kconfig and replaces usage of redundant
+CONFIG_NEED_MULTIPLE_NODES and CONFIG_FLAT_NODE_MEM_MAP with CONFIG_NUMA
+and CONFIG_FLATMEM respectively. 
+
+I've also removed NUMA support on alpha that was BROKEN for more than 15
+years.
+
+There were also minor updates all over arch/ to remove mentions of
+DISCONTIGMEM in comments and #ifdefs.
+
+Mike Rapoport (9):
+  alpha: remove DISCONTIGMEM and NUMA
+  arc: update comment about HIGHMEM implementation
+  arc: remove support for DISCONTIGMEM
+  m68k: remove support for DISCONTIGMEM
+  mm: remove CONFIG_DISCONTIGMEM
+  arch, mm: remove stale mentions of DISCONIGMEM
+  docs: remove description of DISCONTIGMEM
+  mm: replace CONFIG_NEED_MULTIPLE_NODES with CONFIG_NUMA
+  mm: replace CONFIG_FLAT_NODE_MEM_MAP with CONFIG_FLATMEM
+
+ Documentation/admin-guide/sysctl/vm.rst |  12 +-
+ Documentation/vm/memory-model.rst       |  45 +----
+ arch/alpha/Kconfig                      |  22 ---
+ arch/alpha/include/asm/machvec.h        |   6 -
+ arch/alpha/include/asm/mmzone.h         | 100 -----------
+ arch/alpha/include/asm/pgtable.h        |   4 -
+ arch/alpha/include/asm/topology.h       |  39 -----
+ arch/alpha/kernel/core_marvel.c         |  53 +-----
+ arch/alpha/kernel/core_wildfire.c       |  29 +--
+ arch/alpha/kernel/pci_iommu.c           |  29 ---
+ arch/alpha/kernel/proto.h               |   8 -
+ arch/alpha/kernel/setup.c               |  16 --
+ arch/alpha/kernel/sys_marvel.c          |   5 -
+ arch/alpha/kernel/sys_wildfire.c        |   5 -
+ arch/alpha/mm/Makefile                  |   2 -
+ arch/alpha/mm/init.c                    |   3 -
+ arch/alpha/mm/numa.c                    | 223 ------------------------
+ arch/arc/Kconfig                        |  13 --
+ arch/arc/include/asm/mmzone.h           |  40 -----
+ arch/arc/mm/init.c                      |  21 +--
+ arch/arm64/Kconfig                      |   2 +-
+ arch/ia64/Kconfig                       |   2 +-
+ arch/ia64/kernel/topology.c             |   5 +-
+ arch/ia64/mm/numa.c                     |   5 +-
+ arch/m68k/Kconfig.cpu                   |  10 --
+ arch/m68k/include/asm/page.h            |   2 +-
+ arch/m68k/include/asm/page_mm.h         |  33 ----
+ arch/m68k/mm/init.c                     |  20 ---
+ arch/mips/Kconfig                       |   2 +-
+ arch/mips/include/asm/mmzone.h          |   8 +-
+ arch/mips/include/asm/page.h            |   2 +-
+ arch/mips/mm/init.c                     |   7 +-
+ arch/nds32/include/asm/memory.h         |   6 -
+ arch/powerpc/Kconfig                    |   2 +-
+ arch/powerpc/include/asm/mmzone.h       |   4 +-
+ arch/powerpc/kernel/setup_64.c          |   2 +-
+ arch/powerpc/kernel/smp.c               |   2 +-
+ arch/powerpc/kexec/core.c               |   4 +-
+ arch/powerpc/mm/Makefile                |   2 +-
+ arch/powerpc/mm/mem.c                   |   4 +-
+ arch/riscv/Kconfig                      |   2 +-
+ arch/s390/Kconfig                       |   2 +-
+ arch/sh/include/asm/mmzone.h            |   4 +-
+ arch/sh/kernel/topology.c               |   2 +-
+ arch/sh/mm/Kconfig                      |   2 +-
+ arch/sh/mm/init.c                       |   2 +-
+ arch/sparc/Kconfig                      |   2 +-
+ arch/sparc/include/asm/mmzone.h         |   4 +-
+ arch/sparc/kernel/smp_64.c              |   2 +-
+ arch/sparc/mm/init_64.c                 |  12 +-
+ arch/x86/Kconfig                        |   2 +-
+ arch/x86/kernel/setup_percpu.c          |   6 +-
+ arch/x86/mm/init_32.c                   |   4 +-
+ arch/xtensa/include/asm/page.h          |   4 -
+ include/asm-generic/memory_model.h      |  37 +---
+ include/asm-generic/topology.h          |   2 +-
+ include/linux/gfp.h                     |   4 +-
+ include/linux/memblock.h                |   6 +-
+ include/linux/mm.h                      |   4 +-
+ include/linux/mmzone.h                  |  16 +-
+ kernel/crash_core.c                     |   4 +-
+ mm/Kconfig                              |  36 +---
+ mm/memblock.c                           |   8 +-
+ mm/memory.c                             |   3 +-
+ mm/page_alloc.c                         |  25 +--
+ mm/page_ext.c                           |   2 +-
+ 66 files changed, 98 insertions(+), 898 deletions(-)
+ delete mode 100644 arch/alpha/include/asm/mmzone.h
+ delete mode 100644 arch/alpha/mm/numa.c
+ delete mode 100644 arch/arc/include/asm/mmzone.h
+
+
+base-commit: c4681547bcce777daf576925a966ffa824edd09d
 -- 
-Hello did you received my message i send to you?
+2.28.0
+
