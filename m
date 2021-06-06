@@ -2,67 +2,120 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D6E9239CB97
-	for <lists+linux-sh@lfdr.de>; Sun,  6 Jun 2021 01:00:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F36D039D1A3
+	for <lists+linux-sh@lfdr.de>; Sun,  6 Jun 2021 23:29:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230022AbhFEXCb (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sat, 5 Jun 2021 19:02:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47824 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230035AbhFEXCa (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sat, 5 Jun 2021 19:02:30 -0400
-Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CD99C061766
-        for <linux-sh@vger.kernel.org>; Sat,  5 Jun 2021 16:00:28 -0700 (PDT)
-Received: by mail-oi1-x22f.google.com with SMTP id r17so3654371oic.7
-        for <linux-sh@vger.kernel.org>; Sat, 05 Jun 2021 16:00:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=Vuef6UMB3u4KtSmbVmPIsdI+pp8YGRUKBSdGzlDIu5o=;
-        b=nWdDLIfqV/Ru28LOMTqm5VaU9uF3qSVElKi9JXeiD+K3f5nIdGME2gkB3XfaoXh5+c
-         eMgMZodpCb9egDnOHQdRyakGjAPKhrCCcXLfIyz9WHEKVxx1ZzmWLWcmmtbxzuiKxgA7
-         6ZGXkx8RC8kvEK2TvnhlY6Li0sA7CkQoiQ1+iBRKYL6lBqRwWAfjbWGaRfsbqvIBdiBQ
-         g/eGIyscHNkHZ8E2/pggjwmnVQzzvZUyhB8l35y2OrCs4bK+b1AQ0RizcoiYzs2Af+HH
-         BVsCtlN0hsRZ/WCd81dBSixSluIkiKyENQ8cihJIc9ElU2lIXiMERoXDvQK7+o9EgyoL
-         +0bA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=Vuef6UMB3u4KtSmbVmPIsdI+pp8YGRUKBSdGzlDIu5o=;
-        b=LHyiwIsPbYUKo0/PckpgfndxZB/eV2Z9mYh4+KIeOITMl3Ymo32nepSQJntxlEurbl
-         5IXO7qy9uVdpiZpbXQMihlm86XMqQf/ffJp2mQ1Q+apFA3nXhPhbYApxzvA412Ps6q4L
-         OslCDF9TkhzXGkXmitDfVsWqQaIWrpTGelZ1OjC+oVrH1NXCW9tQnHDujYwbxN2zrAkX
-         CfHODVVmiqSdLEcZP5jAMD0B8VYhAhNl+BByTXtjn52B8y1a+E9cWvnEaSMEnu+LAziJ
-         1j1GjYCa2Q7oRk1VW0mYvz2qCP9U6kf3Qhz22V/h3125T+iKZAsaf64Zw93378L2ZP6D
-         Q84Q==
-X-Gm-Message-State: AOAM530bInJFoTUfD1YOlxbkFUBOk8sbPXjQ3sk0hE6NdFuUM16WufZs
-        ckLv8PCW4VGgi/0WrXREkKOfOIezl8DSjy0kkt4=
-X-Google-Smtp-Source: ABdhPJw/GACAhjCxqrRkyVy8S68dVr9aB7zFI6oBr9cb0TTK3WO2TfEQ2ngkti0syLkk6sIMwV37SwrRaJ+Jcu96L/A=
-X-Received: by 2002:a54:400a:: with SMTP id x10mr15703327oie.158.1622934028096;
- Sat, 05 Jun 2021 16:00:28 -0700 (PDT)
+        id S230294AbhFFVbJ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sun, 6 Jun 2021 17:31:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51778 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230270AbhFFVbJ (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Sun, 6 Jun 2021 17:31:09 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 953E4613B6;
+        Sun,  6 Jun 2021 21:29:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1623014959;
+        bh=4t5DawWhLmQPAFGRKhX1jFE4WEqbArxXgmERWe2C0xQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Wu/fyJA4UR/3OsXx5PdnZuKJmqUDl6cQ0I5qOPmOobYB/YwD3loa7CHDMxmjDs7+O
+         /+vTonUI3DKMDg+OJCEqqvIqeoGeqCBaFfCM6MGkwmW6KvTZO5CLkleOMNy5KmfR4d
+         PteqC/M3+gPE1uiUsTSHvYSMYrpSkJ75a30BXywU3cSKzUfAv/A0+aJ76/IGuUYyhl
+         S6LUi9EmnHUL5lEcDnAewWs8EsYomaOBUCef/cImLCqjaabNrEeHJoCWkyMWvCEGV1
+         9+bVS1xXN0QGlOiLh2r3UXefQeesEuK/PQnscumw1S0RmHISk2eF6NrfUP8ytWcSpP
+         sTzKK7DJdkKEw==
+Date:   Mon, 7 Jun 2021 00:29:09 +0300
+From:   Mike Rapoport <rppt@kernel.org>
+To:     Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-sh@vger.kernel.org, linux-s390@vger.kernel.org
+Subject: Re: [PATCH v2 00/15] init_mm: cleanup ARCH's text/data/brk setup code
+Message-ID: <YL0+Jargm+y9aqx1@kernel.org>
+References: <20210604070633.32363-1-wangkefeng.wang@huawei.com>
 MIME-Version: 1.0
-Received: by 2002:a4a:97a7:0:0:0:0:0 with HTTP; Sat, 5 Jun 2021 16:00:27 -0700 (PDT)
-Reply-To: maverickjones57@gmail.com
-From:   maverick Jones <jonesmaverick555@gmail.com>
-Date:   Sun, 6 Jun 2021 00:00:27 +0100
-Message-ID: <CAHk1UWkLO8teZCxyNxvjPGExgk4NgVzaof++Xgnd4XhsWqwDDw@mail.gmail.com>
-Subject: Hello
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210604070633.32363-1-wangkefeng.wang@huawei.com>
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
+Hello Kefeng,
+
+On Fri, Jun 04, 2021 at 03:06:18PM +0800, Kefeng Wang wrote:
+> Add setup_initial_init_mm() helper, then use it
+> to cleanup the text, data and brk setup code.
+> 
+> v2:
+> - change argument from "char *" to "void *" setup_initial_init_mm()
+>   suggested by Geert Uytterhoeven
+> - use NULL instead of (void *)0 on h8300 and m68k
+> - collect ACKs
+> 
+> Cc: linux-snps-arc@lists.infradead.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-csky@vger.kernel.org
+> Cc: uclinux-h8-devel@lists.sourceforge.jp
+> Cc: linux-m68k@lists.linux-m68k.org
+> Cc: openrisc@lists.librecores.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-riscv@lists.infradead.org
+> Cc: linux-sh@vger.kernel.org
+> Cc: linux-s390@vger.kernel.org
+> Kefeng Wang (15):
+>   mm: add setup_initial_init_mm() helper
+>   arc: convert to setup_initial_init_mm()
+>   arm: convert to setup_initial_init_mm()
+>   arm64: convert to setup_initial_init_mm()
+>   csky: convert to setup_initial_init_mm()
+>   h8300: convert to setup_initial_init_mm()
+>   m68k: convert to setup_initial_init_mm()
+>   nds32: convert to setup_initial_init_mm()
+>   nios2: convert to setup_initial_init_mm()
+>   openrisc: convert to setup_initial_init_mm()
+>   powerpc: convert to setup_initial_init_mm()
+>   riscv: convert to setup_initial_init_mm()
+>   s390: convert to setup_initial_init_mm()
+>   sh: convert to setup_initial_init_mm()
+>   x86: convert to setup_initial_init_mm()
+
+I might be missing something, but AFAIU the init_mm.start_code and other
+fields are not used really early so the new setup_initial_init_mm()
+function can be called in the generic code outside setup_arch(), e.g in
+mm_init().
+ 
+>  arch/arc/mm/init.c                 | 5 +----
+>  arch/arm/kernel/setup.c            | 5 +----
+>  arch/arm64/kernel/setup.c          | 5 +----
+>  arch/csky/kernel/setup.c           | 5 +----
+>  arch/h8300/kernel/setup.c          | 5 +----
+>  arch/m68k/kernel/setup_mm.c        | 5 +----
+>  arch/m68k/kernel/setup_no.c        | 5 +----
+>  arch/nds32/kernel/setup.c          | 5 +----
+>  arch/nios2/kernel/setup.c          | 5 +----
+>  arch/openrisc/kernel/setup.c       | 5 +----
+>  arch/powerpc/kernel/setup-common.c | 5 +----
+>  arch/riscv/kernel/setup.c          | 5 +----
+>  arch/s390/kernel/setup.c           | 5 +----
+>  arch/sh/kernel/setup.c             | 5 +----
+>  arch/x86/kernel/setup.c            | 5 +----
+>  include/linux/mm_types.h           | 8 ++++++++
+>  16 files changed, 23 insertions(+), 60 deletions(-)
+> 
+> -- 
+> 2.26.2
+> 
+> 
+> _______________________________________________
+> linux-riscv mailing list
+> linux-riscv@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-riscv
+
 -- 
-
-We wish to notify you again that you were listed as a beneficiary in
-the intent of the deceased .Please provide
-
-your contact details to enable us contact you with full details on how
-to claims the Inheritance.
-
-Yours faithfully,
-
-Maverick Jones.
+Sincerely yours,
+Mike.
