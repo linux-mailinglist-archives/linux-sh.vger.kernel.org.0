@@ -2,65 +2,66 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A78063B1B42
-	for <lists+linux-sh@lfdr.de>; Wed, 23 Jun 2021 15:36:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 334EF3B1E19
+	for <lists+linux-sh@lfdr.de>; Wed, 23 Jun 2021 17:54:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230512AbhFWNih (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 23 Jun 2021 09:38:37 -0400
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:57579 "EHLO
-        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230163AbhFWNig (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 23 Jun 2021 09:38:36 -0400
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.94)
-          with esmtps (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1lw33B-001fsV-BD; Wed, 23 Jun 2021 15:36:17 +0200
-Received: from suse-laptop.physik.fu-berlin.de ([160.45.32.140])
-          by inpost2.zedat.fu-berlin.de (Exim 4.94)
-          with esmtpsa (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1lw33B-00340a-5U; Wed, 23 Jun 2021 15:36:17 +0200
-Subject: Re: dma_declare_coherent_memory and SuperH
-To:     Christoph Hellwig <hch@lst.de>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>
-Cc:     linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20210623133205.GA28589@lst.de>
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Message-ID: <9d12d2e3-3faf-3b2f-0265-2baee85c3ead@physik.fu-berlin.de>
-Date:   Wed, 23 Jun 2021 15:36:16 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        id S231501AbhFWP5A convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-sh@lfdr.de>); Wed, 23 Jun 2021 11:57:00 -0400
+Received: from [183.90.58.236] ([183.90.58.236]:51760 "EHLO ns1.zackeruz.tk"
+        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
+        id S231512AbhFWP46 (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Wed, 23 Jun 2021 11:56:58 -0400
+Received: from johnlewis.com (unknown [192.168.20.1])
+        by ns1.zackeruz.tk (Postfix) with ESMTPSA id 70E3D84631D
+        for <linux-sh@vger.kernel.org>; Wed, 23 Jun 2021 23:54:39 +0800 (+08)
+Reply-To: robert_turner@johnlewis-trading.com,
+          pippawicks.sales@johnlewis-trading.com
+From:   John Lewis & Partnersip <robert.turner107@johnlewis.com>
+To:     linux-sh@vger.kernel.org
+Subject: 6/23/2021 Product Inquiry 
+Date:   23 Jun 2021 15:54:38 +0000
+Message-ID: <20210623094114.FA67583458158B56@johnlewis.com>
 MIME-Version: 1.0
-In-Reply-To: <20210623133205.GA28589@lst.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 160.45.32.140
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Christoph!
+Dear linux-sh
 
-On 6/23/21 3:32 PM, Christoph Hellwig wrote:
-> I have a vague recollection that you were planning on dropping support
-> for non-devicetree platforms, is that still the case?
-I guess you are talking about this patch set [1].
+The famous brand John Lewis Partnership, is UK's largest multi-
+channel retailer with over 126 shops and multiple expansion in 
+Africa furnished by European/Asian/American products. We are 
+sourcing new products to attract new customers and also retain 
+our existing ones, create new partnerships with companies dealing 
+with different kinds of goods globally.
 
-Would be great if we could get this rebased and merged. Since Geert has access
-to SH hardware as well, he might be able to help.
+Your company's products are of interest to our market as we have 
+an amazing market for your products.
 
-Adrian
+Provide us your current catalog through email to review more. We 
+hope to be able to order with you and start a long-term friendly,
+respectable and solid business partnership. Please we would 
+appreciate it if you could send us your stock availability via 
+email if any.
 
-> [1] https://lore.kernel.org/patchwork/cover/693910/
+Our payment terms are 15 days net in Europe, 30 days Net in UK 
+and 30 days net in Asia/USA as we operate with over 5297 
+suppliers around the globe for the past 50 years now. For 
+immediate response Send your reply to robert_turner@johnlewis-
+trading.com for us to be able to 
+treat with care and urgency.
 
--- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer - glaubitz@debian.org
-`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+
+Best Regards
+
+Rob Turner
+Head Of Procurement Operations
+John Lewis & Partners.
+robert_turner@johnlewis-trading.com
+Tel: +44-7451-274090
+WhatsApp: +447497483925
+www.johnlewis.com
+REGISTERED OFFICE: 171 VICTORIA STREET, LONDON SW1E 5NN 
