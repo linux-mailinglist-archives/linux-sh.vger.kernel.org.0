@@ -2,99 +2,53 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 49F203B6918
-	for <lists+linux-sh@lfdr.de>; Mon, 28 Jun 2021 21:30:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 150383B72B3
+	for <lists+linux-sh@lfdr.de>; Tue, 29 Jun 2021 14:55:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236526AbhF1Tce (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 28 Jun 2021 15:32:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47416 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234094AbhF1Tcd (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 28 Jun 2021 15:32:33 -0400
-Received: from mail-ot1-x333.google.com (mail-ot1-x333.google.com [IPv6:2607:f8b0:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7765C061574
-        for <linux-sh@vger.kernel.org>; Mon, 28 Jun 2021 12:30:06 -0700 (PDT)
-Received: by mail-ot1-x333.google.com with SMTP id n99-20020a9d206c0000b029045d4f996e62so20036705ota.4
-        for <linux-sh@vger.kernel.org>; Mon, 28 Jun 2021 12:30:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=landley-net.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=VFJY8505wyLq/TqpNtGxx/X4mufdytmO16W0L0dHIgg=;
-        b=om4/U1E+hj6T7UkgHhPtAr+MURu4APHxmHXxUJG1zNOw+zEl+i9NmsNx3QnEYmmNCp
-         t5rlS5d/Weh7HtAbUzHIz3gebtjOexW6hV5er/4UNfgesAv55oB0eNOqwh5ZbTOJK/g5
-         mmELdGLy/6PiyMJtTefdbQ9vqO+4dpJxQb8bhb2sD26EtqVaM4l+VBwLu8z+oLgnGrJA
-         7JRvkVcgqJbA8TVSkSmHJyxT5B3B42fPTHenlSLt9m4gER/SRYB5BU3YJlnvVC3d/nAV
-         /4/i8jJd4gUGylUuI7MzMh6daNP+Kz6t7IWsXvW6dw6k1KHRxIMnL8Oq2oE4S1HsyORb
-         8DoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=VFJY8505wyLq/TqpNtGxx/X4mufdytmO16W0L0dHIgg=;
-        b=S6gAd75TSVt6BUnFQd+kaXZthCgI2MurQb5u3fL4OEmn6Z1/HNAm87e5fCxPQeW7wv
-         b5vm+yAO+fKYNpq1t/cJxXL4S9qWeezP5DXLev7soEH+Dgm+aw2yL+/DtSoSSpqUxY4w
-         hUgrAv4RUcMYKBVUpZPoxC68slVTbKmpOCdeh3QPWO0NQyT9PPtxGzujMXWcOwuo88EW
-         5zrmkbaE3WBNzIkpvxm6XQZuqsUQCCWPT/mGSk/Ep3vRwxkBCAcbuPAro6sBxWU40ngX
-         Wa/KrUYyO9FqheswzHd/m2PlIqC5GtE6LwsgzOwCadg4CtMK14nqQoLhRmHhoGpTIH/i
-         jIlQ==
-X-Gm-Message-State: AOAM530zcvFzpWaTEsSAdwIjTlg4Q1hLxT3XyGJt5CaCJdrL9IkZ0bdf
-        7i2FbyqBwFu8naC5aXPCR8RjFw==
-X-Google-Smtp-Source: ABdhPJyQF1m0BxNSgT0anmTMLiJYKDNJJnKXUgkXT4+p9bUZ460gWnijh9Yo+M4Apn9fU8Cn89ZRYw==
-X-Received: by 2002:a9d:62cf:: with SMTP id z15mr1002438otk.306.1624908606386;
-        Mon, 28 Jun 2021 12:30:06 -0700 (PDT)
-Received: from [192.168.86.166] ([136.62.4.88])
-        by smtp.gmail.com with ESMTPSA id p190sm259011oop.2.2021.06.28.12.30.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Jun 2021 12:30:05 -0700 (PDT)
-Subject: Re: dma_declare_coherent_memory and SuperH
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20210623133205.GA28589@lst.de>
- <1a55cf69-8fe1-dca0-68c7-f978567f9ca0@landley.net>
- <20210628133858.GA21602@lst.de>
- <4d6b7c35-f2fa-b476-b814-598a812770e6@landley.net>
- <20210628134955.GA22559@lst.de>
- <1141b20f-7cdf-1477-ef51-876226db7a37@landley.net>
- <20210628163312.GA29659@lst.de>
-From:   Rob Landley <rob@landley.net>
-Message-ID: <4415e2cf-5a6a-8e83-a6d8-391c25e1f041@landley.net>
-Date:   Mon, 28 Jun 2021 14:47:15 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        id S233700AbhF2M6B convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-sh@lfdr.de>); Tue, 29 Jun 2021 08:58:01 -0400
+Received: from [218.75.92.58] ([218.75.92.58]:49208 "EHLO WIN-VTPUBHNS72V"
+        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
+        id S233698AbhF2M57 (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Tue, 29 Jun 2021 08:57:59 -0400
+Received: from [192.168.43.47] (Unknown [197.210.84.10])
+        by WIN-VTPUBHNS72V with ESMTPA
+        ; Thu, 24 Jun 2021 20:47:09 +0800
+Message-ID: <71132C79-D52A-403F-92F1-F243F45CAEAD@WIN-VTPUBHNS72V>
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-In-Reply-To: <20210628163312.GA29659@lst.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: URGENT ATTENTION
+To:     Recipients <wjjt@wjjt.cn>
+From:   "Andres Auchincloss" <wjjt@wjjt.cn>
+Date:   Thu, 24 Jun 2021 14:46:40 +0200
+Reply-To: andresauchincloss926@gmail.com
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 6/28/21 11:33 AM, Christoph Hellwig wrote:
-> On Mon, Jun 28, 2021 at 09:29:59AM -0500, Rob Landley wrote:
-> >> Your plan is to eliminate the ability for non-device-tree boards to do DMA?
->
->> > No.
->
->> Which part of this exchange have I misunderstood?
-> 
-> The part that there is no easy way out without the device tree
-> conversion.
+Hi,
 
-Interesting use of the word "No".
+I will like to use this opportunity to wish you a productive time in 2021 and also confide in you to finalize this transaction of mutual benefits. It may seem strange to you, but it is real. This is a transaction that has no risk at all, due process shall be followed and it shall be carried out under the ambit of the financial laws. Being the Chief Financial Officer, BP Plc. I want to trust and put in your care Eighteen Million British Pounds Sterling, The funds were acquired from an over-invoiced payment from a past contract executed in one of my departments.
 
-I didn't ask for easy, I asked what needed to be done. What is the patch you
-want to apply to kernel/dma so I can see what infrastructure needs to be moved
-into arch/sh so it's our problem and not yours.
+I can't successfully achieve this transaction without presenting you as foreign contractor who will provide a bank account to receive the funds.
 
-If a wrapper function has to fake up a temporary device tree snippet to lie to
-new DMA infrastructure that refuses to export non-systemd APIs to handle this,
-fine. It's still less intrusive than converting EVERY device to a new API on
-boards I can't easily regression test. (And hey, if you squint that would be a
-little like a partial incremental device tree conversion.)
+Documentation for the claim of the funds will be legally processed and documented, so I will need your full cooperation on this matter for our mutual benefits. We will discuss details if you are interested to work with me to secure this funds. I will appreciate your prompt response in every bit of our communication. Stay Blessed and Stay Safe.
 
-Rob
+
+
+Best Regards
+
+
+
+
+Tel: +1 (587) 770-0485
+Andres .B. Auchincloss
+Chief financial officerBP Petroleum p.l.c.
+
+
+
+
+                                  Copyright ©? 1996-2021
+
