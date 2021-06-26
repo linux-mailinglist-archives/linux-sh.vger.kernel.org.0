@@ -2,41 +2,88 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 66B9A3B4FEC
-	for <lists+linux-sh@lfdr.de>; Sat, 26 Jun 2021 21:04:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 945E83B505A
+	for <lists+linux-sh@lfdr.de>; Sun, 27 Jun 2021 00:19:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230136AbhFZTGa convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-sh@lfdr.de>); Sat, 26 Jun 2021 15:06:30 -0400
-Received: from [210.180.118.67] ([210.180.118.67]:44690 "EHLO blank.cafe24.com"
-        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
-        id S230107AbhFZTG3 (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Sat, 26 Jun 2021 15:06:29 -0400
-Received: from IP-130-143.dataclub.eu (ip-130-143.dataclub.info [84.38.130.143] (may be forged))
-        (authenticated bits=0)
-        by blank.cafe24.com (8.14.7/8.14.7) with ESMTP id 15H5YqDF003014
-        for <linux-sh@vger.kernel.org>; Thu, 17 Jun 2021 14:34:55 +0900
-Message-Id: <202106170534.15H5YqDF003014@blank.cafe24.com>
-Content-Type: text/plain; charset="iso-8859-1"
+        id S230151AbhFZWV0 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sat, 26 Jun 2021 18:21:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49646 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229794AbhFZWV0 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sat, 26 Jun 2021 18:21:26 -0400
+Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com [IPv6:2607:f8b0:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8480C061574
+        for <linux-sh@vger.kernel.org>; Sat, 26 Jun 2021 15:19:03 -0700 (PDT)
+Received: by mail-ot1-x332.google.com with SMTP id d21-20020a9d72d50000b02904604cda7e66so11999560otk.7
+        for <linux-sh@vger.kernel.org>; Sat, 26 Jun 2021 15:19:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=landley-net.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=hL4UYM2SGkybwhGKeNVxRc3RhwhOjX0QboFkuvBmxSI=;
+        b=gPLAQUkBSs4K1Iyg7nlLQ/Di9cZnlIsOhjJYah1/ndHUfP+UuOwlG+gejgqQJCKSV1
+         MUw36uxralpQUiWvIyF0aqn3Yrj73aWwwLBtQTaPhjxUki4ky3Il2oC1Azt3hbGAfjyC
+         bbdlT7fo6N/nTsbmiLeblzvTYK/WmzP1YQi9Xwd0XeAGcwUlirB4hYCLSMUsGgOX82dB
+         mnNIW3xg9C9tlzbeCtnLTyeM/IoNls8iuZ386wT9zOpk11vgT67UcihHwg0kDXapUqJy
+         uVYPnIFONm9jX+XVBIg6X99gH/SXHNi5frxyks1cnl1ShzPP8OdWW8J0twuu5FKIS5gX
+         RCZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=hL4UYM2SGkybwhGKeNVxRc3RhwhOjX0QboFkuvBmxSI=;
+        b=Cex52XFyw9UtUBIMDQLqBZbErvx04Z8wjB5WkBh47u+MIz5fCl+q2b9m+kzLIvLWCw
+         YEwmt7Thgf89Smiz4DDFRL/VaXxOsppo6Lpda/8CXeFGqw00OvClVYMz0zqak/msHFSZ
+         7iKAsBKpYCTonTgRc34SXHlGbsivSMGEr1dRnHe9IBFvOeoqtT9yFx3qrvFOjIz0U7kt
+         3MjPOja0jNhealNwg3ua3HW2XaaLUFyVQi3FYGs1MqgcrCKRuYRAEghigxPzzRh6AjFG
+         x9o/ECMFePDn46IBvsqIUjkY6r5oX8yuwa//XwBofnVn+Y75OvgnASa1Nj8RDw2NBNX0
+         fsyA==
+X-Gm-Message-State: AOAM533RmVanfzgpgo0JrUfAHahrhThd0CFbskk8IpyX7Vs5bV5umcGt
+        g4qtp5mNDNBQZ+8FVxLZOFOCaLXqo2cNIDIl
+X-Google-Smtp-Source: ABdhPJzIBYiDwN+vs4Juiju+SrRswUfU+7eER9WObXr+x/xzu9mdFDLFiX/Zu9aD6NeZSS/2M7F/iw==
+X-Received: by 2002:a9d:80a:: with SMTP id 10mr12880537oty.192.1624745942815;
+        Sat, 26 Jun 2021 15:19:02 -0700 (PDT)
+Received: from [192.168.86.166] ([136.62.4.88])
+        by smtp.gmail.com with ESMTPSA id 35sm2389066oth.49.2021.06.26.15.19.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 26 Jun 2021 15:19:01 -0700 (PDT)
+Subject: Re: dma_declare_coherent_memory and SuperH
+To:     Christoph Hellwig <hch@lst.de>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>
+Cc:     linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20210623133205.GA28589@lst.de>
+From:   Rob Landley <rob@landley.net>
+Message-ID: <1a55cf69-8fe1-dca0-68c7-f978567f9ca0@landley.net>
+Date:   Sat, 26 Jun 2021 17:36:08 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: BUSINESS LOAN/PROJECT FUNDING...67
-To:     linux-sh@vger.kernel.org
-From:   "Smith Green" <ssbinvestmentsllc@citromail.hu>
-Date:   Thu, 17 Jun 2021 08:34:48 +0300
-Reply-To: ssbinvestmentsllc@citromail.hu
+In-Reply-To: <20210623133205.GA28589@lst.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Dear Sir/Madam,
+On 6/23/21 8:32 AM, Christoph Hellwig wrote:
+> Hi SuperH maintainers,
+> 
+> I have a vague recollection that you were planning on dropping support
+> for non-devicetree platforms, is that still the case?
 
-Our Investors are based in the middle east with a profound track record. We invite you to take advantage of our investment loan program to fund your existing or intending projects. We offer a straight or convertible loan investment program for projects with high-returns and payback prospects without the usual rigid procedures of conventional lenders.
- 
-Kindly forward a copy of your Executive business summary for our review: info@ssbinvestmentsllc.us
+We'd like to convert them, but have to rustle up test hardware for what _is_
+still available. (There was some motion towards this a year or so back, but it
+petered out because pandemic and everyone got distracted halfway through.)
 
- 
-Best Regards.
-Smith Green
-E:info@ssbinvestmentsllc.us
-International investment broker
+(We should definitely START by converting the r2d board qemu emulates. :)
+
+> The reason I'm asking is because all but one users of
+> dma_declare_coherent_memory are in the sh platform setup code, and
+> I'd really like to move towards killing this function off.
+
+Understood. Is there an easy "convert to this" I could do to those callers?
+
+Rob
