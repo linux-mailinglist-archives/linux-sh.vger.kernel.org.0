@@ -2,65 +2,64 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F2173B5293
-	for <lists+linux-sh@lfdr.de>; Sun, 27 Jun 2021 10:38:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D4813B556D
+	for <lists+linux-sh@lfdr.de>; Mon, 28 Jun 2021 00:05:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229534AbhF0Iff (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sun, 27 Jun 2021 04:35:35 -0400
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:56721 "EHLO
-        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229507AbhF0Iff (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sun, 27 Jun 2021 04:35:35 -0400
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.94)
-          with esmtps (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1lxQDz-001KP2-HR; Sun, 27 Jun 2021 10:33:07 +0200
-Received: from p57ae5209.dip0.t-ipconnect.de ([87.174.82.9] helo=[192.168.178.35])
-          by inpost2.zedat.fu-berlin.de (Exim 4.94)
-          with esmtpsa (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1lxQDz-002ANq-AR; Sun, 27 Jun 2021 10:33:07 +0200
-Subject: Re: dma_declare_coherent_memory and SuperH
-To:     Daniel Palmer <daniel@0x0f.com>, Christoph Hellwig <hch@lst.de>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        id S231738AbhF0WIM (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sun, 27 Jun 2021 18:08:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45154 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231713AbhF0WIM (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sun, 27 Jun 2021 18:08:12 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B8FAC061766;
+        Sun, 27 Jun 2021 15:05:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=b9tp+JdGeJfN/iWAAVHlO9/qdJRqaDOdraHTaeXVj5w=; b=OtZNB5uKW+Qg08MO8irtX6ZaDa
+        8xWDfA8z9lufCgddsb4FWbsUKOnGIEndYNavhGRGmCE8ARnfXkNOrkijRp7K4M2CYDhiRMp89ax+9
+        8imU0eVXrBCP/6ir6+0XRlVR5op2aAfQHvwyDfZdF/Yvem+fz4+ENdaJMAJayE5p2A/ff3Xs3hlkb
+        OGrQvMl44vhyBpdJR8AWG1kzhJGHh7NSO6v2gGIRkaVHU8yQSrf+zATMwipr0mSFY175haL6/rsQj
+        quWzjEQbs7QRPnb3lKhsZmql9gU5V3HgBvk4BgNkJAJRKw4FAxabHUCnEIyb4P+w9+vUvciNeuBLZ
+        Tx4eGnQA==;
+Received: from [2601:1c0:6280:3f0::aefb] (helo=bombadil.infradead.org)
+        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1lxcuP-006CHh-DY; Sun, 27 Jun 2021 22:05:45 +0000
+From:   Randy Dunlap <rdunlap@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <20210623133205.GA28589@lst.de>
- <CAFr9PXk84aejj186UNizftwK_w5G1RXLMsSvAEVEYsXi8=yCoA@mail.gmail.com>
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Message-ID: <27c78c11-b230-a5b5-6648-6b93daf6afda@physik.fu-berlin.de>
-Date:   Sun, 27 Jun 2021 10:33:06 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH 0/3 v2] sh: fixes for various build and kconfig warnings
+Date:   Sun, 27 Jun 2021 15:05:41 -0700
+Message-Id: <20210627220544.8757-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-In-Reply-To: <CAFr9PXk84aejj186UNizftwK_w5G1RXLMsSvAEVEYsXi8=yCoA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 87.174.82.9
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 6/27/21 5:08 AM, Daniel Palmer wrote:
-> On Wed, 23 Jun 2021 at 22:32, Christoph Hellwig <hch@lst.de> wrote
->> I have a vague recollection that you were planning on dropping support
->> for non-devicetree platforms, is that still the case?
-> 
-> Are there any SH4 boards that actually support DT?
-> I'm still using an ecovec24 board(SH7724). I'd love to use DT if
-> that's possible.
+Fix a few build warnings and one kconfig warning on SUPERH.
 
-There is an unmerged patch set by Yoshinori Sato that adds device tree support for SH.
+v2: add a previously-sent Kconfig patch
+    add a few more Cc's
 
-Adrian
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Rich Felker <dalias@libc.org>
+Cc: linux-sh@vger.kernel.org
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>
 
--- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer - glaubitz@debian.org
-`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+[PATCH 1/3 v2] sh: fix kconfig unmet dependency warning for FRAME_POINTER
+[PATCH 2/3 v2] sh: define __BIG_ENDIAN for math-emu
+[PATCH 3/3 v2] sh: fix READ/WRITE redefinition warnings
+
+ arch/sh/Kconfig.debug             |    1 
+ arch/sh/include/asm/sfp-machine.h |    8 +++++
+ arch/sh/math-emu/math.c           |   44 ++++++++++++++--------------
+ 3 files changed, 31 insertions(+), 22 deletions(-)
