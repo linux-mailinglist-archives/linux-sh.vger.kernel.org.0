@@ -2,52 +2,52 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A12713B5F54
-	for <lists+linux-sh@lfdr.de>; Mon, 28 Jun 2021 15:47:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C1CF3B5FB8
+	for <lists+linux-sh@lfdr.de>; Mon, 28 Jun 2021 16:12:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232178AbhF1Ntk (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 28 Jun 2021 09:49:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54968 "EHLO
+        id S232396AbhF1OPQ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 28 Jun 2021 10:15:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232131AbhF1Ntj (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 28 Jun 2021 09:49:39 -0400
-Received: from mail-oo1-xc36.google.com (mail-oo1-xc36.google.com [IPv6:2607:f8b0:4864:20::c36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9BCEC061574
-        for <linux-sh@vger.kernel.org>; Mon, 28 Jun 2021 06:47:10 -0700 (PDT)
-Received: by mail-oo1-xc36.google.com with SMTP id l26-20020a4ac61a0000b029024c94215d77so916469ooq.11
-        for <linux-sh@vger.kernel.org>; Mon, 28 Jun 2021 06:47:10 -0700 (PDT)
+        with ESMTP id S232376AbhF1OPQ (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 28 Jun 2021 10:15:16 -0400
+Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com [IPv6:2607:f8b0:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93AD0C061574
+        for <linux-sh@vger.kernel.org>; Mon, 28 Jun 2021 07:12:50 -0700 (PDT)
+Received: by mail-ot1-x332.google.com with SMTP id g19-20020a9d12930000b0290457fde18ad0so18885551otg.1
+        for <linux-sh@vger.kernel.org>; Mon, 28 Jun 2021 07:12:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=landley-net.20150623.gappssmtp.com; s=20150623;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=qceIscsR0qrG5qBxyFH8+s8zOb1JhNM9G4ZV0IV+llI=;
-        b=Ui5tbzleCKtxQLzeaeNusdncvAYbZ0YVOaGFOd9hPcTFcKVdYk3QY7gbBOjNaFJN6v
-         BTKz1fQcFColqlgOehqK1lCndPtgfQ7g5E07dU8Ga6wHXAqFg1S62r3U7snNJAGS8awD
-         VE0Bv+6UzQCojhJjbb+wdf5OQpg2M6RJaulStQP6nxup6C4jaL+/ljjWn1OL10iv5ofs
-         PsOum6XwhXMAILXuiX/Xl38nrmFKYNGiN5pDMRX0LYIEDwsIsiIXxwRhXJqwufJnfwSB
-         nUsHJ2JeGNdd6Z9YeVWdo1+VFc+QPUboRwHfLrsLGKXIak/048eDNKCJ59FydZXXbb6Z
-         WJrQ==
+        bh=rfeXX0z3uQGk3VM+2xtA2DmnGgP2rWO/RWy/3AwFX2Y=;
+        b=oEx9hPhXaBPdvVIaz6BVAJzYzMGl1m/N8qbg7AEc2G1ta3UVBQUKXNySY2Fbm/zSZg
+         7CNt3L0bqI/4Ex96WZP/HbqN90z4RXEOrOk9kC4kPL859tXwX34YFvjbsBEf+E1q2rqj
+         4nykuDKfuw6dFHpbXiBlHRhLLw3RdF1KAVKOWeHIGiqU4ZVExCSWaIX4bqR7UMbOF08g
+         qvRxi0uFH9hd3yV+KOBOTXMk8UOE3Lykv1AxSqqsucT4+HJyGb/3bue6CZ+d9OlkWDg7
+         2KkzfBq9ajnol99Q6mRWLMvg5b5Kg+aMSEk81qANYVNpsKJEjFshv6OBf+osh/Wbmcs4
+         /m3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=qceIscsR0qrG5qBxyFH8+s8zOb1JhNM9G4ZV0IV+llI=;
-        b=ReAI3vup/555cicGD5Sp/EoH3fwiu8Z8nTF6jm5rcOHDAD8wRTUOtNncGtM6JGTYz4
-         v4HgeTo/BeHwyWRcgNq65Ujh1kPn5wePpdtg03D4RH3SSgCFf681vhyiTFR2aXFa0Kw2
-         7kPcl/g4dbJXIVQi0XImg3SdGGcCSXJExGnEy2dvf6ns1hvrKPUVeplW1k10cx9DleT4
-         dfLx6XmI+ugakSyMbY3zEWzEFcM8AuHTsCSWA9jC2epcc/S5KSH8wDyU7Uu3TQOMGqHD
-         jbR93gvN3NdfCdv7vgG9d3c1pTjzW6Jsf5SVg5xz+dY5/PClaMjrDtbs9TkHYjfIgzkP
-         XxEA==
-X-Gm-Message-State: AOAM531c6cVRYI/kLcxRokhxFUsTXg83s1SHIlZZrt8jbXvqpY1yX3Bn
-        UWzD+gCh7rPDrbSD93UQJJVHskLB3S2HmwyG
-X-Google-Smtp-Source: ABdhPJzW850hkyCet8ockBb2pXWxsK9Q32fy3TmhkXzxvuk4dJrRBVxkfdylqxd+lYT1oDAev5TCSA==
-X-Received: by 2002:a4a:b815:: with SMTP id g21mr19202867oop.70.1624888030261;
-        Mon, 28 Jun 2021 06:47:10 -0700 (PDT)
+        bh=rfeXX0z3uQGk3VM+2xtA2DmnGgP2rWO/RWy/3AwFX2Y=;
+        b=DErUDG9IbyQMAb0gaXPXLF+m4ExKBfRVJa7V/h+nQh+VD2YW9fIOMqpcEE9ulQwI6u
+         nyLy4ULULSVJOsQ8xnyVjnlueyIjcmmFPZ6wuFHYQrYLHiMkU6M2FDw4LlOncSTJx13R
+         xyGqJEUnPYhCjFyq8fPiYUjOVOLeavIilG+MwrF91en8m+mXW1uvXcXtncqg+ejFlZHV
+         z5FY4iOuYrfaEhtdDqflbeBHpXiAd11FNNd15XMw3RFnAQLj0kOW7DHETCFUm8yIM04C
+         Kg4OxJIX5WOKUMPhdWGy3CotNRyxvsezAUzJz36+B+OYzH1DxziqCHES8A8CHTmCrGYW
+         ay+Q==
+X-Gm-Message-State: AOAM53020qt9GcbmqJqNW7DrSIKyNItAG2vRg4fKdyVonNrgA7ZvjIS1
+        w5N7uGzk7F5A7JucIPIy5dAGyw==
+X-Google-Smtp-Source: ABdhPJxwqACyHwzTBQ3ULjEyeEdUJXy8m8MXBq1w/A8ku65FixpuNCpN7u0pxb2tmcH/AD8R8Qx+7w==
+X-Received: by 2002:a05:6830:1e64:: with SMTP id m4mr20972177otr.23.1624889569949;
+        Mon, 28 Jun 2021 07:12:49 -0700 (PDT)
 Received: from [192.168.86.166] ([136.62.4.88])
-        by smtp.gmail.com with ESMTPSA id y20sm1619791ots.23.2021.06.28.06.47.09
+        by smtp.gmail.com with ESMTPSA id b20sm3513621otq.41.2021.06.28.07.12.49
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Jun 2021 06:47:09 -0700 (PDT)
+        Mon, 28 Jun 2021 07:12:49 -0700 (PDT)
 Subject: Re: dma_declare_coherent_memory and SuperH
 To:     Christoph Hellwig <hch@lst.de>
 Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
@@ -56,13 +56,15 @@ Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
 References: <20210623133205.GA28589@lst.de>
  <1a55cf69-8fe1-dca0-68c7-f978567f9ca0@landley.net>
  <20210628133858.GA21602@lst.de>
+ <4d6b7c35-f2fa-b476-b814-598a812770e6@landley.net>
+ <20210628134955.GA22559@lst.de>
 From:   Rob Landley <rob@landley.net>
-Message-ID: <4d6b7c35-f2fa-b476-b814-598a812770e6@landley.net>
-Date:   Mon, 28 Jun 2021 09:04:19 -0500
+Message-ID: <1141b20f-7cdf-1477-ef51-876226db7a37@landley.net>
+Date:   Mon, 28 Jun 2021 09:29:59 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.11.0
 MIME-Version: 1.0
-In-Reply-To: <20210628133858.GA21602@lst.de>
+In-Reply-To: <20210628134955.GA22559@lst.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -70,31 +72,24 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-
-
-On 6/28/21 8:38 AM, Christoph Hellwig wrote:
-> On Sat, Jun 26, 2021 at 05:36:08PM -0500, Rob Landley wrote:
->> On 6/23/21 8:32 AM, Christoph Hellwig wrote:
->> > Hi SuperH maintainers,
->> > 
->> > I have a vague recollection that you were planning on dropping support
->> > for non-devicetree platforms, is that still the case?
+On 6/28/21 8:49 AM, Christoph Hellwig wrote:
+> On Mon, Jun 28, 2021 at 09:04:19AM -0500, Rob Landley wrote:
+>> > Well, the replacement is to declare the device memory carveouts in the
+>> > Device Tree.
 >> 
->> We'd like to convert them, but have to rustle up test hardware for what _is_
->> still available. (There was some motion towards this a year or so back, but it
->> petered out because pandemic and everyone got distracted halfway through.)
->> 
->> (We should definitely START by converting the r2d board qemu emulates. :)
->> 
->> > The reason I'm asking is because all but one users of
->> > dma_declare_coherent_memory are in the sh platform setup code, and
->> > I'd really like to move towards killing this function off.
->> 
->> Understood. Is there an easy "convert to this" I could do to those callers?
+>> Your plan is to eliminate the ability for non-device-tree boards to do DMA?
 > 
-> Well, the replacement is to declare the device memory carveouts in the
-> Device Tree.
+> No.  My hope is to kill dma_declarare_coherent, an API for board
+> support files to declare device-specific regions to be used for
+> coherent DMA.
 
-Your plan is to eliminate the ability for non-device-tree boards to do DMA?
+Q) If I haven't got regression test hardware to make sure I properly converted
+each of these entire boards to device tree, Is there anything else I can do to
+help you remove this function from common code, such as inlining some portion of
+this function?
+
+A) You can convert the board to device tree.
+
+Which part of this exchange have I misunderstood?
 
 Rob
