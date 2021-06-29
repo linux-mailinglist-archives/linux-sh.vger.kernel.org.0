@@ -2,53 +2,71 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 150383B72B3
-	for <lists+linux-sh@lfdr.de>; Tue, 29 Jun 2021 14:55:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14F423B7A17
+	for <lists+linux-sh@lfdr.de>; Tue, 29 Jun 2021 23:49:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233700AbhF2M6B convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-sh@lfdr.de>); Tue, 29 Jun 2021 08:58:01 -0400
-Received: from [218.75.92.58] ([218.75.92.58]:49208 "EHLO WIN-VTPUBHNS72V"
-        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233698AbhF2M57 (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Tue, 29 Jun 2021 08:57:59 -0400
-Received: from [192.168.43.47] (Unknown [197.210.84.10])
-        by WIN-VTPUBHNS72V with ESMTPA
-        ; Thu, 24 Jun 2021 20:47:09 +0800
-Message-ID: <71132C79-D52A-403F-92F1-F243F45CAEAD@WIN-VTPUBHNS72V>
-Content-Type: text/plain; charset="iso-8859-1"
+        id S235473AbhF2VwT (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 29 Jun 2021 17:52:19 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:52883 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233660AbhF2VwT (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 29 Jun 2021 17:52:19 -0400
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.94)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1lyLc2-001t9P-5m; Tue, 29 Jun 2021 23:49:46 +0200
+Received: from p57bd964c.dip0.t-ipconnect.de ([87.189.150.76] helo=[192.168.178.81])
+          by inpost2.zedat.fu-berlin.de (Exim 4.94)
+          with esmtpsa (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1lyLc1-003Yvo-VO; Tue, 29 Jun 2021 23:49:46 +0200
+Subject: Re: [PATCH 0/3 v2] sh: fixes for various build and kconfig warnings
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To:     Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
+Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+References: <20210627220544.8757-1-rdunlap@infradead.org>
+ <be15fd85-1d35-0cba-5c27-8273f0647f94@physik.fu-berlin.de>
+Message-ID: <33d4f0ef-0d7d-c0a5-102a-7ae862b8c12a@physik.fu-berlin.de>
+Date:   Tue, 29 Jun 2021 23:49:45 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: URGENT ATTENTION
-To:     Recipients <wjjt@wjjt.cn>
-From:   "Andres Auchincloss" <wjjt@wjjt.cn>
-Date:   Thu, 24 Jun 2021 14:46:40 +0200
-Reply-To: andresauchincloss926@gmail.com
+In-Reply-To: <be15fd85-1d35-0cba-5c27-8273f0647f94@physik.fu-berlin.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 87.189.150.76
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi,
+Hello!
 
-I will like to use this opportunity to wish you a productive time in 2021 and also confide in you to finalize this transaction of mutual benefits. It may seem strange to you, but it is real. This is a transaction that has no risk at all, due process shall be followed and it shall be carried out under the ambit of the financial laws. Being the Chief Financial Officer, BP Plc. I want to trust and put in your care Eighteen Million British Pounds Sterling, The funds were acquired from an over-invoiced payment from a past contract executed in one of my departments.
+On 6/28/21 12:26 AM, John Paul Adrian Glaubitz wrote:
+>>  arch/sh/Kconfig.debug             |    1 
+>>  arch/sh/include/asm/sfp-machine.h |    8 +++++
+>>  arch/sh/math-emu/math.c           |   44 ++++++++++++++--------------
+>>  3 files changed, 31 insertions(+), 22 deletions(-)
+> 
+> I'll test these tomorrow on my SH-7785LCR board. Would it be possible to queue
+> them up for linux-next after verification?
 
-I can't successfully achieve this transaction without presenting you as foreign contractor who will provide a bank account to receive the funds.
+Just as a heads-up: My fast EPYC server for kernel cross-compilation is currently down,
+so I'll have to set up a new machine at SUSE tomorrow for that purpose. Hope to be able
+to test the kernel after that.
 
-Documentation for the claim of the funds will be legally processed and documented, so I will need your full cooperation on this matter for our mutual benefits. We will discuss details if you are interested to work with me to secure this funds. I will appreciate your prompt response in every bit of our communication. Stay Blessed and Stay Safe.
+Sorry for the delay, the other server is currently down due to an A/C failure at the university.
 
+Adrian
 
-
-Best Regards
-
-
-
-
-Tel: +1 (587) 770-0485
-Andres .B. Auchincloss
-Chief financial officerBP Petroleum p.l.c.
-
-
-
-
-                                  Copyright ©? 1996-2021
-
+-- 
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
