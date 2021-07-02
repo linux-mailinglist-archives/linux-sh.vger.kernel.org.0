@@ -2,110 +2,37 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A3A1C3B9E28
-	for <lists+linux-sh@lfdr.de>; Fri,  2 Jul 2021 11:25:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A8743BA515
+	for <lists+linux-sh@lfdr.de>; Fri,  2 Jul 2021 23:36:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230256AbhGBJ16 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 2 Jul 2021 05:27:58 -0400
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:37215 "EHLO
-        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230388AbhGBJ16 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 2 Jul 2021 05:27:58 -0400
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.94)
-          with esmtps (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1lzFQG-002aEM-Gp; Fri, 02 Jul 2021 11:25:20 +0200
-Received: from p57bd964c.dip0.t-ipconnect.de ([87.189.150.76] helo=[192.168.178.81])
-          by inpost2.zedat.fu-berlin.de (Exim 4.94)
-          with esmtpsa (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1lzFQG-004BfI-AA; Fri, 02 Jul 2021 11:25:20 +0200
-Subject: Re: [PATCH 3/3 v2] sh: fix READ/WRITE redefinition warnings
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Takashi YOSHII <takasi-y@ops.dti.ne.jp>,
-        Arnd Bergmann <arnd@arndb.de>
-References: <20210627220544.8757-1-rdunlap@infradead.org>
- <20210627220544.8757-4-rdunlap@infradead.org>
- <6af41806-e715-4084-418f-4a8924d26c07@physik.fu-berlin.de>
- <8efd6e1d-9949-9598-9e6b-41d9b2f4ea7a@infradead.org>
- <d1e925b1-b0ef-2e00-ea79-b5ff2be3cf4c@physik.fu-berlin.de>
- <CAMuHMdUjT3GnZTUurHmjctxaa==VYU9-rNuQun=f=RyWi2M5Tw@mail.gmail.com>
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Message-ID: <85485961-4c6e-a1bc-d66a-19869b5a03f1@physik.fu-berlin.de>
-Date:   Fri, 2 Jul 2021 11:25:19 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        id S230020AbhGBVjb convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-sh@lfdr.de>); Fri, 2 Jul 2021 17:39:31 -0400
+Received: from emailmailspro.live ([184.164.142.195]:57370 "EHLO
+        emailmailspro.live" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229648AbhGBVja (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 2 Jul 2021 17:39:30 -0400
+Reply-To: chusakjaidee2020@gmail.com
+From:   Info <info@emailmailspro.live>
+To:     linux-sh@vger.kernel.org
+Subject: Hi,
+Date:   02 Jul 2021 14:37:03 -0700
+Message-ID: <20210702143702.70188DB1DF9D3A8F@emailmailspro.live>
 MIME-Version: 1.0
-In-Reply-To: <CAMuHMdUjT3GnZTUurHmjctxaa==VYU9-rNuQun=f=RyWi2M5Tw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 87.189.150.76
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; pl-PL; rv:1.9.0.1) Gecko/2008071222 Ubuntu (hardy) Firefox/3.0.1
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Geert!
+Hello, 
 
-On 7/1/21 10:41 AM, Geert Uytterhoeven wrote:
->>> OK. Thanks for all of the testing.
->>
->> I'll report back with the other patch applied that Geert mentioned from linux-next before this one.
-> 
-> FTR, I booted all three successfully on qemu/rts7751r2d and on physical landisk.
+How are doing today? 
 
-Good to know, thanks.
+I sent you an email yesterday, did you get it? It is very 
+important, anyway reply me back to confirm that you already got 
+my message email..
 
->> FWIW, there are some warnings when building the SH-7785LCR configuration:
->>
->> In file included from ./arch/sh/include/asm/hw_irq.h:6,
->>                  from ./include/linux/irq.h:591,
->>                  from ./include/asm-generic/hardirq.h:17,
->>                  from ./arch/sh/include/asm/hardirq.h:9,
->>                  from ./include/linux/hardirq.h:11,
->>                  from ./include/linux/interrupt.h:11,
->>                  from ./include/linux/serial_core.h:13,
->>                  from ./include/linux/serial_sci.h:6,
->>                  from arch/sh/kernel/cpu/sh4a/setup-sh7785.c:10:
->> ./include/linux/sh_intc.h:100:63: warning: division 'sizeof (void *) / sizeof (void)' does not compute the number of array elements [-Wsizeof-pointer-div]
->>   100 | #define _INTC_ARRAY(a) a, __same_type(a, NULL) ? 0 : sizeof(a)/sizeof(*a)
->>       |                                                               ^
->> ./include/linux/sh_intc.h:107:9: note: in expansion of macro '_INTC_ARRAY'
->>   107 |         _INTC_ARRAY(sense_regs), _INTC_ARRAY(ack_regs), \
->>       |         ^~~~~~~~~~~
->> ./include/linux/sh_intc.h:124:15: note: in expansion of macro 'INTC_HW_DESC'
->>   124 |         .hw = INTC_HW_DESC(vectors, groups, mask_regs,                  \
->>       |               ^~~~~~~~~~~~
->> arch/sh/kernel/cpu/sh4a/setup-sh7785.c:478:8: note: in expansion of macro 'DECLARE_INTC_DESC'
->>   478 | static DECLARE_INTC_DESC(intc_desc, "sh7785", vectors, groups,
->>       |        ^~~~~~~~~~~~~~~~~
-> 
-> A while ago, I had a look into fixing them, but it was non-trivial.
-> The issue is that the macros are sometimes used with NULL pointer arrays.
-> The __same_type() check in
-> 
->     #define _INTC_ARRAY(a) a, __same_type(a, NULL) ? 0 : sizeof(a)/sizeof(*a)
-> 
-> is supposed to catch that, but modern compilers seem to evaluate the
-> non-taken branch, too, leading to the warning.
-> 
-> Anyone with a suggestion? (CCing the multi-compiler guru)
 
-Ah, thanks for the explanation.
-
-Adrian
-
--- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer - glaubitz@debian.org
-`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+Sent from my iPhone
