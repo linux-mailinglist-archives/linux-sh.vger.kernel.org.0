@@ -2,89 +2,88 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E3D4A3DB813
-	for <lists+linux-sh@lfdr.de>; Fri, 30 Jul 2021 13:54:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 947B23DBEC5
+	for <lists+linux-sh@lfdr.de>; Fri, 30 Jul 2021 21:11:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238626AbhG3LyM (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 30 Jul 2021 07:54:12 -0400
-Received: from mail-vs1-f43.google.com ([209.85.217.43]:44557 "EHLO
-        mail-vs1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238687AbhG3LyJ (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 30 Jul 2021 07:54:09 -0400
-Received: by mail-vs1-f43.google.com with SMTP id t2so5247878vsa.11;
-        Fri, 30 Jul 2021 04:54:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=10AbK6xK8RHobfuB2T0I9ydjpvpHcTKY9gPukwHCGGA=;
-        b=YmhSWe4ysVoxpkFxv01nZcYjbowvxAt4AmXoLUb1J5l/9+OVzYtM/U91iSFuVd4j1T
-         OOh41vU1X7Q5YEO2iFZlnSlMyK8akuCce5aqJaFeb4HurZk5i/1LZIHnxTCeF8Fjwtop
-         KUappP524ABfwUd2AFwE09lg8Mmuo06WYnD5+apwUDyOJO5MIUq+Jvy/N2IttQwvOgF3
-         R3LydwxxLjPTHCsCKY7xgLlYA4CXleO5UPOae10xxjHpDHHgznosWs8JvYeCihUtzmTY
-         3duBjo7i7c1jqowm3jL2a8f78hL5inxsc9ylnmUxBqxfWiZUdlSJjQ3TXUE3/9wK14Pc
-         H5vw==
-X-Gm-Message-State: AOAM5303d4WMe9j/oJTT97blA0+lnvq55eCvWzmCWUDxkPK+X74oFZj1
-        hH9ZuWXv8hGKrJNelNzFSAfwu74ds1W7dXLHTiM=
-X-Google-Smtp-Source: ABdhPJz4vdafBihdMrOKEMxBFoPjbpJQjxu69DET98mge7/3K8Au1C7Ct04O+Z9CWQAOZ0tklY4nnHzuyfbZq+wo9hQ=
-X-Received: by 2002:a05:6102:321c:: with SMTP id r28mr1030174vsf.40.1627646043462;
- Fri, 30 Jul 2021 04:54:03 -0700 (PDT)
+        id S231237AbhG3TLC (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 30 Jul 2021 15:11:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58228 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231236AbhG3TLB (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 30 Jul 2021 15:11:01 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00B9FC06175F
+        for <linux-sh@vger.kernel.org>; Fri, 30 Jul 2021 12:10:55 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1m9Xu8-00068d-Ao; Fri, 30 Jul 2021 21:10:44 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1m9Xu5-0005yh-PK; Fri, 30 Jul 2021 21:10:41 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1m9Xu5-0007KF-Nx; Fri, 30 Jul 2021 21:10:41 +0200
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     linux-kernel@vger.kernel.org, kernel@pengutronix.de,
+        Chen-Yu Tsai <wens@csie.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Finn Thain <fthain@linux-m68k.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+        Rich Felker <dalias@libc.org>,
+        =?UTF-8?q?Samuel=20Iglesias=20Gons=C3=A1lvez?= 
+        <siglesias@igalia.com>, linux-m68k@lists.linux-m68k.org,
+        linux-sh@vger.kernel.org
+Subject: [PATCH v2 0/4] Some cleanups after making bus_type::remove return void
+Date:   Fri, 30 Jul 2021 21:10:31 +0200
+Message-Id: <20210730191035.1455248-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-References: <20210728182115.4401-1-lukas.bulwahn@gmail.com>
-In-Reply-To: <20210728182115.4401-1-lukas.bulwahn@gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Fri, 30 Jul 2021 13:53:52 +0200
-Message-ID: <CAMuHMdXt4tYHcgPNUZ0ZQ9iKhmZ_dC=ub=Ha35xDy+jR2-CroQ@mail.gmail.com>
-Subject: Re: [PATCH] arch: Kconfig: clean up obsolete use of HAVE_IDE
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        alpha <linux-alpha@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:H8/300 ARCHITECTURE" 
-        <uclinux-h8-devel@lists.sourceforge.jp>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        "open list:TENSILICA XTENSA PORT (xtensa)" 
-        <linux-xtensa@linux-xtensa.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-sh@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Wed, Jul 28, 2021 at 8:21 PM Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
-> The arch-specific Kconfig files use HAVE_IDE to indicate if IDE is
-> supported.
->
-> As IDE support and the HAVE_IDE config vanishes with commit b7fb14d3ac63
-> ("ide: remove the legacy ide driver"), there is no need to mention
-> HAVE_IDE in all those arch-specific Kconfig files.
->
-> The issue was identified with ./scripts/checkkconfigsymbols.py.
->
-> Fixes: b7fb14d3ac63 ("ide: remove the legacy ide driver")
-> Suggested-by: Randy Dunlap <rdunlap@infradead.org>
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Hello,
 
->  arch/m68k/Kconfig             | 1 -
+compared to (implicit) v1 that can be found at
+https://lore.kernel.org/lkml/20210727080840.3550927-1-u.kleine-koenig@pengutronix.de
+I rebased on top of
+git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core.git's
+driver-core-next where Greg already applied one of the patches.
 
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Patch #1 has an updated commit log, the other three patches are
+unmodified.
 
-Gr{oetje,eeting}s,
+There are no interdependencies between these patches apart from the two
+zorro patches. So the patches can also be taken independently by their
+respective maintainers.
 
-                        Geert
+Uwe Kleine-König (4):
+  nubus: Simplify check in remove callback
+  sh: superhyway: Simplify check in remove callback
+  zorro: Simplify remove callback
+  zorro: Drop useless (and hardly used) .driver member in struct
+    zorro_dev
 
+ drivers/nubus/bus.c                |  2 +-
+ drivers/sh/superhyway/superhyway.c |  2 +-
+ drivers/zorro/zorro-driver.c       | 13 ++++---------
+ include/linux/zorro.h              |  1 -
+ 4 files changed, 6 insertions(+), 12 deletions(-)
+
+
+base-commit: b2c943e52705b211d1aa0633c9196150cf30be47
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.30.2
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
