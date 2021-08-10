@@ -2,69 +2,85 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC0803E8289
-	for <lists+linux-sh@lfdr.de>; Tue, 10 Aug 2021 20:10:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCC303E85F8
+	for <lists+linux-sh@lfdr.de>; Wed, 11 Aug 2021 00:11:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232974AbhHJSKJ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 10 Aug 2021 14:10:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58440 "EHLO
+        id S235007AbhHJWLq (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 10 Aug 2021 18:11:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237615AbhHJSIM (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 10 Aug 2021 14:08:12 -0400
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2909C0F26E2
-        for <linux-sh@vger.kernel.org>; Tue, 10 Aug 2021 10:37:18 -0700 (PDT)
-Received: by mail-lj1-x244.google.com with SMTP id x7so18744186ljn.10
-        for <linux-sh@vger.kernel.org>; Tue, 10 Aug 2021 10:37:18 -0700 (PDT)
+        with ESMTP id S231252AbhHJWLp (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 10 Aug 2021 18:11:45 -0400
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D920DC061765
+        for <linux-sh@vger.kernel.org>; Tue, 10 Aug 2021 15:11:20 -0700 (PDT)
+Received: by mail-pj1-x1043.google.com with SMTP id mq2-20020a17090b3802b0290178911d298bso1380225pjb.1
+        for <linux-sh@vger.kernel.org>; Tue, 10 Aug 2021 15:11:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=y3BZ+wT7TMDVjM2/WQcyPOhYkG/NWjvDbJIsMqFI2RA=;
-        b=FuP099TP8k/m0JBPS1nAgOFN6sXi3eDmM/YfGo6yCSObbSPCRjqlY16x08usz48ZHo
-         jZMBpmGui8dE9+3WmXL7Kx+D23wGl5pSJGJ/iebyo6e4FXEHejAP7efEQy95kqUlgakD
-         2Rhr+0QZY5Ry4QdZkf0EQck3mEPjegksQqG1JAP/riMeugeH2Cxg4XVD29AFRDKeTvyF
-         TROPvpF+7Ygm6xV4BKk2wi81EwDp7/wI9lqfZR8/wP7fUQIK55nDLud3hV9OHt/Q3Qe3
-         3nMUgI4Q9BaDoZ6o8fLZh7mNpWE/I70mIlADrII/DB6aobgmFe9e4z8jOjBueZQNLsVt
-         YbnQ==
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=IQHSganE9l19iTgrn80yLWsoYeJzOQHkJLYoScDVw3M=;
+        b=s772g5E6pIaLiwA3ugqj8hi1sNc8109BKNCkkSy+1LkX/BYws+uvIEv9Mk2x1gcwZD
+         AoNwt4byd28pv5LPcV7Bu7D200IknQPSutDSXk1kmrpQvq9tJIgMZexJy2ChRyrt1bol
+         +wQcMA1PA9uhwqpVo7wS7z2nH15Kh8CDrWoAZ44FFGdvJ0L+bFdJEwBzcMbgTSurKrk3
+         1J2eCUR1wzPUBAYe3AB2YzKKJOFItfA8Oany0TRY8JrNFOxcxlxwr8jPaSn/Z73YtIkR
+         r9h3KcVI81VlQB5YO3LYc+6LlSj7bpCQsYGrJQ/G7wfPEXQp0dV85pjH6NTjlItm/r13
+         QKIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=y3BZ+wT7TMDVjM2/WQcyPOhYkG/NWjvDbJIsMqFI2RA=;
-        b=Sqmw2cJu5cMNsYHhDwxifnnntpHZdrNH6mL8/j16ZNINdLBOA/3nIKS/w5PdaoHYuX
-         A5iri+riZnZGJvypEbCXBK134EorGf1FIJDEDyEgzFoy1WOThvjbEFx19OTZPppQu0xM
-         q0+Fd7CehdycedMz0D1jsnnM48fy46iIxLgsIRBntM1M3hPIP+DF3zyyzsqIP4OknT93
-         8GTaVrrOwoiigbgeW5yECcwCmAjAikzIKb0p1keFe2lSErxptuQRpnnYxHFo2Wy6SCaG
-         7IhHowo43y7JrrvNlHDiE/3bdbwKrMPWwh2ViXYovQZWHc0MfrMa3oLpCZqIKY/hQFue
-         i2YA==
-X-Gm-Message-State: AOAM5314HqfVjHCVRKwJO4uiHJvYZ4Yb5Yjjr1M4bb7XReFSw+MpdX/W
-        Bl+g42YIBOLsVlnwImJ5UN1qQagwEnVZshGzUBk=
-X-Google-Smtp-Source: ABdhPJwIio+vDL2Val+e5dePi9SzYhcEnWF1Jlxgy9IPumrFZ9ENmt3MvVOjOCINUh/TuwCeiP2uIFp/DdLQIlgaW8A=
-X-Received: by 2002:a2e:7f01:: with SMTP id a1mr16588358ljd.213.1628617035207;
- Tue, 10 Aug 2021 10:37:15 -0700 (PDT)
+         :subject:to:content-transfer-encoding;
+        bh=IQHSganE9l19iTgrn80yLWsoYeJzOQHkJLYoScDVw3M=;
+        b=OHccsbCt6hZJsVwJd4MbBkXjKuyz1Zl5GEg14XhtpRjmE24IjcUUsTNAmXptFJqMxV
+         YXHDlRYCV95LX4Y37b7u5B0jCMOQBvMztUtAgpHFSvIBcri3CZO5VZRXpSUCCaw6FVOR
+         Wy5xsbNslTm0do+sCxeQVuXmB4eqrKZ1U5la06IR37Dy/oTV7gU7/8+VvQu0dz3Kd0Jk
+         MiwIOkALuYolbU74rCM4xdcC/URnEJkuMo7UmMdzVjcaG5tR8m15/PWm/2eNdctlcVo3
+         lvJXkG509vlV0snX0qoyFOw6uTeDIzk1D11xoAIBDlENLB3iAEKu239QKqaPDQmc6B9x
+         n6OQ==
+X-Gm-Message-State: AOAM5305jQj1l5Rc0QZ6V83tQOR7FSY1+YzD3QMmEOlZfHHF9z26WuuH
+        Zb41grDK8eOS3kUNLsQqVOvM4nOt5FLOjtj/qWA=
+X-Google-Smtp-Source: ABdhPJwmnhb4iNpSYVZ9/F2Q1V7KZ9j3tgXqqMI7lTxdhdUxMvE4S6G2Ozrx53NBzr/Mr4WIv18yl58yFLN+AZLmEEQ=
+X-Received: by 2002:a05:6a00:a88:b029:31a:c2ef:d347 with SMTP id
+ b8-20020a056a000a88b029031ac2efd347mr31994900pfl.20.1628633480353; Tue, 10
+ Aug 2021 15:11:20 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:ac2:4eca:0:0:0:0:0 with HTTP; Tue, 10 Aug 2021 10:37:14
- -0700 (PDT)
-Reply-To: majidmuzaffar8@gmail.com
-From:   Majid Muzaffar <ngl.binabdul.rashiid333.me@gmail.com>
-Date:   Tue, 10 Aug 2021 20:37:14 +0300
-Message-ID: <CAG1gDZU1CxotywZURUvYo7LKSJHyjqa-rXMA3=uddwTbEJECPw@mail.gmail.com>
-Subject: Proposal
+Received: by 2002:a05:6a20:a019:b029:49:823d:9fa9 with HTTP; Tue, 10 Aug 2021
+ 15:11:19 -0700 (PDT)
+Reply-To: sandrine024ni@gmail.com
+From:   Sandrine Nikiema Daouda <mrsalfathqiyamah1@gmail.com>
+Date:   Tue, 10 Aug 2021 22:11:19 +0000
+Message-ID: <CAC-3AyxUDCoQwFK+UibMMqUt5siTxM+2kaZvkJBwuKmTEy6YDg@mail.gmail.com>
+Subject: God bless you my beloved.
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Salam alaikum,
+God bless you my beloved,
+How are you and your lovely family doing I hope you are all in good
+health? Meanwhile, I don=E2=80=99t know you in person but I am 100% sure th=
+at
+we can join our head together and achieve this great opportunity which
+I request your co-operation in my desire to find a foreign partner who
+will assist me in relocation and investment of an abandoned fund in
+the bank where I work.  I am the personal Accountant of our deceased
+customer before his accidental death.
 
-I am the investment officer of UAE based investment company who are
-ready to fund projects outside UAE, in the form of debt finance. We
-grant loan to both Corporate and private entities at a low interest
-rate of 3% ROI per annum. The terms are very flexible and interesting.
-Kindly revert back if you have projects that needs funding for further
-discussion and negotiation.
+Meanwhile, I got your contact address through my Country E-mail Data
+Directory while searching for a credible and reliable foreign partner
+to share this information with you over this abandoned fund ($19.3
+Million) Nineteen Million Three Hundred Thousand US Dollars.
 
-Thanks
+In-which I am counting on your sense of confidentiality as I desire
+that you keep this business transaction top secret to yourself.
 
-investment officer
+Therefore, if you are interested and willing to assist me kindly get
+back to me without further delay for more details on how we could
+proceed and achieve these goals successfully.
+
+Thanks and my regards to your lovely family.
+Mrs. Sandrine Nikiema Daouda.
+My private Phone number and WhatsApp +226- 64-19-73-97.
