@@ -2,75 +2,149 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C22B3ECF41
-	for <lists+linux-sh@lfdr.de>; Mon, 16 Aug 2021 09:22:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0F7C3F6192
+	for <lists+linux-sh@lfdr.de>; Tue, 24 Aug 2021 17:26:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233798AbhHPHXD (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 16 Aug 2021 03:23:03 -0400
-Received: from wtarreau.pck.nerim.net ([62.212.114.60]:35412 "EHLO 1wt.eu"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233725AbhHPHXD (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Mon, 16 Aug 2021 03:23:03 -0400
-Received: (from willy@localhost)
-        by pcw.home.local (8.15.2/8.15.2/Submit) id 17G7MDgs013422;
-        Mon, 16 Aug 2021 09:22:13 +0200
-Date:   Mon, 16 Aug 2021 09:22:13 +0200
-From:   Willy Tarreau <w@1wt.eu>
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     zhao xc <xinchao.zhao.kernelz@gmail.com>, ysato@users.osdn.me,
-        dalias@libc.org, linux-sh@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: Patch formatting - Re:
-Message-ID: <20210816072213.GA13349@1wt.eu>
-References: <CAP7CzPfRFSfUka1Wjo1+KNSdhYjR2n59g2yvEFGRyfYwNFNy1A@mail.gmail.com>
- <fbd17d71-91e8-fb0c-f621-ee41787e4bad@physik.fu-berlin.de>
+        id S238204AbhHXP0w (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 24 Aug 2021 11:26:52 -0400
+Received: from condef-04.nifty.com ([202.248.20.69]:36245 "EHLO
+        condef-04.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238162AbhHXP0w (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 24 Aug 2021 11:26:52 -0400
+Received: from conssluserg-04.nifty.com ([10.126.8.83])by condef-04.nifty.com with ESMTP id 17OFNIOI020737
+        for <linux-sh@vger.kernel.org>; Wed, 25 Aug 2021 00:23:18 +0900
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182]) (authenticated)
+        by conssluserg-04.nifty.com with ESMTP id 17OFMfa6016562;
+        Wed, 25 Aug 2021 00:22:42 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-04.nifty.com 17OFMfa6016562
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1629818562;
+        bh=S+OncbYervpFyf36q1qMQ/cK2RuBY42Jax+g4KEinBk=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=ZcH8Mol3zFOfA82L2ktXpSfndCTVIm8sSN5WhvCF0nkR7lfzciGFhUJXETjlXjtPX
+         zJh+MUJ/Ewjk16dZQ1gny5f5e7a9UEa8Y4ew4QsRa2f8+XDPL4zy7TRkyQPCCGuQBR
+         HtPcktDDii+gXrd9c6Y/+n2IDAqMdutuYAV8w4MCt5+cnVSpw8AKUX2Ib7Ibo6FD2q
+         Ohh6UGM+07Qonx5uLAq8xTeCFAPzEUUH7JfX0G/OTHgFnWD/VUkraTi5Z03rF1LVlI
+         S9HUYx9frUuL/nuZq9/KuCBWLzyvJI5ic9YGRufpg399QFVGzpWMzh0y6+RyOdbiCs
+         U/uVLdyiGdKjg==
+X-Nifty-SrcIP: [209.85.215.182]
+Received: by mail-pg1-f182.google.com with SMTP id e7so20084678pgk.2;
+        Tue, 24 Aug 2021 08:22:41 -0700 (PDT)
+X-Gm-Message-State: AOAM532kurLktu58pwqpHuXIw8lHovCfniN5blvX1moEtQVIcV7LHn01
+        PUcoRr6FGo3YJvxRRhzqkBZgYNDXJOe0Ioj8nm8=
+X-Google-Smtp-Source: ABdhPJxOp9dnA/3wndoHqVeBS+wD5iSN8I9DS95FoFt5pEdVV9c/uEMA3l6IFAOsje6soli60G91Ls2TkIcdXGUYgjE=
+X-Received: by 2002:aa7:8e56:0:b029:3cd:c2ec:6c1c with SMTP id
+ d22-20020aa78e560000b02903cdc2ec6c1cmr39028324pfr.80.1629818561184; Tue, 24
+ Aug 2021 08:22:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fbd17d71-91e8-fb0c-f621-ee41787e4bad@physik.fu-berlin.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20210407053419.449796-1-gregkh@linuxfoundation.org> <20210407053419.449796-19-gregkh@linuxfoundation.org>
+In-Reply-To: <20210407053419.449796-19-gregkh@linuxfoundation.org>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Wed, 25 Aug 2021 00:22:03 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQ07ycpjJQGwbtq1ii3k9rh2CZVN6MVxkfMb=+Vgs9zqw@mail.gmail.com>
+Message-ID: <CAK7LNAQ07ycpjJQGwbtq1ii3k9rh2CZVN6MVxkfMb=+Vgs9zqw@mail.gmail.com>
+Subject: Re: [PATCH 18/20] kbuild: sh: remove unused install script
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Michal Marek <michal.lkml@markovi.net>,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Mon, Aug 16, 2021 at 09:04:57AM +0200, John Paul Adrian Glaubitz wrote:
-> Hi Zhao!
-> 
-> Thanks for your patch!
-> 
-> However, the patch has not been properly formatted and needs to be resend.
-> 
-> Could you follow this guide [1] and send your patch again in the correct
-> format?
+On Wed, Apr 7, 2021 at 2:35 PM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> The sh arch has a install.sh script, but no Makefile actually calls it.
+> Remove it to keep anyone from accidentally calling it in the future.
+>
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Cc: Rich Felker <dalias@libc.org>
+> Cc: linux-sh@vger.kernel.org
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  arch/sh/boot/compressed/install.sh | 56 ------------------------------
+>  1 file changed, 56 deletions(-)
+>  delete mode 100644 arch/sh/boot/compressed/install.sh
+>
+> diff --git a/arch/sh/boot/compressed/install.sh b/arch/sh/boot/compressed/install.sh
+> deleted file mode 100644
+> index f9f41818b17e..000000000000
+> --- a/arch/sh/boot/compressed/install.sh
+> +++ /dev/null
+> @@ -1,56 +0,0 @@
+> -#!/bin/sh
+> -#
+> -# arch/sh/boot/install.sh
+> -#
+> -# This file is subject to the terms and conditions of the GNU General Public
+> -# License.  See the file "COPYING" in the main directory of this archive
+> -# for more details.
+> -#
+> -# Copyright (C) 1995 by Linus Torvalds
+> -#
+> -# Adapted from code in arch/i386/boot/Makefile by H. Peter Anvin
+> -# Adapted from code in arch/i386/boot/install.sh by Russell King
+> -# Adapted from code in arch/arm/boot/install.sh by Stuart Menefy
+> -#
+> -# "make install" script for sh architecture
+> -#
+> -# Arguments:
+> -#   $1 - kernel version
+> -#   $2 - kernel image file
+> -#   $3 - kernel map file
+> -#   $4 - default install path (blank if root directory)
+> -#
+> -
+> -# User may have a custom install script
+> -
+> -if [ -x /sbin/${INSTALLKERNEL} ]; then
+> -  exec /sbin/${INSTALLKERNEL} "$@"
+> -fi
+> -
+> -if [ "$2" = "zImage" ]; then
+> -# Compressed install
+> -  echo "Installing compressed kernel"
+> -  if [ -f $4/vmlinuz-$1 ]; then
+> -    mv $4/vmlinuz-$1 $4/vmlinuz.old
+> -  fi
+> -
+> -  if [ -f $4/System.map-$1 ]; then
+> -    mv $4/System.map-$1 $4/System.old
+> -  fi
+> -
+> -  cat $2 > $4/vmlinuz-$1
+> -  cp $3 $4/System.map-$1
+> -else
+> -# Normal install
+> -  echo "Installing normal kernel"
+> -  if [ -f $4/vmlinux-$1 ]; then
+> -    mv $4/vmlinux-$1 $4/vmlinux.old
+> -  fi
+> -
+> -  if [ -f $4/System.map ]; then
+> -    mv $4/System.map $4/System.old
+> -  fi
+> -
+> -  cat $2 > $4/vmlinux-$1
+> -  cp $3 $4/System.map
+> -fi
+> --
+> 2.31.1
+>
 
-Adrian, it would be nice to give some hints about what has to be fixed,
-because it's not necessarily easy to be able to figure this by comparing
-one's patch to an example in a blog article.
 
-Zhao, some hints:
-  - the subject line doesn't make it obvious what subsystem is being touched.
-    Often running "git log" on the file(s) you change can help you figure what
-    others commonly use ;
+This one is applicable independently.
 
-  - the commit message is empty, it should carry a description of what you
-    are trying to improve or fix, and when relevant, some indications about
-    how you decided to address that. A good hint is to think that you're
-    trying to "sell" your patch to someone else who will become responsible
-    for maintaining it, thus put all the selling arguments there :-)
+Applied to linux-kbuild. Thanks.
 
-  - often a Cc list is desired if it touches areas that may impact others,
-    as well as their maintainers ;
 
-  - using git-send-email like in the article is generally preferred as it
-    makes the process smoother on the receiver's end. It can look scary
-    at first, making you fear to accidentally send poorly formatted
-    e-mails, but in practice it's rare, and recipients are used to seeing
-    this and are very tolerant to this :-)
 
-And yes, reading Nick's article is definitely a good idea!
-
-> Thanks,
-> Adrian
-
-Regards,
-Willy
+-- 
+Best Regards
+Masahiro Yamada
