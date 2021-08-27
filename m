@@ -2,106 +2,72 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DE223F6DE3
-	for <lists+linux-sh@lfdr.de>; Wed, 25 Aug 2021 05:50:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5ECEC3F9273
+	for <lists+linux-sh@lfdr.de>; Fri, 27 Aug 2021 04:42:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238618AbhHYDuk (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 24 Aug 2021 23:50:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34498 "EHLO
+        id S244056AbhH0CnD (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 26 Aug 2021 22:43:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238637AbhHYDue (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 24 Aug 2021 23:50:34 -0400
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05569C0617A8
-        for <linux-sh@vger.kernel.org>; Tue, 24 Aug 2021 20:49:38 -0700 (PDT)
-Received: by mail-pl1-x62a.google.com with SMTP id u15so13485198plg.13
-        for <linux-sh@vger.kernel.org>; Tue, 24 Aug 2021 20:49:38 -0700 (PDT)
+        with ESMTP id S231681AbhH0CnD (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 26 Aug 2021 22:43:03 -0400
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACEC5C061757
+        for <linux-sh@vger.kernel.org>; Thu, 26 Aug 2021 19:42:14 -0700 (PDT)
+Received: by mail-lf1-x143.google.com with SMTP id k5so11256342lfu.4
+        for <linux-sh@vger.kernel.org>; Thu, 26 Aug 2021 19:42:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20150623.gappssmtp.com; s=20150623;
-        h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
-         :content-transfer-encoding;
-        bh=CbvF3gcMl15CsJvEJlvAwV4jg0kS7/1c0/243X9NmVQ=;
-        b=nS8Xfv5Np514ewOr71qM5OVYQ4om375+9iia5AAYDaK3OM+hzJenuJr7dAU5cYremk
-         lMJSdk/H6gRuWyoAZ38Dxo4xTOwzwlYBTQ7mHvrJGvY2eRlpd9btrTwCc/T4R+lnp2Oz
-         tfjjB9XYA84IA+sxs7E0+0bjR3ImZY/NCblTCqWV1vz8ngiUx+QRlaWbVMisVRWW3rOO
-         yK85Pgi7JMY0nVAg9WrPZrM52PG/5lW+DmvVcQIgBTfNfdcKCdUHJCl4J+hHtwrGzLzq
-         JQXK/nMftIjnNhxqPt/IHdPMmbV0SixoX/iiQ7rUV+IDNkS5Y0uflbsJwBJg2KghrkLe
-         Gahg==
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=JcCnNkxtHweN6ApEPCItRB3oqJyAr4ORMY/4f0Zly6Y=;
+        b=QLNNnnSmx5+wwQTd4shmMgVp4iQCPMVXy3nfe1hBzX2owOmPeR+c5qUHq1M8q2jv6d
+         4jga6QhZlH84xJm30uwxLxWA8GnbkrCglYZwqgCyTtM8m+Ku1puRjE1oOKxvkfbZZCMa
+         O3r6ExzcWOfABZ4oc2B9xbDj0mEd+zoil2/U2aEg1K9F7EqkBSHFU8s9GHQxkblWJTz9
+         oPXg6GYRFtRV7w/hThUdnwgsvtpmtc9f6SPj2fObZh21Wr02Ix2fm1tQf8qq2PFS/Syp
+         yyObuAvYhb4bG1Rgui7L1fVFgjUazdsbmM9ziBysaRpD1M5XeM1sAsNOV2Tvi5VmJ92q
+         G+xA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
-         :mime-version:content-transfer-encoding;
-        bh=CbvF3gcMl15CsJvEJlvAwV4jg0kS7/1c0/243X9NmVQ=;
-        b=VuTA3lXuGZW9zaHK6X3wOmMn77iJNF4pvIPXt08AGa803CJBTTu+8nJi5WhnTkPNO5
-         m6muOzpPZKctgKT5UVE6YkHjWaxR1GklP+06yG4LigtjOdIjjdvpz37UMMBZtjqAohID
-         vZt9u1C29hPwh7ju6ZOSqoEgg2NIYumP1lABYgy/kW7U6FMt0Dkz4XixViCTRf7+Ocym
-         XKJGVl9nfO7/8Xn5vdsq0f0WwXYrffEADjF0Jorx2oHXMLK2OPsDgexEfLsXyR0Yu+p5
-         uMQ9djCPbGm5S2zTcCSSdX1mmEOoINbR8gneQwNdFzDEK9DvfQLUDTKowxDNOqSa5lYP
-         3NcA==
-X-Gm-Message-State: AOAM531ce1jjSqtjiRxvc3TNkFcHe+rZDUF7ZniqzUgEIhhxuwcqy7OG
-        WC1Jn34IUdD9klE8Nw+Jnpqr6A==
-X-Google-Smtp-Source: ABdhPJyuW0xG5fzwlVnm+V74njUWhK4iHoDYuJqptloS8iraqWcj5+LzzcKnLTPVDHS2p7IwfcePKA==
-X-Received: by 2002:a17:90a:428f:: with SMTP id p15mr8241589pjg.75.1629863378109;
-        Tue, 24 Aug 2021 20:49:38 -0700 (PDT)
-Received: from localhost (76-210-143-223.lightspeed.sntcca.sbcglobal.net. [76.210.143.223])
-        by smtp.gmail.com with ESMTPSA id q21sm23393107pgk.71.2021.08.24.20.49.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Aug 2021 20:49:37 -0700 (PDT)
-Date:   Tue, 24 Aug 2021 20:49:37 -0700 (PDT)
-X-Google-Original-Date: Tue, 24 Aug 2021 20:42:18 PDT (-0700)
-Subject:     Re: [PATCH 2/3] trace: refactor TRACE_IRQFLAGS_SUPPORT in Kconfig
-In-Reply-To: <20210731052233.4703-2-masahiroy@kernel.org>
-CC:     rostedt@goodmis.org, mingo@redhat.com, masahiroy@kernel.org,
-        Arnd Bergmann <arnd@arndb.de>, ardb@kernel.org, bp@alien8.de,
-        linus.walleij@linaro.org, ley.foon.tan@intel.com, x86@kernel.org,
-        linux-mips@vger.kernel.org, sparclinux@vger.kernel.org,
-        anshuman.khandual@arm.com, nickhu@andestech.com,
-        tglx@linutronix.de, rppt@kernel.org, geert@linux-m68k.org,
-        peterz@infradead.org, catalin.marinas@arm.com,
-        linux-riscv@lists.infradead.org, yifeifz2@illinois.edu,
-        green.hu@gmail.com, monstr@monstr.eu, deller@gmx.de,
-        linux-sh@vger.kernel.org, vgupta@synopsys.com,
-        u.kleine-koenig@pengutronix.de, guoren@kernel.org,
-        samitolvanen@google.com, richard@nod.at, borntraeger@de.ibm.com,
-        dalias@libc.org, aou@eecs.berkeley.edu, hca@linux.ibm.com,
-        jdike@addtoit.com, jcmvbkbc@gmail.com,
-        linux-hexagon@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        hpa@zytor.com, will@kernel.org, tsbogend@alpha.franken.de,
-        stefan.kristiansson@saunalahti.fi, linux-s390@vger.kernel.org,
-        ysato@users.sourceforge.jp, James.Bottomley@HansenPartnership.com,
-        linux-um@lists.infradead.org, andreyknvl@gmail.com,
-        frederic@kernel.org, npiggin@gmail.com, benh@kernel.crashing.org,
-        bcain@codeaurora.org, linux-csky@vger.kernel.org, shorne@gmail.com,
-        linux@armlinux.org.uk, linux-arm-kernel@lists.infradead.org,
-        Paul Walmsley <paul.walmsley@sifive.com>, chris@zankel.net,
-        gor@linux.ibm.com, linux-snps-arc@lists.infradead.org,
-        jonas@southpole.se, linux-parisc@vger.kernel.org,
-        keescook@chromium.org, krzysztof.kozlowski@canonical.com,
-        colin.king@canonical.com, davem@davemloft.net,
-        linux-kernel@vger.kernel.org, deanbo422@gmail.com,
-        anton.ivanov@cambridgegreys.com, akpm@linux-foundation.org,
-        mpe@ellerman.id.au, paulus@samba.org, mark.rutland@arm.com,
-        viresh.kumar@linaro.org, linuxppc-dev@lists.ozlabs.org,
-        openrisc@lists.librecores.org
-From:   Palmer Dabbelt <palmer@dabbelt.com>
-To:     masahiroy@kernel.org
-Message-ID: <mhng-fae2ea79-c261-4e5d-8eae-21e60810a957@palmerdabbelt-glaptop>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=JcCnNkxtHweN6ApEPCItRB3oqJyAr4ORMY/4f0Zly6Y=;
+        b=tFrpKufcDVVoMSJovIYhZ8ucqa/XOjCQTKvqLDJvobsd2gJ1PvpuOC+3agZ4kBhSzl
+         EndYmofsjulapNKrC5uPK/CWYCL0nCVrqmrC7Y8XZd9ZHOLJkzTYj1UcqffwPCN5SmVs
+         lidEooRC0zBVuSK+dULZjsCRLuZPC+WgmRG9ynOWSe92q+TcY/AgQiiGxO5q6VljWJk3
+         z0k8emrEFyFejJGhBJlzwYjJVoczeDvF3r9nBHO+NFfcvwx2kPaKKJMQjlnSaTtj40D2
+         sf4lPEk1GaurzxF6LXME2+RvnxBHVoQ26Qk5ICN+9qF19uN92qKQU9/Ktoa+5dp2TBjZ
+         H7mw==
+X-Gm-Message-State: AOAM532bpzhWLAnnr2qUAf1ui6moxZ1HdSHeWt5w1FzCMLGCTKAjd0sq
+        LAvWLwsPSAd49v0+hcgQoDxRxpyoQ+l4Mu2ODzA=
+X-Google-Smtp-Source: ABdhPJydVOyKGViILBUNcAKTQ50S3WwK/sbNSR0R0/QmDZ+c+BHGnzzyfVZC0Dt/M2l/GHwKRrf625Hm5HSDgL/XIEs=
+X-Received: by 2002:a05:6512:2248:: with SMTP id i8mr5098874lfu.258.1630032132455;
+ Thu, 26 Aug 2021 19:42:12 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a2e:7304:0:0:0:0:0 with HTTP; Thu, 26 Aug 2021 19:42:11
+ -0700 (PDT)
+From:   john williams <jw3340082@gmail.com>
+Date:   Thu, 26 Aug 2021 14:42:11 -1200
+Message-ID: <CAEoBN-hEjVtr=Fwzvh9V+RNbP8HQUvoMTYXkdURigfcSUFcttQ@mail.gmail.com>
+Subject: CONFIRM YOUR DETAILS TO ENABLE US START,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Fri, 30 Jul 2021 22:22:32 PDT (-0700), masahiroy@kernel.org wrote:
-> Make architectures select TRACE_IRQFLAGS_SUPPORT instead of
-> having many defines.
->
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> ---
->
->  arch/riscv/Kconfig            | 4 +---
+Dear Beneficiary,
 
-Acked-by: Palmer Dabbelt <palmerdabbelt@google.com>
+Following your pending fund for years and the delay you imposed in
+receiving it,We have called back your fund to this office as directed
+by the Finance Office and we will be paying you directly through the
+BANK OF AMERICA.(BOA) NEW YORK BRANCH AND ALL YOU NEED NOW IS TO
+RE-CONFIRM YOUR BANKING DETAILS FOR THE TRANSFER IMMEDIATELY WITHOUT
+ANY FURTHER DELAY.
 
-Thanks!
+NOTE THAT WE WILL PAY ALL THE EXPENSES INVOLVED FOR YOU TO RECEIVE
+THIS FUND AND ALL WE NEED FROM YOU IS YOUR CO-OPERATION.
+
+Send your full details with Banking details to enable us commence the
+transfer process immediately through the BOA BANK IN NEW YORK,USA OR
+DO YOU WANT TO RECEIVE THIS FUND VIA ATM CARD ????????.
+
+John O.Williams.
