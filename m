@@ -2,72 +2,137 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5ECEC3F9273
-	for <lists+linux-sh@lfdr.de>; Fri, 27 Aug 2021 04:42:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12F003F9A90
+	for <lists+linux-sh@lfdr.de>; Fri, 27 Aug 2021 16:04:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244056AbhH0CnD (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 26 Aug 2021 22:43:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57600 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231681AbhH0CnD (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 26 Aug 2021 22:43:03 -0400
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACEC5C061757
-        for <linux-sh@vger.kernel.org>; Thu, 26 Aug 2021 19:42:14 -0700 (PDT)
-Received: by mail-lf1-x143.google.com with SMTP id k5so11256342lfu.4
-        for <linux-sh@vger.kernel.org>; Thu, 26 Aug 2021 19:42:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=JcCnNkxtHweN6ApEPCItRB3oqJyAr4ORMY/4f0Zly6Y=;
-        b=QLNNnnSmx5+wwQTd4shmMgVp4iQCPMVXy3nfe1hBzX2owOmPeR+c5qUHq1M8q2jv6d
-         4jga6QhZlH84xJm30uwxLxWA8GnbkrCglYZwqgCyTtM8m+Ku1puRjE1oOKxvkfbZZCMa
-         O3r6ExzcWOfABZ4oc2B9xbDj0mEd+zoil2/U2aEg1K9F7EqkBSHFU8s9GHQxkblWJTz9
-         oPXg6GYRFtRV7w/hThUdnwgsvtpmtc9f6SPj2fObZh21Wr02Ix2fm1tQf8qq2PFS/Syp
-         yyObuAvYhb4bG1Rgui7L1fVFgjUazdsbmM9ziBysaRpD1M5XeM1sAsNOV2Tvi5VmJ92q
-         G+xA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=JcCnNkxtHweN6ApEPCItRB3oqJyAr4ORMY/4f0Zly6Y=;
-        b=tFrpKufcDVVoMSJovIYhZ8ucqa/XOjCQTKvqLDJvobsd2gJ1PvpuOC+3agZ4kBhSzl
-         EndYmofsjulapNKrC5uPK/CWYCL0nCVrqmrC7Y8XZd9ZHOLJkzTYj1UcqffwPCN5SmVs
-         lidEooRC0zBVuSK+dULZjsCRLuZPC+WgmRG9ynOWSe92q+TcY/AgQiiGxO5q6VljWJk3
-         z0k8emrEFyFejJGhBJlzwYjJVoczeDvF3r9nBHO+NFfcvwx2kPaKKJMQjlnSaTtj40D2
-         sf4lPEk1GaurzxF6LXME2+RvnxBHVoQ26Qk5ICN+9qF19uN92qKQU9/Ktoa+5dp2TBjZ
-         H7mw==
-X-Gm-Message-State: AOAM532bpzhWLAnnr2qUAf1ui6moxZ1HdSHeWt5w1FzCMLGCTKAjd0sq
-        LAvWLwsPSAd49v0+hcgQoDxRxpyoQ+l4Mu2ODzA=
-X-Google-Smtp-Source: ABdhPJydVOyKGViILBUNcAKTQ50S3WwK/sbNSR0R0/QmDZ+c+BHGnzzyfVZC0Dt/M2l/GHwKRrf625Hm5HSDgL/XIEs=
-X-Received: by 2002:a05:6512:2248:: with SMTP id i8mr5098874lfu.258.1630032132455;
- Thu, 26 Aug 2021 19:42:12 -0700 (PDT)
+        id S245182AbhH0ODs (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 27 Aug 2021 10:03:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45302 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S244821AbhH0ODp (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Fri, 27 Aug 2021 10:03:45 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9A91060F25;
+        Fri, 27 Aug 2021 14:02:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1630072976;
+        bh=OyaTCDm5vZvhy4U/W+GLWVTstNRbyz9YgcJskrj8wkQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=2TtPPCf+LNZnOsmLvAt9fUc5OzpV+f1ui/mrVuQC5Y7ImvGFnotOSUyq4gY/q8pre
+         GiBds2poXTHLvcaBEqnwYawae2sBQ7JnFOeI00lMERtULkhi7E5728cVkdRxH1yxEt
+         j2icDYo7tnhEa7qnCC+ZSLgzFmUwZdEFtT4D4JL8=
+Date:   Fri, 27 Aug 2021 16:02:49 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Masahiro Yamada <masahiroy@kernel.org>
+Cc:     Michal Marek <michal.lkml@markovi.net>,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>
+Subject: Re: [PATCH 18/20] kbuild: sh: remove unused install script
+Message-ID: <YSjwiQu1kz7CJCrq@kroah.com>
+References: <20210407053419.449796-1-gregkh@linuxfoundation.org>
+ <20210407053419.449796-19-gregkh@linuxfoundation.org>
+ <CAK7LNAQ07ycpjJQGwbtq1ii3k9rh2CZVN6MVxkfMb=+Vgs9zqw@mail.gmail.com>
 MIME-Version: 1.0
-Received: by 2002:a2e:7304:0:0:0:0:0 with HTTP; Thu, 26 Aug 2021 19:42:11
- -0700 (PDT)
-From:   john williams <jw3340082@gmail.com>
-Date:   Thu, 26 Aug 2021 14:42:11 -1200
-Message-ID: <CAEoBN-hEjVtr=Fwzvh9V+RNbP8HQUvoMTYXkdURigfcSUFcttQ@mail.gmail.com>
-Subject: CONFIRM YOUR DETAILS TO ENABLE US START,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK7LNAQ07ycpjJQGwbtq1ii3k9rh2CZVN6MVxkfMb=+Vgs9zqw@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Dear Beneficiary,
+On Wed, Aug 25, 2021 at 12:22:03AM +0900, Masahiro Yamada wrote:
+> On Wed, Apr 7, 2021 at 2:35 PM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > The sh arch has a install.sh script, but no Makefile actually calls it.
+> > Remove it to keep anyone from accidentally calling it in the future.
+> >
+> > Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> > Cc: Rich Felker <dalias@libc.org>
+> > Cc: linux-sh@vger.kernel.org
+> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > ---
+> >  arch/sh/boot/compressed/install.sh | 56 ------------------------------
+> >  1 file changed, 56 deletions(-)
+> >  delete mode 100644 arch/sh/boot/compressed/install.sh
+> >
+> > diff --git a/arch/sh/boot/compressed/install.sh b/arch/sh/boot/compressed/install.sh
+> > deleted file mode 100644
+> > index f9f41818b17e..000000000000
+> > --- a/arch/sh/boot/compressed/install.sh
+> > +++ /dev/null
+> > @@ -1,56 +0,0 @@
+> > -#!/bin/sh
+> > -#
+> > -# arch/sh/boot/install.sh
+> > -#
+> > -# This file is subject to the terms and conditions of the GNU General Public
+> > -# License.  See the file "COPYING" in the main directory of this archive
+> > -# for more details.
+> > -#
+> > -# Copyright (C) 1995 by Linus Torvalds
+> > -#
+> > -# Adapted from code in arch/i386/boot/Makefile by H. Peter Anvin
+> > -# Adapted from code in arch/i386/boot/install.sh by Russell King
+> > -# Adapted from code in arch/arm/boot/install.sh by Stuart Menefy
+> > -#
+> > -# "make install" script for sh architecture
+> > -#
+> > -# Arguments:
+> > -#   $1 - kernel version
+> > -#   $2 - kernel image file
+> > -#   $3 - kernel map file
+> > -#   $4 - default install path (blank if root directory)
+> > -#
+> > -
+> > -# User may have a custom install script
+> > -
+> > -if [ -x /sbin/${INSTALLKERNEL} ]; then
+> > -  exec /sbin/${INSTALLKERNEL} "$@"
+> > -fi
+> > -
+> > -if [ "$2" = "zImage" ]; then
+> > -# Compressed install
+> > -  echo "Installing compressed kernel"
+> > -  if [ -f $4/vmlinuz-$1 ]; then
+> > -    mv $4/vmlinuz-$1 $4/vmlinuz.old
+> > -  fi
+> > -
+> > -  if [ -f $4/System.map-$1 ]; then
+> > -    mv $4/System.map-$1 $4/System.old
+> > -  fi
+> > -
+> > -  cat $2 > $4/vmlinuz-$1
+> > -  cp $3 $4/System.map-$1
+> > -else
+> > -# Normal install
+> > -  echo "Installing normal kernel"
+> > -  if [ -f $4/vmlinux-$1 ]; then
+> > -    mv $4/vmlinux-$1 $4/vmlinux.old
+> > -  fi
+> > -
+> > -  if [ -f $4/System.map ]; then
+> > -    mv $4/System.map $4/System.old
+> > -  fi
+> > -
+> > -  cat $2 > $4/vmlinux-$1
+> > -  cp $3 $4/System.map
+> > -fi
+> > --
+> > 2.31.1
+> >
+> 
+> 
+> This one is applicable independently.
+> 
+> Applied to linux-kbuild. Thanks.
 
-Following your pending fund for years and the delay you imposed in
-receiving it,We have called back your fund to this office as directed
-by the Finance Office and we will be paying you directly through the
-BANK OF AMERICA.(BOA) NEW YORK BRANCH AND ALL YOU NEED NOW IS TO
-RE-CONFIRM YOUR BANKING DETAILS FOR THE TRANSFER IMMEDIATELY WITHOUT
-ANY FURTHER DELAY.
+Hey, nice, thanks!
 
-NOTE THAT WE WILL PAY ALL THE EXPENSES INVOLVED FOR YOU TO RECEIVE
-THIS FUND AND ALL WE NEED FROM YOU IS YOUR CO-OPERATION.
+I'll work on the rest of the patches in this series after the next merge
+window is over...
 
-Send your full details with Banking details to enable us commence the
-transfer process immediately through the BOA BANK IN NEW YORK,USA OR
-DO YOU WANT TO RECEIVE THIS FUND VIA ATM CARD ????????.
-
-John O.Williams.
+greg k-h
