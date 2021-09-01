@@ -2,137 +2,91 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 12F003F9A90
-	for <lists+linux-sh@lfdr.de>; Fri, 27 Aug 2021 16:04:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F22103FE210
+	for <lists+linux-sh@lfdr.de>; Wed,  1 Sep 2021 20:11:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245182AbhH0ODs (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 27 Aug 2021 10:03:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45302 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S244821AbhH0ODp (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Fri, 27 Aug 2021 10:03:45 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9A91060F25;
-        Fri, 27 Aug 2021 14:02:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1630072976;
-        bh=OyaTCDm5vZvhy4U/W+GLWVTstNRbyz9YgcJskrj8wkQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=2TtPPCf+LNZnOsmLvAt9fUc5OzpV+f1ui/mrVuQC5Y7ImvGFnotOSUyq4gY/q8pre
-         GiBds2poXTHLvcaBEqnwYawae2sBQ7JnFOeI00lMERtULkhi7E5728cVkdRxH1yxEt
-         j2icDYo7tnhEa7qnCC+ZSLgzFmUwZdEFtT4D4JL8=
-Date:   Fri, 27 Aug 2021 16:02:49 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     Michal Marek <michal.lkml@markovi.net>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>
-Subject: Re: [PATCH 18/20] kbuild: sh: remove unused install script
-Message-ID: <YSjwiQu1kz7CJCrq@kroah.com>
-References: <20210407053419.449796-1-gregkh@linuxfoundation.org>
- <20210407053419.449796-19-gregkh@linuxfoundation.org>
- <CAK7LNAQ07ycpjJQGwbtq1ii3k9rh2CZVN6MVxkfMb=+Vgs9zqw@mail.gmail.com>
+        id S1344979AbhIASMf (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 1 Sep 2021 14:12:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53718 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1346841AbhIASMY (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 1 Sep 2021 14:12:24 -0400
+Received: from mail-qv1-xf35.google.com (mail-qv1-xf35.google.com [IPv6:2607:f8b0:4864:20::f35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82E8AC061141
+        for <linux-sh@vger.kernel.org>; Wed,  1 Sep 2021 11:11:23 -0700 (PDT)
+Received: by mail-qv1-xf35.google.com with SMTP id 4so327775qvp.3
+        for <linux-sh@vger.kernel.org>; Wed, 01 Sep 2021 11:11:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=2joGkq8i8C5vglZO1FYNTlWqLyr4vSiCXKQYXBVnv4Q=;
+        b=LD3mpzy1s09M3e/Eheelu/QMtbN6lrYJQ+S1BsYhmG4zP9OQuKOeD1zHV2lZaK7Hdt
+         vXoBMumPRACuZhnwd8TYAFIvdImPe0Zn4DA41GnzHGsnpDZPE0wUFWVFNzgpxF6bh6D8
+         CVxTiiIN7w8BVpPirFLytZKK2cFqqV6q9qR8cw4XmdYYgGZs+MdnDeP+neEr/SbnLI2h
+         mwT6gqJ8+HvNCQei5Zu6b3U+/YcUOepEDfVn6t0IkNG5YzxTV8mH8IqZ4zEsqBchdgxI
+         E/zGH3KCiuS7UdfEMBVKPbpzhhPyh4quLRALvE4iCHtswqSZDgWUuzksodIw8OWwGR1Z
+         0RlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=2joGkq8i8C5vglZO1FYNTlWqLyr4vSiCXKQYXBVnv4Q=;
+        b=qWIZiqkSNH69YSMhyagKdV2KHTIjGz0ZdEHxlUkhmSVcJqjcRfrvWsA06stD7udg+i
+         KtHnE0JyoG4NDI7oqhSAmYHN3OalHHCn/mnhIvpRJwQC9+QOfKO0QmbssCm1bZier6Ii
+         pJM4eDFNfvhX7GRxshs41J9EYyWF3OQVAOhW+mUJyU31MRNbWndAcQ/qhFVq0z6MrSn0
+         KFUarzoBZ+YZ8RC4jlHw3rmRAWlAkOBRfJeAjRSQbjCkycDDGofu+1Gp3bajZLkRLLtv
+         quKclVgd8XW2yu7O7J12wAJbxaRPdzBbNd23+1sTN20bJ+297z+GpRHeQdygN707HenP
+         lLYw==
+X-Gm-Message-State: AOAM533qY0kPS4yzcWolr+9GxwjYZP1ce5h2f7ikD3cLdVoyCWgrCGUq
+        QPHfwJd8id6AzawV8khPoNVytC8DVq/lT3Z4aoTT3aQaPWx/8w==
+X-Google-Smtp-Source: ABdhPJwbbBYGjUEQSS3Bb7EfYk34O3AVuG22pVIF78fkATQG8c+PQmeHgcc35+YrriS74Wl5STB8JbzOasp+8kCVBlk=
+X-Received: by 2002:a67:8c5:: with SMTP id 188mr1017695vsi.4.1630519870726;
+ Wed, 01 Sep 2021 11:11:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAK7LNAQ07ycpjJQGwbtq1ii3k9rh2CZVN6MVxkfMb=+Vgs9zqw@mail.gmail.com>
+Received: by 2002:ab0:740d:0:0:0:0:0 with HTTP; Wed, 1 Sep 2021 11:11:10 -0700 (PDT)
+From:   CorisBank International <corisbankintlbf@gmail.com>
+Date:   Wed, 1 Sep 2021 11:11:10 -0700
+Message-ID: <CA+25hwzjLgVdtDXYWeuqFBTvAbpc4oxK0dW54s7tjGNyU_m0ow@mail.gmail.com>
+Subject: CORISBANK INTERNATIONAL OFFICIAL NOTIFICATION
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Wed, Aug 25, 2021 at 12:22:03AM +0900, Masahiro Yamada wrote:
-> On Wed, Apr 7, 2021 at 2:35 PM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > The sh arch has a install.sh script, but no Makefile actually calls it.
-> > Remove it to keep anyone from accidentally calling it in the future.
-> >
-> > Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-> > Cc: Rich Felker <dalias@libc.org>
-> > Cc: linux-sh@vger.kernel.org
-> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > ---
-> >  arch/sh/boot/compressed/install.sh | 56 ------------------------------
-> >  1 file changed, 56 deletions(-)
-> >  delete mode 100644 arch/sh/boot/compressed/install.sh
-> >
-> > diff --git a/arch/sh/boot/compressed/install.sh b/arch/sh/boot/compressed/install.sh
-> > deleted file mode 100644
-> > index f9f41818b17e..000000000000
-> > --- a/arch/sh/boot/compressed/install.sh
-> > +++ /dev/null
-> > @@ -1,56 +0,0 @@
-> > -#!/bin/sh
-> > -#
-> > -# arch/sh/boot/install.sh
-> > -#
-> > -# This file is subject to the terms and conditions of the GNU General Public
-> > -# License.  See the file "COPYING" in the main directory of this archive
-> > -# for more details.
-> > -#
-> > -# Copyright (C) 1995 by Linus Torvalds
-> > -#
-> > -# Adapted from code in arch/i386/boot/Makefile by H. Peter Anvin
-> > -# Adapted from code in arch/i386/boot/install.sh by Russell King
-> > -# Adapted from code in arch/arm/boot/install.sh by Stuart Menefy
-> > -#
-> > -# "make install" script for sh architecture
-> > -#
-> > -# Arguments:
-> > -#   $1 - kernel version
-> > -#   $2 - kernel image file
-> > -#   $3 - kernel map file
-> > -#   $4 - default install path (blank if root directory)
-> > -#
-> > -
-> > -# User may have a custom install script
-> > -
-> > -if [ -x /sbin/${INSTALLKERNEL} ]; then
-> > -  exec /sbin/${INSTALLKERNEL} "$@"
-> > -fi
-> > -
-> > -if [ "$2" = "zImage" ]; then
-> > -# Compressed install
-> > -  echo "Installing compressed kernel"
-> > -  if [ -f $4/vmlinuz-$1 ]; then
-> > -    mv $4/vmlinuz-$1 $4/vmlinuz.old
-> > -  fi
-> > -
-> > -  if [ -f $4/System.map-$1 ]; then
-> > -    mv $4/System.map-$1 $4/System.old
-> > -  fi
-> > -
-> > -  cat $2 > $4/vmlinuz-$1
-> > -  cp $3 $4/System.map-$1
-> > -else
-> > -# Normal install
-> > -  echo "Installing normal kernel"
-> > -  if [ -f $4/vmlinux-$1 ]; then
-> > -    mv $4/vmlinux-$1 $4/vmlinux.old
-> > -  fi
-> > -
-> > -  if [ -f $4/System.map ]; then
-> > -    mv $4/System.map $4/System.old
-> > -  fi
-> > -
-> > -  cat $2 > $4/vmlinux-$1
-> > -  cp $3 $4/System.map
-> > -fi
-> > --
-> > 2.31.1
-> >
-> 
-> 
-> This one is applicable independently.
-> 
-> Applied to linux-kbuild. Thanks.
+Att: Client
 
-Hey, nice, thanks!
 
-I'll work on the rest of the patches in this series after the next merge
-window is over...
+CORISBANK INTERNATIONAL URGENT NOTIFICATION
 
-greg k-h
+Notification / Notification/ Notification
+
+Note, We are writing to inform you officially that Finally the Central
+Bank Financial Authority have approved to transfer your $8.2Million
+which was signed by late Mrs Rose Banneth the COVID.19 victim to
+transfer to you, Late Mrs Rose Banneth the France Lady contacted us to
+transfer her fund in our bank to you for Orphanage work before she
+died by the COVID.19
+and as it is now, you will receive your fund through our corresponding
+bank in Dubai [Emirate Investment Bank ] for security reason. Please
+you should reconfirm your details to receive the $8.2Million.
+
+Name, Country, Address, occupations, Age, Telephone number, account
+Details so that we can immediately forward to the World Bank to
+transfer the fund.
+You are advised to comply on timely manner to permit this esteem bank
+transfer your fund as scheduled.
+
+We look forward to serving you better
+Your Financial Comfort Is A Priority
+Thank you for choosing Corisbank International.
+
+Sincerely,
+
+----
+
+Mr Diakarya Ouattara
+Managing Director
+Bank Coris
+Burkina Faso
++226 556 163 37
+financial_bf_info@accountant.com
