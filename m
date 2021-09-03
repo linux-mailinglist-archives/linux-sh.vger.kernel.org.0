@@ -2,120 +2,73 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 97D323FFBE3
-	for <lists+linux-sh@lfdr.de>; Fri,  3 Sep 2021 10:25:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4881940079A
+	for <lists+linux-sh@lfdr.de>; Fri,  3 Sep 2021 23:52:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348363AbhICIYr (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 3 Sep 2021 04:24:47 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:2482 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1348295AbhICIYq (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 3 Sep 2021 04:24:46 -0400
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 18384kVk094606;
-        Fri, 3 Sep 2021 04:22:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=yvn3uRltpD6qua2hyp0D2c7Lx/IW7lVKvIh+1+hY8jc=;
- b=sxqFHGBuVldPs6+5K/rqtVS9JHaQU11EacvwcMXWaBbncc1l8OOnAuO55qpy/Yz7lvG8
- fHBGcdKnfMjUhSSKgEXpC9tfhTNXhCD4RL1rLoTx+ouZqYUheCwxI6sQQRKrEw+MIkfP
- NvtrSkjS+pOzrkJLiM4WrfcV3fsDP5VKqrtC2E9soOQhjwnWHr03qec/WayDpr2td3x+
- 3dJLfkNMsgjwswwo311zitvpYu/rAJHq1kjaBUQjEZ5HM8L/YTyT0zKUTr/71/uf3dON
- n8LL5RnLa43g60fHv/kVumN2Z4k8oa5+mK/9XJPoCXZpMKfS4mcMm6AYJ7LnhFAdfrNc 2Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3auftc8fse-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 03 Sep 2021 04:22:03 -0400
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 18384pMm095198;
-        Fri, 3 Sep 2021 04:22:02 -0400
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3auftc8frg-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 03 Sep 2021 04:22:02 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
-        by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 18388C9c028085;
-        Fri, 3 Sep 2021 08:21:59 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
-        by ppma04fra.de.ibm.com with ESMTP id 3au6q74x6c-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 03 Sep 2021 08:21:59 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
-        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 1838LtB930671224
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 3 Sep 2021 08:21:55 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 50DCEA4054;
-        Fri,  3 Sep 2021 08:21:55 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id D5A24A405B;
-        Fri,  3 Sep 2021 08:21:53 +0000 (GMT)
-Received: from osiris (unknown [9.145.159.114])
-        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-        Fri,  3 Sep 2021 08:21:53 +0000 (GMT)
-Date:   Fri, 3 Sep 2021 10:21:52 +0200
-From:   Heiko Carstens <hca@linux.ibm.com>
-To:     Weizhao Ouyang <o451686892@gmail.com>
-Cc:     rostedt@goodmis.org, mingo@redhat.com, linux@armlinux.org.uk,
-        catalin.marinas@arm.com, will@kernel.org, guoren@kernel.org,
-        monstr@monstr.eu, tsbogend@alpha.franken.de, nickhu@andestech.com,
-        green.hu@gmail.com, deanbo422@gmail.com,
-        James.Bottomley@hansenpartnership.com, deller@gmx.de,
-        mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
-        paul.walmsley@sifive.com, palmer@dabbelt.com,
-        aou@eecs.berkeley.edu, gor@linux.ibm.com, borntraeger@de.ibm.com,
-        ysato@users.sourceforge.jp, dalias@libc.org, davem@davemloft.net,
-        tglx@linutronix.de, bp@alien8.de, x86@kernel.org, hpa@zytor.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org
-Subject: Re: [PATCH] ftrace: Cleanup ftrace_dyn_arch_init()
-Message-ID: <YTHbIMVw2EhNpDwO@osiris>
-References: <20210903071817.1162938-1-o451686892@gmail.com>
+        id S236097AbhICVxX (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 3 Sep 2021 17:53:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56258 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235691AbhICVxW (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 3 Sep 2021 17:53:22 -0400
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B10CC061757
+        for <linux-sh@vger.kernel.org>; Fri,  3 Sep 2021 14:52:22 -0700 (PDT)
+Received: by mail-wr1-x42d.google.com with SMTP id u9so563571wrg.8
+        for <linux-sh@vger.kernel.org>; Fri, 03 Sep 2021 14:52:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=KiU6nMkCZYJbqe8bSBt+kfTnczgB7P2IjW8/5H1bcPQ=;
+        b=Yd0e26scvdG4xG8i8OV+NKoWE+Ok72MZiQLdj9qHxeqVhIF6lRikOhDjgzzC/LALO9
+         DtvD99MMXu1JFJ3MwN6tmDl5d8MdoSW82rXRaKLtDCSaGEAE+LMOXs/j8Gkw24v9EnZa
+         BuBEKlDC/K3oGPdH2GNVfuhHIztQZYxl11UpRj/xqIpM4iKg+cZoWQAZ7DJPdYWc1oIy
+         /4GWBqxxz31drGsJlcjM71LEfXoYZ8Mo6Blo2gVWVV+5yggll2YGjo5zGvBx93AjwU5t
+         8dHDOqqqVGauhJlX+zVuEtirx1/vcg8t1SOsrlmLa66u58R2+euwlIUhvdKrT71HCOc8
+         8nIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=KiU6nMkCZYJbqe8bSBt+kfTnczgB7P2IjW8/5H1bcPQ=;
+        b=I9eZyheODKy6vZBHEmjyNEJLe5iXeKZalsET5VzoR9Fg2h4dxIedu8TZroIZHzuQwp
+         Hpn+QoAATD9vhYm0MR1Us2aeBfIflLogMVQXOOl9jaJAWi4CkWRRd1j/7y591twItmNg
+         7Y0/UzNReFBwPZchQdh4FpDjJmzALaZgCQsFsfkTeeZ/9PzaoK9iKAPjE0rWEtlqz/sh
+         Con8SsW6bxJIHdLfC9mdf0ARo6DQpXReXYXiLrK0zKlI4JYog5ibISoQg/1xr3uzcium
+         GRjTB7AM/4jx2qy0D5uYohJcQshaz5CjRqvR+oRG2ywo2fgeveB6oOZL/9aKPMY5ehN/
+         lY8Q==
+X-Gm-Message-State: AOAM5310pFZrRmqSkKtUkY1qvs86ue+P75CYk3iAaUI6sjp8niEOkVDL
+        vO7WbkNG1TlxSKOL31xtRKT/pbkNocIxxMbqBxE=
+X-Google-Smtp-Source: ABdhPJzLr4SBfGHfPjlGXXa8yn1t2HDrRbRFcOyaIRxenjO2cyxDRciNDqUrgatlR4NSTLgRc653BTziU1E/4d5MnCY=
+X-Received: by 2002:adf:edcf:: with SMTP id v15mr1088659wro.61.1630705940703;
+ Fri, 03 Sep 2021 14:52:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210903071817.1162938-1-o451686892@gmail.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: v7gSly151gMH4jiswwJLQJyae83ofpqz
-X-Proofpoint-ORIG-GUID: 5AAR1uAs7Bex_EJmpFQlQUops1ZiOFiF
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
- definitions=2021-09-03_02:2021-09-03,2021-09-03 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- clxscore=1011 adultscore=0 spamscore=0 bulkscore=0 phishscore=0
- impostorscore=0 lowpriorityscore=0 mlxlogscore=634 suspectscore=0
- malwarescore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2108310000 definitions=main-2109030048
+Sender: misssamiraibrahim@gmail.com
+Received: by 2002:a1c:29c4:0:0:0:0:0 with HTTP; Fri, 3 Sep 2021 14:52:20 -0700 (PDT)
+From:   "Mrs. Aisha Gaddafi" <mrsaishaalqaddafi40@gmail.com>
+Date:   Fri, 3 Sep 2021 23:52:20 +0200
+X-Google-Sender-Auth: x24WuZTe4W-gz-okJQBk4Xa_agc
+Message-ID: <CAD2KnJJQ5wSSbo6S97V9bxuJdWL8OETcTqi9SCYp4tyY39m0QQ@mail.gmail.com>
+Subject: Dear Friend,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Fri, Sep 03, 2021 at 03:18:17PM +0800, Weizhao Ouyang wrote:
-> Most ARCHs use empty ftrace_dyn_arch_init(), introduce a weak common
-> ftrace_dyn_arch_init() to cleanup them.
-> 
-> Signed-off-by: Weizhao Ouyang <o451686892@gmail.com>
-> ---
->  arch/arm/kernel/ftrace.c          | 5 -----
->  arch/arm64/kernel/ftrace.c        | 5 -----
->  arch/csky/kernel/ftrace.c         | 5 -----
->  arch/ia64/kernel/ftrace.c         | 6 ------
->  arch/microblaze/kernel/ftrace.c   | 5 -----
->  arch/mips/include/asm/ftrace.h    | 2 ++
->  arch/nds32/kernel/ftrace.c        | 5 -----
->  arch/parisc/kernel/ftrace.c       | 5 -----
->  arch/powerpc/include/asm/ftrace.h | 4 ++++
->  arch/riscv/kernel/ftrace.c        | 5 -----
->  arch/s390/kernel/ftrace.c         | 5 -----
->  arch/sh/kernel/ftrace.c           | 5 -----
->  arch/sparc/kernel/ftrace.c        | 5 -----
->  arch/x86/kernel/ftrace.c          | 5 -----
->  include/linux/ftrace.h            | 1 -
->  kernel/trace/ftrace.c             | 5 +++++
->  16 files changed, 11 insertions(+), 62 deletions(-)
+Dear Friend,
 
-For s390:
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
+I came across your e-mail contact prior to a private search while in
+need of your assistance. My name is Aisha Gaddafi, a single Mother and
+a Widow with three Children. I am the only biological Daughter of the
+late Libyan President (Late Colonel Muammar Gaddafi).
+
+I have investment funds worth Twenty Seven Million Five Hundred
+Thousand United State Dollar ($27.500.000.00 ) and I need a trusted
+investment Manager/Partner because of my current refugee status,
+however, I am interested in you for investment project assistance in
+your country, may be from there, we can build business relationship in
+the nearest future.
+
+Best Regards
+Mrs Aisha Gaddafi
