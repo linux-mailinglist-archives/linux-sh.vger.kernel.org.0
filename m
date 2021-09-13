@@ -2,91 +2,90 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A73354083BA
-	for <lists+linux-sh@lfdr.de>; Mon, 13 Sep 2021 07:15:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B40AD408A84
+	for <lists+linux-sh@lfdr.de>; Mon, 13 Sep 2021 13:51:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229833AbhIMFQ1 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 13 Sep 2021 01:16:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59306 "EHLO
+        id S239698AbhIMLwl (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 13 Sep 2021 07:52:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229563AbhIMFQ0 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 13 Sep 2021 01:16:26 -0400
-Received: from mail-il1-x133.google.com (mail-il1-x133.google.com [IPv6:2607:f8b0:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B609CC061574;
-        Sun, 12 Sep 2021 22:15:11 -0700 (PDT)
-Received: by mail-il1-x133.google.com with SMTP id h20so7846542ilj.13;
-        Sun, 12 Sep 2021 22:15:11 -0700 (PDT)
+        with ESMTP id S239682AbhIMLwk (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 13 Sep 2021 07:52:40 -0400
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D795BC061760
+        for <linux-sh@vger.kernel.org>; Mon, 13 Sep 2021 04:51:24 -0700 (PDT)
+Received: by mail-lf1-x133.google.com with SMTP id i4so3391229lfv.4
+        for <linux-sh@vger.kernel.org>; Mon, 13 Sep 2021 04:51:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=Fym7Ho3/HB4lYkhNEdo9I/OHj12nal5b2UIn6CWREBk=;
-        b=qGn3WBtr47uclRtIV3dRAGzWNWa0BFeOnorOzw5Oz6w6Bodo4vRBRO36bij6VxDuD6
-         YqkGNEkfaBxqpJRMzH9mtvgfMSB8voc9L5MbjSIHrbEiD5jTmXUJ14lOJXmdzeumXQGt
-         BvByBr89FKobLzw275YRxYKfwWyoqyTh9PhP8grJflJKi94e++6/eLYX88VNrCrv4qbA
-         8sYHVtIavqCkaWYfR20gHcj7tpBnLfosvhXbFiMJn6tZg944SWfoeJhVf+t/pkY3ez/E
-         MwnzncticLhlM+i8We6/JWwd2onZF/JhTWVidXnsTDGo/XjNKRw+fM+HyXD4c/t7nUtW
-         YTcw==
+        d=0x0f.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=vcxL95DIl7E0Surm2fYVh0FLQdkw8xdl/2I8gB6Ck0A=;
+        b=F/FAqgSC2yHhGt81eMsu5irZzsSG7lnTScaJlLQars0vcimQ5j+chCBZ/sqyDjOVaw
+         zszBu+9roSDnBN6pLYP9I9oePiq0cMyRp8H4tQOYuzrHPrLmUFng3Qz3sElUBeK3X4AH
+         4WS1j8hhHZyjGQMijZ25Y0LF9sNe21zcaq2Ic=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=Fym7Ho3/HB4lYkhNEdo9I/OHj12nal5b2UIn6CWREBk=;
-        b=JOPCwsCwN3+r+twnXkq7p+yuYeqQBiaGc+TB42/YG3b1emZA8T9cUiFc/xeeXg76YS
-         TcbfpWLfpzINbDg5h0ZRRKVsNnCQPCLbH2rI+Ib64I9MeOBWFeo1RI0kcLGkyONruuNl
-         bwpWrDQCSd1/+10qSUnUyjpIRlEelrw87//Wdio1fj/xH4T4sQiWNwx5WIPa4m4JkjsQ
-         kwHbC6En8nHnQG+rxqVJnLHbC/whWzb7VPiDVilFoiLreegzhBR3c5OHD+lwQLJQr4of
-         Rkmc/WTMiKrE3ck+csUF+aycOpe2UcUIYV4TixRy8nNDSaB9IhLEi+TjeKzj8Y28eXFS
-         cBdA==
-X-Gm-Message-State: AOAM532VYcV0G6SeroDqAx1XQJ690x+E07Q7p390zYl1ZPoXIsuHmJi+
-        hWW0XayiGQh+LjFSXLNZjly35dh0XgNieYn2SLHt8Bbg2YE=
-X-Google-Smtp-Source: ABdhPJwXcuPacVX3Si/EYs85Sy+ueqZTP34GmxqYuIVM2FfaSeF/jjBHYkni4aXXfaLv1ELoLBH3/WmEtLu4Q0KOLXc=
-X-Received: by 2002:a05:6e02:120e:: with SMTP id a14mr6603429ilq.222.1631510111123;
- Sun, 12 Sep 2021 22:15:11 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=vcxL95DIl7E0Surm2fYVh0FLQdkw8xdl/2I8gB6Ck0A=;
+        b=lxvhzRCxXpXrsfjlO/Rrd6kTA0W5kEvhbda68QP9jPP87gpoOUVk+AENrjLs7+Edgl
+         UFw6lio3p7a/SnEAQ71UCzgFOFRa8EW5P6RGfYsjtOox7yGFRkjUXJSTls9Zv0x7Pvi1
+         y0wZmqHfEHu+Vau/h7Tmryh/IwG6n4JfZPpxb5i6pGUIHfmQws0SQj0wiEh/ftfQzXFr
+         CEMRo14hc4RWhY/dDO9s7HuFPX2kKzcO/F6j9I60kXKDQeTnQ+HgSyXyK/dzxthfn/IC
+         RUqlwBEBjCO6j2juEzwyocHBkWbVUU+zdcJ7VEKg2VWFj+ThcBb6j3xuFy7ycIpkzhrU
+         yPIQ==
+X-Gm-Message-State: AOAM532NVyWRJ/TWdL76iWafiCrttVKO8C5GuGUZqUMfgEIRUjlp/Rqf
+        r3sXsPv1KMlRJDmxsycHxDPiJRNJy5aXkH2ME9F6zg==
+X-Google-Smtp-Source: ABdhPJzQUy1rsa2nwHauTUnzipk89JG7Ch4EPsaNLW/0YP4N/Py2u4+AEqdTBjHV7GUlDd2hGYO0QrK02PPjy89yJfM=
+X-Received: by 2002:a05:6512:118e:: with SMTP id g14mr8493571lfr.661.1631533883167;
+ Mon, 13 Sep 2021 04:51:23 -0700 (PDT)
 MIME-Version: 1.0
-From:   zhao xc <xinchao.zhao.kernelz@gmail.com>
-Date:   Mon, 13 Sep 2021 13:15:00 +0800
-Message-ID: <CAP7CzPcc40RobQfMLPkW3TXkEf1b7B7Xd_ufFBh76LKoegiqeQ@mail.gmail.com>
-Subject: 
-To:     ysato@users.sourceforge.jp
-Cc:     dalias@libc.org, linux-sh@vger.kernel.org,
-        linux-kernel@vger.kernel.org, xinchao.zhao@ucas.com.cn
-Content-Type: multipart/mixed; boundary="0000000000009f21ef05cbd98c83"
+References: <20210627220544.8757-1-rdunlap@infradead.org> <2bae95d0-0932-847c-c105-a333e9956dff@infradead.org>
+ <f63694aa-85b3-0238-5228-eb35a52bf360@physik.fu-berlin.de>
+ <CAFr9PXn5S_3mpJBF0bNo+S1US=Z5s89rbO-OhhqGk=zqPGWXoQ@mail.gmail.com> <20210912015740.GJ13220@brightrain.aerifal.cx>
+In-Reply-To: <20210912015740.GJ13220@brightrain.aerifal.cx>
+From:   Daniel Palmer <daniel@0x0f.com>
+Date:   Mon, 13 Sep 2021 20:53:42 +0900
+Message-ID: <CAFr9PXk_w_+4mec1OfQLzsYHta2P4rEFGwsJJv+LSQo+hzKGeg@mail.gmail.com>
+Subject: Re: [PATCH 0/3 v2] sh: fixes for various build and kconfig warnings
+To:     Rich Felker <dalias@libc.org>
+Cc:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>, j-core@j-core.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
---0000000000009f21ef05cbd98c83
-Content-Type: text/plain; charset="UTF-8"
+Hi Rich,
 
-Hi maintainer:
-    This is a patch fix the unused macro definition
-Thanks!
+On Sun, 12 Sept 2021 at 10:57, Rich Felker <dalias@libc.org> wrote:
+>
+> On Thu, Sep 09, 2021 at 06:08:58PM +0900, Daniel Palmer wrote:
+> Hi. I see there's a situation that needs my attention here. I will
+> plan to review and merge anything important/blocking that doesn't have
+> problems this week.
 
---0000000000009f21ef05cbd98c83
-Content-Type: application/octet-stream; 
-	name="0001-arch-sh-fix-the-unused-macro-definition-IP_NF_MATCH_.patch"
-Content-Disposition: attachment; 
-	filename="0001-arch-sh-fix-the-unused-macro-definition-IP_NF_MATCH_.patch"
-Content-Transfer-Encoding: base64
-Content-ID: <f_kti6xv5p0>
-X-Attachment-Id: f_kti6xv5p0
+Great. If you want to have it tested on real hardware please let me know.
+I have an ecovec24 (SH4A) board connected to CI so I can easily build
+and boot test.
 
-RnJvbSA3M2YyMWY3ZTBhNDdlZTI3NmY5YTQ4NjFlNDFmNWFjNjA1NzVhNjY5IE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiB6aGFveGluY2hhbyA8d2FuZ2h1b0B1Y2FzLmNvbS5jbj4KRGF0
-ZTogVGh1LCA5IFNlcCAyMDIxIDAyOjMyOjU2IC0wNzAwClN1YmplY3Q6IFtQQVRDSF0gYXJjaDog
-c2g6IGZpeCB0aGUgdW51c2VkIG1hY3JvIGRlZmluaXRpb24KIElQX05GX01BVENIX0FERFJUWVBF
-LiBJUF9ORl9NQVRDSF9BRERSVFlQRSBoYXMgY2hhbmdlZCB0bwogTkVURklMVEVSX1hUX01BVENI
-X0FERFJUWVBFIGluIDIwMTEuIENPTkZJR19JUF9ORl9UQVJHRVRfTE9HIGRvZXMgbm90IGV4aXN0
-CiBpbiB0aGUga2VybmVsLgoKc2VlIHRoZSBjb21taXQgPGRlODFiYmVhMTc2NTA3Njk4ODJiYzYy
-NWQ2YjVkZjExZWU3YzRiMjQ+CgpTaWduZWQtb2ZmLWJ5OiB6aGFveGluY2hhbyA8d2FuZ2h1b0B1
-Y2FzLmNvbS5jbj4KLS0tCiBhcmNoL3NoL2NvbmZpZ3MvdGl0YW5fZGVmY29uZmlnIHwgMiArLQog
-MSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pCgpkaWZmIC0tZ2l0
-IGEvYXJjaC9zaC9jb25maWdzL3RpdGFuX2RlZmNvbmZpZyBiL2FyY2gvc2gvY29uZmlncy90aXRh
-bl9kZWZjb25maWcKaW5kZXggYmE4ODdmMTM1MWJlLi5hOGI0YTlkMzkzYmUgMTAwNjQ0Ci0tLSBh
-L2FyY2gvc2gvY29uZmlncy90aXRhbl9kZWZjb25maWcKKysrIGIvYXJjaC9zaC9jb25maWdzL3Rp
-dGFuX2RlZmNvbmZpZwpAQCAtODMsNyArODMsNyBAQCBDT05GSUdfSVBfTkZfTUFUQ0hfRUNOPW0K
-IENPTkZJR19JUF9ORl9NQVRDSF9UVEw9bQogQ09ORklHX0lQX05GX0ZJTFRFUj1tCiBDT05GSUdf
-SVBfTkZfVEFSR0VUX1JFSkVDVD1tCi1DT05GSUdfSVBfTkZfVEFSR0VUX0xPRz1tCitDT05GSUdf
-TkVURklMVEVSX1hUX1RBUkdFVF9MT0c9bQogQ09ORklHX0lQX05GX01BTkdMRT1tCiBDT05GSUdf
-SVBfTkZfVEFSR0VUX0VDTj1tCiBDT05GSUdfSVBfTkZfVEFSR0VUX1RUTD1tCi0tIAoyLjE3LjEK
-Cg==
---0000000000009f21ef05cbd98c83--
+> At the same time, I am open to the possibility of a new maintainer or
+> co-maintainer if that ends up being what makes sense. Are there any
+> candidates?
+
+I think the problem is that while there are hobbyists out there the
+number of people that are still familiar with how the SuperH stuff
+works is pretty low.
+I don't have the debug dongles etc anymore so if some treewide change
+breaks everything then I don't know how I'd debug it.
+Maybe we could add a few people that still have working hardware as
+reviewers so they see patches and build test them for you?
+
+Cheers,
+
+Daniel
