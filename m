@@ -2,29 +2,29 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BCB940D4C5
+	by mail.lfdr.de (Postfix) with ESMTP id E904E40D4C6
 	for <lists+linux-sh@lfdr.de>; Thu, 16 Sep 2021 10:42:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235171AbhIPIoQ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        id S234589AbhIPIoQ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
         Thu, 16 Sep 2021 04:44:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51944 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234589AbhIPIoP (ORCPT
+        with ESMTP id S235130AbhIPIoP (ORCPT
         <rfc822;linux-sh@vger.kernel.org>); Thu, 16 Sep 2021 04:44:15 -0400
 Received: from michel.telenet-ops.be (michel.telenet-ops.be [IPv6:2a02:1800:110:4::f00:18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75964C061768
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A82CC0613C1
         for <linux-sh@vger.kernel.org>; Thu, 16 Sep 2021 01:42:55 -0700 (PDT)
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed20:39fa:3565:945d:98f4])
         by michel.telenet-ops.be with bizsmtp
-        id uYim2500S3mHZPk06YimpP; Thu, 16 Sep 2021 10:42:53 +0200
+        id uYim2500T3mHZPk06YimpQ; Thu, 16 Sep 2021 10:42:53 +0200
 Received: from rox.of.borg ([192.168.97.57])
         by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <geert@linux-m68k.org>)
-        id 1mQmyj-0053tp-S0; Thu, 16 Sep 2021 10:42:45 +0200
+        id 1mQmyk-0053tq-0b; Thu, 16 Sep 2021 10:42:46 +0200
 Received: from geert by rox.of.borg with local (Exim 4.93)
         (envelope-from <geert@linux-m68k.org>)
-        id 1mQmyj-004q6a-AI; Thu, 16 Sep 2021 10:42:45 +0200
+        id 1mQmyj-004q6g-CF; Thu, 16 Sep 2021 10:42:45 +0200
 From:   Geert Uytterhoeven <geert+renesas@glider.be>
 To:     Matt Fleming <matt@codeblueprint.co.uk>,
         Mel Gorman <mgorman@suse.de>,
@@ -39,47 +39,59 @@ Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
         linux-mm@kvack.org, linux-sh@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 0/2] Fix NUMA without SMP
-Date:   Thu, 16 Sep 2021 10:42:41 +0200
-Message-Id: <cover.1631781495.git.geert+renesas@glider.be>
+Subject: [PATCH 1/2] mm: Move node_reclaim_distance to fix NUMA without SMP
+Date:   Thu, 16 Sep 2021 10:42:42 +0200
+Message-Id: <6432666a648dde85635341e6c918cee97c97d264.1631781495.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <cover.1631781495.git.geert+renesas@glider.be>
+References: <cover.1631781495.git.geert+renesas@glider.be>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-	Hi all,
+If CONFIG_NUMA=y, but CONFIG_SMP=n (e.g. sh/migor_defconfig):
 
-SuperH is the only architecture which still supports NUMA without SMP,
-for good reasons (various memories scattered around the address space,
-each with varying latencies).  This series fixes two build errors due to
-variables and functions used by the NUMA code being provided by SMP-only
-source files or sections.
+    sh4-linux-gnu-ld: mm/page_alloc.o: in function `get_page_from_freelist':
+    page_alloc.c:(.text+0x2c24): undefined reference to `node_reclaim_distance'
 
-These are compile-tested only, as the remote Migo-R is MIA.
+Fix this by moving the declaration of node_reclaim_distance from an
+SMP-only to a generic file.
 
-Thanks for your comments!
+Fixes: a55c7454a8c887b2 ("sched/topology: Improve load balancing on AMD EPYC systems")
+Suggested-by: Matt Fleming <matt@codeblueprint.co.uk>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+ kernel/sched/topology.c | 1 -
+ mm/page_alloc.c         | 2 ++
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-Geert Uytterhoeven (2):
-  mm: Move node_reclaim_distance to fix NUMA without SMP
-  mm: Move fold_vm_numa_events() to fix NUMA without SMP
-
- kernel/sched/topology.c |  1 -
- mm/page_alloc.c         |  2 ++
- mm/vmstat.c             | 56 ++++++++++++++++++++---------------------
- 3 files changed, 30 insertions(+), 29 deletions(-)
-
+diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+index 4e8698e62f0754a3..738ee7fa79724c7d 100644
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -1481,7 +1481,6 @@ static int			sched_domains_curr_level;
+ int				sched_max_numa_distance;
+ static int			*sched_domains_numa_distance;
+ static struct cpumask		***sched_domains_numa_masks;
+-int __read_mostly		node_reclaim_distance = RECLAIM_DISTANCE;
+ 
+ static unsigned long __read_mostly *sched_numa_onlined_nodes;
+ #endif
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index b37435c274cf1cb1..8b2d7a9bae6c1754 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -3966,6 +3966,8 @@ bool zone_watermark_ok_safe(struct zone *z, unsigned int order,
+ }
+ 
+ #ifdef CONFIG_NUMA
++int __read_mostly node_reclaim_distance = RECLAIM_DISTANCE;
++
+ static bool zone_allows_reclaim(struct zone *local_zone, struct zone *zone)
+ {
+ 	return node_distance(zone_to_nid(local_zone), zone_to_nid(zone)) <=
 -- 
 2.25.1
 
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
