@@ -2,80 +2,84 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B581040CBA5
-	for <lists+linux-sh@lfdr.de>; Wed, 15 Sep 2021 19:23:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BCB940D4C5
+	for <lists+linux-sh@lfdr.de>; Thu, 16 Sep 2021 10:42:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230088AbhIORZM (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 15 Sep 2021 13:25:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58892 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229531AbhIORZL (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Wed, 15 Sep 2021 13:25:11 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E4EB161101;
-        Wed, 15 Sep 2021 17:23:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631726632;
-        bh=11IfLlG7/d+bq2n5fIVzsKIoKm0HuIFUadH/5zMFKqg=;
-        h=From:To:Cc:Subject:Date:From;
-        b=GOnsMkjN9qIEJYYTbAkDJ9vUFJxn+HiP70EmuerwRH1OA7GOCi9t15huEyHdh4tMj
-         QaGtbIf2Nrb5WeP2TQXtTSyZ+r5Aa4PK+L5603gUFAOClILSHtdpAG8N6W6D/ikzyb
-         PN97z9trBAGp1sHcCb63SzdGniBkJ3C9Y6XqOayephFmYjRG1xNNgypfREEMJJMjtr
-         PBlIjVnngQq6sVF7jBwjg36K3zBqzggA/PESNyFGReB1lOzz04pxOt3IG48gplkb6u
-         to/gzg4Fzmr/FLallLNYPkM1GkBJ461nOhWfhWjJUFyD3pXKoj1ZwRIjImmP2u7M+R
-         wr2C/pLzyEl7g==
-From:   Mark Brown <broonie@kernel.org>
-To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>
-Cc:     linux-sh@vger.kernel.org, alsa-devel@alsa-project.org,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH] sh: Use modern ASoC DAI format terminology
-Date:   Wed, 15 Sep 2021 18:23:02 +0100
-Message-Id: <20210915172302.36677-1-broonie@kernel.org>
-X-Mailer: git-send-email 2.20.1
+        id S235171AbhIPIoQ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 16 Sep 2021 04:44:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51944 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234589AbhIPIoP (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 16 Sep 2021 04:44:15 -0400
+Received: from michel.telenet-ops.be (michel.telenet-ops.be [IPv6:2a02:1800:110:4::f00:18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75964C061768
+        for <linux-sh@vger.kernel.org>; Thu, 16 Sep 2021 01:42:55 -0700 (PDT)
+Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed20:39fa:3565:945d:98f4])
+        by michel.telenet-ops.be with bizsmtp
+        id uYim2500S3mHZPk06YimpP; Thu, 16 Sep 2021 10:42:53 +0200
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1mQmyj-0053tp-S0; Thu, 16 Sep 2021 10:42:45 +0200
+Received: from geert by rox.of.borg with local (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1mQmyj-004q6a-AI; Thu, 16 Sep 2021 10:42:45 +0200
+From:   Geert Uytterhoeven <geert+renesas@glider.be>
+To:     Matt Fleming <matt@codeblueprint.co.uk>,
+        Mel Gorman <mgorman@suse.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>
+Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, Gon Solo <gonsolo@gmail.com>,
+        linux-mm@kvack.org, linux-sh@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH 0/2] Fix NUMA without SMP
+Date:   Thu, 16 Sep 2021 10:42:41 +0200
+Message-Id: <cover.1631781495.git.geert+renesas@glider.be>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1487; h=from:subject; bh=11IfLlG7/d+bq2n5fIVzsKIoKm0HuIFUadH/5zMFKqg=; b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBhQiuXiTtFN7sR9hC2A9+mw8lS+S1V4ZnUOkdg225s /FUf64SJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCYUIrlwAKCRAk1otyXVSH0IcKB/ 9fuMZQxMg6bWtUAO2pQqJ3TuHZAvt6Rsc2ZfV2RcL82q19i8UfXTbNp6KHul/89ynMxfSt7zgCubih ksMF+6Ts8W80LlsI5v0PR0x82lhaJIHE3IaHTwkZlr2chVi9ES9a1XJsdTTFgxVUV0swPT4o8rOQr5 zB/C4mvZCumEcXsJLJbcX3tdWw9aKoxh3RjtCxYipQ1LCTfIcm4DHqB2kqmHdVDvhh4Gb8jaucjU1g HTRpk1IEYOI0KJUbtxp8sqrAlGS6/vrXCo027EPJftRf8xmQPPwLGMsD3B0Ex2JV/3o0RFUfePmDn/ JpvSoUzeCpM35VvDLtt4q5r+aKNYu4
-X-Developer-Key: i=broonie@kernel.org; a=openpgp; fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-The SH machine drivers have some ASoC DAI format specifications that use
-older defines based on outdated terminology which we're trying to retire,
-update to the new bindings.
+	Hi all,
 
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- arch/sh/boards/mach-ecovec24/setup.c | 2 +-
- arch/sh/boards/mach-se/7724/setup.c  | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+SuperH is the only architecture which still supports NUMA without SMP,
+for good reasons (various memories scattered around the address space,
+each with varying latencies).  This series fixes two build errors due to
+variables and functions used by the NUMA code being provided by SMP-only
+source files or sections.
 
-diff --git a/arch/sh/boards/mach-ecovec24/setup.c b/arch/sh/boards/mach-ecovec24/setup.c
-index bab91a99124e..97c5703b1818 100644
---- a/arch/sh/boards/mach-ecovec24/setup.c
-+++ b/arch/sh/boards/mach-ecovec24/setup.c
-@@ -886,7 +886,7 @@ static struct asoc_simple_card_info fsi_da7210_info = {
- 	.card		= "FSIB-DA7210",
- 	.codec		= "da7210.0-001a",
- 	.platform	= "sh_fsi.0",
--	.daifmt		= SND_SOC_DAIFMT_I2S | SND_SOC_DAIFMT_CBM_CFM,
-+	.daifmt		= SND_SOC_DAIFMT_I2S | SND_SOC_DAIFMT_CBP_CFP,
- 	.cpu_dai = {
- 		.name	= "fsib-dai",
- 	},
-diff --git a/arch/sh/boards/mach-se/7724/setup.c b/arch/sh/boards/mach-se/7724/setup.c
-index 8d6541ba0186..d9b31d4560c0 100644
---- a/arch/sh/boards/mach-se/7724/setup.c
-+++ b/arch/sh/boards/mach-se/7724/setup.c
-@@ -305,7 +305,7 @@ static struct asoc_simple_card_info fsi_ak4642_info = {
- 	.card		= "FSIA-AK4642",
- 	.codec		= "ak4642-codec.0-0012",
- 	.platform	= "sh_fsi.0",
--	.daifmt		= SND_SOC_DAIFMT_LEFT_J | SND_SOC_DAIFMT_CBM_CFM,
-+	.daifmt		= SND_SOC_DAIFMT_LEFT_J | SND_SOC_DAIFMT_CBP_CFP,
- 	.cpu_dai = {
- 		.name	= "fsia-dai",
- 	},
+These are compile-tested only, as the remote Migo-R is MIA.
+
+Thanks for your comments!
+
+Geert Uytterhoeven (2):
+  mm: Move node_reclaim_distance to fix NUMA without SMP
+  mm: Move fold_vm_numa_events() to fix NUMA without SMP
+
+ kernel/sched/topology.c |  1 -
+ mm/page_alloc.c         |  2 ++
+ mm/vmstat.c             | 56 ++++++++++++++++++++---------------------
+ 3 files changed, 30 insertions(+), 29 deletions(-)
+
 -- 
-2.20.1
+2.25.1
 
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds
