@@ -2,48 +2,102 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 23D1540F14C
-	for <lists+linux-sh@lfdr.de>; Fri, 17 Sep 2021 06:26:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06A0D40F4B4
+	for <lists+linux-sh@lfdr.de>; Fri, 17 Sep 2021 11:24:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244629AbhIQE2L convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-sh@lfdr.de>); Fri, 17 Sep 2021 00:28:11 -0400
-Received: from gw.math.univ-paris13.fr ([194.254.165.1]:5973 "EHLO
-        obelix.math.univ-paris13.fr" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S244266AbhIQE2J (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 17 Sep 2021 00:28:09 -0400
-Received: from DESKTOP-AH5A7AN.home (unknown [45.135.187.135])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: landoulsi)
-        by obelix.math.univ-paris13.fr (Postfix) with ESMTPSA id 1B62F351E4;
-        Fri, 17 Sep 2021 02:34:12 +0200 (CEST)
-Content-Type: text/plain; charset="iso-8859-1"
+        id S245701AbhIQJZg (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 17 Sep 2021 05:25:36 -0400
+Received: from mail-ua1-f46.google.com ([209.85.222.46]:41827 "EHLO
+        mail-ua1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S245705AbhIQJWu (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 17 Sep 2021 05:22:50 -0400
+Received: by mail-ua1-f46.google.com with SMTP id f24so5688272uav.8;
+        Fri, 17 Sep 2021 02:21:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=8I/7meg9hzcw7tEZzqH2YXfTn0DbCHMjtqTubXnUYqM=;
+        b=dbhbZ3+ULfqp1/spGZK77yrmQQ+jygp00REsOYh9oi4neYqM9nvykqIFxeJoQ04+mp
+         g6r4nidWmC+hm8zPUQbD4hOT1HEXJv4zET6K7WayjjpQUO7SUhxXll9FCZzhGO9tpOwb
+         gU0N0p/HEvfkj+La1qsvdNVr8AWKTf7sOsWKMAr1JnZhYmgF9gmTiImoZAL8CPoK+RBK
+         NfGERpaN8Uh7dzvk4zW7C5yMkIG1z+Va3Q7LOXS4wWwK6KeLnx4av8gZS+iNtSosAiHU
+         2CriEHjBdbSJEFdx90Y9ehnuxvMMOL6nYkjnB3Jdf8aitQEgWQxtJ3X2YqJrCsYpaRxT
+         a/6w==
+X-Gm-Message-State: AOAM531FJERQQ+EyppXfuTFbrzVL0k0cKemm7zBKywJBy6RIu7cK+/NS
+        FxSGxDN3TVJcJjSHvKHqTeWC5TZ2McQy11d1KDs=
+X-Google-Smtp-Source: ABdhPJwDxvombQXM8qDAYdgzwqm9pCHR3qlDCJ/FLgNppzCu2UdGidrdzoe/gRoxmK+GNur1xSzAvGWKBs1rxvDGBGw=
+X-Received: by 2002:ab0:6dc7:: with SMTP id r7mr3590208uaf.14.1631870481125;
+ Fri, 17 Sep 2021 02:21:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Re: Partnerskab
-To:     Recipients <assistant.sec@math.univ-paris13.fr>
-From:   "Dave Ramsden" <assistant.sec@math.univ-paris13.fr>
-Date:   Fri, 17 Sep 2021 01:34:08 +0100
-Reply-To: davdr1964@aol.com
-Message-Id: <20210917003412.1B62F351E4@obelix.math.univ-paris13.fr>
-X-LAGA-MailScanner-Information: Please contact the ISP for more information
-X-LAGA-MailScanner-ID: 1B62F351E4.A3663
-X-LAGA-MailScanner: Found to be clean
-X-LAGA-MailScanner-From: assistant.sec@math.univ-paris13.fr
-X-Spam-Status: No
+References: <2c2eef3c9a2f57e5609100a4864715ccf253d30f.1631713483.git.geert+renesas@glider.be>
+ <1acace03-4273-a5ad-50b4-5ab8e3baa551@landley.net>
+In-Reply-To: <1acace03-4273-a5ad-50b4-5ab8e3baa551@landley.net>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Fri, 17 Sep 2021 11:21:09 +0200
+Message-ID: <CAMuHMdUYUbjPSitt3wTi-YY5CEKwDJNJKPp9Pbfewm7B0CXP2A@mail.gmail.com>
+Subject: Re: [PATCH] sh: pgtable-3level: Fix cast to pointer from integer of
+ different size
+To:     Rob Landley <rob@landley.net>
+Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jacopo Mondi <jacopo+renesas@jmondi.org>,
+        Daniel Palmer <daniel@0x0f.com>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        Linux MM <linux-mm@kvack.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-16. september 2021.
- 
-Er du åben for en forretningsouverture, der er et betydeligt beløb værd? Efter modtagelse af din bekræftelse til denne mail, vil jeg afsløre detaljer om min hensigt i min næste side mail.
- 
-Angiv din interesse for engelsk, hvis det er muligt, for bedre kommunikation.
- 
-Venlig hilsen,
-Dave Ramsden
-E-mail: davdr1964@aol.com
-__________________________
-Sekretær: Rose Anderson
+Hi Rob,
+
+On Fri, Sep 17, 2021 at 3:12 AM Rob Landley <rob@landley.net> wrote:
+> On 9/15/21 8:50 AM, Geert Uytterhoeven wrote:
+> >     arch/sh/include/asm/pgtable-3level.h:37:9: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
+> ...
+> > The truncation to "unsigned long" has been there since forever, so
+> > probably it still works fine ;-)
+>
+> 1) Linux is LP64 so sizeof(long) and sizeof(pointer) always match, so it's not
+> truncating.
+>
+> 2) The sh5 only ever shipped evaluation units, it never had a production run,
+> and we haven't implemented j64 yet, so all superh targets are currently 32 bit.
+> (I.E. it's complaining about _expanding_ the pointer, which shouldn't be a
+> problem as long as endianness is respected.)
+
+The build error is for 32-bit.
+If CONFIG_X2TLB=y, pgd_t.pgd is "unsigned long long", i.e. 64-bit, so
+casting it to a pointer needs an intermediate cast to "unsigned long".
+See arch/sh/include/asm/page.h:
+
+#ifdef CONFIG_X2TLB
+typedef struct { unsigned long pte_low, pte_high; } pte_t;
+typedef struct { unsigned long long pgprot; } pgprot_t;
+typedef struct { unsigned long long pgd; } pgd_t;
+#define pte_val(x) \
+        ((x).pte_low | ((unsigned long long)(x).pte_high << 32))
+#define __pte(x) \
+        ({ pte_t __pte = {(x), ((unsigned long long)(x)) >> 32}; __pte; })
+#else
+typedef struct { unsigned long pte_low; } pte_t;
+typedef struct { unsigned long pgprot; } pgprot_t;
+typedef struct { unsigned long pgd; } pgd_t;
+#define pte_val(x)      ((x).pte_low)
+#define __pte(x)        ((pte_t) { (x) } )
+#endif
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
