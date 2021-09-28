@@ -2,90 +2,85 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B12B041A6C6
-	for <lists+linux-sh@lfdr.de>; Tue, 28 Sep 2021 06:47:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37BBC41A6EA
+	for <lists+linux-sh@lfdr.de>; Tue, 28 Sep 2021 07:09:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229754AbhI1EtX (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 28 Sep 2021 00:49:23 -0400
-Received: from szxga02-in.huawei.com ([45.249.212.188]:13348 "EHLO
-        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229611AbhI1EtX (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 28 Sep 2021 00:49:23 -0400
-Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.53])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4HJRhT2YxJz8yww;
-        Tue, 28 Sep 2021 12:43:05 +0800 (CST)
-Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
- dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.8; Tue, 28 Sep 2021 12:47:40 +0800
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2308.8; Tue, 28 Sep 2021 12:47:40 +0800
-Message-ID: <f68bf3ba-987d-fd82-adce-8ed1681cecd1@huawei.com>
-Date:   Tue, 28 Sep 2021 12:47:39 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.1.1
-Subject: Re: [PATCH 2/3] csky: Use SPARSE_IRQ
-Content-Language: en-US
-To:     Guo Ren <guoren@kernel.org>
-CC:     Thomas Gleixner <tglx@linutronix.de>,
+        id S234067AbhI1FLa (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 28 Sep 2021 01:11:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34296 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229493AbhI1FLa (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 28 Sep 2021 01:11:30 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B3DEC061575;
+        Mon, 27 Sep 2021 22:09:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=oOd9LxoociUm+XQt9zv+ciORRiD3WJaBIAs9vhJ/RBU=; b=QEti/cNOWw+cTSUuHKYv5niedv
+        OTE+5bQlj2w39HoDBdfnfzLOSKu3EaUm7Uqwg6U53WWuCvTB+l9Wr1XV7dfgAJfLqlK9hDJl9wW1q
+        kEV2OpRJabiiPgPlsptDYH2oN85MbCfbHnm56jZD4kw0ZoGv+k6luGN2seSqXnQnsexa9JiHqlO44
+        qqz4L4UZUi/24mUjAqJfskHIrxCGp46f2SpYytuhL0YpYSSJpkk3zq0cwCMlT1RCWMI7Db9NtC8p6
+        PqkdY0xfj1B0qU8f2iFHlK14HB7hq0PHB7GrLJPeLXI8/2Qliro4TT6O06ecWmzeIpgz4uGrR6ni3
+        38wNVRIQ==;
+Received: from hch by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1mV5MJ-00AVbC-Nz; Tue, 28 Sep 2021 05:09:00 +0000
+Date:   Tue, 28 Sep 2021 06:08:51 +0100
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        "maintainer:BROADCOM BCM281XX/BCM11XXX/BCM216XX ARM ARCHITE..." 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, <linux-sh@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        <linux-csky@vger.kernel.org>
-References: <20210927081402.191717-1-wangkefeng.wang@huawei.com>
- <20210927081402.191717-3-wangkefeng.wang@huawei.com>
- <CAJF2gTT1oM6L+R4c6bKKJV5xnHre+P4+779vH5h7xG9Hf-ZKCQ@mail.gmail.com>
-From:   Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <CAJF2gTT1oM6L+R4c6bKKJV5xnHre+P4+779vH5h7xG9Hf-ZKCQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: dggeme706-chm.china.huawei.com (10.1.199.102) To
- dggpemm500001.china.huawei.com (7.185.36.107)
-X-CFilter-Loop: Reflected
+        Rich Felker <dalias@libc.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Mike Rapoport <rppt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Andrey Konovalov <andreyknvl@gmail.com>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Valentin Schneider <valentin.schneider@arm.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
+        "open list:SUPERH" <linux-sh@vger.kernel.org>,
+        "open list:BROADCOM BMIPS MIPS ARCHITECTURE" 
+        <linux-mips@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE" 
+        <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v2 01/12] arch: Export cpu_logical_map to modules
+Message-ID: <YVKjYxf5bzJzWJDb@infradead.org>
+References: <20210928022715.369160-1-f.fainelli@gmail.com>
+ <20210928022715.369160-2-f.fainelli@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210928022715.369160-2-f.fainelli@gmail.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
+On Mon, Sep 27, 2021 at 07:27:04PM -0700, Florian Fainelli wrote:
+> In order to allow drivers/irqchip/irq-bcm7038-l1.c to be built as a
+> module and usable in GKI, export cpu_logical_map or __cpu_logical_map
+> towards the modules. This follows what MIPS has been doing since
+> 2dc2ae344e0e ("MIPS: Export __cpu_number_map and __cpu_logical_map.")
 
-On 2021/9/28 11:39, Guo Ren wrote:
-> On Mon, Sep 27, 2021 at 4:11 PM Kefeng Wang <wangkefeng.wang@huawei.com> wrote:
->> The sparse IRQ framework is preferred, switch over to it,
->> and Kill MAY_HAVE_SPARSE_IRQ.
->>
->> Cc: Guo Ren <guoren@kernel.org>
->> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
->> ---
->>   arch/csky/Kconfig | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/arch/csky/Kconfig b/arch/csky/Kconfig
->> index 9d4d898df76b..3d720a577be7 100644
->> --- a/arch/csky/Kconfig
->> +++ b/arch/csky/Kconfig
->> @@ -69,7 +69,6 @@ config CSKY
->>          select HAVE_RSEQ
->>          select HAVE_STACKPROTECTOR
->>          select HAVE_SYSCALL_TRACEPOINTS
->> -       select MAY_HAVE_SPARSE_IRQ
->>          select MODULES_USE_ELF_RELA if MODULES
->>          select OF
->>          select OF_EARLY_FLATTREE
->> @@ -82,6 +81,7 @@ config CSKY
->>          select PCI_SYSCALL if PCI
->>          select PCI_MSI if PCI
->>          select SET_FS
->> +       select SPARSE_IRQ
-> Most csky platforms use !SPARSE_IRQ, so please remove the above line.
-Ok, will drop this.
->
->>          select TRACE_IRQFLAGS_SUPPORT
->>
->>   config LOCKDEP_SUPPORT
->> --
->> 2.26.2
->>
->
+This seems like a pretty bad idea.  For one you should export an
+accessor instead of the data structure.  And this probably should be an
+EXPORT_SYMBOL_GPL.
