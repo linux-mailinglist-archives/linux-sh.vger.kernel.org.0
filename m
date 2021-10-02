@@ -2,83 +2,90 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B360241FB62
-	for <lists+linux-sh@lfdr.de>; Sat,  2 Oct 2021 14:02:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D127E41FDDB
+	for <lists+linux-sh@lfdr.de>; Sat,  2 Oct 2021 21:12:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232952AbhJBMEG (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sat, 2 Oct 2021 08:04:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60572 "EHLO
+        id S233880AbhJBTOO (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sat, 2 Oct 2021 15:14:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232801AbhJBMEG (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sat, 2 Oct 2021 08:04:06 -0400
-Received: from mail-io1-xd31.google.com (mail-io1-xd31.google.com [IPv6:2607:f8b0:4864:20::d31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A145BC061570
-        for <linux-sh@vger.kernel.org>; Sat,  2 Oct 2021 05:02:20 -0700 (PDT)
-Received: by mail-io1-xd31.google.com with SMTP id 134so14672270iou.12
-        for <linux-sh@vger.kernel.org>; Sat, 02 Oct 2021 05:02:20 -0700 (PDT)
+        with ESMTP id S230319AbhJBTON (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sat, 2 Oct 2021 15:14:13 -0400
+Received: from mail-io1-xd2e.google.com (mail-io1-xd2e.google.com [IPv6:2607:f8b0:4864:20::d2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74B78C0613EC
+        for <linux-sh@vger.kernel.org>; Sat,  2 Oct 2021 12:12:27 -0700 (PDT)
+Received: by mail-io1-xd2e.google.com with SMTP id e144so15568478iof.3
+        for <linux-sh@vger.kernel.org>; Sat, 02 Oct 2021 12:12:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=nsZbpm1YBoHMpWTnzHLuE/zYZ0yg4jBiKD5Q7oCTPBE=;
-        b=iyEBzcDh9nP1PeLfcLE3pZKPEbSZYlNJtG653y4A86xr3J1faktwZUDFMjqeFWC4C3
-         pF3DV4+WL5MsKoy2amNMy+K7hDBtQvfj1qv/5Vza7exMgEb2nSnZspfYYcaKQwauvIfR
-         eaDtNiNgszpeb9Scnrd/vQBPlttKLeWDRGTlI5+aZdzLdO1cqyEKk75QVrkmtR8QWe1/
-         3RLpjHt6B0vXzlo7fVwZ8drnq7AmrqY7JNdV+87jeT56inImTbQDyh3GgJPbNvZ3t8aE
-         dRoxyA7ZuZnwr1vP4QKaq11tUGQgjFG78UGyuxOrlrUwN0mpFkKvX3YcdEez5H49cH5q
-         DG6Q==
+        d=landley-net.20210112.gappssmtp.com; s=20210112;
+        h=from:subject:to:message-id:date:user-agent:mime-version
+         :content-language:content-transfer-encoding;
+        bh=ZOaBNnj00pLFecEyXMl/Bc8m8pDlS6WA4HjIdytrTag=;
+        b=zhN0XDnNCJBpY1D3hPToCfjH2bhPplASw0R4KJMNzbUokyknPi0c94QDBpYyAjr26e
+         JhrWvaC8zKC+1rBy0GUamNWZf4X/erCyjWrSmpLTUZ/z8pv7dt+GolUHzqwVZrgyNio7
+         Yeerl0Y3kmNkQ9T5o/jEaW19xCQqpUK9dG6ThBCeTXBNF3qtOL5BBx3IDVgRKCq7Dknq
+         +jVZabbTcvYihOxIp3YTINs8J6gETSUBEZAMIs+IrE8LBjIIAdbILRYPJAEHlbHaMDCH
+         DGCUYjERsWoGAcZK7UFDveHkoy7ND6h3dicsBLMnXAIQQmB7uP53Fi6/j11HBfrS6aJc
+         VMHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=nsZbpm1YBoHMpWTnzHLuE/zYZ0yg4jBiKD5Q7oCTPBE=;
-        b=NCX+f86B6H4QVPorY1AaQ728Ss08RF1VtVCXD7ks0puXP3a32Ls16uLWOHP5LB95Iu
-         oHgxMW+QXNz9dG6hcdARtsIHyIfxBXePpc8I1HQii1E2f8+n769bacUw+F8Rjwmzw30x
-         794BSfwfJ3bmYhpDT9TZ1LmIBf0r37g3RxPxH+/UwjAQVeIhgsKWY4+5sf5qJ15qpos/
-         x440Jew8yXTejQlZ+J36WxZc960CylmGe36RCDrZ0aQsvleFi3sZcO8JFU383hvbj5Ar
-         ufeb52KmJDotjSsc5suoXrUgKx9T1IPacImk/NCURDL/+0NXwyaVy4NE0MJx0Gxm7lyM
-         GK5w==
-X-Gm-Message-State: AOAM532hJdMk7Zacnia7YN73s8ix9RidYKUTQrLZ/+3QFfOC+ucNfHiT
-        B7wSWFMM195hPD+XACWgrECZzOE79YBDPZk/8yg=
-X-Google-Smtp-Source: ABdhPJyC9vEfIVIZ0piprG1qmWZzMdIHfp+9a9LJrm7oG79+zeu4afF3nEZRNwO4iftaiuEc0899zzSIm+Z44BWVOkI=
-X-Received: by 2002:a5d:9613:: with SMTP id w19mr2276285iol.144.1633176140158;
- Sat, 02 Oct 2021 05:02:20 -0700 (PDT)
+        h=x-gm-message-state:from:subject:to:message-id:date:user-agent
+         :mime-version:content-language:content-transfer-encoding;
+        bh=ZOaBNnj00pLFecEyXMl/Bc8m8pDlS6WA4HjIdytrTag=;
+        b=FsIvolGNZ7QwcSEm+jJoOjdPbn1eEITu4ajbTGDVamfV7NwDRVvreif3nQzxyaTEPH
+         /vBsWRNA4seudIoM5kaXFMBrJdN1YkI0aa9lmLKevI9On2iUV81afIX9xO0tkc1nK1Ii
+         ItuidsSnQirIGp5iFPbnKqqXdTeivLvxdxzPPP/XC+xdgyix6JsgyOnbVfLV8pMudjBO
+         8Dz3fdYLcdRVd4r3U3/FHbTKQ4Z3gy6+FA13tF7PvundqT5kY8cE/BsLlzM/izpIMCbk
+         GrODJw6AuWFhdS2PcNg5TicEUL9iHOJOdbCGl51Q29wJQV9p2skIlflVyUobmv6CWWq9
+         i2mQ==
+X-Gm-Message-State: AOAM531x+sBahIvhg+MlL7//Mz/HOGpJ/D70eZqWC2OWLv4Iydm2B3FS
+        trKtWpxIXK8vwORP8FgIAx9fV3cwlWRZw2xc
+X-Google-Smtp-Source: ABdhPJyM1v3PS/zsTR9IJTj4KikH4MpwADZsZlJA02xmXh15intnIkT5F7IQgyCEdMzUJyXEzZKJcw==
+X-Received: by 2002:a6b:b714:: with SMTP id h20mr3455675iof.9.1633201946795;
+        Sat, 02 Oct 2021 12:12:26 -0700 (PDT)
+Received: from [192.168.221.11] ([172.58.143.248])
+        by smtp.gmail.com with ESMTPSA id v63sm5809888ioe.17.2021.10.02.12.12.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 02 Oct 2021 12:12:26 -0700 (PDT)
+From:   Rob Landley <rob@landley.net>
+Subject: [PATCH] Fix the j-core SOC build.
+To:     Linux-sh list <linux-sh@vger.kernel.org>,
+        Rich Felker <dalias@libc.org>
+Message-ID: <7d559bd1-1f9c-124f-ad4d-c805c049971a@landley.net>
+Date:   Sat, 2 Oct 2021 14:32:15 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 MIME-Version: 1.0
-Received: by 2002:a4f:f90d:0:0:0:0:0 with HTTP; Sat, 2 Oct 2021 05:02:19 -0700 (PDT)
-Reply-To: unitednnation0@gmail.com
-From:   "U.n" <wadebaye33@gmail.com>
-Date:   Sat, 2 Oct 2021 00:02:19 -1200
-Message-ID: <CACE0T5XMqZGDn0LuVHJd2BMTQMXPyHA=xtbBVkc63R=7gJr72g@mail.gmail.com>
-Subject: Attention
-To:     unitednnation0@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
---=20
+From: Rob Landley <rob@landley.net>
 
+Commit b67177ecd956 broke the j-core SOC build with a link failure, because
+mm/percpu.c function pcpu_post_unmap_tlb_flush() calls flush_tlb_kernel_range()
+which is defined under #ifdef CONFIG_MMU.
 
-Attention Sir/Madam
-This is the United Nation (UN). We the United Nations (UN) Globally
-has approved (US$2.500,000)( two Million Five hundred thousand
-dollars) compensation as part of our responsibilities for humanitarian
-Aid for fighting against CoronaVirus and you are among the lucky ones.
+Signed-off-by: Rob Landley <rob@landley.net>
+---
 
+ arch/sh/kernel/smp.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-This compensation is for the most affected countries, communities and
-families across the global. Your funds were deposited with Bank in USA
-to transfer your funds to you via Internet Banking. You have to send
-your full details as state below:with this email Address
-  ( unitednnation0@gmail.com )
-Your full names:
-Address:
-Telephone:
-Occupation:
+diff --git a/arch/sh/kernel/smp.c b/arch/sh/kernel/smp.c
+index 65924d9ec245..3ec8f32aad85 100644
+--- a/arch/sh/kernel/smp.c
++++ b/arch/sh/kernel/smp.c
+@@ -468,4 +468,9 @@ void flush_tlb_one(unsigned long asid, unsigned long vaddr)
+ 	local_flush_tlb_one(asid, vaddr);
+ }
 
-
-
-Yours Sincerely
-Mr. Ant=C3=B3nio Guterres
-United Nations (UN).
++#else
++void flush_tlb_kernel_range(unsigned long start, unsigned long end)
++{
++	local_flush_tlb_all();
++}
+ #endif
