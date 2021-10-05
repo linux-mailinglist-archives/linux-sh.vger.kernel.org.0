@@ -2,200 +2,66 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D9441421B0A
-	for <lists+linux-sh@lfdr.de>; Tue,  5 Oct 2021 02:19:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9D0E421F5E
+	for <lists+linux-sh@lfdr.de>; Tue,  5 Oct 2021 09:22:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230254AbhJEAVJ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 4 Oct 2021 20:21:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46248 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230189AbhJEAVH (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 4 Oct 2021 20:21:07 -0400
-Received: from bombadil.infradead.org (unknown [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF05CC061749;
-        Mon,  4 Oct 2021 17:19:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
-        :Reply-To:Content-Type:Content-ID:Content-Description;
-        bh=M0GxxOUNM2NCgc5+UlE92aSv5qcyndOY+ydhMBjsJuA=; b=M+samDPbBs8WEBQlqyC8UWsnso
-        INCEEuWpzxdztDVkEkDFALllDIhLEKOPKjtTuukoxlVvHLGoFybt7rNachompFDKZml05SSXoak5r
-        FbhV85DZu4RtQOBuBPEYun553dRabsESNB/rmeKuay40gpvCclDfl6wsii8lIRNDgm6S+kukWAXl6
-        yAXqLn//QbBzuuXYSdO98dEhs8MCFMojhIoKi4iSV3YyeIw0vt5upSiu7dajuyC6S5WZiWB+tmwb9
-        wUlrNSJfDYQrZoklRhhcAEEbiiQBgyWUcopSsUVMAE36hB4/42HeLtF3tigAD9LCZdI6EfJG3E78E
-        tI3oyb/A==;
-Received: from [2601:1c0:6280:3f0::aa0b] (helo=bombadil.infradead.org)
-        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1mXYAv-008SGi-GY; Tue, 05 Oct 2021 00:19:17 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Takashi YOSHII <takasi-y@ops.dti.ne.jp>
-Subject: [PATCH 5/5 v3] sh: fix READ/WRITE redefinition warnings
-Date:   Mon,  4 Oct 2021 17:19:14 -0700
-Message-Id: <20211005001914.28574-6-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20211005001914.28574-1-rdunlap@infradead.org>
-References: <20211005001914.28574-1-rdunlap@infradead.org>
+        id S232251AbhJEHXw (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 5 Oct 2021 03:23:52 -0400
+Received: from mail-vs1-f47.google.com ([209.85.217.47]:47029 "EHLO
+        mail-vs1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232108AbhJEHXw (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 5 Oct 2021 03:23:52 -0400
+Received: by mail-vs1-f47.google.com with SMTP id i30so1871564vsj.13;
+        Tue, 05 Oct 2021 00:22:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=4O4XIro868olf1wuylF9SCQXMXnh8ese50mqT6xsuuM=;
+        b=7zdg6NHSO4bnlyBiuc/adFSZKXQn4L3LWssjs39cTje67fE8nxqHccr6DH1HPWLZcJ
+         mx7EnXpoqb31yU8AAFcpPqWr3/Dsq391shRzbCu/KVDcyImKTfXE3Jeio/KiMPxgcqC0
+         B+alUnVgcpX+YQhnAdrd82e9fwkA+NrNL2m1OJA38fsA09wLMsqyf+Pnaj5XnXLk/JJN
+         wGfaGBpPHMNidyjW0h+Ov+rdpGH4T6sHDFpgkRArjVMJCBYRcpFvAUDue0NKaq+SZn+t
+         0t4wOl8AIizUmVVNckHhXBvYHPR39AygkWqfEhqaZY4a9JOGc3V0Hz59D+vu7fGs398+
+         /JNA==
+X-Gm-Message-State: AOAM530TFNNsQvXB0Yq675GCQAcjGktLTgOkmu3xFqwVmgma6//jcqjy
+        4M+zfFZt1mfsgmjcxq1+odE/2aK3DI1bt2JxoWDeABdD
+X-Google-Smtp-Source: ABdhPJyqQC3Sn92Li8BRseG8K2kSDaj8wDlFVxxnje2BdMpIk7SgXWBAYO28JeecSeH/zE8VP00QTVA1KrTJ0pyUaz8=
+X-Received: by 2002:a67:2c58:: with SMTP id s85mr16913385vss.35.1633418521843;
+ Tue, 05 Oct 2021 00:22:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20211005001914.28574-1-rdunlap@infradead.org> <20211005001914.28574-3-rdunlap@infradead.org>
+In-Reply-To: <20211005001914.28574-3-rdunlap@infradead.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 5 Oct 2021 09:21:50 +0200
+Message-ID: <CAMuHMdUPDgZ3nVsMx4y2uqC6vLzOUYSeCucMO0_rRv73BSLnWA@mail.gmail.com>
+Subject: Re: [PATCH 2/5 v3] sh: add git tree to MAINTAINERS
+To:     Randy Dunlap <rdunlap@infradead.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-kernel.h defines READ and WRITE, so rename the SH math-emu macros
-to MREAD and MWRITE.
+On Tue, Oct 5, 2021 at 2:19 AM Randy Dunlap <rdunlap@infradead.org> wrote:
+> Add the git tree location for linux-sh.
+>
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 
-Fixes these warnings:
-
-../arch/sh/math-emu/math.c:54: warning: "WRITE" redefined
-   54 | #define WRITE(d,a) ({if(put_user(d, (typeof (d) __user *)a)) return -EFAULT;})
-In file included from ../arch/sh/math-emu/math.c:10:
-../include/linux/kernel.h:37: note: this is the location of the previous definition
-   37 | #define WRITE   1
-../arch/sh/math-emu/math.c:55: warning: "READ" redefined
-   55 | #define READ(d,a) ({if(get_user(d, (typeof (d) __user *)a)) return -EFAULT;})
-In file included from ../arch/sh/math-emu/math.c:10:
-../include/linux/kernel.h:36: note: this is the location of the previous definition
-   36 | #define READ   0
-
-Fixes: 4b565680d163 ("sh: math-emu support")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: linux-sh@vger.kernel.org
-Cc: Takashi YOSHII <takasi-y@ops.dti.ne.jp>
-Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>
 Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
-v2: renumber patches, otherwise no change;
-v3: renumber, rebase, & resend;
-    add Rev-by: Geert;
 
- arch/sh/math-emu/math.c |   44 +++++++++++++++++++-------------------
- 1 file changed, 22 insertions(+), 22 deletions(-)
+Gr{oetje,eeting}s,
 
---- linux-next-20211001.orig/arch/sh/math-emu/math.c
-+++ linux-next-20211001/arch/sh/math-emu/math.c
-@@ -51,8 +51,8 @@
- #define Rn	(regs->regs[n])
- #define Rm	(regs->regs[m])
- 
--#define WRITE(d,a)	({if(put_user(d, (typeof (d) __user *)a)) return -EFAULT;})
--#define READ(d,a)	({if(get_user(d, (typeof (d) __user *)a)) return -EFAULT;})
-+#define MWRITE(d,a)	({if(put_user(d, (typeof (d) __user *)a)) return -EFAULT;})
-+#define MREAD(d,a)	({if(get_user(d, (typeof (d) __user *)a)) return -EFAULT;})
- 
- #define PACK_S(r,f)	FP_PACK_SP(&r,f)
- #define UNPACK_S(f,r)	FP_UNPACK_SP(f,&r)
-@@ -157,11 +157,11 @@ fmov_idx_reg(struct sh_fpu_soft_struct *
- {
- 	if (FPSCR_SZ) {
- 		FMOV_EXT(n);
--		READ(FRn, Rm + R0 + 4);
-+		MREAD(FRn, Rm + R0 + 4);
- 		n++;
--		READ(FRn, Rm + R0);
-+		MREAD(FRn, Rm + R0);
- 	} else {
--		READ(FRn, Rm + R0);
-+		MREAD(FRn, Rm + R0);
- 	}
- 
- 	return 0;
-@@ -173,11 +173,11 @@ fmov_mem_reg(struct sh_fpu_soft_struct *
- {
- 	if (FPSCR_SZ) {
- 		FMOV_EXT(n);
--		READ(FRn, Rm + 4);
-+		MREAD(FRn, Rm + 4);
- 		n++;
--		READ(FRn, Rm);
-+		MREAD(FRn, Rm);
- 	} else {
--		READ(FRn, Rm);
-+		MREAD(FRn, Rm);
- 	}
- 
- 	return 0;
-@@ -189,12 +189,12 @@ fmov_inc_reg(struct sh_fpu_soft_struct *
- {
- 	if (FPSCR_SZ) {
- 		FMOV_EXT(n);
--		READ(FRn, Rm + 4);
-+		MREAD(FRn, Rm + 4);
- 		n++;
--		READ(FRn, Rm);
-+		MREAD(FRn, Rm);
- 		Rm += 8;
- 	} else {
--		READ(FRn, Rm);
-+		MREAD(FRn, Rm);
- 		Rm += 4;
- 	}
- 
-@@ -207,11 +207,11 @@ fmov_reg_idx(struct sh_fpu_soft_struct *
- {
- 	if (FPSCR_SZ) {
- 		FMOV_EXT(m);
--		WRITE(FRm, Rn + R0 + 4);
-+		MWRITE(FRm, Rn + R0 + 4);
- 		m++;
--		WRITE(FRm, Rn + R0);
-+		MWRITE(FRm, Rn + R0);
- 	} else {
--		WRITE(FRm, Rn + R0);
-+		MWRITE(FRm, Rn + R0);
- 	}
- 
- 	return 0;
-@@ -223,11 +223,11 @@ fmov_reg_mem(struct sh_fpu_soft_struct *
- {
- 	if (FPSCR_SZ) {
- 		FMOV_EXT(m);
--		WRITE(FRm, Rn + 4);
-+		MWRITE(FRm, Rn + 4);
- 		m++;
--		WRITE(FRm, Rn);
-+		MWRITE(FRm, Rn);
- 	} else {
--		WRITE(FRm, Rn);
-+		MWRITE(FRm, Rn);
- 	}
- 
- 	return 0;
-@@ -240,12 +240,12 @@ fmov_reg_dec(struct sh_fpu_soft_struct *
- 	if (FPSCR_SZ) {
- 		FMOV_EXT(m);
- 		Rn -= 8;
--		WRITE(FRm, Rn + 4);
-+		MWRITE(FRm, Rn + 4);
- 		m++;
--		WRITE(FRm, Rn);
-+		MWRITE(FRm, Rn);
- 	} else {
- 		Rn -= 4;
--		WRITE(FRm, Rn);
-+		MWRITE(FRm, Rn);
- 	}
- 
- 	return 0;
-@@ -445,11 +445,11 @@ id_sys(struct sh_fpu_soft_struct *fregs,
- 	case 0x4052:
- 	case 0x4062:
- 		Rn -= 4;
--		WRITE(*reg, Rn);
-+		MWRITE(*reg, Rn);
- 		break;
- 	case 0x4056:
- 	case 0x4066:
--		READ(*reg, Rn);
-+		MREAD(*reg, Rn);
- 		Rn += 4;
- 		break;
- 	default:
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
