@@ -2,54 +2,33 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E03C44270A2
-	for <lists+linux-sh@lfdr.de>; Fri,  8 Oct 2021 20:19:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E7A7427182
+	for <lists+linux-sh@lfdr.de>; Fri,  8 Oct 2021 21:47:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231308AbhJHSU7 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 8 Oct 2021 14:20:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43500 "EHLO
+        id S231433AbhJHTs4 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 8 Oct 2021 15:48:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238481AbhJHSU5 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 8 Oct 2021 14:20:57 -0400
-Received: from mail-ot1-x333.google.com (mail-ot1-x333.google.com [IPv6:2607:f8b0:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E5AFC061764
-        for <linux-sh@vger.kernel.org>; Fri,  8 Oct 2021 11:19:01 -0700 (PDT)
-Received: by mail-ot1-x333.google.com with SMTP id 5-20020a9d0685000000b0054706d7b8e5so12726871otx.3
-        for <linux-sh@vger.kernel.org>; Fri, 08 Oct 2021 11:19:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=landley-net.20210112.gappssmtp.com; s=20210112;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=Wvco89YLBu0DEdVBRR/EZqf56tHvQxnFA9DIAVgf/4Q=;
-        b=CCbppUTIUQvTjkPUaUNiIHgqJbgfmRNPXmRT0POd8fNlqCBD/ASCphs6/oyKfJ3/L/
-         +3wrqJqEKdzzsG+oz2MqRyT2Bq2Tk7YsMgbAGe26W0XPv1PV3WI+65G/rIhv3eZG7p5s
-         R69vHTlKA/zlGfIKR9E7JHwqWRMJNPTgPC6ssQ0JzuqMCMPYPH/BReAN8eSCIBnl8QwZ
-         KoL6rBwxW3SNsQRVbaqjqr1RlLUuozfgwyXifXrnr283vkw61czYE3gCi8MGKRKuSYXK
-         aa6kcjdCnWHA5Bwj3jHBcFlaUowp+vnjYlibtNIaf70uh0MUZeVxaMBwlKd+iLf9p93O
-         kJ4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=Wvco89YLBu0DEdVBRR/EZqf56tHvQxnFA9DIAVgf/4Q=;
-        b=SFp0aUbWiP2Dr0qUXIXb03seTClzS2lTkBUYVJ6W95zU1L8DhJLFLHIiggBT87TdPu
-         8NK3zmBGrqy8cjuXR75t4AKVK653vXo0rrvOmSU5/Nev63jkzkfrQTT+Qa3hGNygfLDs
-         el9DzzLRHKvdc7pVDaEuhYNLxJmln314K4ZXtBOJekXL5mSONVlXYtXa/jfFgAlDMtBf
-         xJ7uD6LC+EwHvDAknelGJ/t0e+3QoIAvVrofpvICtBbUCQDJ5GZmASDPIg6n6legBoUL
-         Ue1Oi8lFJhMQrDumY4jtGU/Q5YnG+vD0DcwRJON0nFhc9Mirk6g2V2iwD00PF2e5Q8AU
-         TUBg==
-X-Gm-Message-State: AOAM532ZdQqvbWs8hJXNoMVHeSn9Spy+eFBgygrWNIjDyy498JZPa7Tw
-        Mf/iXAkOgxoEufgGqWKhhngSbg==
-X-Google-Smtp-Source: ABdhPJyUheagIg/hKhzvfZcpPOdSHlnIcX7BlEOe1hmwytswtWoq7wiueZrmeNbi1o5kX5XDLaGFNQ==
-X-Received: by 2002:a05:6830:95:: with SMTP id a21mr10280463oto.43.1633717141031;
-        Fri, 08 Oct 2021 11:19:01 -0700 (PDT)
-Received: from [192.168.248.11] ([172.58.83.190])
-        by smtp.gmail.com with ESMTPSA id bj33sm33556oib.31.2021.10.08.11.18.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 08 Oct 2021 11:19:00 -0700 (PDT)
+        with ESMTP id S231296AbhJHTs4 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 8 Oct 2021 15:48:56 -0400
+Received: from bombadil.infradead.org (unknown [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8217C061570;
+        Fri,  8 Oct 2021 12:47:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
+        Subject:Sender:Reply-To:Content-ID:Content-Description;
+        bh=IRGD4RfBn7KLUyaNIF8H0Vn2lDfysR2nr3bQYIRmdjo=; b=1e0XizjF86RqMSFmwaq5bfgKr9
+        +9OdCsQVlszLbhF52EQgo3ZV8NGK3yPCkk9F6qM0yvtSeUmlOCvqdZLON0zWpoSO7T8z3un1B8CW5
+        sgV5rGRB8lIRkQ504nD41TUCIRbz41IRkSlNPNiKmm1Ieqy4qZMuuG/rmQKvdZ/qvB7zuzZTNi0rt
+        mJfxRenm2/dtfwst2yvHT8+bdhMjwQoWGzleP35PkILcKAjTaCFKdL6NvYAmImTEXn5Gy7AX9EiQP
+        BIQXyKZkYeri8XCGMTl/GOlh+vhVLVXA1N77XbA8lNuGPhCXltYwB9k6Gl+ZwJcmP/W1+oY55QTRG
+        ZqECr1QQ==;
+Received: from [2601:1c0:6280:3f0::aa0b]
+        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1mYvpV-0040Q3-Ml; Fri, 08 Oct 2021 19:46:53 +0000
 Subject: Re: [PATCH 5/5 v3] sh: fix READ/WRITE redefinition warnings
-To:     Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
+To:     Rob Landley <rob@landley.net>, linux-kernel@vger.kernel.org
 Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
         John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
@@ -57,39 +36,55 @@ Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
         Takashi YOSHII <takasi-y@ops.dti.ne.jp>
 References: <20211005001914.28574-1-rdunlap@infradead.org>
  <20211005001914.28574-6-rdunlap@infradead.org>
-From:   Rob Landley <rob@landley.net>
-Message-ID: <1191978c-be37-87b1-bbc9-f0aa128d0961@landley.net>
-Date:   Fri, 8 Oct 2021 13:39:00 -0500
+ <1191978c-be37-87b1-bbc9-f0aa128d0961@landley.net>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <754abc70-d539-296a-8993-3a66656e44b1@infradead.org>
+Date:   Fri, 8 Oct 2021 12:46:53 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.12.0
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-In-Reply-To: <20211005001914.28574-6-rdunlap@infradead.org>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <1191978c-be37-87b1-bbc9-f0aa128d0961@landley.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 10/4/21 7:19 PM, Randy Dunlap wrote:
-> kernel.h defines READ and WRITE, so rename the SH math-emu macros
-> to MREAD and MWRITE.
+On 10/8/21 11:39 AM, Rob Landley wrote:
+> On 10/4/21 7:19 PM, Randy Dunlap wrote:
+>> kernel.h defines READ and WRITE, so rename the SH math-emu macros
+>> to MREAD and MWRITE.
+> 
+> This one doesn't apply for me. My file has:
+> 
+> #define WRITE(d,a)      ({if(put_user(d, (typeof (d)*)a)) return -EFAULT;})
+> 
+> But your patch tries to remove:
+> 
+> -#define WRITE(d,a)     ({if(put_user(d, (typeof (d) __user *)a)) return -EFAULT;})
+> 
+> Which is odd because git log says my tree is current as of today, but git log on
+> this file says it was last updated:
+> 
+> commit 2e1661d2673667d886cd40ad9f414cb6db48d8da
+> Author: Eric W. Biederman <ebiederm@xmission.com>
+> Date:   Thu May 23 11:04:24 2019 -0500
+> 
+> What did I miss?
 
-This one doesn't apply for me. My file has:
+Hi Rob,
 
-#define WRITE(d,a)      ({if(put_user(d, (typeof (d)*)a)) return -EFAULT;})
+I am making patches to linux-next, which contains this:
 
-But your patch tries to remove:
+commit ca42bc4b7bda
+Author: Al Viro <viro@zeniv.linux.org.uk>
+Date:   Thu Dec 31 23:23:01 2020 +0000
 
--#define WRITE(d,a)     ({if(put_user(d, (typeof (d) __user *)a)) return -EFAULT;})
+     sh: fix trivial misannotations
 
-Which is odd because git log says my tree is current as of today, but git log on
-this file says it was last updated:
+which adds the __user annotations...
 
-commit 2e1661d2673667d886cd40ad9f414cb6db48d8da
-Author: Eric W. Biederman <ebiederm@xmission.com>
-Date:   Thu May 23 11:04:24 2019 -0500
 
-What did I miss?
-
-Rob
+-- 
+~Randy
