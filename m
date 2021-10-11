@@ -2,80 +2,76 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 98E91428B76
-	for <lists+linux-sh@lfdr.de>; Mon, 11 Oct 2021 12:56:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC1E9429512
+	for <lists+linux-sh@lfdr.de>; Mon, 11 Oct 2021 19:01:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236176AbhJKK6Z (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 11 Oct 2021 06:58:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51538 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236163AbhJKK6U (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 11 Oct 2021 06:58:20 -0400
-Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6EEEC06177A
-        for <linux-sh@vger.kernel.org>; Mon, 11 Oct 2021 03:56:12 -0700 (PDT)
-Received: by mail-lf1-x141.google.com with SMTP id p16so947579lfa.2
-        for <linux-sh@vger.kernel.org>; Mon, 11 Oct 2021 03:56:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=DOxN63QWnl4dBNWQl+LufsBrewR+8VuPJnGph7ijSeE=;
-        b=km/+rwE10MGCG3K0BNjxD+A2l394aMlSCDFqBEiDyrs45mObKwVEkOccUp5BPFftJU
-         5cB06txNzUPVxcrxQnkqMq9zaxAqQeR9eoa3+7DqnAg3rX7wMze/dloERdrhczopiGET
-         PvxtLks7kWCMKTs5Q8Mmq12LwUKUT5cPH1x1mszpEwl0kuXWAYNTl0kX4+cL3oWAj8+a
-         6an2wLimFEmscCT9jtQf7FGYav0q/UTa6GRCeFihab7mYp8KZTVzyAi9ONxHllw1wfay
-         OSS3CoE7RnQ2PFKTnc/5Yya8gHnSshWvMzermo1msudbBS7MTk09iY8fA6ci8A/KmFSk
-         +E4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=DOxN63QWnl4dBNWQl+LufsBrewR+8VuPJnGph7ijSeE=;
-        b=wYT1S5E+/7qp4V7pD6MN7YyhuwjEZ8gtznNipf4AZzMsch9CWUvZXN2UgUlKv4dCiR
-         vde2NQAshmHQ5hq2brIO32apn1bJegA3P9/7/mmaTfsYT5JY8IjIhD03sj9hABri/KTE
-         m6xfLUQKatI1GdZ/KVBOzo4M78Wg36tqYSKgvib0SvFvXpbyZr1E/xocG88PKq2ir7TK
-         HyiFFzHnEvLsyEv2sNxa14Aup2PKyzo/OoeYNCuRN9/fRurgRYOO7rkVY6t0lhSVhqaA
-         q38aSAHnvlgxZCEKmD3B49KwJQzd+9J5qKrBeZoYYEKJ9FgvOLfFXdUFu0r6/xfssFoM
-         8hRA==
-X-Gm-Message-State: AOAM53166TNlQTWNC076kNRbp9eOujxlDqjxj7Jzl6zzGAWE8wYIbT3C
-        /0fkLpB2GZltA2Po7nZU1l67p8E+CNGlgenw8rO0z+PJHtiHLA==
-X-Google-Smtp-Source: ABdhPJxWYMUVxuj7Tly9azrkWxEMXzTPZAklmoVIH4V2ykknMMiBN9imOFz2zTqxux/zk/7pzvFSRlX+C6mfjc7ADy4=
-X-Received: by 2002:adf:8b9a:: with SMTP id o26mr24377548wra.109.1633949760323;
- Mon, 11 Oct 2021 03:56:00 -0700 (PDT)
+        id S233439AbhJKRD7 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 11 Oct 2021 13:03:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46214 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233351AbhJKRDx (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Mon, 11 Oct 2021 13:03:53 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 1C0A460F3A;
+        Mon, 11 Oct 2021 17:01:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1633971713;
+        bh=5cqL9zWFZBEBMTUX4ZfpDqFN24XzofHHL51jBod0crk=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=PB1fq8/VYbqOg3HlflwTVaaHg9aibDKfx91ypOkx1H2qs1SxAs14Oj/+pdmMX/2ZW
+         brEt4C2FEwsqsBRR2wJk6/CfEhXNvSbW+xvzt5CUru6Ek8vSXh5PI7+dLUKTZF6akp
+         vaeTvsSl+1aXbAFgZoA5oCgVx7NPCmHNGkpTTj6e1wToSNsGMgn9Fyr5Lxv6vCTA3J
+         hMjDCeQTqpuus+U6BHbjgdw76hYMlE0Yc+ufAz56CJp5D0DinR+gp475pqNWcLkp0E
+         7iQx+glAMWVpPJHWT5JWOLBryz+KVevcIsCd9KMBhS/VpQ7a/RxkWLChuArXWtf5H8
+         egSS6YVOe85LA==
+From:   Mark Brown <broonie@kernel.org>
+To:     Mark Brown <broonie@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>
+Cc:     linux-sh@vger.kernel.org, alsa-devel@alsa-project.org
+Subject: Re: [PATCH] sh: Use modern ASoC DAI format terminology
+Date:   Mon, 11 Oct 2021 18:01:40 +0100
+Message-Id: <163397094549.6567.3207662556586178987.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210915172302.36677-1-broonie@kernel.org>
+References: <20210915172302.36677-1-broonie@kernel.org>
 MIME-Version: 1.0
-Received: by 2002:adf:dd8c:0:0:0:0:0 with HTTP; Mon, 11 Oct 2021 03:55:59
- -0700 (PDT)
-Reply-To: ramcharan9910@outlook.com
-From:   "Cr.David Ramcharan" <convy0101@gmail.com>
-Date:   Mon, 11 Oct 2021 03:55:59 -0700
-Message-ID: <CADDRs95718H=K3tUjphEHH_C96xYhoJw7jeCMpt_FfZZjhEXrA@mail.gmail.com>
-Subject: Thank You
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Please I am writing to notify you again on my intention to list your
-name as a beneficiary to the total sum of GBP6.350 million (Six
-million, Three hundred and fifty thousand British Pounds Sterlings) in
-the intent of the deceased (name now withheld since this is my second
-letter to you).
+On Wed, 15 Sep 2021 18:23:02 +0100, Mark Brown wrote:
+> The SH machine drivers have some ASoC DAI format specifications that use
+> older defines based on outdated terminology which we're trying to retire,
+> update to the new bindings.
+> 
+> 
 
-I contacted you because you bear the surname identity and therefore
-can present you as the beneficiary to inherit the account proceeds of
-the deceased since there is no written "WILL" or trace to the deceased
-family relatives. My aim is to present you to my Bank Authorities as
-the Next of Kin to our deceased client. I will guide you all through
-the Claim procedure by providing all relevant Information and guiding
-you in your decisions and response to the Bank Management. All the
-papers will be processed after your acceptance.
+Applied to
 
-In your acceptance of this deal, I request that you kindly forward to
-me your letter of acceptance; your current telephone and fax numbers
-,age, occupational status and a forwarding address to enable me submit
-to the Bank Management the details as the Next of Kin to their
-deceased customer. Reply strictly through: ramcharancrdavid@gmail.com
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-Yours faithfully,
-Cr.David Ramcharan
+Thanks!
+
+[1/1] sh: Use modern ASoC DAI format terminology
+      commit: 81a13ac7e3e490a76fafb7f62d1dd751ae94ca11
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
