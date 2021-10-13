@@ -2,82 +2,71 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D82B429B50
-	for <lists+linux-sh@lfdr.de>; Tue, 12 Oct 2021 04:11:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BF0B42B798
+	for <lists+linux-sh@lfdr.de>; Wed, 13 Oct 2021 08:39:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230322AbhJLCN4 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 11 Oct 2021 22:13:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33782 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230172AbhJLCNz (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 11 Oct 2021 22:13:55 -0400
-Received: from mail-oi1-x22d.google.com (mail-oi1-x22d.google.com [IPv6:2607:f8b0:4864:20::22d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16795C06161C
-        for <linux-sh@vger.kernel.org>; Mon, 11 Oct 2021 19:11:55 -0700 (PDT)
-Received: by mail-oi1-x22d.google.com with SMTP id q129so6354611oib.0
-        for <linux-sh@vger.kernel.org>; Mon, 11 Oct 2021 19:11:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=u1FS23f9lMOyJIiIZuP0A4Qiyf73vPOUb05pwu8u1Yk=;
-        b=LhjvUH5u6NL5tTEDtcPzQCylcWVQT3e+kTi2H5j9FEg0bLOIFaJMlOQE7Up2k8oLfC
-         RvISb+vDuMcw37UAJYznorPFWItaoxgy7mSJWOmdpFt5dREijsW69bbb7vT2G2dlUXOx
-         v7RGvhbGTel+EIewIbaRK7fcpLJjoaeOZ99FSvk+50WAKDe2ZNhnYlTX5FYkMlfVKQhR
-         ZRte0QnE59C1dhRRBVQaf/aGIAB5PYk32TZZs79POhiuia8A/gb9tvceldol5RyndYME
-         Mr+mjQ6V8sbnZwYCbifgbKdKoiYDoBk1MleILiIYtGqSLP5d9YiWj0QEy1ddcUToMmE+
-         SBGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to:content-transfer-encoding;
-        bh=u1FS23f9lMOyJIiIZuP0A4Qiyf73vPOUb05pwu8u1Yk=;
-        b=Xa/88KIjDIESNwPTQIFLSLOoPEIPuVfbMXUEvsvnpqjTxK5MQZv+dEzrJjzXU3fK/o
-         SP+CHZAOlpVD/hfxjJq1oTCHN8LN/+12pDOQ7oTL3jPSBRMjISSkNFbeKprHCOf91uwo
-         gLmTgws3odMRWCXa86Hnuz3hkWDJDJwPRF+NyFRtdmXUvDvoJw2REP5+e+ERCM3tfBYf
-         xrU7hYnibzBgLYcLOzfHrLiGwsrOvwzNCOnqPAJ0rw+hafujQmJqp5rlokLxHEPKlynt
-         ZVv0uvrQ91D0/Eg2ulCSJH/LIOpNjCZ0VFJrbj+ZgbeyHLsOTLj8UYucd1EjtD9wGDCO
-         I/Gw==
-X-Gm-Message-State: AOAM530xC6LDme9NiZpENK1J4YeseHxtMhcTXOJvJqkpK8LbvbcAiq8x
-        7b3VklrqGEFcevvNzAkRxIS9ACSj3NoFXdRBd8I=
-X-Google-Smtp-Source: ABdhPJwZoy5cRgnNfndrgNUnOf5XyCbyFa4GNQgnZnVRKxpKzwJ0AeJbFBYCsGyKnEZK4e8Kx1lEL3saHEqg+A+JjdQ=
-X-Received: by 2002:aca:a94c:: with SMTP id s73mr1761040oie.93.1634004714492;
- Mon, 11 Oct 2021 19:11:54 -0700 (PDT)
+        id S238109AbhJMGlW (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 13 Oct 2021 02:41:22 -0400
+Received: from condef-04.nifty.com ([202.248.20.69]:50347 "EHLO
+        condef-04.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238106AbhJMGlV (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 13 Oct 2021 02:41:21 -0400
+Received: from conuserg-08.nifty.com ([10.126.8.71])by condef-04.nifty.com with ESMTP id 19D6b62H017483
+        for <linux-sh@vger.kernel.org>; Wed, 13 Oct 2021 15:37:06 +0900
+Received: from grover.RMN.KIBA.LAB.jp (133-32-232-101.west.xps.vectant.ne.jp [133.32.232.101]) (authenticated)
+        by conuserg-08.nifty.com with ESMTP id 19D6aPug030197;
+        Wed, 13 Oct 2021 15:36:26 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-08.nifty.com 19D6aPug030197
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1634106986;
+        bh=uh555ogoVopmgQsC3VCDBjBfCTqg/qreN2LFFwAIv0A=;
+        h=From:To:Cc:Subject:Date:From;
+        b=idPWaNlEoM5sjDwU3u1q+W+VCa1GSODdzCbzYJG+SPFaKry7oi2J6EvdY8iCYgDyn
+         hMYeusJKyV6cBCjigT/S5LWHt1TMB5RVYTQAm1QnvhgLsEG8hly5Yvh95UHTVYnA52
+         i2SeH1KUDCd3JDtWlrTrEIoQlSPrpVHc5L8AfuWx3Y4H6JA/aM7f4xFs3vbrCiNO6S
+         BM0EBnfAOOOD+C6E9MiKzQv4MOhEsPDchYMHp9IkKLfWuRrCsMJBRDTS++Sb8kSOkq
+         1d75WpBKeVgDMF3Oa83O4Ja0V28/FGBq0glt63mcPJrqlUks97IOwWTpzUAJgaT/su
+         NBtuTnSi0LG9g==
+X-Nifty-SrcIP: [133.32.232.101]
+From:   Masahiro Yamada <masahiroy@kernel.org>
+To:     linux-kbuild@vger.kernel.org
+Cc:     Masahiro Yamada <masahiroy@kernel.org>,
+        Rich Felker <dalias@libc.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        linux-kernel@vger.kernel.org, linux-sh@vger.kernel.org
+Subject: [PATCH 1/2] sh: remove meaningless archclean line
+Date:   Wed, 13 Oct 2021 15:36:21 +0900
+Message-Id: <20211013063622.548590-1-masahiroy@kernel.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Sender: mrtamuhfariq1@gmail.com
-Received: by 2002:a9d:2aa:0:0:0:0:0 with HTTP; Mon, 11 Oct 2021 19:11:54 -0700 (PDT)
-From:   Bello Abubakar <bellobelloabubakar5@gmail.com>
-Date:   Mon, 11 Oct 2021 19:11:54 -0700
-X-Google-Sender-Auth: JRsJ-kzeOfvJBC2GXKWcsRiK-1k
-Message-ID: <CAO2k2xfTHPa6rC0O6FdKkbsZAUmBKS8J+PUVEn71d4mNv8Ux8w@mail.gmail.com>
-Subject: URGENT REPLY
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
---=20
-Hello,
+The vsyscall directory is cleaned up by the ordinary way
+via arch/sh/kernel/Makefile:
 
-I am a relative of a politically exposed person (PEP) that is in
-financial regulation. Due to my present health condition, I'd decided
-to write through this email for the security reason.
+  obj-$(CONFIG_VSYSCALL)          += vsyscall/
 
-Therefore, kindly treat this as top secret for the security reason.
-I'd after fasting and prayer choose to write not you particularly but
-I believing in probability of you being a confidant chosen by chance;
-luck to help and share in this noble cause.
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+---
 
-I need your assistant to conduct secret transfers of family's funds
-worth =E2=82=AC90.5 millions Euros. It was deposited in bank clandestinely.
+ arch/sh/Makefile | 1 -
+ 1 file changed, 1 deletion(-)
 
-I am in grave condition and I expect my death any moment now and I
-want to donate the fund to less privilege and you will be rewarded
-with reasonable percentage of the fund if you can assist.
+diff --git a/arch/sh/Makefile b/arch/sh/Makefile
+index 88ddb6f1c75b..781463900621 100644
+--- a/arch/sh/Makefile
++++ b/arch/sh/Makefile
+@@ -200,7 +200,6 @@ archprepare:
+ 
+ archclean:
+ 	$(Q)$(MAKE) $(clean)=$(boot)
+-	$(Q)$(MAKE) $(clean)=arch/sh/kernel/vsyscall
+ 
+ archheaders:
+ 	$(Q)$(MAKE) $(build)=arch/sh/kernel/syscalls all
+-- 
+2.30.2
 
-Please contact me back for more details,
-
-Yours truly,
-Bello Abubakar
