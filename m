@@ -2,62 +2,78 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 58A3C433397
-	for <lists+linux-sh@lfdr.de>; Tue, 19 Oct 2021 12:34:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D2FF433601
+	for <lists+linux-sh@lfdr.de>; Tue, 19 Oct 2021 14:30:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235150AbhJSKgy (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 19 Oct 2021 06:36:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38588 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235234AbhJSKgx (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 19 Oct 2021 06:36:53 -0400
-Received: from mail-il1-x12e.google.com (mail-il1-x12e.google.com [IPv6:2607:f8b0:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E96F2C06176A
-        for <linux-sh@vger.kernel.org>; Tue, 19 Oct 2021 03:34:40 -0700 (PDT)
-Received: by mail-il1-x12e.google.com with SMTP id s3so17983915ild.0
-        for <linux-sh@vger.kernel.org>; Tue, 19 Oct 2021 03:34:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=1fHli0Y7ukDxNuAT5ZXebI19L35uKvvemX9ZjZqRSdg=;
-        b=nR1X+erv5EN/vky/Ir69nPjkLCCSIIoZUipb5nM6BfgEeUxc8HAYCjVrALJOCZjTxA
-         lis2Wb9C4KZUuYk7+Q7hO44YX1IoYonQkd2C5zTKoIaItnWorRfGvtzzYJvEQb8QeOSh
-         03NUnMqCUcNQrOu5Hl2olvxTankzThOCoUiXvwpzIefc1G5AorpttEhY2134AbRk6Xqk
-         wm1tl677+tjP1fqOiFEhUyhTEvcCuSiGTJ13pohVf0kdEs23luyaSgKaLllxrk6T2eOx
-         npJYqdmNmAdJL9duWyTRFxGiv+MHWVMrxZa+JMq8NtWk6ahxL9+2ZAqJQmPQRlOWNUWE
-         nTkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=1fHli0Y7ukDxNuAT5ZXebI19L35uKvvemX9ZjZqRSdg=;
-        b=e/eNmElejVHduT281+Svj+V+v1Ra391DAW6TyHH5PdJXlA2ZjRzZoygcYhhNBzTVz4
-         M2yhqUNrHP0I+QRelw3LQVObP9YVKzExUEyTAgIhi0Cs5ldMKl6vlPQ4yGl3f33F1Ry9
-         8fJZUGWk8iOBhocFkOmW6mjfLkwPs2e8hbJbrfn+Pavy9Cw1sLqZqBncbp8MMVxyawUW
-         nIXNl1xjIbNu+VC6Dm0HM2FBnwI4l1VNOxwPHgzIgOcI19Mc6R55Aft2/dJVIb5072xv
-         P8vGsqCUNjGyuTmLllCRm4UBaLuC5jcbkgrB05dLSINSxm+5eIiOga+IptL4GtJBA9bG
-         RHYg==
-X-Gm-Message-State: AOAM533yERE+cto3381/z0xwquIIzCM3TFKXrlgTAKHhnaoBvwATHHLL
-        VuwPwacLYip53tJsruVrOd7sNIz+s9l4ORPsiRU=
-X-Google-Smtp-Source: ABdhPJzmqRGov2VinbRx5vtMHFl4IOT3PCON5l7eRJ8jsIqEp27Bu8lT0s/gWwkIyMNtkZ0XtjOxNaLRom+bbOWKlUM=
-X-Received: by 2002:a05:6e02:1a43:: with SMTP id u3mr17745471ilv.35.1634639680049;
- Tue, 19 Oct 2021 03:34:40 -0700 (PDT)
+        id S235661AbhJSMcn (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 19 Oct 2021 08:32:43 -0400
+Received: from szxga08-in.huawei.com ([45.249.212.255]:25169 "EHLO
+        szxga08-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235466AbhJSMcm (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 19 Oct 2021 08:32:42 -0400
+Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.57])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4HYY225Y8Bz1DGn9;
+        Tue, 19 Oct 2021 20:28:42 +0800 (CST)
+Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
+ dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.15; Tue, 19 Oct 2021 20:30:28 +0800
+Received: from [10.174.177.243] (10.174.177.243) by
+ dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.2308.15; Tue, 19 Oct 2021 20:30:27 +0800
+Message-ID: <3c64a5a1-128a-7448-f429-b2d195819ca2@huawei.com>
+Date:   Tue, 19 Oct 2021 20:30:26 +0800
 MIME-Version: 1.0
-Received: by 2002:a6b:fd11:0:0:0:0:0 with HTTP; Tue, 19 Oct 2021 03:34:39
- -0700 (PDT)
-Reply-To: mcchember@gmail.com
-From:   Michael Christopher <johnadillchember2@gmail.com>
-Date:   Tue, 19 Oct 2021 11:34:39 +0100
-Message-ID: <CAJ8VP79WdSih5KDw7DqE-3G=LrYQjjgO5xdSfUN4z5gTqM1vRg@mail.gmail.com>
-Subject: Hi
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH v2 0/3] Cleanup MAY_HAVE_SPARSE_IRQ
+Content-Language: en-US
+To:     Thomas Gleixner <tglx@linutronix.de>, Guo Ren <guoren@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        <linux-sh@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-csky@vger.kernel.org>
+References: <20210929023522.57732-1-wangkefeng.wang@huawei.com>
+From:   Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <20210929023522.57732-1-wangkefeng.wang@huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.177.243]
+X-ClientProxiedBy: dggeme701-chm.china.huawei.com (10.1.199.97) To
+ dggpemm500001.china.huawei.com (7.185.36.107)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hello
+Hi Thomas, Could you pickup this cleanup patchset from your tree if 
+possible, thanks.
 
-I am Barrister.Michael Christopher attorney to your late relative, now
-am contacting you for the claim of your late relatives fund.Please
-contact me with this email.(michaelchember@gmail.com
+On 2021/9/29 10:35, Kefeng Wang wrote:
+> Most ARCHs support SPARSE_IRQ, the dynamical and statical irq
+> description allocation are alternative.
+> 
+> The last user of MAY_HAVE_SPARSE_IRQ is sh/csky, but the sh use
+> SPARSE_IRQ, MAY_HAVE_SPARSE_IRQ could be kill. and for csky, it
+> uses statical allocation by default.
+> 
+> So MAY_HAVE_SPARSE_IRQ seems to be useless, no need to maintain a
+> separate MAY_HAVE_SPARSE_IRQ config, kill it.
+> 
+> Also cleanup the kernel/irq/Kconfig a little.
+> 
+> v2:
+> - drop all the NR_IRQS suggested by Geert
+> - don' use SPARSE_IRQ for csky by default, suggested by Guo.
+> 
+> Kefeng Wang (3):
+>    sh: Cleanup about SPARSE_IRQ
+>    csky: Kill MAY_HAVE_SPARSE_IRQ
+>    genirq: Cleanup Kconfig
+> 
+>   arch/csky/Kconfig         |  1 -
+>   arch/sh/Kconfig           |  1 -
+>   arch/sh/include/asm/irq.h | 11 ---------
+>   kernel/irq/Kconfig        | 50 ++++++++++++++++-----------------------
+>   4 files changed, 20 insertions(+), 43 deletions(-)
+> 
