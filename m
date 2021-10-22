@@ -2,88 +2,89 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 077C0436FD9
-	for <lists+linux-sh@lfdr.de>; Fri, 22 Oct 2021 04:16:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21BAD4376ED
+	for <lists+linux-sh@lfdr.de>; Fri, 22 Oct 2021 14:22:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232412AbhJVCSs (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 21 Oct 2021 22:18:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55266 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232411AbhJVCSr (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Thu, 21 Oct 2021 22:18:47 -0400
-Received: from rorschach.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9EE5F6138D;
-        Fri, 22 Oct 2021 02:16:29 +0000 (UTC)
-Date:   Thu, 21 Oct 2021 22:16:27 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     LKML <linux-kernel@vger.kernel.org>
-Cc:     Ingo Molnar <mingo@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org
-Subject: [PATCH] ftrace/sh: Add arch_ftrace_ops_list_func stub to have
- compressed image still link
-Message-ID: <20211021221627.5d7270de@rorschach.local.home>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        id S232167AbhJVMY3 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 22 Oct 2021 08:24:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53696 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231960AbhJVMYY (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 22 Oct 2021 08:24:24 -0400
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41142C06122E
+        for <linux-sh@vger.kernel.org>; Fri, 22 Oct 2021 05:22:02 -0700 (PDT)
+Received: by mail-lf1-x129.google.com with SMTP id j21so8911595lfe.0
+        for <linux-sh@vger.kernel.org>; Fri, 22 Oct 2021 05:22:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=EabbjzyBCsHP1Pqryzjhoy0dM3xlyxLmmpO8ACgMTo8=;
+        b=opUIgqVWyZcHOIldu+LgQVfQLu2JLSm4eq0yRYoR8X3EkJ0jJdtgK1LJrEC4fAYG/u
+         x5QndCavFk6KrgrLKL2M04eWhmo9Ht5gsCUOTzm6BFmYlOhPKCnfQmAWRcGWJ3Kgd+Po
+         dxnzE1GzD0Fe/zdoRYGanqsnNZ7HZwcDd5jvb2P53Z7ySB2eUUW5eKcCwJjvHcLwQW3D
+         hmZMQ0WQ67mADARNZlQPTMDFACAa1pT2f55C5E+z5xU/0SGGI05AA1ys/nk/8Z7QRecx
+         rbFLK51ODld/urTp+hjZ3tCNNEiv03NL8R5n8H4ZVv1sIR3Pcfr4FSd/aUugOrtvCJBK
+         4QUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=EabbjzyBCsHP1Pqryzjhoy0dM3xlyxLmmpO8ACgMTo8=;
+        b=PnOK5B/FbH+EBFIXCGpw0W7Co9Z+tV8ebzUL73nGzcpgZLks1NoZdXn37SO7L/bl15
+         mHxIuwBKFFUYmsKA+afT0oy27wYK8mffpCd/Y8tCXKk5Th94aPVcYHmz75gEg1WLXfkl
+         D/aiVfTWsLPeZryUTaiTyQ/jZk9Fabu15ykdQcaLfvNukGPGaLiQxBgrNzCpvBmGSiyG
+         xC6zYIzpV/Pqaw/cLMUvscOJCip/feb+mIBRQYuEQfmC/H0EdgluXpBC1S8/LRbmBh5u
+         WC21KIiqGjQUVz7+DVerSBc+7cRSX5kT0hsLHRr2gJ50wvI8/JQttwC2ynGg8wXIFn7y
+         auIA==
+X-Gm-Message-State: AOAM530+E32Zo50Cc1HD2P/hXIjxUCzHHVmG37GGoYMq6lQJCN0PMTXl
+        ebY+Zoo7UBH7/ojYZnF6x4CjXW94n+8FlMZLeh4laVLFOD/PS70H
+X-Google-Smtp-Source: ABdhPJy2Z+mCK6UsBedDHfuHLqHjOelryE6bx9xZ/OavTEghlxY+bPID2uQBe/oD5nVNF4jHf9BZTkpf3h9vpVXzB08=
+X-Received: by 2002:a17:907:1b0a:: with SMTP id mp10mr15488909ejc.29.1634905309828;
+ Fri, 22 Oct 2021 05:21:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a17:907:7fa7:0:0:0:0 with HTTP; Fri, 22 Oct 2021 05:21:48
+ -0700 (PDT)
+Reply-To: bahadur.rayanby@gmail.com
+From:   Ryan Bahadur <dr.philposman7@gmail.com>
+Date:   Fri, 22 Oct 2021 05:21:48 -0700
+Message-ID: <CAMOT=VQ19xGMh1Soq8rNHNKaBCqZh03d0u+Nrf_Ou9bAtd-seQ@mail.gmail.com>
+Subject: CAN I TRUST YOU
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Using the linker script to fix an issue where some archs call the
-function tracer with just the ip (instruction pointer) and pip (parent
-instruction pointer) where as more up to date archs also pass in the
-associated ftrace_ops and the ftrace_regs pointer, the generic code
-will be called either with two parameters or four. To avoid any C
-undefined behavior of calling two parameters to four or four to two
-parameter function, two functions are created, where a preprocessor
-macro uses the one that matches the architecture. As the function
-pointers for them may be different, a typecast is used. But this
-triggers issues with newer compilers that will fail due to -Werror.
+-- 
+Greetings,
 
-A linker trick is now used to map the generic function to the function
-that is used (note the generic function is only used to set the default
-function callback). The linker trick defines ftrace_ops_list_func (the
-generic function) to arch_ftrace_ops_list_func (the arch defined one).
+Firstly, I apologize for encroaching into your privacy in this manner
+as it may seem unethical though it is a matter of great importance.
 
-Link: https://lore.kernel.org/all/20200617165616.52241bde@oasis.local.home/
+I am Mr.Ryan Bahadur, I work with Cayman National Bank (Cayman Islands).
 
-But this fails sh arch because their linker script is included in their
-compressed image that does not define arch_ftrace_ops_list_func at all
+I am contacting you because my status would not permit me to do this
+alone as it is concerning our customer and an investment placed under
+our bank's management over 5 years ago.
 
-  sh4-linux-ld:arch/sh/boot/compressed/../../kernel/vmlinux.lds:32: undefined symbol `arch_ftrace_ops_list_func' referenced in expression
+I have a proposal I would love to discuss with you which will be very
+beneficial to both of us. It's regarding my late client who has a huge
+deposit with my bank.
 
-Included a stub by that name in the misc.c to allow the code to
-compile and link, even though it's not used.
+He is from your country and shares the same last name with you.
 
-This is similar to what was done for ftrace_stub:
+I want to seek your consent to present you as the next of kin to my
+late client who died and left a huge deposit with my bank.
 
-  b83b43ffc6e4b ("fgraph: Fix function type mismatches of
-  ftrace_graph_return using ftrace_stub")
+I would respectfully request that you keep the contents of this mail
+confidential and respect the integrity of the information you come by
+as a result of this mail.
 
-Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
----
-This is based on my tree at:
-  git://git.kernel.org/pub/scm/linux/kernel/git/rostedt/linux-trace.git
-  branch: ftrace/core
-  I can push this change through my tree with the SuperH maintainer's acks.
+Please kindly get back to me for more details if I can TRUST YOU.{
+bahadur.rayanby@gmail.com}
 
-diff --git a/arch/sh/boot/compressed/misc.c b/arch/sh/boot/compressed/misc.c
-index a03b6680a9d9..ca05c99a3d5b 100644
---- a/arch/sh/boot/compressed/misc.c
-+++ b/arch/sh/boot/compressed/misc.c
-@@ -115,6 +115,9 @@ void __stack_chk_fail(void)
- void ftrace_stub(void)
- {
- }
-+void arch_ftrace_ops_list_func(void)
-+{
-+}
- 
- #define stackalign	4
- 
-
+Regards
+Mr.Ryan Bahadur
+Treasury and Deposit Management,
+Cayman National Bank Cayman Islands.
