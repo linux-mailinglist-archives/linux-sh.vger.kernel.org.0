@@ -2,61 +2,128 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 89E0B447ADB
-	for <lists+linux-sh@lfdr.de>; Mon,  8 Nov 2021 08:27:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6ACC2447B5B
+	for <lists+linux-sh@lfdr.de>; Mon,  8 Nov 2021 08:47:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236412AbhKHH3n (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 8 Nov 2021 02:29:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57502 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235786AbhKHH3l (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 8 Nov 2021 02:29:41 -0500
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B783C06120E
-        for <linux-sh@vger.kernel.org>; Sun,  7 Nov 2021 23:26:56 -0800 (PST)
-Received: by mail-ed1-x529.google.com with SMTP id v11so56033679edc.9
-        for <linux-sh@vger.kernel.org>; Sun, 07 Nov 2021 23:26:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=gS+G2bXPLTc8QV9oSOsVFPfildfSifO+gabOlUjPn+8=;
-        b=PnTjqCg/4dLlfwZvkIw5TCFiXXqI7eQL3D+17+RauQ+gPkf2k9hY9S+Ii/M5IA0uoj
-         tcY9XkBE8UoWnMFVRIdA+q744Hmx7Z0JsFaVREssmf6KamM5Bd6A03cMP5bTAvPf1/y/
-         DwxXsJaTEuCfFdzSQFJTUHpZB56hO6UBVJPo7/S7fIQbraF2JB9fnNx0H/YOCyXyn5Fv
-         TpIbuoc9MhMDHEy5d5ztUWIHQVhdvbVN+KOKXsEiQg7QzXSruhiqF9yWAy+A70V6Qa0U
-         ve8aiam44Pcv5P2919T2rRvgnVW0nPh2s7GY8MWiotEmFwjxJpYnpgBFa5LZ/bTsndTX
-         N0eA==
+        id S236579AbhKHHuR (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 8 Nov 2021 02:50:17 -0500
+Received: from mail-qk1-f170.google.com ([209.85.222.170]:46929 "EHLO
+        mail-qk1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235081AbhKHHuQ (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 8 Nov 2021 02:50:16 -0500
+Received: by mail-qk1-f170.google.com with SMTP id bl12so14637691qkb.13;
+        Sun, 07 Nov 2021 23:47:32 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=gS+G2bXPLTc8QV9oSOsVFPfildfSifO+gabOlUjPn+8=;
-        b=XB7Dh3xiBwMmWO4C1GNxHtmZLI6KZaPYj5pnDXGk7INb+k/8+aaVIgFLFqxDIn1IWS
-         2YEWGq/41XSwxKg9beBIE41G6gtKkF1QBNH/HAG8cwEF2WdtJFHdF9bKc452PRkPaAG4
-         lHAs3TAwwWWttHgRO7IMZhqlKLOAwoeAGSVYkFxZC4AvXG9cUdIN1IBSD8sx0vHUGZ+v
-         kREhab9LxYY+dFJ3+2v+ca6wVopTYjNBwLiZj+iHxm6v1AAJgnAVAqfCBzJIjLPv8gmr
-         QXp8WbbpVlc7Ws0tl3IpIHxl3vTdZ1LxzeStqynGlr+ANXRXYicUku3+UNk6ger7BhN3
-         VAxw==
-X-Gm-Message-State: AOAM530ijb3rA7B2RsjW7m8MTJY+Y6faGT+TFEBc1FSpz3JlUvyoyXN4
-        FHxvXw3duhoOT+bi9HjQvYk9OPn/Kczz9/RXBXM=
-X-Google-Smtp-Source: ABdhPJz9Akl6xfGwwFGOOyIMXLWznjij6kDDSEQ53AjVdYeVh/nfgX+la012XOuUHhNctlqPhGJ9oR9znvMO/9Cv6/o=
-X-Received: by 2002:a50:930b:: with SMTP id m11mr83450378eda.133.1636356414537;
- Sun, 07 Nov 2021 23:26:54 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=niQCVpji9nu8a8Mfie3ofua8MkF1HzpLuS22ys5pvwg=;
+        b=QxhKC3BH6UKmsf+en5LDsE2LBeZaA/X8MZ852CifiBk7lxKwvvQ8DvQzVCJxpn5NLP
+         sUafxXkCujdPkXdjCp08V3qdDG7N1+RyuQ4yRaYSXr9VC8emQREANOjzOZyjMa/6MyZ1
+         ebyXOdDFecNFXOnOI9KCznfXjls9NSdbdlYPIqzXgQKeYmXawyeNbqPk+wpw/iM3p8Qz
+         GYnZJI/gOifPb+tn1N/ez25v3Z+EZKbOTcnsyGCUaB1vQAwldUQHRYwqwJ4JsbCGpA52
+         q/cZpzUYpazcuYCAjvlNWmBhpUmXw2FumJQh7RMmwOl9AidSO6dCrA3Tw6e+d4XChmpJ
+         S2qQ==
+X-Gm-Message-State: AOAM533Ndj5HCg9s4l2OPPgz513/MnYueo8JLiwpRssuUn55AVtH5Ycg
+        pSYGW71BTe5t90Ouy0Kgyqyh+38S0qx3Jg==
+X-Google-Smtp-Source: ABdhPJwQvMewvRjNbN/c0TXq4JonZhcv8d7XAj6/kChLjlMOwqYn6iZDfJo4XDnr1yHj+M1GgRMQ2Q==
+X-Received: by 2002:a05:620a:752:: with SMTP id i18mr6713068qki.453.1636357651412;
+        Sun, 07 Nov 2021 23:47:31 -0800 (PST)
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com. [209.85.219.41])
+        by smtp.gmail.com with ESMTPSA id s13sm5045006qtw.33.2021.11.07.23.47.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 07 Nov 2021 23:47:31 -0800 (PST)
+Received: by mail-qv1-f41.google.com with SMTP id gh1so11375219qvb.8;
+        Sun, 07 Nov 2021 23:47:31 -0800 (PST)
+X-Received: by 2002:a05:6102:3a07:: with SMTP id b7mr71214037vsu.35.1636357641114;
+ Sun, 07 Nov 2021 23:47:21 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a50:2501:0:0:0:0:0 with HTTP; Sun, 7 Nov 2021 23:26:54 -0800 (PST)
-Reply-To: mariaschaefler@gmx.com
-From:   Maria Schaefler <ziskoraa@gmail.com>
-Date:   Mon, 8 Nov 2021 07:26:54 +0000
-Message-ID: <CAJh0FjiDs5_oQE4K3AME-kH_RMPNXEEapYKvrR9As+S+Dzwh5Q@mail.gmail.com>
-Subject: MY HEART CHOOSE YOU.
-To:     undisclosed-recipients:;
+References: <20211108004524.29465-1-digetx@gmail.com> <20211108004524.29465-22-digetx@gmail.com>
+In-Reply-To: <20211108004524.29465-22-digetx@gmail.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 8 Nov 2021 08:47:10 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdXpW0389_uJR2xg+HCstXanutPxrcRdvgu8kxH1J9T++w@mail.gmail.com>
+Message-ID: <CAMuHMdXpW0389_uJR2xg+HCstXanutPxrcRdvgu8kxH1J9T++w@mail.gmail.com>
+Subject: Re: [PATCH v3 21/25] m68k: Switch to new sys-off handler API
+To:     Dmitry Osipenko <digetx@gmail.com>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Joshua Thompson <funaho@jurai.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Nick Hu <nickhu@andestech.com>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+        Lee Jones <lee.jones@linaro.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
+        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-tegra@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Given my current state of health, I have decided to donate what I
-inherited from my late husband to you to help the poor and needy. I am
-Mrs Maria Schaefler,a 57years old dying woman. I was diagnosed for
-cancer about 2 years ago and I have few months to live according to
-medical experts. Email me for my directives
+On Mon, Nov 8, 2021 at 1:48 AM Dmitry Osipenko <digetx@gmail.com> wrote:
+> Kernel now supports chained power-off handlers. Use
+> register_power_off_handler() that registers power-off handlers and
+> do_kernel_power_off() that invokes chained power-off handlers. Legacy
+> pm_power_off() will be removed once all drivers will be converted to
+> the new power-off API.
+>
+> Normally arch code should adopt only the do_kernel_power_off() at first,
+> but m68k is a special case because it uses pm_power_off() "inside out",
+> i.e. pm_power_off() invokes machine_power_off() [in fact it does nothing],
+> while it's machine_power_off() that should invoke the pm_power_off(), and
+> thus, we can't convert platforms to the new API separately. There are only
+> two platforms changed here, so it's not a big deal.
+>
+> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
