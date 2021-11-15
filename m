@@ -2,24 +2,24 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 91C40450C14
-	for <lists+linux-sh@lfdr.de>; Mon, 15 Nov 2021 18:31:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 21157451E33
+	for <lists+linux-sh@lfdr.de>; Tue, 16 Nov 2021 01:32:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238053AbhKORee (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 15 Nov 2021 12:34:34 -0500
-Received: from mail.kernel.org ([198.145.29.99]:46730 "EHLO mail.kernel.org"
+        id S244888AbhKPAf0 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 15 Nov 2021 19:35:26 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45400 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238178AbhKORdi (ORCPT <rfc822;linux-sh@vger.kernel.org>);
-        Mon, 15 Nov 2021 12:33:38 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 88D7863248;
-        Mon, 15 Nov 2021 17:21:39 +0000 (UTC)
+        id S1344741AbhKOTZS (ORCPT <rfc822;linux-sh@vger.kernel.org>);
+        Mon, 15 Nov 2021 14:25:18 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 38F21632A4;
+        Mon, 15 Nov 2021 19:03:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1636996900;
+        s=korg; t=1637003004;
         bh=XmzqHL0Z0tJSw6FXl0JzN3xJCCpGMGmK9Cp/EP+0nkA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KaoACGz5jQJjuatCI6RAlwwv5jgVkNYzVfbnzYLbWDmvyE5Lf0UOAVflrNkH1FLdd
-         fE+jUJbebc+g7OKjcK/tlLLtHxqsFnvo3mARkxFnzORfxnkQw52OHACfH+AkDazLBK
-         EbPMzMpTIhJH2LyTXyn7L6cqWcCBL3oycKZIiYKI=
+        b=ciSF34K8tinOMRs6y/7B1cl7kT7UFw5IqHXPaFU8UOGzWCxPO+Ia2mQnHjeT44qHI
+         xC+91wOpMhF3pjcmKzz32zDbKja6SQj0bklzPDhdhshAEuzYAziRXtpku7v0etSJl0
+         XAanFIxyDFN46ulyFcqRAAfjygZrnSiuFyB+Y8T8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -28,12 +28,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
         "Eric W. Biederman" <ebiederm@xmission.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 307/355] signal/sh: Use force_sig(SIGKILL) instead of do_group_exit(SIGKILL)
-Date:   Mon, 15 Nov 2021 18:03:51 +0100
-Message-Id: <20211115165323.653076217@linuxfoundation.org>
+Subject: [PATCH 5.15 742/917] signal/sh: Use force_sig(SIGKILL) instead of do_group_exit(SIGKILL)
+Date:   Mon, 15 Nov 2021 18:03:57 +0100
+Message-Id: <20211115165454.075483293@linuxfoundation.org>
 X-Mailer: git-send-email 2.33.1
-In-Reply-To: <20211115165313.549179499@linuxfoundation.org>
-References: <20211115165313.549179499@linuxfoundation.org>
+In-Reply-To: <20211115165428.722074685@linuxfoundation.org>
+References: <20211115165428.722074685@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
