@@ -2,49 +2,201 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C53B945D99A
-	for <lists+linux-sh@lfdr.de>; Thu, 25 Nov 2021 12:55:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BF6345D9CE
+	for <lists+linux-sh@lfdr.de>; Thu, 25 Nov 2021 13:12:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239930AbhKYL6Q convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-sh@lfdr.de>); Thu, 25 Nov 2021 06:58:16 -0500
-Received: from [186.226.176.30] ([186.226.176.30]:40913 "EHLO
-        mail.serrinha.ba.gov.br" rhost-flags-FAIL-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S234439AbhKYL4L (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 25 Nov 2021 06:56:11 -0500
-X-Greylist: delayed 7937 seconds by postgrey-1.27 at vger.kernel.org; Thu, 25 Nov 2021 06:56:10 EST
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.serrinha.ba.gov.br (Postfix) with ESMTP id 292A91BA92F1;
-        Thu, 25 Nov 2021 06:55:50 -0200 (BRST)
-X-Virus-Scanned: amavisd-new at mail.serrinha.ba.gov.br
-Received: from mail.serrinha.ba.gov.br ([127.0.0.1])
-        by localhost (mail.serrinha.ba.gov.br [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id m+uTHb93adZQ; Thu, 25 Nov 2021 06:55:49 -0200 (BRST)
-Received: from [209.127.184.115] (unknown [186.226.183.225])
-        by mail.serrinha.ba.gov.br (Postfix) with ESMTP id AD66F1BA92EC;
-        Thu, 25 Nov 2021 06:55:47 -0200 (BRST)
-Content-Type: text/plain; charset="iso-8859-1"
+        id S240059AbhKYMPw (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 25 Nov 2021 07:15:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56362 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1348322AbhKYMNw (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 25 Nov 2021 07:13:52 -0500
+Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E25B3C061756
+        for <linux-sh@vger.kernel.org>; Thu, 25 Nov 2021 04:10:40 -0800 (PST)
+Received: by mail-oi1-x22c.google.com with SMTP id m6so12163298oim.2
+        for <linux-sh@vger.kernel.org>; Thu, 25 Nov 2021 04:10:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=landley-net.20210112.gappssmtp.com; s=20210112;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=TvO93ObMgTYHjDl6zNqxFkX4IbiTkta5TxuIJ9/0KE0=;
+        b=uj6zTQLmvsacomfu4ja02b3+QGGKnR2VvOCjQU6GDqQ3tSfWyLurrZmiVooaYsYVzv
+         91noICmFahhM2vJXHUdCdTC86dC4J0O0xLYX4HIAwgPJ6ltgW4iNqa0B8NnE/WGJ/pyv
+         RcIQxqyNbQpST93lIaay+4v6cWXmlUDW1XMsoPw0v5MFoABHU5D6lIglCa6why1vMTKG
+         ghUkK4/sBk0AAFtwPgDTot1oh+N0ceGiI7fYmvR8pB3rI5st37sHO9UrlT3yTBbTzF9v
+         l6/R9Z6Cf57Si1tdLTZKp+N/SWdeuHs9eEu34sG7jl2pePNKba83A453HTwSGfj4ZIta
+         jAcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=TvO93ObMgTYHjDl6zNqxFkX4IbiTkta5TxuIJ9/0KE0=;
+        b=GQqAMEORs6bCise2A9DFKSJPnmWNOB8xUz2GA3ZppfnxmHX1ohDbfvnFj/nMYIqdEB
+         HCXIWSsqexpGUoh7hdMQfc9FbuSH8DV3CbPHpeWSpXgIGjEeQO2UsWkpYRq10dP8SId8
+         NRatipBnSLkfhrJ7hVKvP6J5dN2TXLv2K8s+fpLbm9TRXL13C8fxWQ2Km30zydmV3OUQ
+         w9EIJytaTWI3shFLqOnP9N3jHEbnIgI/ua7PbSKem6/3U/ID15wayKH2oMnDZU7zosJZ
+         Dp6L9s91/fxDs+7bH+bqJsD50Fz5v9ePQ9e5quRYVVOf+ukRIZgYc++ryR4LUEr2ZByl
+         fLlQ==
+X-Gm-Message-State: AOAM5336zi6D0Nc8x2flGZN0+Hzg4zP6/pY9V9BH6kSK4JEdA41EiDCJ
+        5Go/nCnqwSMqjYRT4qaI+Bs1Vg==
+X-Google-Smtp-Source: ABdhPJwfIBTpcnLWlUhrZerKtW/NA0YMhumz3pqkLqPb4YSPTm3bW+wCISbyS5i+PNkBiKGPcdXqkg==
+X-Received: by 2002:a05:6808:14c3:: with SMTP id f3mr14791412oiw.162.1637842240252;
+        Thu, 25 Nov 2021 04:10:40 -0800 (PST)
+Received: from ?IPv6:2607:fb90:c2ea:cdb4:6680:99ff:fe6f:cb54? ([2607:fb90:c2ea:cdb4:6680:99ff:fe6f:cb54])
+        by smtp.gmail.com with ESMTPSA id a16sm486384otj.79.2021.11.25.04.10.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 Nov 2021 04:10:39 -0800 (PST)
+Subject: Re: spinlock.c:306:9: error: implicit declaration of function
+ '__raw_write_lock_nested'
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Linux-Next Mailing List <linux-next@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+        Waiman Long <longman@redhat.com>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Minchan Kim <minchan@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Mike Galbraith <umgwanakikbuti@gmail.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, lkft-triage@lists.linaro.org,
+        =?UTF-8?Q?Andr=c3=a9_Almeida?= <andrealmeid@collabora.com>
+References: <CA+G9fYtH2JR=L0cPoOEqsEGrZW_uOJgX6qLGMe_hbLpBtjVBwA@mail.gmail.com>
+ <41206fc7-f8ce-98aa-3718-ba3e1431e320@landley.net>
+ <CAK8P3a3pQW59NVF=5P+ZiBjNJmnWh+iTZUHvqHBrXkHA6pMd4g@mail.gmail.com>
+ <7d5a5249-40ee-9a42-c6a0-a5defa3703c1@landley.net>
+ <CAK8P3a0XGz=F0nPAW8T-VvfH5bPuGTNiPZ18N+Z6Sj_M_6TrPA@mail.gmail.com>
+From:   Rob Landley <rob@landley.net>
+Message-ID: <eef6670c-1fb7-2d01-72ed-258d49227de1@landley.net>
+Date:   Thu, 25 Nov 2021 06:10:54 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Re: Attn
-To:     Recipients <elsayedhamdy041@gmail.com>
-From:   "Hamdy Elsayed" <elsayedhamdy041@gmail.com>
-Date:   Thu, 25 Nov 2021 01:01:05 -0800
-Reply-To: hamdy5@pbefin.com
-Message-Id: <20211125085547.AD66F1BA92EC@mail.serrinha.ba.gov.br>
+In-Reply-To: <CAK8P3a0XGz=F0nPAW8T-VvfH5bPuGTNiPZ18N+Z6Sj_M_6TrPA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hello,
+On 11/25/21 1:25 AM, Arnd Bergmann wrote:
+> On Thu, Nov 25, 2021 at 12:38 AM Rob Landley <rob@landley.net> wrote:
+>> On 11/24/21 1:49 AM, Arnd Bergmann wrote:
+>> > On Wed, Nov 24, 2021 at 8:31 AM Rob Landley <rob@landley.net> wrote:
+> 
+>> > Did you test clone3?
+>>
+>> Haven't got anything that's using it (musl-libc doesn't know about it yet) but
+>> it looked straightforward? (Unlike the #ifdef stack around the previous clone...)
+>>
+>> I can try building tools/testing/selftests/clone3 if you like, but for some
+>> reason the clone3 tests want -lcap which isn't in my cross compiler. (Because to
+>> test a clone system call, you need to manipulate capability bits. Of course.)
+>> Right, comment out the LDLIBS line in the makefile and the first 3 built, let's
+>> try those... Hmmm, it's saying the syscall isn't supported, because it's using
+>> syscall.h out of the cross compiler headers (not THIS kernel's #includes) which
+>> of course doesn't have it, and then clone3_selftests.h falls back to:
+>>
+>> #ifndef __NR_clone3
+>> #define __NR_clone3 -1
+>> #endif
+>>
+>> Right, stick a 435 in there and... it's still skipping it. Why is it still
+>> skipping it... because the RUNTIME syscall is returning ENOSYS. Ok, I have to go
+>> stick printk() calls into the kernel. (Do I have to #define those
+>> #YES_I_WANT_THIS_SYSCALL_WHY_WOULDNT_I macros? Hmmm...)
+> 
+> This specific syscall is protected by a macro so it doesn't get implicitly
+> enabled without architecture specific review for those architectures using
+> include/uapi/asm-generic/unistd.h.
 
-How are you once again. I have been having difficulty reaching you. I
-have an important business transaction to discuss with you.
+Sigh.
 
-There are funds available and ready for investment which we will need
-your assistance to invest.
+>> > This needs a custom wrapper on most architectures
+>> > to have sensible calling conventions.
+>>
+>> Define "sensible" in this context? It's a new 2 argument syscall? (Do you mean a
+>> libc wrapper?)
+>>
+>> > If sh doesn't need it, that should
+>> > be explained in the changelog text.
+>>
+>> I'm happy to try to fix stuff up, but I don't understand the objection. Does it
+>> do something other than what the old clone did, except without the need to pass
+>> more arguments than we necessarily have registers defined for? (Calls the same
+>> clone plumbing, which should call back into arch/sh/kernel/process_32.c already...?)
+>>
+>> The most recent clone3 arch addition was commit 59a4e0d5511b which also just
+>> pulled in the generic version. (Via #define NO_REALLY_I_WANT_THIS_SYSCALL rather
+>> than editing the tbl file? Looks like I've got some reading to do...)
+> 
+> The best reference I could find is:
+> 
+> https://lore.kernel.org/linux-api/20190604160944.4058-2-christian@brauner.io/
 
-Do get back to me as soon as you can for more details.
+Does not say what the special handling is. Does not provide an example of said
+special handling. Implied that only three do NOT need special handling, two of
+which are x86 and arm, which seems... convenient.
 
-Regards,
-Hamdy Elsayed
+Right, let's see what "grep -r clone arch/" says:
+
+m68k/kernel/process.c is obviously overriding
+arc/include/syscalls.h has sys_clone_wrapper()
+nios2/kernel/process.c has nios2_clone()
+openrisc/kernel/entry.S has __sys_clone()
+sparc/kernel/process.c has sparce_clone()
+h8300/kernel/process.c has its own sys_clone()
+ia64/kernel/process.c has ia64_clone()
+user mode linux is just weird.
+
+So the architectures that wrap clone are m68k, arc, nios2, openrisc, sparc,
+h8300, and ia64.
+
+Implying that the ones that DON'T are alpha, arm64, hexagon, nds32, parisc,
+s390, csky, microblaze, powerpc, sh, x86, arm, mips, riscv, and xtensa.
+
+Which would mean 2/3 of architectures don't wrap clone, and thus arch/sh not
+doing so isn't unusual.
+
+> If fork() and clone() don't need special handling on arch/sh, then
+> clone3 shouldn't
+> need it either, unless the existing ones are also wrong. It looks like
+> some architectures
+> override these to avoid leaking register state from the kernel to the
+> child process.
+
+$ cd arch/sh
+
+$ grep -r clone
+tools/Makefile:# Shamelessly cloned from ARM.
+kernel/process_32.c:int copy_thread(unsigned long clone_flags, unsigned long
+usp, unsigned long arg,
+kernel/process_32.c:	if (clone_flags & CLONE_SETTLS)
+kernel/syscalls/syscall.tbl:120	common	clone				sys_clone
+kernel/syscalls/syscall.tbl:435	common	clone3				sys_clone3
+
+$ grep -r fork
+include/asm/cacheflush.h: *  - flush_cache_dup mm(mm) handles cache flushing
+when forking
+kernel/entry-common.S:	.globl	ret_from_fork
+kernel/entry-common.S:ret_from_fork:
+kernel/cpu/init.c: * state prior to hand forking the idle loop.
+kernel/process_32.c:asmlinkage void ret_from_fork(void);
+kernel/process_32.c:	p->thread.pc = (unsigned long) ret_from_fork;
+kernel/syscalls/syscall.tbl:2	common	fork				sys_fork
+kernel/syscalls/syscall.tbl:190	common	vfork				sys_vfork
+
+Hard to prove a negative, but I'm not seeing any wrappers. It's got some
+callbacks, but I think the existing plumbing is calling them already?
+
+>        Arnd
+
+Rob
