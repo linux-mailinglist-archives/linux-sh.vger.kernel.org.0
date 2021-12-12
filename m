@@ -2,78 +2,74 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E5548471704
-	for <lists+linux-sh@lfdr.de>; Sat, 11 Dec 2021 22:58:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE5284719DC
+	for <lists+linux-sh@lfdr.de>; Sun, 12 Dec 2021 12:47:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231453AbhLKV6b (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sat, 11 Dec 2021 16:58:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54124 "EHLO
+        id S230250AbhLLLru (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sun, 12 Dec 2021 06:47:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231675AbhLKV6a (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sat, 11 Dec 2021 16:58:30 -0500
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7890C0617A2
-        for <linux-sh@vger.kernel.org>; Sat, 11 Dec 2021 13:58:29 -0800 (PST)
-Received: by mail-ed1-x529.google.com with SMTP id x15so41378803edv.1
-        for <linux-sh@vger.kernel.org>; Sat, 11 Dec 2021 13:58:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=hD0jfu1MWy/UXBkBYsVvOAZPApZLyir6gKavdc4BceI=;
-        b=SOBkDHN1upt351fJGA10IENq8Lskn6OtfiA/mtFXWwbxNo6rK0VqMIikUbNdR10QL9
-         NEz57nH7+DwD4ui2QjR5G0PDUg/x30DeYlpAViKmfLpj6c8owgTXHIRe2HlXrWJIYspc
-         p1qexb7VgQzyxOs2U317jKWC2PVt5FsJQNP/qzuU8HlodfKZxoIrg2Y5u0+UlgiuF7n+
-         KF6xHlFhNhhV0WZH+n1XpQNFkro1//sIniT/eC7+Qq7omDixZHJ42uWefxucVRQsgqoP
-         MP9jAyQEdDJw2KiXunMshfyB4wcDGfWvxehuLHSr6op0i/Er4qRI4zT2OKxsbV2QjSnP
-         PYpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=hD0jfu1MWy/UXBkBYsVvOAZPApZLyir6gKavdc4BceI=;
-        b=eiMYGX51sRs29CLzi+woT0Mu9U3M8ZwmHpggL69pA/hGfsVkU4pFnI9t7r6Bfhcq13
-         v8UHqDArKiZU8T00acioLPAh/Fbqc3Ib/Ns/wIetdtxGssbtHtI06s9Fi6SmjWngE4c+
-         ypIB2eZ8xBJx2hc/kMSvnSSE13HkxEJMGj7LysLrMRw4/l/Ww+AzDUbgbM1aiefgmFCN
-         dElMTIz1xAiPLPPkDGwXVRYieleGch04lxle58cfuUFx81gxh92yS7ldlZgVUkiPcrij
-         rrw34lVvIvCeaLGFhlCOucH/SgFph4vWZhzukzB6WSraWVpmWHKP5lZHjd4Lw+OHPpF/
-         c3Zg==
-X-Gm-Message-State: AOAM531Q4fYEvOEBBIknkaJ/FnsoSHoNNdDXCYXz6sWwgix52D6j1+84
-        afRNAXGt36qiQqt2pVknGKJf9hpFbQGsqTtgo5fW6Ui2nD16GUzh1ho=
-X-Google-Smtp-Source: ABdhPJxTVLquc00JfCv8xmVg6F+Df36Ax6F8m8eI1vWHtjjPBaUzu2dvtxl/29t2QJINStCFpJhLct20UqzajIEroTA=
-X-Received: by 2002:a17:907:6da2:: with SMTP id sb34mr33325880ejc.509.1639259897490;
- Sat, 11 Dec 2021 13:58:17 -0800 (PST)
+        with ESMTP id S229464AbhLLLrt (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sun, 12 Dec 2021 06:47:49 -0500
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84685C061714;
+        Sun, 12 Dec 2021 03:47:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=cdIWjpexE795gzuTbGkhPUpnRr/U2TeKiWDOHNiXINU=; b=DBuAHgfzGOIMRSDJohGgbB9HgK
+        ghrV2KCPdFwOYiKPJbGZmSBlu830exEyDU1H933xIMmToosr9grTCGE55WJZij6cZJgiJ1q30Hz6n
+        hZ10t4g0j/sD0EiJhnKSD6jRzu1/6oOpBcVGGwdhdZP63WKKmTkX5QTrHpV8qjjFHIi/X5QMWkaoG
+        kknEssmq/uipXQiDMvDkVUnKo+GmhJFGjhExQwE0EWBz9jMfQIQFxVuyBDOWKu8J+hXb6Owf3uTdh
+        8Fl4Is3Mc1bjDe5u/B8VTKoy9i1C2ETLTUE3K71/BU8t21Bssus2/nA1qsleo4QX3UFxfJvaTfFhq
+        xMZgWXeA==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1mwNKJ-00Bt8s-Ff; Sun, 12 Dec 2021 11:47:35 +0000
+Date:   Sun, 12 Dec 2021 11:47:35 +0000
+From:   Matthew Wilcox <willy@infradead.org>
+To:     David Laight <David.Laight@aculab.com>
+Cc:     'Tiezhu Yang' <yangtiezhu@loongson.cn>,
+        Dave Young <dyoung@redhat.com>, Baoquan He <bhe@redhat.com>,
+        Vivek Goyal <vgoyal@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+        "kexec@lists.infradead.org" <kexec@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Xuefeng Li <lixuefeng@loongson.cn>
+Subject: Re: [PATCH v2 0/2] kdump: simplify code
+Message-ID: <YbXhVxRJfjvKw++W@casper.infradead.org>
+References: <1639193588-7027-1-git-send-email-yangtiezhu@loongson.cn>
+ <0c5cb37139af4f3e85cc2c5115d7d006@AcuMS.aculab.com>
 MIME-Version: 1.0
-Reply-To: martinafrancis022@gmail.com
-Sender: rebeccaalhajidangombe@gmail.com
-Received: by 2002:a17:907:94d3:0:0:0:0 with HTTP; Sat, 11 Dec 2021 13:58:16
- -0800 (PST)
-From:   Martina Francis <martinafrancis61@gmail.com>
-Date:   Sat, 11 Dec 2021 13:58:16 -0800
-X-Google-Sender-Auth: QI6h_ccu4Os7HpLN5lf7FmNkMqQ
-Message-ID: <CANadOMYJBdKak2aObykULF4gdU88=OTR03g+XDqpCofMfFracg@mail.gmail.com>
-Subject: Bom Dia meu querido
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0c5cb37139af4f3e85cc2c5115d7d006@AcuMS.aculab.com>
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
---=20
-Bom Dia meu querido,
-Como vai voc=C3=AA hoje, meu nome =C3=A9 Dona Martina Francis, uma vi=C3=BA=
-va doente.
-Eu tenho um fundo de doa=C3=A7=C3=A3o de ($ 2.700.000,00 USD) MILH=C3=95ES =
-que quero
-doar atrav=C3=A9s de voc=C3=AA para ajudar os =C3=B3rf=C3=A3os, vi=C3=BAvas=
-, deficientes
-f=C3=ADsicos e casas de caridade.
+On Sat, Dec 11, 2021 at 05:53:46PM +0000, David Laight wrote:
+> From: Tiezhu Yang
+> > Sent: 11 December 2021 03:33
+> > 
+> > v2:
+> >   -- add copy_to_user_or_kernel() in lib/usercopy.c
+> >   -- define userbuf as bool type
+> 
+> Instead of having a flag to indicate whether the buffer is user or kernel,
+> would it be better to have two separate buffer pointers.
+> One for a user space buffer, the other for a kernel space buffer.
+> Exactly one of the buffers should always be NULL.
 
-Por favor, volte para mim imediatamente ap=C3=B3s ler esta mensagem para
-obter mais detalhes sobre esta agenda humanit=C3=A1ria.
-
-Deus te aben=C3=A7oe enquanto espero sua resposta.
-Sua irm=C3=A3.
-
-Sra. Martina Francis.
+No.  You should be using an iov_iter instead.  See
+https://lore.kernel.org/all/Ya4bdB0UBJCZhUSo@casper.infradead.org/
+for a start on this.
