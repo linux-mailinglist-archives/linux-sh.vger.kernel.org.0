@@ -2,60 +2,66 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5843D48823C
-	for <lists+linux-sh@lfdr.de>; Sat,  8 Jan 2022 09:02:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 82070488432
+	for <lists+linux-sh@lfdr.de>; Sat,  8 Jan 2022 16:28:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233752AbiAHHwD (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sat, 8 Jan 2022 02:52:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50324 "EHLO
+        id S234539AbiAHP2S (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sat, 8 Jan 2022 10:28:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233665AbiAHHwD (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sat, 8 Jan 2022 02:52:03 -0500
-Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com [IPv6:2607:f8b0:4864:20::f29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09ACDC061574
-        for <linux-sh@vger.kernel.org>; Fri,  7 Jan 2022 23:52:03 -0800 (PST)
-Received: by mail-qv1-xf29.google.com with SMTP id fq10so7851953qvb.10
-        for <linux-sh@vger.kernel.org>; Fri, 07 Jan 2022 23:52:03 -0800 (PST)
+        with ESMTP id S234540AbiAHP2R (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sat, 8 Jan 2022 10:28:17 -0500
+Received: from mail-qv1-xf2c.google.com (mail-qv1-xf2c.google.com [IPv6:2607:f8b0:4864:20::f2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 799DDC061747
+        for <linux-sh@vger.kernel.org>; Sat,  8 Jan 2022 07:28:17 -0800 (PST)
+Received: by mail-qv1-xf2c.google.com with SMTP id ke6so8721909qvb.1
+        for <linux-sh@vger.kernel.org>; Sat, 08 Jan 2022 07:28:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=hLe6inFIpheC1g9qja6CKVg1LizD8q2whZW2tg94BWw=;
-        b=noqkBj8ciNh/uCUrl9mMTOeFH5vcOY4nsGpnS/egFHoscmyXjOu3Uwjiq+HJmAEW/V
-         X8W2ef3+6FgcuQPT4180AmWgyS/ZrV96XWrKQf2T3rRRddLPG25y63AQfokr7CWbAAgS
-         FN+4PurVptWbsE+dlE6NYhii8IddIM0o6WqYoIiekdg98dhIJaj6ICM4hdg3kkDbzQRq
-         5w08LJXz5MplliD/cl/zqfBug5R4hbwAF6S0tQ+MNrE6GeA6KA1+lgq9PAIFhHhUVkUB
-         0vKxUOLLgvouMevW61yUmPbA8rxl+RawHY14jT22+enPc6e9hYVsuxZ2JxPEDTMnXsjA
-         WvXg==
+        bh=jAEA4RXHhQRz3Fj+n3lKmZ2eOrREDuhlbj+OJlhTcUw=;
+        b=qS7liRn3v1fc4VaPwBLZYhdTXpdAhDP0Of8wkHQcUBokNBJ1oH675IEYcIz8JJNGe0
+         yaP/absZyJtUsVCfmn7qfXg0krRVSrduZDrjmpX9ux9y/AP3895DLKaJnTopqc41dIoS
+         s6pgfsrVA5lQ/qaOEQoSmhFxnfHx0WF7zdzqCvp5m1rgawdjurPR8NqWPikGJlEDOCtE
+         tyJguBhq1CFPSOUJwUnTJHkusl+QwdF5LrjFSMIQ9/3VBhH79LR7+jaBwk8ICjy7JEDp
+         RUhCwwLajqglxRYINDHLJRok78GXmX6nM9+vSnhBRuV+bm/UXqiOTI5gBeWVrFl6zKCx
+         9Rcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:reply-to:from:date:message-id
          :subject:to;
-        bh=hLe6inFIpheC1g9qja6CKVg1LizD8q2whZW2tg94BWw=;
-        b=SkBwvfZNBFj5i5Dd0cO0KtOO+7qpJ3AGZr+WlvSdhgKAF0t+ks1xoXxLASf0nSkAmt
-         f8fwS/xGuc8Ugf1Bm+dHTaUAPSTR8g0yiGzBwhN7tJcZPkaogP8LBY6rF5H30xu1AsOB
-         JPEsIeLThEg3iCOxNz1cVHcu/mj8TRyXxUU0u23Y1e0scvFTDeyTSY5DocFcBZop/LQS
-         te60lcRZVq6oOojWyv6YrxTa8eFmW3O4ovhU+Asq+5WffpjlQSbBRpCx4VwJQokP9ecY
-         sKk+ajg5HkKTNlRCiEz0Wwn0iIh/AiTSXF7O8QC7vahSw0ruAejbZTGiFTmGv2m41g74
-         A8Nw==
-X-Gm-Message-State: AOAM533bzrJ5Fe+jTaVj8Oz3Z6Z/6uxWKHotuRpGY/LeK6pPXFlUk/hA
-        ZijFiiRaA2rEe+JrfGGjYQvkrpHNJ0PPMjf2X6E=
-X-Google-Smtp-Source: ABdhPJz5EsLprQsFbmbBvPYAlE3JmFZwnbCH2RdOD80wu4sLuH5R6MT999E9qyePaQFHOlhkqUUGXwGwjRTd/gKX38w=
-X-Received: by 2002:a05:6214:1c8a:: with SMTP id ib10mr45736903qvb.12.1641628322205;
- Fri, 07 Jan 2022 23:52:02 -0800 (PST)
+        bh=jAEA4RXHhQRz3Fj+n3lKmZ2eOrREDuhlbj+OJlhTcUw=;
+        b=wcQZoInCfEMDBNh3Qh+siVMWxA9Eue8hJbtMCgPrcc5q30oER49BOrMcTWBS5MHd0m
+         ju5oaMjm5GlmUjOEELV2JLt8dC11UxHP9d1a7juVd8YA2PWabYmPqgR5rKhtDji3VRmf
+         IW2r3JYmHkUB7bkONOcd8Al2nVhPTtBNm3nIrdEzcFRStICWxdm/zOzdk5RjBatbzXUm
+         WzHSJFxuqJ0m85+S5OsvRxinQuhOtEKhE2h8O2GzLCv9XOnhCjaoYFhrmF2ZhmayfEwr
+         +EkgB2njuKrujy+KoLnLLlbY5CbYrRA6CdyeJhdDc35BE1TQVTSoC2IlEd0sHNVzExvX
+         r94w==
+X-Gm-Message-State: AOAM531yxq/yRpfCSddGRXj8vbiBin+QdctHHHA012oV7DP3MMR4I4Gq
+        IgbodtqxXxOyT5XesV/RVLSBjfTq4rvtD5gscQ8=
+X-Google-Smtp-Source: ABdhPJyPzc6tJBwm8jaci8jRWyn9MMN8O+6h4nQCk7eBzaxOBOXvEbsUoQO874OxtMX236595K5pnsCeSFBcKHHKmpk=
+X-Received: by 2002:a05:6214:c6d:: with SMTP id t13mr46494387qvj.76.1641655696425;
+ Sat, 08 Jan 2022 07:28:16 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:ac8:5fc1:0:0:0:0:0 with HTTP; Fri, 7 Jan 2022 23:52:01 -0800 (PST)
-Reply-To: jean1nasri@gmail.com
-From:   Jean nasri <edae6906@gmail.com>
-Date:   Sat, 8 Jan 2022 08:52:01 +0100
-Message-ID: <CAANBhRK-2YrrKkcmAdfPvgfgt0ncLP7wj0tuH6MWqACgbFDLZQ@mail.gmail.com>
-Subject: Yes,it is true
+Received: by 2002:a05:6214:2462:0:0:0:0 with HTTP; Sat, 8 Jan 2022 07:28:15
+ -0800 (PST)
+Reply-To: sigmondhelvig@gmail.com
+From:   Sigmond Helvig <37737duueu@gmail.com>
+Date:   Sat, 8 Jan 2022 17:28:15 +0200
+Message-ID: <CADhR1xuJN=C1+yg7pJROac9Z16EQBKMpEDVYe1WRjdgCS4EEug@mail.gmail.com>
+Subject: Business Opportunity
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
--- 
-Do you have an account to receive donation funds? Please reply for
-further explanation.
-Nasri.
+Good Day.
+
+My name is Sigmond Helvig, i'm a Banker. I have a profiting business
+opportunity regarding a probate file that can be of a great benefit to
+both of us. Kindly contact me for more details with email:
+sigmondhelvig@gmail.com
+
+Sincerely,
+Sigmond Helvig
