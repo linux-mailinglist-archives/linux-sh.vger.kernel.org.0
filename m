@@ -2,79 +2,89 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 988C4492629
-	for <lists+linux-sh@lfdr.de>; Tue, 18 Jan 2022 13:56:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 81A754934DA
+	for <lists+linux-sh@lfdr.de>; Wed, 19 Jan 2022 07:09:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241231AbiARM4b (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 18 Jan 2022 07:56:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35112 "EHLO
+        id S1350084AbiASGJt (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 19 Jan 2022 01:09:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241094AbiARM4b (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 18 Jan 2022 07:56:31 -0500
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0BB4C061401
-        for <linux-sh@vger.kernel.org>; Tue, 18 Jan 2022 04:56:30 -0800 (PST)
-Received: by mail-wm1-x329.google.com with SMTP id q141-20020a1ca793000000b00347b48dfb53so7283107wme.0
-        for <linux-sh@vger.kernel.org>; Tue, 18 Jan 2022 04:56:30 -0800 (PST)
+        with ESMTP id S234904AbiASGJt (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 19 Jan 2022 01:09:49 -0500
+Received: from mail-ot1-x32d.google.com (mail-ot1-x32d.google.com [IPv6:2607:f8b0:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A13DC061574
+        for <linux-sh@vger.kernel.org>; Tue, 18 Jan 2022 22:09:49 -0800 (PST)
+Received: by mail-ot1-x32d.google.com with SMTP id a10-20020a9d260a000000b005991bd6ae3eso1689083otb.11
+        for <linux-sh@vger.kernel.org>; Tue, 18 Jan 2022 22:09:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=kt7BSYvG+rr2bLEECwLOEMCvBVZotJIk44/4XcKD9H0=;
-        b=qVnMKKFkDFfregDqIMLKYbf/6Rfv7ZYgGOembxhYq270XML2HKFtTQgZWIe4suSlTH
-         9ZzqBt5SMc2HUATvpaoydj6CpAH75hfC5DF+qG4KwifTo4DrFaHm4c8fs1QJQm7jolVG
-         Yz4zXdaQM20LOthQjIWFNEHmWnNyurUbd97AZ4ibUQhIkLNbnMtMag6Xrg6QZ8gZZqDm
-         AhE1vYxascg6oV2aYaMhw3KgbAVODS8uHXaxJLKE26GX1yPfuLfQGBvcHdmtP8IdG3mL
-         tZhPduIc/yXpUOsnqZjXTAJXBz08l+EgG80HPIwCF9codvQmj8aBOWuUqBF+k09ulJ3k
-         hb2w==
+        d=landley-net.20210112.gappssmtp.com; s=20210112;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=43yjm3GBrfxAti0haKpvNlKdelvTPs44VxewE+IQewg=;
+        b=w7CQevK1ocTKilzExf3SnKObXDSsx58lt66yfzm6fDXIjfzuCy5YjAY11nLQrZfAlp
+         WlT3WL10GoythN0zpCk7uNgIlLHgiJiAgU7czJv/zj9SDQDnTFlAHoAvg1YayUgax3xg
+         pVyMNpBui7AEls0FrLisDtF1Un6+qLPuggfP1vo+6LvP6NHoHH0AF1nzTB1QLI2/f5jT
+         Ru7+JoLa4CL81FJIV2WQP1bz+5PlvqNfSiQRdbTdAaPLWAo8tw4OiBJCt4tOMOne+af8
+         0gJ926wFOYOlfiHlj0qaArJrhhDJ9UVvR4Pw1mH0RTJfOpXoR4fUfHHiHe9VdM0J2jtz
+         Pj7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=kt7BSYvG+rr2bLEECwLOEMCvBVZotJIk44/4XcKD9H0=;
-        b=x6v87dPYqBglTS+C8hZmxkAJOwM+3MxuEvftMbRdEzKxeieoMJZQedemPx02xP1O/u
-         LQ9Vp+E/Nuslznxxx7mqgWCFpkupq8VFR6i94QovA+HeZsPjtI66TKm9U1WS8lZfT6Gf
-         sGWA2C5ReKtzvwMVHpfEXFST4LTPsf+Yc/QZgeWxyKFUp5RlCUZJN9DnNmqu9G5fEg2l
-         +IYXHdn/5BR5lTomc1JdZ7XuNs6snwxLNZlO3qQ7mifPyvj9uVexEelbQRKSkFSMmksI
-         0orH6mQpEKZN4wUIfjhtxR3KVJbPVkr/RMj5s5IbvpLs2opCsRsKCGdofewRjcP0fcY2
-         Y4lg==
-X-Gm-Message-State: AOAM533YXJJ3g9Q28roHamojW4oxFTqlW/SF3dltrwAF1FoYdWbs77RL
-        00IoJCO2CkrpfZw/rOc34S4DbkzCbF7UAKN+j1w=
-X-Google-Smtp-Source: ABdhPJxGKt76Lg3GTqSnJwaq8ce07osyp5P35JeSOcN9tb1VXjOIJO04UXEDjKYPd9tAaf1+CAAgchajeREZcdHreE4=
-X-Received: by 2002:a05:6000:1b0e:: with SMTP id f14mr24751578wrz.100.1642510589314;
- Tue, 18 Jan 2022 04:56:29 -0800 (PST)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=43yjm3GBrfxAti0haKpvNlKdelvTPs44VxewE+IQewg=;
+        b=EHUoHamFrFZrh8L76uGefww/xaxgB1NnZTf/kZai2N/QDwxhU5PX2aLMq1xwU4551V
+         hlpRQ+L7TKu8iJZPRSsv13+A/nHN/msSWJj+Fp6KWlN9d1YgXy+W1hi1v4m4eMRhzlIa
+         a6DLdggkgAdnY99BjyPH6TP7SUwnUtt5gufexc9kmYERrjSXvGxg6ZlfCfrfPuf7axh9
+         cT5iA4NIz/hTBDu4yaddbDjIpwz1DEGBDUWgDxC+tcINbfbRCUn+bE7qEWesSg7vkX7R
+         HM8a2btsAFO3avD1KuzsIurAHr8N3119Ycywb6YBhH/sQN/mUnHszlJVt22j5VnoztTr
+         TU8A==
+X-Gm-Message-State: AOAM531OlmVSDW3D8kceSYx0dmWV0ZZaiaeRy1JuFbOAPZK7hDLNApR6
+        6FAOhXkKM00sNDSgR/sMTsmdc1AXtoSmGvQZ
+X-Google-Smtp-Source: ABdhPJwFbV74gNyHoCqPgb6yQEvcst0OtXOE+uZX2uLzQALrl5qaR4mO8F/ufnym8x7MeYNXpMvoDg==
+X-Received: by 2002:a9d:2ed:: with SMTP id 100mr20164142otl.352.1642572588399;
+        Tue, 18 Jan 2022 22:09:48 -0800 (PST)
+Received: from ?IPv6:2607:fb90:c22a:dc8d:282f:5bff:fe84:bdfc? ([2607:fb90:c22a:dc8d:282f:5bff:fe84:bdfc])
+        by smtp.gmail.com with ESMTPSA id 186sm9451106oig.28.2022.01.18.22.09.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Jan 2022 22:09:47 -0800 (PST)
+Subject: Re: Fwd: Debian on Linux-SH4
+To:     =?UTF-8?Q?Robert_=c5=9awi=c4=99cki?= <robert@swiecki.net>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc:     linux-sh@vger.kernel.org, debian-superh@lists.debian.org
+References: <CAP145pjk471P9pUzhf-rpZiQvjd499i-VpL8iRECDWkSKM_cyA@mail.gmail.com>
+ <CAP145pjjyXs40Disg3QhFkkEp8CFXeBCHjn_8Hu=s1cxEjCUQg@mail.gmail.com>
+ <c947a46b-7c5e-6ca3-fabe-ce648d9c182c@physik.fu-berlin.de>
+ <CAP145pjQJkgHx0AhGvDp9Rg0x0KfN1utxMaehrqp8sWNSR4x0g@mail.gmail.com>
+From:   Rob Landley <rob@landley.net>
+Message-ID: <4a7eb3fc-32d8-be06-7932-1423371b7a76@landley.net>
+Date:   Wed, 19 Jan 2022 00:11:49 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Received: by 2002:adf:e18f:0:0:0:0:0 with HTTP; Tue, 18 Jan 2022 04:56:28
- -0800 (PST)
-Reply-To: mohsheikhalhamed@gmail.com
-From:   bratikox <bratikox@gmail.com>
-Date:   Tue, 18 Jan 2022 13:56:28 +0100
-Message-ID: <CAFuXTSxdo5QqN-cWu1zvOLDOxST9c2oW0BX-ZHL4Uwk2Qh45dA@mail.gmail.com>
-Subject: Salam Alaikum /ADIA LOAN OFFER
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CAP145pjQJkgHx0AhGvDp9Rg0x0KfN1utxMaehrqp8sWNSR4x0g@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Salam Alaikum,
+On 1/11/22 5:41 AM, Robert Święcki wrote:
+>> Then run "./debootstrap/debootstrap --second-stage" on the target system.
+>>
+>> If your qemu-user is properly set up to use binfmt (which is currently not the case on my
+>> system), you can omit the "--foreign" option and get a ready-to-boot chroot for Debian sh4.
+> 
+> Thanks, I guess I did it the hard way then (through the debian-installer) :)
 
-We are a United Arab Emirates based investment company known as Abu
-Dhabi Investment Authority working on expanding its portfolio globally
-and financing projects.
+I have a todo item to create a musl-based debian image for sh4. Do either of you
+have an idea what the procedure for that might look like? :)
 
-We are offering Corporate and Personal Loan at 3.5% Interest Rate for
-a duration of 5 to 10 years.
+I've got sh4 musl cross and native compilers built from musl-cross-make, and
+have built a bootable kernel and toybox-based initramfs for sh4
+(https://landley.net/toybox/downloads/binaries/mkroot/latest/sh4.tgz) but don't
+really know what to do about the debian parts of it. (debootstrap is all about
+installing prebuilt binary packages...)
 
-Please get back to us on Email: mohsheikhalhamed@gmail.com ,if you are
-interested for further embellishment.
-
-We also pay 2% commission to brokers who introduce project owners for
-finance or other opportunities.
-
-
- Yours truly,
- Hamed Mohammad
- (Personal Assistant)
- Abu Dhabi Investment Authority
- 211 Corniche, P.O Box 3600
- Abu Dhabi,United Arab Emirates
+Rob
