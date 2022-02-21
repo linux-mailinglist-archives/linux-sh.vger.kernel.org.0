@@ -2,72 +2,148 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5FBE4BCF83
-	for <lists+linux-sh@lfdr.de>; Sun, 20 Feb 2022 16:44:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD8BC4BD63B
+	for <lists+linux-sh@lfdr.de>; Mon, 21 Feb 2022 07:56:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242019AbiBTPir (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sun, 20 Feb 2022 10:38:47 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:42208 "EHLO
+        id S1345347AbiBUGlx (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 21 Feb 2022 01:41:53 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244121AbiBTPin (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sun, 20 Feb 2022 10:38:43 -0500
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B157841604
-        for <linux-sh@vger.kernel.org>; Sun, 20 Feb 2022 07:38:17 -0800 (PST)
-Received: by mail-ed1-x52c.google.com with SMTP id u18so24478611edt.6
-        for <linux-sh@vger.kernel.org>; Sun, 20 Feb 2022 07:38:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=ymEpgIXl54yuSlZg88NLeYK1RJf0YDtYgXWD/9J1GQ0=;
-        b=degv64KeFtdi2zbjsMqCg99XUBwRsWWRsat8pVSE1dsJMyLEQebzW+u8gL6CBfEQQn
-         TR573CG7WA+9vnEdvbzyisLdqVfd2L7tW255YjXAv70Nz6z7oKmPah1XlxlqBd5nDgXH
-         ePUhHpcz6Nz3MIgpiiVSbZwwadbd4mnHSGmsNzIMifS2uWsr5SlJ5m2rsNUPByoI5zhb
-         SR83azGcCTW//SbmgQ0y+vLGSla0uKvjbMIVO2C3U/MToeM9d3wUPHwP8BDBVACmWkyb
-         mbrrj1iz1ehyoQ1IJSYmVaPjfehHwDHBxgq0J/uzM167cyMcPy58BK3LuVjr98uUFJPh
-         U0VQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=ymEpgIXl54yuSlZg88NLeYK1RJf0YDtYgXWD/9J1GQ0=;
-        b=FosEPmxvw83BF2OYxPBkZ/M/B6Q7iIWl6t3e3iBHIlqOJp0T+93rmBu7PbYgu90q+C
-         BnGQwORwnj0jYslc8DbXpPMHrz1jSDKQ1dcsKyIcAJKoVEDhRWIrh3PYio25F7PukTaJ
-         APHWQ8ubYST49rzDKh/6D28CWTBEXeKmGuQmq4cQ78yzEI1dJWPBiIlo+uydrw+swHdZ
-         PV/1rjOD/EN2MjqmbkYUwC4bJ/4e6deg/AHyNSrmA+X7t0DyN3d4jlE+9JrofZQE/gMf
-         I+HkpiRLoI0ZpPPVjU3IlvL/IPz+wDy0y+t5skWnprbaicwAb9L8M0EHFYczRpkI69rp
-         gPiw==
-X-Gm-Message-State: AOAM5319pIfuauQlO/SxS8f9gwZ4yTV+HkY+UiIv4E86EcTFDNcdvYjE
-        h5PQJDTosuZ/5DzVRlBxsIxrFDSacaaAeNxLgZE=
-X-Google-Smtp-Source: ABdhPJz0AN7o9No0fhs6xZEm8hzyX6WOZhNi8B3U8PCYdBi3itNU8MBgMEdAbbMqhnsTf7H9NACa5LH5MJlqKIgsin0=
-X-Received: by 2002:aa7:ce92:0:b0:40f:b89c:18fe with SMTP id
- y18-20020aa7ce92000000b0040fb89c18femr17517323edv.67.1645371495858; Sun, 20
- Feb 2022 07:38:15 -0800 (PST)
-MIME-Version: 1.0
-Received: by 2002:a54:38c1:0:0:0:0:0 with HTTP; Sun, 20 Feb 2022 07:38:15
- -0800 (PST)
-Reply-To: fatibaro01@yahoo.com
-From:   Fatimah Baro <imanosose@gmail.com>
-Date:   Sun, 20 Feb 2022 16:38:15 +0100
-Message-ID: <CAFEyOE7M=ZUrSROmPGAE3yrv-g10xHU=UARo1h+trJF7vepfMA@mail.gmail.com>
-Subject: Business invitation
-To:     imanosose <imanosose@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=2.8 required=5.0 tests=ADVANCE_FEE_3_NEW,BAYES_50,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        with ESMTP id S1345411AbiBUGkf (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 21 Feb 2022 01:40:35 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4C2C7427FB;
+        Sun, 20 Feb 2022 22:39:44 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1B5161476;
+        Sun, 20 Feb 2022 22:39:44 -0800 (PST)
+Received: from p8cg001049571a15.arm.com (unknown [10.163.49.67])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id E13593F70D;
+        Sun, 20 Feb 2022 22:39:40 -0800 (PST)
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+To:     linux-mm@kvack.org, akpm@linux-foundation.org
+Cc:     linux-kernel@vger.kernel.org,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        linux-arch@vger.kernel.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org
+Subject: [PATCH V2 17/30] sh/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+Date:   Mon, 21 Feb 2022 12:08:26 +0530
+Message-Id: <1645425519-9034-18-git-send-email-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1645425519-9034-1-git-send-email-anshuman.khandual@arm.com>
+References: <1645425519-9034-1-git-send-email-anshuman.khandual@arm.com>
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Greetings from Burkina Faso,
-Please pardon me if my request offend your person; I need you to stand
-as my foreign partner for investment in your country. Please reply
-immediately if you are interested, so that I can give you more
-information.
-Fatimah Baro
+This defines and exports a platform specific custom vm_get_page_prot() via
+subscribing ARCH_HAS_VM_GET_PAGE_PROT. Subsequently all __SXXX and __PXXX
+macros can be dropped which are no longer needed.
+
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Rich Felker <dalias@libc.org>
+Cc: linux-sh@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+---
+ arch/sh/Kconfig               |  1 +
+ arch/sh/include/asm/pgtable.h | 17 ----------------
+ arch/sh/mm/mmap.c             | 38 +++++++++++++++++++++++++++++++++++
+ 3 files changed, 39 insertions(+), 17 deletions(-)
+
+diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
+index 2474a04ceac4..f3fcd1c5e002 100644
+--- a/arch/sh/Kconfig
++++ b/arch/sh/Kconfig
+@@ -11,6 +11,7 @@ config SUPERH
+ 	select ARCH_HAS_GCOV_PROFILE_ALL
+ 	select ARCH_HAS_PTE_SPECIAL
+ 	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
++	select ARCH_HAS_VM_GET_PAGE_PROT
+ 	select ARCH_HIBERNATION_POSSIBLE if MMU
+ 	select ARCH_MIGHT_HAVE_PC_PARPORT
+ 	select ARCH_WANT_IPC_PARSE_VERSION
+diff --git a/arch/sh/include/asm/pgtable.h b/arch/sh/include/asm/pgtable.h
+index d7ddb1ec86a0..6fb9ec54cf9b 100644
+--- a/arch/sh/include/asm/pgtable.h
++++ b/arch/sh/include/asm/pgtable.h
+@@ -89,23 +89,6 @@ static inline unsigned long phys_addr_mask(void)
+  * completely separate permission bits for user and kernel space.
+  */
+ 	 /*xwr*/
+-#define __P000	PAGE_NONE
+-#define __P001	PAGE_READONLY
+-#define __P010	PAGE_COPY
+-#define __P011	PAGE_COPY
+-#define __P100	PAGE_EXECREAD
+-#define __P101	PAGE_EXECREAD
+-#define __P110	PAGE_COPY
+-#define __P111	PAGE_COPY
+-
+-#define __S000	PAGE_NONE
+-#define __S001	PAGE_READONLY
+-#define __S010	PAGE_WRITEONLY
+-#define __S011	PAGE_SHARED
+-#define __S100	PAGE_EXECREAD
+-#define __S101	PAGE_EXECREAD
+-#define __S110	PAGE_RWX
+-#define __S111	PAGE_RWX
+ 
+ typedef pte_t *pte_addr_t;
+ 
+diff --git a/arch/sh/mm/mmap.c b/arch/sh/mm/mmap.c
+index 6a1a1297baae..cad14af6c8e6 100644
+--- a/arch/sh/mm/mmap.c
++++ b/arch/sh/mm/mmap.c
+@@ -162,3 +162,41 @@ int valid_mmap_phys_addr_range(unsigned long pfn, size_t size)
+ {
+ 	return 1;
+ }
++
++#ifdef CONFIG_MMU
++pgprot_t vm_get_page_prot(unsigned long vm_flags)
++{
++	switch (vm_flags & (VM_READ | VM_WRITE | VM_EXEC | VM_SHARED)) {
++	case VM_NONE:
++		return PAGE_NONE;
++	case VM_READ:
++		return PAGE_READONLY;
++	case VM_WRITE:
++	case VM_WRITE | VM_READ:
++		return PAGE_COPY;
++	case VM_EXEC:
++	case VM_EXEC | VM_READ:
++		return PAGE_EXECREAD;
++	case VM_EXEC | VM_WRITE:
++	case VM_EXEC | VM_WRITE | VM_READ:
++		return PAGE_COPY;
++	case VM_SHARED:
++		return PAGE_NONE;
++	case VM_SHARED | VM_READ:
++		return PAGE_READONLY;
++	case VM_SHARED | VM_WRITE:
++		return PAGE_WRITEONLY;
++	case VM_SHARED | VM_WRITE | VM_READ:
++		return PAGE_SHARED;
++	case VM_SHARED | VM_EXEC:
++	case VM_SHARED | VM_EXEC | VM_READ:
++		return PAGE_EXECREAD;
++	case VM_SHARED | VM_EXEC | VM_WRITE:
++	case VM_SHARED | VM_EXEC | VM_WRITE | VM_READ:
++		return PAGE_RWX;
++	default:
++		BUILD_BUG();
++	}
++}
++EXPORT_SYMBOL(vm_get_page_prot);
++#endif
+-- 
+2.25.1
+
