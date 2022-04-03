@@ -2,70 +2,134 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E71CC4F06DF
-	for <lists+linux-sh@lfdr.de>; Sun,  3 Apr 2022 05:05:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B4C64F0A5D
+	for <lists+linux-sh@lfdr.de>; Sun,  3 Apr 2022 16:50:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231367AbiDCDHa (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sat, 2 Apr 2022 23:07:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50894 "EHLO
+        id S1344622AbiDCOwD (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sun, 3 Apr 2022 10:52:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231318AbiDCDH3 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sat, 2 Apr 2022 23:07:29 -0400
-X-Greylist: delayed 312 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 02 Apr 2022 20:05:35 PDT
-Received: from mta-out-06.alice.it (mta-out-06.alice.it [217.169.118.12])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2451E31212
-        for <linux-sh@vger.kernel.org>; Sat,  2 Apr 2022 20:05:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alice.it; s=20211207; t=1648955135; 
-        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-        h=Reply-To:From:To:Date:Message-ID:MIME-Version;
-        b=E0Dk+3BjJwmvGqyTx8LT1HazJFEpBfWAzR+bjlLA5abqqnP/UOQvh7Vjr8T2XNWTNzBAxZeeUya+KxY+iNUnoF/+zpjNk4jWZW85h8Or9mHs8yJhEo6Kamer0CbwWRXQhJyaxRnAIIvMtXpGNwI2+MoSHr0bc+1fqsqcgUmKStrkeSy3b8jd1H9zJiI+AAoXWzoBsgoSHL5IvgUXp2aAw771OMbcshy7Wj+GR8UrFX4YMdfJ/mK25wr2RDbytFN9Vv9mCTiSciy/pbxmw54Vn3hjZuN8Qesno4VMYk8XxqCjEAcLkGdgknZ9ex3fqCd5T91ZlJyDVNK8BuH0iY7cZg==
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgedvvddrudeiledgiedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuvffgnffgvefqoffkvfetnffktedpqfgfvfenuceurghilhhouhhtmecufedtudenucfgmhhpthihuchsuhgsjhgvtghtucdluddtmdengfhmphhthicusghougihucdlhedtmdenucfjughrpehrhffvfffkggestddtfedttddttdenucfhrhhomhephggvuchhrghvvgcurghnuchofhhfvghruchtohcuihhnvhgvshhtuchinhcuhihouhhrucgtohhunhhtrhihuchunhguvghrucgruchjohhinhhtuchvvghnthhurhgvuchprghrthhnvghrshhhihhpuchplhgvrghsvgcurhgvphhlhicufhhorhcumhhorhgvucguvghtrghilhhsuceofhgpphgvnhhnrgesrghlihgtvgdrihhtqeenucggtffrrghtthgvrhhnpeehjeetgefhleetiedtkeelfffgjeeugeegleekueffgfegtdekkeeifedvvdffteenucfkphepudejiedrvddvjedrvdegvddrudeltdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhephhgvlhhopegrlhhitggvrdhithdpihhnvghtpedujeeirddvvdejrddvgedvrdduledtpdhmrghilhhfrhhomhepfhgpphgvnhhnrgesrghlihgtvgdrihhtpdhnsggprhgtphhtthhopedupdhrtghpthhtoheplhhinhhugidqshhhsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-RazorGate-Vade-Verdict: clean 60
-X-RazorGate-Vade-Classification: clean
-Received: from alice.it (176.227.242.190) by mta-out-06.alice.it (5.8.807.04) (authenticated as f_penna@alice.it)
-        id 623C9D2100ECF57D for linux-sh@vger.kernel.org; Sun, 3 Apr 2022 05:00:22 +0200
-Reply-To: dougfield20@inbox.lv
-From:   We have an offer to invest in your country under a
-         joint venture partnership please reply for more
-         details <f_penna@alice.it>
+        with ESMTP id S244926AbiDCOwC (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sun, 3 Apr 2022 10:52:02 -0400
+X-Greylist: delayed 339 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 03 Apr 2022 07:50:06 PDT
+Received: from glittertind.blackshift.org (glittertind.blackshift.org [IPv6:2a01:4f8:1c1c:29e9::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9D5E396B6;
+        Sun,  3 Apr 2022 07:50:06 -0700 (PDT)
+Received: from bjornoya.blackshift.org (unknown [IPv6:2a03:f580:87bc:d400:dea6:32ff:feb1:177a])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256
+         client-signature RSA-PSS (4096 bits) client-digest SHA256)
+        (Client CN "bjornoya.blackshift.org", Issuer "R3" (verified OK))
+        by glittertind.blackshift.org (Postfix) with ESMTPS id ED0AE4E1439;
+        Sun,  3 Apr 2022 14:44:25 +0000 (UTC)
+Received: from pengutronix.de (2a03-f580-87bc-d400-2568-5610-be2e-0839.ip6.dokom21.de [IPv6:2a03:f580:87bc:d400:2568:5610:be2e:839])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        (Authenticated sender: mkl-all@blackshift.org)
+        by smtp.blackshift.org (Postfix) with ESMTPSA id 3A11B5932E;
+        Sun,  3 Apr 2022 14:44:25 +0000 (UTC)
+Date:   Sun, 3 Apr 2022 16:44:24 +0200
+From:   Marc Kleine-Budde <mkl@blackshift.org>
 To:     linux-sh@vger.kernel.org
-Date:   02 Apr 2022 20:00:20 -0700
-Message-ID: <20220402200020.1999373E3FC8FE1D@alice.it>
+Cc:     Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Rich Felker <dalias@libc.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] sh: make iounmap() a static inline again
+Message-ID: <20220403144424.f5akrad75xtkncgz@pengutronix.de>
+References: <20220105085746.1116726-1-mkl@pengutronix.de>
 MIME-Version: 1.0
-X-Spam-Status: Yes, score=5.7 required=5.0 tests=BAYES_50,BODY_EMPTY,
-        DKIM_INVALID,DKIM_SIGNED,EMPTY_MESSAGE,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,MISSING_SUBJECT,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_BL,RCVD_IN_MSPIKE_L3,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.7 RCVD_IN_DNSWL_LOW RBL: Sender listed at https://www.dnswl.org/,
-        *       low trust
-        *      [217.169.118.12 listed in list.dnswl.org]
-        *  0.0 RCVD_IN_MSPIKE_L3 RBL: Low reputation (-3)
-        *      [217.169.118.12 listed in bl.mailspike.net]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5006]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [f_penna[at]alice.it]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [dougfield20[at]inbox.lv]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        *  2.3 EMPTY_MESSAGE Message appears to have no textual parts and no
-        *      Subject: text
-        *  1.8 MISSING_SUBJECT Missing Subject: header
-        *  0.1 DKIM_INVALID DKIM or DK signature exists, but is not valid
-        *  0.0 RCVD_IN_MSPIKE_BL Mailspike blacklisted
-        *  0.0 BODY_EMPTY No body text in message
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="y5qda4tomsttcgy4"
+Content-Disposition: inline
+In-Reply-To: <20220105085746.1116726-1-mkl@pengutronix.de>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
+
+--y5qda4tomsttcgy4
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On 05.01.2022 09:57:47, Marc Kleine-Budde wrote:
+> The patch
+>=20
+> | 98c90e5ea34e sh: remove __iounmap
+>=20
+> removed the __iounmap macro for the NOMMU case, but also converted the
+> static inline no-op iounmap() to a macro, resulting in lots of unused
+> variable warnings.
+>=20
+> This patch coverts the macro into a static inline function, similar to
+> previous patches in the sh arch:
+>=20
+> | 4580ba4ad2e6 sh: Convert iounmap() macros to inline functions
+> | 733f0025f0fb sh: prevent warnings when using iounmap
+
+The problem still exists in linus/master, can someone take this patch?
+
+regards,
+Marc
+
+> Fixes: 98c90e5ea34e ("sh: remove __iounmap")
+> Cc: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+> Cc: Sam Ravnborg <sam@ravnborg.org>
+> Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+> Cc: Rich Felker <dalias@libc.org>
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+> ---
+>  arch/sh/include/asm/io.h | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/arch/sh/include/asm/io.h b/arch/sh/include/asm/io.h
+> index cf9a3ec32406..4960b8ff1ad4 100644
+> --- a/arch/sh/include/asm/io.h
+> +++ b/arch/sh/include/asm/io.h
+> @@ -271,7 +271,9 @@ static inline void __iomem *ioremap_prot(phys_addr_t =
+offset, unsigned long size,
+>  #endif /* CONFIG_HAVE_IOREMAP_PROT */
+> =20
+>  #else /* CONFIG_MMU */
+> -#define iounmap(addr)		do { } while (0)
+> +static inline void iounmap(void __iomem *addr)
+> +{
+> +}
+>  #define ioremap(offset, size)	((void __iomem *)(unsigned long)(offset))
+>  #endif /* CONFIG_MMU */
+> =20
+> --=20
+> 2.34.1
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde           |
+Embedded Linux                   | https://www.pengutronix.de  |
+Vertretung West/Dortmund         | Phone: +49-231-2826-924     |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-5555 |
+
+--y5qda4tomsttcgy4
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEBsvAIBsPu6mG7thcrX5LkNig010FAmJJssQACgkQrX5LkNig
+011irQf9HZnQq5ATktTlhzEDcsWEtrTO/zuIuVRQjCjJkoXxx/AXnmr1Bxdhpqpl
+XrJRgk8pqsrkK1RBHLJNKS19NU6ujciVKnOSbJ1hQkQhiXC9CLZI8O0X+PkyrbbZ
+de5pUts2RqImI3s+ejZVCAeGnmaEmp0VAKYmehxbAhwGnRmdxkpYa6Yi/iC3Mhxs
+p0eM6hdbm2wYbMI/jTLUAkZ+vTmK3uG7vHg7Z2m3HWMwQ2024GGiSS97LDKblpEa
+hfCUQ5gfM9Y4BG1S/QOYkB5bl43ZUkLUOk7Gn2Yqvwz4vGugzZ0js53B9YtI+ZKl
+4M/1OI/zd2SHm+ONDwjy4uHfbuj7pQ==
+=O1BU
+-----END PGP SIGNATURE-----
+
+--y5qda4tomsttcgy4--
