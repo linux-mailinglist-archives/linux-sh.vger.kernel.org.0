@@ -2,437 +2,122 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1B234F10FB
-	for <lists+linux-sh@lfdr.de>; Mon,  4 Apr 2022 10:30:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 409D34F1597
+	for <lists+linux-sh@lfdr.de>; Mon,  4 Apr 2022 15:12:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238884AbiDDIcg (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 4 Apr 2022 04:32:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47688 "EHLO
+        id S1349885AbiDDNO2 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 4 Apr 2022 09:14:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238460AbiDDIc2 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 4 Apr 2022 04:32:28 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF2F331937;
-        Mon,  4 Apr 2022 01:30:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1649061030; x=1680597030;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=maSL2cxRqazwpa1HcB3zULcND5265JQwoKkKrstAzyI=;
-  b=XsgUyjLL7lS/rQA4FlMSwpHSUheSIGViHu6RFDBG5F1wlnnFSuTjt9mS
-   Qgaw/XR91l7XebFA3qP/B2+CGEBj/TaWqJKICwSA1n0syhYC0GAU5Dnur
-   lHnoADPBlFOpha9dgt4cZw8VP5ywNkr+UzWblpOos2q4FOcsVaYapbHE3
-   Q0cjTHYzZoR/9c/qta2ptn1hgcCn11KIV7xHCZFyZodJb7V4qfqA0t5z6
-   0no/Qm+Vd/TBzwbcXkAsL95TLQSO2aUHMpaaRSJ0C7YO37ik7W5KSI15R
-   HMaESRyhC5g3i/5Qk9SgHIWe23IBd5xID2Uc0lyySV9oodUch+4ay2ZME
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10306"; a="241052980"
-X-IronPort-AV: E=Sophos;i="5.90,233,1643702400"; 
-   d="scan'208";a="241052980"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2022 01:30:30 -0700
-X-IronPort-AV: E=Sophos;i="5.90,233,1643702400"; 
-   d="scan'208";a="569293625"
-Received: from rhamza-mobl.ger.corp.intel.com (HELO ijarvine-MOBL2.ger.corp.intel.com) ([10.251.211.126])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2022 01:30:20 -0700
-From:   =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To:     linux-serial@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Lukas Wunner <lukas@wunner.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Johan Hovold <johan@kernel.org>, heiko@sntech.de,
-        giulio.benetti@micronovasrl.com,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        linux-api@vger.kernel.org,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>, linux-alpha@vger.kernel.org,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-mips@vger.kernel.org,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>,
-        linux-arch@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: [PATCH v2 08/12] serial: General support for multipoint addresses
-Date:   Mon,  4 Apr 2022 11:29:08 +0300
-Message-Id: <20220404082912.6885-9-ilpo.jarvinen@linux.intel.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220404082912.6885-1-ilpo.jarvinen@linux.intel.com>
-References: <20220404082912.6885-1-ilpo.jarvinen@linux.intel.com>
+        with ESMTP id S1349981AbiDDNO0 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 4 Apr 2022 09:14:26 -0400
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F81E3BF91
+        for <linux-sh@vger.kernel.org>; Mon,  4 Apr 2022 06:12:28 -0700 (PDT)
+Received: from mail-wr1-f41.google.com ([209.85.221.41]) by
+ mrelayeu.kundenserver.de (mreue009 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1MYvTs-1nWsLS2quW-00UrPF; Mon, 04 Apr 2022 15:07:22 +0200
+Received: by mail-wr1-f41.google.com with SMTP id m30so14451164wrb.1;
+        Mon, 04 Apr 2022 06:07:22 -0700 (PDT)
+X-Gm-Message-State: AOAM530c+h48op2UHtrEOs0VSiSnb0bcPTTsU412fVGXz/sZO+rUotG2
+        ZdNR7F0VUfMeUPzOgR43T6lpYLpXslI/47MAmvk=
+X-Google-Smtp-Source: ABdhPJw/K8sYYGcKUcFc4yTdlw9+SOONHXxVgL1yKBMYbeG+8L+jnCtk7Gvh9Q0ehBPBsNK344bb2OH5nTaXtmbK2/w=
+X-Received: by 2002:adf:d081:0:b0:1ef:9378:b7cc with SMTP id
+ y1-20020adfd081000000b001ef9378b7ccmr17503109wrh.407.1649077642251; Mon, 04
+ Apr 2022 06:07:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <Yib9F5SqKda/nH9c@infradead.org> <CAK8P3a1dUVsZzhAe81usLSkvH29zHgiV9fhEkWdq7_W+nQBWbg@mail.gmail.com>
+ <YkmWh2tss8nXKqc5@infradead.org>
+In-Reply-To: <YkmWh2tss8nXKqc5@infradead.org>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Mon, 4 Apr 2022 15:07:06 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a0QdFOJbM72geYTWOKumeKPSCVD8Nje5pBpZWazX0GEnQ@mail.gmail.com>
+Message-ID: <CAK8P3a0QdFOJbM72geYTWOKumeKPSCVD8Nje5pBpZWazX0GEnQ@mail.gmail.com>
+Subject: Re: [RFC PULL] remove arch/h8300
+To:     Christoph Hellwig <hch@infradead.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        "moderated list:H8/300 ARCHITECTURE" 
+        <uclinux-h8-devel@lists.sourceforge.jp>,
+        "open list:TENSILICA XTENSA PORT (xtensa)" 
+        <linux-xtensa@linux-xtensa.org>, Max Filippov <jcmvbkbc@gmail.com>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Damien Le Moal <damien.lemoal@wdc.com>,
+        linux-riscv <linux-riscv@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:9BmX5wrEOGpmHMR2F3z2Bt76ujJUbajTL4OWilqNZyahkgTnsN5
+ 14FWdmHHezznXtIKj30YQnL5gC3iajJkT0ImRntZ1zrXMWolfqEb72+GyMls66tZlqV2Lbn
+ 1cKSFI9PpeFrzdepwtWOp4AeNRB3x+YHr1zbFS6aIkwogNnJU84nLjHAG9P0TapZC4VAcve
+ C0d2Cm06UyXPfBpXDBvwQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:JdGcPWsaUBQ=:F6gYGnIvQUhn5XX8Dji3ua
+ TrzBwpAewxATj44lpG3pd8VbJtc7IN45lmk3fSLeC2YdgxUYl98dJ9d9eYfsU+LGqxu8fKUVO
+ 4STvGviB8Z81fuu7Hzzc/MFOW4qCGX2Py6sXuEDxE0i+4d9mZxf3d3KnGXTb7KGrB4I+0rPLV
+ QLReqs/oCWFBYR/jtyJmSKYJUWzGUIFZtBp5ade2Y+H1jQ0ob536UfjYIs/lCBMqmlTsAOzhL
+ 3I+Ne1lLwQtIkodAB+ajQby9tFm8uXvM/x3I5i1fPIvwmDckelsC6qntewPnzZ5y2fb5o0uzF
+ 7IesYSMjlNqLh7FkM/76z9Z0fAscHWrkkHXtZSi+trqj14iPz9WyoLrSn8v1cl8T9xJze4Jc2
+ u5XsIx6s1EvzzD9W7u48sbUM36oTjKUfeO8Nj7oF/a8TQx+VW3K0DZmO4O72ExrdJ7hx/qf84
+ 6CVz+A0BPjo+UA88smM0GpBIu6zj88RKm2Fa3xh8j2ukX66A4voNiHuJbS1ZKKi01zPH0Lwks
+ Lv52VUyKSWPJUebhTwevwExg4vL02riMmPTCowl0rmXZAjJH67LiG0ihEzF3lGq6Sn6ep4/7j
+ SsDTLTg9d0r1bbm4yk9sAqCU520Z3GkbN5gcFOhRemWTmnncz+OhHUGGXjOpGVkErTYCYHw1x
+ 4lN1CAp/oJRPnc+EmKLUyoLkHAXbiKK6MfLWcA/H9UWJMR35NtQZUzO8gqKNQmq2Dg7AMOaNS
+ hTLksbP22R9FjbOYe2DCuJe0I63NFsfSSeoknBoapZj+knXkb4TdOsujyFOgZ70P4pjEaHbSI
+ Z/oalLKLfpOmVGmevzWZfxSA6JxazEhEqRvT4VDZ3Vluq5grbY=
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Add generic support for serial multipoint addressing. Two new
-ioctls are added. TIOCSADDR is used to indicate the
-destination/receive address. TIOCGADDR returns the current
-address in use. The driver should implement set_addr and get_addr
-to support addressing mode.
+On Sun, Apr 3, 2022 at 2:43 PM Christoph Hellwig <hch@infradead.org> wrote:
+>
+> On Tue, Mar 08, 2022 at 09:19:16AM +0100, Arnd Bergmann wrote:
+> > If there are no other objections, I'll just queue this up for 5.18 in
+> > the asm-generic
+> > tree along with the nds32 removal.
+>
+> So it is the last day of te merge window and arch/h8300 is till there.
+> And checking nw the removal has also not made it to linux-next.  Looks
+> like it is so stale that even the removal gets ignored :(
 
-Adjust ADDRB clearing to happen only if driver does not provide
-set_addr (=the driver doesn't support address mode).
+I was really hoping that someone else would at least comment.
+I've queued it up now for 5.19.
 
-This change is necessary for supporting devices with RS485
-multipoint addressing [*]. A following patch in the patch series
-adds support for Synopsys Designware UART capable for 9th bit
-addressing mode. In this mode, 9th bit is used to indicate an
-address (byte) within the communication line. The 9th bit
-addressing mode is selected using ADDRB introduced by the
-previous patch.
+Should we garbage-collect some of the other nommu platforms where
+we're here? Some of them are just as stale:
 
-Transmit addresses / receiver filter are specified by setting
-the flags SER_ADDR_DEST and/or SER_ADDR_RECV. When the user
-supplies the transmit address, in the 9bit addressing mode it is
-sent out immediately with the 9th bit set to 1. After that, the
-subsequent normal data bytes are sent with 9th bit as 0 and they
-are intended to the device with the given address. It is up to
-receiver to enforce the filter using SER_ADDR_RECV. When userspace
-has supplied the receive address, the driver is expected to handle
-the matching of the address and only data with that address is
-forwarded to the user. Both SER_ADDR_DEST and SER_ADDR_RECV can
-be given at the same time in a single call if the addresses are
-the same.
+1. xtensa nommu has does not compile in mainline and as far as I can
+tell never did
+   (there was https://github.com/jcmvbkbc/linux-xtensa/tree/xtensa-5.6-esp32,
+which
+   worked at some point, but I don't think there was enough interest
+to get in merged)
 
-The user can clear the receive filter with SER_ADDR_RECV_CLEAR.
+2. arch/sh Hitachi/Renesas sh2 (non-j2) support appears to be in a similar state
+    to h8300, I don't think anyone would miss it
 
-[*] Technically, RS485 is just an electronic spec and does not
-itself specify the 9th bit addressing mode but 9th bit seems
-at least "semi-standard" way to do addressing with RS485.
+8<----- This may we where we want to draw the line ----
 
-Cc: linux-api@vger.kernel.org
-Cc: Ivan Kokshaysky <ink@jurassic.park.msu.ru>
-Cc: Matt Turner <mattst88@gmail.com>
-Cc: linux-alpha@vger.kernel.org
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: linux-mips@vger.kernel.org
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: linux-parisc@vger.kernel.org
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: linux-sh@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: sparclinux@vger.kernel.org
-Cc: Chris Zankel <chris@zankel.net>
-Cc: Max Filippov <jcmvbkbc@gmail.com>
-Cc: linux-xtensa@linux-xtensa.org
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: linux-arch@vger.kernel.org
-Cc: linux-doc@vger.kernel.org
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
----
- .../driver-api/serial/serial-rs485.rst        | 23 ++++++-
- arch/alpha/include/uapi/asm/ioctls.h          |  3 +
- arch/mips/include/uapi/asm/ioctls.h           |  3 +
- arch/parisc/include/uapi/asm/ioctls.h         |  3 +
- arch/powerpc/include/uapi/asm/ioctls.h        |  3 +
- arch/sh/include/uapi/asm/ioctls.h             |  3 +
- arch/sparc/include/uapi/asm/ioctls.h          |  3 +
- arch/xtensa/include/uapi/asm/ioctls.h         |  3 +
- drivers/tty/serial/8250/8250_core.c           |  2 +
- drivers/tty/serial/serial_core.c              | 62 ++++++++++++++++++-
- include/linux/serial_core.h                   |  6 ++
- include/uapi/asm-generic/ioctls.h             |  3 +
- include/uapi/linux/serial.h                   |  8 +++
- 13 files changed, 123 insertions(+), 2 deletions(-)
+3. arch/sh j2 support was added in 2016 and doesn't see a lot of
+changes, but I think
+    Rich still cares about it and wants to add J32 support (with MMU)
+in the future
 
-diff --git a/Documentation/driver-api/serial/serial-rs485.rst b/Documentation/driver-api/serial/serial-rs485.rst
-index 6bc824f948f9..2f45f007fa5b 100644
---- a/Documentation/driver-api/serial/serial-rs485.rst
-+++ b/Documentation/driver-api/serial/serial-rs485.rst
-@@ -95,7 +95,28 @@ RS485 Serial Communications
- 		/* Error handling. See errno. */
- 	}
- 
--5. References
-+5. Multipoint Addressing
-+========================
-+
-+   The Linux kernel provides serial_addr structure to handle addressing within
-+   multipoint serial communications line such as RS485. 9th bit addressiong mode
-+   is enabled by adding ADDRB flag in termios c_cflag.
-+
-+   Serial core calls device specific set/get_addr in response to TIOCSADDR and
-+   TIOCGADDR ioctls with a pointer to serial_addr. Destination and receive
-+   address can be specified using serial_addr flags field. Receive address may
-+   also be cleared using flags. Once an address is set, the communication
-+   can occur only with the particular device and other peers are filtered out.
-+   It is left up to the receiver side to enforce the filtering.
-+
-+   Address flags:
-+	- SER_ADDR_RECV: Receive (filter) address.
-+	- SER_ADDR_RECV_CLEAR: Clear receive filter (only for TIOCSADDR).
-+	- SER_ADDR_DEST: Destination address.
-+
-+   Note: not all devices supporting RS485 support multipoint addressing.
-+
-+6. References
- =============
- 
-  [1]	include/uapi/linux/serial.h
-diff --git a/arch/alpha/include/uapi/asm/ioctls.h b/arch/alpha/include/uapi/asm/ioctls.h
-index 971311605288..500cab3e1d6b 100644
---- a/arch/alpha/include/uapi/asm/ioctls.h
-+++ b/arch/alpha/include/uapi/asm/ioctls.h
-@@ -125,4 +125,7 @@
- #define TIOCMIWAIT	0x545C	/* wait for a change on serial input line(s) */
- #define TIOCGICOUNT	0x545D	/* read serial port inline interrupt counts */
- 
-+#define TIOCSADDR	_IOWR('T', 0x63, struct serial_addr)
-+#define TIOCGADDR	_IOWR('T', 0x64, struct serial_addr)
-+
- #endif /* _ASM_ALPHA_IOCTLS_H */
-diff --git a/arch/mips/include/uapi/asm/ioctls.h b/arch/mips/include/uapi/asm/ioctls.h
-index 16aa8a766aec..3859dc46857e 100644
---- a/arch/mips/include/uapi/asm/ioctls.h
-+++ b/arch/mips/include/uapi/asm/ioctls.h
-@@ -96,6 +96,9 @@
- #define TIOCGISO7816	_IOR('T', 0x42, struct serial_iso7816)
- #define TIOCSISO7816	_IOWR('T', 0x43, struct serial_iso7816)
- 
-+#define TIOCSADDR	_IOWR('T', 0x63, struct serial_addr)
-+#define TIOCGADDR	_IOWR('T', 0x64, struct serial_addr)
-+
- /* I hope the range from 0x5480 on is free ... */
- #define TIOCSCTTY	0x5480		/* become controlling tty */
- #define TIOCGSOFTCAR	0x5481
-diff --git a/arch/parisc/include/uapi/asm/ioctls.h b/arch/parisc/include/uapi/asm/ioctls.h
-index 82d1148c6379..62337743db64 100644
---- a/arch/parisc/include/uapi/asm/ioctls.h
-+++ b/arch/parisc/include/uapi/asm/ioctls.h
-@@ -86,6 +86,9 @@
- #define TIOCSTOP	0x5462
- #define TIOCSLTC	0x5462
- 
-+#define TIOCSADDR	_IOWR('T', 0x63, struct serial_addr)
-+#define TIOCGADDR	_IOWR('T', 0x64, struct serial_addr)
-+
- /* Used for packet mode */
- #define TIOCPKT_DATA		 0
- #define TIOCPKT_FLUSHREAD	 1
-diff --git a/arch/powerpc/include/uapi/asm/ioctls.h b/arch/powerpc/include/uapi/asm/ioctls.h
-index 2c145da3b774..84fd69ac366a 100644
---- a/arch/powerpc/include/uapi/asm/ioctls.h
-+++ b/arch/powerpc/include/uapi/asm/ioctls.h
-@@ -120,4 +120,7 @@
- #define TIOCMIWAIT	0x545C	/* wait for a change on serial input line(s) */
- #define TIOCGICOUNT	0x545D	/* read serial port inline interrupt counts */
- 
-+#define TIOCSADDR	_IOWR('T', 0x63, struct serial_addr)
-+#define TIOCGADDR	_IOWR('T', 0x64, struct serial_addr)
-+
- #endif	/* _ASM_POWERPC_IOCTLS_H */
-diff --git a/arch/sh/include/uapi/asm/ioctls.h b/arch/sh/include/uapi/asm/ioctls.h
-index 11866d4f60e1..f82966b7dba2 100644
---- a/arch/sh/include/uapi/asm/ioctls.h
-+++ b/arch/sh/include/uapi/asm/ioctls.h
-@@ -113,4 +113,7 @@
- #define TIOCMIWAIT	_IO('T', 92) /* 0x545C */	/* wait for a change on serial input line(s) */
- #define TIOCGICOUNT	0x545D	/* read serial port inline interrupt counts */
- 
-+#define TIOCSADDR	_IOWR('T', 0x63, struct serial_addr)
-+#define TIOCGADDR	_IOWR('T', 0x64, struct serial_addr)
-+
- #endif /* __ASM_SH_IOCTLS_H */
-diff --git a/arch/sparc/include/uapi/asm/ioctls.h b/arch/sparc/include/uapi/asm/ioctls.h
-index 7fd2f5873c9e..e44624c67c79 100644
---- a/arch/sparc/include/uapi/asm/ioctls.h
-+++ b/arch/sparc/include/uapi/asm/ioctls.h
-@@ -125,6 +125,9 @@
- #define TIOCMIWAIT	0x545C /* Wait for change on serial input line(s) */
- #define TIOCGICOUNT	0x545D /* Read serial port inline interrupt counts */
- 
-+#define TIOCSADDR	_IOWR('T', 0x63, struct serial_addr)
-+#define TIOCGADDR	_IOWR('T', 0x64, struct serial_addr)
-+
- /* Kernel definitions */
- 
- /* Used for packet mode */
-diff --git a/arch/xtensa/include/uapi/asm/ioctls.h b/arch/xtensa/include/uapi/asm/ioctls.h
-index 6d4a87296c95..759ca9377f2a 100644
---- a/arch/xtensa/include/uapi/asm/ioctls.h
-+++ b/arch/xtensa/include/uapi/asm/ioctls.h
-@@ -127,4 +127,7 @@
- #define TIOCMIWAIT	_IO('T', 92) /* wait for a change on serial input line(s) */
- #define TIOCGICOUNT	0x545D	/* read serial port inline interrupt counts */
- 
-+#define TIOCSADDR	_IOWR('T', 0x63, struct serial_addr)
-+#define TIOCGADDR	_IOWR('T', 0x64, struct serial_addr)
-+
- #endif /* _XTENSA_IOCTLS_H */
-diff --git a/drivers/tty/serial/8250/8250_core.c b/drivers/tty/serial/8250/8250_core.c
-index 01d30f6ed8fb..f67bc3b76f65 100644
---- a/drivers/tty/serial/8250/8250_core.c
-+++ b/drivers/tty/serial/8250/8250_core.c
-@@ -1008,6 +1008,8 @@ int serial8250_register_8250_port(const struct uart_8250_port *up)
- 		uart->port.rs485	= up->port.rs485;
- 		uart->rs485_start_tx	= up->rs485_start_tx;
- 		uart->rs485_stop_tx	= up->rs485_stop_tx;
-+		uart->port.set_addr	= up->port.set_addr;
-+		uart->port.get_addr	= up->port.get_addr;
- 		uart->dma		= up->dma;
- 
- 		/* Take tx_loadsz from fifosize if it wasn't set separately */
-diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
-index de198c2acefe..2cd129c78ef6 100644
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -1350,6 +1350,56 @@ static int uart_set_iso7816_config(struct uart_port *port,
- 	return 0;
- }
- 
-+static int uart_set_addr(struct uart_port *port,
-+			 struct serial_addr __user *serial_addr_user)
-+{
-+	struct serial_addr addr;
-+	unsigned long flags;
-+	int ret;
-+
-+	if (!port->set_addr)
-+		return -ENOTTY;
-+
-+	if (copy_from_user(&addr, serial_addr_user, sizeof(*serial_addr_user)))
-+		return -EFAULT;
-+
-+	spin_lock_irqsave(&port->lock, flags);
-+	ret = port->set_addr(port, &addr);
-+	spin_unlock_irqrestore(&port->lock, flags);
-+	if (ret)
-+		return ret;
-+
-+	if (copy_to_user(serial_addr_user, &addr, sizeof(addr)))
-+		return -EFAULT;
-+
-+	return 0;
-+}
-+
-+static int uart_get_addr(struct uart_port *port,
-+			 struct serial_addr __user *serial_addr_user)
-+{
-+	struct serial_addr addr;
-+	unsigned long flags;
-+	int ret;
-+
-+	if (!port->get_addr)
-+		return -ENOTTY;
-+
-+	if (copy_from_user(&addr, serial_addr_user, sizeof(*serial_addr_user)))
-+		return -EFAULT;
-+
-+	spin_lock_irqsave(&port->lock, flags);
-+	ret = port->get_addr(port, &addr);
-+	spin_unlock_irqrestore(&port->lock, flags);
-+	if (ret)
-+		return ret;
-+
-+	if (copy_to_user(serial_addr_user, &addr, sizeof(addr)))
-+		return -EFAULT;
-+
-+	return 0;
-+}
-+
- /*
-  * Called via sys_ioctl.  We can use spin_lock_irq() here.
-  */
-@@ -1427,6 +1477,15 @@ uart_ioctl(struct tty_struct *tty, unsigned int cmd, unsigned long arg)
- 	case TIOCGISO7816:
- 		ret = uart_get_iso7816_config(state->uart_port, uarg);
- 		break;
-+
-+	case TIOCSADDR:
-+		ret = uart_set_addr(uport, uarg);
-+		break;
-+
-+	case TIOCGADDR:
-+		ret = uart_get_addr(uport, uarg);
-+		break;
-+
- 	default:
- 		if (uport->ops->ioctl)
- 			ret = uport->ops->ioctl(uport, cmd, arg);
-@@ -1493,7 +1552,8 @@ static void uart_set_termios(struct tty_struct *tty,
- 		goto out;
- 	}
- 
--	tty->termios.c_cflag &= ~ADDRB;
-+	if (!uport->set_addr)
-+		tty->termios.c_cflag &= ~ADDRB;
- 
- 	uart_change_speed(tty, state, old_termios);
- 	/* reload cflag from termios; port driver may have overridden flags */
-diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
-index 504d365e2803..a2efd3fe2635 100644
---- a/include/linux/serial_core.h
-+++ b/include/linux/serial_core.h
-@@ -135,6 +135,12 @@ struct uart_port {
- 						struct serial_rs485 *rs485);
- 	int			(*iso7816_config)(struct uart_port *,
- 						  struct serial_iso7816 *iso7816);
-+
-+	int			(*set_addr)(struct uart_port *p,
-+					    struct serial_addr *addr);
-+	int			(*get_addr)(struct uart_port *p,
-+					    struct serial_addr *addr);
-+
- 	unsigned int		irq;			/* irq number */
- 	unsigned long		irqflags;		/* irq flags  */
- 	unsigned int		uartclk;		/* base uart clock */
-diff --git a/include/uapi/asm-generic/ioctls.h b/include/uapi/asm-generic/ioctls.h
-index cdc9f4ca8c27..689743366091 100644
---- a/include/uapi/asm-generic/ioctls.h
-+++ b/include/uapi/asm-generic/ioctls.h
-@@ -106,6 +106,9 @@
- # define FIOQSIZE	0x5460
- #endif
- 
-+#define TIOCSADDR	_IOWR('T', 0x63, struct serial_addr)
-+#define TIOCGADDR	_IOWR('T', 0x64, struct serial_addr)
-+
- /* Used for packet mode */
- #define TIOCPKT_DATA		 0
- #define TIOCPKT_FLUSHREAD	 1
-diff --git a/include/uapi/linux/serial.h b/include/uapi/linux/serial.h
-index fa6b16e5fdd8..8cb785ea7087 100644
---- a/include/uapi/linux/serial.h
-+++ b/include/uapi/linux/serial.h
-@@ -149,4 +149,12 @@ struct serial_iso7816 {
- 	__u32	reserved[5];
- };
- 
-+struct serial_addr {
-+	__u32	flags;
-+#define SER_ADDR_RECV			(1 << 0)
-+#define SER_ADDR_RECV_CLEAR		(1 << 1)
-+#define SER_ADDR_DEST			(1 << 2)
-+	__u32	addr;
-+};
-+
- #endif /* _UAPI_LINUX_SERIAL_H */
--- 
-2.30.2
+4. m68k Dragonball, Coldfire v2 and Coldfire v3 are just as obsolete as SH2 as
+   hardware is concerned, but Greg Ungerer keeps maintaining it, along with the
+   newer Coldfire v4 (with MMU)
 
+5. K210 was added in 2020. I assume you still want to keep it.
+
+7. Arm32 has several Cortex-M based platforms that are mainly kept for
+    legacy users (in particular stm32) or educational value.
+
+
+       Arnd
