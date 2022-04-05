@@ -2,35 +2,47 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B3824F4533
-	for <lists+linux-sh@lfdr.de>; Wed,  6 Apr 2022 00:40:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 703464F5481
+	for <lists+linux-sh@lfdr.de>; Wed,  6 Apr 2022 07:20:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242489AbiDEPZN (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 5 Apr 2022 11:25:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37590 "EHLO
+        id S229726AbiDFFMv (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 6 Apr 2022 01:12:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1385694AbiDEOSr (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 5 Apr 2022 10:18:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41B2A3135A;
-        Tue,  5 Apr 2022 06:07:16 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CF37A61868;
-        Tue,  5 Apr 2022 13:07:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA18DC385A1;
-        Tue,  5 Apr 2022 13:07:11 +0000 (UTC)
-Message-ID: <5b7687d4-8ba5-ad79-8a74-33fc2496a3db@linux-m68k.org>
-Date:   Tue, 5 Apr 2022 23:07:10 +1000
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [RFC PULL] remove arch/h8300
-Content-Language: en-US
-To:     Daniel Palmer <daniel@0x0f.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Christoph Hellwig <hch@infradead.org>,
+        with ESMTP id S236368AbiDEX2I (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 5 Apr 2022 19:28:08 -0400
+X-Greylist: delayed 1442 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 05 Apr 2022 14:51:00 PDT
+Received: from gateway30.websitewelcome.com (gateway30.websitewelcome.com [192.185.184.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 364FB6F48C
+        for <linux-sh@vger.kernel.org>; Tue,  5 Apr 2022 14:50:58 -0700 (PDT)
+Received: from cm12.websitewelcome.com (cm12.websitewelcome.com [100.42.49.8])
+        by gateway30.websitewelcome.com (Postfix) with ESMTP id 43095CFD5
+        for <linux-sh@vger.kernel.org>; Tue,  5 Apr 2022 16:26:55 -0500 (CDT)
+Received: from 162-215-252-75.unifiedlayer.com ([208.91.199.152])
+        by cmsmtp with SMTP
+        id bqhTndoed9AGSbqhTnEslZ; Tue, 05 Apr 2022 16:26:55 -0500
+X-Authority-Reason: nr=8
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=roeck-us.net; s=default; h=In-Reply-To:Content-Type:MIME-Version:References
+        :Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding
+        :Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=etLRv605waIPx1DCrS1r2FtQdxwRWlTwRr0MCFi87mQ=; b=sDX58Fsb0AiIgrUpsTvhohwTrE
+        XQ1vZUwbXi1u2XKNWkOabkdtvSY+nJsJnq0jEJWOR2pWup9lL6B1Mma1ENz8pF3G+ncnOQDMBWueO
+        XHkI5kIBI84YfYzO74YAyKDyDKe2FjwoGqgSZffJ5D+JJXb2Jq5ETNOBfe4fmt1CjLYkwcQ+vhYYD
+        Mp+MjiO2y0hQtXtTYWaQgBv5t2HUUiMwf4OS56xwETZ1BcjgDwyOR2rvANhkO7vmxLAVlqJQlomJS
+        A1LWi97vunmvbWJ2N78LVU+fj8RDpGNVebNiU4xgOzx9rtMLQ/EktX2AhgIrfrya8pzpfhsWoBVtB
+        klltifqw==;
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:57870 helo=localhost)
+        by bh-25.webhostbox.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <linux@roeck-us.net>)
+        id 1nbqhS-003NqP-K5; Tue, 05 Apr 2022 21:26:54 +0000
+Date:   Tue, 5 Apr 2022 14:26:53 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Christoph Hellwig <hch@infradead.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
@@ -41,21 +53,39 @@ Cc:     Arnd Bergmann <arnd@arndb.de>,
         <linux-xtensa@linux-xtensa.org>, Max Filippov <jcmvbkbc@gmail.com>,
         Linux-sh list <linux-sh@vger.kernel.org>,
         linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
         Damien Le Moal <damien.lemoal@wdc.com>,
         linux-riscv <linux-riscv@lists.infradead.org>
+Subject: Re: [RFC PULL] remove arch/h8300
+Message-ID: <20220405212653.GA2482665@roeck-us.net>
 References: <Yib9F5SqKda/nH9c@infradead.org>
  <CAK8P3a1dUVsZzhAe81usLSkvH29zHgiV9fhEkWdq7_W+nQBWbg@mail.gmail.com>
  <YkmWh2tss8nXKqc5@infradead.org>
  <CAK8P3a0QdFOJbM72geYTWOKumeKPSCVD8Nje5pBpZWazX0GEnQ@mail.gmail.com>
- <6a38e8b8-7ccc-afba-6826-cb6e4f92af83@linux-m68k.org>
- <CAFr9PXkk=8HOxPwVvFRzqHZteRREWxSOOcdjrcOPe0d=9AW2yQ@mail.gmail.com>
-From:   Greg Ungerer <gerg@linux-m68k.org>
-In-Reply-To: <CAFr9PXkk=8HOxPwVvFRzqHZteRREWxSOOcdjrcOPe0d=9AW2yQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK8P3a0QdFOJbM72geYTWOKumeKPSCVD8Nje5pBpZWazX0GEnQ@mail.gmail.com>
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - roeck-us.net
+X-BWhitelist: no
+X-Source-IP: 108.223.40.66
+X-Source-L: No
+X-Exim-ID: 1nbqhS-003NqP-K5
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 108-223-40-66.lightspeed.sntcca.sbcglobal.net (localhost) [108.223.40.66]:57870
+X-Source-Auth: guenter@roeck-us.net
+X-Email-Count: 15
+X-Source-Cap: cm9lY2s7YWN0aXZzdG07YmgtMjUud2ViaG9zdGJveC5uZXQ=
+X-Local-Domain: yes
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_PASS,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,32 +93,56 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Daniel,
-
-On 5/4/22 13:23, Daniel Palmer wrote:
-> On Mon, 4 Apr 2022 at 22:42, Greg Ungerer <gerg@linux-m68k.org> wrote:
->> But we could consider the Dragonball support for removal. I keep it compiling,
->> but I don't use it and can't test that it actually works. Not sure that it
->> has been used for a very long time now. And I didn't even realize but its
->> serial driver (68328serial.c) was removed in 2015. No one seems too have
->> noticed and complained.
+On Mon, Apr 04, 2022 at 03:07:06PM +0200, Arnd Bergmann wrote:
+> On Sun, Apr 3, 2022 at 2:43 PM Christoph Hellwig <hch@infradead.org> wrote:
+> >
+> > On Tue, Mar 08, 2022 at 09:19:16AM +0100, Arnd Bergmann wrote:
+> > > If there are no other objections, I'll just queue this up for 5.18 in
+> > > the asm-generic
+> > > tree along with the nds32 removal.
+> >
+> > So it is the last day of te merge window and arch/h8300 is till there.
+> > And checking nw the removal has also not made it to linux-next.  Looks
+> > like it is so stale that even the removal gets ignored :(
 > 
-> I noticed this and I am working on fixing it up for a new Dragonball
-> homebrew machine.
-> I'm trying to add a 68000 machine to QEMU to make the development
-> easier because I'm currently waiting an hour or more for a kernel to
-> load over serial.
-> It might be a few months.
+> I was really hoping that someone else would at least comment.
+> I've queued it up now for 5.19.
 > 
-> It looked like 68328serial.c was removed because someone tried to
-> clean it up and it was decided that no one was using it and it was
-> best to delete it.
-> My plan was to at some point send a series to fix up the issues with
-> the Dragonball support, revert removing the serial driver and adding
-> the patch that cleaned it up.
+> Should we garbage-collect some of the other nommu platforms where
+> we're here? Some of them are just as stale:
+> 
+> 1. xtensa nommu has does not compile in mainline and as far as I can
+> tell never did
+>    (there was https://github.com/jcmvbkbc/linux-xtensa/tree/xtensa-5.6-esp32,
+> which
+>    worked at some point, but I don't think there was enough interest
+> to get in merged)
 
-Nice. I will leave all the 68000/68328 code alone for now then.
+Hmm, I build and test nommu_kc705_defconfig in my test system.
 
-Regards
-Greg
+> 
+> 2. arch/sh Hitachi/Renesas sh2 (non-j2) support appears to be in a similar state
+>     to h8300, I don't think anyone would miss it
+> 
+> 8<----- This may we where we want to draw the line ----
+> 
+> 3. arch/sh j2 support was added in 2016 and doesn't see a lot of
+> changes, but I think
+>     Rich still cares about it and wants to add J32 support (with MMU)
+> in the future
+> 
+> 4. m68k Dragonball, Coldfire v2 and Coldfire v3 are just as obsolete as SH2 as
+>    hardware is concerned, but Greg Ungerer keeps maintaining it, along with the
+>    newer Coldfire v4 (with MMU)
+> 
+> 5. K210 was added in 2020. I assume you still want to keep it.
+> 
+> 7. Arm32 has several Cortex-M based platforms that are mainly kept for
+>     legacy users (in particular stm32) or educational value.
+> 
+I do build and test mps2_defconfig with qemu's mps2-an385 emulation.
 
+I am not saying that those are actively used, and I don't mind dropping
+them, but they do still work.
+
+Guenter
