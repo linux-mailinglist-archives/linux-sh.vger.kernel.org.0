@@ -2,147 +2,132 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD68D4FDCA2
-	for <lists+linux-sh@lfdr.de>; Tue, 12 Apr 2022 13:05:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED59D4FDD7E
+	for <lists+linux-sh@lfdr.de>; Tue, 12 Apr 2022 13:09:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234532AbiDLKhC (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 12 Apr 2022 06:37:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53714 "EHLO
+        id S1344568AbiDLLKb (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 12 Apr 2022 07:10:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1381418AbiDLK3T (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 12 Apr 2022 06:29:19 -0400
-Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78C3F580CA
-        for <linux-sh@vger.kernel.org>; Tue, 12 Apr 2022 02:31:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
-        from:to:cc:subject:date:message-id:mime-version
-        :content-transfer-encoding; s=k1; bh=pXpt/O0wt40ELy2VjiVcNMr4U+X
-        Bfk5SDzhV9fM2Egk=; b=JonB2GfC1bYb3hU/Pm+B/VVayEli2jf5gVR+JuHgVI9
-        0QU1Z1rg+w/ylhmfkssV9mzymBRYToStQ9jqBqjrgUPM2KkGAqoTwbnK1plACiO9
-        nVMgRySQ10W7FikM2QDbyLs5FNnesUrNhNVnvAK8KOyXHkF1EnZXwkwM0UAObKtc
-        =
-Received: (qmail 981999 invoked from network); 12 Apr 2022 11:31:30 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 12 Apr 2022 11:31:30 +0200
-X-UD-Smtp-Session: l3s3148p1@jLPGuXHcAucgAQnoAGZ4AFi7qjeMIP6q
-From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
-To:     linux-mmc@vger.kernel.org
-Cc:     linux-renesas-soc@vger.kernel.org,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
+        with ESMTP id S1353858AbiDLLFA (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 12 Apr 2022 07:05:00 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A13D6548F;
+        Tue, 12 Apr 2022 02:55:39 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: dmitry.osipenko)
+        with ESMTPSA id 1E1521F43F0C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1649757337;
+        bh=L7sIocVMVJFFf6pt5kvonBwHJBi8ufG5aawNMHgSOk0=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=S7aa0qukIEifv3VA3CuUR35b2mrfJnR/HsoJXzpmjRJMCbhxox8PyYd3y4yAh2cci
+         fkdP6WhWpX2fTNoSalTPD6PO9LosH8R/uIddoXqmSbAGkyMpOv7gtxoyhkm7Vdt7Po
+         VE+FMV4P/sBi8qGDGbVNV7G1cE0QQC1Psgi2NgDN4gF7AuPhmOvrPWztAg0OKxrhYx
+         ZY0kqCMPGfjI965JP3tWKRvKNwoFqex5VZBw8ei+llxHp+CnMQUlR0C0Mb9omyZuyR
+         pQwj21iO0qbnTtEuCeKQh+DA2pdqBpS/Tpsp0jFVlk3igIjJYKAd36t5EZ0tHXKfa6
+         Nz+EAW2F2/bCw==
+Message-ID: <24a38d79-b52e-387b-5ef2-954aef05a49d@collabora.com>
+Date:   Tue, 12 Apr 2022 12:55:30 +0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH v7 00/20] Introduce power-off+restart call chain API
+Content-Language: en-US
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Joshua Thompson <funaho@jurai.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Sebastian Reichel <sre@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>, linux-sh@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2] mmc: sh_mmcif: move platform_data header to proper location
-Date:   Tue, 12 Apr 2022 11:31:02 +0200
-Message-Id: <20220412093102.3428-1-wsa+renesas@sang-engineering.com>
-X-Mailer: git-send-email 2.30.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+        Lee Jones <lee.jones@linaro.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-csky@vger.kernel.org,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        xen-devel@lists.xenproject.org,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        linux-tegra <linux-tegra@vger.kernel.org>
+References: <20220411233832.391817-1-dmitry.osipenko@collabora.com>
+ <CAMuHMdVfOpGvF5FR6vFD-3a1h-7Kc_yAKQzWV71PD6mDy6BmZw@mail.gmail.com>
+From:   Dmitry Osipenko <dmitry.osipenko@collabora.com>
+In-Reply-To: <CAMuHMdVfOpGvF5FR6vFD-3a1h-7Kc_yAKQzWV71PD6mDy6BmZw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-We have a dedicated directory for platform_data meanwhile, don't spoil
-the MMC directory with it.
+On 4/12/22 10:06, Geert Uytterhoeven wrote:
+> Hi Dmitry,
+> 
+> On Tue, Apr 12, 2022 at 1:38 AM Dmitry Osipenko
+> <dmitry.osipenko@collabora.com> wrote:
+>> Problem
+>> -------
+>>
+>> SoC devices require power-off call chaining functionality from kernel.
+>> We have a widely used restart chaining provided by restart notifier API,
+>> but nothing for power-off.
+> 
+>> Changelog:
+>>
+>> v7: - Rebased on a recent linux-next. Dropped the recently removed
+>>       NDS32 architecture. Only SH and x86 arches left un-acked.
+>>
+>>     - Added acks from Thomas Bogendoerfer and Krzysztof Kozlowski
+>>       to the MIPS and memory/emif patches respectively.
+> 
+> Looks like you forgot to add the actual acks?
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
----
-
-Change since v1: fixed sorting of includes in the MMCIF driver
-		 (Thanks Geert!)
-
-I don't have the HW to test this but the buildbots are happy with this
-change. I checked that they actually tested the SH builds. To make the
-patch more readable, I used the -M (rename) feature of git-format-patch.
-
- arch/sh/boards/board-sh7757lcr.c                | 2 +-
- arch/sh/boards/mach-ecovec24/setup.c            | 2 +-
- arch/sh/boot/romimage/mmcif-sh7724.c            | 2 +-
- drivers/mmc/host/sh_mmcif.c                     | 2 +-
- include/linux/{mmc => platform_data}/sh_mmcif.h | 2 --
- 5 files changed, 4 insertions(+), 6 deletions(-)
- rename include/linux/{mmc => platform_data}/sh_mmcif.h (99%)
-
-diff --git a/arch/sh/boards/board-sh7757lcr.c b/arch/sh/boards/board-sh7757lcr.c
-index c32b4c6229d3..f39c8196efdf 100644
---- a/arch/sh/boards/board-sh7757lcr.c
-+++ b/arch/sh/boards/board-sh7757lcr.c
-@@ -16,7 +16,7 @@
- #include <linux/io.h>
- #include <linux/mfd/tmio.h>
- #include <linux/mmc/host.h>
--#include <linux/mmc/sh_mmcif.h>
-+#include <linux/platform_data/sh_mmcif.h>
- #include <linux/sh_eth.h>
- #include <linux/sh_intc.h>
- #include <linux/usb/renesas_usbhs.h>
-diff --git a/arch/sh/boards/mach-ecovec24/setup.c b/arch/sh/boards/mach-ecovec24/setup.c
-index 4c9522dd351f..674da7ebd8b7 100644
---- a/arch/sh/boards/mach-ecovec24/setup.c
-+++ b/arch/sh/boards/mach-ecovec24/setup.c
-@@ -19,7 +19,7 @@
- #include <linux/memblock.h>
- #include <linux/mfd/tmio.h>
- #include <linux/mmc/host.h>
--#include <linux/mmc/sh_mmcif.h>
-+#include <linux/platform_data/sh_mmcif.h>
- #include <linux/mtd/physmap.h>
- #include <linux/gpio.h>
- #include <linux/gpio/machine.h>
-diff --git a/arch/sh/boot/romimage/mmcif-sh7724.c b/arch/sh/boot/romimage/mmcif-sh7724.c
-index 6595b6b45bf1..d30123d859e0 100644
---- a/arch/sh/boot/romimage/mmcif-sh7724.c
-+++ b/arch/sh/boot/romimage/mmcif-sh7724.c
-@@ -8,7 +8,7 @@
-  * for more details.
-  */
- 
--#include <linux/mmc/sh_mmcif.h>
-+#include <linux/platform_data/sh_mmcif.h>
- #include <mach/romimage.h>
- 
- #define MMCIF_BASE      (void __iomem *)0xa4ca0000
-diff --git a/drivers/mmc/host/sh_mmcif.c b/drivers/mmc/host/sh_mmcif.c
-index 5f9ebf045b1c..0fd4c9d644dd 100644
---- a/drivers/mmc/host/sh_mmcif.c
-+++ b/drivers/mmc/host/sh_mmcif.c
-@@ -43,12 +43,12 @@
- #include <linux/mmc/host.h>
- #include <linux/mmc/mmc.h>
- #include <linux/mmc/sdio.h>
--#include <linux/mmc/sh_mmcif.h>
- #include <linux/mmc/slot-gpio.h>
- #include <linux/mod_devicetable.h>
- #include <linux/mutex.h>
- #include <linux/of_device.h>
- #include <linux/pagemap.h>
-+#include <linux/platform_data/sh_mmcif.h>
- #include <linux/platform_device.h>
- #include <linux/pm_qos.h>
- #include <linux/pm_runtime.h>
-diff --git a/include/linux/mmc/sh_mmcif.h b/include/linux/platform_data/sh_mmcif.h
-similarity index 99%
-rename from include/linux/mmc/sh_mmcif.h
-rename to include/linux/platform_data/sh_mmcif.h
-index e25533b95d9f..6eb914f958f9 100644
---- a/include/linux/mmc/sh_mmcif.h
-+++ b/include/linux/platform_data/sh_mmcif.h
-@@ -1,7 +1,5 @@
- /* SPDX-License-Identifier: GPL-2.0-only */
- /*
-- * include/linux/mmc/sh_mmcif.h
-- *
-  * platform data for eMMC driver
-  *
-  * Copyright (C) 2010 Renesas Solutions Corp.
--- 
-2.30.2
-
+Good catch, thank you! Indeed, I sent out the version without the acks,
+but luckily it's only the acks that are missing, the code is fine.
