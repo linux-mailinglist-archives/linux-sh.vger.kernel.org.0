@@ -2,103 +2,106 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BE6E502F2C
-	for <lists+linux-sh@lfdr.de>; Fri, 15 Apr 2022 21:17:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 634B75034CE
+	for <lists+linux-sh@lfdr.de>; Sat, 16 Apr 2022 09:51:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347400AbiDOTTw (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 15 Apr 2022 15:19:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35530 "EHLO
+        id S230172AbiDPHw2 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sat, 16 Apr 2022 03:52:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232645AbiDOTTw (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 15 Apr 2022 15:19:52 -0400
-Received: from mail-ot1-x32e.google.com (mail-ot1-x32e.google.com [IPv6:2607:f8b0:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BA4949CB7
-        for <linux-sh@vger.kernel.org>; Fri, 15 Apr 2022 12:17:23 -0700 (PDT)
-Received: by mail-ot1-x32e.google.com with SMTP id c11-20020a9d684b000000b00603307cef05so2275606oto.3
-        for <linux-sh@vger.kernel.org>; Fri, 15 Apr 2022 12:17:23 -0700 (PDT)
+        with ESMTP id S230195AbiDPHwY (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sat, 16 Apr 2022 03:52:24 -0400
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB134FFFA5
+        for <linux-sh@vger.kernel.org>; Sat, 16 Apr 2022 00:49:37 -0700 (PDT)
+Received: by mail-pg1-x544.google.com with SMTP id h5so10073645pgc.7
+        for <linux-sh@vger.kernel.org>; Sat, 16 Apr 2022 00:49:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=landley-net.20210112.gappssmtp.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=PdIDFGQW4UYiVf0M69peoSmdiojSEaqNuqBV2NqZc8U=;
-        b=0BVtvbGjVzsjRc+2SRZo6FtQuKRHY0bMFiXstc0wjsPiOk9WCBEGmJBfKuqAeGof45
-         gpVDYqx32IFNfcTzBnn5cmZHoNgFQXCjq3eUHdjkvnIh/1xTI6r8WMhPytEUjT6uLYLJ
-         cExJu5uJ0tdB6kjwdbK4Um6lTlZtKF62leIkSvASocAuXi20DEQFaqFdYwqHmzgeTSJL
-         EekXUfNNzLHhW3+ARTGLRbGhQAG4qLidXgubjdDELCqmJYGfghXaLulX3paNl4nmI/M1
-         YLOnsZLjHZYAAh0zt5EGwOZ7QQEUW0b1rfibLnT9dMZleNB+b9Hby1YoCoXi5gI5i+UY
-         Jukg==
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=KeMi8W+p20zdR41YZoRj2EapY7imNsLYkAgQIQsIzqY=;
+        b=bJd2DIgtyK+bZCVQpMa9XLiI7bVnFQgVFeGzbZ6bXamjrEFIUCNaIDR9YpvR5iTRQC
+         EoRjHn2hxdGgHpTmUXoJLhLdkz8kw8CpdMkf+RjOM2yxgJf0M2w5tnzpw0NiczM9cGQm
+         aTRY2J48j2+AVBVM6ZplapTERLwB7sqpQHn0KTPy+GATyEE1HlWbU25nZewZyTln9PiO
+         eb2iuPe3VcoLkYjZ6tmC44EeIcF1BzRiek/y+/+gg720T1wEvd/5m2iOgdTIUS3isI5Z
+         q2z1OdX/gYACU6OexrbNcXzEKBC+MKUq0Bm7V68HpmeyS3D5tFhEEP1iOfnkPKJo7x6w
+         XtNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=PdIDFGQW4UYiVf0M69peoSmdiojSEaqNuqBV2NqZc8U=;
-        b=ZI6SIYpzEl/RkwDiHcGj8CrIWBfZUFI0cQGotyG2zI7/9Fl3/8TKsjYMhL6EkfyGiR
-         reLowfyfhdTNzOL6JwCsT8qMrPXlNZKgbaENR1cLY9q4pa71N8QiOoxXXZUhSCw8st9I
-         SPH/1+d6iYLtU/Js6LGY+DgnvxCeBuYTYsEggkkXBm0d411sJ+3vwvNEWv5vV0Nmopg1
-         Fu321DT7RI0Hm3ic65WSYWrgkBM84bENKmbJ3mHDVnlCPF4F2WoKRAiH5mytN1jFt3Rm
-         S4TR77St9wNIUNaVIGl+bDw53bO54qeunsYKCyoHtty//IqM8rFo5Yq0MB68T7vVac8w
-         br3w==
-X-Gm-Message-State: AOAM533v6ckljPIh3dixPYmdyGd1VssO2XqpHn8hZW8pWr2Wj/tONifu
-        ciBpaElkAYuRbX8AnyZPtxHvhw==
-X-Google-Smtp-Source: ABdhPJwufc9Dw5netOvXCeF2GG9ESvEIF+T2ecye6tMC450yb9o/WVAtW1iX7f2vcwiYoZEUnqk7kg==
-X-Received: by 2002:a9d:6503:0:b0:5e6:d8b6:f684 with SMTP id i3-20020a9d6503000000b005e6d8b6f684mr198853otl.289.1650050241494;
-        Fri, 15 Apr 2022 12:17:21 -0700 (PDT)
-Received: from [192.168.86.188] ([136.62.4.88])
-        by smtp.gmail.com with ESMTPSA id eq37-20020a056870a92500b000c6699dad62sm1949141oab.41.2022.04.15.12.17.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 Apr 2022 12:17:20 -0700 (PDT)
-Message-ID: <76a7b33d-6f8b-e660-c64d-027b1bc8e308@landley.net>
-Date:   Fri, 15 Apr 2022 14:21:30 -0500
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=KeMi8W+p20zdR41YZoRj2EapY7imNsLYkAgQIQsIzqY=;
+        b=KsjMDDkPznH7GD6E7CeShQ5wMOkpAaBIDVoQX0Y81bieDEKvHbGbUA/MqP4YMpPEtW
+         IOkGHVIJ3eiYUa26+g8UK7pVLkbIRsJ7lUXobRAxAdSs+yOcshESW1YoGm2xIgasO4Rt
+         WZrx1TM1jhrUVJLVZbIUoOg38bQHsc6t95kUIwkrvG48oEQzgM56AL9VRMvqPIGo0kJ4
+         cSUmKRJ2I6t6HykcHaK4FNUO9FsipWj2Tiu2cESVUMvnUGMCDjOvgaXwznX0bYTR8J5w
+         Z2srZkdCfp1j1jvf1UmFm/Dchz9QApRvbTLYkGmClq5z6V4WC/UqxABlnV95eCw6Kxt1
+         F5TQ==
+X-Gm-Message-State: AOAM5332LICjcytEjTBi4RZd1l+mJ8/w1FpJmcUbRgRiLm//s9AQFULu
+        oYNCQVjapwA1wYBPf+J9sY18dG0Peyxkc5bpN+cYFnotkI8=
+X-Google-Smtp-Source: ABdhPJzPQ782jxaaybf4v05kBQtFRTzv0MMrux20NcZ4Q10XmGrK6dnUIabFDBNBmBOv8fFyQY5zqzYAgf4Cnc3KaCc=
+X-Received: by 2002:a92:508:0:b0:2cb:ebd8:a76b with SMTP id
+ q8-20020a920508000000b002cbebd8a76bmr1009500ile.156.1650095366830; Sat, 16
+ Apr 2022 00:49:26 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.2
-Subject: Re: [PATCH] sh: make !MMU iounmap an inline function
-Content-Language: en-US
-To:     Vincent Whitchurch <vincent.whitchurch@axis.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>
-Cc:     kernel@axis.com, hch@lst.de, kernel test robot <lkp@intel.com>,
-        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220414081257.1487499-1-vincent.whitchurch@axis.com>
-From:   Rob Landley <rob@landley.net>
-In-Reply-To: <20220414081257.1487499-1-vincent.whitchurch@axis.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Received: by 2002:a05:6638:1309:0:0:0:0 with HTTP; Sat, 16 Apr 2022 00:49:26
+ -0700 (PDT)
+Reply-To: daniel.seyba@yahoo.com
+From:   Seyba Daniel <royhalton13@gmail.com>
+Date:   Sat, 16 Apr 2022 09:49:26 +0200
+Message-ID: <CALSxb2w9zQYotuLcRSCPns53ksvT9UrEMVx-1Cp1f8RE7er3cA@mail.gmail.com>
+Subject: Hello,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:544 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [royhalton13[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [royhalton13[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 4/14/22 03:12, Vincent Whitchurch wrote:
-> The current definition of sh's !MMU iounmap makes it unusable in certain
-> kinds of code, such as this instance caught by 0day on a patch posted to
-> the mailing lists:
-> 
->  In file included from include/linux/io.h:13,
->                   from drivers/mtd/devices/phram.c:21:
->  drivers/mtd/devices/phram.c: In function 'register_device':
->  arch/sh/include/asm/io.h:274:33: error: expected expression before 'do'
->    274 | #define iounmap(addr)           do { } while (0)
->        |                                 ^~
->  drivers/mtd/devices/phram.c:150:44: note: in expansion of macro 'iounmap'
->    150 |         cached ? memunmap(new->mtd.priv) : iounmap(new->mtd.priv);
->        |                                            ^~~~~~~
-> 
-> Make it an inline function as it was earlier.
-> 
-> Link: https://lore.kernel.org/lkml/202204131446.omJ5mC54-lkp@intel.com/
-> Fixes: 13f1fc870dd747131 ("sh: move the ioremap implementation out of line")
-> Reported-by: kernel test robot <lkp@intel.com>
-> Signed-off-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
+Hello,
 
-Tested-by: Rob Landley <rob@landley.net>
+I am so sorry contacting you in this means especially when we have never
+met before. I urgently seek your service to represent me in investing in
+your region / country and you will be rewarded for your service without
+affecting your present job with very little time invested in it.
 
-Worked For Me.
+My interest is in buying real estate, private schools or companies with
+potentials for rapid growth in long terms.
 
-Rob
+So please confirm interest by responding back.
+
+My dearest regards
+
+Seyba Daniel
