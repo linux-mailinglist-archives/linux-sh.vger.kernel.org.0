@@ -2,109 +2,177 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FFE15384BD
-	for <lists+linux-sh@lfdr.de>; Mon, 30 May 2022 17:22:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A775A5385B9
+	for <lists+linux-sh@lfdr.de>; Mon, 30 May 2022 18:01:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242101AbiE3PWL (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 30 May 2022 11:22:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59286 "EHLO
+        id S242500AbiE3P7o (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 30 May 2022 11:59:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242954AbiE3PUx (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 30 May 2022 11:20:53 -0400
-Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DEEF6D380
-        for <linux-sh@vger.kernel.org>; Mon, 30 May 2022 07:22:54 -0700 (PDT)
-Received: by mail-io1-xd44.google.com with SMTP id b4so11434587iog.11
-        for <linux-sh@vger.kernel.org>; Mon, 30 May 2022 07:22:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=XJqXgw0Qi4Ge6Q57wB4GlvotoYnhUuSq68y9152a6AE=;
-        b=Uon8wdSqHAkD3+idsDwqsw5/RYE9GUuamAt3cXARqV3NAeDaGTFSLoXs/G0hoAHt+5
-         codSJJxeeG8vzFjwPvQIVi8pQwh8BHkUEnJ12EbeOHHixGjwXNoKXbv093UEgoEUQfeX
-         Wod0GKDhAdiR/Ye/ytirv8v0lLWuUvpQJix1wPyUwccxWGh+xUage9MXo7G5h4Fk521r
-         DI2oe8/v8oseOn3Ob0K+CIOBqiMgej7MNHpUOxL774B1gIBhklt7oanUcWy5rMkcHIBO
-         DPJxFGRqOeAdN5gDE89YSbgO4qUovR5BE7nFCFMjyJGWrnHFIj5hKg5UUE4gd+cXFCdp
-         hO1w==
+        with ESMTP id S240081AbiE3P7g (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 30 May 2022 11:59:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2B51DE034
+        for <linux-sh@vger.kernel.org>; Mon, 30 May 2022 08:53:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1653925982;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=bDYue/Afd3VGZHzU7tYF7qy5xBeBUpqe85rLuoAiRcE=;
+        b=AkXHNJKvAQRHb5OqI+OhXnw4AlFTHU7SQ25I25r8DrkTB9nwXx2U3S7uy3yWEhfxPKMgZ0
+        MCHoCCU4ElbTk7DKNd2mXmRpWE6tOdwsDRWpn7scMraYzymGuve2EYFM1vMWpJYkKpJQS0
+        OjtcJUf23O2R/uhMV8v3cei4In0oe2Y=
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com
+ [209.85.166.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-647-MZG1D_PUO5yZMe72ts0O-w-1; Mon, 30 May 2022 11:53:01 -0400
+X-MC-Unique: MZG1D_PUO5yZMe72ts0O-w-1
+Received: by mail-il1-f197.google.com with SMTP id r9-20020a92cd89000000b002d16798b3cfso8564293ilb.22
+        for <linux-sh@vger.kernel.org>; Mon, 30 May 2022 08:53:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=XJqXgw0Qi4Ge6Q57wB4GlvotoYnhUuSq68y9152a6AE=;
-        b=bnXKJJGVXypVjJZiPbosv7xxDPlQzUTwbRY8p+OAHWBXFPZMetjxdo2MWd2GMew5Za
-         MHRfzxwCA0WX2azFXhrBpMZEjs8V0OoSph7G3/RBnTXl4Z02bmkl5lt92X22OYiu0mhx
-         L0frxDSR54m/WmYlZo4wX/DbxvrRcBYj3cBLGoIGCyzMLu4ZorO8uw8EGIUYcil+RS2S
-         GClVZB2jUG5X6J5Gi9lT5KYJGnfpC/wTCBaOfzwlrWt8ecmjxGOX37RT9b/07RnD8RhN
-         0n7a5CLkE1WQy4YwUJbvk+OpRv5pFyfSDLRLnLScxZGNQpspdEyjW9HcQ1BJtFqyiEVr
-         DAtQ==
-X-Gm-Message-State: AOAM533rmKR5qNGPdKojLnpIrt/cYND+v9vveTsjxVhBu4l1dFaM53hM
-        P+117OjqVuWmbMLpwsaQ2Z8VSw7mpYKNCT4H3hI=
-X-Google-Smtp-Source: ABdhPJwtvJ+07dKTyr7TpOGjLPDpnwsexIyHiV/hfgzfTPNlT+ipRRN6pgsw9s1i3X6T+BTCXU16HSeeuxtReVm1TBY=
-X-Received: by 2002:a05:6638:498e:b0:32e:be76:f908 with SMTP id
- cv14-20020a056638498e00b0032ebe76f908mr20858880jab.66.1653920570933; Mon, 30
- May 2022 07:22:50 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=bDYue/Afd3VGZHzU7tYF7qy5xBeBUpqe85rLuoAiRcE=;
+        b=tGQwYdGIp0rKK7VCoKpvIzBeR9Yxkpzjh5hCAz81iLU6N0YS1Eq6PUPnJ1irDLJG/f
+         PQh41InnvuhGab01pmemzYH6HwkcI0hz7pLspIxURYtkAlcf8kTusZj1LQitB0RTtD+Z
+         +rfHV3NrkbowYRWY4Y2LviW7Scdw3ol8rr76tWg1AKqHgWN+cSziaP/Y2B8C0lif6ktD
+         PD1KP+eZrv0sAZ6FB6EhiY69TQlbZXqoCIkyukCW7dHsiuo5seHdCPJhjK1A3Te3I0BC
+         kAbV3VznTARX0Df1PM9vg4GisIilgm9Fb8Us2LOb+i3VIrbxxvVwDtb58M8+GTJ6yLyw
+         X4Tg==
+X-Gm-Message-State: AOAM5307qbu0K7DBq+82wsigBZ5t/bG+s20FZDdGqA5GUiNOBXawuOOf
+        9qJFcw/nHhp5UEwbyzUUSqZOavgFUff7DQC6D5YIz+PRLezhFM0/iOFeOmv9LVnoftjUZyYCBSu
+        hlqk3JK6B+R7DNSJUpJ8=
+X-Received: by 2002:a5d:9cc8:0:b0:663:2899:4b8 with SMTP id w8-20020a5d9cc8000000b00663289904b8mr16857369iow.192.1653925980593;
+        Mon, 30 May 2022 08:53:00 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyKQIoyyqGc41UCjMUnObS0GZ5Lh8IPSVLY8KDGIOa5YRMfMwdzANPXLWIG/1E7oUnwvcvO1w==
+X-Received: by 2002:a5d:9cc8:0:b0:663:2899:4b8 with SMTP id w8-20020a5d9cc8000000b00663289904b8mr16857337iow.192.1653925980357;
+        Mon, 30 May 2022 08:53:00 -0700 (PDT)
+Received: from xz-m1.local (cpec09435e3e0ee-cmc09435e3e0ec.cpe.net.cable.rogers.com. [99.241.198.116])
+        by smtp.gmail.com with ESMTPSA id 66-20020a021d45000000b0032e75bfe344sm2781109jaj.171.2022.05.30.08.52.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 May 2022 08:52:59 -0700 (PDT)
+Date:   Mon, 30 May 2022 11:52:54 -0400
+From:   Peter Xu <peterx@redhat.com>
+To:     Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc:     Heiko Carstens <hca@linux.ibm.com>, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, Will Deacon <will@kernel.org>,
+        Matt Turner <mattst88@gmail.com>, linux-s390@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Brian Cain <bcain@quicinc.com>, Borislav Petkov <bp@alien8.de>,
+        linux-alpha@vger.kernel.org, Alistair Popple <apopple@nvidia.com>,
+        Jonas Bonn <jonas@southpole.se>,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        linux-snps-arc@lists.infradead.org,
+        Vineet Gupta <vgupta@kernel.org>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Rich Felker <dalias@libc.org>, sparclinux@vger.kernel.org,
+        Russell King <linux@armlinux.org.uk>,
+        David Hildenbrand <david@redhat.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+        linux-xtensa@linux-xtensa.org, linux-sh@vger.kernel.org,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        linux-m68k@lists.linux-m68k.org, linuxppc-dev@lists.ozlabs.org,
+        Richard Henderson <rth@twiddle.net>,
+        Guo Ren <guoren@kernel.org>, linux-parisc@vger.kernel.org,
+        Andrea Arcangeli <aarcange@redhat.com>,
+        Helge Deller <deller@gmx.de>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        linux-um@lists.infradead.org, "H . Peter Anvin" <hpa@zytor.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        openrisc@lists.librecores.org,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        linux-hexagon@vger.kernel.org, Andy Lutomirski <luto@kernel.org>,
+        Stafford Horne <shorne@gmail.com>, linux-csky@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-mips@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Hugh Dickins <hughd@google.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        linux-riscv@lists.infradead.org, Max Filippov <jcmvbkbc@gmail.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Chris Zankel <chris@zankel.net>,
+        Michal Simek <monstr@monstr.eu>, x86@kernel.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Richard Weinberger <richard@nod.at>,
+        Ingo Molnar <mingo@kernel.org>
+Subject: Re: [PATCH v4] mm: Avoid unnecessary page fault retires on shared
+ memory types
+Message-ID: <YpToVpjXmdFqGOpY@xz-m1.local>
+References: <20220527193936.30678-1-peterx@redhat.com>
+ <YpPYkzbrQmy4FjrI@osiris>
+ <33fd4731-9765-d78b-bdc3-f8243c98e81f@linux.ibm.com>
 MIME-Version: 1.0
-Received: by 2002:a05:6622:f06:0:0:0:0 with HTTP; Mon, 30 May 2022 07:22:50
- -0700 (PDT)
-Reply-To: barristerbenjamin221@gmail.com
-From:   Attorney Amadou <koadaidrissa1@gmail.com>
-Date:   Mon, 30 May 2022 07:22:50 -0700
-Message-ID: <CAOh7+P_+cJJknP6BJXj8NWX7nn8nkbA=aoSG2t49pestA9PG0g@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-X-Spam-Status: Yes, score=7.7 required=5.0 tests=BAYES_99,BAYES_999,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:d44 listed in]
-        [list.dnswl.org]
-        *  0.2 BAYES_999 BODY: Bayes spam probability is 99.9 to 100%
-        *      [score: 1.0000]
-        *  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
-        *      [score: 1.0000]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [koadaidrissa1[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [barristerbenjamin221[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [koadaidrissa1[at]gmail.com]
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *******
+In-Reply-To: <33fd4731-9765-d78b-bdc3-f8243c98e81f@linux.ibm.com>
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=peterx@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-SGVsbG8gZGVhciBmcmllbmQuDQoNClBsZWFzZSBJIHdpbGwgbG92ZSB0byBkaXNjdXNzIHNvbWV0
-aGluZyB2ZXJ5IGltcG9ydGFudCB3aXRoIHlvdSwgSQ0Kd2lsbCBhcHByZWNpYXRlIGl0IGlmIHlv
-dSBncmFudCBtZSBhdWRpZW5jZS4NCg0KU2luY2VyZWx5Lg0KQmFycmlzdGVyIEFtYWRvdSBCZW5q
-YW1pbiBFc3EuDQouLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
-Li4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4NCuimquaEm+OB
-quOCi+WPi+S6uuOAgeOBk+OCk+OBq+OBoeOBr+OAgg0KDQrnp4Hjga/jgYLjgarjgZ/jgajpnZ7l
-uLjjgavph43opoHjgarjgZPjgajjgavjgaTjgYTjgaboqbHjgZflkIjjgYbjga7jgYzlpKflpb3j
-gY3jgafjgZnjgIHjgYLjgarjgZ/jgYznp4HjgavogbTooYbjgpLkuI7jgYjjgabjgY/jgozjgozj
-gbDnp4Hjga/jgZ3jgozjgpLmhJ/orJ3jgZfjgb7jgZnjgIINCg0K5b+D44GL44KJ44CCDQrjg5Dj
-g6rjgrnjgr/jg7zjgqLjg57jg4njgqXjg5njg7Pjgrjjg6Pjg5/jg7NFc3HjgIINCg==
+On Mon, May 30, 2022 at 11:35:10AM +0200, Christian Borntraeger wrote:
+> 
+> 
+> Am 29.05.22 um 22:33 schrieb Heiko Carstens:
+> [...]
+> > 
+> > Guess the patch below on top of your patch is what we want.
+> > Just for clarification: if gmap is not NULL then the process is a kvm
+> > process. So, depending on the workload, this optimization makes sense.
+> > 
+> > diff --git a/arch/s390/mm/fault.c b/arch/s390/mm/fault.c
+> > index 4608cc962ecf..e1d40ca341b7 100644
+> > --- a/arch/s390/mm/fault.c
+> > +++ b/arch/s390/mm/fault.c
+> > @@ -436,12 +436,11 @@ static inline vm_fault_t do_exception(struct pt_regs *regs, int access)
+> >   	/* The fault is fully completed (including releasing mmap lock) */
+> >   	if (fault & VM_FAULT_COMPLETED) {
+> > -		/*
+> > -		 * Gmap will need the mmap lock again, so retake it.  TODO:
+> > -		 * only conditionally take the lock when CONFIG_PGSTE set.
+> > -		 */
+> > -		mmap_read_lock(mm);
+> > -		goto out_gmap;
+> > +		if (gmap) {
+> > +			mmap_read_lock(mm);
+> > +			goto out_gmap;
+> > +		}
+> > +		goto out;
+> 
+> Yes, that makes sense. With that
+> 
+> Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+
+Looks sane, thanks Heiko, Christian.  I'll cook another one.
+
+-- 
+Peter Xu
+
