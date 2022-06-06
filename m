@@ -2,64 +2,42 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FE2C53AD65
-	for <lists+linux-sh@lfdr.de>; Wed,  1 Jun 2022 21:48:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F9BE53EC74
+	for <lists+linux-sh@lfdr.de>; Mon,  6 Jun 2022 19:10:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229713AbiFATbP (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 1 Jun 2022 15:31:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58146 "EHLO
+        id S232503AbiFFJIS (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 6 Jun 2022 05:08:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229745AbiFATbL (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 1 Jun 2022 15:31:11 -0400
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B846E17DDC3
-        for <linux-sh@vger.kernel.org>; Wed,  1 Jun 2022 12:28:56 -0700 (PDT)
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-f3381207a5so4047307fac.4
-        for <linux-sh@vger.kernel.org>; Wed, 01 Jun 2022 12:28:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:in-reply-to:references:from:date:message-id
-         :subject:to;
-        bh=Gk4nfCem3ECRa7Gml0J0mN/3RZoOAdfGaQAqyHPKtiI=;
-        b=DxxMd4k8tG1Z+DI+JxuL9225Cp+S+uInl/poXMcuMZiTQV1c8XJNPCuJB0EN9Fm1lJ
-         tjqO15tZbiRtkiZc869kqZb+gTGwGsofr4Ks/EzA24HoqZkeukApCRLbeWaJgYbzN6Uj
-         DJcyUaN0vgzLiaJiK8SKJwd17XWuJUN7X4OrSO+zy2q+txFdEpb8ifoCAb/ECnGeqxQV
-         22+OgKU21rrXICCeKXN25GVJHEIOuX810V30PW3f8Y111fShlwSlQkBARV9N87g0aoLJ
-         wQNCoaF08Ng768jLDvSBCHYHS21HkQkWfLc+tM30B/O2SgLendb0dLrFE3BY6UlGqUm0
-         gBYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:in-reply-to:references
-         :from:date:message-id:subject:to;
-        bh=Gk4nfCem3ECRa7Gml0J0mN/3RZoOAdfGaQAqyHPKtiI=;
-        b=J4x2oWvQ/Q9FLICcUBTh2TbcnJANdroarYRVLH+5pkZGx83fB2EsJsMOYKtv1o9w5v
-         4X3U1eUEdKQ7g9bBj2rxHanAVkJTJd+Re3Qpg1z5++C7mexJQv6ypmJ9ESQ5HhQfq6ap
-         KJl6BYNxWN8VQAl+ppUWskN3NyFatFPJSfRWzKrxO8tgITUKWVebaGZ8jCX0peSEBkbZ
-         RrGveIE2RJiuO6+mgDnKpsgjXdGd7u+PzL7kaeuINvjdYWf32T3WlP4pKq5Hepw4mHXv
-         KP11OoVmeIe1VPmEqcu3wOjoOG5Kc4oyXT5cspJYYMyNnrOfm6VWnunkTeocCpTP5s85
-         oIAw==
-X-Gm-Message-State: AOAM532FqjCRIBM9+m0XKFEkGjofE1gtQtDbqoLem38DQ3OdeFFgnxMt
-        oAxmZR9zcETxGOMyFl2pt4toTskzpQ0b5M1a7EJiBjvgd+8=
-X-Google-Smtp-Source: ABdhPJxRHJ7PowqzwP8FVf7Pao2siL9+mp8F+vsKwg9Hvlld1uXwEH8+vzJyu5zLQk9d57eu+g6BtXkHW1P4ce0P3TA=
-X-Received: by 2002:a05:6870:4619:b0:f1:e78d:fd54 with SMTP id
- z25-20020a056870461900b000f1e78dfd54mr18175523oao.195.1654111088174; Wed, 01
- Jun 2022 12:18:08 -0700 (PDT)
+        with ESMTP id S232464AbiFFJIR (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 6 Jun 2022 05:08:17 -0400
+Received: from albert.telenet-ops.be (albert.telenet-ops.be [IPv6:2a02:1800:110:4::f00:1a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF4321057C
+        for <linux-sh@vger.kernel.org>; Mon,  6 Jun 2022 02:08:15 -0700 (PDT)
+Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed30:4ddc:2f16:838f:9c0c])
+        by albert.telenet-ops.be with bizsmtp
+        id fl8C270034e6eDr06l8Cbl; Mon, 06 Jun 2022 11:08:14 +0200
+Received: from geert (helo=localhost)
+        by ramsan.of.borg with local-esmtp (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1ny8iZ-002urS-KO; Mon, 06 Jun 2022 11:08:11 +0200
+Date:   Mon, 6 Jun 2022 11:08:11 +0200 (CEST)
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+X-X-Sender: geert@ramsan.of.borg
+To:     linux-kernel@vger.kernel.org
+cc:     Kees Cook <keescook@chromium.org>, nvdimm@lists.linux.dev,
+        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+        linux-sh@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-scsi@vger.kernel.org, sparclinux@vger.kernel.org
+Subject: Re: Build regressions/improvements in v5.19-rc1
+In-Reply-To: <20220606082201.2792145-1-geert@linux-m68k.org>
+Message-ID: <alpine.DEB.2.22.394.2206061104510.695137@ramsan.of.borg>
+References: <CAHk-=wgZt-YDSKfdyES2p6A_KJoG8DwQ0mb9CeS8jZYp+0Y2Rw@mail.gmail.com> <20220606082201.2792145-1-geert@linux-m68k.org>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-Received: by 2002:a05:6358:3601:b0:a3:2139:251d with HTTP; Wed, 1 Jun 2022
- 12:18:07 -0700 (PDT)
-Reply-To: johnwinery@online.ee
-In-Reply-To: <CAFqHCSSUC0MpbjYK8d-GCxOG4b6Qbk2uH3+xQDZte6cPBsxLGA@mail.gmail.com>
-References: <CAFqHCSSUC0MpbjYK8d-GCxOG4b6Qbk2uH3+xQDZte6cPBsxLGA@mail.gmail.com>
-From:   johnwinery <alicejohnson8974@gmail.com>
-Date:   Wed, 1 Jun 2022 12:18:07 -0700
-Message-ID: <CAFqHCSTLW5uHwBqcyU-qn7_jF2jtwt2-CjgdN8-B9nAn9yi+vg@mail.gmail.com>
-Subject: Re:
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,4 +45,65 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Greeting ,I had written an earlier mail to you but without response
+On Mon, 6 Jun 2022, Geert Uytterhoeven wrote:
+> Below is the list of build error/warning regressions/improvements in
+> v5.19-rc1[1] compared to v5.18[2].
+>
+> Summarized:
+>  - build errors: +9/-10
+
+> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/f2906aa863381afb0015a9eb7fefad885d4e5a56/ (all 135 configs)
+> [2] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/4b0986a3613c92f4ec1bdc7f60ec66fea135991f/ (131 out of 135 configs)
+
+> 9 error regressions:
+>  + /kisskb/src/arch/um/include/asm/page.h: error: too few arguments to function 'to_phys':  => 105:20
+>  + /kisskb/src/drivers/nvdimm/pmem.c: error: conflicting types for 'to_phys':  => 48:20
+>  + /kisskb/src/drivers/nvdimm/pmem.c: error: control reaches end of non-void function [-Werror=return-type]:  => 324:1
+
+um-x86_64/um-allyesconfig
+
+>  + /kisskb/src/arch/xtensa/kernel/entry.S: Error: unknown pseudo-op: `.bss':  => 2176
+
+xtensa-gcc11/xtensa-allmodconfig
+
+>  + /kisskb/src/drivers/tty/serial/sh-sci.c: error: unused variable 'sport' [-Werror=unused-variable]:  => 2655:26
+
+sh4-gcc11/se7619_defconfig
+sh4-gcc11/sh-allmodconfig
+
+Fix available
+https://lore.kernel.org/all/4ed0a7a0d3fa912a5b44c451884818f2c138ef42.1644914600.git.geert+renesas@glider.be
+
+>  + /kisskb/src/include/linux/fortify-string.h: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]:  => 344:25
+
+powerpc-gcc11/ppc64_book3e_allmodconfig
+
+>  + /kisskb/src/include/ufs/ufshci.h: error: initializer element is not constant:  => 245:36
+
+mipsel-gcc5/mips-allmodconfig
+powerpc-gcc5/powerpc-allmodconfig
+
+FTR, include/ufs/ufshci.h lacks a MAINTAINERS entry.
+
+>  + error: relocation truncated to fit: R_SPARC_WDISP22 against `.init.text':  => (.head.text+0x5100), (.head.text+0x5040)
+>  + error: relocation truncated to fit: R_SPARC_WDISP22 against symbol `leon_smp_cpu_startup' defined in .text section in arch/sparc/kernel/trampoline_32.o:  => (.init.text+0xa4)
+
+sparc64-gcc5/sparc-allmodconfig
+
+> 3 warning regressions:
+
+>  + arch/m68k/configs/multi_defconfig: warning: symbol value 'm' invalid for ZPOOL:  => 61
+>  + arch/m68k/configs/sun3_defconfig: warning: symbol value 'm' invalid for ZPOOL:  => 37
+
+Will be fixed by the m68k defconfig update for v5.20.
+
+Gr{oetje,eeting}s,
+
+ 						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+ 							    -- Linus Torvalds
