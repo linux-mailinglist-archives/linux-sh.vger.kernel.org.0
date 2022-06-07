@@ -2,131 +2,123 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BD5653F9A2
-	for <lists+linux-sh@lfdr.de>; Tue,  7 Jun 2022 11:28:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19F9653FCB5
+	for <lists+linux-sh@lfdr.de>; Tue,  7 Jun 2022 13:01:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239552AbiFGJ2O (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 7 Jun 2022 05:28:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41600 "EHLO
+        id S242336AbiFGLBd (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 7 Jun 2022 07:01:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239514AbiFGJ2N (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 7 Jun 2022 05:28:13 -0400
-Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3D4149F17
-        for <linux-sh@vger.kernel.org>; Tue,  7 Jun 2022 02:28:11 -0700 (PDT)
-Received: by mail-yb1-xb2f.google.com with SMTP id p13so30153366ybm.1
-        for <linux-sh@vger.kernel.org>; Tue, 07 Jun 2022 02:28:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=ohM259uqobJqtM7gttWurWj7P+4iDfPJquHax95olDY=;
-        b=gujHBVxqWIlmngbJHwwatlrY6K2BhXGLJOXKENebOL4hOCXVjvoa+7rQ+wCwOuo7nz
-         8e28HbaszMFtjrNu2xJwHUtJo1p0vWs5cPK29M2FpYQX1yrDGputAW1tF1NfmP59wawm
-         4ciGU9SnxDgRMb84mTOs96+/9zN97uENfqj9/+eZfuG77h5pSaMszmbmnWOwi9m+gNzd
-         5NtwsZACk2ULSP0cRt0MdNUxBuwzIbCfzmloCBb/Ue1QhCyZ8f6GEgrTXVIY7durHnKk
-         UWQF6j7yHnTlxlvI9xCgSzii4NusQH9ADfpyzQwiF9b+OrCBSH3adFs9TwqclNBk9aQF
-         O14A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=ohM259uqobJqtM7gttWurWj7P+4iDfPJquHax95olDY=;
-        b=xC3U5AMF3ZsSWl/bg/8nWRSH96OM2rBJOISFkydA63L52DLz2ZTHay2HLjjObGoHuT
-         GmfDkisg/dv+9tC11+d9Hg6zEUzV4SXGAuTPzc4pndW/zRJ6h4v8oWAqHvWkKwbJ95fb
-         Cb+bX7noQ2g01yKAwvcAyP2w6mgtdFxEaexdh+8QMU2YQE3wt2e4vd0EtBDxasUaisn0
-         9y+189OCKN0Q/1Xl+2ZTd5gDYWRWEBmsDgo33S4r709CnyQHf5L6nZIFix4yQWQ9TSCk
-         8YSXw37hKY14GFz0aQ7w4xKVUU27CILCaze4aKD7X8vmWy/kecdCc5JDIE4YbrCTwxNt
-         sFvw==
-X-Gm-Message-State: AOAM531aVQryCLl/kouh0ruVf0Xutab6TrTWNJrYKVgqfFXwoKpaQE4l
-        xwP0K9B+6mt9WONJGs+F+DA5ntJmiS0xlWFJkrxcNav6f8ZaqzP+
-X-Google-Smtp-Source: ABdhPJxTYNOyqQTj+pRtv7B26L++zgaw4oyR9fAzq9Xjy/qi86fDOL5mMOdKcDA6Petw4QZgBH7CHdeaexgYk1On3ls=
-X-Received: by 2002:a05:6830:919:b0:60a:fe63:e321 with SMTP id
- v25-20020a056830091900b0060afe63e321mr11494607ott.227.1654594080399; Tue, 07
- Jun 2022 02:28:00 -0700 (PDT)
+        with ESMTP id S242611AbiFGLAY (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 7 Jun 2022 07:00:24 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4519831224;
+        Tue,  7 Jun 2022 03:58:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1654599503; x=1686135503;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=xf+xgYb0NBQxQ+h8wlDbNS86vV9+HUcg11x5pXMRmAQ=;
+  b=R2doGKjQuidWS+kP8eBepGTA0o9o2t3YZ1d7pIhaFSvt+amH2modQtqO
+   8OXFpDR1Z0iyOCd16iZiqBN0B3rqGDTOVsbechc0N7hrbOxTNobw4TjlR
+   mZnUK96IULjtFZscvt4FX/X7NxFu+6UeSj9yRomviIhVU79qUDGgV3pzV
+   nM2ANswMciiasZldd+Q0ziDOPbh84MQx9RfZhl8JeFTZ0b0mgNRSS/zkq
+   IvlAXc4Bmpx7shijjRfhE/f94CLJ95gH7ghQNxVijNeDlD2LDB0N5SzXH
+   RlNIwSHZaIpfnei5qaSSy5sA3JElSl0AOm8f6cxPa6PxvWRnQ71S6xloD
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10370"; a="265083760"
+X-IronPort-AV: E=Sophos;i="5.91,283,1647327600"; 
+   d="scan'208";a="265083760"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2022 03:58:22 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,283,1647327600"; 
+   d="scan'208";a="614868186"
+Received: from irvmail001.ir.intel.com ([10.43.11.63])
+  by orsmga001.jf.intel.com with ESMTP; 07 Jun 2022 03:58:16 -0700
+Received: from newjersey.igk.intel.com (newjersey.igk.intel.com [10.102.20.203])
+        by irvmail001.ir.intel.com (8.14.3/8.13.6/MailSET/Hub) with ESMTP id 257AwEl8019500;
+        Tue, 7 Jun 2022 11:58:14 +0100
+From:   Alexander Lobakin <alexandr.lobakin@intel.com>
+To:     Mark Rutland <mark.rutland@arm.com>
+Cc:     Alexander Lobakin <alexandr.lobakin@intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Yury Norov <yury.norov@gmail.com>,
+        "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Matt Turner <mattst88@gmail.com>,
+        Brian Cain <bcain@quicinc.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        "Yoshinori Sato" <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Kees Cook <keescook@chromium.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Marco Elver <elver@google.com>, Borislav Petkov <bp@suse.de>,
+        Tony Luck <tony.luck@intel.com>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        linux-alpha@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 5/6] bitops: wrap non-atomic bitops with a transparent macro
+Date:   Tue,  7 Jun 2022 12:57:18 +0200
+Message-Id: <20220607105718.72434-1-alexandr.lobakin@intel.com>
+X-Mailer: git-send-email 2.36.1
+In-Reply-To: <Yp4q5KlIxmlznvuh@FVFF77S0Q05N.cambridge.arm.com>
+References: <20220606114908.962562-1-alexandr.lobakin@intel.com> <20220606114908.962562-6-alexandr.lobakin@intel.com> <Yp4q5KlIxmlznvuh@FVFF77S0Q05N.cambridge.arm.com>
 MIME-Version: 1.0
-Received: by 2002:a05:6358:99a5:b0:a2:a1fa:9308 with HTTP; Tue, 7 Jun 2022
- 02:28:00 -0700 (PDT)
-Reply-To: robertbaileys_spende@aol.com
-From:   Robert Baileys <mercymiji.j@gmail.com>
-Date:   Tue, 7 Jun 2022 11:28:00 +0200
-Message-ID: <CAAD1zOZ9bCDqBnjmbC3dQfgC=P2zTqAS=TP3q5qK5TFB5=Q9dQ@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=6.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,UNDISC_MONEY autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:b2f listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [mercymiji.j[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.3 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
-        *      email?
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  0.6 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: ******
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
---=20
-Hallo, lieber Beg=C3=BCnstigter,
+From: Mark Rutland <mark.rutland@arm.com>
+Date: Mon, 6 Jun 2022 17:27:16 +0100
 
-Sie haben diese E-Mail von der Robert Bailey Foundation erhalten. Ich
-bin ein pensionierter Regierungsangestellter aus Harlem und ein
-Powerball-Lotterie-Jackpot-Gewinner von 343,8 Millionen Dollar. Ich
-bin der gr=C3=B6=C3=9Fte Jackpot-Gewinner in der Geschichte der New York Lo=
-ttery
-in Amerika. Ich habe diesen Wettbewerb am 27. Oktober 2018 gewonnen
-und m=C3=B6chte Ihnen mitteilen, dass Google in Kooperation mit Microsoft
-Ihre "E-Mail-Adresse" f=C3=BCr meine Anfrage hat und diese 3.000.000,00
-Millionen Euro kosten wird. Ich spende diese 3 Millionen Euro an Sie,
-um auch Wohlt=C3=A4tigkeitsorganisationen und armen Menschen in Ihrer
-Gemeinde zu helfen, damit wir die Welt zu einem besseren Ort f=C3=BCr alle
-machen k=C3=B6nnen. Bitte besuchen Sie die folgende Website f=C3=BCr weiter=
-e
-Informationen, damit Sie diesen 3 Mio. EUR Ausgaben nicht skeptisch
-gegen=C3=BCberstehen.
-https://nypost.com/2018/11/14/meet-the-winner-of-the-biggest-lottery-jackpo=
-t-in-new-york-history/Sie
-Weitere Best=C3=A4tigungen kann ich auch auf meinem Youtube suchen:
-https://www.youtube.com/watch?v=3DH5vT18Ysavc
-Bitte antworten Sie mir per E-Mail (robertbaileys_spende@aol.com).
-Sie m=C3=BCssen diese E-Mail sofort beantworten, damit die =C3=BCberweisend=
-e
-Bank mit dem Erhalt dieser Spende in H=C3=B6he von 3.000.000,00 Millionen
-Euro beginnen kann.
-Bitte kontaktieren Sie die untenstehende E-Mail-Adresse f=C3=BCr weitere
-Informationen, damit Sie diese Spende von der =C3=BCberweisenden Bank
-erhalten k=C3=B6nnen. E-Mail: robertbaileys_spende@aol.com
+> On Mon, Jun 06, 2022 at 01:49:06PM +0200, Alexander Lobakin wrote:
+> > In preparation for altering the non-atomic bitops with a macro, wrap
+> > them in a transparent definition. This requires prepending one more
+> > '_' to their names in order to be able to do that seamlessly.
+> > sparc32 already has the triple-underscored functions, so I had to
+> > rename them ('___' -> 'sp32_').
+> 
+> Could we use an 'arch_' prefix here, like we do for the atomics, or is that
+> already overloaded?
 
-Gr=C3=BC=C3=9Fe,
-Robert Bailey
-* * * * * * * * * * * * * * * *
+Yeah it is, for example, x86 has 'arch_' functions defined in its
+architecture headers[0] and at the same time uses generic
+instrumented '__' helpers[1], so on x86 both underscored and 'arch_'
+are defined and they are not the same.
+Same with those sparc32 triple-underscored, sparc32 at the same time
+uses generic non-instrumented, so it has underscored, 'arch_' and
+triple-underscored.
 
-Powerball-Jackpot-Gewinner
-E-Mail: robertbaileys_spende@aol.com
+In general, bitops are overloaded with tons of prefixes already :)
+I'm not really glad that I introduced one more level, but not that
+we have many options here.
+
+> 
+> Thanks,
+> Mark.
+> 
+> > 
+> > Signed-off-by: Alexander Lobakin <alexandr.lobakin@intel.com>
+> > ---
+
+[...]
+
+> > -- 
+> > 2.36.1
+
+Thanks,
+Olek
