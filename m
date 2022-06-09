@@ -2,129 +2,125 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B66C544A38
-	for <lists+linux-sh@lfdr.de>; Thu,  9 Jun 2022 13:31:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D90FB544AEE
+	for <lists+linux-sh@lfdr.de>; Thu,  9 Jun 2022 13:47:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243906AbiFILbk (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 9 Jun 2022 07:31:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54342 "EHLO
+        id S244689AbiFILrY (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 9 Jun 2022 07:47:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242625AbiFILbT (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 9 Jun 2022 07:31:19 -0400
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E0683A483D
-        for <linux-sh@vger.kernel.org>; Thu,  9 Jun 2022 04:31:11 -0700 (PDT)
-Received: by mail-ej1-x62c.google.com with SMTP id kq6so33820645ejb.11
-        for <linux-sh@vger.kernel.org>; Thu, 09 Jun 2022 04:31:11 -0700 (PDT)
+        with ESMTP id S244644AbiFILrK (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 9 Jun 2022 07:47:10 -0400
+Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F4B2E4437
+        for <linux-sh@vger.kernel.org>; Thu,  9 Jun 2022 04:45:39 -0700 (PDT)
+Received: by mail-lj1-x22e.google.com with SMTP id j20so2214728ljg.8
+        for <linux-sh@vger.kernel.org>; Thu, 09 Jun 2022 04:45:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
+        d=google.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=+XewJc/p+7yp1re11t6BfmEtfp27WPbXPnywgusXXTc=;
-        b=dD0Bz9eW32MHk+TeRLS+QqFpXQSyJG1PFuM0sFc2oIQiPmRbBKI4wiAjUnrY0TOPB3
-         vmLpoVIxPESYT9ISrrirk39KtLhSpCgEKtG3yrDCpv/Gh6ZWSamp4kS8RJg23gIGNIEa
-         lDd2yagv7BcuRvFzrWxMhthjwknH7br96szys=
+        bh=SgEKCxAtx5GHqR+44FfrWhhi7CpRDkMPbE0Ct/xZup4=;
+        b=Wn59IozK5z/jpjt8Q+UhuuKvGQXTYML6Wz855bP4DgDOntSmeYZtPzJNKtrlHwfvHf
+         ApbXtCwKfeZ9hkhsu/hkSYT0kDL5vYvror1qbKdxxG0eCculn2KC1zsnYdh5Z3OJJXaJ
+         5NaEzVt8ZA9DzqbThmfpCgKCv6J/qg9D1M7wTBZXgSSz2qD3+FK0XuiNELILE5TU27LI
+         YLCa4egi9+BCmGd8KGu3bd37kTQfiL8IbIqhCIAXJpOwFaoJ9PTvisfnBF+H1VDtVFno
+         R6GtChMm1zuBAx0vTWGYEU/bAmM0fIwyOLHfidKpaC8t20PfA6rVFqFtlM7yyE0bCNxG
+         aWfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=+XewJc/p+7yp1re11t6BfmEtfp27WPbXPnywgusXXTc=;
-        b=Hm1C97kAcBN6f/8B8nTWyB51ci2n9Lqln9+yyWg08nSgO1g/WjFQwkzogdtRxYn4XX
-         58LAloO07skn+gA71c3HKs+u2+1Hy2a7XBZP1+iwbK5+xXHN/Rc2Gx0IBRUBW9rBuV5E
-         VB89WMBbmFAD+XnvnpGkGPHhq3WJGnUmaJGjSS6U9uqic1Hr9AsRmUHiVcL/TwNQSfmo
-         NPcVQMTsgpwXK3PFTZLPGBKAeV2jUVUr1YL/auQ4ezMqCX6FAVYtBsv1hLPtcbnKoNmg
-         hqV7Kx4lPw9mRJHh5ELGW2dxKMEDNSn56tS8dod3W+kEfPYM19iujc4PH+fh8STv13Z9
-         U+aA==
-X-Gm-Message-State: AOAM5309kfmalvsNFg+bPsJ5K9g88f0qBEJTKHUulaNQV2Xb4sx+mBjR
-        9cloixCBSI07zpzZeG9+4fcSnG8nQKSSZ/Qw55LcXg==
-X-Google-Smtp-Source: ABdhPJx9nV7wAxP/lyAtNedlGfDPIROj9YXpatcH7EqCac1uVlfTSKszMzYbWUxkatf8WgjTCZNOZTjPAlJBoltWDx4=
-X-Received: by 2002:a17:907:c22:b0:711:dc95:3996 with SMTP id
- ga34-20020a1709070c2200b00711dc953996mr13928684ejc.62.1654774269713; Thu, 09
- Jun 2022 04:31:09 -0700 (PDT)
+        bh=SgEKCxAtx5GHqR+44FfrWhhi7CpRDkMPbE0Ct/xZup4=;
+        b=AFoCS7r3y/F5I0k7MpXYBCMw6P7JuUT1BFF1vNGyhpnpQk0w8eC4wuVQzWidODhypX
+         CxYK9WUu5zVdcBTDlXflNcHNhhbhs5aEnLERU9D3DxXjAw7utXXJau9IV+8JRgDg/tIS
+         DGso6FBU2uEbjPa/QiCjC85YxwrHAElWe3n7vr3C6X57b6/leFvozoUlv71OIHB8lBeS
+         oHw/ytOmEcYJYrSeq1v6TFztj0jE/oCzuljeTjyWUDg8hxcwjSWQJXBwXiIcEOr+bjnd
+         BsgPqIiNZpeUFiTB9LwRpXTzsD8FlgHAB6TXTXIwjuq7wlZW/crYrKZybspzGJv6RBDu
+         N15g==
+X-Gm-Message-State: AOAM530te66W53WcVC0dTpCcxJ29erRz01zo9XMrjpocfnHUx2DkvnPR
+        UP/v6BNjUa8LgSJamwtUlFBMNnyRVq7Pmv9JlFSEgQ==
+X-Google-Smtp-Source: ABdhPJzc//2SRPZwIQ355J74Z4MT+McfEWqwj7F8FfClJc+91CoVx7/ooPiEOeCc/G2KtXyyeT2PvA9UqQV4rHuXqnA=
+X-Received: by 2002:a2e:b0fc:0:b0:255:6f92:f9d4 with SMTP id
+ h28-20020a2eb0fc000000b002556f92f9d4mr21861715ljl.92.1654775137344; Thu, 09
+ Jun 2022 04:45:37 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220608142723.103523089@infradead.org> <20220608144517.444659212@infradead.org>
- <YqG6URbihTNCk9YR@alley> <YqHFHB6qqv5wiR8t@worktop.programming.kicks-ass.net>
-In-Reply-To: <YqHFHB6qqv5wiR8t@worktop.programming.kicks-ass.net>
-From:   Sergey Senozhatsky <senozhatsky@chromium.org>
-Date:   Thu, 9 Jun 2022 20:30:58 +0900
-Message-ID: <CA+_sPaoJGrXhNPCs2dKf2J7u07y1xYrRFZBUtkKwzK9GqcHSuQ@mail.gmail.com>
-Subject: Re: [PATCH 24/36] printk: Remove trace_.*_rcuidle() usage
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Petr Mladek <pmladek@suse.com>, ink@jurassic.park.msu.ru,
-        mattst88@gmail.com, vgupta@kernel.org, linux@armlinux.org.uk,
-        ulli.kroll@googlemail.com, linus.walleij@linaro.org,
-        shawnguo@kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
-        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
-        tony@atomide.com, khilman@kernel.org, catalin.marinas@arm.com,
-        will@kernel.org, guoren@kernel.org, bcain@quicinc.com,
-        chenhuacai@kernel.org, kernel@xen0n.name, geert@linux-m68k.org,
-        sammy@sammy.net, monstr@monstr.eu, tsbogend@alpha.franken.de,
-        dinguyen@kernel.org, jonas@southpole.se,
-        stefan.kristiansson@saunalahti.fi, shorne@gmail.com,
-        James.Bottomley@hansenpartnership.com, deller@gmx.de,
-        mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
-        paul.walmsley@sifive.com, palmer@dabbelt.com,
-        aou@eecs.berkeley.edu, hca@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
-        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
-        davem@davemloft.net, richard@nod.at,
-        anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        acme@kernel.org, mark.rutland@arm.com,
-        alexander.shishkin@linux.intel.com, jolsa@kernel.org,
-        namhyung@kernel.org, jgross@suse.com, srivatsa@csail.mit.edu,
-        amakhalov@vmware.com, pv-drivers@vmware.com,
-        boris.ostrovsky@oracle.com, chris@zankel.net, jcmvbkbc@gmail.com,
-        rafael@kernel.org, lenb@kernel.org, pavel@ucw.cz,
-        gregkh@linuxfoundation.org, mturquette@baylibre.com,
-        sboyd@kernel.org, daniel.lezcano@linaro.org, lpieralisi@kernel.org,
-        sudeep.holla@arm.com, agross@kernel.org,
-        bjorn.andersson@linaro.org, anup@brainfault.org,
-        thierry.reding@gmail.com, jonathanh@nvidia.com,
-        jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>,
-        yury.norov@gmail.com, andriy.shevchenko@linux.intel.com,
-        linux@rasmusvillemoes.dk, rostedt@goodmis.org,
-        john.ogness@linutronix.de, paulmck@kernel.org, frederic@kernel.org,
-        quic_neeraju@quicinc.com, josh@joshtriplett.org,
-        mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
-        joel@joelfernandes.org, juri.lelli@redhat.com,
-        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-        bsegall@google.com, mgorman@suse.de, bristot@redhat.com,
-        vschneid@redhat.com, jpoimboe@kernel.org,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-perf-users@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        xen-devel@lists.xenproject.org, linux-xtensa@linux-xtensa.org,
-        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-arch@vger.kernel.org,
-        rcu@vger.kernel.org
+References: <20220609113046.780504-1-elver@google.com> <20220609113046.780504-3-elver@google.com>
+In-Reply-To: <20220609113046.780504-3-elver@google.com>
+From:   Dmitry Vyukov <dvyukov@google.com>
+Date:   Thu, 9 Jun 2022 13:45:25 +0200
+Message-ID: <CACT4Y+ZM3yYYeOGBNEA8+FzjjfMcR-TiENjmCB8Dq-KSPvOWyg@mail.gmail.com>
+Subject: Re: [PATCH 2/8] perf/hw_breakpoint: Mark data __ro_after_init
+To:     Marco Elver <elver@google.com>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        linux-perf-users@vger.kernel.org, x86@kernel.org,
+        linux-sh@vger.kernel.org, kasan-dev@googlegroups.com,
+        linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-My emails are getting rejected... Let me try web-interface
+On Thu, 9 Jun 2022 at 13:31, Marco Elver <elver@google.com> wrote:
+>
+> Mark read-only data after initialization as __ro_after_init.
+>
+> While we are here, turn 'constraints_initialized' into a bool.
+>
+> Signed-off-by: Marco Elver <elver@google.com>
 
-Kudos to Petr for the questions and thanks to PeterZ for the answers.
+Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
 
-On Thu, Jun 9, 2022 at 7:02 PM Peter Zijlstra <peterz@infradead.org> wrote:
-> This is the tracepoint used to spool all of printk into ftrace, I
-> suspect there's users, but I haven't used it myself.
-
-I'm somewhat curious whether we can actually remove that trace event.
+> ---
+>  kernel/events/hw_breakpoint.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/kernel/events/hw_breakpoint.c b/kernel/events/hw_breakpoint.c
+> index 25c94c6e918d..1f718745d569 100644
+> --- a/kernel/events/hw_breakpoint.c
+> +++ b/kernel/events/hw_breakpoint.c
+> @@ -47,7 +47,7 @@ struct bp_cpuinfo {
+>  };
+>
+>  static DEFINE_PER_CPU(struct bp_cpuinfo, bp_cpuinfo[TYPE_MAX]);
+> -static int nr_slots[TYPE_MAX];
+> +static int nr_slots[TYPE_MAX] __ro_after_init;
+>
+>  static struct bp_cpuinfo *get_bp_info(int cpu, enum bp_type_idx type)
+>  {
+> @@ -63,7 +63,7 @@ static const struct rhashtable_params task_bps_ht_params = {
+>         .automatic_shrinking = true,
+>  };
+>
+> -static int constraints_initialized;
+> +static bool constraints_initialized __ro_after_init;
+>
+>  /* Gather the number of total pinned and un-pinned bp in a cpuset */
+>  struct bp_busy_slots {
+> @@ -711,7 +711,7 @@ int __init init_hw_breakpoint(void)
+>         if (ret)
+>                 goto err;
+>
+> -       constraints_initialized = 1;
+> +       constraints_initialized = true;
+>
+>         perf_pmu_register(&perf_breakpoint, "breakpoint", PERF_TYPE_BREAKPOINT);
+>
+> --
+> 2.36.1.255.ge46751e96f-goog
+>
