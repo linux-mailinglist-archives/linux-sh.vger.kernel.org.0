@@ -2,80 +2,79 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CCE354DB8B
-	for <lists+linux-sh@lfdr.de>; Thu, 16 Jun 2022 09:30:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A58354DF07
+	for <lists+linux-sh@lfdr.de>; Thu, 16 Jun 2022 12:26:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359170AbiFPHah (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 16 Jun 2022 03:30:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45908 "EHLO
+        id S1359702AbiFPKZv (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 16 Jun 2022 06:25:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1359169AbiFPHad (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 16 Jun 2022 03:30:33 -0400
-Received: from me-region.ru (email.mesg-online.ru [178.238.126.75])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id 71B2C4FC6A
-        for <linux-sh@vger.kernel.org>; Thu, 16 Jun 2022 00:30:31 -0700 (PDT)
-Received: from rmail.major-express.ru (rmail [127.0.0.1])
-        by me-region.ru (Postfix) with ESMTP id 06A9F2BE759
-        for <linux-sh@vger.kernel.org>; Thu, 16 Jun 2022 10:30:30 +0300 (MSK)
-Authentication-Results: rmail.major-express.ru (amavisd-new); dkim=pass
-        reason="pass (just generated, assumed good)" header.d=me-region.ru
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=me-region.ru; h=
-        reply-to:date:date:from:from:to:subject:subject
-        :content-description:content-transfer-encoding:mime-version
-        :content-type:content-type; s=dkim; t=1655364629; x=1656228630;
-         bh=q+AB6wTcFowTQDN3yBj6V7w56hj7BQnkh6i5A0MwiTQ=; b=ipeXWLOUt7ls
-        blPUUYnAJ1PnW1SgCjn1nLDmEt5VB0KDn5YeUlWKh1cHuebkXzswL4+whjSBluVP
-        RnG74+uqh2f9zP56c9Zw+eK+v8misA1iWKUBTtvMiN3UN5/gGVK+68Ui2rcs7GWV
-        pKunfRUFqhMya903uIMa5JR6ZD6VO5w=
-X-Virus-Scanned: Debian amavisd-new at rmail
-Received: from me-region.ru ([127.0.0.1])
-        by rmail.major-express.ru (rmail.major-express.ru [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id oJ6J5_2LlN5k for <linux-sh@vger.kernel.org>;
-        Thu, 16 Jun 2022 10:30:29 +0300 (MSK)
-Received: from [2.56.59.106] (unknown [2.56.59.106])
-        by me-region.ru (Postfix) with ESMTPSA id 37DB52A529E;
-        Wed, 15 Jun 2022 12:32:43 +0300 (MSK)
-Content-Type: text/plain; charset="iso-8859-1"
+        with ESMTP id S1376509AbiFPKZm (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 16 Jun 2022 06:25:42 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EF8E5D5F6
+        for <linux-sh@vger.kernel.org>; Thu, 16 Jun 2022 03:25:41 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id y32so1520571lfa.6
+        for <linux-sh@vger.kernel.org>; Thu, 16 Jun 2022 03:25:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=lLG88JCPgF7Yhflf4FNi4GQedsSNMbwmPtgneUr9Mu0=;
+        b=ABukwHqeSM98uGcshbCxcb5wQWHGiHfFagypt7/loMb9v2FDjwcTgJrhBtRxVWf1v2
+         BXStPbBsgYSqnUGGl7zGBKM5CMLd7osq6XxwDfWGiMcFn4Pi67uCFUXjvoArP/U14XOy
+         mQeS4UYPV1T6X+0EnR/uBN8wVFg+Gtbvf3f6qSheDv1gjHNHTXbbedH61hcExrUHexoJ
+         rx1Jgk5bVM9b9AL2u7FDe7guhHcyiN+kbqYLFek60/qjs7XvLdFeOWURUBV0kwO8CI+7
+         Cgd19SBjyhxlRHqwqo9b9KDCVX/Ur+QyoWeFC2a2uxKLH7+bPAsMu0Sd6y37iHP37kUl
+         Kx9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=lLG88JCPgF7Yhflf4FNi4GQedsSNMbwmPtgneUr9Mu0=;
+        b=gjeQ3+gvDkhStaKAja87PloA7qGAppHNiSBWf/GLaKzzKVp9L3crhSxKYyjmFNL4PX
+         8/9ISi5OrvMSjK9p4DV7OAhDWQy42ez51dgmpPm0CFXT7HBmA1J64+4WuO3bopDDMuV+
+         n7OyPE7rK7Hthd9O2C/gIf//PpRxzL/f8izL7969Uy52rFD2NIBDHWhaaat4/u1OGHUH
+         ZItIbfLM+62AaNIRS+kBm0fmH3fRKZeewTZHrwXXRhqKJvjTljQDiVm7yBPPPjXEk2NS
+         0GHu+vtLgsyzFU5thgG18QM12o2mks0TKrNKsAkL/X0VFv7DDjgH2pM+0/8wIteQVIV7
+         bUHg==
+X-Gm-Message-State: AJIora/KQMusYXldEsWDnZiiY8V/J+pbebu/Ea+KqwSumgpXBCexjnhY
+        mDH1Vm3t8er+C2UDaOChIOu5PjQgjaw9G045HUo=
+X-Google-Smtp-Source: AGRyM1v58shGjEx7x4KAdFNHXuS9Ixy8KMeEpc8k/MiglXee1uXZfo7fZhbkGUuLzTt8pK6QeU3FZUcLi8QQvzcrZAY=
+X-Received: by 2002:a19:ca0c:0:b0:479:46c:2917 with SMTP id
+ a12-20020a19ca0c000000b00479046c2917mr2283112lfg.160.1655375140632; Thu, 16
+ Jun 2022 03:25:40 -0700 (PDT)
 MIME-Version: 1.0
+Received: by 2002:a05:6520:28c2:b0:1f3:cf5:e20d with HTTP; Thu, 16 Jun 2022
+ 03:25:39 -0700 (PDT)
+Reply-To: clmloans9@gmail.com
+From:   MR ANTHONY EDWARD <bashirusman02021@gmail.com>
+Date:   Thu, 16 Jun 2022 11:25:39 +0100
+Message-ID: <CAGOBX5aJbCGJvAx_fa099PFZmXDUdUgW9p6nY_cgZy+0W2JLtg@mail.gmail.com>
+Subject: DARLEHENSANGEBOT
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Good day, 93.189.94.68
-To:     Recipients <postmaster@me-region.ru>
-From:   "Lynn Page" <postmaster@me-region.ru>
-Date:   Wed, 15 Jun 2022 02:32:40 -0700
-Reply-To: lewislekan@outlook.com
-Message-Id: <20220616073030.06A9F2BE759@me-region.ru>
-X-Spam-Status: Yes, score=5.7 required=5.0 tests=BAYES_50,DKIM_INVALID,
-        DKIM_SIGNED,FREEMAIL_FORGED_REPLYTO,RCVD_IN_BL_SPAMCOP_NET,
-        RCVD_IN_MSPIKE_H2,RCVD_IN_VALIDITY_RPBL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  1.3 RCVD_IN_BL_SPAMCOP_NET RBL: Received via a relay in
-        *      bl.spamcop.net
-        *      [Blocked - see <https://www.spamcop.net/bl.shtml?2.56.59.106>]
-        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
-        *      https://senderscore.org/blocklistlookup/
-        *      [178.238.126.75 listed in bl.score.senderscore.com]
-        * -0.0 RCVD_IN_MSPIKE_H2 RBL: Average reputation (+2)
-        *      [178.238.126.75 listed in wl.mailspike.net]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        *  0.1 DKIM_INVALID DKIM or DK signature exists, but is not valid
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-X-Spam-Level: *****
+X-Spam-Status: No, score=4.3 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
+        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Good day,
+--=20
+Ben=C3=B6tigen Sie ein Gesch=C3=A4ftsdarlehen oder ein Darlehen jeglicher A=
+rt?
+Wenn ja, kontaktieren Sie uns
 
-This email will come to your as surprise, i will like to discuss Business P=
-roposal with u Kindly get back to me asap
-
-Mrs.Lynn Page
+*Vollst=C3=A4ndiger Name:
+* Ben=C3=B6tigte Menge:
+*Leihdauer:
+*Mobiltelefon:
+*Land:
