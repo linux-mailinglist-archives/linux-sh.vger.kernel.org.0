@@ -2,107 +2,195 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2684552EE5
-	for <lists+linux-sh@lfdr.de>; Tue, 21 Jun 2022 11:41:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8169555390E
+	for <lists+linux-sh@lfdr.de>; Tue, 21 Jun 2022 19:39:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349427AbiFUJkM (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 21 Jun 2022 05:40:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51560 "EHLO
+        id S1352469AbiFURjt (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 21 Jun 2022 13:39:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349334AbiFUJkH (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 21 Jun 2022 05:40:07 -0400
-Received: from mail-ot1-x32d.google.com (mail-ot1-x32d.google.com [IPv6:2607:f8b0:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98DBD27CC6
-        for <linux-sh@vger.kernel.org>; Tue, 21 Jun 2022 02:39:55 -0700 (PDT)
-Received: by mail-ot1-x32d.google.com with SMTP id l9-20020a056830268900b006054381dd35so10267706otu.4
-        for <linux-sh@vger.kernel.org>; Tue, 21 Jun 2022 02:39:55 -0700 (PDT)
+        with ESMTP id S1352406AbiFURjr (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 21 Jun 2022 13:39:47 -0400
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6DCB1C10F;
+        Tue, 21 Jun 2022 10:39:46 -0700 (PDT)
+Received: by mail-pj1-x1029.google.com with SMTP id h9-20020a17090a648900b001ecb8596e43so4983675pjj.5;
+        Tue, 21 Jun 2022 10:39:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=/0bRExIb6Mv4sy5raFRmeQINC+UUx7zEZcUUOWWOPJg=;
-        b=NKhg6kSkfnglJlsPDVUWhCY3Iibudx7OhZC5CePFgeNekYJKNrcmU8wB8gkktmjPqY
-         f0o4DET3nwW7oGb1WQAmWVCm6yLISrVrQXMY/9qoCppMNLX7K/jA/JZ+JMs1mNT38j+N
-         qSlM2vTiSOIkQo5cZ6oY4dkMVda7fWn0vzKRT295Q67AStI8u0BTanvw38uSxo4IMvFm
-         mtbeFJOQugEk6bmbrSLJZHxNWvSEoU0AT9TQz59V3jAGDZbWiI6U0Fx8UlroTYMr9wGQ
-         +xC78kHT5AZK7k/f6wmWhdDj3ThC5Cy20ctCKCcYvb/idPExEpgvQXB/UX/ziCu3vO07
-         Q2/g==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=mm0iD6HT9Mx8CXXEjxAdU1TvUV4Ez2s5c81pc2wmXwg=;
+        b=Cpkt5sgP0fqAe+Y1iRtsx8qe+2jJ5InANoetmpK6UNu1KPb9jca4X2hLmzTTN1WqPF
+         AU0N56w++P4mZB3mMlojr8wWM6bXtyDQsj/chEau1PJEWu/RbPlbW8FkMaEMDcuPhG5r
+         NO9U1XfR4Ff0tZM0w5zbEK3DXlzrhHV7B8JwF4bM67grhmMuaBqYmjgCMyeRoaWlti7C
+         oSeeejFFPjPSIRjK9+1Rgrl2zWynXbFQRm7FQYkAlfB/wIgHuMlRiuxIjmRIwu5lXPCE
+         0Z5+P7a9Rw480gqVmvlY0WIZSXBMO/pcQ7u54RbQuXhy+qhX+mUtGNe0SZOZMRjQfaGC
+         hf8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=/0bRExIb6Mv4sy5raFRmeQINC+UUx7zEZcUUOWWOPJg=;
-        b=VYqx8O2iz7II76wTUvcjOtFvSqwehdSSgRuixucDjHl9u0k12FJ9nRAklmcomfRqtu
-         CJ+qj5HAJDQYqGBtr4yPK9QXQ6RhrSKprKHGyWBmXawvNEk/HiO01r2xda9S51mvb4tN
-         tUOS+CMJhLcBVCttsTMgZrsG9ZIMrDF81LlPrRpulMc+7FTJNPnQ3KbX/nUUK9CJrHNh
-         eAHdk/6OrkTYZWiSY4gEbANSAtN0fNeTkzHDys8MaJWhUt2Es/zgabkyr1tztGSxy651
-         fpplboKkGvHxCqzB1ygq00aZ8Rncy0LRGDAOt5zZkrmXjPylHsBiuOHSx2gY24BpvSXi
-         YkLg==
-X-Gm-Message-State: AJIora84kSt9H8O9CfuoCeCZfAw5QmfHAzRUQ5k45uZiQdsjQiHKnlB6
-        2f+er7QyLicSeKEmiHABU1sHZP74kThnBjQ6pcN0iGL6imN9nYkZ
-X-Google-Smtp-Source: AGRyM1sTF/SvvxCyraPE52znD36ZX02jNmxmam87lP8bWzXT3yTfChS1a9JgJI9LjBXh9tpS4qLO5E/t+5efudcEruY=
-X-Received: by 2002:a0d:d7c7:0:b0:317:bfe8:4f2 with SMTP id
- z190-20020a0dd7c7000000b00317bfe804f2mr12417910ywd.276.1655804384555; Tue, 21
- Jun 2022 02:39:44 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=mm0iD6HT9Mx8CXXEjxAdU1TvUV4Ez2s5c81pc2wmXwg=;
+        b=RUgcl7rL7IdSWWFD6qs7/DMLSajLQ+ND+DI93mFzP9GEELexvxELPkYsLRWV5VoscD
+         m2iCPeSdzxxaIRlbJTW4a+UyTqgRHD728fEw0sWpp+5zLPB3Dake2f2Ea1kngNQSgPww
+         ZS44z3Wk73d25ppXRGUF2R8WuhyT46KcAdbY32skeQUHbFKPEVaQ+8HCHifbIY/KOW2E
+         at4w1pMRd/QekuKCoh+xldrTopHr8lhjfbT50bEgHzINzGnKQEN1KOUumy2BlrwJFk6t
+         8T4ZLWJT2JtUyKMIFN4lEk/lPZLdgz9vPqtrhbiyPoQpxUtScczfdZArH4hCqryDbSN4
+         8uwA==
+X-Gm-Message-State: AJIora/Nuv4KcXctTMUE/b3dQKALG8795vuSP86e3LwjKxKnIMvwqjIQ
+        fYg0KsDJDM3u9ZxRPKDui9s=
+X-Google-Smtp-Source: AGRyM1tK7vJkGhs4aAwjMWhpAIqeIo4Bvt11WfobTLLuR1i8TRAIfeLZcBg7z4nUYaKeHpF0qxaBHg==
+X-Received: by 2002:a17:90a:2e02:b0:1ea:c661:7507 with SMTP id q2-20020a17090a2e0200b001eac6617507mr43707102pjd.133.1655833186113;
+        Tue, 21 Jun 2022 10:39:46 -0700 (PDT)
+Received: from localhost ([172.85.181.54])
+        by smtp.gmail.com with ESMTPSA id cp1-20020a170902e78100b00168f329b282sm10960496plb.155.2022.06.21.10.39.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jun 2022 10:39:45 -0700 (PDT)
+Date:   Tue, 21 Jun 2022 10:39:44 -0700
+From:   Yury Norov <yury.norov@gmail.com>
+To:     Alexander Lobakin <alexandr.lobakin@intel.com>
+Cc:     Mark Rutland <mark.rutland@arm.com>, Arnd Bergmann <arnd@arndb.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Matt Turner <mattst88@gmail.com>,
+        Brian Cain <bcain@quicinc.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Kees Cook <keescook@chromium.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Marco Elver <elver@google.com>, Borislav Petkov <bp@suse.de>,
+        Tony Luck <tony.luck@intel.com>,
+        Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+        Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-alpha@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 0/7] bitops: let optimize out non-atomic bitops on
+ compile-time constants
+Message-ID: <YrICYCW0fCb0Rh8/@yury-laptop>
+References: <20220617144031.2549432-1-alexandr.lobakin@intel.com>
+ <YrCB/rz3RM6TCjij@FVFF77S0Q05N>
+ <20220620150855.2630784-1-alexandr.lobakin@intel.com>
 MIME-Version: 1.0
-Received: by 2002:a05:7010:e10a:b0:2d9:e631:94d0 with HTTP; Tue, 21 Jun 2022
- 02:39:44 -0700 (PDT)
-Reply-To: dimitryedik@gmail.com
-From:   Dimitry Edik <lsbthdwrds@gmail.com>
-Date:   Tue, 21 Jun 2022 02:39:44 -0700
-Message-ID: <CAGrL05aBO8rbFuij24J-APa+Luis69gEjhj35iv_GZfkHCVYDQ@mail.gmail.com>
-Subject: Dear Partner,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=7.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_MONEY_PERCENT,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,
-        UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:32d listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [lsbthdwrds[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.2 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
-        *      email?
-        *  0.0 T_MONEY_PERCENT X% of a lot of money for you
-        *  2.0 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *******
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220620150855.2630784-1-alexandr.lobakin@intel.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hello Dear,
+On Mon, Jun 20, 2022 at 05:08:55PM +0200, Alexander Lobakin wrote:
+> From: Mark Rutland <mark.rutland@arm.com>
+> Date: Mon, 20 Jun 2022 15:19:42 +0100
+> 
+> > On Fri, Jun 17, 2022 at 04:40:24PM +0200, Alexander Lobakin wrote:
+> > > So, in order to let the compiler optimize out such cases, expand the
+> > > test_bit() and __*_bit() definitions with a compile-time condition
+> > > check, so that they will pick the generic C non-atomic bitop
+> > > implementations when all of the arguments passed are compile-time
+> > > constants, which means that the result will be a compile-time
+> > > constant as well and the compiler will produce more efficient and
+> > > simple code in 100% cases (no changes when there's at least one
+> > > non-compile-time-constant argument).
+> > 
+> > > The savings are architecture, compiler and compiler flags dependent,
+> > > for example, on x86_64 -O2:
+> > > 
+> > > GCC 12: add/remove: 78/29 grow/shrink: 332/525 up/down: 31325/-61560 (-30235)
+> > > LLVM 13: add/remove: 79/76 grow/shrink: 184/537 up/down: 55076/-141892 (-86816)
+> > > LLVM 14: add/remove: 10/3 grow/shrink: 93/138 up/down: 3705/-6992 (-3287)
+> > > 
+> > > and ARM64 (courtesy of Mark[0]):
+> > > 
+> > > GCC 11: add/remove: 92/29 grow/shrink: 933/2766 up/down: 39340/-82580 (-43240)
+> > > LLVM 14: add/remove: 21/11 grow/shrink: 620/651 up/down: 12060/-15824 (-3764)
+> > 
+> > Hmm... with *this version* of the series, I'm not getting results nearly as
+> > good as that when building defconfig atop v5.19-rc3:
+> > 
+> >   GCC 8.5.0:   add/remove: 83/49 grow/shrink: 973/1147 up/down: 32020/-47824 (-15804)
+> >   GCC 9.3.0:   add/remove: 68/51 grow/shrink: 1167/592 up/down: 30720/-31352 (-632)
+> >   GCC 10.3.0:  add/remove: 84/37 grow/shrink: 1711/1003 up/down: 45392/-41844 (3548)
+> >   GCC 11.1.0:  add/remove: 88/31 grow/shrink: 1635/963 up/down: 51540/-46096 (5444)
+> >   GCC 11.3.0:  add/remove: 89/32 grow/shrink: 1629/966 up/down: 51456/-46056 (5400)
+> >   GCC 12.1.0:  add/remove: 84/31 grow/shrink: 1540/829 up/down: 48772/-43164 (5608)
+> > 
+> >   LLVM 12.0.1: add/remove: 118/58 grow/shrink: 437/381 up/down: 45312/-65668 (-20356)
+> >   LLVM 13.0.1: add/remove: 35/19 grow/shrink: 416/243 up/down: 14408/-22200 (-7792)
+> >   LLVM 14.0.0: add/remove: 42/16 grow/shrink: 415/234 up/down: 15296/-21008 (-5712)
+> > 
+> > ... and that now seems to be regressing codegen with recent versions of GCC as
+> > much as it improves it LLVM.
+> > 
+> > I'm not sure if we've improved some other code and removed the benefit between
+> > v5.19-rc1 and v5.19-rc3, or whether something else it at play, but this doesn't
+> > look as compelling as it did.
+> 
+> Mostly likely it's due to that in v1 I mistakingly removed
+> `volatile` from gen[eric]_test_bit(), so there was an impact for
+> non-constant cases as well.
+> +5 Kb sounds bad tho. Do you have CONFIG_TEST_BITMAP enabled, does
+> it work? Probably the same reason as for m68k, more constant
+> optimization -> more aggressive inlining or inlining rebalance ->
+> larger code. OTOH I've no idea why sometimes compiler decides to
+> uninline really tiny functions where due to this patch series some
+> bitops have been converted to constants, like it goes on m68k.
+> 
+> > 
+> > Overall that's mostly hidden in the Image size, due to 64K alignment and
+> > padding requirements:
+> > 
+> >   Toolchain      Before      After       Difference
+> > 
+> >   GCC 8.5.0      36178432    36178432    0
+> >   GCC 9.3.0      36112896    36112896    0
+> >   GCC 10.3.0     36442624    36377088    -65536
+> >   GCC 11.1.0     36311552    36377088    +65536
+> >   GCC 11.3.0     36311552    36311552    0
+> >   GCC 12.1.0     36377088    36377088    0
+> > 
+> >   LLVM 12.0.1    31418880    31418880    0
+> >   LLVM 13.0.1    31418880    31418880    0
+> >   LLVM 14.0.0    31218176    31218176    0
+> > 
+> > ... so aside from the blip around GCC 10.3.0 and 11.1.0, there's not a massive
+> > change overall (due to 64KiB alignment restrictions for portions of the kernel
+> > Image).
 
-My Name is Dimitry Edik from Russia A special assistance to my Russia
-boss who deals in oil import and export He was killed by the Ukraine
-soldiers at the border side. He supplied
-oil to the Philippines company and he was paid over 90 per cent of the
-transaction and the remaining $18.6 Million dollars have been paid into a
-Taiwan bank in the Philippines..i want a partner that will assist me
-with the claims. Is a (DEAL ) 40% for you and 60% for me
-I have all information for the claims.
-Kindly read and reply to me back is 100 per cent risk-free
+I gave it a try on v5.19-rc3 for arm64 with my default GCC 11.2, and it's:
+add/remove: 89/33 grow/shrink: 1629/966 up/down: 51456/-46064 (5392)
 
-Yours Sincerely
-Dimitry Edik
+Which is not great in terms of layout size. But I don't think we should
+focus too much on those numbers. The goal of the series is not to shrink
+the image; the true goal is to provide more information to the compiler
+in a hope that it will make a better decision regarding optimizations.
+
+Looking at results provided by Mark, both GCC and LLVM have a tendency
+to inline and use other techniques that increase the image more
+aggressively in newer releases, comparing to old ones. From this
+perspective, unless we find some terribly wrong behavior, I'm OK with
++5K for the Image, because I trust my compiler and believe it spent
+those 5K wisely.
+
+For the reasons said above, I think we shouldn't disable const
+bitops for -Os build.
+
+I think this series has total positive impact because it adds a lot
+of information for compiler with just a few lines of code.
+
+If no objections, I think it's good to try it in -next. Alexander,
+would you like me to fix gen/generic typo in comment and take it in
+bitmap-for-next, or you'd prefer to send v4?
+
+Thanks,
+Yury
