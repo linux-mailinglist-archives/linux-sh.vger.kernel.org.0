@@ -2,67 +2,182 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 347A155E4E3
-	for <lists+linux-sh@lfdr.de>; Tue, 28 Jun 2022 15:39:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6270755CC3A
+	for <lists+linux-sh@lfdr.de>; Tue, 28 Jun 2022 15:01:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346680AbiF1NfK (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 28 Jun 2022 09:35:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37768 "EHLO
+        id S1344155AbiF1J7G (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 28 Jun 2022 05:59:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345541AbiF1NfF (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 28 Jun 2022 09:35:05 -0400
-X-Greylist: delayed 3567 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 28 Jun 2022 06:35:01 PDT
-Received: from www2055.sakura.ne.jp (www2055.sakura.ne.jp [59.106.171.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FBD27661;
-        Tue, 28 Jun 2022 06:35:00 -0700 (PDT)
-Received: from fsav315.sakura.ne.jp (fsav315.sakura.ne.jp [153.120.85.146])
-        by www2055.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 25S97Gau026635;
-        Tue, 28 Jun 2022 18:07:16 +0900 (JST)
-        (envelope-from 1955@kkden.co.jp)
-Received: from www2055.sakura.ne.jp (59.106.171.65)
- by fsav315.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav315.sakura.ne.jp);
- Tue, 28 Jun 2022 18:07:16 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav315.sakura.ne.jp)
-Received: from www2055.sakura.ne.jp (localhost [127.0.0.1])
-        by www2055.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 25S97Dsm026581;
-        Tue, 28 Jun 2022 18:07:16 +0900 (JST)
-        (envelope-from 1955@kkden.co.jp)
-Received: (from kkden@localhost)
-        by www2055.sakura.ne.jp (8.15.2/8.15.2/Submit) id 25S97DN6026577;
-        Tue, 28 Jun 2022 18:07:13 +0900 (JST)
-        (envelope-from 1955@kkden.co.jp)
-Message-Id: <202206280907.25S97DN6026577@www2055.sakura.ne.jp>
-X-Authentication-Warning: www2055.sakura.ne.jp: kkden set sender to 1955@kkden.co.jp using -f
-Subject: THIS IS VERY CONFIDENTIAL
-From:   Steve Dibenedetto <1955@kkden.co.jp>
-To:     stevedibenedetto17@gmail.com
-MIME-Version: 1.0
-Date:   Tue, 28 Jun 2022 18:07:13 +0900
-Content-Type: text/plain; charset="ISO-2022-JP"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=1.3 required=5.0 tests=BAYES_50,SPF_HELO_NONE,
-        SPF_NONE,SUBJ_ALL_CAPS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: *
+        with ESMTP id S1344164AbiF1J7B (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 28 Jun 2022 05:59:01 -0400
+Received: from mail-ej1-x64a.google.com (mail-ej1-x64a.google.com [IPv6:2a00:1450:4864:20::64a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 082DE2E68F
+        for <linux-sh@vger.kernel.org>; Tue, 28 Jun 2022 02:59:00 -0700 (PDT)
+Received: by mail-ej1-x64a.google.com with SMTP id p7-20020a170906614700b006f87f866117so3424561ejl.21
+        for <linux-sh@vger.kernel.org>; Tue, 28 Jun 2022 02:58:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=date:message-id:mime-version:subject:from:to:cc;
+        bh=MrF5aaShEN6B7UjaZWC1TSqA3Z20kM5d1l/pRL2xCe0=;
+        b=kpac3JTWggRdiHBa1fh59jMkbCSb9OblwJN+RfZ/fjE4TPO76j/gmwnSWiMqirO/RA
+         MtTi0fzXw/WvbDygEa8XmyBZWWv2LuPU5ilmvRbvg+qDo7rJ6DcpD45MbwShAf9gYcT4
+         58D0kDspgGu8+ctdqSssbUA7tsc65VeY5aG4g876MM2ToFCKqdihwENvPWn0UTUi6yl4
+         lzT6hrrYw9uwZNPpHny3QZvwu6p21XsvqJUitxVvhT50c15CL3uUPY2xFITl5liDkI7H
+         p1WOWea+7N0BdGIRUCqRUJNLZg9qyiTWACWLDmZ4AN7CghQcExbp5T5IhlOXd+FnUH9J
+         UWbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+        bh=MrF5aaShEN6B7UjaZWC1TSqA3Z20kM5d1l/pRL2xCe0=;
+        b=Sh2rKb5pXL1UjLSy2Euhh6AQt+cbP+EFbZbjCQe4uOW/Q6up6RwDnlBmLZqKrqQhnf
+         uEw6k0ufbXYiP26SmOb1RIqXbv7PUzBm4n1L/Cn+/nKVPsE7Zyf4DbHQdAEVuYdFVTtf
+         +9GJq+3IAhAtjSKRi7N1t/UusANxCTfalmQOLvxDUSvlZzYlMnolG+J0AJ83GFKHsjY5
+         pK3u1WpeoBFOPSpE3OJA6DX5qBEWb9hUBQQUyAKtjgA58Qxhww7kBXS5bnUuAgl/G26l
+         vhvD22wRqV/xhgcIejxVqgptbeT6sE5o67xRn8wQWivFhWFaKtfaquNNeeypnS2zBEd8
+         Mo4g==
+X-Gm-Message-State: AJIora/xaZIp/g9HSYPER1EVXQG/zJcdvf5w0f2Fq8XJDHGrJQK+EPRv
+        VLX75FuIcDhB1LiSq9eZ25XEdXc2PA==
+X-Google-Smtp-Source: AGRyM1u3/0hvVVmDLacPPBFeWP8vaAFalfonAP5U/UldSOaNizgt1tCkuWBKHhsyPyl7bj7GKBvrytijQg==
+X-Received: from elver.muc.corp.google.com ([2a00:79e0:9c:201:3496:744e:315a:b41b])
+ (user=elver job=sendgmr) by 2002:a05:6402:1c09:b0:435:6562:e70d with SMTP id
+ ck9-20020a0564021c0900b004356562e70dmr21782463edb.203.1656410338427; Tue, 28
+ Jun 2022 02:58:58 -0700 (PDT)
+Date:   Tue, 28 Jun 2022 11:58:20 +0200
+Message-Id: <20220628095833.2579903-1-elver@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.37.0.rc0.161.g10f37bed90-goog
+Subject: [PATCH v2 00/13] perf/hw_breakpoint: Optimize for thousands of tasks
+From:   Marco Elver <elver@google.com>
+To:     elver@google.com, Peter Zijlstra <peterz@infradead.org>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        linuxppc-dev@lists.ozlabs.org, linux-perf-users@vger.kernel.org,
+        x86@kernel.org, linux-sh@vger.kernel.org,
+        kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
+The hw_breakpoint subsystem's code has seen little change in over 10
+years. In that time, systems with >100s of CPUs have become common,
+along with improvements to the perf subsystem: using breakpoints on
+thousands of concurrent tasks should be a supported usecase.
 
-Hello,
+The breakpoint constraints accounting algorithm is the major bottleneck
+in doing so:
 
-My name is Steve Dibenedetto.
-I apologize to have contacted you this way without a direct relationship. There is an opportunity to collaborate with me in the sourcing of some materials needed by our company for production of the different medicines we are researching.
+  1. toggle_bp_slot() and fetch_bp_busy_slots() are O(#cpus * #tasks):
+     Both iterate through all CPUs and call task_bp_pinned(), which is
+     O(#tasks).
 
-I'm aware that this might be totally outside your professional specialization, but it will be a great source for generating extra revenue. I  discovered a manufacturer who can supply us at a lower rate than our company's previous purchases.
-I will give you more specific details when/if I receive feedback from you showing interest.
+  2. Everything is serialized on a global mutex, 'nr_bp_mutex'.
 
-Warm Regards  
-Steve Dibenedetto
-Production & Control Manager,
-Green Field Laboratories
-Gothic House, Barker Gate,
-Nottingham, NG1 1JU,
-United Kingdom.
+The series progresses with the simpler optimizations and finishes with
+the more complex optimizations:
+
+ 1. We first optimize task_bp_pinned() to only take O(1) on average.
+
+ 2. Rework synchronization to allow concurrency when checking and
+    updating breakpoint constraints for tasks.
+
+ 3. Eliminate the O(#cpus) loops in the CPU-independent case.
+
+Along the way, smaller micro-optimizations and cleanups are done as they
+seemed obvious when staring at the code (but likely insignificant).
+
+The result is (on a system with 256 CPUs) that we go from:
+
+ | $> perf bench -r 30 breakpoint thread -b 4 -p 64 -t 64
+	 	[ ^ more aggressive benchmark parameters took too long ]
+ | # Running 'breakpoint/thread' benchmark:
+ | # Created/joined 30 threads with 4 breakpoints and 64 parallelism
+ |      Total time: 236.418 [sec]
+ |
+ |   123134.794271 usecs/op
+ |  7880626.833333 usecs/op/cpu
+
+... to the following with all optimizations:
+
+ | $> perf bench -r 30 breakpoint thread -b 4 -p 64 -t 64
+ |      Total time: 0.067 [sec]
+ |
+ |       35.292187 usecs/op
+ |     2258.700000 usecs/op/cpu
+
+On the used test system, that's an effective speedup of ~3490x per op.
+
+Which is on par with the theoretical ideal performance through
+optimizations in hw_breakpoint.c (constraints accounting disabled), and
+only 12% slower than no breakpoints at all.
+
+Changelog
+---------
+
+v2:
+ * Add KUnit test suite.
+ * Remove struct bp_busy_slots and simplify functions.
+ * Add "powerpc/hw_breakpoint: Avoid relying on caller synchronization".
+ * Add "locking/percpu-rwsem: Add percpu_is_write_locked() and percpu_is_read_locked()".
+ * Use percpu-rwsem instead of rwlock.
+ * Use task_struct::perf_event_mutex instead of sharded mutex.
+ * Drop v1 "perf/hw_breakpoint: Optimize task_bp_pinned() if CPU-independent".
+ * Add "perf/hw_breakpoint: Introduce bp_slots_histogram".
+ * Add "perf/hw_breakpoint: Optimize max_bp_pinned_slots() for CPU-independent task targets".
+ * Add "perf/hw_breakpoint: Optimize toggle_bp_slot() for CPU-independent task targets".
+ * Apply Acked-by/Reviewed-by given in v1 for unchanged patches.
+==> Speedup of ~3490x (vs. ~3315x in v1).
+
+v1: https://lore.kernel.org/all/20220609113046.780504-1-elver@google.com/
+
+Marco Elver (13):
+  perf/hw_breakpoint: Add KUnit test for constraints accounting
+  perf/hw_breakpoint: Clean up headers
+  perf/hw_breakpoint: Optimize list of per-task breakpoints
+  perf/hw_breakpoint: Mark data __ro_after_init
+  perf/hw_breakpoint: Optimize constant number of breakpoint slots
+  perf/hw_breakpoint: Make hw_breakpoint_weight() inlinable
+  perf/hw_breakpoint: Remove useless code related to flexible
+    breakpoints
+  powerpc/hw_breakpoint: Avoid relying on caller synchronization
+  locking/percpu-rwsem: Add percpu_is_write_locked() and
+    percpu_is_read_locked()
+  perf/hw_breakpoint: Reduce contention with large number of tasks
+  perf/hw_breakpoint: Introduce bp_slots_histogram
+  perf/hw_breakpoint: Optimize max_bp_pinned_slots() for CPU-independent
+    task targets
+  perf/hw_breakpoint: Optimize toggle_bp_slot() for CPU-independent task
+    targets
+
+ arch/powerpc/kernel/hw_breakpoint.c  |  53 ++-
+ arch/sh/include/asm/hw_breakpoint.h  |   5 +-
+ arch/x86/include/asm/hw_breakpoint.h |   5 +-
+ include/linux/hw_breakpoint.h        |   1 -
+ include/linux/percpu-rwsem.h         |   6 +
+ include/linux/perf_event.h           |   3 +-
+ kernel/events/Makefile               |   1 +
+ kernel/events/hw_breakpoint.c        | 594 ++++++++++++++++++++-------
+ kernel/events/hw_breakpoint_test.c   | 321 +++++++++++++++
+ kernel/locking/percpu-rwsem.c        |   6 +
+ lib/Kconfig.debug                    |  10 +
+ 11 files changed, 826 insertions(+), 179 deletions(-)
+ create mode 100644 kernel/events/hw_breakpoint_test.c
+
+-- 
+2.37.0.rc0.161.g10f37bed90-goog
+
