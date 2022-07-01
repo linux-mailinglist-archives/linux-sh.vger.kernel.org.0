@@ -2,177 +2,200 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBD86563127
-	for <lists+linux-sh@lfdr.de>; Fri,  1 Jul 2022 12:15:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C24B563AAC
+	for <lists+linux-sh@lfdr.de>; Fri,  1 Jul 2022 22:12:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233989AbiGAKPW (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 1 Jul 2022 06:15:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37786 "EHLO
+        id S232055AbiGAUKz (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 1 Jul 2022 16:10:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233946AbiGAKPV (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 1 Jul 2022 06:15:21 -0400
-Received: from FRA01-PR2-obe.outbound.protection.outlook.com (mail-eopbgr120050.outbound.protection.outlook.com [40.107.12.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9621B74DF8;
-        Fri,  1 Jul 2022 03:15:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UxUzIG0ynPRDwqHrTyl/Mu4VUHpYx0Y4jiDtBGWKop8ycdPTA9rBFToQP1xU5y1+m9EUHQIZieNfYmAn7o/vdaFSKFPTDCTf1Kp0U54kUWaOdyL4bspsh5MtzU6DRcDxqC6dQ77xDPMijfGQW9ZQL3jFtS6jgwyqkRenbQIQwR7DUK/xPat39KpzmpPq3mIFaY/oWn/oMtj/n40QhhGmiVZ1ILUWOwVndUR3SiBDRVGXtPs52ajwkXZfl/J6EMYmEuk1sWiwTVINWcdxOYpyYuLnBKnWl1GHgYCkouDKM64kPfuEFsnARm/8YSPns/zMpUaTE47Bm80og03tQJzCWw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ocCRJjkqO7buL2mBeRsOB2SD34qpk9FTwN+Vhknt944=;
- b=SGazAHxv28n3ZYElqCHMsenA2/8CTuALwK7tGz0L4M9Xc6QGNSn+D3j+H7EgnXIoaFQambjgpwG8d085heQlOk66ozjaftNqAzUl0celOidKFgaONgKKxKuNovh0xTWv4wFpS5UUhzdVPaR5xccZHvniYj+LcwSl0cctPqOnSPlT0gcGy/YKaBxgSioyKSvYEKolX2dmkrjuuVSZt3jxZzg6xyw3ckXkfN6ZD1zkTM9aHK1rWRSAOoG11XQwLs6IhoTcCzeKex+d5NrDSoLmjf9X5X7ZU3Jwuqd32mOWoMFRKyUWvA2GPuGBWzXGNqA6T75JnOUKoWkJwDz5Dq1Gfg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ocCRJjkqO7buL2mBeRsOB2SD34qpk9FTwN+Vhknt944=;
- b=kOoTarWbm311rSmr09ZcB00dh4HbqjQkq6OO7bmsU2sbzClCV9oWaLI4kTYcsTnBxTwKoOq9GYspA44g3YXC6NSIEuskOQK5bRnZpBH2ti6oyWOU8OZXFZ14TO6rumwL/at5K3SSbJmq02ymX2/oNNi0ift/+eANC0po5YdOg8SHzqufuLzPmOhFZgCXYtechJozwflEqeivKJ4Gmea5ue0vOb7HOyUn4uH0B5LjI9Fu84yZrbBO3Mo+m41DSqovxdV3Agfxk8H3bXL7X4BZ08h62e13BYlUbtwMJKHqHkKEogwv5K1ZM3hsl6KayU9cMlmyfHYNMsf7cH/rM8vY7g==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by PR1P264MB3759.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:142::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5395.15; Fri, 1 Jul
- 2022 10:15:17 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::e063:6eff:d302:8624]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::e063:6eff:d302:8624%5]) with mapi id 15.20.5395.014; Fri, 1 Jul 2022
- 10:15:17 +0000
-From:   Christophe Leroy <christophe.leroy@csgroup.eu>
-To:     Marco Elver <elver@google.com>
-CC:     Peter Zijlstra <peterz@infradead.org>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>,
+        with ESMTP id S231812AbiGAUKv (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 1 Jul 2022 16:10:51 -0400
+Received: from new2-smtp.messagingengine.com (new2-smtp.messagingengine.com [66.111.4.224])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B67561EAD7;
+        Fri,  1 Jul 2022 13:10:48 -0700 (PDT)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+        by mailnew.nyi.internal (Postfix) with ESMTP id 28AC058020B;
+        Fri,  1 Jul 2022 16:01:10 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute1.internal (MEProxy); Fri, 01 Jul 2022 16:01:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sholland.org; h=
+        cc:cc:content-transfer-encoding:date:date:from:from:in-reply-to
+        :message-id:mime-version:reply-to:sender:subject:subject:to:to;
+         s=fm3; t=1656705670; x=1656712870; bh=h3WN3AcddFJuwhQ39XPEdgr5t
+        ejPWmRF9a5JWUKLi6w=; b=mK5frjjpRETCdaizhOvpq/mQo5UlOZqfHCt356wLu
+        +SqVP3qKJ9LvP7YyRWEopUxCgCJ/Co0nb1GRIXbVwdtlJ5JrYoRlSvc+27WDag9+
+        3jqJC6Nc5lLjDB1EbFnpv2S6VMiJgoGG3ESQyrzvFx4wbwb1+hfvfkj14nzE1iZ9
+        iHVs2Uh7tOwAj5coKNt98E1KuIr4Dy7ZidSi8Si+tRxxbGIc8g9/Wkp/PXxkdKWp
+        GwXvkDhS2Mkt7Y8U+OzIUgUEfaENyM7PjR+7UVXgmM8J+652ddmFvBKyk157w8wr
+        Skl8C3hKCbHheCLVFZJbuy7hz1/cffoSdxxCfnrh8YV+w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:message-id
+        :mime-version:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+        1656705670; x=1656712870; bh=h3WN3AcddFJuwhQ39XPEdgr5tejPWmRF9a5
+        JWUKLi6w=; b=hcCVwh1PvSeKLtV/WWesjzpJEJOw4znKr5Z/2vhxnZuKQA9kLw4
+        /4+bCBG81guTmscsfsRlkY2MRf/An6IfLb4PqUB9cFC2NzaudqFlvP/yY19K+3XC
+        pDHCoLiIcwUV2Xv5FAIqCmEYAOVR+oCL2f261uukUnOGmb9sZJ1Wjru1FpMPNx9q
+        O20C8qlSGZIk/uqxcd6LnT2yDuqwiTmpUUWND72se1ELzfF/mrU6icJu6Gm0jlH3
+        iWOFR5OoOCZxlEPQplc7c7ud1SjE6qek/nk6mnJ70FNjkvapXHjyVwlAV5qpv1MZ
+        45+fzYTFXAvc9YboPqeOQ31my0wQpPDiZ5Q==
+X-ME-Sender: <xms:e1K_YqJAKXaKPgqyd59ldyt87npfqKJCG8Fa8IiJ1JGRiUiSXx5JZg>
+    <xme:e1K_YiIt8LjVqOvwpx_JqZXxhJz3pskkEoDpx0DfqF9QwrmlD77DvYrLphtzsH91c
+    60EnwaE7sSCA8LhkQ>
+X-ME-Received: <xmr:e1K_YqsbiJXFwsSStjJJO67Bifhg0yOnU6Z4_h1F4ezRCF_0D6gcyJ1rBH7JskXj8BCpGV4CECN0ypLF1eSiq5ghfDtA6Nb3u4bteUm49CHrPVJYe6DLnAKCGajaiAQKWL5-Lw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrudehfedgudeggecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefhvfevufffkffoggfgsedtkeertdertddtnecuhfhrohhmpefurghmuhgv
+    lhcujfholhhlrghnugcuoehsrghmuhgvlhesshhhohhllhgrnhgurdhorhhgqeenucggtf
+    frrghtthgvrhhnpeekheffteehtdetfffgfeetteejvdefleeuvedufffguedtjedvheel
+    vddvfffhveenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepshgrmhhuvghlsehshhholhhlrghn
+    ugdrohhrgh
+X-ME-Proxy: <xmx:e1K_YvbVVgQANbs4tH6mMUrH5LaNLres37xpgQFzFinmY6f7nPb4Fg>
+    <xmx:e1K_YhbiP6yq2Gi3AoIAcfhp4QohMreFnvgTLD9awWXIWatRIZ3Cjw>
+    <xmx:e1K_YrCjgb2M3iT9zxycFn46jQ9pLIWED1rqKrx13LiM_I0tfM9RnQ>
+    <xmx:hlK_YgfaZPstR3sDyiLp39VIN104HgzzMuXBbFWrwe3H_JzEL7MHlA>
+Feedback-ID: i0ad843c9:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 1 Jul 2022 16:00:57 -0400 (EDT)
+From:   Samuel Holland <samuel@sholland.org>
+To:     Marc Zyngier <maz@kernel.org>, Thomas Gleixner <tglx@linutronix.de>
+Cc:     Samuel Holland <samuel@sholland.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Broadcom internal kernel review list 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        Chris Zankel <chris@zankel.net>,
+        Colin Ian King <colin.king@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Dexuan Cui <decui@microsoft.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Helge Deller <deller@gmx.de>, Ingo Molnar <mingo@redhat.com>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Jan Beulich <jbeulich@suse.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Juergen Gross <jgross@suse.com>,
+        Julia Lawall <Julia.Lawall@inria.fr>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Kees Cook <keescook@chromium.org>,
+        =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>,
-        "kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Dmitry Vyukov <dvyukov@google.com>
-Subject: Re: [PATCH v2 08/13] powerpc/hw_breakpoint: Avoid relying on caller
- synchronization
-Thread-Topic: [PATCH v2 08/13] powerpc/hw_breakpoint: Avoid relying on caller
- synchronization
-Thread-Index: AQHYitZo2ef+XoeA/keVuMHbOZq9GK1pOsOAgAANBYCAAAl3gA==
-Date:   Fri, 1 Jul 2022 10:15:17 +0000
-Message-ID: <45396b77-4acb-817c-eeae-9a672a92611c@csgroup.eu>
-References: <20220628095833.2579903-1-elver@google.com>
- <20220628095833.2579903-9-elver@google.com>
- <045a825c-cd7d-5878-d655-3d55fffb9ac2@csgroup.eu>
- <CANpmjNOeyZ0MZ_esOnR7TUE1R5Vf+_Ejt5JRQ1AoAmhkCrVrBA@mail.gmail.com>
-In-Reply-To: <CANpmjNOeyZ0MZ_esOnR7TUE1R5Vf+_Ejt5JRQ1AoAmhkCrVrBA@mail.gmail.com>
-Accept-Language: fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 4e66d82a-4ea9-4191-7136-08da5b4a98e8
-x-ms-traffictypediagnostic: PR1P264MB3759:EE_
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: /ZvgGXbY30ZUl0+WciWToYiBqnw+jH+n/7aMH0SVNDmgFzXuMAP+IAa1dglBwFbIqOhluckt7gXtaqwMbq4k5bUGprPOuSXFuqRFESH/3yfz/flX/YoVDu02O+/HBUzPs2YN4/M1N2hZIdoD3ZI/OvxeKomEwtmfBISf+2aJz2IdteU4z7rKp8m5OUXuDNxZ0+oq3EHcf8lV4OGj/XZeR9vv2C6rDqNFIz/m53b7UUxuXFMJApFUtzG8KaJRYFTaawcp3YzruuYJm/Tc9MWAM0CObVM0g7fC2V+w7kz9uMfxDG4JNwu0tTKKJWTiajvcFmB//+2R381b3/OBXVn/cmsQjcjXPaZrk+P9vxJT+olgOi4+hKObwZUv6OoSoEkQmIilfKhyqGE9WOUiLQvVgw197IFKgHjPoV+9MlOtwAJUV0qwBWszLziUwGXQcIWwdWg1aKuCDqZz67F1HyAEqZULAg7pr/ayD1tEiPSLSGwpBSqEmfrJpU+cqXjjeUoSRu06bQGrRv7DlDQv3lU7+a7kRHv2Ubw3o136V/vYVqpaqHm7iVQGXND3oGDz/TSnEgfQsceN8/hbsCBFeTDt4bAAabGGzoezmM/feM32Vt6/4cghCQ7wjUM2UprQy3meyp6hmNbvoH7qoJzUXu+oNc1mgO63pR//9dahjHCnrjcGlm6sYtEeJjQFH0zX9WGHZ9GQO8FlUtbKpnObS0ImlquXrWWqyHmMnl5XoPeq8ye9VF46+HQKII23ogUfLncWB1VXRZzOx20RpsPlZj2+tgCHmKdM1NrkvEeodmznbGGawFTiZf9AaHcVxDQ5rNJdRtde+E1WlaTCrZk6n/rQTW8TvwiUJ4SfrKhAsAcQQFNDN+DluT1qhiqQlyScQG4v55yMBOBDfceTsqNjNK4wjjMSKokcvdqkX5UdhHx3JvU=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230016)(4636009)(376002)(346002)(396003)(39860400002)(366004)(136003)(66446008)(66476007)(4326008)(478600001)(64756008)(91956017)(8936002)(38070700005)(76116006)(66946007)(8676002)(66556008)(966005)(6486002)(2906002)(7416002)(83380400001)(41300700001)(44832011)(5660300002)(71200400001)(36756003)(2616005)(6916009)(54906003)(86362001)(66574015)(6506007)(31686004)(122000001)(31696002)(38100700002)(186003)(6512007)(316002)(26005)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?WUJXK3NKYjZpYXhIMlNzTUw5eTI3OUNSWHdRUHlaZHFYMnprekVlK2JaeDds?=
- =?utf-8?B?WmM5c2hEZzcyN2NNRFNsRDZ1VXQxU0MvNStLMFJRd095TlFRYkFYR1BjVXFV?=
- =?utf-8?B?Ym5sZDRKWVBMdDVaaW9BVnUxZWRpQksyVVFFbmNpamhNOW90WjlkSzkzaWFP?=
- =?utf-8?B?aXBmQThTK1F2bXZNUmFGQ0huR1EyYTZ4bzFmcC9lMG5vMi9nSmE3WnV4R2M4?=
- =?utf-8?B?am50VFAzeTV5RmlDYk1YRHpLSFBRUm02ajhLWG14SjhMS2xvRVVjZE1ydFBO?=
- =?utf-8?B?anpFTC9hMVVzSE80V3E4YjE3N0FSR2UzUzFmdVY1bEtjcnNHbDF3ZitoMlpV?=
- =?utf-8?B?UXUxbFR4VS9ZRk5iUEtvc0Q5eHBCZGgzS1FlMHNVRVJiZC9QQ3J4SG1YaVRv?=
- =?utf-8?B?SnFvUHVFcjk4RncyVSs3QTV1TWpjdEpaVEw4K3VpZlplRXhOdEJibm5tdm54?=
- =?utf-8?B?TjRETDBUbjFBSGZVRU8xQTJjaFR5K0dmWEZYME4zNkF1UnpLSHFwcEw4cTZN?=
- =?utf-8?B?T3dyNng0azRUNUhkNjVyYkFtQWFpUkNkcGVnSXh2eldXc2U3SUEvNXhtTlFF?=
- =?utf-8?B?SWdqUjRtZitFY1JoV05vemloL2tPbWtFL2hnbDYxSGc2Z2xYT1MvSXEzWWl4?=
- =?utf-8?B?MjRxRWZxRGpnd1Nza015eFNyS01DT2oyRk1KdTVLMVJmVzlOVDMwOTc4V2ph?=
- =?utf-8?B?RmFYeEM4SnFMZGJLVDFSVTJjbkFja2RhUjlxZCsybk12b25OQ0MycFBEMmRy?=
- =?utf-8?B?UStlSzJrQ1ZxeHZ5UDV4STJwYU91TzZkOVY2aCtyUFplWDc2TGNJS3lQb3Jy?=
- =?utf-8?B?V0RQRWF5bEJBaElqTWV4cCtsOGxvZHNYaUkyTVlnb1E2T1RjdStxcENwakFq?=
- =?utf-8?B?WlhwNWhoYVd0WERxZUROL3ZNRThQMTRuM3BZLzNQNnFFWWx1bElseFY2OHZz?=
- =?utf-8?B?REU2NDUrYVV4M1NmMjNoMGYxWFR1NmFiajlEOGZ1YjZHRkZUTTROaGVmV3l4?=
- =?utf-8?B?MGk2UGtqQ1l5bGowMUJzNnYxNXRyY3BSeTYwVjRLeWdZS3VxMTBYVW4yYURa?=
- =?utf-8?B?SWFwRXBsUjhCNkZEb1hNZWw1bDg1UUU0VXpQeW11MzZvbGZoSmdJYmZMRmg4?=
- =?utf-8?B?Wm5GaHdpdUIrT2htUTZTYXIvcnlobzdVYkxUS0tuaG0xUExjV3dqZ0wzN0Vr?=
- =?utf-8?B?WXpGbnMxeVV2Sms4dDZTelZpRjloYVdyRHZwVlV6WE4vMHB6QnRINXdsZFNr?=
- =?utf-8?B?d3NiMDBDNkFyR3hTOUozRkJialFha0pSVGhxSGNiMjIyREhYU3IrK3BkeUx4?=
- =?utf-8?B?TE1neWM4ZUpVZnNSSjIrSEZHdkJDQXdFZXB0VTJMM2ZieEoySFhNYkNPc21S?=
- =?utf-8?B?TFZNb1k4Zjk2bjZ2L0RUVUxvdndVdkxyZ0dxUGRpOTlrTlpHYldPZjl4aStH?=
- =?utf-8?B?TG9KV250THp6dzhES0ljdnVCU1B5Q08vMlpNU0IvSjdpeDcrbVRVUFFuQnZ0?=
- =?utf-8?B?ZFprNlV0YWVNc3NYQWVXWkV4SDIrbzA4WDQyQWFqTmpreHlzZGtuRmRObXYx?=
- =?utf-8?B?cU8rTmhPSDN1WFpNU1JRelVQamR6YUoxbW5lM3BBMWVDK2VOVmd5WWp6L0N2?=
- =?utf-8?B?MGkzalVyQ2JPakQ5bjlxV0lXUnVHaGM5S1BKOG1jUUtPQzVLSmF0Q09ZSENL?=
- =?utf-8?B?SzhkdWVibU5xYWV3Q3Nxajd6eGlvNjN5MzduVmw1ek5WaHZIVGExNjBMNVpa?=
- =?utf-8?B?L1RKVnhIOWlIZGNuUGVCYXpOSnMycENjeFpib0dvbHhRUlpqZzVBZHcycm9K?=
- =?utf-8?B?SVdJdkVaZm9FN2hpZU1SQVpkNmYvM2Juc3N4bWJ1K1k1S2RPN1pCNmVTWURU?=
- =?utf-8?B?ZUVzL3ZyaVZNR1cwaGRxRkppTFUvcVpIK0w4Sk5QbTBQanl1R0hvS1lkVFBz?=
- =?utf-8?B?RVJlb1R5ZVVtYWgxcXlkZUZWS3p3dGR2WC9sNU5SdjlybVp2ekg5ay9WZXhZ?=
- =?utf-8?B?TEJ3bm9vMzBsbzVEUmJvQ1M5Tk82NG9mSkJOWHBFUlNmQ1RxSFE2VmI3OHo2?=
- =?utf-8?B?SXVGK2s0T1QvTTRCSmpSL2pSWm9WSWdJQ2drcVpQMys2RGxBdDZuWXVDbzlJ?=
- =?utf-8?B?VHAxb3d5emMvRUdOUEdKYUE1OHJIT1I3cEE5ZjhBaUJSOVRqNFZ6RWpVazEr?=
- =?utf-8?Q?38SpEZ26RKfZbNvpcQ5tpd4=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <48A37FA002C14C49A2E2CA16C8FCBF9E@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+        Matt Turner <mattst88@gmail.com>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Maximilian Heyne <mheyne@amazon.de>,
+        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+        Rich Felker <dalias@libc.org>,
+        Richard Henderson <rth@twiddle.net>,
+        Rikard Falkeborn <rikard.falkeborn@gmail.com>,
+        Rob Herring <robh@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Serge Semin <fancer.lancer@gmail.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Sven Schnelle <svens@stackframe.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Wei Liu <wei.liu@kernel.org>, Wei Xu <xuwei5@hisilicon.com>,
+        Will Deacon <will@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        iommu@lists.linux-foundation.org, iommu@lists.linux.dev,
+        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-hyperv@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        x86@kernel.org, xen-devel@lists.xenproject.org
+Subject: [PATCH v3 0/8] genirq: Provide real IRQ affinity masks in non-SMP configs
+Date:   Fri,  1 Jul 2022 15:00:48 -0500
+Message-Id: <20220701200056.46555-1-samuel@sholland.org>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4e66d82a-4ea9-4191-7136-08da5b4a98e8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Jul 2022 10:15:17.7268
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: qgiqtQZuNzk+4zMt2P7lEbskDMOTOOfh7GX87C3rGGSWKCv/sLcNa6Zg22pPcTejz4eYQL4KCl0Osx2sGptt5zEGlsgRbrzVFLRyhkme+9c=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR1P264MB3759
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-DQoNCkxlIDAxLzA3LzIwMjIgw6AgMTE6NDEsIE1hcmNvIEVsdmVyIGEgw6ljcml0wqA6DQo+IE9u
-IEZyaSwgMSBKdWwgMjAyMiBhdCAxMDo1NCwgQ2hyaXN0b3BoZSBMZXJveQ0KPiA8Y2hyaXN0b3Bo
-ZS5sZXJveUBjc2dyb3VwLmV1PiB3cm90ZToNCj4+DQo+PiBIaSBNYXJjbywNCj4+DQo+PiBMZSAy
-OC8wNi8yMDIyIMOgIDExOjU4LCBNYXJjbyBFbHZlciBhIMOpY3JpdCA6DQo+Pj4gSW50ZXJuYWwg
-ZGF0YSBzdHJ1Y3R1cmVzIChjcHVfYnBzLCB0YXNrX2Jwcykgb2YgcG93ZXJwYydzIGh3X2JyZWFr
-cG9pbnQNCj4+PiBpbXBsZW1lbnRhdGlvbiBoYXZlIHJlbGllZCBvbiBucl9icF9tdXRleCBzZXJp
-YWxpemluZyBhY2Nlc3MgdG8gdGhlbS4NCj4+Pg0KPj4+IEJlZm9yZSBvdmVyaGF1bGluZyBzeW5j
-aHJvbml6YXRpb24gb2Yga2VybmVsL2V2ZW50cy9od19icmVha3BvaW50LmMsDQo+Pj4gaW50cm9k
-dWNlIDIgc3BpbmxvY2tzIHRvIHN5bmNocm9uaXplIGNwdV9icHMgYW5kIHRhc2tfYnBzIHJlc3Bl
-Y3RpdmVseSwNCj4+PiB0aHVzIGF2b2lkaW5nIHJlbGlhbmNlIG9uIGNhbGxlcnMgc3luY2hyb25p
-emluZyBwb3dlcnBjJ3MgaHdfYnJlYWtwb2ludC4NCj4+DQo+PiBXZSBoYXZlIGFuIHN0aWxsIG9w
-ZW5lZCBvbGQgaXNzdWUgaW4gb3VyIGRhdGFiYXNlIHJlbGF0ZWQgdG8NCj4+IGh3X2JyZWFrcG9p
-bnQsIEkgd2FzIHdvbmRlcmluZyBpZiBpdCBjb3VsZCBoYXZlIGFueSBsaW5rIHdpdGggdGhlDQo+
-PiBjaGFuZ2VzIHlvdSBhcmUgZG9pbmcgYW5kIHdoZXRoZXIgeW91IGNvdWxkIGhhbmRsZSBpdCBh
-dCB0aGUgc2FtZSB0aW1lLg0KPj4NCj4+IGh0dHBzOi8vZ2l0aHViLmNvbS9saW51eHBwYy9pc3N1
-ZXMvaXNzdWVzLzM4DQo+Pg0KPj4gTWF5YmUgaXQgaXMgY29tcGxldGVseSB1bnJlbGF0ZWQsIGJ1
-dCBhcyB5b3VyIHNlcmllcyBtb2RpZmllcyBvbmx5DQo+PiBwb3dlcnBjIGFuZCBhcyB0aGUgaXNz
-dWUgc2F5cyB0aGF0IHBvd2VycGMgaXMgdGhlIG9ubHkgb25lIHRvIGRvIHRoYXQsIEkNCj4+IHRo
-b3VnaHQgaXQgbWlnaHQgYmUgd29ydGggYSBoYW5kIHVwLg0KPiANCj4gSSBzZWUgdGhlIHBvd2Vy
-cGMgaXNzdWUgdW5yZWxhdGVkIHRvIHRoZSBvcHRpbWl6YXRpb25zIGluIHRoaXMgc2VyaWVzOw0K
-PiBwZXJoYXBzIGJ5IGZpeGluZyB0aGUgcG93ZXJwYyBpc3N1ZSwgaXQgd291bGQgYWxzbyBiZWNv
-bWUgbW9yZQ0KPiBvcHRpbWFsLiBCdXQgYWxsIEkgc2F3IGlzIHRoYXQgaXQganVzdCBzbyBoYXBw
-ZW5zIHRoYXQgcG93ZXJwYyByZWxpZWQNCj4gb24gdGhlIG5yX2JwX211dGV4IHdoaWNoIGlzIGdv
-aW5nIGF3YXkuDQo+IA0KPiBUaGlzIHNlcmllcyB3aWxsIGJlY29tZSBldmVuIG1vcmUgY29tcGxl
-eCBpZiBJIGRlY2lkZWQgdG8gYWRkIGENCj4gcG93ZXJwYyByZXdvcmsgb24gdG9wIChub3R3aXRo
-c3RhbmRpbmcgdGhlIGZhY3QgSSBkb24ndCBoYXZlIGFueSBwcGMNCj4gaGFyZHdhcmUgYXQgbXkg
-ZGlzcG9zYWwgZWl0aGVyKS4gQSBzZXBhcmF0ZSBzZXJpZXMvcGF0Y2ggc2VlbXMgbXVjaA0KPiBt
-b3JlIGFwcHJvcHJpYXRlLg0KPiANCg0KRmFpciBlbm91Z2guIFRoYW5rcyBmb3IgYW5zd2VyaW5n
-IGFuZCBjbGFyaWZ5aW5nLg0KDQpDaHJpc3RvcGhl
+This series solves some inconsistency with how IRQ affinity masks are
+handled between SMP and non-SMP configurations.
+
+In non-SMP configs, an IRQ's true affinity is always cpumask_of(0), so
+irq_{,data_}get_affinity_mask now return that, instead of returning an
+uninitialized per-IRQ cpumask. This change makes iterating over the
+affinity mask do the right thing in both SMP and non-SMP configurations.
+
+To accomplish that:
+ - patches 1-3 disable some library code that was broken anyway on !SMP
+ - patches 4-7 refactor the code so that irq_{,data_}get_affinity_mask
+   can return a const cpumask, since that is what cpumask_of provides
+ - patch 8 drops the per-IRQ cpumask and replaces it with cpumask_of(0)
+
+This series was split from the v2 series here, which uses the new
+behavior in the RISC-V PLIC irqchip driver:
+
+https://lore.kernel.org/lkml/20220616064028.57933-1-samuel@sholland.org/
+
+Changes in v3:
+ - New patch to fix build errors in uniprocessor MIPS configs
+ - New patch to drop irq_init_effective_affinity
+ - New patch to introduce irq_data_update_affinity
+ - New patch to make the returned cpumasks const
+ - Use cpumask_of(0) instead of cpu_possible_mask
+
+Changes in v2:
+ - New patch to prevent GENERIC_IRQ_IPI from being selected on !SMP
+
+Samuel Holland (8):
+  irqchip/mips-gic: Only register IPI domain when SMP is enabled
+  genirq: GENERIC_IRQ_IPI depends on SMP
+  genirq: GENERIC_IRQ_EFFECTIVE_AFF_MASK depends on SMP
+  genirq: Drop redundant irq_init_effective_affinity
+  genirq: Refactor accessors to use irq_data_get_affinity_mask
+  genirq: Add and use an irq_data_update_affinity helper
+  genirq: Return a const cpumask from irq_data_get_affinity_mask
+  genirq: Provide an IRQ affinity mask in non-SMP configs
+
+ arch/alpha/kernel/irq.c              |  2 +-
+ arch/arm/mach-hisi/Kconfig           |  2 +-
+ arch/ia64/kernel/iosapic.c           |  2 +-
+ arch/ia64/kernel/irq.c               |  4 +-
+ arch/ia64/kernel/msi_ia64.c          |  4 +-
+ arch/mips/cavium-octeon/octeon-irq.c |  4 +-
+ arch/parisc/kernel/irq.c             |  2 +-
+ arch/sh/kernel/irq.c                 |  7 +--
+ arch/x86/hyperv/irqdomain.c          |  2 +-
+ arch/xtensa/kernel/irq.c             |  7 +--
+ drivers/iommu/hyperv-iommu.c         |  2 +-
+ drivers/irqchip/Kconfig              | 19 +++----
+ drivers/irqchip/irq-bcm6345-l1.c     |  4 +-
+ drivers/irqchip/irq-mips-gic.c       | 80 +++++++++++++++++++---------
+ drivers/parisc/iosapic.c             |  2 +-
+ drivers/pci/controller/pci-hyperv.c  | 10 ++--
+ drivers/sh/intc/chip.c               |  2 +-
+ drivers/xen/events/events_base.c     |  7 +--
+ include/linux/irq.h                  | 34 ++++++++----
+ kernel/irq/Kconfig                   |  2 +
+ kernel/irq/chip.c                    |  8 +--
+ kernel/irq/debugfs.c                 |  2 +-
+ kernel/irq/ipi.c                     | 16 +++---
+ kernel/irq/manage.c                  | 10 +---
+ 24 files changed, 140 insertions(+), 94 deletions(-)
+
+-- 
+2.35.1
+
