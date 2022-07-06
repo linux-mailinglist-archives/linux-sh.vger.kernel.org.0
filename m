@@ -2,140 +2,175 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7DC85684DD
-	for <lists+linux-sh@lfdr.de>; Wed,  6 Jul 2022 12:11:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1A2B568697
+	for <lists+linux-sh@lfdr.de>; Wed,  6 Jul 2022 13:16:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232019AbiGFKKF (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 6 Jul 2022 06:10:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46468 "EHLO
+        id S233271AbiGFLPn (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 6 Jul 2022 07:15:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232532AbiGFKJu (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 6 Jul 2022 06:09:50 -0400
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED099A467;
-        Wed,  6 Jul 2022 03:09:46 -0700 (PDT)
-Received: by mail-qt1-f176.google.com with SMTP id c13so17480565qtq.10;
-        Wed, 06 Jul 2022 03:09:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=kx69JRXRHaP9bPHWeCJjLQ/KjVRjWJF5OqT3P9q0cBs=;
-        b=lAzdRd1By0sHsBk/HkiVBJYiSBscgl0i1ZLAsUpFAIe8qAFmd4kDffUF8y1jY0FzOQ
-         vVQfqo0DLW7HANISepVttWLbihN1jcWLZBXtujKa69KSjCNBQbl+XqnRi2/a+OCql/Tc
-         G8X6soaObeyIiRaLHtBaDSvM4cEzvyuPysp+OQZs4wHtBIWH/haIhn4mW1FvFW+t+ti0
-         qBHP0Vmz2rWXotho0cLXnoEcZVjtPVWLkVQDIOQaZYE5+Ub0Ua9c2gW8CKiGhkL+io3k
-         qVkdq0txxNz1x/GETY20MSUDfZmIuHQf2qN1c1YuF5B4VJ9m9c4sskMn3wC6HuqqW6ET
-         4sEA==
-X-Gm-Message-State: AJIora+fQVLRC2JPBJguYfUYsik9hV+zeKmHAXEqN5WBunFzox/ZpMxo
-        yPE6Majlkyis7OxP4gCWrdsz3ayypng1TNvl
-X-Google-Smtp-Source: AGRyM1uRi24Ome6ymG0bopZ8WaKaGL4MX+ul7f2gDeb/y4XMxl60luZgTxp4X64UGyjAH5lS0Ja8GQ==
-X-Received: by 2002:a05:622a:4cc:b0:31d:26a1:2538 with SMTP id q12-20020a05622a04cc00b0031d26a12538mr31085549qtx.498.1657102185760;
-        Wed, 06 Jul 2022 03:09:45 -0700 (PDT)
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com. [209.85.128.169])
-        by smtp.gmail.com with ESMTPSA id d71-20020a379b4a000000b006a6a1e4aec2sm28819484qke.49.2022.07.06.03.09.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 Jul 2022 03:09:44 -0700 (PDT)
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-31c86fe1dddso87249647b3.1;
-        Wed, 06 Jul 2022 03:09:44 -0700 (PDT)
-X-Received: by 2002:a81:5404:0:b0:31c:c24d:94b0 with SMTP id
- i4-20020a815404000000b0031cc24d94b0mr10209449ywb.502.1657102184115; Wed, 06
- Jul 2022 03:09:44 -0700 (PDT)
+        with ESMTP id S233243AbiGFLPk (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 6 Jul 2022 07:15:40 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E2E2427FCE;
+        Wed,  6 Jul 2022 04:15:39 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CFE831042;
+        Wed,  6 Jul 2022 04:15:39 -0700 (PDT)
+Received: from [10.163.43.16] (unknown [10.163.43.16])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 60BFD3F66F;
+        Wed,  6 Jul 2022 04:15:31 -0700 (PDT)
+Message-ID: <ea0f8db8-831b-dcb4-b8c7-ab651f1e1713@arm.com>
+Date:   Wed, 6 Jul 2022 16:45:27 +0530
 MIME-Version: 1.0
-References: <20220624121313.2382500-1-alexandr.lobakin@intel.com> <20220624121313.2382500-4-alexandr.lobakin@intel.com>
-In-Reply-To: <20220624121313.2382500-4-alexandr.lobakin@intel.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 6 Jul 2022 12:09:33 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdWB8CjbOarttKSaY2=kASbqU2UBCe9bpU17=MdZP_rGUA@mail.gmail.com>
-Message-ID: <CAMuHMdWB8CjbOarttKSaY2=kASbqU2UBCe9bpU17=MdZP_rGUA@mail.gmail.com>
-Subject: Re: [PATCH v5 3/9] bitops: unify non-atomic bitops prototypes across architectures
-To:     Alexander Lobakin <alexandr.lobakin@intel.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Yury Norov <yury.norov@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Matt Turner <mattst88@gmail.com>,
-        Brian Cain <bcain@quicinc.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Kees Cook <keescook@chromium.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Marco Elver <elver@google.com>, Borislav Petkov <bp@suse.de>,
-        Tony Luck <tony.luck@intel.com>,
-        Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, kernel test robot <lkp@intel.com>,
-        alpha <linux-alpha@vger.kernel.org>,
-        "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH V6 21/26] m68k/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+Content-Language: en-US
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Linux MM <linux-mm@kvack.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
         "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
         Linux-sh list <linux-sh@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-csky@vger.kernel.org,
         sparclinux <sparclinux@vger.kernel.org>,
-        Linux-Arch <linux-arch@vger.kernel.org>, llvm@lists.linux.dev,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Christoph Hellwig <hch@infradead.org>,
+        arcml <linux-snps-arc@lists.infradead.org>,
+        "open list:TENSILICA XTENSA PORT (xtensa)" 
+        <linux-xtensa@linux-xtensa.org>,
+        linux-um <linux-um@lists.infradead.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        Openrisc <openrisc@lists.librecores.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        alpha <linux-alpha@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+References: <20220630051630.1718927-1-anshuman.khandual@arm.com>
+ <20220630051630.1718927-22-anshuman.khandual@arm.com>
+ <CAMuHMdX_Ji7dCzzCc3xw5ic6J=0PaPkyzXKpOgUFjjEkR+yJOw@mail.gmail.com>
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <CAMuHMdX_Ji7dCzzCc3xw5ic6J=0PaPkyzXKpOgUFjjEkR+yJOw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Fri, Jun 24, 2022 at 2:13 PM Alexander Lobakin
-<alexandr.lobakin@intel.com> wrote:
-> Currently, there is a mess with the prototypes of the non-atomic
-> bitops across the different architectures:
->
-> ret     bool, int, unsigned long
-> nr      int, long, unsigned int, unsigned long
-> addr    volatile unsigned long *, volatile void *
->
-> Thankfully, it doesn't provoke any bugs, but can sometimes make
-> the compiler angry when it's not handy at all.
-> Adjust all the prototypes to the following standard:
->
-> ret     bool                            retval can be only 0 or 1
-> nr      unsigned long                   native; signed makes no sense
-> addr    volatile unsigned long *        bitmaps are arrays of ulongs
->
-> Next, some architectures don't define 'arch_' versions as they don't
-> support instrumentation, others do. To make sure there is always the
-> same set of callables present and to ease any potential future
-> changes, make them all follow the rule:
->  * architecture-specific files define only 'arch_' versions;
->  * non-prefixed versions can be defined only in asm-generic files;
-> and place the non-prefixed definitions into a new file in
-> asm-generic to be included by non-instrumented architectures.
->
-> Finally, add some static assertions in order to prevent people from
-> making a mess in this room again.
-> I also used the %__always_inline attribute consistently, so that
-> they always get resolved to the actual operations.
->
-> Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Signed-off-by: Alexander Lobakin <alexandr.lobakin@intel.com>
-> Acked-by: Mark Rutland <mark.rutland@arm.com>
-> Reviewed-by: Yury Norov <yury.norov@gmail.com>
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
->  arch/m68k/include/asm/bitops.h                | 49 ++++++++++-----
 
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+On 7/6/22 15:33, Geert Uytterhoeven wrote:
+> Hi Anshuman,
+> 
+> On Thu, Jun 30, 2022 at 7:19 AM Anshuman Khandual
+> <anshuman.khandual@arm.com> wrote:
+>> This enables ARCH_HAS_VM_GET_PAGE_PROT on the platform and exports standard
+>> vm_get_page_prot() implementation via DECLARE_VM_GET_PAGE_PROT, which looks
+>> up a private and static protection_map[] array. Subsequently all __SXXX and
+>> __PXXX macros can be dropped which are no longer needed.
+>>
+>> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+>> Cc: linux-m68k@lists.linux-m68k.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> 
+> Thanks for your patch!
+> 
+>> --- a/arch/m68k/include/asm/mcf_pgtable.h
+>> +++ b/arch/m68k/include/asm/mcf_pgtable.h
+>> @@ -91,60 +91,6 @@
+>>   * for use. In general, the bit positions are xwr, and P-items are
+>>   * private, the S-items are shared.
+>>   */
+> 
+> The comment above should be removed, too.
 
-Gr{oetje,eeting}s,
+Sure, will do.
 
-                        Geert
+> 
+>> -#define __P000         PAGE_NONE
+>> -#define __P001         __pgprot(CF_PAGE_VALID \
+>> -                                | CF_PAGE_ACCESSED \
+>> -                                | CF_PAGE_READABLE)
+> 
+>> --- a/arch/m68k/include/asm/motorola_pgtable.h
+>> +++ b/arch/m68k/include/asm/motorola_pgtable.h
+>> @@ -83,28 +83,6 @@ extern unsigned long mm_cachebits;
+>>  #define PAGE_COPY_C    __pgprot(_PAGE_PRESENT | _PAGE_RONLY | _PAGE_ACCESSED)
+>>  #define PAGE_READONLY_C        __pgprot(_PAGE_PRESENT | _PAGE_RONLY | _PAGE_ACCESSED)
+> 
+> You might move the *_C definitions above into arch/m68k/mm/motorola.c
+> as well, as they are only used in the latter.
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Okay, will do.
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+> 
+>>
+>> -/*
+>> - * The m68k can't do page protection for execute, and considers that the same are read.
+>> - * Also, write permissions imply read permissions. This is the closest we can get..
+>> - */
+>> -#define __P000 PAGE_NONE_C
+>> -#define __P001 PAGE_READONLY_C
+>> -#define __P010 PAGE_COPY_C
+>> -#define __P011 PAGE_COPY_C
+>> -#define __P100 PAGE_READONLY_C
+>> -#define __P101 PAGE_READONLY_C
+>> -#define __P110 PAGE_COPY_C
+>> -#define __P111 PAGE_COPY_C
+>> -
+>> -#define __S000 PAGE_NONE_C
+>> -#define __S001 PAGE_READONLY_C
+>> -#define __S010 PAGE_SHARED_C
+>> -#define __S011 PAGE_SHARED_C
+>> -#define __S100 PAGE_READONLY_C
+>> -#define __S101 PAGE_READONLY_C
+>> -#define __S110 PAGE_SHARED_C
+>> -#define __S111 PAGE_SHARED_C
+>> -
+>>  #define pmd_pgtable(pmd) ((pgtable_t)pmd_page_vaddr(pmd))
+>>
+>>  /*
+>> diff --git a/arch/m68k/include/asm/sun3_pgtable.h b/arch/m68k/include/asm/sun3_pgtable.h
+>> index 5e4e753f0d24..9d919491765b 100644
+>> --- a/arch/m68k/include/asm/sun3_pgtable.h
+>> +++ b/arch/m68k/include/asm/sun3_pgtable.h
+>> @@ -71,23 +71,6 @@
+>>   * protection settings, valid (implying read and execute) and writeable. These
+>>   * are as close as we can get...
+>>   */
+> 
+> The comment above should be removed, too.
+
+Sure, will do.
+
+> 
+>> -#define __P000 PAGE_NONE
+>> -#define __P001 PAGE_READONLY
+> 
+> With the above fixed:
+> Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>> 
+> Gr{oetje,eeting}s,
+> 
+>                         Geert
+> 
+> --
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+> 
+> In personal conversations with technical people, I call myself a hacker. But
+> when I'm talking to journalists I just say "programmer" or something like that.
+>                                 -- Linus Torvalds
+> 
