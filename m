@@ -2,235 +2,168 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 281D056A044
-	for <lists+linux-sh@lfdr.de>; Thu,  7 Jul 2022 12:46:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8C3156B3DF
+	for <lists+linux-sh@lfdr.de>; Fri,  8 Jul 2022 09:55:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235185AbiGGKpp (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 7 Jul 2022 06:45:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39314 "EHLO
+        id S237181AbiGHHyZ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 8 Jul 2022 03:54:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234834AbiGGKpn (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 7 Jul 2022 06:45:43 -0400
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACDAD4D4C0;
-        Thu,  7 Jul 2022 03:45:41 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id y18so10859731ljj.6;
-        Thu, 07 Jul 2022 03:45:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=WY98p2xpQdOFXmhJtt3xHyGiLiAUhi6XRf4hr9Uc3Wg=;
-        b=b6GFfkBqjaMf2ocm+NmB4Pdq8BftwMkyn64oPaQ4MV4pvFzFkwxMEQeq6P80Hm4/xV
-         qZ+8LuyU5wRQNERGgQNFjcHh58vvfaC0ptqNORWmxffraiT9/DjbcHTSFTsFBlux58Ot
-         XhtqsfAx1Sa2gM/tjlsL0QsZtd9LNBgjw9CnnsV557EhbpHb9gCv8v2p+Oj+GmTrlkqp
-         mUp+nL+5dVYNjaxqq1uCJh+k/gsHSTvygVI9uMaKcsKBGCdHzMWvDPsDHQivCRNcB3z5
-         282ePxgRE2AokBxYCEN4Y+8PqCSOtSZbzmUbIGk4eL7kv/uEwV39B6EvqmW8CS1gOdOi
-         UC1w==
+        with ESMTP id S237500AbiGHHyZ (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 8 Jul 2022 03:54:25 -0400
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F5CF25C68
+        for <linux-sh@vger.kernel.org>; Fri,  8 Jul 2022 00:54:24 -0700 (PDT)
+Received: by mail-qk1-f169.google.com with SMTP id x17so18075qkh.11
+        for <linux-sh@vger.kernel.org>; Fri, 08 Jul 2022 00:54:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=WY98p2xpQdOFXmhJtt3xHyGiLiAUhi6XRf4hr9Uc3Wg=;
-        b=5Eo/0Z9lE0dnEeA9CuAdzgT3ij2ITH1jbtYNGQ3ygRTp6jZ+ZR9exxaGcxsdWLOp43
-         QEfLLPrepVslpODTt1c/qMl2IB5pR1uJbrnRoxK3I/RrgsGUtsG5sjFEaxpM0rxv7VZB
-         6yFa4tvQySbXnXgQdXI5P2XVZ2T838olFWqvhX7ardxLCW9rniWNuC3chL9ntyBbv9VU
-         gTJ+ctTszv+uIF5a1LzpKx5VHuD6KJjeLh9OGF4MPEtyXszsyNiZB4rrTWvvgA8ipBpo
-         qsruG5dF5+MsgNhHJ+lXuQf0T4SFgwiFleFinWHRUzJWDuzuCYv0LZ4ZX6Bb70Rb0PS8
-         AQpg==
-X-Gm-Message-State: AJIora+KWHbZBHMQ09F9agduePiLBnsypQP2ImH/lJvQ7Ytt3b/WMIi9
-        7Ccx7XfzwyGkgpAJZ45OVhc=
-X-Google-Smtp-Source: AGRyM1u/4QG+lv01OuNQRv5dICfp1iMojBGdOQCB054Of0nHO6eJIDlEiA+XLi20gZMrDBLB66OBnA==
-X-Received: by 2002:a05:651c:158a:b0:25d:1cc9:3ce7 with SMTP id h10-20020a05651c158a00b0025d1cc93ce7mr13652854ljq.450.1657190739851;
-        Thu, 07 Jul 2022 03:45:39 -0700 (PDT)
-Received: from mobilestation ([95.79.140.178])
-        by smtp.gmail.com with ESMTPSA id g2-20020a056512118200b0047f701f6d09sm6766233lfr.184.2022.07.07.03.45.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Jul 2022 03:45:37 -0700 (PDT)
-Date:   Thu, 7 Jul 2022 13:45:33 +0300
-From:   Serge Semin <fancer.lancer@gmail.com>
-To:     Marc Zyngier <maz@kernel.org>
-Cc:     Samuel Holland <samuel@sholland.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Broadcom internal kernel review list 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Chris Zankel <chris@zankel.net>,
-        Colin Ian King <colin.king@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Dexuan Cui <decui@microsoft.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Helge Deller <deller@gmx.de>, Ingo Molnar <mingo@redhat.com>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Jan Beulich <jbeulich@suse.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Juergen Gross <jgross@suse.com>,
-        Julia Lawall <Julia.Lawall@inria.fr>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Kees Cook <keescook@chromium.org>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Matt Turner <mattst88@gmail.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Maximilian Heyne <mheyne@amazon.de>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-        Rich Felker <dalias@libc.org>,
-        Richard Henderson <rth@twiddle.net>,
-        Rikard Falkeborn <rikard.falkeborn@gmail.com>,
-        Rob Herring <robh@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Sven Schnelle <svens@stackframe.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Wei Liu <wei.liu@kernel.org>, Wei Xu <xuwei5@hisilicon.com>,
-        Will Deacon <will@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        iommu@lists.linux-foundation.org, iommu@lists.linux.dev,
-        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-hyperv@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        x86@kernel.org, xen-devel@lists.xenproject.org,
-        kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH v3 1/8] irqchip/mips-gic: Only register IPI domain when
- SMP is enabled
-Message-ID: <20220707104533.7iakliv2f5i2qi33@mobilestation>
-References: <20220701200056.46555-1-samuel@sholland.org>
- <20220701200056.46555-2-samuel@sholland.org>
- <20220705135243.ydbwfo4kois64elr@mobilestation>
- <87czehmiwt.wl-maz@kernel.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=XR9WjDWPP0AqCRVmMHVxtD0tF3ApqqEeeQJCbUtfFac=;
+        b=ubBPI8P4BLE+uWT3fInLCKEMZlOE1ayf0Bnhi28BfIA+AseZ0Hi82gZzhWr5RMMTf8
+         XOrPDtE7xMfuzknW19JGkg4+rtN4v0MSIsIeugAQ9LTi5UpVDBMDgNmg7zYSE1jzDpRU
+         LlsbHVhyu9JSk4owZQs1BfgY7Kur7vfBcmXArNdkbMno1+IWSVlVXyZoRB6j/C7pQLUt
+         0V2PpPJDgGEaSFwxHflIn6sqzex4TZVU+zqQsfDudjtSw5AJJifvgGbPkKpmwNb4a7bY
+         ZmRMcIwvGVqcq1Gm9Ty4UNO8XgjaotM1uAlkpWwrYJsNt3f0BiInXA9RFOGZFZx1LSy2
+         IP4A==
+X-Gm-Message-State: AJIora/enuGHzwMKtlD6C9NIBQzhBUOd7VPeCdeutVTdgntwQ4M61k7w
+        /Uo2Fc7KLJ3hGxc1zOqod9C1Tpa9x84GlQ==
+X-Google-Smtp-Source: AGRyM1tNObGO7kvszYSpCI5rOfbmsb535Q/rPAb8dfSneBj6A9XFtS1+gTeStgl1IbGtNbNGA+M1Fg==
+X-Received: by 2002:a05:620a:20c2:b0:6b5:5db7:41b with SMTP id f2-20020a05620a20c200b006b55db7041bmr1362001qka.659.1657266863300;
+        Fri, 08 Jul 2022 00:54:23 -0700 (PDT)
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com. [209.85.219.177])
+        by smtp.gmail.com with ESMTPSA id i8-20020a05620a404800b006b24f49d06csm20267376qko.6.2022.07.08.00.54.22
+        for <linux-sh@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 08 Jul 2022 00:54:22 -0700 (PDT)
+Received: by mail-yb1-f177.google.com with SMTP id r3so36572004ybr.6
+        for <linux-sh@vger.kernel.org>; Fri, 08 Jul 2022 00:54:22 -0700 (PDT)
+X-Received: by 2002:a25:2b48:0:b0:668:3b7d:326c with SMTP id
+ r69-20020a252b48000000b006683b7d326cmr2120545ybr.380.1657266862287; Fri, 08
+ Jul 2022 00:54:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87czehmiwt.wl-maz@kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20220523091633.5217-1-phil.edworthy@renesas.com>
+In-Reply-To: <20220523091633.5217-1-phil.edworthy@renesas.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Fri, 8 Jul 2022 09:54:11 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdWdd7VGLpUFo--DdYJRtHhrEH-j9wm1nb66BZZ6o82Sug@mail.gmail.com>
+Message-ID: <CAMuHMdWdd7VGLpUFo--DdYJRtHhrEH-j9wm1nb66BZZ6o82Sug@mail.gmail.com>
+Subject: Re: [PATCH] sh: clk: Extend valid clk ptr checks using IS_ERR_OR_NULL
+To:     Phil Edworthy <phil.edworthy@renesas.com>
+Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Thu, Jul 07, 2022 at 09:22:26AM +0100, Marc Zyngier wrote:
-> On Tue, 05 Jul 2022 14:52:43 +0100,
-> Serge Semin <fancer.lancer@gmail.com> wrote:
-> > 
-> > Hi Samuel
-> > 
-> > On Fri, Jul 01, 2022 at 03:00:49PM -0500, Samuel Holland wrote:
-> > > The MIPS GIC irqchip driver may be selected in a uniprocessor
-> > > configuration, but it unconditionally registers an IPI domain.
-> > > 
-> > > Limit the part of the driver dealing with IPIs to only be compiled when
-> > > GENERIC_IRQ_IPI is enabled, which corresponds to an SMP configuration.
-> > 
-> > Thanks for the patch. Some comment is below.
-> > 
-> > > 
-> > > Reported-by: kernel test robot <lkp@intel.com>
-> > > Signed-off-by: Samuel Holland <samuel@sholland.org>
-> > > ---
-> > > 
-> > > Changes in v3:
-> > >  - New patch to fix build errors in uniprocessor MIPS configs
-> > > 
-> > >  drivers/irqchip/Kconfig        |  3 +-
-> > >  drivers/irqchip/irq-mips-gic.c | 80 +++++++++++++++++++++++-----------
-> > >  2 files changed, 56 insertions(+), 27 deletions(-)
-> > > 
-> > > diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
-> > > index 1f23a6be7d88..d26a4ff7c99f 100644
-> > > --- a/drivers/irqchip/Kconfig
-> > > +++ b/drivers/irqchip/Kconfig
-> > > @@ -322,7 +322,8 @@ config KEYSTONE_IRQ
-> > >  
-> > >  config MIPS_GIC
-> > >  	bool
-> > > -	select GENERIC_IRQ_IPI
-> > > +	select GENERIC_IRQ_IPI if SMP
-> > 
-> > > +	select IRQ_DOMAIN_HIERARCHY
-> > 
-> > It seems to me that the IRQ domains hierarchy is supposed to be
-> > created only if IPI is required. At least that's what the MIPS GIC
-> > driver implies. Thus we can go further and CONFIG_IRQ_DOMAIN_HIERARCHY
-> > ifdef-out the gic_irq_domain_alloc() and gic_irq_domain_free()
-> > methods definition together with the initialization:
-> > 
-> >  static const struct irq_domain_ops gic_irq_domain_ops = {
-> >  	.xlate = gic_irq_domain_xlate,
-> > +#ifdef CONFIG_IRQ_DOMAIN_HIERARCHY
-> >  	.alloc = gic_irq_domain_alloc,
-> >  	.free = gic_irq_domain_free,
-> > +#endif
-> >  	.map = gic_irq_domain_map,
-> > };
-> > 
-> > If the GENERIC_IRQ_IPI config is enabled, CONFIG_IRQ_DOMAIN_HIERARCHY
-> > will be automatically selected (see the config definition in
-> > kernel/irq/Kconfig). If the IRQs hierarchy is needed for some another
-> > functionality like GENERIC_MSI_IRQ_DOMAIN or GPIOs then they will
-> > explicitly enable the IRQ_DOMAIN_HIERARCHY config thus activating the
-> > denoted .alloc and .free methods definitions.
-> > 
-> > To sum up you can get rid of the IRQ_DOMAIN_HIERARCHY config
-> > force-select from this patch and make the MIPS GIC driver code a bit
-> > more coherent.
-> > 
-> > @Marc, please correct me if were wrong.
-> 
+Hi Phil,
 
-> Either way probably works correctly, but Samuel's approach is more
-> readable IMO. It is far easier to reason about a high-level feature
-> (GENERIC_IRQ_IPI) than an implementation detail (IRQ_DOMAIN_HIERARCHY).
-> 
+On Mon, May 23, 2022 at 11:16 AM Phil Edworthy
+<phil.edworthy@renesas.com> wrote:
+> In order to allow all drivers to call clk functions with an invalid clk
+> ptr, ensure we check not only for a NULL clk ptr, but also for errors
+> before using it.
+>
+> Signed-off-by: Phil Edworthy <phil.edworthy@renesas.com>
 
-The main idea of my comment was to get rid of the forcible
-IRQ_DOMAIN_HIERARCHY config selection, because the basic part of the
-driver doesn't depends on the hierarchical IRQ-domains functionality.
-It's needed only for IPIs and implicitly for the lower level IRQ
-device drivers like GPIO or PCIe-controllers, which explicitly enable
-the IRQ_DOMAIN_HIERARCHY config anyway. That's why instead of forcible
-IRQ_DOMAIN_HIERARCHY config selection (see Samuel patch) I suggested
-to make the corresponding functionality defined under the
-IRQ_DOMAIN_HIERARCHY config ifdefs, thus having the driver capable of
-creating the hierarchical IRQs domains only if it's required.
+Thanks for your patch!
 
-> If you really want to save a handful of bytes, you can make the
-> callbacks conditional on GENERIC_IRQ_IPI, and be done with it.
+> --- a/drivers/sh/clk/core.c
+> +++ b/drivers/sh/clk/core.c
+> @@ -294,7 +294,7 @@ int clk_enable(struct clk *clk)
+>         unsigned long flags;
+>         int ret;
+>
+> -       if (!clk)
+> +       if (IS_ERR_OR_NULL(clk))
+>                 return -EINVAL;
 
-AFAIU I can't in this case. It must be either IRQ_DOMAIN_HIERARCHY
-ifdefs or explicit IRQ_DOMAIN_HIERARCHY select. There can be non-SMP
-(UP) systems with no need in IPIs but for instance having a GPIO or
-PCIe controller which require the hierarchical IRQ-domains support of
-the parental IRQ controller. So making the callbacks definition
-depended on the GENERIC_IRQ_IPI config state will break the driver for
-these systems. That's why I suggested to use
-CONFIG_IRQ_DOMAIN_HIERARCHY which activates the hierarchical IRQ
-domains support in the IRQ-chip system (see the irq_domain_ops
-structure conditional fields definition) and shall we have the
-suggested approach implemented in the MIPS GIC driver.
+drivers/clk/clk.c:clk_enable() only checks for NULL, so I think this
+part should be dropped.
 
--Sergey
+>
+>         spin_lock_irqsave(&clock_lock, flags);
+> @@ -470,7 +470,7 @@ void clk_enable_init_clocks(void)
+>
+>  unsigned long clk_get_rate(struct clk *clk)
+>  {
+> -       if (!clk)
+> +       if (IS_ERR_OR_NULL(clk))
+>                 return 0;
 
-> But this can come as an additional patch.
-> 
-> Thanks,
-> 
-> 	M.
-> 
-> -- 
-> Without deviation from the norm, progress is not possible.
+Same here.
+
+>
+>         return clk->rate;
+> @@ -482,7 +482,7 @@ int clk_set_rate(struct clk *clk, unsigned long rate)
+>         int ret = -EOPNOTSUPP;
+>         unsigned long flags;
+>
+> -       if (!clk)
+> +       if (IS_ERR_OR_NULL(clk))
+>                 return 0;
+
+Same here.
+
+>
+>         spin_lock_irqsave(&clock_lock, flags);
+> @@ -513,7 +513,7 @@ int clk_set_parent(struct clk *clk, struct clk *parent)
+>         unsigned long flags;
+>         int ret = -EINVAL;
+>
+> -       if (!parent || !clk)
+> +       if (!parent || IS_ERR_OR_NULL(clk))
+>                 return ret;
+
+Same here.
+
+>         if (clk->parent == parent)
+>                 return 0;
+> @@ -542,7 +542,7 @@ EXPORT_SYMBOL_GPL(clk_set_parent);
+>
+>  struct clk *clk_get_parent(struct clk *clk)
+>  {
+> -       if (!clk)
+> +       if (IS_ERR_OR_NULL(clk))
+>                 return NULL;
+
+Same here.
+
+>
+>         return clk->parent;
+> @@ -551,7 +551,7 @@ EXPORT_SYMBOL_GPL(clk_get_parent);
+>
+>  long clk_round_rate(struct clk *clk, unsigned long rate)
+>  {
+> -       if (!clk)
+> +       if (IS_ERR_OR_NULL(clk))
+>                 return 0;
+
+Same here.
+
+>
+>         if (likely(clk->ops && clk->ops->round_rate)) {
+
+So it's just clk_disable() that needs the improved checking, so you can
+always call it in cleanup code, regardless of failing to get the clock.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
