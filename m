@@ -2,157 +2,113 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 848F45AF731
-	for <lists+linux-sh@lfdr.de>; Tue,  6 Sep 2022 23:43:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72CF95B06B9
+	for <lists+linux-sh@lfdr.de>; Wed,  7 Sep 2022 16:32:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229468AbiIFVmy (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 6 Sep 2022 17:42:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40330 "EHLO
+        id S230306AbiIGOcB (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 7 Sep 2022 10:32:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229980AbiIFVms (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 6 Sep 2022 17:42:48 -0400
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0ED491D0E
-        for <linux-sh@vger.kernel.org>; Tue,  6 Sep 2022 14:42:39 -0700 (PDT)
-Received: by mail-pf1-x42a.google.com with SMTP id z187so12677419pfb.12
-        for <linux-sh@vger.kernel.org>; Tue, 06 Sep 2022 14:42:39 -0700 (PDT)
+        with ESMTP id S230123AbiIGObk (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 7 Sep 2022 10:31:40 -0400
+Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5693824F2E
+        for <linux-sh@vger.kernel.org>; Wed,  7 Sep 2022 07:31:37 -0700 (PDT)
+Received: by mail-ed1-x543.google.com with SMTP id a70so3865174edf.10
+        for <linux-sh@vger.kernel.org>; Wed, 07 Sep 2022 07:31:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date;
-        bh=qqaQNOdpehqVq2XrweTVHqYoJcLxU4LOqgxU+UY60WQ=;
-        b=Qs7dLb2pL3V3HdrG3Pv00KmIHSZrRFEQqdYflAlJUmtdciWsItEQ8Htkv6YneSBYwY
-         Hs5g69MtDio3wFYWyiMv+3vQXaoDbTS74stSTnR7vUz9O65mWgC5c5hVw9AM8sXQ2wRx
-         VTRNK5albonxpliONnuWIYHNI/t4MHcs1gF/o=
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date;
+        bh=UTPjlhWN0j/3cl0uibj9IdU3K9tIHCNTd74bAPWV+BQ=;
+        b=k+kTmF4dNKKC1tFdYzcwH7/l46epf5FbUFPW9fotRQ90/DS7R3h9yaNhOg0lTJdIKN
+         YHdSCTkM8Zkjp7Hn3R4P0XvsDr7GxfmeGBL++Unk5TJmx9qVPx583aTDfnV2PWRJleSF
+         V9CWF3CXrTGHaUKzdckweUxspufsytFwPi4BnYsAOc2hSOm8q6pA2t/VPIekeXstFpXE
+         htt2kpsyRtvUjut5U+QWEOTH3kFoTjQxxF4WczaCcSaHvXanBanYGkEYwnM/Vnd0ubg4
+         W8etIyyum3dHJgEwMgk9+gvP+Ht+yKtyVUWfAI5wHJqHC9VVX3XlSnd5oyt/DWf9M1PE
+         uqfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=qqaQNOdpehqVq2XrweTVHqYoJcLxU4LOqgxU+UY60WQ=;
-        b=Vms+3jOpTpriqejIOT0qUfkkHh8dCFm2dCozjMu2KusolnfFk3S5YTqZdlxG+agz/f
-         heag12c7mGVtkPAG4OitXPc/D2KXEn6s10z5cNTE4L5TqWRnyB+mAZlA/D06mFPAm6Xv
-         ORxgp0ti8Ra6CTFtG0+lo4CDMtU4aO6wV0eYjpapcsTdpQhq/8pvfzo9+9XIH1L/cH+8
-         pOAv22HYztJLUq9gHy7sEte187dQ+rebJfPt7aAwwalyYxgEuggc89I10q4xbXgcGZkg
-         Trq+aLH6G8aSa2+7nOcEf759pMSWyAkILCBVdoglUz0cUaaTttifbNCFKOLzZe8/Sfw6
-         hTQw==
-X-Gm-Message-State: ACgBeo3GFIAwB7ma98Yz14MANHq2BorFY+x1g5cIEDn1F4S58GBR0ti+
-        sn3vu8f2bBLQc6a7scaPIFNe9g==
-X-Google-Smtp-Source: AA6agR6IVbl9vhYt8tQVvWX6Bhb8qmGSNxPpRhfN16MoqKCPZoC5QRPOOz4Jr5nirm//GtXy6ukk6w==
-X-Received: by 2002:a63:2208:0:b0:429:9444:85be with SMTP id i8-20020a632208000000b00429944485bemr597770pgi.236.1662500558614;
-        Tue, 06 Sep 2022 14:42:38 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id j3-20020a170902da8300b001752216ca51sm10545234plx.39.2022.09.06.14.42.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Sep 2022 14:42:37 -0700 (PDT)
-Date:   Tue, 6 Sep 2022 14:42:36 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     linux-kernel@vger.kernel.org, linux-sh@vger.kernel.org,
-        amd-gfx@lists.freedesktop.org, linux-s390@vger.kernel.org,
-        linux-hardening@vger.kernel.org
-Subject: Re: Build regressions/improvements in v6.0-rc4
-Message-ID: <202209061432.FFF96789B@keescook>
-References: <CAHk-=wiqix9N5P0BXrSSOXjPZxMh=wDDRJ3sgf=hutoTUx0nZQ@mail.gmail.com>
- <20220905071915.2312316-1-geert@linux-m68k.org>
- <alpine.DEB.2.22.394.2209050944290.964530@ramsan.of.borg>
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=UTPjlhWN0j/3cl0uibj9IdU3K9tIHCNTd74bAPWV+BQ=;
+        b=t3usi66LEAjvXuPE7J97BJKUwGmP2OIMrPLGxgMvYocR/h1tTGca4IThnJq0PJMY16
+         96vNPU1l7Yt195O1s7eBJmVSdetMcXw5a887Yx5Wr/b8QSDrZg9Rdf7T+FvQAP1dNllq
+         qVXAIwsgkI2uR5WK66K8WikE4v5blMiOBnda0EO8a4R8B+N9+Bw7NJzfwW/bsnwFH7Xn
+         9RGLXm/JzJXEr+UDhPXnN1YH2+isovBsSdCNRKvoWhP7kg5jGC4n7YcOe74wu7tmkGGc
+         kKajsewzBWYL6Q1qcyOqIyVg5fvZa8WtC9Xr+Y008bDcc4g7UqB5JiOVjd+SoJV6yz/E
+         sZog==
+X-Gm-Message-State: ACgBeo1kBo2/57A+P17vtRy8L9rtb4gqFw2whzfJlX71Olz4UajcJI5q
+        kcvHaanamzFUE53UmpUBkTdY2PqZRDnfYsbKxQI=
+X-Google-Smtp-Source: AA6agR7oVOAvDjQn3BvyL8TRl7TU52ugVo1oxft3hLVGbPDpO77yZb9oqAmvuH8HvlLOfxUiSLCWLP4h3TKLUQD64AM=
+X-Received: by 2002:a05:6402:2937:b0:44e:b578:6fdd with SMTP id
+ ee55-20020a056402293700b0044eb5786fddmr3322109edb.159.1662561095860; Wed, 07
+ Sep 2022 07:31:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.22.394.2209050944290.964530@ramsan.of.borg>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+Received: by 2002:a54:3fc4:0:0:0:0:0 with HTTP; Wed, 7 Sep 2022 07:31:34 -0700 (PDT)
+Reply-To: lumar.casey@outlook.com
+From:   LUMAR CASEY <miriankushrat@gmail.com>
+Date:   Wed, 7 Sep 2022 16:31:34 +0200
+Message-ID: <CAO4StN1ngaz5Z=OEaG_ttEwdR6_pWWO2Esip5rtKi-tOEu80oA@mail.gmail.com>
+Subject: ATTENTION/PROPOSAL
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=6.8 required=5.0 tests=ADVANCE_FEE_4_NEW_MONEY,
+        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM,UNDISC_MONEY,UPPERCASE_75_100 autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:543 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5035]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [miriankushrat[at]gmail.com]
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  0.0 UPPERCASE_75_100 message body is 75-100% uppercase
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  0.2 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+        *  0.0 ADVANCE_FEE_4_NEW_MONEY Advance Fee fraud and lots of money
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Mon, Sep 05, 2022 at 09:46:01AM +0200, Geert Uytterhoeven wrote:
-> On Mon, 5 Sep 2022, Geert Uytterhoeven wrote:
-> > JFYI, when comparing v6.0-rc4[1] to v6.0-rc3[3], the summaries are:
-> >  - build errors: +3/-16
-> 
->   + /kisskb/src/arch/sh/kernel/machvec.c: error: array subscript 'struct sh_machine_vector[0]' is partly outside array bounds of 'long int[1]' [-Werror=array-bounds]:  => 105:33
-> 
-> sh4-gcc11/sh-allyesconfig (-Werror)
+ATTENTION
 
-Interesting -- I wonder why this suddenly appeared. I think the fix is
-the common "linker addresses need to be char arrays" fix:
+BUSINESS PARTNER,
 
-diff --git a/arch/sh/include/asm/sections.h b/arch/sh/include/asm/sections.h
-index 8edb824049b9..0cb0ca149ac3 100644
---- a/arch/sh/include/asm/sections.h
-+++ b/arch/sh/include/asm/sections.h
-@@ -4,7 +4,7 @@
- 
- #include <asm-generic/sections.h>
- 
--extern long __machvec_start, __machvec_end;
-+extern char __machvec_start[], __machvec_end[];
- extern char __uncached_start, __uncached_end;
- extern char __start_eh_frame[], __stop_eh_frame[];
- 
-diff --git a/arch/sh/kernel/machvec.c b/arch/sh/kernel/machvec.c
-index d606679a211e..57efaf5b82ae 100644
---- a/arch/sh/kernel/machvec.c
-+++ b/arch/sh/kernel/machvec.c
-@@ -20,8 +20,8 @@
- #define MV_NAME_SIZE 32
- 
- #define for_each_mv(mv) \
--	for ((mv) = (struct sh_machine_vector *)&__machvec_start; \
--	     (mv) && (unsigned long)(mv) < (unsigned long)&__machvec_end; \
-+	for ((mv) = (struct sh_machine_vector *)__machvec_start; \
-+	     (mv) && (unsigned long)(mv) < (unsigned long)__machvec_end; \
- 	     (mv)++)
- 
- static struct sh_machine_vector * __init get_mv_byname(const char *name)
-@@ -87,8 +87,8 @@ void __init sh_mv_setup(void)
- 	if (!machvec_selected) {
- 		unsigned long machvec_size;
- 
--		machvec_size = ((unsigned long)&__machvec_end -
--				(unsigned long)&__machvec_start);
-+		machvec_size = ((unsigned long)__machvec_end -
-+				(unsigned long)__machvec_start);
- 
- 		/*
- 		 * Sanity check for machvec section alignment. Ensure
-@@ -102,7 +102,7 @@ void __init sh_mv_setup(void)
- 		 * vector (usually the only one) from .machvec.init.
- 		 */
- 		if (machvec_size >= sizeof(struct sh_machine_vector))
--			sh_mv = *(struct sh_machine_vector *)&__machvec_start;
-+			sh_mv = *(struct sh_machine_vector *)__machvec_start;
- 	}
- 
- 	pr_notice("Booting machvec: %s\n", get_system_type());
+I AM LUMAR CASEY WORKING WITH AN INSURANCE FINANCIAL INSTITUTE, WITH
+MY POSITION AND PRIVILEGES I WAS ABLE TO SOURCE OUT AN OVER DUE
+PAYMENT OF 12.8 MILLION POUNDS THAT IS NOW SECURED WITH A SHIPPING
+DIPLOMATIC OUTLET.
 
-> 
->   + /kisskb/src/drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn32/display_mode_vba_32.c: error: the frame size of 2144 bytes is larger than 2048 bytes [-Werror=frame-larger-than=]:  => 3768:1
-> 
-> x86_64-gcc8/x86-allmodconfig (in function dml32_ModeSupportAndSystemConfigurationFull())
+I AM SEEKING YOUR PARTNERSHIP TO RECEIVE THIS CONSIGNMENT AS AS MY
+PARTNER TO INVEST THIS FUND INTO A PROSPEROUS INVESTMENT VENTURE IN
+YOUR COUNTRY.
 
-This I don't know about it, but looks like a recent commit: dda4fb85e433f
-Given it's a 2000 line function, I assume it could be improved! :)
+I AWAIT YOUR REPLY TO ENABLE US PROCEED WITH THIS BUSINESS PARTNERSHIP TOGETHER.
 
->   + /kisskb/src/include/linux/fortify-string.h: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]:  => 258:25
-> 
-> s390x-gcc11/s390-allyesconfig (inlined from 'copy_process' at /kisskb/src/kernel/fork.c:2200:2)
+REGARDS,
 
-This is:
-
-        memset(&p->irqtrace, 0, sizeof(p->irqtrace));
-
-p->irqtrace is:
-
-        struct irqtrace_events          irqtrace;
-
-But that's a whole object destination... why would only s390 warn?
-
--Kees
-
--- 
-Kees Cook
+LUMAR CASEY
