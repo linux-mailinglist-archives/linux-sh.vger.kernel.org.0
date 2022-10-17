@@ -2,109 +2,73 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1671A5FF54D
-	for <lists+linux-sh@lfdr.de>; Fri, 14 Oct 2022 23:24:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61ECA600D53
+	for <lists+linux-sh@lfdr.de>; Mon, 17 Oct 2022 13:02:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229972AbiJNVYU (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 14 Oct 2022 17:24:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55860 "EHLO
+        id S229935AbiJQLCd (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 17 Oct 2022 07:02:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229982AbiJNVYJ (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 14 Oct 2022 17:24:09 -0400
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D5C01DDDCE;
-        Fri, 14 Oct 2022 14:24:06 -0700 (PDT)
-Received: from localhost.localdomain (178.176.75.138) by msexch01.omp.ru
- (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Sat, 15 Oct
- 2022 00:23:10 +0300
-From:   Sergey Shtylyov <s.shtylyov@omp.ru>
-To:     Oleg Nesterov <oleg@redhat.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, <linux-sh@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 11/13] sh: ptrace: user_regset_copyin_ignore() always returns 0
-Date:   Sat, 15 Oct 2022 00:22:33 +0300
-Message-ID: <20221014212235.10770-12-s.shtylyov@omp.ru>
-X-Mailer: git-send-email 2.26.3
-In-Reply-To: <20221014212235.10770-1-s.shtylyov@omp.ru>
-References: <20221014212235.10770-1-s.shtylyov@omp.ru>
+        with ESMTP id S230110AbiJQLCE (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 17 Oct 2022 07:02:04 -0400
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1897862ABF
+        for <linux-sh@vger.kernel.org>; Mon, 17 Oct 2022 04:00:36 -0700 (PDT)
+Received: by mail-ej1-x62f.google.com with SMTP id a26so24014610ejc.4
+        for <linux-sh@vger.kernel.org>; Mon, 17 Oct 2022 04:00:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=h6TAvh2KhlPwZbZl975on9cPhNtC4Qh0FGtOTBu2EFs=;
+        b=DT8N1zHgLUhSB1amgTlfFh83oizvxuJI1bIsoUxMqxVUs6HsG0Bk31WC7B8BnwOprK
+         D6mdVNtCiEnV4TxaF3j3hPCQmnySY0FuitZ4lFHuqDs+/kz0yR8Y/IolCLGy5i1rKQI3
+         zIQ9eQ1LxaFe9lvQWiyywxDOPpb+CK+epF6ABZTS+DkW9f5mZh20AcvFA4KMwVps5ZB8
+         JXe4Y91AttcyJgHMjZFO7ABKX8twjogHMbgukFek7fDiU2DepYLjOSV/SrNgT2eaKZfc
+         BmNVu2eUWCWIP4AT6DQBUh/oyB3Fiw4B2pP72PaHrf82HVgxEmWrD8TF75gUsj5psKlF
+         cI1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=h6TAvh2KhlPwZbZl975on9cPhNtC4Qh0FGtOTBu2EFs=;
+        b=nprSnOldLZ6IFIVu5VJI/7mHtJqz/oLb6I/kxDSJIIHaVyVwSzKTvhxzJ1RjDeMb/0
+         /CVbLO8HKc1pxeF8KOfREH8/rbbP+pqbgNBCYnhGvioPaAxVlubGIlfr1LGzJe+CwngZ
+         VMqWF64dizA/xb9EUUCZwQxoGHBEqRj3vSs7VogqgX/BQ17zJwQ5O2M8IX8VHk88REPV
+         40IgAA+nv7bWRKe5HZssAwIQ+uC7Ts+ERCNN4WtjiG987CUTr/9umib58qe/eA1c5Gcy
+         k6oB18N0yj+qomymJ1uE4lOkgs2tcesmIpaRmfL0rv1oiqX2R4kcFmnz3B+92qE2Y5Il
+         ERpw==
+X-Gm-Message-State: ACrzQf1LxYeEMgzGoDQjUcxaYpN+ysepgD+VOJUExXrLieyzq4l2NMT5
+        Iigr3KR0q7ziHfaQ2coogOnOfyd7G2kVdXNZiZ4=
+X-Google-Smtp-Source: AMsMyM74yHjVKIntIP82c1RevnU7nAjR2UNpS5Lb2GuXZmne+62tWsGsOvV77WZgR2y3iOGN4qsJp/C78bwdlkN2CtY=
+X-Received: by 2002:a17:906:eecb:b0:73c:5bcb:8eb3 with SMTP id
+ wu11-20020a170906eecb00b0073c5bcb8eb3mr7860270ejb.284.1666004425820; Mon, 17
+ Oct 2022 04:00:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [178.176.75.138]
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 10/14/2022 21:00:39
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 173137 [Oct 14 2022]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 500 500 6cc86d8f5638d79810308830d98d6b6279998c49
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: omp.ru:7.1.1;127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1
-X-KSE-AntiSpam-Info: ApMailHostAddress: 178.176.75.138
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 10/14/2022 21:03:00
-X-KSE-AttachmentFiltering-Interceptor-Info: protection disabled
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 10/14/2022 3:23:00 PM
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a50:71a:0:b0:1df:c5cd:1b43 with HTTP; Mon, 17 Oct 2022
+ 04:00:25 -0700 (PDT)
+From:   M Cheickna Toure <metraoretk5@gmail.com>
+Date:   Mon, 17 Oct 2022 12:00:25 +0100
+Message-ID: <CACw7F=bKmq3FB6uTbtMRGMKD2i_mzwTSayyUxgyDT06qYbcJNw@mail.gmail.com>
+Subject: Hello, Good morning
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=1.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLY,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-user_regset_copyin_ignore() always returns 0, so checking its result seems
-pointless -- don't do this anymore...
-
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
----
- arch/sh/kernel/ptrace_32.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/arch/sh/kernel/ptrace_32.c b/arch/sh/kernel/ptrace_32.c
-index d417988d9770..36f50ad81e83 100644
---- a/arch/sh/kernel/ptrace_32.c
-+++ b/arch/sh/kernel/ptrace_32.c
-@@ -157,8 +157,8 @@ static int genregs_set(struct task_struct *target,
- 					 offsetof(struct pt_regs, pc),
- 					 sizeof(struct pt_regs));
- 	if (!ret)
--		ret = user_regset_copyin_ignore(&pos, &count, &kbuf, &ubuf,
--						sizeof(struct pt_regs), -1);
-+		user_regset_copyin_ignore(&pos, &count, &kbuf, &ubuf,
-+					  sizeof(struct pt_regs), -1);
- 
- 	return ret;
- }
-@@ -229,8 +229,8 @@ static int dspregs_set(struct task_struct *target,
- 	ret = user_regset_copyin(&pos, &count, &kbuf, &ubuf, regs,
- 				 0, sizeof(struct pt_dspregs));
- 	if (!ret)
--		ret = user_regset_copyin_ignore(&pos, &count, &kbuf, &ubuf,
--						sizeof(struct pt_dspregs), -1);
-+		user_regset_copyin_ignore(&pos, &count, &kbuf, &ubuf,
-+					  sizeof(struct pt_dspregs), -1);
- 
- 	return ret;
- }
--- 
-2.26.3
-
+Hello,
+Good morning and how are you?
+I have an important and favourable information/proposal which might
+interest you to know,
+let me hear from you to detail you, it's important
+Sincerely,
+M.Cheickna
+tourecheickna@consultant.com
