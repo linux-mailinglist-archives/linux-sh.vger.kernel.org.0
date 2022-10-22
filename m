@@ -2,47 +2,52 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B80A2607FBF
-	for <lists+linux-sh@lfdr.de>; Fri, 21 Oct 2022 22:24:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A147B60866A
+	for <lists+linux-sh@lfdr.de>; Sat, 22 Oct 2022 09:49:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229793AbiJUUYr (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 21 Oct 2022 16:24:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43262 "EHLO
+        id S230405AbiJVHto (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sat, 22 Oct 2022 03:49:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229682AbiJUUYo (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 21 Oct 2022 16:24:44 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1AB2356D8;
-        Fri, 21 Oct 2022 13:24:43 -0700 (PDT)
+        with ESMTP id S231697AbiJVHtA (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sat, 22 Oct 2022 03:49:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8C3C24AE1A;
+        Sat, 22 Oct 2022 00:45:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 677CAB82CC6;
-        Fri, 21 Oct 2022 20:24:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07516C433C1;
-        Fri, 21 Oct 2022 20:24:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666383882;
-        bh=+us4sh73zodMSJr2daIIFwpHjFf1Aug9TQOSGrI/oiw=;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7873F60ADA;
+        Sat, 22 Oct 2022 07:42:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 667CEC433C1;
+        Sat, 22 Oct 2022 07:42:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1666424535;
+        bh=tsYIEnNeNXBKuktBDiK6adMOHZqbmAxFQCb+rNO0Bnc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VQTaDCeZPsfI+kuEDc+ETL9M2MSLlBX0bcHoSmBUDeo0pKPC2w8jo/NW4i4Ne9t4b
-         pChKX5VxoOW0bFY/1uC8Jc9KPZ5uoDrxZhlCRgiYDB4D+oFR2kOQDwY2KQc1nQdImH
-         0pXW6EmxLKU+tegZwuaxC5iOGN5LiuMmKdcMQiu18zgux/+V6MdeQLUC606zPnKw2J
-         +7lfoEITWMHfzrGMmCefRv1Q0kw2W4A1Ij/VHNomJMiHuJH91nkS3FyVH23NZMztA8
-         XJ3sBUv3gp6eEQRpqzPK2VnYCEE/nz/nfsLr9n+xMVP6cXdcV7HhBo+OVhXNh/hTQo
-         SNN9hTT1Kzlfw==
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>
-Cc:     linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 4/4] sh: remove unnecessary __BUILD_MEMORY_STRING() 'pfx' parameter
-Date:   Fri, 21 Oct 2022 15:24:24 -0500
-Message-Id: <20221021202424.307531-5-helgaas@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20221021202424.307531-1-helgaas@kernel.org>
-References: <20221021202424.307531-1-helgaas@kernel.org>
+        b=H9p8V9ucd7fkvjnb9j6+/VX4kSpcgClvHZ1WJ5HyTDT6kO6FEfNjaIXve1xzld5VC
+         w8LS/HzRBwmOZD67hKHRe1z5VxKqsFwQvf4wB4ULLZCaneZoZQbfrNSmtx9HjX04j7
+         BC8Xfdx2Xg7rWcIRvYZDbikhX7RGOJilPOouqF5A=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.19 182/717] sh: machvec: Use char[] for section boundaries
+Date:   Sat, 22 Oct 2022 09:21:01 +0200
+Message-Id: <20221022072447.821113921@linuxfoundation.org>
+X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20221022072415.034382448@linuxfoundation.org>
+References: <20221022072415.034382448@linuxfoundation.org>
+User-Agent: quilt/0.67
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
@@ -53,64 +58,82 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Kees Cook <keescook@chromium.org>
 
-Previously __BUILD_MEMORY_STRING() accepted a "pfx" parameter, to which all
-users passed "__raw_".  Simplify this by dropping the parameter and
-encoding "__raw_" in the function name explicitly.
+[ Upstream commit c5783af354688b24abd359f7086c282ec74de993 ]
 
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+As done for other sections, define the extern as a character array,
+which relaxes many of the compiler-time object size checks, which would
+otherwise assume it's a single long. Solves the following build error:
+
+arch/sh/kernel/machvec.c: error: array subscript 'struct sh_machine_vector[0]' is partly outside array bounds of 'long int[1]' [-Werror=array-bounds]:  => 105:33
+
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Rich Felker <dalias@libc.org>
+Cc: linux-sh@vger.kernel.org
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/lkml/alpine.DEB.2.22.394.2209050944290.964530@ramsan.of.borg/
+Fixes: 9655ad03af2d ("sh: Fixup machvec support.")
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Acked-by: Rich Felker <dalias@libc.org>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sh/include/asm/io.h | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ arch/sh/include/asm/sections.h |  2 +-
+ arch/sh/kernel/machvec.c       | 10 +++++-----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/sh/include/asm/io.h b/arch/sh/include/asm/io.h
-index e29e8870dc3b..179420fc4053 100644
---- a/arch/sh/include/asm/io.h
-+++ b/arch/sh/include/asm/io.h
-@@ -86,11 +86,11 @@ __BUILD_UNCACHED_IO(w, u16)
- __BUILD_UNCACHED_IO(l, u32)
- __BUILD_UNCACHED_IO(q, u64)
+diff --git a/arch/sh/include/asm/sections.h b/arch/sh/include/asm/sections.h
+index 8edb824049b9..0cb0ca149ac3 100644
+--- a/arch/sh/include/asm/sections.h
++++ b/arch/sh/include/asm/sections.h
+@@ -4,7 +4,7 @@
  
--#define __BUILD_MEMORY_STRING(pfx, bwlq, type)				\
-+#define __BUILD_MEMORY_STRING(bwlq, type)				\
- 									\
- static inline void							\
--pfx##writes##bwlq(volatile void __iomem *mem, const void *addr,		\
--		  unsigned int count)					\
-+__raw_writes##bwlq(volatile void __iomem *mem, const void *addr,	\
-+		   unsigned int count)					\
- {									\
- 	const volatile type *__addr = addr;				\
- 									\
-@@ -100,8 +100,8 @@ pfx##writes##bwlq(volatile void __iomem *mem, const void *addr,		\
- 	}								\
- }									\
- 									\
--static inline void pfx##reads##bwlq(volatile void __iomem *mem,		\
--				    void *addr, unsigned int count)	\
-+static inline void __raw_reads##bwlq(volatile void __iomem *mem,	\
-+				     void *addr, unsigned int count)	\
- {									\
- 	volatile type *__addr = addr;					\
- 									\
-@@ -111,13 +111,13 @@ static inline void pfx##reads##bwlq(volatile void __iomem *mem,		\
- 	}								\
- }
+ #include <asm-generic/sections.h>
  
--__BUILD_MEMORY_STRING(__raw_, b, u8)
--__BUILD_MEMORY_STRING(__raw_, w, u16)
-+__BUILD_MEMORY_STRING(b, u8)
-+__BUILD_MEMORY_STRING(w, u16)
+-extern long __machvec_start, __machvec_end;
++extern char __machvec_start[], __machvec_end[];
+ extern char __uncached_start, __uncached_end;
+ extern char __start_eh_frame[], __stop_eh_frame[];
  
- void __raw_writesl(void __iomem *addr, const void *data, int longlen);
- void __raw_readsl(const void __iomem *addr, void *data, int longlen);
+diff --git a/arch/sh/kernel/machvec.c b/arch/sh/kernel/machvec.c
+index d606679a211e..57efaf5b82ae 100644
+--- a/arch/sh/kernel/machvec.c
++++ b/arch/sh/kernel/machvec.c
+@@ -20,8 +20,8 @@
+ #define MV_NAME_SIZE 32
  
--__BUILD_MEMORY_STRING(__raw_, q, u64)
-+__BUILD_MEMORY_STRING(q, u64)
+ #define for_each_mv(mv) \
+-	for ((mv) = (struct sh_machine_vector *)&__machvec_start; \
+-	     (mv) && (unsigned long)(mv) < (unsigned long)&__machvec_end; \
++	for ((mv) = (struct sh_machine_vector *)__machvec_start; \
++	     (mv) && (unsigned long)(mv) < (unsigned long)__machvec_end; \
+ 	     (mv)++)
  
- #ifdef CONFIG_HAS_IOPORT_MAP
+ static struct sh_machine_vector * __init get_mv_byname(const char *name)
+@@ -87,8 +87,8 @@ void __init sh_mv_setup(void)
+ 	if (!machvec_selected) {
+ 		unsigned long machvec_size;
  
+-		machvec_size = ((unsigned long)&__machvec_end -
+-				(unsigned long)&__machvec_start);
++		machvec_size = ((unsigned long)__machvec_end -
++				(unsigned long)__machvec_start);
+ 
+ 		/*
+ 		 * Sanity check for machvec section alignment. Ensure
+@@ -102,7 +102,7 @@ void __init sh_mv_setup(void)
+ 		 * vector (usually the only one) from .machvec.init.
+ 		 */
+ 		if (machvec_size >= sizeof(struct sh_machine_vector))
+-			sh_mv = *(struct sh_machine_vector *)&__machvec_start;
++			sh_mv = *(struct sh_machine_vector *)__machvec_start;
+ 	}
+ 
+ 	pr_notice("Booting machvec: %s\n", get_system_type());
 -- 
-2.25.1
+2.35.1
+
+
 
