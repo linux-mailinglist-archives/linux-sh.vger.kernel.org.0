@@ -2,32 +2,32 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBFC760A566
-	for <lists+linux-sh@lfdr.de>; Mon, 24 Oct 2022 14:25:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7990560AD3A
+	for <lists+linux-sh@lfdr.de>; Mon, 24 Oct 2022 16:20:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231756AbiJXMYo (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 24 Oct 2022 08:24:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40658 "EHLO
+        id S232288AbiJXOUB (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 24 Oct 2022 10:20:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233744AbiJXMYL (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 24 Oct 2022 08:24:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF3BC44575;
-        Mon, 24 Oct 2022 05:00:16 -0700 (PDT)
+        with ESMTP id S235310AbiJXOS7 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 24 Oct 2022 10:18:59 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30A622C66E;
+        Mon, 24 Oct 2022 05:56:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 912CB6121A;
-        Mon, 24 Oct 2022 11:48:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A138FC433C1;
-        Mon, 24 Oct 2022 11:48:47 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 7517BB818EB;
+        Mon, 24 Oct 2022 12:39:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8AB4C433C1;
+        Mon, 24 Oct 2022 12:39:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1666612128;
-        bh=zyn4n4h+hCJZVFeLUjY46IkKRhJ1R1o5FUAeIwX4jUQ=;
+        s=korg; t=1666615146;
+        bh=tsYIEnNeNXBKuktBDiK6adMOHZqbmAxFQCb+rNO0Bnc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p/QdONgUSjEp4tkelSgNvYdRZo8YFIKGFU2nS/JIlC42Y5O6FAwkDh3dyrFH9yr5P
-         rOQL16i4BpfL6OokJXYfdUmqwksOV+qD1R//jtTjM93EIOk9G80scNfHGMH/aihnWB
-         5u/JRtXBpTPqawBVfET/eh4SYtzSpOQ9bB059T7c=
+        b=T31da/6n9n64A6UeKcHpwI6mhzWkI3QBWY2dCyry0gBnd4AP6We6rmvmQOyTvFiIw
+         QGREWFDxsZ7upxgQ1r50IZ8Flmq/GYpt+44Xm8yjRp/GizFFFu/SLVvQFaunzrFzBG
+         B7qiUUl0Cp1WaevUJX9p8YFntqncAOUUc8eTNYWk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -39,12 +39,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Gustavo A. R. Silva" <gustavoars@kernel.org>,
         Kees Cook <keescook@chromium.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 081/210] sh: machvec: Use char[] for section boundaries
-Date:   Mon, 24 Oct 2022 13:29:58 +0200
-Message-Id: <20221024112959.690828237@linuxfoundation.org>
+Subject: [PATCH 5.15 140/530] sh: machvec: Use char[] for section boundaries
+Date:   Mon, 24 Oct 2022 13:28:04 +0200
+Message-Id: <20221024113051.399438104@linuxfoundation.org>
 X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221024112956.797777597@linuxfoundation.org>
-References: <20221024112956.797777597@linuxfoundation.org>
+In-Reply-To: <20221024113044.976326639@linuxfoundation.org>
+References: <20221024113044.976326639@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -98,10 +98,10 @@ index 8edb824049b9..0cb0ca149ac3 100644
  extern char __start_eh_frame[], __stop_eh_frame[];
  
 diff --git a/arch/sh/kernel/machvec.c b/arch/sh/kernel/machvec.c
-index ec05f491c347..a9f797a76e7c 100644
+index d606679a211e..57efaf5b82ae 100644
 --- a/arch/sh/kernel/machvec.c
 +++ b/arch/sh/kernel/machvec.c
-@@ -22,8 +22,8 @@
+@@ -20,8 +20,8 @@
  #define MV_NAME_SIZE 32
  
  #define for_each_mv(mv) \
@@ -112,7 +112,7 @@ index ec05f491c347..a9f797a76e7c 100644
  	     (mv)++)
  
  static struct sh_machine_vector * __init get_mv_byname(const char *name)
-@@ -89,8 +89,8 @@ void __init sh_mv_setup(void)
+@@ -87,8 +87,8 @@ void __init sh_mv_setup(void)
  	if (!machvec_selected) {
  		unsigned long machvec_size;
  
@@ -123,7 +123,7 @@ index ec05f491c347..a9f797a76e7c 100644
  
  		/*
  		 * Sanity check for machvec section alignment. Ensure
-@@ -104,7 +104,7 @@ void __init sh_mv_setup(void)
+@@ -102,7 +102,7 @@ void __init sh_mv_setup(void)
  		 * vector (usually the only one) from .machvec.init.
  		 */
  		if (machvec_size >= sizeof(struct sh_machine_vector))
@@ -131,7 +131,7 @@ index ec05f491c347..a9f797a76e7c 100644
 +			sh_mv = *(struct sh_machine_vector *)__machvec_start;
  	}
  
- 	printk(KERN_NOTICE "Booting machvec: %s\n", get_system_type());
+ 	pr_notice("Booting machvec: %s\n", get_system_type());
 -- 
 2.35.1
 
