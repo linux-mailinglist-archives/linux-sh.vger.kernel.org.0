@@ -2,138 +2,73 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7990560AD3A
-	for <lists+linux-sh@lfdr.de>; Mon, 24 Oct 2022 16:20:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E364160F77C
+	for <lists+linux-sh@lfdr.de>; Thu, 27 Oct 2022 14:37:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232288AbiJXOUB (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 24 Oct 2022 10:20:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54524 "EHLO
+        id S235387AbiJ0MhV (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 27 Oct 2022 08:37:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235310AbiJXOS7 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 24 Oct 2022 10:18:59 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30A622C66E;
-        Mon, 24 Oct 2022 05:56:30 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 7517BB818EB;
-        Mon, 24 Oct 2022 12:39:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8AB4C433C1;
-        Mon, 24 Oct 2022 12:39:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1666615146;
-        bh=tsYIEnNeNXBKuktBDiK6adMOHZqbmAxFQCb+rNO0Bnc=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=T31da/6n9n64A6UeKcHpwI6mhzWkI3QBWY2dCyry0gBnd4AP6We6rmvmQOyTvFiIw
-         QGREWFDxsZ7upxgQ1r50IZ8Flmq/GYpt+44Xm8yjRp/GizFFFu/SLVvQFaunzrFzBG
-         B7qiUUl0Cp1WaevUJX9p8YFntqncAOUUc8eTNYWk=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 140/530] sh: machvec: Use char[] for section boundaries
-Date:   Mon, 24 Oct 2022 13:28:04 +0200
-Message-Id: <20221024113051.399438104@linuxfoundation.org>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221024113044.976326639@linuxfoundation.org>
-References: <20221024113044.976326639@linuxfoundation.org>
-User-Agent: quilt/0.67
+        with ESMTP id S234239AbiJ0MhU (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 27 Oct 2022 08:37:20 -0400
+Received: from mail-ua1-x933.google.com (mail-ua1-x933.google.com [IPv6:2607:f8b0:4864:20::933])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3CDB159A2E
+        for <linux-sh@vger.kernel.org>; Thu, 27 Oct 2022 05:37:16 -0700 (PDT)
+Received: by mail-ua1-x933.google.com with SMTP id t26so495628uaj.9
+        for <linux-sh@vger.kernel.org>; Thu, 27 Oct 2022 05:37:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=eQtHVIh1aNe4Qh0x0ragWBnOPchUE+ZIYXzmSXO/abc=;
+        b=qlNsrosJercoAIRBP7rls2+DO6N2QChzhgrNubVLaP/XZ7tWFhYD2doN/zhwy9Cs1e
+         L5AwTxtyURDNZaSaQ/ebp/8aEvsmYaIF6x+x+FqPBBWJiYFyt9OMCwRx9tMBIPWnp7F/
+         mUwDIG4hGvbAjjLj04uUrwrXcq+uixbDkyXOBjL8NnckOq2OmwSIksNEzw9+DXuTkjel
+         anWxa84DOGXhwpFrWIcQXqpOCeE5cO/HPba2rzhAE2cJjKVoruNhznc5g3zZO/KjaCcy
+         qLrw3OvYOuUqzMkaPfqOFOyoslmE8CQnW0J9t/SP+zdB02OLr+lewqCLEghdRsaiAnnR
+         M2Lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=eQtHVIh1aNe4Qh0x0ragWBnOPchUE+ZIYXzmSXO/abc=;
+        b=G+MweZhJS5L6eVE6K4d4jBE4/wumPw4DgImKs0w8MlIns2/DAoGdid3kh/XIzWib8R
+         rDLjAouL2K/Uw2Vj2NdbtQ4+VqcgQZjKTTx/iSHlj3hnKqQv30o3AtNAQ7AIbiQ6dyjc
+         x4nLNMFN5zYpjBcy577mm4n/rwhq/kPbBZc5/YPNiMHEM6vtrqewobG12MCHcPFAk3T8
+         6Pg7sUzPF/MYHuMZni4n2Gw9uq7kwdW787lTBSKfWRVdQFR7gRcNcNK0cJB1dRQmevCz
+         YrjM+McmXLH3oryLoqkjcD89TzuAscAHwxwsHR+IH4WL3GGDt0kMphe9HVyHiFBUxFCt
+         8K5Q==
+X-Gm-Message-State: ACrzQf3h47tks9SHK+D0GtSYO8HxnDKKE70dlJuCnrgWnp2dl2uBlJhn
+        ZqpA9L4ALy7CjMJvzi3wj4R8bQ+to2FfUyArFhE=
+X-Google-Smtp-Source: AMsMyM6N08J1cioI6DLoa3mFh9ZAP88WuUeI6aE0ejM3764JQ988W4bu8pKA91x/cekbo5NTW4+llGzKYI0ICPZU6fE=
+X-Received: by 2002:ab0:32cd:0:b0:408:ffa4:85f9 with SMTP id
+ f13-20020ab032cd000000b00408ffa485f9mr4028372uao.62.1666874234647; Thu, 27
+ Oct 2022 05:37:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:6102:3d83:0:0:0:0 with HTTP; Thu, 27 Oct 2022 05:37:13
+ -0700 (PDT)
+From:   Cheickna Toure <metk1959@gmail.com>
+Date:   Thu, 27 Oct 2022 13:37:13 +0100
+Message-ID: <CAOAL42hQPJ6_wWrbOjTu=aUC1hBe-EmZ85SW_AE6rkYp283tBQ@mail.gmail.com>
+Subject: Hello, Good afternoon
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=1.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLY,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-From: Kees Cook <keescook@chromium.org>
-
-[ Upstream commit c5783af354688b24abd359f7086c282ec74de993 ]
-
-As done for other sections, define the extern as a character array,
-which relaxes many of the compiler-time object size checks, which would
-otherwise assume it's a single long. Solves the following build error:
-
-arch/sh/kernel/machvec.c: error: array subscript 'struct sh_machine_vector[0]' is partly outside array bounds of 'long int[1]' [-Werror=array-bounds]:  => 105:33
-
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: linux-sh@vger.kernel.org
-Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/lkml/alpine.DEB.2.22.394.2209050944290.964530@ramsan.of.borg/
-Fixes: 9655ad03af2d ("sh: Fixup machvec support.")
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Acked-by: Rich Felker <dalias@libc.org>
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/sh/include/asm/sections.h |  2 +-
- arch/sh/kernel/machvec.c       | 10 +++++-----
- 2 files changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/arch/sh/include/asm/sections.h b/arch/sh/include/asm/sections.h
-index 8edb824049b9..0cb0ca149ac3 100644
---- a/arch/sh/include/asm/sections.h
-+++ b/arch/sh/include/asm/sections.h
-@@ -4,7 +4,7 @@
- 
- #include <asm-generic/sections.h>
- 
--extern long __machvec_start, __machvec_end;
-+extern char __machvec_start[], __machvec_end[];
- extern char __uncached_start, __uncached_end;
- extern char __start_eh_frame[], __stop_eh_frame[];
- 
-diff --git a/arch/sh/kernel/machvec.c b/arch/sh/kernel/machvec.c
-index d606679a211e..57efaf5b82ae 100644
---- a/arch/sh/kernel/machvec.c
-+++ b/arch/sh/kernel/machvec.c
-@@ -20,8 +20,8 @@
- #define MV_NAME_SIZE 32
- 
- #define for_each_mv(mv) \
--	for ((mv) = (struct sh_machine_vector *)&__machvec_start; \
--	     (mv) && (unsigned long)(mv) < (unsigned long)&__machvec_end; \
-+	for ((mv) = (struct sh_machine_vector *)__machvec_start; \
-+	     (mv) && (unsigned long)(mv) < (unsigned long)__machvec_end; \
- 	     (mv)++)
- 
- static struct sh_machine_vector * __init get_mv_byname(const char *name)
-@@ -87,8 +87,8 @@ void __init sh_mv_setup(void)
- 	if (!machvec_selected) {
- 		unsigned long machvec_size;
- 
--		machvec_size = ((unsigned long)&__machvec_end -
--				(unsigned long)&__machvec_start);
-+		machvec_size = ((unsigned long)__machvec_end -
-+				(unsigned long)__machvec_start);
- 
- 		/*
- 		 * Sanity check for machvec section alignment. Ensure
-@@ -102,7 +102,7 @@ void __init sh_mv_setup(void)
- 		 * vector (usually the only one) from .machvec.init.
- 		 */
- 		if (machvec_size >= sizeof(struct sh_machine_vector))
--			sh_mv = *(struct sh_machine_vector *)&__machvec_start;
-+			sh_mv = *(struct sh_machine_vector *)__machvec_start;
- 	}
- 
- 	pr_notice("Booting machvec: %s\n", get_system_type());
--- 
-2.35.1
-
-
-
+Hello,
+Good afternoon and how are you?
+I have an important and favourable information/proposal which might
+interest you to know,
+let me hear from you to detail you, it's important
+Sincerely,
+M.Cheickna
+tourecheickna@consultant.com
