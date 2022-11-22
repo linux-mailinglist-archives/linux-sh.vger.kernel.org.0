@@ -2,159 +2,95 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CDB2A632D20
-	for <lists+linux-sh@lfdr.de>; Mon, 21 Nov 2022 20:44:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6790263329F
+	for <lists+linux-sh@lfdr.de>; Tue, 22 Nov 2022 03:04:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229723AbiKUToo (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 21 Nov 2022 14:44:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36068 "EHLO
+        id S232444AbiKVCEE (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 21 Nov 2022 21:04:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229501AbiKUToo (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 21 Nov 2022 14:44:44 -0500
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11776A9963;
-        Mon, 21 Nov 2022 11:44:42 -0800 (PST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id F2C97220E5;
-        Mon, 21 Nov 2022 19:44:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-        t=1669059880; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=HK8SHrswSKDS6/O+Mgs+PmBluOOCcSpzcSHcaJVrEzE=;
-        b=sGBGsUvnd5vxckcevJ68UxFxz1PoSqb+HhkiZGIEIDv5PR4YlOP0Zat6gVJdddKiT400ks
-        wisOjKNDBHCc4+joBpswgAQDQXnYetJ9aUaT7Wg9UcqlRbNDkiHk7BWVRvebwJDG2sibT+
-        RwgzKgvvOsvdRGQJ/P8vcVMnR/oOku0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-        s=susede2_ed25519; t=1669059880;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=HK8SHrswSKDS6/O+Mgs+PmBluOOCcSpzcSHcaJVrEzE=;
-        b=RHu+rInak5/4nHVa3RdOHmAbZaaxIEagdc61JXpBnzjGyWi4Zyr3p6vQ7MuqiWEOoxE/qR
-        Nt9yrf83lq8MtuDQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 6022D1376E;
-        Mon, 21 Nov 2022 19:44:39 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id sE6GFifVe2O+QwAAMHmgww
-        (envelope-from <vbabka@suse.cz>); Mon, 21 Nov 2022 19:44:39 +0000
-Message-ID: <53c6d988-7147-2233-6904-f881e7c067b6@suse.cz>
-Date:   Mon, 21 Nov 2022 20:42:53 +0100
+        with ESMTP id S232430AbiKVCEC (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 21 Nov 2022 21:04:02 -0500
+Received: from mail-yw1-x1135.google.com (mail-yw1-x1135.google.com [IPv6:2607:f8b0:4864:20::1135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 496C8C7213;
+        Mon, 21 Nov 2022 18:04:02 -0800 (PST)
+Received: by mail-yw1-x1135.google.com with SMTP id 00721157ae682-3a3961f8659so39330517b3.2;
+        Mon, 21 Nov 2022 18:04:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=TzriTTjDN2sG1GFT5R1JUO/5Csi2e/XJJrWhOlsWXVg=;
+        b=mrxfXGgSv373PWJgm80ATEzqSwwa0Q7tVbMNWfmqMxhy2yyBtscLwV12nXuvqOLNjj
+         eFS8FyDDnBn7dlb3QehsEwEz6RaTgzVRJBsBGOvDEb46/IQKvhQSjV7vevgPwDXTSf06
+         xj3IN47CNcalIgTWt8ti252jq6qnr+HoYnwAvba49WQOklUy9HUfCxX9Gyco0EgOYf2Z
+         CJ0+WdVAI/AsxvW9PVeBR96tnXhc+zggHNYNRQ5YDTMmHvvJn+qdbMxeks8T/2hNeHal
+         y5dDjbJGlZaurkrG0GdE3KVaH8LCbgtLfTa8gLI4vR+pLpLDjZIpYBJFuvsqM6LLeF0f
+         em7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TzriTTjDN2sG1GFT5R1JUO/5Csi2e/XJJrWhOlsWXVg=;
+        b=TDa+RL82769JefbgpNsPDhsTBocBFCpL2CkkYy90KnVHvJF0gpZmojRaAhAHeilyB4
+         SfaLp4prjimW6kcEi743F3/YkridAmU/DeEPMP2SIQT1jslsclffFEmYpaTSXmJYsEcL
+         k2MTgnwchmds6feZhuWnhVdjMdcnOcbokZryC5x4LA93z0ez+gLPRHzdmx1LC5BiiHIC
+         6joEesPfl+RCFnNtaDTwxwZefIV7XDz4elqG3GBzFbwwAeqh0XTWrsZP4enGFSZ3HMGX
+         EOnga9FU4iDhIK3gcZM8ID0WiLJxWKGFGnfWXmuvpitkCz01rXUTJUXmmifQNQ4sC+bQ
+         W1yA==
+X-Gm-Message-State: ANoB5pknJgJY5vOEWmaoQ+lLvrph3or82XpzWZrtYivBiTjsTjzld/Ip
+        GXXLKKw13GJqZo4NAvN9HSM8++FKeP1KxOFvNOzlZkkegu281EzU
+X-Google-Smtp-Source: AA0mqf4BgxsC9aIrMaQRhD8pLDEayfmcykFiWo+TKaALiht0J4G6oCYhaXmgM0eaAh/ISr3UdUWBkYM8LZxNC+kTUT0=
+X-Received: by 2002:a81:9194:0:b0:3a2:55fa:e3c2 with SMTP id
+ i142-20020a819194000000b003a255fae3c2mr1806947ywg.320.1669082641424; Mon, 21
+ Nov 2022 18:04:01 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH 12/12] mm, slob: rename CONFIG_SLOB to
- CONFIG_SLOB_DEPRECATED
-Content-Language: en-US
-To:     Christoph Lameter <cl@linux.com>,
-        David Rientjes <rientjes@google.com>,
-        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-        Pekka Enberg <penberg@kernel.org>
-Cc:     Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Matthew Wilcox <willy@infradead.org>, patches@lists.linux.dev,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        Russell King <linux@armlinux.org.uk>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Jonas Bonn <jonas@southpole.se>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Stafford Horne <shorne@gmail.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, Arnd Bergmann <arnd@arndb.de>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Conor Dooley <conor@kernel.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        openrisc@lists.librecores.org, linux-riscv@lists.infradead.org,
-        linux-sh@vger.kernel.org
-References: <20221121171202.22080-1-vbabka@suse.cz>
- <20221121171202.22080-13-vbabka@suse.cz>
-From:   Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <20221121171202.22080-13-vbabka@suse.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_SOFTFAIL autolearn=ham autolearn_force=no
+Received: by 2002:a25:9f88:0:0:0:0:0 with HTTP; Mon, 21 Nov 2022 18:04:01
+ -0800 (PST)
+From:   Felipe Bedetti <felipebedetticosta@gmail.com>
+Date:   Mon, 21 Nov 2022 23:04:01 -0300
+Message-ID: <CAFO8uszP62oOSCuLaex_3xS3HAoJt5OQgi5rPPrknLOLz=GvMA@mail.gmail.com>
+Subject: Norah Colly
+To:     linux serial <linux-serial@vger.kernel.org>,
+        linux sh <linux-sh@vger.kernel.org>,
+        linux sparse <linux-sparse@vger.kernel.org>,
+        linux tegra <linux-tegra@vger.kernel.org>,
+        linux usb <linux-usb@vger.kernel.org>,
+        linux uvc devel <linux-uvc-devel@lists.sourceforge.net>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.5 required=5.0 tests=BAYES_50,BODY_SINGLE_URI,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SHORT_SHORTNER,SPF_HELO_NONE,SPF_PASS,
+        SUSPICIOUS_RECIPS,TVD_SPACE_RATIO autolearn=no autolearn_force=no
         version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:1135 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  2.5 SUSPICIOUS_RECIPS Similar addresses in recipient list
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [felipebedetticosta[at]gmail.com]
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.0 TVD_SPACE_RATIO No description available.
+        *  1.6 SHORT_SHORTNER Short body with little more than a link to a
+        *      shortener
+        *  0.7 BODY_SINGLE_URI Message body is only a URI
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 11/21/22 18:12, Vlastimil Babka wrote:
-> As explained in [1], we would like to remove SLOB if possible.
-> 
-> - There are no known users that need its somewhat lower memory footprint
->    so much that they cannot handle SLUB (after some modifications by the
->    previous patches) instead.
-> 
-> - It is an extra maintenance burden, and a number of features are
->    incompatible with it.
-> 
-> - It blocks the API improvement of allowing kfree() on objects allocated
->    via kmem_cache_alloc().
-> 
-> As the first step, rename the CONFIG_SLOB option in the slab allocator
-> configuration choice to CONFIG_SLOB_DEPRECATED. Add CONFIG_SLOB
-> depending on CONFIG_SLOB_DEPRECATED as an internal option to avoid code
-> churn. This will cause existing .config files and defconfigs with
-> CONFIG_SLOB=y to silently switch to the default (and recommended
-> replacement) SLUB, while still allowing SLOB to be configured by anyone
-> that notices and needs it. But those should contact the slab maintainers
-> and linux-mm@kvack.org as explained in the updated help. With no valid
-> objections, the plan is to update the existing defconfigs to SLUB and
-> remove SLOB in a few cycles.
-> 
-> To make SLUB more suitable replacement for SLOB, a CONFIG_SLUB_TINY
-> option was introduced to limit SLUB's memory overhead.
-> There is a number of defconfigs specifying CONFIG_SLOB=y. As part of
-> this patch, update them to select CONFIG_SLUB and CONFIG_SLUB_TINY.
-
-Hm I forgot - some of those defconfigs might not actually be for so tiny 
-devices to need CONFIG_SLUB_TINY (or SLOB previously). For those it 
-would make more sense to simply remove CONFIG_SLOB=y and leave it to the 
-default choice, which is SLUB (without _TINY). Feel free to point those 
-out to me and I'll adjust. Thanks.
-
-> [1] https://lore.kernel.org/all/b35c3f82-f67b-2103-7d82-7a7ba7521439@suse.cz/
-> 
-> Cc: Russell King <linux@armlinux.org.uk>
-> Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
-> Cc: Janusz Krzysztofik <jmkrzyszt@gmail.com>
-> Cc: Tony Lindgren <tony@atomide.com>
-> Cc: Jonas Bonn <jonas@southpole.se>
-> Cc: Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
-> Cc: Stafford Horne <shorne@gmail.com>
-> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-> Cc: Rich Felker <dalias@libc.org>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Josh Triplett <josh@joshtriplett.org>
-> Cc: Conor Dooley <conor@kernel.org>
-> Cc: Damien Le Moal <damien.lemoal@opensource.wdc.com>
-> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> Cc: <linux-arm-kernel@lists.infradead.org>
-> Cc: <linux-omap@vger.kernel.org>
-> Cc: <openrisc@lists.librecores.org>
-> Cc: <linux-riscv@lists.infradead.org>
-> Cc: <linux-sh@vger.kernel.org>
-> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-
+https://bit.ly/3UV8qJp
