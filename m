@@ -2,72 +2,75 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5ED2563820E
-	for <lists+linux-sh@lfdr.de>; Fri, 25 Nov 2022 02:17:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B5C3A639363
+	for <lists+linux-sh@lfdr.de>; Sat, 26 Nov 2022 03:30:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229480AbiKYBRa (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 24 Nov 2022 20:17:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46152 "EHLO
+        id S230141AbiKZCaE (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 25 Nov 2022 21:30:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbiKYBRa (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 24 Nov 2022 20:17:30 -0500
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E688D56
-        for <linux-sh@vger.kernel.org>; Thu, 24 Nov 2022 17:17:28 -0800 (PST)
-Received: from kwepemi500012.china.huawei.com (unknown [172.30.72.55])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4NJH5L14FSzRpMV;
-        Fri, 25 Nov 2022 09:16:54 +0800 (CST)
-Received: from cgs.huawei.com (10.244.148.83) by
- kwepemi500012.china.huawei.com (7.221.188.12) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Fri, 25 Nov 2022 09:17:26 +0800
-From:   Gaosheng Cui <cuigaosheng1@huawei.com>
-To:     <ysato@users.sourceforge.jp>, <dalias@libc.org>,
-        <cuigaosheng1@huawei.com>, <lethal@linux-sh.org>, <damm@igel.co.jp>
-CC:     <linux-sh@vger.kernel.org>
-Subject: [PATCH] sh/intc: Add missing list_del(&d->list) in register_intc_controller
-Date:   Fri, 25 Nov 2022 09:17:25 +0800
-Message-ID: <20221125011725.3287607-1-cuigaosheng1@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S229514AbiKZCaD (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 25 Nov 2022 21:30:03 -0500
+X-Greylist: delayed 1043 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 25 Nov 2022 18:30:01 PST
+Received: from mail.rrk.ir (mail.rrk.ir [46.209.19.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAE393136D;
+        Fri, 25 Nov 2022 18:30:01 -0800 (PST)
+Received: from localhost (mail.rrk.ir [127.0.0.1])
+        by mail.rrk.ir (Postfix) with ESMTP id EA9C439713E;
+        Sat, 26 Nov 2022 05:42:33 +0330 (+0330)
+X-Virus-Scanned: Debian amavisd-new at mail.rrk.ir
+Received: from mail.rrk.ir ([127.0.0.1])
+        by localhost (mail.rrk.ir [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id IzeIoOj2fku4; Sat, 26 Nov 2022 05:42:24 +0330 (+0330)
+Content-Type: text/plain; charset="iso-8859-1"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=rrk.ir; s=rrk;
+        t=1669401265; bh=Tek/QbFshVvW3DxuEJIWlwCvxszEYuMod+HhVGwXvdw=;
+        h=Subject:To:From:Date:Reply-To:From;
+        b=XsaGpSI2+BPsPsnjXM4yFUsvvZtG2D3G4mu7WrXewlWGtdJtiw/lhxot1OPNVFGVf
+         KfOjnF6/wtoPXS4GV7gMJGL7wUBB61LKZzEz3ekcgyUmTkcWAb6+q2MbfNaI8W7y8D
+         FAhONqYUnRm167ahaXs6fewXFePk7acVbtylF5Z4=
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.244.148.83]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- kwepemi500012.china.huawei.com (7.221.188.12)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Re: Liaison Officer Needed In Your State...  
+To:     Recipients <firewall@rrk.ir>
+From:   "Ms. Kelvin Lin " <firewall@rrk.ir>
+Date:   Fri, 25 Nov 2022 10:34:12 -0800
+Reply-To: mail@gukaimail.com
+Message-Id: <20221126021233.EA9C439713E@mail.rrk.ir>
+X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_99,BAYES_999,
+        DATE_IN_PAST_06_12,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.2 BAYES_999 BODY: Bayes spam probability is 99.9 to 100%
+        *      [score: 1.0000]
+        *  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
+        *      [score: 1.0000]
+        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
+        *  1.5 DATE_IN_PAST_06_12 Date: is 6 to 12 hours before Received: date
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-The list_del(&d->list) should be called in the error handling in
-register_intc_controller(), otherwise, d will be freed, but d->list
-will not be removed from &intc_list, list traversal may cause UAF.
+Hello,
 
-Fix it by adding missing list_del(&d->list) in register_intc_controller.
 
-Fixes: 2dcec7a988a1 ("sh: intc: set_irq_wake() support")
-Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
----
- drivers/sh/intc/core.c | 1 +
- 1 file changed, 1 insertion(+)
+A reputable pharmaceutical company from Vietnam is in need of a reliable in=
+dividual or corporate entity in your state to act as their Liaison; this wi=
+ll not affect your current job or business operations in anyway.  If intere=
+sted, reply for more information.
 
-diff --git a/drivers/sh/intc/core.c b/drivers/sh/intc/core.c
-index ca4f4ca413f1..6bf38cd0f6e5 100644
---- a/drivers/sh/intc/core.c
-+++ b/drivers/sh/intc/core.c
-@@ -387,6 +387,7 @@ int __init register_intc_controller(struct intc_desc *desc)
- 
- 	kfree(d->window);
- err1:
-+	list_del(&d->list);
- 	kfree(d);
- err0:
- 	pr_err("unable to allocate INTC memory\n");
--- 
-2.25.1
 
+Sincerely,
+Ms. Kelvin Lin
+CC
