@@ -2,59 +2,58 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5C3A639363
-	for <lists+linux-sh@lfdr.de>; Sat, 26 Nov 2022 03:30:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D5ECD639788
+	for <lists+linux-sh@lfdr.de>; Sat, 26 Nov 2022 19:08:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230141AbiKZCaE (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 25 Nov 2022 21:30:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58470 "EHLO
+        id S229533AbiKZSIQ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sat, 26 Nov 2022 13:08:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229514AbiKZCaD (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 25 Nov 2022 21:30:03 -0500
-X-Greylist: delayed 1043 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 25 Nov 2022 18:30:01 PST
+        with ESMTP id S229459AbiKZSIP (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sat, 26 Nov 2022 13:08:15 -0500
 Received: from mail.rrk.ir (mail.rrk.ir [46.209.19.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAE393136D;
-        Fri, 25 Nov 2022 18:30:01 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE46BFAC2;
+        Sat, 26 Nov 2022 10:08:12 -0800 (PST)
 Received: from localhost (mail.rrk.ir [127.0.0.1])
-        by mail.rrk.ir (Postfix) with ESMTP id EA9C439713E;
-        Sat, 26 Nov 2022 05:42:33 +0330 (+0330)
+        by mail.rrk.ir (Postfix) with ESMTP id C481838D9A0;
+        Sat, 26 Nov 2022 21:37:32 +0330 (+0330)
 X-Virus-Scanned: Debian amavisd-new at mail.rrk.ir
 Received: from mail.rrk.ir ([127.0.0.1])
         by localhost (mail.rrk.ir [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id IzeIoOj2fku4; Sat, 26 Nov 2022 05:42:24 +0330 (+0330)
+        with ESMTP id CFIx55AsO790; Sat, 26 Nov 2022 21:37:23 +0330 (+0330)
 Content-Type: text/plain; charset="iso-8859-1"
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=rrk.ir; s=rrk;
-        t=1669401265; bh=Tek/QbFshVvW3DxuEJIWlwCvxszEYuMod+HhVGwXvdw=;
+        t=1669467275; bh=Tek/QbFshVvW3DxuEJIWlwCvxszEYuMod+HhVGwXvdw=;
         h=Subject:To:From:Date:Reply-To:From;
-        b=XsaGpSI2+BPsPsnjXM4yFUsvvZtG2D3G4mu7WrXewlWGtdJtiw/lhxot1OPNVFGVf
-         KfOjnF6/wtoPXS4GV7gMJGL7wUBB61LKZzEz3ekcgyUmTkcWAb6+q2MbfNaI8W7y8D
-         FAhONqYUnRm167ahaXs6fewXFePk7acVbtylF5Z4=
+        b=Hw71v4y9yrE004yZ9eO4Q5oLsq2KSFaUs3uITrAj3aH3Y7KiChIF39JN6SAdFE8Fn
+         aFN6s97jJf7VIV4J5nT99w5wPNm29NTFKzGZ94dc8La0EW7gko3G2HFC7VDWxOPBXx
+         PBGobfMl+j0fgqkpYxFwq3H1avFzM++/Vo2C/kEE=
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Description: Mail message body
 Subject: Re: Liaison Officer Needed In Your State...  
 To:     Recipients <firewall@rrk.ir>
 From:   "Ms. Kelvin Lin " <firewall@rrk.ir>
-Date:   Fri, 25 Nov 2022 10:34:12 -0800
+Date:   Sat, 26 Nov 2022 04:54:23 -0800
 Reply-To: mail@gukaimail.com
-Message-Id: <20221126021233.EA9C439713E@mail.rrk.ir>
-X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_99,BAYES_999,
-        DATE_IN_PAST_06_12,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+Message-Id: <20221126180732.C481838D9A0@mail.rrk.ir>
+X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_99,BAYES_999,
+        DATE_IN_PAST_03_06,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Report: *  0.2 BAYES_999 BODY: Bayes spam probability is 99.9 to 100%
-        *      [score: 1.0000]
+        *      [score: 0.9999]
         *  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
-        *      [score: 1.0000]
-        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
-        *  1.5 DATE_IN_PAST_06_12 Date: is 6 to 12 hours before Received: date
+        *      [score: 0.9999]
         * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  1.6 DATE_IN_PAST_03_06 Date: is 3 to 6 hours before Received: date
+        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
         * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
         *      envelope-from domain
         *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
         *       valid
         * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
         *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
 X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
