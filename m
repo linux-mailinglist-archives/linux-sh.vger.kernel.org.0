@@ -2,77 +2,72 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D49A9642DBE
-	for <lists+linux-sh@lfdr.de>; Mon,  5 Dec 2022 17:50:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C572F6439F9
+	for <lists+linux-sh@lfdr.de>; Tue,  6 Dec 2022 01:30:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231663AbiLEQur (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 5 Dec 2022 11:50:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47546 "EHLO
+        id S232180AbiLFAar (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 5 Dec 2022 19:30:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232711AbiLEQuK (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 5 Dec 2022 11:50:10 -0500
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B72BDE083
-        for <linux-sh@vger.kernel.org>; Mon,  5 Dec 2022 08:49:14 -0800 (PST)
-Received: by mail-wm1-x343.google.com with SMTP id v124-20020a1cac82000000b003cf7a4ea2caso12171535wme.5
-        for <linux-sh@vger.kernel.org>; Mon, 05 Dec 2022 08:49:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=O4WPtqOs6pYDke8VCfpzwsIX+8zN33o8tLS2XMy/lFU=;
-        b=Z2wBWagY9UnEZ+M5YPDdGkg6nVUsQfYS1BhjpcwGEao2GhG01+Mm/qvV+1fKOq1lbu
-         EFS78qR+UGfEwXQVt6IRXk6jTGT8mo+KAwwjj0fZxBmjE1jztugOoJP4/rka0x6XFhxu
-         W6iUCvsIDO6eHcdCHFvdIDlIVpJCsES5SD3xSnapoHClZmLcHlXbjXoeix+TX99ab7ry
-         BqOOHDFzUlmJeyU3OvUitATOsPkFA0DOczbi/Afsjm9NHI/YtApk72ny0qjFhFTXO+XP
-         yKXAtBeMHMlIwSKvmuRpEfOfWiK9b959mo8P7Fx64Ot+uHxQXUUrd10S+RG2s/yWLOX2
-         BSUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=O4WPtqOs6pYDke8VCfpzwsIX+8zN33o8tLS2XMy/lFU=;
-        b=XxeEM7gfldsVNxrbaa0iqK574G6r6T8IZlEjY7uUQ9sRcD193SA+89tDy2j+BLxpbp
-         MuCHQ3z4uWg0tdd8tiUhOYi0P+cVcFKEvOBFHQR5Ui1MPbD1Kw8BcHq0rmqNWyO7DO28
-         6Ud4EzkE4HxaAbP9u7nj/oKlNj5yBnHOxZkx2uZELZa2KU0Dl4Ol6EszbpNs0z6zZtMk
-         0ksEO+x9SOjtknwbzg/ujDCQ2fTw4tJIcs4ZjX3iOYaFrZsNgfVNEco3tHvBJuWgEknV
-         RkHjLfno/0Y/XuY2VymSYZGdtCQhgBIJsfzS5qgvuLZZP7p7EBfE3JZ7SW+wn3G19SWr
-         Qqng==
-X-Gm-Message-State: ANoB5plwi7Y8FB4ATfdJhrFHQC3sU09MV1Vwg5qmjvnjrXG/sHmpKqes
-        E88urKWFN0OHFSsrNrGdRMtOi0DDqvwn5ojvsvyVQtpp4gE=
-X-Google-Smtp-Source: AA0mqf6LlThRqxALxahU+d5CDCL5XgA0Iri4oQFEx6hETTBFBZxUw9iI5CXyM5b3WvWotoaM22oBvK+CwFtVO/zgxX4=
-X-Received: by 2002:a7b:c8d0:0:b0:3cf:ca91:7094 with SMTP id
- f16-20020a7bc8d0000000b003cfca917094mr60628535wml.24.1670258943314; Mon, 05
- Dec 2022 08:49:03 -0800 (PST)
+        with ESMTP id S229938AbiLFAan (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 5 Dec 2022 19:30:43 -0500
+X-Greylist: delayed 2008 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 05 Dec 2022 16:30:36 PST
+Received: from mail.academia-cj.ro (mail.academia-cj.ro [188.213.48.91])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E90A4205D0
+        for <linux-sh@vger.kernel.org>; Mon,  5 Dec 2022 16:30:36 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.academia-cj.ro (Postfix) with ESMTP id 0CD57237B6D;
+        Tue,  6 Dec 2022 01:58:30 +0200 (EET)
+Received: from mail.academia-cj.ro ([127.0.0.1])
+        by localhost (mail.academia-cj.ro [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id NsTrrD7GKpD0; Tue,  6 Dec 2022 01:58:29 +0200 (EET)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.academia-cj.ro (Postfix) with ESMTP id 49BD1241728;
+        Tue,  6 Dec 2022 01:58:29 +0200 (EET)
+X-Virus-Scanned: amavisd-new at mail.academia-cj.ro
+Received: from mail.academia-cj.ro ([127.0.0.1])
+        by localhost (mail.academia-cj.ro [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id S6h8W2YoXIyt; Tue,  6 Dec 2022 01:58:29 +0200 (EET)
+Received: from mail.academia-cj.ro (mail.academia-cj.ro [188.213.48.91])
+        by mail.academia-cj.ro (Postfix) with ESMTP id CD79A147C0D;
+        Tue,  6 Dec 2022 01:58:22 +0200 (EET)
+Date:   Tue, 6 Dec 2022 01:58:22 +0200 (EET)
+From:   Lukas <cosmin.borza@academia-cj.ro>
+Reply-To: Lukas <lukas@marineinzynieriagleam-jobs.com>
+Message-ID: <1199503760.996240.1670284702793.JavaMail.zimbra@academia-cj.ro>
+Subject: Direct Interview
 MIME-Version: 1.0
-Received: by 2002:a05:6000:5c1:0:0:0:0 with HTTP; Mon, 5 Dec 2022 08:49:02
- -0800 (PST)
-Reply-To: phmanu14@hotmail.com
-From:   Philip Manul <zagbamdjala@gmail.com>
-Date:   Mon, 5 Dec 2022 08:49:02 -0800
-Message-ID: <CAPCnorG0wZz4L65xmUUzHEvxvuhrsq0nQnSPJqno3Ah89AhSwA@mail.gmail.com>
-Subject: REP:
-To:     in <in@proposal.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=1.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [188.213.48.91]
+X-Mailer: Zimbra 8.8.15_GA_4308 (zclient/8.8.15_GA_4308)
+Thread-Index: yhsv26sVK9qvDrIeigxz7HC3C2URXQ==
+Thread-Topic: Direct Interview
+X-Spam-Status: No, score=4.1 required=5.0 tests=ADVANCE_FEE_3_NEW_MONEY,
+        BAYES_50,LOTS_OF_MONEY,MISSING_HEADERS,NA_DOLLARS,
+        REPLYTO_WITHOUT_TO_CC,SPF_HELO_NONE,SPF_PASS,XFER_LOTSA_MONEY
         autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: *
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
---=20
-Guten tag,
-Mein Name ist Philip Manul. Ich bin von Beruf Rechtsanwalt. Ich habe
-einen verstorbenen Kunden, der zuf=C3=A4llig denselben Namen mit Ihnen
-teilt. Ich habe alle Papierdokumente in meinem Besitz. Ihr Verwandter,
-mein verstorbener Kunde, hat hier in meinem Land einen nicht
-beanspruchten Fonds zur=C3=BCckgelassen. Ich warte auf Ihre Antwort zum
-Verfahren.
-Philip Manul.
+Hello,
+
+I am writing to you on behalf of Mr. Yusuf Habib. My name is Lukas, I am an investment portfolio Manager at MetLife, and my client (Mr. Yusuf Habib) has a large sum of money he is looking for someone to help him manage the funds.The Saudi government filed charges against my-client Mr. Yusuf Habib with the aim of keeping him in prison indefinitely. A variety of local and foreign politicians, civil activists, and journalists consider the process leading to the imprisonment of Mr. Yusuf to be politically motivated.
+My client&#039;s involvement and financial support for Jamal Ahmad Khashoggi posed the most challenge ever to Mohammed bin Salman Al Saud who happens to be the current Crown Prince of Saudi Arabia the money is currently deposited in the name of an existing Investment entity.
+
+My client Mr. Yusuf Habib has presented a subtle offer that will need the help of a partner like you to complete successfully. Mr. Yusuf Habib is in a difficult situation, and he must immediately relocate certain sums of money and this must be done in such a way that it must not be tied to Mr. Yusuf Habib. The money is currently deposited in the name of an existing Investment entity. Your role will be to:
+
+[1]. Act as the original beneficiary of the funds.
+[2]. Receive the funds into a business / private bank account.
+[3]. Invest / Manage the funds outside of Turkey
+[4]. Value of funds: 35 million US Dollars.
+
+Everything will be done legally to ensure the rights to the funds are transferred to you. If you agree to partner with Mr. Yusuf Habib in this partnership business proposal, he will compensate you with 35% percent of the total sum. Terms will be discussed when you show interest and if you aren&#039;t interested and you know of someone looking for an investor, please give him / her my contact.
+Should you prefer I re-contact you with more express facts. Then make your interest known.
+Sincerely,
+Lukas.
