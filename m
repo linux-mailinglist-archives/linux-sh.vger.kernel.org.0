@@ -2,82 +2,70 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E48BB65CD1E
-	for <lists+linux-sh@lfdr.de>; Wed,  4 Jan 2023 07:32:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1337365D379
+	for <lists+linux-sh@lfdr.de>; Wed,  4 Jan 2023 13:56:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233330AbjADGcg (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 4 Jan 2023 01:32:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49908 "EHLO
+        id S239332AbjADMzm (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 4 Jan 2023 07:55:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233403AbjADGcf (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 4 Jan 2023 01:32:35 -0500
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CE6A14027;
-        Tue,  3 Jan 2023 22:32:34 -0800 (PST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4Nn0C04FZWz4xyt;
-        Wed,  4 Jan 2023 17:32:28 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-        s=201909; t=1672813949;
-        bh=yy1Ja7/gN5t53Ult7n0CLa7oWDzh1zFh5lkAWxcgdt4=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=O4NB1Mbe8U1HnIqf4kh5MjyenZwCG/UFSMjCR1YYsUv1msRBsq/cOPLS6UtlKekr1
-         p6ptRIVwVzzlvJI93Ym02Oo05krdVqvgro5C0ZJsz43Szf6QgOVbpOsmHnW+gP0Gxx
-         It+IIdezLasjprYmU/SNgRBa10xEHn9+NA+tiicO7+ipsJRYHocYBPmny2FkZO/+wg
-         /epgOSK4vPhFgHXdUqK1IAxlZdB/yJHbn5w69kkhfDL3nd7GL2eD5P212casgM5OdH
-         c43Ps7M6A84QPKdoDYHXciU+J4Ulm/M0HKxYmBvID8fagf/DOXadZyPIXS+qRVGPMN
-         77iTDos8k8Exg==
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Rob Landley <rob@landley.net>
-Cc:     linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        kasan-dev@googlegroups.com,
-        Linux-sh list <linux-sh@vger.kernel.org>
-Subject: Re: Build regressions/improvements in v6.2-rc1
-In-Reply-To: <CAMuHMdVX4Yz-zHvnwB0oCuLfiNAiEsSupcyjfeH+1oKTfQKC9A@mail.gmail.com>
-References: <CAHk-=wgf929uGOVpiWALPyC7pv_9KbwB2EAvQ3C4woshZZ5zqQ@mail.gmail.com>
- <20221227082932.798359-1-geert@linux-m68k.org>
- <alpine.DEB.2.22.394.2212270933530.311423@ramsan.of.borg>
- <397291cd-4953-8b47-6021-228c9eb38361@landley.net>
- <CAMuHMdVX4Yz-zHvnwB0oCuLfiNAiEsSupcyjfeH+1oKTfQKC9A@mail.gmail.com>
-Date:   Wed, 04 Jan 2023 17:32:24 +1100
-Message-ID: <877cy24xon.fsf@mpe.ellerman.id.au>
+        with ESMTP id S237727AbjADMzV (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 4 Jan 2023 07:55:21 -0500
+Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44EC537393
+        for <linux-sh@vger.kernel.org>; Wed,  4 Jan 2023 04:54:54 -0800 (PST)
+Received: by mail-qk1-x72a.google.com with SMTP id pe2so16230730qkn.1
+        for <linux-sh@vger.kernel.org>; Wed, 04 Jan 2023 04:54:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=g2m/uNsCm/OsAUZxAnJOSdXXDa9Gh4wg88n4VPL2lMU=;
+        b=BQfo1+41q2NZR57Q7BFlMODaOza2AgrRvUpAp3daCd4t1w84OEhFtXAM1g7CkVTr/y
+         mvXWkJvXCDM96Iy3cSf9E37Th3uZX5TzmwlIsHFzK3DAyLuSjJ8d3uR9drr/ahkzPGkt
+         iW+sw+gZOJCd7bumtfoM4UR2xOfXz6tdmGq2f+IJJhoSBazdofAm5Gs9PxuweXnk264c
+         knSGf1CtrqZScdeov1GoaGbl2sApMUXYjJGPCObPVA0UTlHx2t6+wdp4VOKHmsqLWM8X
+         lQt15zqigA6uJCG+q37n0r4mLK1MKtsniT1i9jhRA9qlN9E2Mf0sYN4W9Jd0n+39BoCK
+         yzWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=g2m/uNsCm/OsAUZxAnJOSdXXDa9Gh4wg88n4VPL2lMU=;
+        b=sCh+lYFeNo/A8NSeMVTqwghO98YVN39BB6qpclyEA2DQrNFmZc5w5iRxZiSZMC6IsB
+         NEx9ss5wQ0eqrYpN6xhFrgCHwhlhkqdGIBlnMLV8pGlX1u+bpPKwrpZw6BzoSaRTou2C
+         2VoSTGRbXjgMs1wUs1MvBR58TD+MqOaisQIZu9U9rF4Un4wjzvBCETpdmhCLtuifpacT
+         ZjloPvT52TmEQ2QuTu4bThbEmutF8IoBR7QwMBjCMXMBKZHsl7E4a9dFYcGGbc0zupMs
+         td9YvurDnbU58eHSeTQyYpFdf9pBO3bGwLuIatXcHrMx8HOt4JFaOVQUT/jSqxVTRf1A
+         tO2Q==
+X-Gm-Message-State: AFqh2kqHzKtfd2XF1uf2nWKZ+XZ+n2nH7R6+CX+IA92hwIqnazpDQrIq
+        SH0xmWrxIP6PF9F8Dc07XyvqYP5u/u7dbpUad5zswEK3K5c=
+X-Google-Smtp-Source: AMrXdXuKXTvNK0aSB9vnyjtdhrZfKmRzvU9Jw1W0zhcD7x19AMFVNgTh5oL+8ilZBOfTDf/bL64QVz1mYULxa/ftADs=
+X-Received: by 2002:ac8:568a:0:b0:3a9:688d:fad2 with SMTP id
+ h10-20020ac8568a000000b003a9688dfad2mr1976067qta.646.1672836882017; Wed, 04
+ Jan 2023 04:54:42 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:6200:5d91:b0:4a5:78e9:2012 with HTTP; Wed, 4 Jan 2023
+ 04:54:41 -0800 (PST)
+Reply-To: Gregdenzell9@gmail.com
+From:   Greg Denzell <mzsophie@gmail.com>
+Date:   Wed, 4 Jan 2023 12:54:41 +0000
+Message-ID: <CAEoj5=ZpJ15GRz-U33Ocbu5-P3Va+3bNv3476+mmJJ52cwx7tA@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Geert Uytterhoeven <geert@linux-m68k.org> writes:
-> Hi Rob,
->
-> On Sun, Jan 1, 2023 at 2:22 AM Rob Landley <rob@landley.net> wrote:
->> On 12/27/22 02:35, Geert Uytterhoeven wrote:
->> > sh4-gcc11/sh-allmodconfig (ICE = internal compiler error)
->>
->> What's your actual test config here? Because when I try make ARCH=sh
->> allmodconfig; make ARCH=sh it dies in arch/sh/kernel/cpu/sh2/setup-sh7619.c with:
->
-> [re-adding the URL you deleted]
->
->> > [2] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/830b3c68c1fb1e9176028d02ef86f3cf76aa2476/ (all 152 configs)
->
-> Following to
-> http://kisskb.ellerman.id.au/kisskb/target/212841/ and
-> http://kisskb.ellerman.id.au/kisskb/buildresult/14854440/
-> gives you a page with a link to the config.
+Seasons Greetings!
 
-It's possible there's something wrong with the toolchain setup, I don't
-know much about sh.
-
-But it's just the kernel.org crosstool sh4 compiler, nothing else fancy.
-
-cheers
+This will remind you again that I have not yet received your reply to
+my last message to you.
