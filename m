@@ -2,37 +2,37 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87102678531
-	for <lists+linux-sh@lfdr.de>; Mon, 23 Jan 2023 19:45:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BEF5C678543
+	for <lists+linux-sh@lfdr.de>; Mon, 23 Jan 2023 19:49:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231501AbjAWSpY (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 23 Jan 2023 13:45:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56204 "EHLO
+        id S230128AbjAWStF (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 23 Jan 2023 13:49:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229913AbjAWSpX (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 23 Jan 2023 13:45:23 -0500
+        with ESMTP id S232336AbjAWStD (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 23 Jan 2023 13:49:03 -0500
 Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D0CF2139;
-        Mon, 23 Jan 2023 10:45:22 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28D0C10A90;
+        Mon, 23 Jan 2023 10:49:01 -0800 (PST)
 Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
           by outpost.zedat.fu-berlin.de (Exim 4.95)
           with esmtps (TLS1.3)
           tls TLS_AES_256_GCM_SHA384
           (envelope-from <mkarcher@zedat.fu-berlin.de>)
-          id 1pK1om-003lk6-AJ; Mon, 23 Jan 2023 19:45:20 +0100
+          id 1pK1sJ-003mag-PP; Mon, 23 Jan 2023 19:48:59 +0100
 Received: from pd9f631ca.dip0.t-ipconnect.de ([217.246.49.202] helo=[192.168.144.87])
           by inpost2.zedat.fu-berlin.de (Exim 4.95)
           with esmtpsa (TLS1.3)
           tls TLS_AES_128_GCM_SHA256
           (envelope-from <kernel@mkarcher.dialup.fu-berlin.de>)
-          id 1pK1om-0001f8-4B; Mon, 23 Jan 2023 19:45:20 +0100
-Message-ID: <68e5d3d1-7d7d-232c-c6dc-3f65bfb55114@mkarcher.dialup.fu-berlin.de>
-Date:   Mon, 23 Jan 2023 19:45:19 +0100
+          id 1pK1sJ-00024b-JI; Mon, 23 Jan 2023 19:48:59 +0100
+Message-ID: <b41ea008-d9c4-fd76-a5ce-00fe435deed5@mkarcher.dialup.fu-berlin.de>
+Date:   Mon, 23 Jan 2023 19:48:58 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.6.1
 From:   Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
-Subject: [PATCH v3 1/1] arch/sh: avoid spurious sizeof-pointer-div warning
+Subject: [PATCH v4 1/1] arch/sh: avoid spurious sizeof-pointer-div warning
 To:     linux-kernel@vger.kernel.org, linux-sh@vger.kernel.org,
         Segher Boessenkool <segher@kernel.crashing.org>,
         Rich Felker <dalias@libc.org>,
@@ -67,6 +67,8 @@ in https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108483 by Jakub Jelinek
 
 Signed-off-by: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
 ---
+This edition of the mail has the correct "v4" designation in the subject.
+
 History:
 v4:
    - Put the case distinction into the numerator instead of the denominator
@@ -96,6 +98,5 @@ index c255273b0281..98d1da0d8e36 100644
 
   #define INTC_HW_DESC(vectors, groups, mask_regs,    \
                prio_regs,    sense_regs, ack_regs)    \
-
 
 
