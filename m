@@ -2,53 +2,53 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FBB6695BEE
-	for <lists+linux-sh@lfdr.de>; Tue, 14 Feb 2023 09:05:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 29746695BFF
+	for <lists+linux-sh@lfdr.de>; Tue, 14 Feb 2023 09:05:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231448AbjBNIFH (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 14 Feb 2023 03:05:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38902 "EHLO
+        id S231689AbjBNIFz (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 14 Feb 2023 03:05:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231783AbjBNIEd (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 14 Feb 2023 03:04:33 -0500
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D055F22A3D
-        for <linux-sh@vger.kernel.org>; Tue, 14 Feb 2023 00:04:23 -0800 (PST)
-Received: by mail-wr1-x42f.google.com with SMTP id m10so5799965wrn.4
-        for <linux-sh@vger.kernel.org>; Tue, 14 Feb 2023 00:04:23 -0800 (PST)
+        with ESMTP id S231769AbjBNIFf (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 14 Feb 2023 03:05:35 -0500
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C7B02310F
+        for <linux-sh@vger.kernel.org>; Tue, 14 Feb 2023 00:05:24 -0800 (PST)
+Received: by mail-wm1-x32a.google.com with SMTP id g6-20020a05600c310600b003e1f6dff952so391416wmo.1
+        for <linux-sh@vger.kernel.org>; Tue, 14 Feb 2023 00:05:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=rivosinc-com.20210112.gappssmtp.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5wjc5nUaXPqzOcikp/dFCXLyDNPdOZGtU07c3eeQkEo=;
-        b=QzV31v7ItXqx4yWsJfh152ebFGrBo9gPdhTErCgeoMfuI0a/bXBwVo9zVazH0XhD1o
-         1P22Wx88GfdDl5eEqBxmERSHFO/cszqUOCuMenN38SqwMA+e3o2paztN+lm0B02Xgkp3
-         e+v+idvauAUtu3a/SIQ7MztA/LQf+9eZsxk+Jym1ZZLsfwfAVWgFyBnu0nM0VTcvl2h7
-         FliYXwQgV+CnK774qEo/1yzLrYpRuhTqe2ZbWRvyqrg3H8e5u97kFVktjSnfWw7k86cI
-         vT5XzHCiZvDMnZ0VdkIY4TftV6Qme4WQXbWLgnrifFqlcq70lxh8ilRJsq+QAWvDOKHL
-         u3Gw==
+        bh=1ct5xtrlPKjjQBQKaK50Nq6yDXnm+cC6tgPBoUaDGX0=;
+        b=1xRasjafQOUXarQQWSF/7kHUt/+VaNN41JsvVie78fHCvnBtsCj6XLXrQlYRyk8SMa
+         GUvcrv27BCA5nhu5rZ94G6eP2FCJVlbcxEW473/DE88fooxiWY9B3ounLWgrhC4c354l
+         WCThvbDJj9wDfwDG0MFuPCBT5KS6UkeI42mD0IwkIqFFeSHi8NMzagvzhfMT0/BwgnWP
+         h8Hb9DgJ/7Q+wtMt+d0JNEWdyH5Eaer5oW2YbMyEVxGNa5XMlrHPlxrCXibcUIedhoSo
+         MSEeANfbCIS64jx01S1TkpGuf4oDZKB8Ll/vCgOr+9ec/Px4ccZvgwXFQD+nV5t3n5cg
+         9NWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=5wjc5nUaXPqzOcikp/dFCXLyDNPdOZGtU07c3eeQkEo=;
-        b=xlkgdF/IZ5WSHRyEZ7QyW6sFdSqXbPYXJPQ7sMkolTVhK6HGLo9ilBtuuReQ6ZoD3M
-         6HtPuDKZ6+t/3nCWOF4RM1GM2hlKZk3D6woa0GVbVQWM89UUwRwJ7bSK5OBtkLLuazb0
-         VSKgPZZGYGvllNKm/iHsH8zKeG9jrNYYAKtsyomD9C7+cHFRYXNZyPWWhXr61bxUtcsk
-         CcM5iHqbLQv2AdXmRpjzYTivmP1QGGPFlXv1ywIXEkBDB3jUF0/lvCgtWMSDwcgHJgKY
-         jazKk3NFiPFHwgDCrlnn2/B3LxnxiELAkjnry1K7Ov6eoeUxGzSLhgjIloXWIGOWzylr
-         UJoA==
-X-Gm-Message-State: AO0yUKX9CUW6PUB7VILZF3qluvRX5SHrOMCb6XoGnGlq2NMdwiPIQ8fk
-        rl9O5G3EEvZEBNEMr09cUo+33A==
-X-Google-Smtp-Source: AK7set8HOf1J9ROM5HGHA9FxRtFWjGn9F9yobbBJ6lKeYYbdTM09Q7loKzacnDzy8U96Ii9jf9YULg==
-X-Received: by 2002:a5d:43c6:0:b0:2bf:bf05:85ac with SMTP id v6-20020a5d43c6000000b002bfbf0585acmr797767wrr.23.1676361862446;
-        Tue, 14 Feb 2023 00:04:22 -0800 (PST)
+        bh=1ct5xtrlPKjjQBQKaK50Nq6yDXnm+cC6tgPBoUaDGX0=;
+        b=PUuQax9H54wWDvhFAUgtL3TLGKFR/EqgcwMNAdkQd8G5l9nXUo/omOaSe1rBfStUCF
+         LGTM+pVbedVT2vgz3aeAK0F+syfltmVqsUojd6AJlIR3iUlqjq3dh3pwvXvvQAIE5N+N
+         JwttCSi/RzCPu7dbfnvkAfJFrzZ+UXsfA0W0ozgu2lv87n+EHvDpu6g4m6j4VfcvYWI7
+         jr8eWZfmmOfrBhVgiBDsK8dQjsqGV7yHwV6fRvdy6EkbwGFHlDaKHCCtDaoeQV1erp32
+         AOF47FmR32ROH5GRYG/lprGUwU8KSWsBPddoVCVjJS6pa4k4EZAHHukLDbI8X0sRmnMz
+         VOXg==
+X-Gm-Message-State: AO0yUKU5UOgLUltmqrisJv/lucwD+pIID2k3lghn945FdBPMlb00+EwV
+        AdXPYDO1/4gGBq1A1EBtuo1e5g==
+X-Google-Smtp-Source: AK7set+BLoUtubkaXYrAKpwb/kFTGI2YrmVGXgoEUrVzZbAjF6WRjdC9KQBLGH8OODS4OAEhnIqBZQ==
+X-Received: by 2002:a05:600c:18a3:b0:3de:e8c5:d826 with SMTP id x35-20020a05600c18a300b003dee8c5d826mr1140255wmp.28.1676361924127;
+        Tue, 14 Feb 2023 00:05:24 -0800 (PST)
 Received: from alex-rivos.ba.rivosinc.com (lfbn-lyo-1-450-160.w2-7.abo.wanadoo.fr. [2.7.42.160])
-        by smtp.gmail.com with ESMTPSA id r2-20020adff702000000b002bddac15b3dsm12021459wrp.33.2023.02.14.00.04.21
+        by smtp.gmail.com with ESMTPSA id t15-20020a5d534f000000b002c55306f6edsm6381370wrv.54.2023.02.14.00.05.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Feb 2023 00:04:22 -0800 (PST)
+        Tue, 14 Feb 2023 00:05:23 -0800 (PST)
 From:   Alexandre Ghiti <alexghiti@rivosinc.com>
 To:     Jonathan Corbet <corbet@lwn.net>,
         Richard Henderson <richard.henderson@linaro.org>,
@@ -95,17 +95,17 @@ To:     Jonathan Corbet <corbet@lwn.net>,
         sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
         linux-arch@vger.kernel.org
 Cc:     Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH v3 14/24] arc: Remove empty <uapi/asm/setup.h>
-Date:   Tue, 14 Feb 2023 08:49:15 +0100
-Message-Id: <20230214074925.228106-15-alexghiti@rivosinc.com>
+Subject: [PATCH v3 15/24] m68k: Remove empty <uapi/asm/setup.h>
+Date:   Tue, 14 Feb 2023 08:49:16 +0100
+Message-Id: <20230214074925.228106-16-alexghiti@rivosinc.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230214074925.228106-1-alexghiti@rivosinc.com>
 References: <20230214074925.228106-1-alexghiti@rivosinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -116,35 +116,31 @@ From: Palmer Dabbelt <palmer@rivosinc.com>
 
 Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 ---
- arch/arc/include/asm/setup.h      | 1 -
- arch/arc/include/uapi/asm/setup.h | 6 ------
- 2 files changed, 7 deletions(-)
- delete mode 100644 arch/arc/include/uapi/asm/setup.h
+ arch/m68k/include/uapi/asm/setup.h | 15 ---------------
+ 1 file changed, 15 deletions(-)
+ delete mode 100644 arch/m68k/include/uapi/asm/setup.h
 
-diff --git a/arch/arc/include/asm/setup.h b/arch/arc/include/asm/setup.h
-index 028a8cf76206..fe45ff4681bc 100644
---- a/arch/arc/include/asm/setup.h
-+++ b/arch/arc/include/asm/setup.h
-@@ -7,7 +7,6 @@
- 
- 
- #include <linux/types.h>
--#include <uapi/asm/setup.h>
- 
- #define COMMAND_LINE_SIZE 256
- 
-diff --git a/arch/arc/include/uapi/asm/setup.h b/arch/arc/include/uapi/asm/setup.h
+diff --git a/arch/m68k/include/uapi/asm/setup.h b/arch/m68k/include/uapi/asm/setup.h
 deleted file mode 100644
-index a6d4e44938be..000000000000
---- a/arch/arc/include/uapi/asm/setup.h
+index 005593acc7d8..000000000000
+--- a/arch/m68k/include/uapi/asm/setup.h
 +++ /dev/null
-@@ -1,6 +0,0 @@
+@@ -1,15 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
 -/*
-- * setup.h is part of userspace header ABI so UAPI scripts have to generate it
-- * even if there's nothing to export - causing empty <uapi/asm/setup.h>
-- * However to prevent "patch" from discarding it we add this placeholder
-- * comment
-- */
+-** asm/setup.h -- Definition of the Linux/m68k setup information
+-**
+-** Copyright 1992 by Greg Harp
+-**
+-** This file is subject to the terms and conditions of the GNU General Public
+-** License.  See the file COPYING in the main directory of this archive
+-** for more details.
+-*/
+-
+-#ifndef _UAPI_M68K_SETUP_H
+-#define _UAPI_M68K_SETUP_H
+-
+-#endif /* _UAPI_M68K_SETUP_H */
 -- 
 2.37.2
 
