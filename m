@@ -2,127 +2,94 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C09D69663E
-	for <lists+linux-sh@lfdr.de>; Tue, 14 Feb 2023 15:13:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 568F369664F
+	for <lists+linux-sh@lfdr.de>; Tue, 14 Feb 2023 15:16:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232785AbjBNONv (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 14 Feb 2023 09:13:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55812 "EHLO
+        id S233234AbjBNOQK (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 14 Feb 2023 09:16:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233459AbjBNONg (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 14 Feb 2023 09:13:36 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7805D2A9AE
-        for <linux-sh@vger.kernel.org>; Tue, 14 Feb 2023 06:12:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1676383867;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=7edBYp6qpX/SlmDw/QknJtcx6m2SrqGm1x4V+hfCBb4=;
-        b=JavpZgrgVONLd4SrLLYl3gNz7fPBFhIpyZHAGblWzvdGuARwzzEXjpZwxTmB7+f+pQ68fF
-        R+d6QynRE6Hif5QFprzGbN8i8Msbmxq+9V1mh13TEEZ0tpJ3t61qqo9bmX5RY3HPNC20qe
-        VVfTxn7jXQT3AngAuK2ab6xsoZNztZM=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-421-RlhJ5FZBMqeEZtSvZB0y3Q-1; Tue, 14 Feb 2023 09:11:06 -0500
-X-MC-Unique: RlhJ5FZBMqeEZtSvZB0y3Q-1
-Received: by mail-qv1-f69.google.com with SMTP id 98-20020a0c806b000000b0056c2797aa8bso8451886qva.2
-        for <linux-sh@vger.kernel.org>; Tue, 14 Feb 2023 06:11:06 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7edBYp6qpX/SlmDw/QknJtcx6m2SrqGm1x4V+hfCBb4=;
-        b=dx8VOIxqH0mtMpj1X9U//+4AF581CrsnnyedvmXCaV+aXhh8z3tx9hEeojue16QLDE
-         S3Rww7WYF/s514W3LTIZM111/dN3aTKueLaO926marjeD2NKi8/TvjvoyrOuMrdEW2aZ
-         JfjTCSnJ5JpXDbk747B3yW006yxr8eRa/M9fFOx6Z2t+sdwFrgBSoVc4tv5aGxm7fcu6
-         HNU6W6NLDUVtujSjP/pS8pWQ6DaWUWBD3ZAPzLhk6uZ/yok59CwrQqr5fPxUv3xEmC6w
-         dktbS9Tz8k6gRX/RyLDJIpODZekLhp9AxQtBuzbPXgSUzF/I28pmvQUkiMguFHfm2+dl
-         yctg==
-X-Gm-Message-State: AO0yUKXSNufy78Sl09BlxoDXT/vS70gcLFV+Lb7csNBucaeGjke1uacW
-        b+Pe0uUPJNnavko5a8wGR7J0xgXjMg8dcaYsllG5/J8ZWgMDYlJnvJw0YU5+EdENFjEVSEaDtf5
-        BGNaiZfb7P6fc16zRPTU=
-X-Received: by 2002:a05:622a:50:b0:3b8:691f:271 with SMTP id y16-20020a05622a005000b003b8691f0271mr3386023qtw.63.1676383850316;
-        Tue, 14 Feb 2023 06:10:50 -0800 (PST)
-X-Google-Smtp-Source: AK7set98OEMKfsGkU19OgnlE6heJ9O6LLo1g6QDlcHkAXfWHsX591p7/3MvgrPqMUwlWB9z0tPx4tA==
-X-Received: by 2002:a05:622a:50:b0:3b8:691f:271 with SMTP id y16-20020a05622a005000b003b8691f0271mr3385969qtw.63.1676383849978;
-        Tue, 14 Feb 2023 06:10:49 -0800 (PST)
-Received: from vschneid.remote.csb ([154.57.232.159])
-        by smtp.gmail.com with ESMTPSA id s184-20020ae9dec1000000b0073b38652b9csm4892065qkf.122.2023.02.14.06.10.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Feb 2023 06:10:49 -0800 (PST)
-From:   Valentin Schneider <vschneid@redhat.com>
-To:     linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        with ESMTP id S232359AbjBNOQH (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 14 Feb 2023 09:16:07 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B69E44EE0;
+        Tue, 14 Feb 2023 06:15:38 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 0B4E1B81DCC;
+        Tue, 14 Feb 2023 14:15:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0907C433EF;
+        Tue, 14 Feb 2023 14:14:59 +0000 (UTC)
+Date:   Tue, 14 Feb 2023 14:14:56 +0000
+From:   Catalin Marinas <catalin.marinas@arm.com>
+To:     Alexandre Ghiti <alexghiti@rivosinc.com>
+Cc:     Jonathan Corbet <corbet@lwn.net>,
+        Richard Henderson <richard.henderson@linaro.org>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Vineet Gupta <vgupta@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Will Deacon <will@kernel.org>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        WANG Xuerui <kernel@xen0n.name>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H . Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
         linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
         linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
         linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
         sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        x86@kernel.org
-Cc:     "Paul E. McKenney" <paulmck@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        Marcelo Tosatti <mtosatti@redhat.com>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Marc Zyngier <maz@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Guo Ren <guoren@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH v4 0/7] Generic IPI sending tracepoint
-In-Reply-To: <20230119143619.2733236-1-vschneid@redhat.com>
-References: <20230119143619.2733236-1-vschneid@redhat.com>
-Date:   Tue, 14 Feb 2023 14:10:43 +0000
-Message-ID: <xhsmhh6voqqvw.mognet@vschneid.remote.csb>
+        linux-arch@vger.kernel.org, Palmer Dabbelt <palmer@rivosinc.com>
+Subject: Re: [PATCH v3 02/24] arm64: Remove COMMAND_LINE_SIZE from uapi
+Message-ID: <Y+uXYILgDMc7zrh+@arm.com>
+References: <20230214074925.228106-1-alexghiti@rivosinc.com>
+ <20230214074925.228106-3-alexghiti@rivosinc.com>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230214074925.228106-3-alexghiti@rivosinc.com>
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
+On Tue, Feb 14, 2023 at 08:49:03AM +0100, Alexandre Ghiti wrote:
+> From: Palmer Dabbelt <palmer@rivosinc.com>
+> 
+> As far as I can tell this is not used by userspace and thus should not
+> be part of the user-visible API.
+> 
+> Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 
-Hey folks,
-
-On 19/01/23 14:36, Valentin Schneider wrote:
-> Patches
-> =======
->
-> o Patches 1-5 spread out the tracepoint across relevant sites.
->   Patch 5 ends up sprinkling lots of #include <trace/events/ipi.h> which I'm not
->   the biggest fan of, but is the least horrible solution I've been able to come
->   up with so far.
->
-> o Patch 7 is trying to be smart about tracing the callback associated with the
->   IPI.
->
-> This results in having IPI trace events for:
->
-> o smp_call_function*()
-> o smp_send_reschedule()
-> o irq_work_queue*()
-> o standalone uses of __smp_call_single_queue()
->
-
-This still rebases cleanly on top of the latest tip/sched/core, any
-objections to parking it there?
-
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
