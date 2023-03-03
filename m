@@ -2,134 +2,177 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 602FA6A98FE
-	for <lists+linux-sh@lfdr.de>; Fri,  3 Mar 2023 15:00:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A4846A9BE6
+	for <lists+linux-sh@lfdr.de>; Fri,  3 Mar 2023 17:41:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231171AbjCCOAy (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 3 Mar 2023 09:00:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43912 "EHLO
+        id S230282AbjCCQln (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 3 Mar 2023 11:41:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231218AbjCCOAv (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 3 Mar 2023 09:00:51 -0500
-Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A83B65FEA5
-        for <linux-sh@vger.kernel.org>; Fri,  3 Mar 2023 06:00:49 -0800 (PST)
-Received: by mail-qt1-x82c.google.com with SMTP id w23so2853210qtn.6
-        for <linux-sh@vger.kernel.org>; Fri, 03 Mar 2023 06:00:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1677852049;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=+hr8eoKRthmUNyUaF1r41naK6g2Gey9LHHGZ7Hwoa34=;
-        b=K30bHFUc8EGzAM3FgrusT0L0PRF0gDSkmeMBxUFtlZSEdD04i3ujUx/dBel1mfs9vd
-         Nl0Tl1lYVAOhWx5uE/TfKw4wrMl9ehpV3dV0IdxGY3zi1BiGQKyxm9whCmlHAubeIMS2
-         XOW2himMc0oA6RQN6X2QYimwVI/Gh+TIoQOAXNSC/ivbaDNLPBs+8G4mneS7HiEYrSDW
-         jArbuWlSPzjm0vwj8BdoSDzFP0sH17VBo5e04tnCalKm3rC/ZiLXJ6kDA5do7spq5/SF
-         Rv/JmWoseUgnFxREnLwj1DN7vKshH+W7iW58AyoObqo/itPgLcDRGs2reZVwwx+RLY/3
-         SHCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677852049;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+hr8eoKRthmUNyUaF1r41naK6g2Gey9LHHGZ7Hwoa34=;
-        b=QkwDjxZXHy4PosGCocXakxdgvoRexcHk+feWQf+1dx++1a8Q5veOG/q/cAg4RqdY5z
-         NAS0k29Ws+dribBiOYY7D/Hn/3pTVerMF9FaYWZVYW9UTOQh5zySrUWIupLBQpsSOxyV
-         jGfhBDMmKpvVWMG0CsyQVf3oDXpEYyE3uP8ScseZ3IRwbfQMX/J+UKO+R+a7w3TFgSuf
-         JKZYKVcGlFNNMfHhgs+Uyvo9mUywgb/VquQzRb1yP/2cxPgnjrqkgFfKxv3gmv/an2HG
-         5sOv+B4PXItURkHvkE3tQe8AvNahDyHZFruZdWwP2/dED4akz6qgO+kdzsdQdG1xSLIq
-         iNaA==
-X-Gm-Message-State: AO0yUKVHsBPQl3xQTS//VoSXBBiB67d3hoGsxgnDViiK2S8bahjqMQbU
-        Wvr9B8/ecHzzzmT1xsjU5oMAI1atacScIF1e5KA=
-X-Google-Smtp-Source: AK7set8uUklN/xmdihr1n3yKRd33J6LbbrdU2lQQgbXKDhzNNTk+UV01jH2qU8K4ky0oNyHAZV5xiR0NcOetP0XiN9Y=
-X-Received: by 2002:aed:27ce:0:b0:3bf:c0d5:a6 with SMTP id m14-20020aed27ce000000b003bfc0d500a6mr617901qtg.4.1677852048452;
- Fri, 03 Mar 2023 06:00:48 -0800 (PST)
-MIME-Version: 1.0
-Received: by 2002:ac8:764c:0:b0:3bf:e3ac:c651 with HTTP; Fri, 3 Mar 2023
- 06:00:46 -0800 (PST)
-Reply-To: MarkDossou@consultant.com
-From:   "MR. MARK DOSSOU" <jimkimmeroun@gmail.com>
-Date:   Fri, 3 Mar 2023 15:00:46 +0100
-Message-ID: <CABH0-dqs1=HE9U=sJWpQ_gf+UisDWZmRzhxiKgdKz4AS55i+Yw@mail.gmail.com>
-Subject: =?UTF-8?B?ccSrbifDoGkgZGUgUMOpbmd5x5J1LA==?=
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-X-Spam-Status: Yes, score=6.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        MIXED_ES,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:82c listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4329]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [jimkimmeroun[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        *  1.9 MIXED_ES Too many es are not es
-        *  3.0 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: ******
+        with ESMTP id S230189AbjCCQlk (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 3 Mar 2023 11:41:40 -0500
+Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E819729146;
+        Fri,  3 Mar 2023 08:41:23 -0800 (PST)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailout.nyi.internal (Postfix) with ESMTP id 6F3885C00BD;
+        Fri,  3 Mar 2023 11:41:21 -0500 (EST)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Fri, 03 Mar 2023 11:41:21 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm1; t=1677861681; x=1677948081; bh=cq
+        QZ3RgaXf1BBbVEeoodJ6F1ZwSPMj6A5MLY/vjXzGA=; b=MBSCbCwUd8juCEDzj6
+        X+v74NFX7yzWnWb/0gMj34SxPvFz8wyL7gywm5fAIqNKELJdPbh2PYOcHyJ8iqlR
+        O8pzmDTMVyBQ9cMZhSKtn6qmb0KnUA81EK1dpH3SIrJLFelykD8o7UZrplrf66L7
+        W9mg6q/stuxyiWKAwsz/FuGl0mIzCybvdEWEtwKs8vITdXabH94KVLj/yk4WWaiY
+        PkScaQMl3egYObdw/lEOs1KQKTN4G4OIlbK8+qX/IrrGOL8Uq8CSP4LjajDkY11d
+        KGKuxzD0Xlm/gwc/z8sKvDkaKXF/dcFxBRwiNzGxIDlYiagYG5UF8qoHNy+mGJFh
+        GxRg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm1; t=1677861681; x=1677948081; bh=cqQZ3RgaXf1BB
+        bVEeoodJ6F1ZwSPMj6A5MLY/vjXzGA=; b=UVgk6Z8BckmZDASnwvaGoQorgyUq2
+        pQEk7FSlPDa2e+Q6rFx7ZTuIeUij7y9Rrf9Jgh1cpCMAjevycM9AKxSI61k/v8pu
+        5BgUmz43ShLEMosBdymSqmoT4llAbJWhUPur9BqQ+EvwN+g9cxgv0PSoeVrl3u/u
+        zIloXjwNhKZwaJsdydfOwKJuRZYRnqEYNX9CUSOueTYvicXxGcaESX9Qxxhz2q7S
+        y23I9CLQUnUCpw4C2ZRx4HGFKdPKZ3KpejAaTVQ+9VLjziJILZV7r4FYif1Od77P
+        LCKDNeAD2rne62GXKt9BQv1wGyqBG0OLRFWwu3Fv7ICn92s37LvtH/j/w==
+X-ME-Sender: <xms:MCMCZJAuWXjkvRapyHeNiOF30z0WZtCT2IUSh_DGzagx2t_9BoAGgA>
+    <xme:MCMCZHhPhHJnQj7Jd9oDbBHLtdzlJQj6AQmaaUj1cJd5hx3-3fWQpnUe6W9Ais0gn
+    IpB2WEfan7YoF3bQKY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudelledgkeeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
+    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:MCMCZEn-u-vskm94MHqpwMb6efig7zWWVGLLDko7WXr67x0p1FHB0w>
+    <xmx:MCMCZDxHsEO9oVcr-nwuh4K7Kk2bkAquoIbrRSs8lGUcL3kT4X9SJA>
+    <xmx:MCMCZOQAoiH6g-an3IU4R8457T0ch4BofH0kMra3K7DfWRtLBv8Gbg>
+    <xmx:MSMCZMdBiQQ4uXlsrvlAy8QwxkZd7eA3C2X8F_mN_fKZzwhl1Hermg>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id 9A291B60086; Fri,  3 Mar 2023 11:41:20 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-183-gbf7d00f500-fm-20230220.001-gbf7d00f5
+Mime-Version: 1.0
+Message-Id: <c500840b-b57d-47f2-a3d9-41465b10ffae@app.fastmail.com>
+In-Reply-To: <674bc31e-e4ed-988f-820d-54213d83f9c7@ghiti.fr>
+References: <mhng-e8b09772-24e5-4729-a0bf-01a9e4c76636@palmer-ri-x1c9a>
+ <21F95EC4-71EA-4154-A7DC-8A5BA54F174B@zytor.com>
+ <674bc31e-e4ed-988f-820d-54213d83f9c7@ghiti.fr>
+Date:   Fri, 03 Mar 2023 17:40:46 +0100
+From:   "Arnd Bergmann" <arnd@arndb.de>
+To:     "Alexandre Ghiti" <alex@ghiti.fr>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        "Palmer Dabbelt" <palmer@dabbelt.com>,
+        "Heiko Carstens" <hca@linux.ibm.com>
+Cc:     "Geert Uytterhoeven" <geert@linux-m68k.org>,
+        "Alexandre Ghiti" <alexghiti@rivosinc.com>,
+        "Jonathan Corbet" <corbet@lwn.net>,
+        "Richard Henderson" <richard.henderson@linaro.org>,
+        "Ivan Kokshaysky" <ink@jurassic.park.msu.ru>,
+        "Matt Turner" <mattst88@gmail.com>,
+        "Vineet Gupta" <vgupta@kernel.org>,
+        "Russell King" <linux@armlinux.org.uk>,
+        "Catalin Marinas" <catalin.marinas@arm.com>,
+        "Will Deacon" <will@kernel.org>,
+        "Huacai Chen" <chenhuacai@kernel.org>,
+        "WANG Xuerui" <kernel@xen0n.name>,
+        "Michal Simek" <monstr@monstr.eu>,
+        "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
+        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+        "Helge Deller" <deller@gmx.de>,
+        "Michael Ellerman" <mpe@ellerman.id.au>,
+        "Nicholas Piggin" <npiggin@gmail.com>,
+        "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+        "Paul Walmsley" <paul.walmsley@sifive.com>,
+        "Albert Ou" <aou@eecs.berkeley.edu>, gor@linux.ibm.com,
+        "Alexander Gordeev" <agordeev@linux.ibm.com>,
+        borntraeger@linux.ibm.com, "Sven Schnelle" <svens@linux.ibm.com>,
+        ysato@users.osdn.me, "Rich Felker" <dalias@libc.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        "Ingo Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>,
+        "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org,
+        chris@zankel.net, "Max Filippov" <jcmvbkbc@gmail.com>,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-m68k@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        Linux-Arch <linux-arch@vger.kernel.org>
+Subject: Re: [PATCH v3 00/24] Remove COMMAND_LINE_SIZE from uapi
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-TUFSSyBET1NTT1UmIExBV0ZJUk0mIEFzc29jaWF0ZXMNCmrDuiAwMSBCUCA3NTk0DQprxJMgdHXF
-jSBux5QgMDIyOSBiw6hpIG7DrW5nIGfDsm5naMOpZ3XDsw0KDQpxxKtuJ8OgaSBkZSBQw6luZ3nH
-knUsDQoNCm3Em2lox45vIGRlIHnEq3RpxIFuLCBux5AgaMeObyBtYT8gV8eSIHjEq3fDoG5nIGjE
-m24gaMeOby4gSMSbbiBiw6BvcWnDoG4gemjDoG55w7JuZw0KbsOtbiBkZSBzaMOtamnEgW4geceQ
-asOtIHTEgSBrxJtuw6luZyBodcOsIHLDoG5nIG7DrW4gc2jFjXUgZMOgbyB3x5IgZGUgeGnEgW94
-xKsgw6lyDQpnx45uZMOgbyBqxKtuZ3nDoCwgemjDqCBqdcOpZHXDrCBzaMOsIHfHkiBjaMO6bGUg
-emjDqCB6aMeSbmcgZsSBbmdmx44gemjEqyB3w6BpIG3DqWl5x5J1DQpyw6huaMOpIHHDrXTEgSBm
-xIFuZ2bHjiBrxJt5x5AgamnEm2p1w6kgZGUgd8OobnTDrSwgZMOgbiB3x5IgaHXDrCB3w6hpIG7D
-rW4gdMOtZ8WNbmcgZ8OobmcNCmR1xY0gc3XHkiB4xasgZGUgeMOsbnjEqywgc3XHknnHknUgd8eS
-IHjFq3nDoG8gZGUgc2jDrCBuw61uIHpow61kw6kgeMOsbmzDoGkgZGUgaMOpenXDsiwNCnnHkCBx
-dcOoYseObyB3x5IgYseOb2jDuSB5x5AgZ8O5IGvDqGjDuSBkZSB6aMOgbmdow7kgamnDoHpow60u
-DQoNClfHkiBzaMOsIHnHkCBnw7kgZ8WNbmdjaMOpbmdzaMSrIGRlIEhvbiBCYXJyaXN0ZXIgTWFy
-ayBEb3Nzb3Ugc8SrcsOpbiBsx5xzaMSrLg0KQWxleCwod8eSIHnHkCBnw7kgZGUga8OoaMO5KSBz
-aMOsIHnEqyBtw61uZyBodcOgeHXDqSBnxY1uZ2Now6luZ3NoxKssIHTEgSB6w6BpIDIwMTMNCm5p
-w6FuIHnHlCBqacSBcsOpbiB5xKtxx5Agc8eQIHnDuiBjaMSTaHXDsi4gVMSBIHrDoGkgeMSrZsST
-aSBjw7NuZ3Now6wgeceUIHl1w6FuecOzdQ0KeGnEgW5nZ3XEgW4gZGUgecOod8O5LCBkw6BuIHpo
-w7kgesOgaSB3x5IgZGUgZ3XDs2ppxIEsIHfHkiBjaMeUbMeQIHTEgSBkZSBzdceSeceSdQ0KZseO
-bMecIHnDqHfDuS4NCg0KWcOzdXnDuiBsacOhbmjDqSB5w61uaMOhbmcgZMeSbmdzaMOsaHXDrCB6
-w6BpIHTEgSBxw7lzaMOsIGjDsnUgemjHkHNow6wgd8eSIHjDum56aMeObw0KdMSBbWVuIHnHkCBn
-w7kga8OoaMO5IGRlIGTDoCBxxKtuc2jHlCwgdMSBIGppxIFuZyB6dcOyd8OpaSB0xIEgemjDoG5n
-aMO5IGppw6B6aMOtIDEwLjcNCk3Em2l5dcOhbiBkZSBzaMOydXnDrCByw6luLCB5xKtuY8eQIHfH
-kiBxx5BuZ3Fpw7ogbsOtbiBkZSBow6l6dcOyIHnHkCBzaMWNdWh1w60gdMSBIGRlDQp6xKtqxKtu
-IGLHjmkgd8OgbiBtxJtpeXXDoW4uIFLDumd1x5Igd8eSIGLDuW7DqW5nIGrHkG5rdcOgaSB6aMeQ
-ZMOsbmcgcsOobmjDqSBzaMOydXnDrA0KcsOpbiwgZ8SBaSB6aMOgbmdow7kgamnEgW5nIGLDqGkg
-bcOyc2jFjXUgd8OpaSB3w7ogcsOpbiByw6hubMeQbmcgZGUgesSrasSrbiwgecSrbnfDqGkNCnTE
-gSB5x5BqxKtuZyB4acWrbWnDoW5sZSBqacSBbmdqw6xuIDEwIG5pw6FuLiBZxKtuY8eQLCB3x5Ig
-eMSrd8OgbmcgbsOtbiBkZSBow6l6dcOyDQp0xY1uZ2d1w7IgaMOpZseOIHpox5Bkw6xuZyBuw61u
-IHp1w7J3w6lpIHNow7J1ecOsIHLDqW4gbMOhaSBxdcOoYseObyBqxKtqxKtuIGRlIMSBbnF1w6Fu
-LA0KecSrbnfDqGkgd8eSIGRlIGvDqGjDuSBxw7lzaMOsIHNow60gd8OoaSBsacO6IHhpw6AgecOt
-emjHlCAodMSBIGRlIMOpcnppIGTDoCB3w6hpIHNow6wNCmrDrG5xxKtuKS4gV8eSIGppxIFuZyB3
-w6hpIG7DrW4gdMOtZ8WNbmcgc2jHkCBjx5AgamnEgW95w6wgaMOpZseOIGLDrG5nIHNoxJNucceQ
-bmcNCnrEq2rEq24gc2jDrGbDoG5nIHN1x5IgeMWrIGRlIHN1x5J5x5J1IHhpxIFuZ2d1xIFuIHjD
-rG54xKsuDQoNCkbEgXPDsm5nIGfEm2kgd8eSIHhpw6BtacOgbiBkZSB4acOhbmd4w6wgeMOsbnjE
-qywNCg0KbsOtbiBkZSBxdcOhbiBtw61uZzogLi4uLi4uLi4uLi4uLi4uLi4uLi4uDQpMacOhbnjD
-rCBkw6x6aMeQOiAuLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLg0KTmnDoW5sw61uZzogLi4u
-Li4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uDQpTaMeSdWrEqyBow6BvbceOOiAuLi4uLi4u
-Li4uLi4uLi4uLi4uLi4uLi4uDQpaaMOtecOoOiAuLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
-Li4uLi4uLi4NCg0KR8eObnhpw6ggbsOtbiBodcSBIHNow61qacSBbiB5dcOoZMO6LCByw7pndceS
-IG7DrW4gbsOpbmcgY2jHlGzHkCBox45vLCB3x5IgamnEgW5nDQpkxJtuZ2TDoGkgbsOtbiBkZSBo
-dcOtZsO5LiBaaMO5ecOsOiBRx5BuZyB0xY1uZ2d1w7Igd8eSIGRlIGRpw6BueseQIHnDs3VqacOg
-biBkw6x6aMeQDQooTWFya0Rvc3NvdUBjb25zdWx0YW50LkNvbSkgeGnDoG5nIHfHkiB0w61nxY1u
-ZyBzaMOgbmdzaMO5IHjDrG54xKssIHnHkCBodcOycceUDQpnw6huZyBkdcWNIHhpw6FuZ3jDrCB4
-w6xueMSrIGjDqSBsx5BqacSbLg0KDQpDx5B6aMOsLA0KbceOa8OowrdkdcWNIHN1x5IgeGnEgW5z
-aMSTbmcNCnDDrW5nZMSbbmcgeceUIGfFjW5ncMOtbmcgbMecc2jEqyBzaMOsd8O5IHN1x5INCg==
+On Fri, Mar 3, 2023, at 12:59, Alexandre Ghiti wrote:
+> On 3/2/23 20:50, H. Peter Anvin wrote:
+>> On March 1, 2023 7:17:18 PM PST, Palmer Dabbelt <palmer@dabbelt.com> wrote:
+
+>>>>> Commit 622021cd6c560ce7 ("s390: make command line configurable"),
+>>>>> I assume?
+>>>> Yes, sorry for that. I got distracted while writing and used the wrong
+>>>> branch to look this up.
+>>> Alex: Probably worth adding that to the list in the cover letter as it looks like you were planning on a v4 anyway (which I guess you now have to do, given that I just added the issue to RISC-V).
+>> The only use that is uapi is the *default* length of the command line if the kernel header doesn't include it (in the case of x86, it is in the bzImage header, but that is atchitecture- or even boot format-specific.)
+>
+> Is COMMAND_LINE_SIZE what you call the default length? Does that mean 
+> that to you the patchset is wrong?
+
+On x86, the COMMAND_LINE_SIZE value is already not part of a uapi header,
+but instead (since bzImage format version 2.06) is communicated from
+the kernel to the boot loader, which then knows how much data the
+kernel will read (at most) from the command line.
+
+Most x86 kernels these days are booted using UEFI, which I think has
+no such interface, the firmware just passes the command line and a
+length, but has no way of knowing if the kernel will truncate this.
+I think that is the same as with any other architecture that passes
+the command line through UEFI, DT or ATAGS, all of which use
+length/value pairs.
+
+Russell argued on IRC that this can be considered an ABI since a
+boot loader may use its knowledge of the kernel's command line size
+limit to reject long command lines. On the other hand, I don't
+think that any boot loader actually does, they just trust that it
+fits and don't have a good way of rejecting invalid configuration
+other than truncating and/or warning.
+
+One notable exception I found while looking through is the old
+(pre-ATAGS) parameter structure on Arm, which uses COMMAND_LINE_SIZE
+as part of the structure definition. Apparently this was deprecated
+22 years ago, so hopefully the remaining riscpc and footbridge
+users have all upgraded their bootloaders.
+
+The only other case I could find that might go wrong is
+m68knommu with a few files copying a COMMAND_LINE_SIZE sized
+buffer from flash into a kernel buffer:
+
+arch/m68k/coldfire/m5206.c:void __init config_BSP(char *commandp, int size)
+arch/m68k/coldfire/m5206.c-{
+arch/m68k/coldfire/m5206.c-#if defined(CONFIG_NETtel)
+arch/m68k/coldfire/m5206.c-     /* Copy command line from FLASH to local buffer... */
+arch/m68k/coldfire/m5206.c-     memcpy(commandp, (char *) 0xf0004000, size);
+arch/m68k/coldfire/m5206.c-     commandp[size-1] = 0;
+arch/m68k/coldfire/m5206.c-#endif /* CONFIG_NETtel */
+
+     Arnd
