@@ -2,112 +2,93 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52A446AB202
-	for <lists+linux-sh@lfdr.de>; Sun,  5 Mar 2023 21:11:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E0E636AB538
+	for <lists+linux-sh@lfdr.de>; Mon,  6 Mar 2023 05:01:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229696AbjCEULR (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sun, 5 Mar 2023 15:11:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53860 "EHLO
+        id S229823AbjCFEA6 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sun, 5 Mar 2023 23:00:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229688AbjCEULP (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sun, 5 Mar 2023 15:11:15 -0500
-Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77ECC16891;
-        Sun,  5 Mar 2023 12:10:56 -0800 (PST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailout.nyi.internal (Postfix) with ESMTP id 456115C00E6;
-        Sun,  5 Mar 2023 15:10:53 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Sun, 05 Mar 2023 15:10:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-transfer-encoding:content-type:content-type:date
-        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to; s=fm1; t=
-        1678047053; x=1678133453; bh=cjW13UmZQsjwyJDeHx5kIcthGLujwjX/c4O
-        TYrUnVEo=; b=M+iX57D3tki6mdnYuiW2+/TVDcTnCB2Ga/GIjvvg25JyIDtZhzU
-        mLkYC+yAY4SFZTnNttwjLlO8DD8yCYVw2kqWR6oHe88HECHGwU2I7Axt7fx139oN
-        etVdN33n4Awn9hGCJAMtMjqHAQtx2VRikVcaIkNPJ7OSOLVm6//NltGUsHzgIj37
-        6Q3ejPZj5Yi2cHI9b414CB+2Y/WNWnifgSj0Gzxyz7KQ4KCQRarWS5CulHYbi5eC
-        ag9J4dSS2qmKbTaLa9/5xYv+fAFL3Yxj7jbc/4GSpKvlOtsPrPUdGxBgQX6SJ5Z/
-        5TNCZ2yUU9mfrFdl1+bt1hfGmpR+ALzk/+w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:content-type:date:date:feedback-id:feedback-id
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-        1678047053; x=1678133453; bh=cjW13UmZQsjwyJDeHx5kIcthGLujwjX/c4O
-        TYrUnVEo=; b=CYjynxi2XdbvcwdySeuJXuc1PmUeES5qN5N0+ACWBaHPfzz2mdY
-        KOtHjXR5RghXHpnlzSUA3NKQ8HzaPRpU50fjVFpJJj2Vy6sGAfy9/jRTA0VzqhBk
-        8GsAumW0PCYRukJgw9SVPtwhkxwpu7ePss7hnK46F7qIf9wvuoF9/IIYqYHLSQ6S
-        WYeQ8pkNDtW0oDCAUXUKxKH9ooj8BOTq4NG7N1mHccROcNqGiApuSD4gGmN67hlg
-        /JkwqqShEOb8mieY78lGMfW+Gz28CVp4X2Co4shGbu4N41Qb30SR08YRmY/mYRXg
-        wfIYMYkcUjgcGZeIAy669di3WjfqzK4B1xQ==
-X-ME-Sender: <xms:TPcEZBo-q52j-jqchY2XGMpcTPYR06yXpKAxCmCfSK69n_WJZvxBew>
-    <xme:TPcEZDrpog9WoSHrCoXbSnoa2mLg-BTyPhTgGzmB-0qEgXBt4T7_tYyFgcQXJBgjV
-    lAj5AsSTwmqOpGlKmY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvddtgedgudefgecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefofgggkfgjfhffhffvvefutgfgsehtqhertderreejnecuhfhrohhmpedf
-    tehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrf
-    grthhtvghrnhepgfekueelgeeigefhudduledtkeefffejueelheelfedutedttdfgveeu
-    feefieegnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiii
-    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:TPcEZOPBv0ou0224OqiUylR9QEbHsuuPAEnRPF5o8Yfvrtw8YAv_tg>
-    <xmx:TPcEZM7r_vfyT0vMjnpfebYe8dIUVygFUa3KtMBPW88bfxP-LizgeA>
-    <xmx:TPcEZA4_keGj9AgoFlOut-Hu30B0X1Jw1pHtsEd1RMfb_pDQw2T6KA>
-    <xmx:TfcEZLJhlAB4TepxklBPOSFU5nuw9mrTxiy269e0J3uc6tV0KxUo8A>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 15985B60086; Sun,  5 Mar 2023 15:10:51 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-183-gbf7d00f500-fm-20230220.001-gbf7d00f5
-Mime-Version: 1.0
-Message-Id: <5dec69d0-0bc9-4f6c-8d0d-ee5422783100@app.fastmail.com>
-In-Reply-To: <CAMuHMdXoM24uAZGcjBtscNMOSY_+4u08PEOR7gOfCH7jvCceDg@mail.gmail.com>
-References: <20230303102817.212148-1-bhe@redhat.com>
- <20230303102817.212148-3-bhe@redhat.com> <87sfej1rie.fsf@mpe.ellerman.id.au>
- <CAMuHMdXoM24uAZGcjBtscNMOSY_+4u08PEOR7gOfCH7jvCceDg@mail.gmail.com>
-Date:   Sun, 05 Mar 2023 21:10:31 +0100
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Geert Uytterhoeven" <geert@linux-m68k.org>,
-        "Michael Ellerman" <mpe@ellerman.id.au>
-Cc:     Linux-Arch <linux-arch@vger.kernel.org>,
-        "Baoquan He" <bhe@redhat.com>, linux-sh@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-hexagon@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-        "Christoph Hellwig" <hch@infradead.org>, linux-mm@kvack.org,
-        "Luis Chamberlain" <mcgrof@kernel.org>,
-        linux-parisc@vger.kernel.org, linux-alpha@vger.kernel.org,
-        sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v3 2/2] arch/*/io.h: remove ioremap_uc in some architectures
-Content-Type: text/plain;charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229752AbjCFEAp (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sun, 5 Mar 2023 23:00:45 -0500
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25040F95E;
+        Sun,  5 Mar 2023 20:00:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=HPz4kPYhPZpQlfeOL2Al6sQo7BQmMegqzbJMsm991po=; b=kx8YsC+c/ytuN48zbGnBp9LIjb
+        yBCqh9LU1+Z3QYjzA2niS9adPj3dkCNPK9Ym8Od1Wr/BDHhrVVmDTWC0xkP4G4qNnSWNWP+q80HfG
+        f9lcxp240fKH5Z0CiTMK2JrECS3tK7Cr20AVXhTf0JqTPDcIVXplGJyHtvltgNahJ5xiSs11FIMPv
+        JgFX+62AKl2B9WxOmH3L7lLmiJWWwxADL57F961nZ5jfdby36oX0ExO1CuGi8lxT59Q9QxCoElI+8
+        0IiD724fEv9Hiqae7coN1EvEDNi4U+Dd9Wsie/jb8hAAE4xo5aZb1LljZxEVolHeppY9jfwQHA8qY
+        3iSISszQ==;
+Received: from [2601:1c2:980:9ec0::df2f] (helo=bombadil.infradead.org)
+        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1pZ21e-00B9yD-PB; Mon, 06 Mar 2023 04:00:38 +0000
+From:   Randy Dunlap <rdunlap@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Hitoshi Mitake <mitake@dcl.info.waseda.ac.jp>,
+        linux-sh@vger.kernel.org, Frank Rowand <frowand.list@gmail.com>,
+        devicetree@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 0/7 v4] sh: various doc, build, init fixes
+Date:   Sun,  5 Mar 2023 20:00:30 -0800
+Message-Id: <20230306040037.20350-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.39.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Sun, Mar 5, 2023, at 10:29, Geert Uytterhoeven wrote:
->
-> On Sun, Mar 5, 2023 at 10:23=E2=80=AFAM Michael Ellerman <mpe@ellerman=
-.id.au> wrote:
->> Maybe that exact code path is only reachable on x86/ia64? But if so
->> please explain why.
->>
->> Otherwise it looks like this series could break that driver on powerpc
->> at least.
->
-> Indeed.
+All of these patches have been sent previously, anywhere from
+one to 3 times.  All patches are now called "v4".
 
-When I last looked into this, I sent a patch to use ioremap()
-on non-x86:
+This refresh/resend is to assist the new SH maintainer.
 
-https://lore.kernel.org/all/20191111192258.2234502-1-arnd@arndb.de/
+ [PATCH 1/7 v4] sh: SH2007: drop the bad URL info
+ [PATCH 2/7 v4] sh: nmi_debug: fix return value of __setup handler
+ [PATCH 3/7 v4] sh: init: use OF_EARLY_FLATTREE for early init
+ [PATCH 4/7 v4] sh: math-emu: fix macro redefined warning
+ [PATCH 5/7 v4] sh: remove sh5/sh64 last fragments
+ [PATCH 6/7 v4] sh: fix Kconfig entry for NUMA => SMP
+ [PATCH 7/7 v4] sh: mcount.S: fix build error when PRINTK is not enabled
 
-    Arnd
+diffstat:
+ Documentation/kbuild/kbuild.rst                           |    1 -
+ Documentation/scheduler/sched-arch.rst                    |    2 --
+ Documentation/translations/zh_CN/scheduler/sched-arch.rst |    2 --
+ arch/sh/Kconfig                                           |    4 ++++
+ arch/sh/Kconfig.debug                                     |    2 +-
+ arch/sh/boards/Kconfig                                    |    1 -
+ arch/sh/kernel/head_32.S                                  |    6 +++---
+ arch/sh/kernel/nmi_debug.c                                |    4 ++--
+ arch/sh/kernel/setup.c                                    |    4 ++--
+ arch/sh/math-emu/sfp-util.h                               |    4 ----
+ scripts/checkstack.pl                                     |    7 -------
+ tools/perf/arch/common.c                                  |    2 --
+ tools/scripts/Makefile.arch                               |    5 -----
+ tools/testing/selftests/mm/Makefile                       |    2 +-
+ tools/testing/selftests/mm/run_vmtests.sh                 |    2 +-
+ 15 files changed, 14 insertions(+), 34 deletions(-)
+
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Rich Felker <dalias@libc.org>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Hitoshi Mitake <mitake@dcl.info.waseda.ac.jp>
+Cc: linux-sh@vger.kernel.org
+Cc: Frank Rowand <frowand.list@gmail.com>
+Cc: devicetree@vger.kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>
