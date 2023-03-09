@@ -2,61 +2,56 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FE4C6B2657
-	for <lists+linux-sh@lfdr.de>; Thu,  9 Mar 2023 15:10:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 79B7B6B2700
+	for <lists+linux-sh@lfdr.de>; Thu,  9 Mar 2023 15:36:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229872AbjCIOKh (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 9 Mar 2023 09:10:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48544 "EHLO
+        id S230398AbjCIOgY convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-sh@lfdr.de>); Thu, 9 Mar 2023 09:36:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231830AbjCIOKI (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 9 Mar 2023 09:10:08 -0500
-Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB4CB8F731
-        for <linux-sh@vger.kernel.org>; Thu,  9 Mar 2023 06:08:59 -0800 (PST)
-Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-53916ab0c6bso37043567b3.7
-        for <linux-sh@vger.kernel.org>; Thu, 09 Mar 2023 06:08:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678370939;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DNYpKD19CQMx//TQ6gRIcfYtZetkx8u9yXR+/GYE/OI=;
-        b=BL6MZ9fFBbKkXJ7YOlcNpYgELX9UktkrC9y2EmF8YA0wNHtltEcFQdWuYyb38fzSzQ
-         OP5jmXOaZQEa1/auJWmya8SCK3vVT4ZKiJ7zAJIc3IVy7pTMsWIEJQlMOu1/ZaUQI2zE
-         INc+EdnVAgfpebx9B3pZ5bDCHcg5jjzF/sknKg3tMykWG9SeKoD1VySgTnHmyOkHxGx/
-         cJrNt2v4ljifBdjs4v2YQsiSiIM810xDaFUDUNg0Mst+Oo5ueUeuQNAYUo/mfQfHxv7G
-         mBdg4o8oueL9ALzIuOSrLixjRcTcqnzuVsWqg0rt4vP3oXLbH4/Hzg4cafpcCqOiZ2YM
-         vudg==
+        with ESMTP id S231844AbjCIOgN (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 9 Mar 2023 09:36:13 -0500
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87E42E7EFC;
+        Thu,  9 Mar 2023 06:35:49 -0800 (PST)
+Received: by mail-qv1-f43.google.com with SMTP id jo29so1554594qvb.0;
+        Thu, 09 Mar 2023 06:35:49 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678370939;
+        d=1e100.net; s=20210112; t=1678372548;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DNYpKD19CQMx//TQ6gRIcfYtZetkx8u9yXR+/GYE/OI=;
-        b=smYLkn87yOvEgjWN7pOUBprpmR3/3Dww6qr1imGF2W/2LXyGN7Fm2lCc32cir7tsfK
-         rqp+XFbxHWt1/t7qN0xEM8uLjXhzmyRBAeUFOkLu8YJK2iP/ehesNUc8oB1IC9e1y5dT
-         NiB1W5D2AbAe/Ywfm+1sVj22HU0afLNBkX5r5NaP/XJnefTXJDZOowZybExocShogxDu
-         rpneJgHIZb8yXqc050r9UttHaZ4SF0eocgcJu8eemSGz1UiIiXLDkTiJYXK+pHh8JleJ
-         WFjm98rZOoko4krgig+CmfGKuOb0cbCBBoyHcfaqXgo4KUhbN66xo6Mv0OswiCDcgXSt
-         Wpiw==
-X-Gm-Message-State: AO0yUKUjBhGApnD8EDcQuzufoOsSKJOgzjLum0nSgoMOLFRS69LvTZpI
-        6KkXCd9SGhDD31VyXouztAsAOMoEIhzwvoQbypGvfg==
-X-Google-Smtp-Source: AK7set+lVvVY4FziSRRfPKq3rHn1hWLe9VJbSzh76+m189ZOrx5E2lz7lYSP1nbFspYJ587Bl4JjlyoL5YqLtGZhBXg=
-X-Received: by 2002:a81:b667:0:b0:534:d71f:14e6 with SMTP id
- h39-20020a81b667000000b00534d71f14e6mr14180137ywk.9.1678370938978; Thu, 09
- Mar 2023 06:08:58 -0800 (PST)
+        bh=ri9sSxFPujb6hfgdxYFHOdQXavWyvWPB4UY0+uT79Nw=;
+        b=eTnguzaluUJXlztCk2iX3NWCpxDgqQ2alLA8p7d2qZUJq2Bnr3O4xwH4dTnJtYAtol
+         yGnaAKQHQl+P0fOr9ZrI4IPwe5EqVGwGceMZCN1WKajed9/9jVkWx1MRY7+Hn6ONOM1b
+         ZlkK4bIGKtquTXKr7bY7arhJeEPH4NnWtvrS6u5eipgFfZXNueNRev/uT+L2EIky/hNU
+         ph1MTqXzTyyC3CfKOUkhCSJ9MNLBfme89grtJOa857bFZiLjZCKszbZwfKdQ10o/4eX2
+         Rd0TnxMgRSsX0YeTPuJtCo+b6K+aKcM5HTJbLBQQk/KFCk13sSw3ftaSELLoTkch5E3o
+         /psg==
+X-Gm-Message-State: AO0yUKW5yo4dufnVktQw/3whRKxyvnTS408N4/nSV9syKCRH7e7N5Qqp
+        NAs9K+bmIQhTOs84O+oRrgOWwHAOM19yLA==
+X-Google-Smtp-Source: AK7set8+SAgzvyJlMh11ayPR9bJfGF9zVYlqWAx9nGmFRdDfApJr4J0bSoNWrJvNXerJ8Pn5gctiyw==
+X-Received: by 2002:a05:6214:238e:b0:56e:bb43:a07c with SMTP id fw14-20020a056214238e00b0056ebb43a07cmr2340663qvb.20.1678372548438;
+        Thu, 09 Mar 2023 06:35:48 -0800 (PST)
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com. [209.85.128.176])
+        by smtp.gmail.com with ESMTPSA id r125-20020a374483000000b006fcb77f3bd6sm13658332qka.98.2023.03.09.06.35.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 09 Mar 2023 06:35:48 -0800 (PST)
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-536bf92b55cso38174207b3.12;
+        Thu, 09 Mar 2023 06:35:47 -0800 (PST)
+X-Received: by 2002:a81:ae1d:0:b0:524:5bc5:a3d5 with SMTP id
+ m29-20020a81ae1d000000b005245bc5a3d5mr13737816ywh.4.1678372547668; Thu, 09
+ Mar 2023 06:35:47 -0800 (PST)
 MIME-Version: 1.0
-References: <20230309135255.3861308-1-geert+renesas@glider.be>
-In-Reply-To: <20230309135255.3861308-1-geert+renesas@glider.be>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 9 Mar 2023 15:08:47 +0100
-Message-ID: <CACRpkdant3mQJX0FM3q65mBaS0fXJ=7tag5dx-1Jp5xpc3EQJg@mail.gmail.com>
+References: <20230309135255.3861308-1-geert+renesas@glider.be> <ZAnna6xIhBZPG/nD@smile.fi.intel.com>
+In-Reply-To: <ZAnna6xIhBZPG/nD@smile.fi.intel.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Thu, 9 Mar 2023 15:35:35 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdUn0rbhiDLyTKuBvYTw3c9JGOs2ZZq=7aaOFnQ4_6PZAg@mail.gmail.com>
+Message-ID: <CAMuHMdUn0rbhiDLyTKuBvYTw3c9JGOs2ZZq=7aaOFnQ4_6PZAg@mail.gmail.com>
 Subject: Re: [PATCH] sh: mach-x3proto: Add missing #include <linux/gpio/driver.h>
-To:     Geert Uytterhoeven <geert+renesas@glider.be>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Arnd Bergmann <arnd@arndb.de>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>,
         John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
@@ -64,43 +59,55 @@ Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         linux-kernel@vger.kernel.org,
         Linux Kernel Functional Testing <lkft@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Thu, Mar 9, 2023 at 2:52 PM Geert Uytterhoeven
-<geert+renesas@glider.be> wrote:
+Hi Andy,
 
-> shx3_defconfig:
+On Thu, Mar 9, 2023 at 3:10 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+> On Thu, Mar 09, 2023 at 02:52:55PM +0100, Geert Uytterhoeven wrote:
+> > shx3_defconfig:
+> >
+> >     arch/sh/boards/mach-x3proto/setup.c: In function ‘x3proto_devices_setup’:
+> >     arch/sh/boards/mach-x3proto/setup.c:246:62: error: invalid use of undefined type ‘struct gpio_chip’
+> >       246 |                 baseboard_buttons[i].gpio = x3proto_gpio_chip.base + i;
+> >         |                                                              ^
+> >
+> > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> > Link: https://lore.kernel.org/r/CA+G9fYs7suzGsEDK40G0pzxXyR1o2V4Pn-oy1owTsTWRVEVHog@mail.gmail.com
+> > Fixes: 21d9526d13b5467b ("gpiolib: Make the legacy <linux/gpio.h> consumer-only")
+> > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 >
->     arch/sh/boards/mach-x3proto/setup.c: In function =E2=80=98x3proto_dev=
-ices_setup=E2=80=99:
->     arch/sh/boards/mach-x3proto/setup.c:246:62: error: invalid use of und=
-efined type =E2=80=98struct gpio_chip=E2=80=99
->       246 |                 baseboard_buttons[i].gpio =3D x3proto_gpio_ch=
-ip.base + i;
->           |                                                              =
-^
+> Thank you!
 >
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> Link: https://lore.kernel.org/r/CA+G9fYs7suzGsEDK40G0pzxXyR1o2V4Pn-oy1owT=
-sTWRVEVHog@mail.gmail.com
-> Fixes: 21d9526d13b5467b ("gpiolib: Make the legacy <linux/gpio.h> consume=
-r-only")
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> ...
+>
+> >  #include <linux/gpio.h>
+> > +#include <linux/gpio/driver.h>
+>
+> Do we still need the legacy header?
 
-This is fallout from cleanups in Bartosz GPIO tree, so it will be applied t=
-here.
-Make sure Bartosz gets the patch (now on To:)
+Apparently not.  And "make arch/sh/boards/mach-x3proto/setup.i"
+confirms it's not included indirectly.
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Will send a v2...
 
-Yours,
-Linus Walleij
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
