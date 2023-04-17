@@ -2,72 +2,39 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B4966E54A1
-	for <lists+linux-sh@lfdr.de>; Tue, 18 Apr 2023 00:19:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E69A6E58B4
+	for <lists+linux-sh@lfdr.de>; Tue, 18 Apr 2023 07:43:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229995AbjDQWTb (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 17 Apr 2023 18:19:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59084 "EHLO
+        id S230064AbjDRFn6 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 18 Apr 2023 01:43:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229694AbjDQWT3 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 17 Apr 2023 18:19:29 -0400
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C661F5275;
-        Mon, 17 Apr 2023 15:19:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1681769968; x=1713305968;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=yMAw32GB6bnYHTIaJx+3YJu4UkN11Fi/gjV1eDLzAFs=;
-  b=brz8CcyL1HOoLlpbB2TIzyxT1Iu3Qf66g66JzOZm3y58A/jPkO7eDQ6p
-   GsEeVdywLd/4vlMPkttjhIc3KVbG6H2Hk0Zmdw0qvQ4Bd5bJaMEC5pnKT
-   vR8EIM0bEyldMhjCrbq7rWCP6WBVWbpxISZnaP01+ozpZdaaUcqYzC0st
-   y1sOvAB3BRWTViGLf5rDUWSBpLZdSjciEy2DM6hRTFK7OfD+eGwL/+Jv2
-   C11tPeZrthUd92qhp6pXDZhf5WaRBOXQOC3RXKclEZFYXcpl55ewvy/dP
-   X5nRPMuisdAvgw/OBjZEEckfZceKwJR4boC0QvjCbJlJhGQJJ2pzTgHv+
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10683"; a="347767943"
-X-IronPort-AV: E=Sophos;i="5.99,205,1677571200"; 
-   d="scan'208";a="347767943"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2023 15:19:11 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10683"; a="684313012"
-X-IronPort-AV: E=Sophos;i="5.99,205,1677571200"; 
-   d="scan'208";a="684313012"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by orsmga007.jf.intel.com with ESMTP; 17 Apr 2023 15:19:05 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1poXBh-000chh-0f;
-        Mon, 17 Apr 2023 22:19:05 +0000
-Date:   Tue, 18 Apr 2023 06:18:32 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Matthew Wilcox <willy@infradead.org>
-Cc:     oe-kbuild-all@lists.linux.dev,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-        xen-devel@lists.xenproject.org, kvm@vger.kernel.org,
-        "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Subject: Re: [PATCH 24/33] m68k: Convert various functions to use ptdescs
-Message-ID: <202304180652.LeoLmaNQ-lkp@intel.com>
-References: <20230417205048.15870-25-vishal.moola@gmail.com>
+        with ESMTP id S229454AbjDRFn5 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 18 Apr 2023 01:43:57 -0400
+X-Greylist: delayed 11861 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 17 Apr 2023 22:43:56 PDT
+Received: from mail.peterfykh.hu (mail.peterfykh.hu [84.206.67.96])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1604F423B;
+        Mon, 17 Apr 2023 22:43:56 -0700 (PDT)
+Received: from mail.peterfykh.hu (localhost [127.0.0.1])
+        by mail.peterfykh.hu (Postfix) with ESMTP id 84E041177;
+        Tue, 18 Apr 2023 01:57:45 +0200 (CEST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230417205048.15870-25-vishal.moola@gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Tue, 18 Apr 2023 01:57:45 +0200
+From:   MK <sebeszet@peterfykh.hu>
+To:     undisclosed-recipients:;
+Subject: Hello sunshine, how are you?
+Reply-To: marion.K08@bahnhof.se
+Mail-Reply-To: marion.K08@bahnhof.se
+Message-ID: <73f25765f6b58f5dbcf3a26ec7364a17@peterfykh.hu>
+X-Sender: sebeszet@peterfykh.hu
+User-Agent: Roundcube Webmail/1.2.3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=peterfykh.hu; s=mail; t=1681775879; bh=EK7FNzGPLm9pid/gmdFBrbarvHS9H0a48U7GgrEq6Uo=; h=MIME-Version:Content-Type:Content-Transfer-Encoding:Date:From:To:Subject:Reply-To:Message-ID; b=uC7WHjqTrFAg10SLXW8+MXT+Qur7exwfyWB2mmR6YGDcxtzadBldDX1N3UpRP30aojbveWRGeFTlU2peS9vUANH7zbFMs4qoDnNMBQzuzQsfWh5lww1DY8W5QfGUmuBFMeNVgffcdOjeQAMphdEqLaKEZ7SaH5Ij5Ylepqp/rYo=
+X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -75,92 +42,29 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Vishal,
+I am sorry to bother you and intrude your privacy. I am single,
+  lonely and in need of a caring, loving and romantic companion.
 
-kernel test robot noticed the following build warnings:
+I am a secret admirer and would like to explore the opportunity to
+learn more about each other. I know it is strange to contact you
+this way and I hope you can forgive me. I am a shy person and
+this is the only way I know I could get your attention. I just want
+to know what you think and my intention is not to offend you.
+I hope we can be friends if that is what you want, although I wish
+to be more than just a friend. I know you have a few questions to
+ask and I hope I can satisfy some of your curiosity with a few
+answers.
 
-[auto build test WARNING on akpm-mm/mm-everything]
-[also build test WARNING on next-20230417]
-[cannot apply to s390/features powerpc/next powerpc/fixes geert-m68k/for-next geert-m68k/for-linus linus/master v6.3-rc7]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+I believe in the saying that 'to the world you are just one person,
+but to someone special you are the world'. All I want is love,
+romantic care and attention from a special companion which I am
+hoping would be you.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Vishal-Moola-Oracle/s390-Use-_pt_s390_gaddr-for-gmap-address-tracking/20230418-045832
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20230417205048.15870-25-vishal.moola%40gmail.com
-patch subject: [PATCH 24/33] m68k: Convert various functions to use ptdescs
-config: m68k-allyesconfig (https://download.01.org/0day-ci/archive/20230418/202304180652.LeoLmaNQ-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 12.1.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/630b38053b213e6138d3deb3e4325b24ad6dcb1f
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Vishal-Moola-Oracle/s390-Use-_pt_s390_gaddr-for-gmap-address-tracking/20230418-045832
-        git checkout 630b38053b213e6138d3deb3e4325b24ad6dcb1f
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=m68k olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=m68k SHELL=/bin/bash arch/m68k/mm/
-
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202304180652.LeoLmaNQ-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   arch/m68k/mm/motorola.c: In function 'free_pointer_table':
->> arch/m68k/mm/motorola.c:204:56: warning: passing argument 1 of 'virt_to_ptdesc' makes pointer from integer without a cast [-Wint-conversion]
-     204 |                         ptdesc_pte_dtor(virt_to_ptdesc(page));
-         |                                                        ^~~~
-         |                                                        |
-         |                                                        long unsigned int
-   In file included from arch/m68k/mm/motorola.c:15:
-   include/linux/mm.h:2721:57: note: expected 'const void *' but argument is of type 'long unsigned int'
-    2721 | static inline struct ptdesc *virt_to_ptdesc(const void *x)
-         |                                             ~~~~~~~~~~~~^
-   arch/m68k/mm/motorola.c: At top level:
-   arch/m68k/mm/motorola.c:418:13: warning: no previous prototype for 'paging_init' [-Wmissing-prototypes]
-     418 | void __init paging_init(void)
-         |             ^~~~~~~~~~~
+I hope this message will be the beginning of a long term
+communication between us, simply send a reply to this message, it
+will make me happy.
 
 
-vim +/virt_to_ptdesc +204 arch/m68k/mm/motorola.c
+Hugs and kisses,
 
-   185	
-   186	int free_pointer_table(void *table, int type)
-   187	{
-   188		ptable_desc *dp;
-   189		unsigned long ptable = (unsigned long)table;
-   190		unsigned long page = ptable & PAGE_MASK;
-   191		unsigned int mask = 1U << ((ptable - page)/ptable_size(type));
-   192	
-   193		dp = PD_PTABLE(page);
-   194		if (PD_MARKBITS (dp) & mask)
-   195			panic ("table already free!");
-   196	
-   197		PD_MARKBITS (dp) |= mask;
-   198	
-   199		if (PD_MARKBITS(dp) == ptable_mask(type)) {
-   200			/* all tables in page are free, free page */
-   201			list_del(dp);
-   202			mmu_page_dtor((void *)page);
-   203			if (type == TABLE_PTE)
- > 204				ptdesc_pte_dtor(virt_to_ptdesc(page));
-   205			free_page (page);
-   206			return 1;
-   207		} else if (ptable_list[type].next != dp) {
-   208			/*
-   209			 * move this descriptor to the front of the list, since
-   210			 * it has one or more free tables.
-   211			 */
-   212			list_move(dp, &ptable_list[type]);
-   213		}
-   214		return 0;
-   215	}
-   216	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+Marion.
