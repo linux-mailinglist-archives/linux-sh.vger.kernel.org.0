@@ -2,76 +2,74 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 840B66E5CC3
-	for <lists+linux-sh@lfdr.de>; Tue, 18 Apr 2023 11:03:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31F446E5DA6
+	for <lists+linux-sh@lfdr.de>; Tue, 18 Apr 2023 11:40:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229593AbjDRJDO (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 18 Apr 2023 05:03:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39102 "EHLO
+        id S231156AbjDRJkt (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 18 Apr 2023 05:40:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231210AbjDRJDL (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 18 Apr 2023 05:03:11 -0400
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 073B34C0B
-        for <linux-sh@vger.kernel.org>; Tue, 18 Apr 2023 02:03:09 -0700 (PDT)
-Received: by mail-pf1-x442.google.com with SMTP id d2e1a72fcca58-63b60366047so1463553b3a.1
-        for <linux-sh@vger.kernel.org>; Tue, 18 Apr 2023 02:03:09 -0700 (PDT)
+        with ESMTP id S231436AbjDRJkR (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 18 Apr 2023 05:40:17 -0400
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2107C7D84;
+        Tue, 18 Apr 2023 02:39:59 -0700 (PDT)
+Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-3f0a00a5880so14036885e9.0;
+        Tue, 18 Apr 2023 02:39:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=landley-net.20221208.gappssmtp.com; s=20221208; t=1681808589; x=1684400589;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=riEyUUcyGOoo1m6E9T12XXnAsiXXXppReCmjmHm49hw=;
-        b=H7SnQr2p/f7scQtloPUNrTUr8NnJaqEnUlXeuUpk8LwhrZl0N53zwJqnPaaxcz3akc
-         oIs6vepvY/FKQZeVWMY+Fy/hZt1KIhaYHkPd1xtqIG2sIC/uj8ZCbaAzfzVietL1O+2e
-         69D6usOu5w6E4K176pgvDx67X7oqtivmsGJhlvyH+4mR+CayuxcTDzUysHDcVQT14Scw
-         k9lcgm4XS+yzJH1VSFmyKcyoJNg0+qTejQnfQVtHHsBSGRRai2sKLVEDNynJicYSZs0q
-         KX8hLkjE04ssnXgVVXYUTljBbsrNb5oQgFjGxzsGCXvcOOXfiaG43s9sT2mtdT2zP61U
-         jT4g==
+        d=gmail.com; s=20221208; t=1681810797; x=1684402797;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zzQBmhBycWm3Z62ZlfZCa618OpeoVEJ5/aiYxN8jq8g=;
+        b=Y8X8UNZ3w6OP7zNvJtK8S//kpaupljHwfXHt1s4mtjajbW+xW7UhtBZ06YIMp2AAu8
+         cq9xxNTjCkt7qUgqteV4MJ54oxoAbc7Tw82xsj5RIRtAbbEDygewA5bcaopcldsde0Ov
+         LcEpUgVX6qf2/5Iq0q7bHGRtzsN3EBDdgH+jzCMfm6MaSeQljGUIxoPREBkehDCdSMFT
+         fnHFsBDaw4lPYCU5ljyfN9q+DeRO3osc7bhUUM1eh6q/FMKY8e68Wsp8NV+cd9ykRC22
+         736BNbfhsW8wwYJ1Jls/UqzT+xI0UJjA7bvliZwnmfSI/Nh4Qcmfr7wpKBtgiXr6IthU
+         EzpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681808589; x=1684400589;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=riEyUUcyGOoo1m6E9T12XXnAsiXXXppReCmjmHm49hw=;
-        b=auTaWIkbVQtr8/XxIYoZs547dGhsJHWLOFD3ZfpPpCvryD9xkeuGp66/p+2zfTzyzA
-         qbraJySHeWuxvUvZcsFtnLkVoZ5Q6E79F9JG9ZLODfAzls/VyZdFi1EehN7x5tUk+GXg
-         0S5UdWYRjh8tKIMqizkB4tI9hsTLnr0R8505wxiXRIxnLnb8T0xGjcwFxm8hU35/GXtD
-         VFPYqsCHXHEycRM+dGSl3PRjmw3Tvd2hpG8Z2uRY9F9RP49eTa5cl9sRnDQwNRL3ldzI
-         2tAf23bUMI6O/4tfBYubtfh7vafbRnUkqTJCAaHXcBVDFDGkw0QJ+ur5K2KZRoPE4RvY
-         sKPA==
-X-Gm-Message-State: AAQBX9e9FspWyKRJskffA7MjIaM1A/cfmbsctsBKwhAcn37C1msmK/11
-        pPJQZeULxs+xbK9NsggulzN8icNYgXIObCdVe0WvOdii
-X-Google-Smtp-Source: AKy350ZFztdvNtdyyYFX3bp5O/XLsyUxbyKY/fR6ry59sIHkwUl/mYYSJb7KgwiEnON421dPqYzJIg==
-X-Received: by 2002:a05:6a00:1249:b0:63d:39f0:6eaa with SMTP id u9-20020a056a00124900b0063d39f06eaamr1577220pfi.4.1681808589423;
-        Tue, 18 Apr 2023 02:03:09 -0700 (PDT)
-Received: from [192.168.33.147] (124-110-25-102.east.xps.vectant.ne.jp. [124.110.25.102])
-        by smtp.gmail.com with ESMTPSA id a10-20020aa780ca000000b005a8173829d5sm8903986pfn.66.2023.04.18.02.03.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 18 Apr 2023 02:03:09 -0700 (PDT)
-Message-ID: <29ac31e3-2c3a-03b3-200f-52c74adcca3f@landley.net>
-Date:   Tue, 18 Apr 2023 04:18:22 -0500
+        d=1e100.net; s=20221208; t=1681810797; x=1684402797;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zzQBmhBycWm3Z62ZlfZCa618OpeoVEJ5/aiYxN8jq8g=;
+        b=lFG03HGy2BBXErV3uFHBGB3ECcncp48biwiVdGmB6S8NS3JrdylL/1CuVhbLJ5I0BE
+         ErQjIjRN5TNTBEWklxmK4GgB5dExmZEFWKCniys/Lj8XJ9VrURy1XiS9jDDh25YrvwT2
+         rNl2DTSmb73vinbPjaz5QEnpdnrknrt3w6J3kC1atvZWGkMMyrspopmKswYr8Kwch4ZJ
+         NzMmKKelF/dlL9LsIN3dcrk0PB1XPb9RRbVCskT96OnCow1Kt1AIsF4cO1i94Ozv6BSU
+         z+7IouMTk9oixAVtu8hN7YD37zhtPzXNMoaLCteGODKLBKHlIfyUKJkdBBe6Cngw8rBT
+         JCwg==
+X-Gm-Message-State: AAQBX9c+haF+PbpLxOi2AErFrhwOecBQQhkwj+r9GwSwgMuFFpLFd7l8
+        ohlVJy3zno171JzwuR37Mwo=
+X-Google-Smtp-Source: AKy350ZQeQOBzR2NxmiWEuG7qicyB6tgVhfnjd7tiafeRzyIisX1X4roYNyApYsHl9lPDW+mjo0PuA==
+X-Received: by 2002:adf:ea8b:0:b0:2f2:c46b:1eb5 with SMTP id s11-20020adfea8b000000b002f2c46b1eb5mr1491650wrm.59.1681810797486;
+        Tue, 18 Apr 2023 02:39:57 -0700 (PDT)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id m14-20020a056000008e00b002c71b4d476asm12576888wrx.106.2023.04.18.02.39.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Apr 2023 02:39:56 -0700 (PDT)
+Date:   Tue, 18 Apr 2023 12:39:43 +0300
+From:   Dan Carpenter <error27@gmail.com>
+To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-sh@vger.kernel.org,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH RESEND] sh: sq: Use the bitmap API when applicable
+Message-ID: <837e9f5e-ca8d-4c93-9a89-d7bdb9bb0240@kili.mountain>
+References: <071e9f32c19a007f4922903282c9121898641400.1681671848.git.christophe.jaillet@wanadoo.fr>
+ <b5fea49d68e1e2a702b0050f73582526e205cfa2.camel@physik.fu-berlin.de>
+ <14788dbc-c2a6-4d1d-8ae3-1be53b0daf17@kili.mountain>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH] Fix J-core aic warning spam
-Content-Language: en-US
-To:     Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     Rich Felker <dalias@libc.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>
-References: <ec905cf9-09de-a5d1-b8ee-0d874db4c301@landley.net>
- <45c6426d762dbbe27830182ce751aa3d8210602a.camel@physik.fu-berlin.de>
- <CAMuHMdVxTtoV5_+tEeoTT6hSEBkK8ZsHtu8t6jumvUK6u5effQ@mail.gmail.com>
- <91f17ce6-566f-c5d0-f30c-8f8440f0cca6@omp.ru>
-From:   Rob Landley <rob@landley.net>
-In-Reply-To: <91f17ce6-566f-c5d0-f30c-8f8440f0cca6@omp.ru>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/mixed; boundary="V2iJ7csRRNqcDySa"
+Content-Disposition: inline
+In-Reply-To: <14788dbc-c2a6-4d1d-8ae3-1be53b0daf17@kili.mountain>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -79,34 +77,71 @@ List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
 
+--V2iJ7csRRNqcDySa
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 4/18/23 03:56, Sergey Shtylyov wrote:
-> On 4/18/23 10:18 AM, Geert Uytterhoeven wrote:
-> [...]
->>>> From: Rich Felker <dalias@libc.org>
->>>> Signed-off-by: Rob Landley <rob@landley.net>
->>>>
->>>> Silence noisy boot messages (warning and stack dump for each IRQ) when booting
->>>> on J2 SOC.
->> 
->>>> --- a/drivers/irqchip/irq-jcore-aic.c
->>>> +++ b/drivers/irqchip/irq-jcore-aic.c
-> [...]
->>>> @@ -100,6 +101,11 @@ static int __init aic_irq_of_init(struct device_node *node,
->>>>       jcore_aic.irq_unmask = noop;
->>>>       jcore_aic.name = "AIC";
->>>>
->>>> +     rc = irq_alloc_descs(min_irq, min_irq, dom_sz - min_irq,
->>>> +                          of_node_to_nid(node));
->>>> +     if (rc < 0)
->>>> +             pr_info("Cannot allocate irq_descs @ IRQ%d, assuming pre-allocated\n",
->>>> +                     min_irq);
->> 
->> This is a fatal error, so please bail out, instead of continuing.
-> 
->    Then shounld't we use pr_err() (or stronger), not pr_info()?
+On Tue, Apr 18, 2023 at 10:30:01AM +0300, Dan Carpenter wrote:
+> I have some unpublished Smatch stuff which tries to track "variable x
+> is in terms of bit units or byte units etc."  I will try to make a
+> static checker rule for this.
 
-That I agree with. Happy to repost the patch with that? (Or, you could just sed
-'s/pr_info/pr_err/' file.patch at your end if that's easier...)
+Attached.  It prints a warning like this:
 
-Rob
+drivers/net/ethernet/broadcom/cnic.c:667 cnic_init_id_tbl() warn: allocating units of longs instead of bytes 'test_var'
+
+I'll test it out tonight.
+
+regards,
+dan carpenter
+
+--V2iJ7csRRNqcDySa
+Content-Type: text/x-csrc; charset=us-ascii
+Content-Disposition: attachment; filename="check_allocating_longs.c"
+
+/*
+ * Copyright 2023 Linaro Ltd.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see http://www.gnu.org/copyleft/gpl.txt
+ */
+
+#include "smatch.h"
+#include "smatch_slist.h"
+
+static int my_id;
+
+static void match_allocation(struct expression *expr,
+			     const char *name, struct symbol *sym,
+			     struct allocation_info *info)
+{
+	struct smatch_state *units;
+	char *str;
+
+	units = get_units(info->total_size);
+	if (!units || strcmp(units->name, "longs") != 0)
+		return;
+
+	str = expr_to_str(info->total_size);
+	sm_warning("allocating units of longs instead of bytes '%s'", str);
+	free_string(str);
+}
+
+void check_allocating_longs(int id)
+{
+	my_id = id;
+
+	add_allocation_hook(&match_allocation);
+}
+
+--V2iJ7csRRNqcDySa--
