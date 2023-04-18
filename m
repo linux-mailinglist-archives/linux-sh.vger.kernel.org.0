@@ -2,107 +2,74 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 544AD6E57F7
-	for <lists+linux-sh@lfdr.de>; Tue, 18 Apr 2023 06:08:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7A6B6E58FF
+	for <lists+linux-sh@lfdr.de>; Tue, 18 Apr 2023 08:00:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229847AbjDREIR (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 18 Apr 2023 00:08:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34210 "EHLO
+        id S230420AbjDRF7t (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 18 Apr 2023 01:59:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229604AbjDREIR (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 18 Apr 2023 00:08:17 -0400
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 538163C3B
-        for <linux-sh@vger.kernel.org>; Mon, 17 Apr 2023 21:08:13 -0700 (PDT)
-Received: by mail-pf1-x443.google.com with SMTP id d2e1a72fcca58-63b62d2f729so1091423b3a.1
-        for <linux-sh@vger.kernel.org>; Mon, 17 Apr 2023 21:08:13 -0700 (PDT)
+        with ESMTP id S229719AbjDRF7h (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 18 Apr 2023 01:59:37 -0400
+Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48E0159FE
+        for <linux-sh@vger.kernel.org>; Mon, 17 Apr 2023 22:59:34 -0700 (PDT)
+Received: by mail-ej1-x642.google.com with SMTP id fw30so17447128ejc.5
+        for <linux-sh@vger.kernel.org>; Mon, 17 Apr 2023 22:59:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=landley-net.20221208.gappssmtp.com; s=20221208; t=1681790892; x=1684382892;
-        h=content-transfer-encoding:subject:from:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=meno7njxl6eUAqTyuR1oL0Xd/upDGwD5Z023aoxqfg8=;
-        b=oJExoZdvkrp+5RCwyR10oeKAqhF4xM59+qryek4MRN7IOTu9JzC/gC8KiCm07JLzgh
-         T/1zpdRcJrd8BOEgNOJcL3fBJBElhWw3pYd+42Y69N/arD9rNMmE15xuktgz11J1O7YS
-         DD1NNQesZWmEgSNhTidkvlv0lU+2HkuVlKC8lmiZngGXeI0dXNR8VrehDacOmGo/+rcy
-         iVRz01hR7b9wJydqVI49Ie7cGmI3CAvXUxETNgL47qe8L8HJexbf5sXSJtbcdM6/091g
-         +wXMOR8FZRPA+4gRQy8Y1mahojpayWl+yIbeTNLaFz1aCdtsLL0PKUwAOvMhveiAX3zQ
-         TlEw==
+        d=gmail.com; s=20221208; t=1681797571; x=1684389571;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dQlu0Oc2Q0nPMBCNq5iTPUZpwrRZlsMdPt2zjra8+VI=;
+        b=h2u+IvYIbnFxxtQG/ZtOJXOGODtmHZE6DE2kphmV5deUhBtI5SSl5ZpPS81I4DoyvM
+         cL/QsMoq/nZ79QoTUVBpjigDCpbkhNV4ihdOYSWAZCOke9dA/QR1VB/koOlQ9LVEDYMX
+         XtbtlwSc8k7WA+c3R6xpugIUkMv4IcvxiBX5jugHOkE6bIQRd6XIP4bPoYTYUOtLJ8cY
+         jqOSy7VahCSY+50nHqKMLAvtMY0jgSKZG9RLZ0VM4rlX3dlYAIwPmpAZEs5sdE1jKPzt
+         sUSa+Yt3rvdogEL685HX9OzzgKvbxUuLxSFiR0ubii95w3DTWRmDDneYGKBqJn2l6obd
+         7Bag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681790892; x=1684382892;
-        h=content-transfer-encoding:subject:from:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=meno7njxl6eUAqTyuR1oL0Xd/upDGwD5Z023aoxqfg8=;
-        b=ggWqGM7IbFuJzcXDlJ6N5htgoel61n9BJGJofPRFiJMLYOnOWqFjbyNiAOqNvXAD96
-         DfMTT9EpTD4xWcL/oGO9GlCWZixPiu5fbXj/X4NV/91O0FleFWfadntLYsmc6v+ips/X
-         s6nmL5zYn5n9sYTLKZbTxu7TfTlDpdIqOiuRkGsGxY/15LzTT2DWTPTo67B4J56qptZY
-         S/gJjbu29Bni1FQ+2jhnGTRwrG0GIWnIqeN0aFcm4Mh2dG+XL4Iriu+1yao9l8cTf9Qe
-         hfx+V+PhSgWLlNPHKR/4OZN+XFIfF2imNKCt8phucmxNn/u83pss++4tSfMfgK60QimL
-         ER1A==
-X-Gm-Message-State: AAQBX9dZMygeQj1wz8MfDC/uZ+ZH3kcOTTNXKK6/CLM0KOcBoPugfgwb
-        kIa6xcsg6h6sa00e/gCUaCVKUCjz7IpJ+cCiEqtVc7xF
-X-Google-Smtp-Source: AKy350YA7j1KDvIvpv8dnk82wVulyNWoeUDJ10Fifk1A0ZABoILnEoVp6OJD0qNTq181O8lsaH2Dkw==
-X-Received: by 2002:a05:6a00:850:b0:626:1523:b10d with SMTP id q16-20020a056a00085000b006261523b10dmr28697289pfk.4.1681790892647;
-        Mon, 17 Apr 2023 21:08:12 -0700 (PDT)
-Received: from [192.168.33.147] (124-110-25-102.east.xps.vectant.ne.jp. [124.110.25.102])
-        by smtp.gmail.com with ESMTPSA id e16-20020aa78250000000b005e4c3e2022fsm8231847pfn.72.2023.04.17.21.08.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 17 Apr 2023 21:08:12 -0700 (PDT)
-Message-ID: <ec905cf9-09de-a5d1-b8ee-0d874db4c301@landley.net>
-Date:   Mon, 17 Apr 2023 23:23:26 -0500
+        d=1e100.net; s=20221208; t=1681797571; x=1684389571;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dQlu0Oc2Q0nPMBCNq5iTPUZpwrRZlsMdPt2zjra8+VI=;
+        b=iQyBoAZ/MRYniJt+vws4U1tRq2X7T4Op50yq2s9yD+WpIHHO/3fBdrz8SyxlgO/Bq/
+         USjUNHTPSXRMFs1O7rysEfxEpo/m05Urgcaz22efunlqFAXcnMbwbSAAd9c8nQ5IhVOh
+         LxF9itBub8peQeKFwDQv5JcL7s9WwSM3YThHHiamfUSijnCa8cuLHj+1oiI1M8jH1Pc8
+         CXltk9Ws/tVJ7B5iuEvbI+DyndzEjItIHoFrkyqsBvbFoYgISnwvpQG39IMqhsANDE+O
+         BB2qnhAhfsGr0QumUAMFvjwhd3xW5vAPJadM+cWpOum0CHbKpCtiQZSUJFRuvzX9MCKK
+         rkXg==
+X-Gm-Message-State: AAQBX9d2QxlXoC8O3VPg3ev95cLeVpe8gTuqIGH5O+mnVhfpn/2+NmxM
+        EQ2MBoAF5rUUWaV0bc2CVzqDLCPzo582tIiEhszwdral0CQ0MlnZ
+X-Google-Smtp-Source: AKy350YRsUSKQ0+i58Lzun7WtY7IrRwSkm+DWIi2JdfS71rVYYWUT2OQ/a/Q5PRWIBazn3AQLm2dWBYGVxBajLvvRoE=
+X-Received: by 2002:a05:6512:96b:b0:4e8:4b7a:6b73 with SMTP id
+ v11-20020a056512096b00b004e84b7a6b73mr2935594lft.4.1681797550844; Mon, 17 Apr
+ 2023 22:59:10 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Content-Language: en-US
-To:     Linux-sh list <linux-sh@vger.kernel.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-From:   Rob Landley <rob@landley.net>
-Subject: [PATCH] Fix J-core aic warning spam
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:ab2:2681:0:b0:1b6:840f:9075 with HTTP; Mon, 17 Apr 2023
+ 22:59:10 -0700 (PDT)
+Reply-To: mariamkouame.info@myself.com
+From:   Mariam Kouame <mariamkouame1992@gmail.com>
+Date:   Mon, 17 Apr 2023 22:59:10 -0700
+Message-ID: <CADUz=agNY633M0qMXMnAP3Ms7-3rKuWtAZGCOQZKeYpCdBxT_w@mail.gmail.com>
+Subject: from mariam kouame
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-From: Rich Felker <dalias@libc.org>
-Signed-off-by: Rob Landley <rob@landley.net>
+Dear,
 
-Silence noisy boot messages (warning and stack dump for each IRQ) when booting
-on J2 SOC.
+Please grant me permission to share a very crucial discussion with
+you. I am looking forward to hearing from you at your earliest
+convenience.
 
----
- drivers/irqchip/irq-jcore-aic.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/drivers/irqchip/irq-jcore-aic.c b/drivers/irqchip/irq-jcore-aic.c
-index 5f47d8ee4ae3..730252cb7b08 100644
---- a/drivers/irqchip/irq-jcore-aic.c
-+++ b/drivers/irqchip/irq-jcore-aic.c
-@@ -68,6 +68,7 @@ static int __init aic_irq_of_init(struct device_node *node,
- 	unsigned min_irq = JCORE_AIC2_MIN_HWIRQ;
- 	unsigned dom_sz = JCORE_AIC_MAX_HWIRQ+1;
- 	struct irq_domain *domain;
-+	int rc;
-
- 	pr_info("Initializing J-Core AIC\n");
-
-@@ -100,6 +101,11 @@ static int __init aic_irq_of_init(struct device_node *node,
- 	jcore_aic.irq_unmask = noop;
- 	jcore_aic.name = "AIC";
-
-+	rc = irq_alloc_descs(min_irq, min_irq, dom_sz - min_irq,
-+			     of_node_to_nid(node));
-+	if (rc < 0)
-+		pr_info("Cannot allocate irq_descs @ IRQ%d, assuming pre-allocated\n",
-+			min_irq);
- 	domain = irq_domain_add_legacy(node, dom_sz - min_irq, min_irq, min_irq,
- 				       &jcore_aic_irqdomain_ops,
- 				       &jcore_aic);
--- 
-2.20.1
+Mrs. Mariam Kouame
