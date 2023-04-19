@@ -2,75 +2,103 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F20CB6E8D9A
-	for <lists+linux-sh@lfdr.de>; Thu, 20 Apr 2023 11:09:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78B116E88EB
+	for <lists+linux-sh@lfdr.de>; Thu, 20 Apr 2023 05:59:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233948AbjDTJJd (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 20 Apr 2023 05:09:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55210 "EHLO
+        id S231186AbjDTD71 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 19 Apr 2023 23:59:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234306AbjDTJIu (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 20 Apr 2023 05:08:50 -0400
-X-Greylist: delayed 4574 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 20 Apr 2023 02:06:13 PDT
-Received: from mx1.bulutepostam.com (mx1.bulutepostam.com [95.217.25.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24DED7694;
-        Thu, 20 Apr 2023 02:06:12 -0700 (PDT)
-Date:   Thu, 20 Apr 2023 01:43:03 +0300 (TRT)
-From:   MK <zibel.koc@hisarhospital.com>
-Reply-To: MK <marion.k07081@gmail.com>
-Message-ID: <1862614163.5364137.1681944183292.JavaMail.zimbra@hisarhospital.com>
-Subject: Hello sunshine, how are you?
+        with ESMTP id S229927AbjDTD70 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 19 Apr 2023 23:59:26 -0400
+X-Greylist: delayed 12770 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 19 Apr 2023 20:59:23 PDT
+Received: from mail.heimpalkorhaz.hu (mail.heimpalkorhaz.hu [193.224.51.23])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96BB3F7;
+        Wed, 19 Apr 2023 20:59:23 -0700 (PDT)
+Received: from mail.heimpalkorhaz.hu (localhost [127.0.0.1])
+        (Authenticated sender: lmateisz@heimpalkorhaz.hu)
+        by mail.heimpalkorhaz.hu (Postfix) with ESMTPA id 2E4F1384A1BD4E;
+        Thu, 20 Apr 2023 01:36:20 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.heimpalkorhaz.hu 2E4F1384A1BD4E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heimpalkorhaz.hu;
+        s=default; t=1681947380;
+        bh=SFPaiUyYqM5Iz1wf9UVYSHssSttYIu6SPYgIrz5naIQ=;
+        h=Date:From:To:Subject:Reply-To:From;
+        b=JtBkHnyNQ5x5tnP4PUQgw4GJ+Qz8Z3zs1U+Pm24n4z91HWvgoFQ7kBk9p3dIncWuc
+         77zCHaxjK71sJwQ5LX1jYL/aXVV4eKz8mEAWn9BcRze6KBSL+waYaTMV9nbxeQcdwV
+         kljPbkt2Ye02VooqqlANUiZ4cJ+QNktWBPxWYpvtk7PAQjL+fGt2HydB+Jgw0Fy0/o
+         Fq5XphI+tcydc9wrbr0mME4H+H908q5UL/FCBwYWLmcvmXX+4zV+uQtZKSZpTxVl5k
+         w1wGPxRAGOSPCgtMAznGLrQi456Le7yz4ui1jCliaF/XjW7Niwf8zvdaA1P5BhEru3
+         StR2CDd1oU64w==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Thread-Index: eEzwsZTwFnjLj7P74ZhHqOh7Aekebw==
-Thread-Topic: Hello sunshine, how are you?
-X-FEAS-Client-IP: 10.34.37.30
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; d=hisarhospital.com; s=e948eec2-1790-11eb-ab59-4e91913d126c; c=relaxed/relaxed;
- h=date:from:reply-to:message-id:subject:mime-version:content-type;
- bh=Bo1svp3IpcnzzRBOA3XuS0KEAWebltEu5dzkGD/6mbE=;
- b=k7AFAqW/UfTfJii8SvHkJrg337js1NhYi1r0ETGHYBHfKvcF0JgK9LicHQ+J8DA4CF3k+pNgcyNR
-        nJe1MKKBk0JUVusSul0cLhggKAmaylTUCHlqCkvYyFLAG/foYZXfasgYQx1gSAVc04w7FrCRYGay
-        RqXLO2f6hukDcMVaMSfsNhV5x3k+ZrkPsbOLbYptObw7p9MwZeqWYUvzHTTN0xFHPKDxM3Cxaliv
-        Dp0AtR8XnW8JTOuJjemrPkBGNCUB81kp4PMHfjejga6LP2XJ4mzr+dJEYe44ZAhIRSIXCtRk1m9W
-        2m6cssT8RnblOzAi/rlAVuijAejtSTop/clsdQ==
-X-Spam-Status: No, score=4.4 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,MISSING_HEADERS,
-        REPLYTO_WITHOUT_TO_CC,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+Date:   Thu, 20 Apr 2023 07:36:19 +0800
+From:   mk <mk@heimpalkorhaz.hu>
+To:     undisclosed-recipients:;
+Subject: Hej solsken
+Reply-To: marionn.k99@gmail.com
+User-Agent: Roundcube Webmail/1.4.13
+Message-ID: <2de98351b83183a992aed2435d03d452@heimpalkorhaz.hu>
+X-Sender: mk@heimpalkorhaz.hu
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [5.41 / 20.00];
+        R_UNDISC_RCPT(3.00)[];
+        FORGED_RECIPIENTS(2.00)[m:,s:lifeinsurance.net@novbackup18.icu,s:lifeinsurance.net@novhelp18.icu,s:lifeinsurance.net@novnet18.icu,s:lifeinsurance.net@novuser18.icu,s:lifeinsurance.net@nowcanoeing02today.stream,s:lifeinsurance.net@nuarne.live,s:lifeinsurance.net@oatrant.info,s:lifeinsurance.net@phres.icu,s:lifeinsurance.net@praka.icu,s:lifeinsurance.net@reedost.icu,s:lifeinsurance.net@risaroge.icu,s:lifeinsurance.net@shaif.icu,s:lifeinsurance.net@shumax.icu,s:lifeinsurance.net@shums.info,s:lifeinsurance.net@tabin.icu,s:lifeinsurance.net@thainor.info,s:lifeinsurance.net@tholi.icu,s:lifestyle@synsam.com,s:lifesum@communication.lifesum.com,s:light4ck@earthlink.net,s:lightning@hol.gr,s:liisabobacka@gmail.com,s:liisa.sulin-elmqvist@arbetslivsresurs.se,s:liisiw@hotmail.com,s:liiv-carolyn@goodinformed.com,s:lijesnic@telia.com,s:likos-celeste@dungy.info,s:lilian.axelsson@gavlefastigheter.se,s:lilian.b@live.se,s:lilian.cassin@iaa.ie,s:lilian.larsson@bahnhof.se,s:lilian.melin@bahnhof.se,s:lili
+ an.sjolund@mittmedia.se,s:liliansjostrom43@gmail.com,s:lilian.stalhammar@telia.com,s:lilian13153@telia.com,s:lilianne.axelsson@bylero.se,s:lilianne.axelsson@matla.se,s:lilin@arkitema.com,s:liliya2408@mail.ru,s:lilja1945@live.se,s:lilja@bahnhof.se,s:liljegrenkurt@gmail.com,s:liljestrand@bahnhof.se,s:lilka.l@centrum.cz,s:lilkama08@yahoo.com,s:lillalivet@post.utfors.se,s:lillamy31@gmail.com,s:lillan.sjolund@mittmedia.se,s:lillaryd@bahnhof.se,s:lillatjarbygard@hotmail.com,s:lillelola1@hotmail.com,s:lillemoja@yahoo.se,s:lillemor.nordenmark@if.se,s:lillemorschultz@gmail.com,s:lillemorskolving@gmail.com,s:lillemor@qimage.se,s:lillemorlomyr@gmail.com,s:lillemormax@hotmail.com,s:lillemorunger@hotmail.com,s:lillianappelqvist@gmail.com,s:lillian.sjolund@mittmedia.se,s:lillian_mead@courtgeneraljudge.icu,s:lillian_michealson@bestscanjune.stream,s:lillie.artis@purmov.info,s:lillisadelind@hotmail.com,s:lillmarieapersson@gmail.com,s:lillsomiss@gmail.com,s:lillvi.arhage@icloud.com,s:lilly.95@hotmail
+ .com,s:lilly.backlund@lycksele.se,s:lilly.nilsson@hotmail.com,s:lilly.nordin11@bredband.net,s:lilly.wen@ericsson.com,s:lily@onertronics.com,s:limbertilanfranco@gmail.com,s:limmel.rosalyn@baudy.icu,s:lin005gad@icloud.com,s:linaaalmgren@gmail.com,s:lina.barremyr@hotmail.com,s:lina.barremyr@hotmail.cvom,s:linabostrom82@gmail.com,s:lina.boy@sd.se,s:lina.dahlberg@telia.com,s:lina.golden@thegridgroup.se,s:lina.ivert@sll.se,s:lina.iyer@linaro.org,s:lina.jarledal.blom@regionostergotland.se,s:lina.johannesson@vardforbundet.se,s:lina.karlsson89@live.se,s:linamholmberg@gmail.com,s:linanolin@gmail.com,s:lina.persson@lila.se,s:linaydrefelt@gmail.com,s:lina@5kh9cw7.cyq32.8chameleon.eu,s:lina@dhzt2k.h6ynz.dsnake.eu,s:lina@elxthpnbr.at8g1.hprimate.eu,s:lina@g-tech.se,s:lina@www16.nchameleon.eu];
+        R_MIXED_CHARSET(1.10)[];
+        GENERIC_REPUTATION(-0.59)[-0.58894983573457];
+        MIME_GOOD(-0.10)[text/plain];
+        RCVD_COUNT_ZERO(0.00)[0];
+        MIME_TRACE(0.00)[0:+];
+        FROM_EQ_ENVFROM(0.00)[];
+        TO_DN_ALL(0.00)[];
+        RCPT_COUNT_ONE(0.00)[1];
+        REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+        FROM_HAS_DN(0.00)[];
+        MID_RHS_MATCH_FROM(0.00)[];
+        FREEMAIL_ENVRCPT(0.00)[earthlink.net,gmail.com,hotmail.com,live.se,mail.ru,centrum.cz,yahoo.com,yahoo.se,icloud.com,msn.com,me.com,europe.com,outlook.com,rocketmail.com,home.se,wanadoo.fr,comcast.net,spray.se,163.com,yahoo.it,hotmail.it,hotmail.es,aol.com,onet.eu,live.com,web.de,yahoo.de,bigpond.com];
+        FREEMAIL_REPLYTO(0.00)[gmail.com];
+        TAGGED_RCPT(0.00)[];
+        HAS_REPLYTO(0.00)[marionn.k99@gmail.com]
+X-Rspamd-Queue-Id: 2E4F1384A1BD4E
+X-Rspamd-Server: mail.heimpalkorhaz.hu
+X-Spam-Status: No, score=0.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-I sent an email to you yesterday but since I did not get a response,
-I thought probably you did not receive it so I decided to send it 
-again and hopefully I will get a response this time around.
+Hej min kära,
 
-I am a secret admirer and would like to explore the opportunity to 
-learn more about each other. I know it is strange to contact you 
-this way and I hope you can forgive me. I am a shy person and 
-this is the only way I know I could get your attention. I just want 
-to know what you think and my intention is not to offend you.
-I hope we can be friends if that is what you want, although I wish 
-to be more than just a friend. I know you have a few questions to 
-ask and I hope I can satisfy some of your curiosity with a few 
-answers.
+Jag är ledsen att jag stör dig och inkräktar på din integritet. Jag är 
+singel, ensam och i behov av en omtänksam, kärleksfull och romantisk 
+följeslagare.
 
-I believe in the saying that &#039;to the world you are just one person, 
-but to someone special you are the world&#039;. All I want is love, 
-romantic care and attention from a special companion which I am
-hoping would be you.
+Jag är en hemlig beundrare och skulle vilja utforska möjligheten att 
+lära mig mer om varandra. Jag vet att det är konstigt att kontakta dig 
+på det här sättet och jag hoppas att du kan förlåta mig. Jag är en blyg 
+person och det är det enda sättet jag vet att jag kan få din 
+uppmärksamhet. Jag vill bara veta vad du tycker och min avsikt är inte 
+att förolämpa dig. Jag hoppas att vi kan vara vänner om det är vad du 
+vill, även om jag vill vara mer än bara en vän. Jag vet att du har några 
+frågor att ställa och jag hoppas att jag kan tillfredsställa en del av 
+din nyfikenhet med några svar.
 
-I hope this message will be the beginning of a long term 
-communication between us, simply send a reply to this message, it 
-will make me happy.
+Jag tror på talesättet att för världen är du bara en person, men för 
+någon speciell är du världen, allt jag vill ha är kärlek, romantisk 
+omsorg och uppmärksamhet från en speciell följeslagare som jag hoppas 
+skulle vara du.
 
+Jag hoppas att detta meddelande kommer att bli början på en långsiktig 
+kommunikation mellan oss, skicka bara ett svar på detta meddelande, det 
+kommer att göra mig glad.
 
-Hugs and kisses,
+Puss och kram,
 
 Marion.
