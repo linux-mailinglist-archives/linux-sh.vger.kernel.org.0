@@ -2,108 +2,75 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0C876E83AB
-	for <lists+linux-sh@lfdr.de>; Wed, 19 Apr 2023 23:25:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F20CB6E8D9A
+	for <lists+linux-sh@lfdr.de>; Thu, 20 Apr 2023 11:09:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229655AbjDSVZk convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-sh@lfdr.de>); Wed, 19 Apr 2023 17:25:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49598 "EHLO
+        id S233948AbjDTJJd (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 20 Apr 2023 05:09:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231217AbjDSVZj (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 19 Apr 2023 17:25:39 -0400
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E79C6974B;
-        Wed, 19 Apr 2023 14:25:12 -0700 (PDT)
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.95)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1ppFIV-003hnW-FK; Wed, 19 Apr 2023 23:25:03 +0200
-Received: from p5b13a017.dip0.t-ipconnect.de ([91.19.160.23] helo=suse-laptop.fritz.box)
-          by inpost2.zedat.fu-berlin.de (Exim 4.95)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1ppFIV-0002on-88; Wed, 19 Apr 2023 23:25:03 +0200
-Message-ID: <149653ffbfa13e508777214174341f9c1263a487.camel@physik.fu-berlin.de>
-Subject: Re: [PATCH RESEND] sh: sq: Use the bitmap API when applicable
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-sh@vger.kernel.org
-Date:   Wed, 19 Apr 2023 23:25:01 +0200
-In-Reply-To: <d2b2baca-589d-83ef-04b0-0f64b18f9d95@wanadoo.fr>
-References: <071e9f32c19a007f4922903282c9121898641400.1681671848.git.christophe.jaillet@wanadoo.fr>
-         <b5fea49d68e1e2a702b0050f73582526e205cfa2.camel@physik.fu-berlin.de>
-         <CAMuHMdWz7YJ4ifkxU2GGdoj46fTsjS5WE66R0YzvOYr1ZKY=4w@mail.gmail.com>
-         <d2b2baca-589d-83ef-04b0-0f64b18f9d95@wanadoo.fr>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-User-Agent: Evolution 3.48.0 
+        with ESMTP id S234306AbjDTJIu (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 20 Apr 2023 05:08:50 -0400
+X-Greylist: delayed 4574 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 20 Apr 2023 02:06:13 PDT
+Received: from mx1.bulutepostam.com (mx1.bulutepostam.com [95.217.25.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24DED7694;
+        Thu, 20 Apr 2023 02:06:12 -0700 (PDT)
+Date:   Thu, 20 Apr 2023 01:43:03 +0300 (TRT)
+From:   MK <zibel.koc@hisarhospital.com>
+Reply-To: MK <marion.k07081@gmail.com>
+Message-ID: <1862614163.5364137.1681944183292.JavaMail.zimbra@hisarhospital.com>
+Subject: Hello sunshine, how are you?
 MIME-Version: 1.0
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 91.19.160.23
-X-ZEDAT-Hint: PO
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Thread-Index: eEzwsZTwFnjLj7P74ZhHqOh7Aekebw==
+Thread-Topic: Hello sunshine, how are you?
+X-FEAS-Client-IP: 10.34.37.30
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; d=hisarhospital.com; s=e948eec2-1790-11eb-ab59-4e91913d126c; c=relaxed/relaxed;
+ h=date:from:reply-to:message-id:subject:mime-version:content-type;
+ bh=Bo1svp3IpcnzzRBOA3XuS0KEAWebltEu5dzkGD/6mbE=;
+ b=k7AFAqW/UfTfJii8SvHkJrg337js1NhYi1r0ETGHYBHfKvcF0JgK9LicHQ+J8DA4CF3k+pNgcyNR
+        nJe1MKKBk0JUVusSul0cLhggKAmaylTUCHlqCkvYyFLAG/foYZXfasgYQx1gSAVc04w7FrCRYGay
+        RqXLO2f6hukDcMVaMSfsNhV5x3k+ZrkPsbOLbYptObw7p9MwZeqWYUvzHTTN0xFHPKDxM3Cxaliv
+        Dp0AtR8XnW8JTOuJjemrPkBGNCUB81kp4PMHfjejga6LP2XJ4mzr+dJEYe44ZAhIRSIXCtRk1m9W
+        2m6cssT8RnblOzAi/rlAVuijAejtSTop/clsdQ==
+X-Spam-Status: No, score=4.4 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,MISSING_HEADERS,
+        REPLYTO_WITHOUT_TO_CC,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Christophe!
+I sent an email to you yesterday but since I did not get a response,
+I thought probably you did not receive it so I decided to send it 
+again and hopefully I will get a response this time around.
 
-On Tue, 2023-04-18 at 20:05 +0200, Christophe JAILLET wrote:
-> Le 18/04/2023 à 09:14, Geert Uytterhoeven a écrit :
-> > 
-> > Nice catch!
-> > 
-> > Looking more deeply at the code, the intention is to allocate a bitmap
-> > with nr_pages bits, so the code fater Christophe's patch is correct.
-> > However, the old code is indeed wrong:
-> > 
-> >      (nr_pages + (BITS_PER_LONG - 1)) / BITS_PER_LONG
-> > 
-> > The aim is to calculate the size in bytes, rounded up to an integral
-> > number of longs, but it lacks a final multiplication by BITS_PER_BYTE,
-> > so it's off by a factor of 4.
-> > 
-> > Fixes: d7c30c682a278abe ("sh: Store Queue API rework.")
-> > 
-> > As we didn't have bitmap_zalloc() until commit c42b65e363ce97a8
-> > ("bitmap: Add bitmap_alloc(), bitmap_zalloc() and bitmap_free()")
-> > in v4.19, it would be good to fix the bug first in a separate patch,
-> > not using
-> > 
-> > BTW, interesting how this got missed when fixing the other out-of-range
-> > bug in commit 9f650cf2b811cfb6 ("sh: Fix store queue bitmap end.",
-> > s/marc.theaimsgroup.com/marc.info/ when following the link).
-> 
-> So, this means that this got unnoticed for 16 years?
-> Waouh!
-> 
-> I would never have thought that a "trivial" clean-up that I took time to 
-> repost could trigger such a thing!
+I am a secret admirer and would like to explore the opportunity to 
+learn more about each other. I know it is strange to contact you 
+this way and I hope you can forgive me. I am a shy person and 
+this is the only way I know I could get your attention. I just want 
+to know what you think and my intention is not to offend you.
+I hope we can be friends if that is what you want, although I wish 
+to be more than just a friend. I know you have a few questions to 
+ask and I hope I can satisfy some of your curiosity with a few 
+answers.
 
-I have fixed the original bug in my for-next branch [1] now. Would you mind
-rebasing your patch on top of that branch and resend it?
+I believe in the saying that &#039;to the world you are just one person, 
+but to someone special you are the world&#039;. All I want is love, 
+romantic care and attention from a special companion which I am
+hoping would be you.
 
-The reason why we're doing this is because we want to be able to backport the
-fix to older kernel versions such as 4.14 which don't have the bitmap API yet.
+I hope this message will be the beginning of a long term 
+communication between us, simply send a reply to this message, it 
+will make me happy.
 
-Thanks,
-Adrian
 
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/glaubitz/sh-linux.git/log/?h=for-next
+Hugs and kisses,
 
--- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+Marion.
