@@ -2,31 +2,31 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79BB76EA4C4
-	for <lists+linux-sh@lfdr.de>; Fri, 21 Apr 2023 09:30:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2CA16EA86F
+	for <lists+linux-sh@lfdr.de>; Fri, 21 Apr 2023 12:39:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230486AbjDUHam convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-sh@lfdr.de>); Fri, 21 Apr 2023 03:30:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39156 "EHLO
+        id S229786AbjDUKjd convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-sh@lfdr.de>); Fri, 21 Apr 2023 06:39:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230042AbjDUHal (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 21 Apr 2023 03:30:41 -0400
+        with ESMTP id S229543AbjDUKjc (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 21 Apr 2023 06:39:32 -0400
 Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A82C57EE7;
-        Fri, 21 Apr 2023 00:30:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2ACA9EF4;
+        Fri, 21 Apr 2023 03:39:30 -0700 (PDT)
 Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
           by outpost.zedat.fu-berlin.de (Exim 4.95)
           with esmtps (TLS1.3)
           tls TLS_AES_256_GCM_SHA384
           (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1pplDd-00039t-Uq; Fri, 21 Apr 2023 09:30:09 +0200
+          id 1ppoAm-001O5I-Af; Fri, 21 Apr 2023 12:39:24 +0200
 Received: from p57bd9bea.dip0.t-ipconnect.de ([87.189.155.234] helo=[192.168.178.81])
           by inpost2.zedat.fu-berlin.de (Exim 4.95)
           with esmtpsa (TLS1.3)
           tls TLS_AES_256_GCM_SHA384
           (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1pplDd-000TX6-Ne; Fri, 21 Apr 2023 09:30:09 +0200
-Message-ID: <7d6733e9b7f4dc624699eb2c72ec3c22d9bd47ef.camel@physik.fu-berlin.de>
+          id 1ppoAm-001A7x-3T; Fri, 21 Apr 2023 12:39:24 +0200
+Message-ID: <a4ddd8fd24247d660a4a7cbedd4de94228c59bc0.camel@physik.fu-berlin.de>
 Subject: Re: [PATCH v2] sh: sq: Use the bitmap API when applicable
 From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
@@ -34,7 +34,7 @@ To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
         Rich Felker <dalias@libc.org>
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         linux-sh@vger.kernel.org
-Date:   Fri, 21 Apr 2023 09:30:08 +0200
+Date:   Fri, 21 Apr 2023 12:39:23 +0200
 In-Reply-To: <a51e9f32c19a007f4922943282cb12c89064440d.1681671848.git.christophe.jaillet@wanadoo.fr>
 References: <a51e9f32c19a007f4922943282cb12c89064440d.1681671848.git.christophe.jaillet@wanadoo.fr>
 Content-Type: text/plain; charset="UTF-8"
@@ -105,7 +105,10 @@ On Thu, 2023-04-20 at 21:19 +0200, Christophe JAILLET wrote:
 >  }
 >  
 
-Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Applied to my for-next branch for 6.4.
+
+Thanks,
+Adrian
 
 -- 
  .''`.  John Paul Adrian Glaubitz
