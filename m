@@ -2,110 +2,105 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 713476F28FA
-	for <lists+linux-sh@lfdr.de>; Sun, 30 Apr 2023 15:03:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F279D6F2F43
+	for <lists+linux-sh@lfdr.de>; Mon,  1 May 2023 10:06:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230233AbjD3NDp convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-sh@lfdr.de>); Sun, 30 Apr 2023 09:03:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59474 "EHLO
+        id S229482AbjEAIG3 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 1 May 2023 04:06:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229531AbjD3NDo (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sun, 30 Apr 2023 09:03:44 -0400
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D22A10DB;
-        Sun, 30 Apr 2023 06:03:41 -0700 (PDT)
-Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-b9a6eec8611so16017321276.0;
-        Sun, 30 Apr 2023 06:03:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682859820; x=1685451820;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        with ESMTP id S232194AbjEAIG2 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 1 May 2023 04:06:28 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9857310DE
+        for <linux-sh@vger.kernel.org>; Mon,  1 May 2023 01:06:25 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id ffacd0b85a97d-2fa47de5b04so2135360f8f.1
+        for <linux-sh@vger.kernel.org>; Mon, 01 May 2023 01:06:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1682928384; x=1685520384;
+        h=to:subject:message-id:date:from:sender:mime-version:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=E7WF7SpO6yLlGrM65QrDk8wld6xpe3XopvGtDDxj/oU=;
-        b=b1d08zJ62G08B0tzTrAn7ooNE+ea9969/G2AEOxxbvuVhyJtJUrlLlDsX1pWtdB7+I
-         IHUvHOmC68r7b4swDWXtKrPYD8rID2BaL6rVtuXdFUuZHcKZc/JkDPRYZ2qonTU+HwdN
-         DDlsZoWIUfolyWcJBfK2mYWxhAKq7JqbqFvIoZlrXCxYytqjnjMjzIOOqkYhi6DMHBOx
-         CneY6s1Xuv4BMD7LrHgyJe3dlL3F61VqBTWVyvSK73PI0oSSwRTCaxPzfC0X2+w3w82l
-         DU+YBE5K7HbvfgQ4XREtILVOyxvYH0KVm9JGsMH/GkDlxtY7MPz6vvjQTSWF3uUE7Tf3
-         +omA==
-X-Gm-Message-State: AC+VfDyKr1H5mi9Zt7Xmc+5rgSENr99I7bJ5a6BFZck981Uxfvaw1Ej9
-        P0RpbzJHyc5EKyZ68KAfcyKM0QA7UvDjrw==
-X-Google-Smtp-Source: ACHHUZ6FRhlovl/iKVtUV2Fz1wira6l+eMUCPrG7OihQsUHYcOm6KZcCsyrwfR6/rk5Ul8/4KP8OjA==
-X-Received: by 2002:a81:9c1:0:b0:559:e21e:6f44 with SMTP id 184-20020a8109c1000000b00559e21e6f44mr4635938ywj.16.1682859819785;
-        Sun, 30 Apr 2023 06:03:39 -0700 (PDT)
-Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com. [209.85.219.171])
-        by smtp.gmail.com with ESMTPSA id x128-20020a818786000000b00545a08184bdsm5173331ywf.77.2023.04.30.06.03.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 30 Apr 2023 06:03:38 -0700 (PDT)
-Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-b9a6eec8611so16017212276.0;
-        Sun, 30 Apr 2023 06:03:37 -0700 (PDT)
-X-Received: by 2002:a81:5253:0:b0:54f:b615:1e44 with SMTP id
- g80-20020a815253000000b0054fb6151e44mr9871377ywb.7.1682859817683; Sun, 30 Apr
- 2023 06:03:37 -0700 (PDT)
+        bh=IJv/fJ1N9jilF17E3JtERDb5lS97I4U+7QcLu+oqNwQ=;
+        b=QF2skOqgQX/jmKlGbCOSK1af6rsjN8WHj8lswS8WUTys9M/ptXz/xL2PnBGPAftHmI
+         XiViqfYUto/hZNwwJWAtLmX5I/8rQbcSUZEUdVHddvVqp2xRj/6Vb6HtJ3MbzcjJAXI2
+         r91S4qo/1fUNbEuwpbE+6fYsctUKXfF0ut6pEaR/N7p5lbGcWgXNf7/op1Xn75gV2+A6
+         h1LsgA3ZeRq1hzXUeS3zrpr12im9U2Rxvi5Sz86ZrQkJvYzOCisFUDx6l3hc1RmJz10Z
+         ncQzpQGk/3xzZlbLSKMimM6ea6bIW/5gwVEb0epLEyG/GpxBjoU97aKQwLBz3fwYSJcM
+         Suzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682928384; x=1685520384;
+        h=to:subject:message-id:date:from:sender:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=IJv/fJ1N9jilF17E3JtERDb5lS97I4U+7QcLu+oqNwQ=;
+        b=cMKOHy8mhDyu8ZLWyezYjYNPNzhj2AI/ZxTAH9rTnYSuZIxG4A3j0fNABo0jqqR7RV
+         Ng1kXjFA/Ia3AL09TX2oj1dlHMTpMTY+mFcpe9qvi1f5/hLYLaOfxVJq0er5Mb0a3Ool
+         eN59kotfOOPjVjEF6vGGxgDZ3boKHhEVty8cF4u1uwBAZXhg8NIjw9vQfERseplfpZpv
+         zR0h46mmVja0IIdeJ1tv1su2oPc/ZR3IPSM67gujGHtTicBfc8fKvynxIqnsj8kCo9dn
+         LtyahYYJzCiXnbj/LEmFt/Om/f2MUEwK+3kA0lLsX56ue1uA7on8uvEPQsiZLI5i6M9D
+         ba3g==
+X-Gm-Message-State: AC+VfDxOOK+pXoMdjOqNeMU9R5A7hfs6rbxFY8xbD9K2FIFCuLUIFP3o
+        OYrYHt8vSr6vLI0Lb7Weg48jxxiRJo89/O5yXk7EHxoke95RvQ==
+X-Google-Smtp-Source: ACHHUZ5WuldWKSwSzsUMTQQdRtLqbB7ZCnOZZnio9EpDgI/WEFLn3Boz4idzAH2yQ9jScSsWcfnYa4n0E4WB7kaHTo8=
+X-Received: by 2002:a5d:6748:0:b0:2ce:a34b:2b0b with SMTP id
+ l8-20020a5d6748000000b002cea34b2b0bmr9076775wrw.28.1682927912014; Mon, 01 May
+ 2023 00:58:32 -0700 (PDT)
 MIME-Version: 1.0
-References: <74a647f7-cf5f-4c23-aad6-77bf5b04e116@app.fastmail.com> <mhng-8d0e378d-10f7-4107-99aa-b204c3d2a619@palmer-ri-x1c9a>
-In-Reply-To: <mhng-8d0e378d-10f7-4107-99aa-b204c3d2a619@palmer-ri-x1c9a>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Sun, 30 Apr 2023 15:03:26 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdVVgAETQPzYNgEnSijt8K6LE86xM2GuJdh7b6_SNCFj2w@mail.gmail.com>
-Message-ID: <CAMuHMdVVgAETQPzYNgEnSijt8K6LE86xM2GuJdh7b6_SNCFj2w@mail.gmail.com>
-Subject: Re: [PATCH] libgcc: Add forward declarations for generic library routines
-To:     Palmer Dabbelt <palmer@dabbelt.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>, geert+renesas@glider.be,
-        akpm@linux-foundation.org, linux-csky@vger.kernel.org,
-        loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
-        chris@zankel.net, jcmvbkbc@gmail.com, lkp@intel.com
+Sender: mrs.mcompola333@gmail.com
+Received: by 2002:adf:ea05:0:b0:306:31c8:dd4a with HTTP; Mon, 1 May 2023
+ 00:58:31 -0700 (PDT)
+From:   Mrs Bill Chantal Lawrence <mrsbillchantallawrence58@gmail.com>
+Date:   Mon, 1 May 2023 00:58:31 -0700
+X-Google-Sender-Auth: iHW6VUZyFb4qhx6R0YR_PBAEFKg
+Message-ID: <CAMw1Tj+YUGw5wFsL349RaSyWLLrofrb0BCBmY-CFhMcRXELj6A@mail.gmail.com>
+Subject: Hello Good Day
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: Yes, score=5.4 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,HK_NAME_FM_MR_MRS,LOTS_OF_MONEY,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:442 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4981]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [mrs.mcompola333[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [mrs.mcompola333[at]gmail.com]
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  1.5 HK_NAME_FM_MR_MRS No description available.
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  3.1 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Palmer,
+Hello Good Day, You have been compensated with the sum of 3.5 million
+dollars in this united nation.
 
-On Sat, Apr 29, 2023 at 10:20 PM Palmer Dabbelt <palmer@dabbelt.com> wrote:
-> On Fri, 21 Apr 2023 13:38:52 PDT (-0700), Arnd Bergmann wrote:
-> > On Fri, Apr 21, 2023, at 16:54, Geert Uytterhoeven wrote:
-> >> With W=1 on platforms that use the generic gcc library routines
-> >> (csky/loongarch/mips/riscv/sh/xtensa):
-> >>
-> >> Reported-by: kernel test robot <lkp@intel.com>
-> >> Link: https://lore.kernel.org/oe-kbuild-all/202303272214.RxzpA6bP-lkp@intel.com/
-> >> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> >
-> > Nice, this is one I don't have in my series,
-> >
-> > Acked-by: Arnd Bergmann <arnd@arndb.de>
-> >
-> > I have patches for a lot of other missing prototype warnings, plan
-> > to send them out after -rc1.
->
-> Reviewed-by: Palmer Dabbelt <palmer@rivosinc.com>
-> Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
+The payment will be issue into atm visa card and send to you from the
+santander bank.
 
-Thanks!
+We need your address and your Whatsapp this my email.ID
+(mrsbillchantallawrence58@gmail.com) contact  me
 
-> I think I've merged some stuff around here before, but it's probably
-> better for some more generic tree?  LMK if you guys wanted me to pick
-> these up, though, I've got a smattering of small stuff already so I'll
-> have another PR either way.
+Thanks my
 
-Too late ;-) Already upstream via akpm's tree.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Mrs Bill Chantal Lawrence
