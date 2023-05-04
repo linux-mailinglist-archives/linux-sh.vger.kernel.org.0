@@ -2,76 +2,79 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2119B6F5A37
-	for <lists+linux-sh@lfdr.de>; Wed,  3 May 2023 16:38:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 911D46F71B0
+	for <lists+linux-sh@lfdr.de>; Thu,  4 May 2023 20:03:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229873AbjECOiS (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 3 May 2023 10:38:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58690 "EHLO
+        id S229748AbjEDSC7 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 4 May 2023 14:02:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229585AbjECOiR (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 3 May 2023 10:38:17 -0400
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3C6C4EC9
-        for <linux-sh@vger.kernel.org>; Wed,  3 May 2023 07:38:16 -0700 (PDT)
-Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1aaed87d8bdso29957965ad.3
-        for <linux-sh@vger.kernel.org>; Wed, 03 May 2023 07:38:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=landley-net.20221208.gappssmtp.com; s=20221208; t=1683124696; x=1685716696;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=MqmgaF6XuhoP3wVySW9wMw/5e4e5ZeEPQvDfp5gqtPc=;
-        b=iS606Z5luysqGmnm8LiWHEq33H+J8gFsDpuK0cQnXPDYwlekDNMUT5maEar7AwIbEp
-         PWR9gz0TKhZuJ6zPNGznrmHwGe4XYTroBbIzljyh7xvXtnzjb5fRKUHrY8FaqyePK1IW
-         wa9MxIKBOr5V4whrygrCEsq8h6hbalIob7riuQ9QPD+gB+Ap3Q6Goln9CqjBPGHG6hgW
-         385NRCRWVhZM6BhezJloBCcAPF+CA2rUUrDCEXIlXoOCcwID6usVdUBHwzUkfcKBojOW
-         Mva/LMDi6Keq1ROfD6N24Es5HNoq8vwouy+0dh/IuQDZ5DmWy9zn04LigovB1h6cYgYS
-         bUzg==
+        with ESMTP id S229449AbjEDSC6 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 4 May 2023 14:02:58 -0400
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD3681BCC;
+        Thu,  4 May 2023 11:02:56 -0700 (PDT)
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-3f182d745deso8688755e9.0;
+        Thu, 04 May 2023 11:02:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683124696; x=1685716696;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MqmgaF6XuhoP3wVySW9wMw/5e4e5ZeEPQvDfp5gqtPc=;
-        b=grLCt6L93Ev6KxgGuQ2oJDdSQxwxnchNpQjfOXl0oyqRE5NxctXKTbWVGuQZs8ECJ+
-         +eDZ35aTi2Ga2zvDu9l9lYpaJ5SzCuG4KNFclDA3n56PUlg7R0buEpL7tlXTRgsBJLCF
-         w+PLaAfbscFFe/16qjKjgSvKDUzip/rwo1YhuOyIaw7XLP1ytuk82jMdITKkIuqg0ifZ
-         37dJbsAo+VZ98Lt6m1f4kJABbC/kp1081vFkziGIVgXg5zzdqwdCJ6+w8baUtSTEGncX
-         AcGv1auxF1Friq8uARH6JSh1gkoyjQUr8l21Bhmz+rtt2K2wGa35o0Dxakl4hmxIZU86
-         emzA==
-X-Gm-Message-State: AC+VfDyamRxYFGQF2mrrwq9Bf4y1wRE7K/iKyfwuKTTppPVJvgVTkS/h
-        a4PtMNsLZ6zX25ewAS4hkIiW6Q==
-X-Google-Smtp-Source: ACHHUZ7LKWeDu4mNX/UGZvHWj1REv9YZWjc+UocrEOkZjtIoLd6PzrjIYhy6tzdYnU2wb98xcV7eyg==
-X-Received: by 2002:a17:902:edc7:b0:1ab:220a:9068 with SMTP id q7-20020a170902edc700b001ab220a9068mr268982plk.42.1683124696040;
-        Wed, 03 May 2023 07:38:16 -0700 (PDT)
-Received: from [192.168.33.147] (124-110-25-102.east.xps.vectant.ne.jp. [124.110.25.102])
-        by smtp.gmail.com with ESMTPSA id u8-20020a170902bf4800b0019c13d032d8sm21708371pls.253.2023.05.03.07.38.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 May 2023 07:38:15 -0700 (PDT)
-Message-ID: <fdcef275-c4ca-5c12-3906-ba32db1386f4@landley.net>
-Date:   Wed, 3 May 2023 09:53:56 -0500
+        d=1e100.net; s=20221208; t=1683223375; x=1685815375;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AZDZ8YxdhDn5mPRZaBC8fY/+Z68in9GRyIAk1Dnoetc=;
+        b=Kl79NMdhU4m3mUbihXEUL8U6/uIEw0kekZUvEQ4VVd/whqOl3+kOn7yzi8w47q1F1e
+         7/nlT2XrZduHKJHJIsZvkAZFjdyRoB8ehWCcQ/lngm+PjcvVccCDUzVajmjU+sZlF2fG
+         3tSe2DcYsV3wxDY0YE1PI/F7iSHBEumgPadM7lx0Vbhc/c+tM7ZftQAakgft2fen7RAA
+         CKECkkiZLNnCfoP4Ho3vf8eUsDY14sop6i+SvdIdIsrFHKnfaLqMw4IkAmcj6C+Pies0
+         HmQau+tm0hzMlRYjD7aUWovGGFv/ZpHI6jWCKG7+JgPDsdwS+iWZi3B6nfQHiVSjC1lx
+         AgHw==
+X-Gm-Message-State: AC+VfDxxRFr+ZV4NJ8ZYIKTNmnLgzMWP7HC0+sSU5A5SOxmbNEvKl0VN
+        H7BBxs4VmZQVnKH/5Wp5sqtwiEd3W9HlUVYi
+X-Google-Smtp-Source: ACHHUZ7DBR9JLJxcGYEzgKy6RZn8Pk58Li37tq9w2jOkGLDCeZjMsgu0U1JZXU2UqbD7d8dCxpFZQw==
+X-Received: by 2002:a1c:6a0d:0:b0:3f1:72ee:97b7 with SMTP id f13-20020a1c6a0d000000b003f172ee97b7mr393450wmc.15.1683223374722;
+        Thu, 04 May 2023 11:02:54 -0700 (PDT)
+Received: from costa-tp.bos2.lab ([2a00:a040:1a3:c11b:3ae6:1732:e587:a81f])
+        by smtp.gmail.com with ESMTPSA id p8-20020a7bcc88000000b003f03d483966sm5560826wma.44.2023.05.04.11.02.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 May 2023 11:02:54 -0700 (PDT)
+From:   Costa Shulyupin <costa.shul@redhat.com>
+To:     Jonathan Corbet <corbet@lwn.net>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-doc@vger.kernel.org
+Cc:     Costa Shulyupin <costa.shul@redhat.com>,
+        Vineet Gupta <vgupta@kernel.org>,
+        Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Stafford Horne <shorne@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Yanteng Si <siyanteng@loongson.cn>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        linux-snps-arc@lists.infradead.org (open list:SYNOPSYS ARC ARCHITECTURE),
+        linux-kernel@vger.kernel.org (open list),
+        linux-ia64@vger.kernel.org (open list:IA64 (Itanium) PLATFORM),
+        linux-openrisc@vger.kernel.org (open list:OPENRISC ARCHITECTURE),
+        linux-parisc@vger.kernel.org (open list:PARISC ARCHITECTURE),
+        linux-sh@vger.kernel.org (open list:SUPERH)
+Subject: [PATCH v3] docs: directive `alias` for redirects
+Date:   Thu,  4 May 2023 21:01:52 +0300
+Message-Id: <20230504180210.727364-1-costa.shul@redhat.com>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: Fixing "int-to-pointer-cast" warning in J2 code
-Content-Language: en-US
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     linux-sh <linux-sh@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, "D. Jeff Dionne" <jeff@coresemi.io>
-References: <eed749a0ec500edf4f70a50578eaa50803fdaf3c.camel@physik.fu-berlin.de>
- <CAMuHMdWOJn97KMBa0YoQo+a7tGDwMTTQ8YPHT7VJ2zJjEYEV0Q@mail.gmail.com>
- <3a42b3b3da5499f1ec1e24f618dd46a75503da16.camel@physik.fu-berlin.de>
-From:   Rob Landley <rob@landley.net>
-In-Reply-To: <3a42b3b3da5499f1ec1e24f618dd46a75503da16.camel@physik.fu-berlin.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,12 +82,244 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 5/3/23 05:50, John Paul Adrian Glaubitz wrote:
->> BTW, "jcore,cache" does not have any DT binding documentation.
-> 
-> Jeff or Rob should look into this.
+and several redirects for moved main arch pages
 
-I'm looking at Documentation/devicetree/bindings/cache... (yaml files?) but am
-not as of yet enlightened. I can poke Jeff in the morning.
+Problems:
+- The documentation lacks hierarchy
+- Relocating pages disrupts external links to
+  the documentation and causes confusion for users
 
-Rob
+Benefits:
+- Users can easily access relocated pages from external resources
+- Using redirects frees up options for reorganizing the documentation
+
+The solution:
+- Introduced directive `alias` which declares previous path of
+  a moved document as the argument.
+- Redirects are implemented with Sphinx extension rediraffe_redirects.
+
+Signed-off-by: Costa Shulyupin <costa.shul@redhat.com>
+
+---
+
+Changes:
+- complete new implementation
+---
+ Documentation/arch/arc/index.rst        |  2 ++
+ Documentation/arch/ia64/index.rst       |  2 ++
+ Documentation/arch/index.rst            |  2 ++
+ Documentation/arch/m68k/index.rst       |  2 ++
+ Documentation/arch/nios2/index.rst      |  2 ++
+ Documentation/arch/openrisc/index.rst   |  2 ++
+ Documentation/arch/parisc/index.rst     |  2 ++
+ Documentation/arch/sh/index.rst         |  2 ++
+ Documentation/arch/sparc/index.rst      |  2 ++
+ Documentation/arch/x86/index.rst        |  2 ++
+ Documentation/arch/x86/x86_64/index.rst |  2 ++
+ Documentation/arch/xtensa/index.rst     |  2 ++
+ Documentation/conf.py                   |  9 +++++++
+ Documentation/sphinx/alias.py           | 35 +++++++++++++++++++++++++
+ Documentation/sphinx/requirements.txt   |  1 +
+ 15 files changed, 69 insertions(+)
+ create mode 100644 Documentation/sphinx/alias.py
+
+diff --git a/Documentation/arch/arc/index.rst b/Documentation/arch/arc/index.rst
+index 7b098d4a5e3e..c2be040f04c3 100644
+--- a/Documentation/arch/arc/index.rst
++++ b/Documentation/arch/arc/index.rst
+@@ -15,3 +15,5 @@ ARC architecture
+    =======
+ 
+    * :ref:`genindex`
++
++.. alias:: arc/index
+diff --git a/Documentation/arch/ia64/index.rst b/Documentation/arch/ia64/index.rst
+index 761f2154dfa2..c4f973f17af2 100644
+--- a/Documentation/arch/ia64/index.rst
++++ b/Documentation/arch/ia64/index.rst
+@@ -17,3 +17,5 @@ IA-64 Architecture
+    serial
+ 
+    features
++
++.. alias:: ia64/index
+diff --git a/Documentation/arch/index.rst b/Documentation/arch/index.rst
+index 80ee31016584..11be66e23de4 100644
+--- a/Documentation/arch/index.rst
++++ b/Documentation/arch/index.rst
+@@ -26,3 +26,5 @@ implementation.
+    sparc/index
+    x86/index
+    xtensa/index
++
++.. alias:: arch
+diff --git a/Documentation/arch/m68k/index.rst b/Documentation/arch/m68k/index.rst
+index 0f890dbb5fe2..9b5c34510fb7 100644
+--- a/Documentation/arch/m68k/index.rst
++++ b/Documentation/arch/m68k/index.rst
+@@ -18,3 +18,5 @@ m68k Architecture
+    =======
+ 
+    * :ref:`genindex`
++
++.. alias:: m68k/index
+diff --git a/Documentation/arch/nios2/index.rst b/Documentation/arch/nios2/index.rst
+index 4468fe1a1037..bfaf0e963db3 100644
+--- a/Documentation/arch/nios2/index.rst
++++ b/Documentation/arch/nios2/index.rst
+@@ -10,3 +10,5 @@ Nios II Specific Documentation
+ 
+    nios2
+    features
++
++.. alias:: nios2/index
+diff --git a/Documentation/arch/openrisc/index.rst b/Documentation/arch/openrisc/index.rst
+index 6879f998b87a..b59d97d6f8b7 100644
+--- a/Documentation/arch/openrisc/index.rst
++++ b/Documentation/arch/openrisc/index.rst
+@@ -18,3 +18,5 @@ OpenRISC Architecture
+    =======
+ 
+    * :ref:`genindex`
++
++.. alias:: openrisc/index
+diff --git a/Documentation/arch/parisc/index.rst b/Documentation/arch/parisc/index.rst
+index 240685751825..aaa708c7f98d 100644
+--- a/Documentation/arch/parisc/index.rst
++++ b/Documentation/arch/parisc/index.rst
+@@ -18,3 +18,5 @@ PA-RISC Architecture
+    =======
+ 
+    * :ref:`genindex`
++
++.. alias:: parisc/index
+diff --git a/Documentation/arch/sh/index.rst b/Documentation/arch/sh/index.rst
+index c64776738cf6..5a12d76abec4 100644
+--- a/Documentation/arch/sh/index.rst
++++ b/Documentation/arch/sh/index.rst
+@@ -54,3 +54,5 @@ Maple
+ 
+ .. kernel-doc:: drivers/sh/maple/maple.c
+    :export:
++
++.. alias:: sh/index
+diff --git a/Documentation/arch/sparc/index.rst b/Documentation/arch/sparc/index.rst
+index ae884224eec2..f2731a4925c3 100644
+--- a/Documentation/arch/sparc/index.rst
++++ b/Documentation/arch/sparc/index.rst
+@@ -11,3 +11,5 @@ Sparc Architecture
+    oradax/oracle-dax
+ 
+    features
++
++.. alias:: sparc/index
+diff --git a/Documentation/arch/x86/index.rst b/Documentation/arch/x86/index.rst
+index c73d133fd37c..2154bfe2b6ca 100644
+--- a/Documentation/arch/x86/index.rst
++++ b/Documentation/arch/x86/index.rst
+@@ -42,3 +42,5 @@ x86-specific Documentation
+    features
+    elf_auxvec
+    xstate
++
++.. alias:: x86/index
+diff --git a/Documentation/arch/x86/x86_64/index.rst b/Documentation/arch/x86/x86_64/index.rst
+index a56070fc8e77..d4eb610b0080 100644
+--- a/Documentation/arch/x86/x86_64/index.rst
++++ b/Documentation/arch/x86/x86_64/index.rst
+@@ -15,3 +15,5 @@ x86_64 Support
+    cpu-hotplug-spec
+    machinecheck
+    fsgs
++
++.. alias:: x86/x86_64/index
+diff --git a/Documentation/arch/xtensa/index.rst b/Documentation/arch/xtensa/index.rst
+index 69952446a9be..a794bddddad4 100644
+--- a/Documentation/arch/xtensa/index.rst
++++ b/Documentation/arch/xtensa/index.rst
+@@ -12,3 +12,5 @@ Xtensa Architecture
+    mmu
+ 
+    features
++
++.. alias:: xtensa/index
+diff --git a/Documentation/conf.py b/Documentation/conf.py
+index 37314afd1ac8..068f85e5dd1f 100644
+--- a/Documentation/conf.py
++++ b/Documentation/conf.py
+@@ -16,6 +16,7 @@ import sys
+ import os
+ import sphinx
+ import shutil
++from importlib.util import find_spec
+ 
+ # helper
+ # ------
+@@ -57,6 +58,14 @@ extensions = ['kerneldoc', 'rstFlatTable', 'kernel_include',
+               'maintainers_include', 'sphinx.ext.autosectionlabel',
+               'kernel_abi', 'kernel_feat']
+ 
++extensions += ['alias'] # uses rediraffe
++
++if find_spec('sphinxext.rediraffe'):
++    extensions += ['sphinxext.rediraffe']
++    rediraffe_redirects = { }
++else:
++    print("Skipping redirects because sphinxext.rediraffe is not installed")
++
+ if major >= 3:
+     if (major > 3) or (minor > 0 or patch >= 2):
+         # Sphinx c function parser is more pedantic with regards to type
+diff --git a/Documentation/sphinx/alias.py b/Documentation/sphinx/alias.py
+new file mode 100644
+index 000000000000..e00605d07dbd
+--- /dev/null
++++ b/Documentation/sphinx/alias.py
+@@ -0,0 +1,35 @@
++# SPDX-License-Identifier: GPL-2.0
++
++u"""
++    Directive `alias`
++    ~~~~~~~~~~~~~~~
++    Provides browser redirects for moved pages.
++
++    The directive declares previous path of a moved document as the argument.
++    Redirects are implemented with Sphinx extension rediraffe_redirects.
++
++    :copyright: Copyright 2023 Costa Shulyupin <costa.shul@redhat.com>
++    :license:   GPL Version 2, June 1991 see linux/COPYING for details.
++
++"""
++
++from docutils.parsers.rst import Directive
++import os
++
++
++class AliasDirective(Directive):
++    required_arguments = 1
++
++    def run(self):
++        env = self.state.document.settings.env
++        if 'rediraffe_redirects' not in env.config:
++            return []
++        env.config.rediraffe_redirects[self.arguments[0]] \
++            = os.path.relpath(self.state.document.current_source,
++                              env.srcdir)
++        return []
++
++
++def setup(app):
++    app.add_directive('alias', AliasDirective)
++    return { 'parallel_read_safe': False, 'parallel_write_safe': False }
+diff --git a/Documentation/sphinx/requirements.txt b/Documentation/sphinx/requirements.txt
+index 335b53df35e2..9ff99beb5ed3 100644
+--- a/Documentation/sphinx/requirements.txt
++++ b/Documentation/sphinx/requirements.txt
+@@ -1,3 +1,4 @@
+ # jinja2>=3.1 is not compatible with Sphinx<4.0
+ jinja2<3.1
+ Sphinx==2.4.4
++rediraffe_redirects
+-- 
+2.40.0
+
