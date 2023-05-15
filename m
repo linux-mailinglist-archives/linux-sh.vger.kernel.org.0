@@ -2,32 +2,32 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54596703680
-	for <lists+linux-sh@lfdr.de>; Mon, 15 May 2023 19:10:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3607D703365
+	for <lists+linux-sh@lfdr.de>; Mon, 15 May 2023 18:36:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243720AbjEORKs (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 15 May 2023 13:10:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47384 "EHLO
+        id S242781AbjEOQgh (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 15 May 2023 12:36:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243423AbjEORJZ (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 15 May 2023 13:09:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82A9BAD0C;
-        Mon, 15 May 2023 10:07:56 -0700 (PDT)
+        with ESMTP id S242730AbjEOQgg (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 15 May 2023 12:36:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A093F170C;
+        Mon, 15 May 2023 09:36:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 32F7B62B16;
-        Mon, 15 May 2023 17:07:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24627C4339B;
-        Mon, 15 May 2023 17:07:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2BE8362813;
+        Mon, 15 May 2023 16:36:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A9CC433D2;
+        Mon, 15 May 2023 16:36:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170450;
-        bh=FWrdJUOVDUfaF82ePCRRUrLyhKUa8xyRp8tooUuq0sk=;
+        s=korg; t=1684168594;
+        bh=Na2VM1Wf6BrkX347llMLUoTmaOF8sVJrWPnjz0Eqzv0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0oqEq7zuP3hWjCFiWS8tQ9/sPKuEqN+QVLJhNqbA/ylDkWXeywGKwtTyIDriJOMrA
-         LlfRV7KRtAQWauAenLeTWc2mCGaF0gMhsWljLYUQuYO89h3dVcw3/C9hkapOaMIhX9
-         ske6EU4Ap2ySegjRe5P5cX0u9/+5o491HBb6SS5I=
+        b=YVpvdBOmsiuvtaJ0/pREOdWBxwNvuWJN9H8HGSUIjL/77Uxhr9GixXdPHVnjFK7VP
+         J1rafyCNabuC8NKJi5A4e+/KhcpdmUb2IDWfFpir50+8fE8wZffqDiSYhf7ltw/lqa
+         aCIKI3i23iNxR6ecoERFPeHKCVNs5hj1Fy1OX9zc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -36,18 +36,18 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org
-Subject: [PATCH 6.1 134/239] sh: nmi_debug: fix return value of __setup handler
-Date:   Mon, 15 May 2023 18:26:37 +0200
-Message-Id: <20230515161725.713461559@linuxfoundation.org>
+Subject: [PATCH 4.14 101/116] sh: nmi_debug: fix return value of __setup handler
+Date:   Mon, 15 May 2023 18:26:38 +0200
+Message-Id: <20230515161701.606314874@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
+References: <20230515161658.228491273@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -87,7 +87,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/arch/sh/kernel/nmi_debug.c
 +++ b/arch/sh/kernel/nmi_debug.c
-@@ -49,7 +49,7 @@ static int __init nmi_debug_setup(char *
+@@ -52,7 +52,7 @@ static int __init nmi_debug_setup(char *
  	register_die_notifier(&nmi_debug_nb);
  
  	if (*str != '=')
@@ -96,7 +96,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  	for (p = str + 1; *p; p = sep + 1) {
  		sep = strchr(p, ',');
-@@ -70,6 +70,6 @@ static int __init nmi_debug_setup(char *
+@@ -73,6 +73,6 @@ static int __init nmi_debug_setup(char *
  			break;
  	}
  
