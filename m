@@ -2,120 +2,85 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A784716987
-	for <lists+linux-sh@lfdr.de>; Tue, 30 May 2023 18:31:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA354716A3B
+	for <lists+linux-sh@lfdr.de>; Tue, 30 May 2023 18:59:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232285AbjE3Qbd (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 30 May 2023 12:31:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45594 "EHLO
+        id S233094AbjE3Q7Z (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 30 May 2023 12:59:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232523AbjE3QbR (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 30 May 2023 12:31:17 -0400
-Received: from mail-il1-x134.google.com (mail-il1-x134.google.com [IPv6:2607:f8b0:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B538D102;
-        Tue, 30 May 2023 09:30:46 -0700 (PDT)
-Received: by mail-il1-x134.google.com with SMTP id e9e14a558f8ab-3360a95c0a1so6350415ab.0;
-        Tue, 30 May 2023 09:30:46 -0700 (PDT)
+        with ESMTP id S233085AbjE3Q7V (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 30 May 2023 12:59:21 -0400
+Received: from mail-yw1-x1133.google.com (mail-yw1-x1133.google.com [IPv6:2607:f8b0:4864:20::1133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ADF7100
+        for <linux-sh@vger.kernel.org>; Tue, 30 May 2023 09:58:57 -0700 (PDT)
+Received: by mail-yw1-x1133.google.com with SMTP id 00721157ae682-565a3cdba71so66158137b3.0
+        for <linux-sh@vger.kernel.org>; Tue, 30 May 2023 09:58:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685464244; x=1688056244;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=iLnzBlwd4R6Xah7NSEk7Gqbfnuy0fx7IzR6wWPi2abY=;
-        b=ZrBmmyjdqwAUMrQ0s1MT6bcQHlkw9VOKADCoct8GsAUr1nE4RCwwN5o/W71+uSJFYa
-         jhEFyLRZZh8JsKtJ87D/B5VWtVaJm0GRri631dez2iYRwMkuQGq12ecIFu3Q1fed0GTx
-         UjO6Ql+YxfHp3FY9pYI27aWHPTZSjaAVEcrGDHCC3mkeOjoUlMOX8IapM2wlEOl1nJi/
-         LyuPi27B99capG2hZahRtiHU+74lQfFpFocCQQ62uhK+iJ6XByVMbKpUPSAy/+zs0mp9
-         FQaLM3LYgmLy8tEYOqhBIkgvBOIsjcz1tNonw9v3PPvU0KemzJEELmI5hOeqKMaz7FY4
-         lx0w==
+        d=gmail.com; s=20221208; t=1685465936; x=1688057936;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=WNArju2Q8+Sr5dwcNQgGMkuM+vdAY/tBFjavnfU7aAs=;
+        b=qdG9+S/QBuGkCrI4SG4FCHvRnfyDE6Ae5IPaT+ckeWD0VmDLcIRRDBgjEtX6B37bql
+         d85weCGIh6Y3bS9I+5JMAomZAKmyYwr314olGhdSZKrbLfUTPGrZngK9WL8hDI+x6QO9
+         N+fDjYqIP0WXYuN5v+Gowry4xZa1hQAorfpx7Mq9COesvhOWLj2FPqaoRlIcBffOm9um
+         A8JVopYtcPAtpTtx2koC8sot50p8vca2r7wUHoV6tiVb7njwFh2p0ArSvnC5ueoYtfZ1
+         9VFcLaL+vkR9rbxdrciJZoYHpsQRC3ho0ooMW9KKpFt8+WsTshTbtZJ79KoHqiSp8Zc1
+         He0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685464244; x=1688056244;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20221208; t=1685465936; x=1688057936;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=iLnzBlwd4R6Xah7NSEk7Gqbfnuy0fx7IzR6wWPi2abY=;
-        b=ZXQ5zFAY3qkdrlSzkElNH0ZV3yXaNcz38fd1xSFG6NVNpE0swimmkpm/dfdfFaKJsO
-         P+5WVNeueAOwFnJPYs2o+p00Ax7GBUr8RwNx5W1QZmFD0d2vTEZoktbHEXkdyvxb3QN7
-         MNqTAAp2OuUVa6vfQ4/6pTwiGMwUwr5NWLM5neJvgVNbIdzngxlSha8qJlRqHLy861PE
-         sy4poaYBiI/sFHrsp/D+hW4n/oRqcx6qn5cxGmm04oTodNmLP/9cHkYycwsOxmHNZrv2
-         jgL7vfl0V249tRm2r19brbePoqJpKNR8NuKrA+qj1VnZY00jjnXXZrPf3J7Fbexarp2Y
-         jtXA==
-X-Gm-Message-State: AC+VfDxYDJn0jVGtsHggORgF2oV1pzq1UirCEDGT4JP/PUdFQSDsZJGG
-        BeivZiPpFFkl6+1s8BM37kw=
-X-Google-Smtp-Source: ACHHUZ4x1Pt5L6exVrp0MlOS69Vf+DlbzGnXtN4/qVqrVNqTZ3F69SALBs4ZMhHtGUr32ghaP/Vp4g==
-X-Received: by 2002:a92:d203:0:b0:335:56cb:a3a with SMTP id y3-20020a92d203000000b0033556cb0a3amr74431ily.16.1685464244493;
-        Tue, 30 May 2023 09:30:44 -0700 (PDT)
-Received: from azeems-kspp.c.googlers.com.com (54.70.188.35.bc.googleusercontent.com. [35.188.70.54])
-        by smtp.gmail.com with ESMTPSA id a4-20020a92a304000000b0033af84e6321sm2543982ili.64.2023.05.30.09.30.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 May 2023 09:30:44 -0700 (PDT)
-From:   Azeem Shaikh <azeemshaikh38@gmail.com>
-To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     linux-hardening@vger.kernel.org,
-        Azeem Shaikh <azeemshaikh38@gmail.com>,
-        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH] sh: Replace all non-returning strlcpy with strscpy
-Date:   Tue, 30 May 2023 16:30:41 +0000
-Message-ID: <20230530163041.985456-1-azeemshaikh38@gmail.com>
-X-Mailer: git-send-email 2.41.0.rc0.172.g3f132b7071-goog
+        bh=WNArju2Q8+Sr5dwcNQgGMkuM+vdAY/tBFjavnfU7aAs=;
+        b=B221Y/gHHD2CZJRRlJQ0mErYET2JBzWypQE/f9OXHP3ppeQRzfSw79hHBbYnQGW8iS
+         uNNWcrivdPvFUWMLD+Jt8jUKDLJ5ORkriS2EERLet38ZB83ID7CNeT1fF9uGwTdGSN5U
+         TrcDwGjabxWFk4GOqosqy2mtABjYa+tkAw3eK2L49pDFhWc6T/o1T49KHE+9h5wMTtMi
+         5ZVhFki4aYk2wk30spt2AANgHPLKMrjvrnrCh3PL87xQEh5iCvBXNl6NgcVKTYBT/AXl
+         2qF9OieFCi45xc1PDjuRVrTM3f8Saav2okziMNy1/cuxV3KGbU4vRZNtz/eHhSBe/QyG
+         DJtA==
+X-Gm-Message-State: AC+VfDzbG/UHhVWHhGuJlTYUK76FJ7S4GpseokwqLW8PO6gZf+e3LnXt
+        OHtUTCq9q3ikaloM8s5Dk6PQDZzxOY7tjWKfLoQ=
+X-Google-Smtp-Source: ACHHUZ4+dMEJzSIWMalEMPrg35II1A6tu8yIcDEhktWVvanbngt7BWHKI/4SaWeSJPVpr46Kv+r2wIxCfWRn4/jnfQU=
+X-Received: by 2002:a81:8607:0:b0:568:98b8:9c2f with SMTP id
+ w7-20020a818607000000b0056898b89c2fmr2728745ywf.46.1685465936384; Tue, 30 May
+ 2023 09:58:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+Received: by 2002:a05:7010:33c6:b0:35e:241b:1d9e with HTTP; Tue, 30 May 2023
+ 09:58:55 -0700 (PDT)
+Reply-To: jkirinec101@gmail.com
+From:   marine medic <bwllcs103@gmail.com>
+Date:   Tue, 30 May 2023 17:58:55 +0100
+Message-ID: <CAFekM9Wr_vwg6EeAvaX+qYtE2WWoX+ufieoUxgji-bzc8EfhLA@mail.gmail.com>
+Subject: Hallo
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=4.3 required=5.0 tests=BAYES_20,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        HK_RANDOM_ENVFROM,HK_RANDOM_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-strlcpy() reads the entire source buffer first.
-This read may exceed the destination size limit.
-This is both inefficient and can lead to linear read
-overflows if a source string is not NUL-terminated [1].
-In an effort to remove strlcpy() completely [2], replace
-strlcpy() here with strscpy().
-No return values were used, so direct replacement is safe.
-
-[1] https://www.kernel.org/doc/html/latest/process/deprecated.html#strlcpy
-[2] https://github.com/KSPP/linux/issues/89
-
-Signed-off-by: Azeem Shaikh <azeemshaikh38@gmail.com>
----
- arch/sh/drivers/dma/dma-api.c |    2 +-
- arch/sh/kernel/setup.c        |    4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/arch/sh/drivers/dma/dma-api.c b/arch/sh/drivers/dma/dma-api.c
-index ab9170494dcc..89cd4a3b4cca 100644
---- a/arch/sh/drivers/dma/dma-api.c
-+++ b/arch/sh/drivers/dma/dma-api.c
-@@ -198,7 +198,7 @@ int request_dma(unsigned int chan, const char *dev_id)
- 	if (atomic_xchg(&channel->busy, 1))
- 		return -EBUSY;
- 
--	strlcpy(channel->dev_id, dev_id, sizeof(channel->dev_id));
-+	strscpy(channel->dev_id, dev_id, sizeof(channel->dev_id));
- 
- 	if (info->ops->request) {
- 		result = info->ops->request(channel);
-diff --git a/arch/sh/kernel/setup.c b/arch/sh/kernel/setup.c
-index af977ec4ca5e..e4f0f9a1d355 100644
---- a/arch/sh/kernel/setup.c
-+++ b/arch/sh/kernel/setup.c
-@@ -304,9 +304,9 @@ void __init setup_arch(char **cmdline_p)
- 	bss_resource.end = virt_to_phys(__bss_stop)-1;
- 
- #ifdef CONFIG_CMDLINE_OVERWRITE
--	strlcpy(command_line, CONFIG_CMDLINE, sizeof(command_line));
-+	strscpy(command_line, CONFIG_CMDLINE, sizeof(command_line));
- #else
--	strlcpy(command_line, COMMAND_LINE, sizeof(command_line));
-+	strscpy(command_line, COMMAND_LINE, sizeof(command_line));
- #ifdef CONFIG_CMDLINE_EXTEND
- 	strlcat(command_line, " ", sizeof(command_line));
- 	strlcat(command_line, CONFIG_CMDLINE, sizeof(command_line));
-
+Hallo, es tut mir so leid, Ihre Privatsph=C3=A4re zu verletzen. Es hei=C3=
+=9Ft:
+=E2=80=9EEin Bild sagt mehr als tausend Worte, aber als ich Ihres sah, war =
+es
+mehr, als Worte erkl=C3=A4ren k=C3=B6nnten.=E2=80=9C Das charmante Profil i=
+st
+unwiderstehlich, obwohl es eine kleine pers=C3=B6nliche Nachricht ist, aber
+Ihr Aussehen verr=C3=A4t viel =C3=BCber eine nette Person ... Also musste i=
+ch
+der charmanten Person mit diesem tollen Profil eine Nachricht
+hinterlassen. Ich glaube, es ist die Neugier, die mich in einer
+solchen Zeit zu Ihnen f=C3=BChrt. Ich muss noch einmal sagen, dass es mir
+leid tut, wenn das Schreiben an Sie Ihrer moralischen Ethik
+widerspricht. Ich m=C3=B6chte dich einfach besser kennenlernen und ein
+Freund sein oder mehr. Ich hoffe, irgendwann von Ihnen zu h=C3=B6ren.
