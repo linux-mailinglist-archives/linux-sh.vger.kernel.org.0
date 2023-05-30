@@ -2,112 +2,120 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 71B0B71681C
-	for <lists+linux-sh@lfdr.de>; Tue, 30 May 2023 17:54:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A784716987
+	for <lists+linux-sh@lfdr.de>; Tue, 30 May 2023 18:31:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232755AbjE3PyC (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 30 May 2023 11:54:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42266 "EHLO
+        id S232285AbjE3Qbd (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 30 May 2023 12:31:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232656AbjE3Px7 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 30 May 2023 11:53:59 -0400
-Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C41E109
-        for <linux-sh@vger.kernel.org>; Tue, 30 May 2023 08:53:43 -0700 (PDT)
-Received: by mail-pg1-x52d.google.com with SMTP id 41be03b00d2f7-52cb8e5e9f5so3015913a12.0
-        for <linux-sh@vger.kernel.org>; Tue, 30 May 2023 08:53:43 -0700 (PDT)
+        with ESMTP id S232523AbjE3QbR (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 30 May 2023 12:31:17 -0400
+Received: from mail-il1-x134.google.com (mail-il1-x134.google.com [IPv6:2607:f8b0:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B538D102;
+        Tue, 30 May 2023 09:30:46 -0700 (PDT)
+Received: by mail-il1-x134.google.com with SMTP id e9e14a558f8ab-3360a95c0a1so6350415ab.0;
+        Tue, 30 May 2023 09:30:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685462022; x=1688054022;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=WNArju2Q8+Sr5dwcNQgGMkuM+vdAY/tBFjavnfU7aAs=;
-        b=m6P4SpRmIhLWilK2bwoWEMQsEWk/K6yhndm14R57q2fmXCIxmQD0hmLtubyT0ltNsD
-         5mzb/C0TgKgAvGKJRMLkGevN9ywiUjPUBVA17GMkjuXksQd7uKuMPAsayxRi957MlXgz
-         VF+5Lk9yteg1zp99/PHovVO1luQYBqZR1begl5GE6xnlUaOH7P8fp/y6TJyqCQrhfJOz
-         GmSLlBKjWMEbPAFAhBZaduYCAy/a7mb7dItIGo7O38cxcSSHJ3fi4GVHm5aPyFiNx0y7
-         0Ylcwe2+d6CvCscSCSmWp1hLDgSsGszHIHhs0OZ+Ti2EwuimZiT8yf6j1niWNwR5h9Dm
-         4p7g==
+        d=gmail.com; s=20221208; t=1685464244; x=1688056244;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=iLnzBlwd4R6Xah7NSEk7Gqbfnuy0fx7IzR6wWPi2abY=;
+        b=ZrBmmyjdqwAUMrQ0s1MT6bcQHlkw9VOKADCoct8GsAUr1nE4RCwwN5o/W71+uSJFYa
+         jhEFyLRZZh8JsKtJ87D/B5VWtVaJm0GRri631dez2iYRwMkuQGq12ecIFu3Q1fed0GTx
+         UjO6Ql+YxfHp3FY9pYI27aWHPTZSjaAVEcrGDHCC3mkeOjoUlMOX8IapM2wlEOl1nJi/
+         LyuPi27B99capG2hZahRtiHU+74lQfFpFocCQQ62uhK+iJ6XByVMbKpUPSAy/+zs0mp9
+         FQaLM3LYgmLy8tEYOqhBIkgvBOIsjcz1tNonw9v3PPvU0KemzJEELmI5hOeqKMaz7FY4
+         lx0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685462022; x=1688054022;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20221208; t=1685464244; x=1688056244;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=WNArju2Q8+Sr5dwcNQgGMkuM+vdAY/tBFjavnfU7aAs=;
-        b=CJCW9z7vszXCXe6Mz/eOcd7NubNFqyRPExKGErqj8Ibnrt1TG1xbsTjuaB6WnCG9ls
-         6sVbjVxoMgdYXaqkVY2AvugXaatViywPsrXdjT6Qp/5U/ZiAjxWNKpkgMupyhrmEXgag
-         qFVhFYqRWAuAxmdbO4z/e7pgk51i5LcaCi1fGK2K0/V2e/Y318WV7DstOFNITru0/wcC
-         8q5BpcpTJGf/ArD1zDM7PuwZPq6/UF5VV2QFuj/FLw8kkS3kndTkuE0QsWJWSr/HKUQZ
-         OSA+LHRpKRjMVFLgDlWCyoa4e6TqG1oA0m1opOjGVr9qtpKRjy316hCF1Fn5qq9xYlCz
-         EU7g==
-X-Gm-Message-State: AC+VfDw7Wt8X+7j0XayZBYOkaFK3GNrdpRT/QbuxWXi+dIqu/NyAf33b
-        qzYoG6RAAyYgHLcbwlWAo86p9459Z6S8OYluVGY=
-X-Google-Smtp-Source: ACHHUZ7sn3ztVKnJjhBggbCbONyO+AsW8XNE2yHvSV08ahzB8uFM1wykgNjVYghRFNCNNXUNIoLTKjLnsrfc/pmUUYs=
-X-Received: by 2002:a17:90a:bf8c:b0:253:25c3:7a95 with SMTP id
- d12-20020a17090abf8c00b0025325c37a95mr11888507pjs.14.1685462021937; Tue, 30
- May 2023 08:53:41 -0700 (PDT)
+        bh=iLnzBlwd4R6Xah7NSEk7Gqbfnuy0fx7IzR6wWPi2abY=;
+        b=ZXQ5zFAY3qkdrlSzkElNH0ZV3yXaNcz38fd1xSFG6NVNpE0swimmkpm/dfdfFaKJsO
+         P+5WVNeueAOwFnJPYs2o+p00Ax7GBUr8RwNx5W1QZmFD0d2vTEZoktbHEXkdyvxb3QN7
+         MNqTAAp2OuUVa6vfQ4/6pTwiGMwUwr5NWLM5neJvgVNbIdzngxlSha8qJlRqHLy861PE
+         sy4poaYBiI/sFHrsp/D+hW4n/oRqcx6qn5cxGmm04oTodNmLP/9cHkYycwsOxmHNZrv2
+         jgL7vfl0V249tRm2r19brbePoqJpKNR8NuKrA+qj1VnZY00jjnXXZrPf3J7Fbexarp2Y
+         jtXA==
+X-Gm-Message-State: AC+VfDxYDJn0jVGtsHggORgF2oV1pzq1UirCEDGT4JP/PUdFQSDsZJGG
+        BeivZiPpFFkl6+1s8BM37kw=
+X-Google-Smtp-Source: ACHHUZ4x1Pt5L6exVrp0MlOS69Vf+DlbzGnXtN4/qVqrVNqTZ3F69SALBs4ZMhHtGUr32ghaP/Vp4g==
+X-Received: by 2002:a92:d203:0:b0:335:56cb:a3a with SMTP id y3-20020a92d203000000b0033556cb0a3amr74431ily.16.1685464244493;
+        Tue, 30 May 2023 09:30:44 -0700 (PDT)
+Received: from azeems-kspp.c.googlers.com.com (54.70.188.35.bc.googleusercontent.com. [35.188.70.54])
+        by smtp.gmail.com with ESMTPSA id a4-20020a92a304000000b0033af84e6321sm2543982ili.64.2023.05.30.09.30.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 May 2023 09:30:44 -0700 (PDT)
+From:   Azeem Shaikh <azeemshaikh38@gmail.com>
+To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc:     linux-hardening@vger.kernel.org,
+        Azeem Shaikh <azeemshaikh38@gmail.com>,
+        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Randy Dunlap <rdunlap@infradead.org>
+Subject: [PATCH] sh: Replace all non-returning strlcpy with strscpy
+Date:   Tue, 30 May 2023 16:30:41 +0000
+Message-ID: <20230530163041.985456-1-azeemshaikh38@gmail.com>
+X-Mailer: git-send-email 2.41.0.rc0.172.g3f132b7071-goog
 MIME-Version: 1.0
-Received: by 2002:a05:7022:ba3:b0:65:5d1b:9a16 with HTTP; Tue, 30 May 2023
- 08:53:41 -0700 (PDT)
-Reply-To: jkirinec101@gmail.com
-From:   marine <jessicakirinec1@gmail.com>
-Date:   Tue, 30 May 2023 16:53:41 +0100
-Message-ID: <CACrLz9RUfqd1XDcU1qQ-MXYbKcZCtOrXa35uzso1LTdRbsO_FQ@mail.gmail.com>
-Subject: Hallo
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:52d listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4998]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [jkirinec101[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [jessicakirinec1[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [jessicakirinec1[at]gmail.com]
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.0 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hallo, es tut mir so leid, Ihre Privatsph=C3=A4re zu verletzen. Es hei=C3=
-=9Ft:
-=E2=80=9EEin Bild sagt mehr als tausend Worte, aber als ich Ihres sah, war =
-es
-mehr, als Worte erkl=C3=A4ren k=C3=B6nnten.=E2=80=9C Das charmante Profil i=
-st
-unwiderstehlich, obwohl es eine kleine pers=C3=B6nliche Nachricht ist, aber
-Ihr Aussehen verr=C3=A4t viel =C3=BCber eine nette Person ... Also musste i=
-ch
-der charmanten Person mit diesem tollen Profil eine Nachricht
-hinterlassen. Ich glaube, es ist die Neugier, die mich in einer
-solchen Zeit zu Ihnen f=C3=BChrt. Ich muss noch einmal sagen, dass es mir
-leid tut, wenn das Schreiben an Sie Ihrer moralischen Ethik
-widerspricht. Ich m=C3=B6chte dich einfach besser kennenlernen und ein
-Freund sein oder mehr. Ich hoffe, irgendwann von Ihnen zu h=C3=B6ren.
+strlcpy() reads the entire source buffer first.
+This read may exceed the destination size limit.
+This is both inefficient and can lead to linear read
+overflows if a source string is not NUL-terminated [1].
+In an effort to remove strlcpy() completely [2], replace
+strlcpy() here with strscpy().
+No return values were used, so direct replacement is safe.
+
+[1] https://www.kernel.org/doc/html/latest/process/deprecated.html#strlcpy
+[2] https://github.com/KSPP/linux/issues/89
+
+Signed-off-by: Azeem Shaikh <azeemshaikh38@gmail.com>
+---
+ arch/sh/drivers/dma/dma-api.c |    2 +-
+ arch/sh/kernel/setup.c        |    4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/arch/sh/drivers/dma/dma-api.c b/arch/sh/drivers/dma/dma-api.c
+index ab9170494dcc..89cd4a3b4cca 100644
+--- a/arch/sh/drivers/dma/dma-api.c
++++ b/arch/sh/drivers/dma/dma-api.c
+@@ -198,7 +198,7 @@ int request_dma(unsigned int chan, const char *dev_id)
+ 	if (atomic_xchg(&channel->busy, 1))
+ 		return -EBUSY;
+ 
+-	strlcpy(channel->dev_id, dev_id, sizeof(channel->dev_id));
++	strscpy(channel->dev_id, dev_id, sizeof(channel->dev_id));
+ 
+ 	if (info->ops->request) {
+ 		result = info->ops->request(channel);
+diff --git a/arch/sh/kernel/setup.c b/arch/sh/kernel/setup.c
+index af977ec4ca5e..e4f0f9a1d355 100644
+--- a/arch/sh/kernel/setup.c
++++ b/arch/sh/kernel/setup.c
+@@ -304,9 +304,9 @@ void __init setup_arch(char **cmdline_p)
+ 	bss_resource.end = virt_to_phys(__bss_stop)-1;
+ 
+ #ifdef CONFIG_CMDLINE_OVERWRITE
+-	strlcpy(command_line, CONFIG_CMDLINE, sizeof(command_line));
++	strscpy(command_line, CONFIG_CMDLINE, sizeof(command_line));
+ #else
+-	strlcpy(command_line, COMMAND_LINE, sizeof(command_line));
++	strscpy(command_line, COMMAND_LINE, sizeof(command_line));
+ #ifdef CONFIG_CMDLINE_EXTEND
+ 	strlcat(command_line, " ", sizeof(command_line));
+ 	strlcat(command_line, CONFIG_CMDLINE, sizeof(command_line));
+
