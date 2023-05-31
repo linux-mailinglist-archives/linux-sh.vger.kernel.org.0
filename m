@@ -2,170 +2,208 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 752FD718998
-	for <lists+linux-sh@lfdr.de>; Wed, 31 May 2023 20:49:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14AEC718B40
+	for <lists+linux-sh@lfdr.de>; Wed, 31 May 2023 22:34:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230017AbjEaStA (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 31 May 2023 14:49:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37718 "EHLO
+        id S229748AbjEaUej (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 31 May 2023 16:34:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230376AbjEaSsz (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 31 May 2023 14:48:55 -0400
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FDA319F;
-        Wed, 31 May 2023 11:48:47 -0700 (PDT)
-Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1b1806264e9so111605ad.0;
-        Wed, 31 May 2023 11:48:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685558927; x=1688150927;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=3EtbHmfy3w5R7KQLkJ5R/6zIzXV1vr/wfKtqhO2sLZ4=;
-        b=Hm0hCkYdtfQRemjMKlbllQL4O8L2Qa3TjHMKohF0mlxv+EqXmacGN9VR1Ny8tXDjdD
-         ACVftV9H3bIHuquZ0Z6IE+mZYNe74kNRg3Br1jlJLowCFdPWRxtQpFk0AR3q9LiI7a38
-         qPm3c5PRQ8s61eGVhHEjXW5Ih2HToJ0OAz+aWBcvAjzRU6N56VF0Fcsn7e4Of0o6uY+V
-         qRpB5UPr9AHKifnMYX6CIDRDJncTTr+hdj/URjfBb9uRPa4+D9LrQ9gR8d8PKDjKpkeg
-         cNuAOwwh+6NOWOIuGiEwVq+aM6BLqglu5nX06SX1AVpMS+9Xl4QNAABt0kr2BfTfppz2
-         6BaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685558927; x=1688150927;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3EtbHmfy3w5R7KQLkJ5R/6zIzXV1vr/wfKtqhO2sLZ4=;
-        b=RGo653AQMrYXPwh934cN6ib/r0oWdFF8BIt1fb666ay2xn2C/tYAoggGazMiR9mAXG
-         +rCrI5FXJrttxvrFM5EHZgUtZfNtxhm2ey9rfkIjrHdx7kkWo5LluCHvDrXaPzt8K/SP
-         vYwsQwh0YBpgoc+9hS2ByBPD+H67eMgwY1pS8KIe15MP3nWRJ5AMKtFGZF9A3Ajm40DO
-         SC8pROQJsBCWqROpKNWPz5kirirgH/a+4zjiTE0yEnNS4arw81+kS6RPbKc7IlQWXn2s
-         b9IErGqyzM5UQToDusgYngJ4awcw39lE7oVc0srI5hYfOv3UXBBH8JNwqDma/spMeWDQ
-         uCYw==
-X-Gm-Message-State: AC+VfDwycDsPJWrRf4HxemiP6gvarLDbCmT9LXSipgCGUHUaGaKEP/Ib
-        sIVy1g+Vm4fpT/0kKFOFoyeaA7iTxNLkBah9pRo=
-X-Google-Smtp-Source: ACHHUZ5M6iYi6/JD6zVRIpgmhcItbt+ub8OAZYuPz3aXn9kIu5A1prvbpB5UhWxoMoGIS6vgwfkfFLYekeLrKRbR0kQ=
-X-Received: by 2002:a17:902:ce86:b0:1b0:3df7:5992 with SMTP id
- f6-20020a170902ce8600b001b03df75992mr5572003plg.32.1685558926693; Wed, 31 May
- 2023 11:48:46 -0700 (PDT)
-MIME-Version: 1.0
-References: <ZF6YIezraETr9iNM@bhelgaas> <ZHZpcli2UmdzHgme@bhelgaas>
-In-Reply-To: <ZHZpcli2UmdzHgme@bhelgaas>
-From:   Jonas Gorski <jonas.gorski@gmail.com>
-Date:   Wed, 31 May 2023 20:48:35 +0200
-Message-ID: <CAOiHx==5YWhDiZP2PyHZiJrmtqRzvqCqoSO59RwuYuR85BezBg@mail.gmail.com>
-Subject: Re: [PATCH v8 0/7] Add pci_dev_for_each_resource() helper and update users
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
-        linux-pci@vger.kernel.org,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        linux-kernel@vger.kernel.org,
-        =?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>,
-        Andrew Lunn <andrew@lunn.ch>, sparclinux@vger.kernel.org,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Russell King <linux@armlinux.org.uk>,
-        linux-acpi@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-        xen-devel@lists.xenproject.org, Matt Turner <mattst88@gmail.com>,
-        Anatolij Gustschin <agust@denx.de>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Niklas Schnelle <schnelle@linux.ibm.com>,
-        Richard Henderson <richard.henderson@linaro.org>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        with ESMTP id S229542AbjEaUei (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 31 May 2023 16:34:38 -0400
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 125F9121;
+        Wed, 31 May 2023 13:34:36 -0700 (PDT)
+Received: from [192.168.1.103] (31.173.87.218) by msexch01.omp.ru
+ (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Wed, 31 May
+ 2023 23:34:26 +0300
+From:   Sergey Shtylyov <s.shtylyov@omp.ru>
+Subject: [PATCH v5] sh: avoid using IRQ0 on SH3/4
+To:     Rich Felker <dalias@libc.org>,
         John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Juergen Gross <jgross@suse.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        Randy Dunlap <rdunlap@infradead.org>,
-        linux-mips@vger.kernel.org,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-        linux-alpha@vger.kernel.org,
-        =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Maciej W. Rozycki" <macro@orcam.me.uk>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        <linux-sh@vger.kernel.org>
+CC:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        <linux-kernel@vger.kernel.org>
+Organization: Open Mobile Platform
+Message-ID: <197b4ccb-2dc8-add6-02a5-2e241b15a5f9@omp.ru>
+Date:   Wed, 31 May 2023 23:34:26 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [31.173.87.218]
+X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
+ (10.188.4.12)
+X-KSE-ServerInfo: msexch01.omp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.59, Database issued on: 05/31/2023 20:12:40
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 59
+X-KSE-AntiSpam-Info: Lua profiles 177762 [May 31 2023]
+X-KSE-AntiSpam-Info: Version: 5.9.59.0
+X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
+X-KSE-AntiSpam-Info: LuaCore: 515 515 1b17fc6ab778ab3730d780f30d802773a7d822ac
+X-KSE-AntiSpam-Info: {rep_avail}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: {relay has no DNS name}
+X-KSE-AntiSpam-Info: {SMTP from is not routable}
+X-KSE-AntiSpam-Info: {Found in DNSBL: 31.173.87.218 in (user)
+ b.barracudacentral.org}
+X-KSE-AntiSpam-Info: 31.173.87.218:7.1.2;127.0.0.199:7.1.2;omp.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1
+X-KSE-AntiSpam-Info: ApMailHostAddress: 31.173.87.218
+X-KSE-AntiSpam-Info: {DNS response errors}
+X-KSE-AntiSpam-Info: Rate: 59
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
+ smtp.mailfrom=omp.ru;dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 05/31/2023 20:21:00
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 5/31/2023 2:11:00 PM
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi,
+Now that IRQ0 is no longer returned by platform_get_irq() and its ilk (they
+now return -EINVAL instead).  However, the code supporting SH3/4 SoCs still
+maps the IRQ #s starting at 0 -- modify that code to start the IRQ #s from
+16 instead.
 
-On Tue, 30 May 2023 at 23:34, Bjorn Helgaas <helgaas@kernel.org> wrote:
-> On Fri, May 12, 2023 at 02:48:51PM -0500, Bjorn Helgaas wrote:
-> > On Fri, May 12, 2023 at 01:56:29PM +0300, Andy Shevchenko wrote:
-> > > On Tue, May 09, 2023 at 01:21:22PM -0500, Bjorn Helgaas wrote:
-> > > > On Tue, Apr 04, 2023 at 11:11:01AM -0500, Bjorn Helgaas wrote:
-> > > > > On Thu, Mar 30, 2023 at 07:24:27PM +0300, Andy Shevchenko wrote:
-> > > > > > Provide two new helper macros to iterate over PCI device resources and
-> > > > > > convert users.
-> > > >
-> > > > > Applied 2-7 to pci/resource for v6.4, thanks, I really like this!
-> > > >
-> > > > This is 09cc90063240 ("PCI: Introduce pci_dev_for_each_resource()")
-> > > > upstream now.
-> > > >
-> > > > Coverity complains about each use,
-> > >
-> > > It needs more clarification here. Use of reduced variant of the
-> > > macro or all of them? If the former one, then I can speculate that
-> > > Coverity (famous for false positives) simply doesn't understand `for
-> > > (type var; var ...)` code.
-> >
-> > True, Coverity finds false positives.  It flagged every use in
-> > drivers/pci and drivers/pnp.  It didn't mention the arch/alpha, arm,
-> > mips, powerpc, sh, or sparc uses, but I think it just didn't look at
-> > those.
-> >
-> > It flagged both:
-> >
-> >   pbus_size_io    pci_dev_for_each_resource(dev, r)
-> >   pbus_size_mem   pci_dev_for_each_resource(dev, r, i)
-> >
-> > Here's a spreadsheet with a few more details (unfortunately I don't
-> > know how to make it dump the actual line numbers or analysis like I
-> > pasted below, so "pci_dev_for_each_resource" doesn't appear).  These
-> > are mostly in the "Drivers-PCI" component.
-> >
-> > https://docs.google.com/spreadsheets/d/1ohOJwxqXXoDUA0gwopgk-z-6ArLvhN7AZn4mIlDkHhQ/edit?usp=sharing
-> >
-> > These particular reports are in the "High Impact Outstanding" tab.
->
-> Where are we at?  Are we going to ignore this because some Coverity
-> reports are false positives?
+The patch should mostly affect the AP-SH4A-3A/AP-SH4AD-0A boards as they
+indeed use IRQ0 for the SMSC911x compatible Ethernet chip...
 
-Looking at the code I understand where coverity is coming from:
+Fixes: ce753ad1549c ("platform: finally disallow IRQ0 in platform_get_irq() and its ilk")
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 
-#define __pci_dev_for_each_res0(dev, res, ...)                         \
-       for (unsigned int __b = 0;                                      \
-            res = pci_resource_n(dev, __b), __b < PCI_NUM_RESOURCES;   \
-            __b++)
+---
+The patch is against Linus Torvalds' 'linux.git' repo.
 
- res will be assigned before __b is checked for being less than
-PCI_NUM_RESOURCES, making it point to behind the array at the end of
-the last loop iteration.
+Changes in version 5:
+- updated the patch description and the "Fixes:" tag as the patch disallowing
+  the use of IRQ0 was merged meanwhile.
 
-Rewriting the test expression as
+Changes in version 4:
+- fixed up the off-chip base IRQ #s for the Dreamcast/Highlander/R2D/SE7724
+  boards.
 
-__b < PCI_NUM_RESOURCES && (res = pci_resource_n(dev, __b));
+Changes in version 3:
+- added an appropriate Fixes: tag and added a passage about it to the patch
+  description;
+- added actual cases of the boards using IRQ0 to the patch description;
+- added Geert Uytterhoeven's and John Paul Adrian Glaubitz's tags;
+- updated the link to point to the version 2 of the patch.
 
-should avoid the (coverity) warning by making use of lazy evaluation.
+Changes in version 2:
+- changed cmp/ge to cmp/hs in the assembly code.
 
-It probably makes the code slightly less performant as res will now be
-checked for being not NULL (which will always be true), but I doubt it
-will be significant (or in any hot paths).
+ arch/sh/include/mach-common/mach/highlander.h |    2 +-
+ arch/sh/include/mach-common/mach/r2d.h        |    2 +-
+ arch/sh/include/mach-dreamcast/mach/sysasic.h |    2 +-
+ arch/sh/include/mach-se/mach/se7724.h         |    2 +-
+ arch/sh/kernel/cpu/sh3/entry.S                |    4 ++--
+ include/linux/sh_intc.h                       |    6 +++---
+ 6 files changed, 9 insertions(+), 9 deletions(-)
 
-Regards,
-Jonas
+Index: linux/arch/sh/include/mach-common/mach/highlander.h
+===================================================================
+--- linux.orig/arch/sh/include/mach-common/mach/highlander.h
++++ linux/arch/sh/include/mach-common/mach/highlander.h
+@@ -176,7 +176,7 @@
+ #define IVDR_CK_ON	4		/* iVDR Clock ON */
+ #endif
+ 
+-#define HL_FPGA_IRQ_BASE	200
++#define HL_FPGA_IRQ_BASE	(200 + 16)
+ #define HL_NR_IRL		15
+ 
+ #define IRQ_AX88796		(HL_FPGA_IRQ_BASE + 0)
+Index: linux/arch/sh/include/mach-common/mach/r2d.h
+===================================================================
+--- linux.orig/arch/sh/include/mach-common/mach/r2d.h
++++ linux/arch/sh/include/mach-common/mach/r2d.h
+@@ -47,7 +47,7 @@
+ 
+ #define IRLCNTR1	(PA_BCR + 0)	/* Interrupt Control Register1 */
+ 
+-#define R2D_FPGA_IRQ_BASE	100
++#define R2D_FPGA_IRQ_BASE	(100 + 16)
+ 
+ #define IRQ_VOYAGER		(R2D_FPGA_IRQ_BASE + 0)
+ #define IRQ_EXT			(R2D_FPGA_IRQ_BASE + 1)
+Index: linux/arch/sh/include/mach-dreamcast/mach/sysasic.h
+===================================================================
+--- linux.orig/arch/sh/include/mach-dreamcast/mach/sysasic.h
++++ linux/arch/sh/include/mach-dreamcast/mach/sysasic.h
+@@ -22,7 +22,7 @@
+    takes.
+ */
+ 
+-#define HW_EVENT_IRQ_BASE  48
++#define HW_EVENT_IRQ_BASE  (48 + 16)
+ 
+ /* IRQ 13 */
+ #define HW_EVENT_VSYNC     (HW_EVENT_IRQ_BASE +  5) /* VSync */
+Index: linux/arch/sh/include/mach-se/mach/se7724.h
+===================================================================
+--- linux.orig/arch/sh/include/mach-se/mach/se7724.h
++++ linux/arch/sh/include/mach-se/mach/se7724.h
+@@ -37,7 +37,7 @@
+ #define IRQ2_IRQ        evt2irq(0x640)
+ 
+ /* Bits in IRQ012 registers */
+-#define SE7724_FPGA_IRQ_BASE	220
++#define SE7724_FPGA_IRQ_BASE	(220 + 16)
+ 
+ /* IRQ0 */
+ #define IRQ0_BASE	SE7724_FPGA_IRQ_BASE
+Index: linux/arch/sh/kernel/cpu/sh3/entry.S
+===================================================================
+--- linux.orig/arch/sh/kernel/cpu/sh3/entry.S
++++ linux/arch/sh/kernel/cpu/sh3/entry.S
+@@ -470,9 +470,9 @@ ENTRY(handle_interrupt)
+ 	mov	r4, r0		! save vector->jmp table offset for later
+ 
+ 	shlr2	r4		! vector to IRQ# conversion
+-	add	#-0x10, r4
+ 
+-	cmp/pz	r4		! is it a valid IRQ?
++	mov	#0x10, r5
++	cmp/hs	r5, r4		! is it a valid IRQ?
+ 	bt	10f
+ 
+ 	/*
+Index: linux/include/linux/sh_intc.h
+===================================================================
+--- linux.orig/include/linux/sh_intc.h
++++ linux/include/linux/sh_intc.h
+@@ -13,9 +13,9 @@
+ /*
+  * Convert back and forth between INTEVT and IRQ values.
+  */
+-#ifdef CONFIG_CPU_HAS_INTEVT
+-#define evt2irq(evt)		(((evt) >> 5) - 16)
+-#define irq2evt(irq)		(((irq) + 16) << 5)
++#ifdef CONFIG_CPU_HAS_INTEVT	/* Avoid IRQ0 (invalid for platform devices) */
++#define evt2irq(evt)		((evt) >> 5)
++#define irq2evt(irq)		((irq) << 5)
+ #else
+ #define evt2irq(evt)		(evt)
+ #define irq2evt(irq)		(irq)
