@@ -2,69 +2,74 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B9132720F6E
-	for <lists+linux-sh@lfdr.de>; Sat,  3 Jun 2023 12:40:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5E2471FCEB
+	for <lists+linux-sh@lfdr.de>; Fri,  2 Jun 2023 11:01:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234630AbjFCKkT (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sat, 3 Jun 2023 06:40:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51000 "EHLO
+        id S234591AbjFBJBg convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-sh@lfdr.de>); Fri, 2 Jun 2023 05:01:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236060AbjFCKkO (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sat, 3 Jun 2023 06:40:14 -0400
-X-Greylist: delayed 4199 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 03 Jun 2023 03:39:52 PDT
-Received: from mail.webtopbits.pl (mail.webtopbits.pl [195.231.64.176])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3B9E1707
-        for <linux-sh@vger.kernel.org>; Sat,  3 Jun 2023 03:39:52 -0700 (PDT)
-Received: by mail.webtopbits.pl (Postfix, from userid 1001)
-        id EC455A38F6; Fri,  2 Jun 2023 09:51:02 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=webtopbits.pl;
-        s=mail; t=1685695869;
-        bh=Eh8ECMiYd4baGAwPAzhz8mhJACXX7NSRkYjh+plaY18=;
-        h=Date:From:To:Subject:From;
-        b=aHVC4tPGpJvnfWsJ7G2xGcMlufT5UGz7yTSbF9HFOGvCeBOzHrr0LG+EsrujECPJ8
-         9rHhE7VH7w3farmvYMNw9wlh4tVZdYFIeQEWApV74u2qHY10SdSpgMM11GW/pCQ2tr
-         JlqPxJeJYc11G7sBjbdUoW7iUArRXK8W1WvDQ2sZBwR8hAOJ7wF6WTGicD1zO8D4k5
-         5p5+lV1/VwenXkEtidyCxk0CDICzE4eYbqVXexZbKhzRQe5J40C0WyBaAhkWWGF50B
-         LsFZREeVCaBfPetiRGrmqI6OTcJspCamYmQQMorrOzDX5UdbTBA09mzj7Vu7Z3tltz
-         /y6RpzY88PB1A==
-Received: by mail.webtopbits.pl for <linux-sh@vger.kernel.org>; Fri,  2 Jun 2023 08:50:56 GMT
-Message-ID: <20230602085530-0.1.8w.5kt0.0.t3zj5o535n@webtopbits.pl>
-Date:   Fri,  2 Jun 2023 08:50:56 GMT
-From:   "Kamil Durjasz" <kamil.durjasz@webtopbits.pl>
-To:     <linux-sh@vger.kernel.org>
-Subject: =?UTF-8?Q?Wy=C5=BCsza_konwersja_w_e-sklepie_?=
-X-Mailer: mail.webtopbits.pl
-MIME-Version: 1.0
+        with ESMTP id S234774AbjFBJBN (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 2 Jun 2023 05:01:13 -0400
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C054CE51;
+        Fri,  2 Jun 2023 02:01:11 -0700 (PDT)
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.95)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1q50eh-001crI-3l; Fri, 02 Jun 2023 11:01:07 +0200
+Received: from ip5b40320d.dynamic.kabel-deutschland.de ([91.64.50.13] helo=suse-laptop.fritz.box)
+          by inpost2.zedat.fu-berlin.de (Exim 4.95)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1q50eg-0036yt-To; Fri, 02 Jun 2023 11:01:07 +0200
+Message-ID: <1df63fac0075558850331210c28cb8fa534dc116.camel@physik.fu-berlin.de>
+Subject: Re: [PATCH v6] sh: avoid using IRQ0 on SH3/4
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To:     Sergey Shtylyov <s.shtylyov@omp.ru>, Rich Felker <dalias@libc.org>,
+        linux-sh@vger.kernel.org
+Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        linux-kernel@vger.kernel.org
+Date:   Fri, 02 Jun 2023 11:01:06 +0200
+In-Reply-To: <71105dbf-cdb0-72e1-f9eb-eeda8e321696@omp.ru>
+References: <71105dbf-cdb0-72e1-f9eb-eeda8e321696@omp.ru>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8BIT
+User-Agent: Evolution 3.48.1 
+MIME-Version: 1.0
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 91.64.50.13
+X-ZEDAT-Hint: PO
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Dzie=C5=84 dobry,
+Hi Sergey!
 
-w jaki spos=C3=B3b docieraj=C4=85 Pa=C5=84stwo do odbiorc=C3=B3w?
+On Thu, 2023-06-01 at 23:22 +0300, Sergey Shtylyov wrote:
+> IRQ0 is no longer returned by platform_get_irq() and its ilk -- they now
+> return -EINVAL instead.  However, the kernel code supporting SH3/4 based
+> SoCs still maps the IRQ #s starting at 0 -- modify that code to start the
+> IRQ #s from 16 instead.
+> 
+> The patch should mostly affect the AP-SH4A-3A/AP-SH4AD-0A boards as they
+> indeed are using IRQ0 for the SMSC911x compatible Ethernet chip...
 
-Tworzymy pot=C4=99=C5=BCne narz=C4=99dzia sprzeda=C5=BCy, kt=C3=B3re pozw=
-alaj=C4=85 kompleksowo rozwi=C4=85za=C4=87 problemy potencjalnych klient=C3=
-=B3w i skutecznie wp=C5=82yn=C4=85=C4=87 na ich decyzje zakupowe.=20
+I don't have time today, but I will look at all current SH patches over the
+weekend. Thanks a lot for being so persistent.
 
-Skupiamy si=C4=99 na Pa=C5=84stwa potrzebach zwi=C4=85zanych z obs=C5=82u=
-g=C4=85 sklepu, oczekiwaniach i planach sprzeda=C5=BCowych. Szczeg=C3=B3=C5=
-=82owo dopasowujemy grafik=C4=99, funkcjonalno=C5=9Bci, struktur=C4=99 i =
-mikrointerakcje do Pa=C5=84stwa grupy docelowej, co przek=C5=82ada si=C4=99=
- na oczekiwane rezultaty.
+Adrian
 
-Ch=C4=99tnie przedstawi=C4=99 dotychczasowe realizacje, aby mogli Pa=C5=84=
-stwo przekona=C4=87 si=C4=99 o naszych mo=C5=BCliwo=C5=9Bciach. Mog=C4=99=
- si=C4=99 skontaktowa=C4=87?
-
-
-Pozdrawiam
-Kamil Durjasz
+-- 
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
