@@ -2,66 +2,139 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 185F172204A
-	for <lists+linux-sh@lfdr.de>; Mon,  5 Jun 2023 09:57:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EA9A72283D
+	for <lists+linux-sh@lfdr.de>; Mon,  5 Jun 2023 16:08:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231874AbjFEH5I (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 5 Jun 2023 03:57:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46348 "EHLO
+        id S234306AbjFEOIV (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 5 Jun 2023 10:08:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231894AbjFEH4o (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 5 Jun 2023 03:56:44 -0400
-Received: from mail.mahavavy.com (mail.mahavavy.com [92.222.170.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8790A12A
-        for <linux-sh@vger.kernel.org>; Mon,  5 Jun 2023 00:56:32 -0700 (PDT)
-Received: by mail.mahavavy.com (Postfix, from userid 1002)
-        id 4387422052; Mon,  5 Jun 2023 07:56:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mahavavy.com; s=mail;
-        t=1685951790; bh=IfqQW79nVX/qUpmHcJiWDpV9BQnOf/s+Zcq9ON74QJY=;
-        h=Date:From:To:Subject:From;
-        b=RvYbzlpvOqZEcxT/Vm2cAebUEfYjjerL7Yrd1H9wcyO1D3pMkvzsH7Zyl7tc+/jYI
-         RciN/QqolsqXdClbaZvOLuZz2cWR/eth/ynkgr+Vt2PwBplmaSYDsjioJj3PmnOgde
-         Naqc3kOqt/qhTmcbReQwZ1H4FIj4OW6dUmiGWCuzKHwG80NORg5Bi1bX8fo8N/cbTB
-         Qv1qCNH+aTe71f8pE0F8ESoG337p75OUlB6faVNy6yFxE3yyYZ0hePqIlPRtg8wa95
-         TrVPwU8G27pa2GhvykDkaD4XXa7p+Ye1tBYx6XX+8j0JBWzPvrFc4L7fwi1c+ky3RK
-         /XnFqAHCLjgxw==
-Received: by mail.mahavavy.com for <linux-sh@vger.kernel.org>; Mon,  5 Jun 2023 07:56:22 GMT
-Message-ID: <20230605064500-0.1.2x.5szs.0.m7aer4kqg4@mahavavy.com>
-Date:   Mon,  5 Jun 2023 07:56:22 GMT
-From:   =?UTF-8?Q? "Kristi=C3=A1n_Plet=C3=A1nek" ?= 
-        <kristian.pletanek@mahavavy.com>
-To:     <linux-sh@vger.kernel.org>
-Subject: =?UTF-8?Q?Tlakov=C4=9B_lit=C3=BD?=
-X-Mailer: mail.mahavavy.com
+        with ESMTP id S234298AbjFEOH7 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 5 Jun 2023 10:07:59 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C8F2E5C;
+        Mon,  5 Jun 2023 07:07:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1685974071; x=1717510071;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=zjA9XYetqLmj2er7YOpXmYqZcR8z8Fh+g5Flt9xdytk=;
+  b=O96WqxzlUCNQyd33mgmV+U+gO7Lgr+/55QF6BKqVKFY53MIvHhzdcl4N
+   xdGbsU6vvWdH65EhEc1Dup08XLUzSGM/ENIdjVfI38q1DmbrtZ7RqIXSU
+   XFhU8HQpR0b9EMsblU4xIi2zBUPnZaOK6MXv7t6Th5nf7GVtcKncqMWRs
+   2pA+rVgzMjtJx8OUe2PgpIprtmvCUcz6OINPgM06ruHWparvphAN7ftf2
+   GODvFHSgy+5VSlcBcv7oGKlEdMT2nWOvsjhUn0zTnzNTLi57F2vd8qIMa
+   fuMqRNsqppppAcn0BAHJHrQ7FODn+RVT8PBKus4oetqfPBskfYs5StpT2
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10732"; a="335993888"
+X-IronPort-AV: E=Sophos;i="6.00,217,1681196400"; 
+   d="scan'208";a="335993888"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2023 07:04:20 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10732"; a="882915325"
+X-IronPort-AV: E=Sophos;i="6.00,217,1681196400"; 
+   d="scan'208";a="882915325"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga005.jf.intel.com with ESMTP; 05 Jun 2023 07:04:09 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1q6AoX-001O9h-1D;
+        Mon, 05 Jun 2023 17:04:05 +0300
+Date:   Mon, 5 Jun 2023 17:04:05 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     Jonas Gorski <jonas.gorski@gmail.com>,
+        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        Andrew Lunn <andrew@lunn.ch>, sparclinux@vger.kernel.org,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Russell King <linux@armlinux.org.uk>,
+        linux-acpi@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        xen-devel@lists.xenproject.org, Matt Turner <mattst88@gmail.com>,
+        Anatolij Gustschin <agust@denx.de>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        Richard Henderson <richard.henderson@linaro.org>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Juergen Gross <jgross@suse.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+        linuxppc-dev@lists.ozlabs.org,
+        Randy Dunlap <rdunlap@infradead.org>,
+        linux-mips@vger.kernel.org,
+        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+        linux-alpha@vger.kernel.org,
+        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        "Maciej W. Rozycki" <macro@orcam.me.uk>
+Subject: Re: [PATCH v8 0/7] Add pci_dev_for_each_resource() helper and update
+ users
+Message-ID: <ZH3rVcSr+m8DHmo9@smile.fi.intel.com>
+References: <CAOiHx==5YWhDiZP2PyHZiJrmtqRzvqCqoSO59RwuYuR85BezBg@mail.gmail.com>
+ <ZHe8dKb3f392MfBO@bhelgaas>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,MIXED_ES,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZHe8dKb3f392MfBO@bhelgaas>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Dobr=C3=A9 r=C3=A1no,
+On Wed, May 31, 2023 at 04:30:28PM -0500, Bjorn Helgaas wrote:
+> On Wed, May 31, 2023 at 08:48:35PM +0200, Jonas Gorski wrote:
 
-zaji=C5=A1=C5=A5ujeme technologii tlakov=C3=A9ho lit=C3=AD hlin=C3=ADku.
+...
 
-M=C3=A1me v=C3=BDrobn=C3=AD z=C3=A1vody v Polsku, =C5=A0v=C3=A9dsku a =C4=
-=8C=C3=ADn=C4=9B se schopnost=C3=AD flexibiln=C4=9B p=C5=99esouvat v=C3=BD=
-robu mezi lokalitami.
+> > Looking at the code I understand where coverity is coming from:
+> > 
+> > #define __pci_dev_for_each_res0(dev, res, ...)                         \
+> >        for (unsigned int __b = 0;                                      \
+> >             res = pci_resource_n(dev, __b), __b < PCI_NUM_RESOURCES;   \
+> >             __b++)
+> > 
+> >  res will be assigned before __b is checked for being less than
+> > PCI_NUM_RESOURCES, making it point to behind the array at the end of
+> > the last loop iteration.
+> > 
+> > Rewriting the test expression as
+> > 
+> > __b < PCI_NUM_RESOURCES && (res = pci_resource_n(dev, __b));
+> > 
+> > should avoid the (coverity) warning by making use of lazy evaluation.
+> > 
+> > It probably makes the code slightly less performant as res will now be
+> > checked for being not NULL (which will always be true), but I doubt it
+> > will be significant (or in any hot paths).
+> 
+> Thanks a lot for looking into this!  I think you're right, and I think
+> the rewritten expression is more logical as well.  Do you want to post
+> a patch for it?
 
-Na=C5=A1e lic=C3=AD bu=C5=88ky jsou v=C4=9Bt=C5=A1inou automatick=C3=A9 n=
-ebo poloautomatick=C3=A9, co=C5=BE umo=C5=BE=C5=88uje v=C3=BDrobu velk=C3=
-=BDch v=C3=BDrobn=C3=ADch s=C3=A9ri=C3=AD s vysokou flexibilitou detail=C5=
-=AF.
-=20
-Poskytujeme podporu v ka=C5=BEd=C3=A9 f=C3=A1zi v=C3=BDvoje projektu, vyv=
-=C3=ADj=C3=ADme strukturu detailu.
+Gimme some time, I was on a long leave and now it's a pile to handle.
 
-Cht=C4=9Bli byste mluvit o spolupr=C3=A1ci v t=C3=A9to oblasti?
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Pozdravy
-Kristi=C3=A1n Plet=C3=A1nek
+
