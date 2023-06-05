@@ -2,74 +2,75 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5E2471FCEB
-	for <lists+linux-sh@lfdr.de>; Fri,  2 Jun 2023 11:01:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 647E2721FF3
+	for <lists+linux-sh@lfdr.de>; Mon,  5 Jun 2023 09:46:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234591AbjFBJBg convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-sh@lfdr.de>); Fri, 2 Jun 2023 05:01:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58920 "EHLO
+        id S230150AbjFEHq3 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 5 Jun 2023 03:46:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234774AbjFBJBN (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 2 Jun 2023 05:01:13 -0400
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C054CE51;
-        Fri,  2 Jun 2023 02:01:11 -0700 (PDT)
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.95)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1q50eh-001crI-3l; Fri, 02 Jun 2023 11:01:07 +0200
-Received: from ip5b40320d.dynamic.kabel-deutschland.de ([91.64.50.13] helo=suse-laptop.fritz.box)
-          by inpost2.zedat.fu-berlin.de (Exim 4.95)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1q50eg-0036yt-To; Fri, 02 Jun 2023 11:01:07 +0200
-Message-ID: <1df63fac0075558850331210c28cb8fa534dc116.camel@physik.fu-berlin.de>
-Subject: Re: [PATCH v6] sh: avoid using IRQ0 on SH3/4
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To:     Sergey Shtylyov <s.shtylyov@omp.ru>, Rich Felker <dalias@libc.org>,
-        linux-sh@vger.kernel.org
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        linux-kernel@vger.kernel.org
-Date:   Fri, 02 Jun 2023 11:01:06 +0200
-In-Reply-To: <71105dbf-cdb0-72e1-f9eb-eeda8e321696@omp.ru>
-References: <71105dbf-cdb0-72e1-f9eb-eeda8e321696@omp.ru>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-User-Agent: Evolution 3.48.1 
+        with ESMTP id S230147AbjFEHqG (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 5 Jun 2023 03:46:06 -0400
+X-Greylist: delayed 579 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 05 Jun 2023 00:45:15 PDT
+Received: from mail.mojafirma24biz.pl (mail.mojafirma24biz.pl [94.177.230.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 058501711
+        for <linux-sh@vger.kernel.org>; Mon,  5 Jun 2023 00:45:15 -0700 (PDT)
+Received: by mail.mojafirma24biz.pl (Postfix, from userid 1002)
+        id 663EC82443; Mon,  5 Jun 2023 09:35:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mojafirma24biz.pl;
+        s=mail; t=1685950533;
+        bh=KdfmXOOTUiU1rPdxFho8h7/xAjTXI1yaanga5GRZkRI=;
+        h=Date:From:To:Subject:From;
+        b=i6gJfZW8YURw3PpbYLpw1H6tx9zgsaK6cJWwQGsMDHwpDu94LfVy/PdS/zxU49ICR
+         jQZcA1+TlieuCYymA1LCaN51EhrV48IQXoTg5mYUMq8euilEoexDYu4xaRwH13YC4L
+         ibQVvRbDsBqGer78FJs9Xxg2Jk/QkxPIlAgtkaBIsC99WCMIgNsXsUl4mxRmkhqf/5
+         ZTsnkOPiqN5SC3HPIBFChotFFNrzX7BVdtOk72M+yaIIVqHV1jaUHcrCQPGoLGq9Sz
+         LP3FGfSHsTkZPa1/nzGr1vpD8YACFqWxcH4XvKpp9HRX+u8nvOKZA0+ybJpsaRhPQC
+         HCCMDgdku1G7A==
+Received: by mail.mojafirma24biz.pl for <linux-sh@vger.kernel.org>; Mon,  5 Jun 2023 07:35:30 GMT
+Message-ID: <20230605084500-0.1.o.23il.0.8eqanlukf8@mojafirma24biz.pl>
+Date:   Mon,  5 Jun 2023 07:35:30 GMT
+From:   "Adam Wyrwisz" <adam.wyrwisz@mojafirma24biz.pl>
+To:     <linux-sh@vger.kernel.org>
+Subject: Wsparcie w finansowaniu fotowoltaiki
+X-Mailer: mail.mojafirma24biz.pl
 MIME-Version: 1.0
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 91.64.50.13
-X-ZEDAT-Hint: PO
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_CSS_A,URIBL_DBL_SPAM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Sergey!
+Szanowni Pa=C5=84stwo,
 
-On Thu, 2023-06-01 at 23:22 +0300, Sergey Shtylyov wrote:
-> IRQ0 is no longer returned by platform_get_irq() and its ilk -- they now
-> return -EINVAL instead.  However, the kernel code supporting SH3/4 based
-> SoCs still maps the IRQ #s starting at 0 -- modify that code to start the
-> IRQ #s from 16 instead.
-> 
-> The patch should mostly affect the AP-SH4A-3A/AP-SH4AD-0A boards as they
-> indeed are using IRQ0 for the SMSC911x compatible Ethernet chip...
+Czy w obliczu ci=C4=85gle rosn=C4=85cych cen produkt=C3=B3w i us=C5=82ug =
+zastanawiali si=C4=99 Pa=C5=84stwo nad sposobami obni=C5=BCenia koszt=C3=B3=
+w prowadzenia dzia=C5=82alno=C5=9Bci? Jednym z efektywnych rozwi=C4=85za=C5=
+=84 jest zainstalowanie system=C3=B3w fotowoltaicznych.
 
-I don't have time today, but I will look at all current SH patches over the
-weekend. Thanks a lot for being so persistent.
+Dla wszystkich zainteresowanych redukcj=C4=85 koszt=C3=B3w energii elektr=
+ycznej, oferujemy kompleksow=C4=85 obs=C5=82ug=C4=99 inwestycji w fotowol=
+taik=C4=99. Jeste=C5=9Bmy jedyn=C4=85 firm=C4=85 na rynku, kt=C3=B3ra zap=
+ewnia 12-letni=C4=85 gwarancj=C4=99, przeprowadza audyt po monta=C5=BCu o=
+raz przeprowadza kalkulacj=C4=99 oszcz=C4=99dno=C5=9Bci po instalacji sys=
+temu fotowoltaicznego.
 
-Adrian
+Dla u=C5=82atwienia, udost=C4=99pniamy opcj=C4=99 leasingu z odroczon=C4=85=
+ sp=C5=82at=C4=85 i bez wk=C5=82adu w=C5=82asnego. Ponadto, zapewniamy ws=
+parcie w pozyskaniu odpowiedniego =C5=BAr=C3=B3d=C5=82a finansowania oraz=
+ pomoc w procesie sk=C5=82adania wniosk=C3=B3w o dotacje.
 
--- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+Czy by=C5=82oby Pa=C5=84stwu mi=C5=82o zapozna=C4=87 si=C4=99 z naszymi d=
+ostosowanymi do Pa=C5=84stwa obiektu mo=C5=BCliwo=C5=9Bciami inwestycji w=
+ fotowoltaik=C4=99?
+
+
+Pozdrawiam
+Adam Wyrwisz
