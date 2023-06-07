@@ -2,57 +2,57 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF467725633
-	for <lists+linux-sh@lfdr.de>; Wed,  7 Jun 2023 09:46:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BE1B725688
+	for <lists+linux-sh@lfdr.de>; Wed,  7 Jun 2023 09:56:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235169AbjFGHp6 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 7 Jun 2023 03:45:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39902 "EHLO
+        id S234932AbjFGH4L (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 7 Jun 2023 03:56:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239625AbjFGHp1 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 7 Jun 2023 03:45:27 -0400
+        with ESMTP id S233661AbjFGH4K (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 7 Jun 2023 03:56:10 -0400
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 708331FF3
-        for <linux-sh@vger.kernel.org>; Wed,  7 Jun 2023 00:42:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 205EB106
+        for <linux-sh@vger.kernel.org>; Wed,  7 Jun 2023 00:55:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1686123740;
+        s=mimecast20190719; t=1686124523;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=VCpM3n9uxiNBqWYphesbEdJfBdCBdNVjlNpr9KooViE=;
-        b=gZ231ichOXO2PsDCf8N78v1GZF4IuEVoChlFzGhTho8vPdadPGv6BCU3+HNWnxwld7AnSZ
-        b37cO1SM9r8OtfjqLmTYk4i8qErdpRr888h3ytpxr8QKrQPgKDU41i/QcWZsNvW3/IteJH
-        awYL3CHNBeBASGhvcg0DRLFpJKnOZSA=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=zrMzVIVwuoeUQwH5hpliW2Jq51XgxuMBmmo9TGjEBeo=;
+        b=YeUTGY09Uhx6OvQQs+YzJ40ATnG/bPIDumBmDHDLKp5E4TMPkxUXmOCvzLQvSJLnv7EDR4
+        fddOecpsQ3JoAYoqc9fz6wnwScB8jK8+1vXZrYwiNvvdt81S5nbhN/53l6NKllvMmHHSR6
+        YGrq2OXUM/yO/mtNo7gfgfhg6sG5xnQ=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-651-O0KWhsL6OB6T4hU8F_mirw-1; Wed, 07 Jun 2023 03:42:19 -0400
-X-MC-Unique: O0KWhsL6OB6T4hU8F_mirw-1
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-30c5d31b567so2492984f8f.2
-        for <linux-sh@vger.kernel.org>; Wed, 07 Jun 2023 00:42:19 -0700 (PDT)
+ us-mta-173-Kwov5eiDN4Gqq5Mcd5qYVw-1; Wed, 07 Jun 2023 03:55:15 -0400
+X-MC-Unique: Kwov5eiDN4Gqq5Mcd5qYVw-1
+Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-4f62d8e527bso1829800e87.1
+        for <linux-sh@vger.kernel.org>; Wed, 07 Jun 2023 00:55:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686123738; x=1688715738;
+        d=1e100.net; s=20221208; t=1686124513; x=1688716513;
         h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
          :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VCpM3n9uxiNBqWYphesbEdJfBdCBdNVjlNpr9KooViE=;
-        b=ZarNLtp6k50+6L93uEayC4BwnssLcvyzNmP0OCqaiDdhwmQgyPXJO+x6TFHjVnR4c9
-         AV8xyDpj3BldjXxqGHSyd4kpO3GGOsYkwy43qNFD0gfsUs6rbMT9TTtocfRDK2ALzqZA
-         q2cp3PbqlKr7BZ5G0dDI4HZEnq5NU5cq81bI9ceyyzA/WzV6RnYoQXruMWbY+ZzGZxC4
-         y48vkhFyvdpud5D97bFShURhHR0q1fgHWBea5i7IVDCbzaMc/o41OTw3CcVqK3GgOPHK
-         dx3xW1euY9BjSCGMc+ouVN8tIKBMe64oZ9MH4didyXRb2B1Zh22r+bEcF5einBk7vHHu
-         8ItA==
-X-Gm-Message-State: AC+VfDxMCoDVbyuUh/d+1pBx8Cvx1FBoISq3cipMUX4RMPFQx8VKo0ar
-        H3W7fDFqlgEO+YgjLrgAjW471+K9Qg0vSY6cGndat/NiEhsHmr/iFK7PJDYM1mjx+INqBY7QE4p
-        lrMT2BjuIXBiOdQnnJ84=
-X-Received: by 2002:adf:eb88:0:b0:30e:45ac:810e with SMTP id t8-20020adfeb88000000b0030e45ac810emr3734966wrn.36.1686123738653;
-        Wed, 07 Jun 2023 00:42:18 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5KZwfGmENtFpHBv/PbHt1rJPnSSY7XTJGSBoIFHGMz6zbW+M0/3e5qcpQ+OgRWGlPIuGCuTA==
-X-Received: by 2002:adf:eb88:0:b0:30e:45ac:810e with SMTP id t8-20020adfeb88000000b0030e45ac810emr3734950wrn.36.1686123738508;
-        Wed, 07 Jun 2023 00:42:18 -0700 (PDT)
+        bh=zrMzVIVwuoeUQwH5hpliW2Jq51XgxuMBmmo9TGjEBeo=;
+        b=lrISeQ0ZumIiuWKKoQe2/zjX/pC70u7Tzl4oY0Z0OBPN8wXFVTcReXldNihbPSPTeP
+         cgM2tNC+7qBRYphYj9/DfmxO2tg9goJ3tqZ0w+iYbMWDipyT+XXwEbg2hyMRpdoISlMx
+         x+SWsNhykaVBCRHcCvRK2t3PAl2oelz53sMiN82+/+HXBhBNVWb1gsz2O/J6Qgc/RcXG
+         enoFZttmyQV71q32r9Hnw76lcR99oD3oP/O7BWIMHLsM8jFKE5SaXPiSsbY722PtDjaq
+         Wt8K9KPCxU9OZ2GqnJojPs5xw9aTpfWfmUcpV7KYlUvnC+9GvNaJTbvPrX8nvT2unkcn
+         FYTQ==
+X-Gm-Message-State: AC+VfDzYQXTCD6cDBSzRh0o8hR6/HZWGhKV0AbiOFDMstEdE9IKxn5OJ
+        P0Ohh4NL600S+x6PFeKQkiPGTvHQbwBv6Rkenb2HQHmYu1xreEObJA81Q3Awtf+n+ahbAhDF0UD
+        4WhK8rKCsxj3W3F7v64A=
+X-Received: by 2002:ac2:5a19:0:b0:4f3:bb14:bd40 with SMTP id q25-20020ac25a19000000b004f3bb14bd40mr1643609lfn.36.1686124513740;
+        Wed, 07 Jun 2023 00:55:13 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5iJQ/YOY5BYJYpCuij2Dk8TuMWnzRrrUQf5oe61hk5gDfo5VjRa0aD7EjgG4gko6svJeBZBA==
+X-Received: by 2002:ac2:5a19:0:b0:4f3:bb14:bd40 with SMTP id q25-20020ac25a19000000b004f3bb14bd40mr1643602lfn.36.1686124513442;
+        Wed, 07 Jun 2023 00:55:13 -0700 (PDT)
 Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id z13-20020a056000110d00b003047dc162f7sm14752394wrw.67.2023.06.07.00.42.18
+        by smtp.gmail.com with ESMTPSA id z9-20020a5d4d09000000b0030e5c8d55f2sm480065wrt.6.2023.06.07.00.55.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Jun 2023 00:42:18 -0700 (PDT)
+        Wed, 07 Jun 2023 00:55:13 -0700 (PDT)
 From:   Javier Martinez Canillas <javierm@redhat.com>
 To:     Thomas Zimmermann <tzimmermann@suse.de>, daniel@ffwll.ch,
         sam@ravnborg.org, deller@gmx.de, geert+renesas@glider.be,
@@ -61,20 +61,20 @@ Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
         linux-sh@vger.kernel.org, linux-omap@vger.kernel.org,
         linux-staging@lists.linux.dev,
         Thomas Zimmermann <tzimmermann@suse.de>
-Subject: Re: [PATCH 06/30] fbdev/aty128fb: Reorder backlight and framebuffer
- init/cleanup
-In-Reply-To: <20230605144812.15241-7-tzimmermann@suse.de>
+Subject: Re: [PATCH 07/30] fbdev/aty128fb: Use hardware device as backlight
+ parent
+In-Reply-To: <20230605144812.15241-8-tzimmermann@suse.de>
 References: <20230605144812.15241-1-tzimmermann@suse.de>
- <20230605144812.15241-7-tzimmermann@suse.de>
-Date:   Wed, 07 Jun 2023 09:42:17 +0200
-Message-ID: <87wn0fg1ly.fsf@minerva.mail-host-address-is-not-set>
+ <20230605144812.15241-8-tzimmermann@suse.de>
+Date:   Wed, 07 Jun 2023 09:55:12 +0200
+Message-ID: <87ttvjg10f.fsf@minerva.mail-host-address-is-not-set>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -84,9 +84,9 @@ X-Mailing-List: linux-sh@vger.kernel.org
 
 Thomas Zimmermann <tzimmermann@suse.de> writes:
 
-> The driver's backlight code requires the framebuffer to be
-> registered. Therefore reorder the init and cleanup calls for
-> both data structures.
+> Use the hardware device in struct fb_info.device as parent of the
+> backlight device. Aligns the driver with the rest of the codebase
+> and prepares fbdev for making struct fb_info.dev optional.
 >
 > Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 > ---
