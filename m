@@ -2,74 +2,108 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1DC174D708
-	for <lists+linux-sh@lfdr.de>; Mon, 10 Jul 2023 15:09:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8725274D7F6
+	for <lists+linux-sh@lfdr.de>; Mon, 10 Jul 2023 15:43:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231435AbjGJNJE (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 10 Jul 2023 09:09:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53644 "EHLO
+        id S233167AbjGJNnM convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-sh@lfdr.de>); Mon, 10 Jul 2023 09:43:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233298AbjGJNIJ (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 10 Jul 2023 09:08:09 -0400
-Received: from mail-ua1-x92f.google.com (mail-ua1-x92f.google.com [IPv6:2607:f8b0:4864:20::92f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76A422114
-        for <linux-sh@vger.kernel.org>; Mon, 10 Jul 2023 06:07:48 -0700 (PDT)
-Received: by mail-ua1-x92f.google.com with SMTP id a1e0cc1a2514c-78701841ccbso1447501241.2
-        for <linux-sh@vger.kernel.org>; Mon, 10 Jul 2023 06:07:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688994463; x=1691586463;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qByi5P9M7+yOnaVyMG6pvW4P+aOlzbN0OZfndybu/l0=;
-        b=qoZL7tybLWbwI3R3w1uNcYrS/hV2TxCv2oMAXBUltuFL40M5tOrn134PgYnPADsO5w
-         s52SZDTPCGGAlGJwa6kaivyVUZmUnLJ0TqYSZfvwYr4O4s7wjd0HZrPnQaza+6Sf2Rfh
-         005j9jVq9/8OF1ByBfRiUtjsGUMLd0HuOeqo4M6ONYZ8dOwoO/KscW+JzwSsV7RGlAlt
-         inLEqCtKtQwOslPb8nkyDhwqDbQJujPrSuPzDrWgI/KYYAcGCf5lwLzGyYmZ/xSoGXmq
-         WQYZjXJFQ6hDrKh+AYW6G8mqhsklHTZFdBZpfgcaDCbrYpqhDzayilqN2fw/VriopHhP
-         co+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688994463; x=1691586463;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qByi5P9M7+yOnaVyMG6pvW4P+aOlzbN0OZfndybu/l0=;
-        b=afqfieIAduINz9OFuMTILESgSd2RZMeytQ5/0thoCqJk8/YAvBm6WBBVbLvvbw6UB7
-         yVdAvbJO0IkJhOF5puye6dy6RyFcDCLIzefmob0pxr06bFurRhUOy/MoVW0VcNp/eKBi
-         ASyoZJqgr1XidAk5pKfy9bisAhj8rZkKopNTJ4XS83iabYPuG7gMtSQcuG5NQU8/bVqO
-         frTFjFkVSAZoss40u5JtAqRt5mpykyswuM+EtLATZ2Q2e0l11ppSMO/2KQheXlHhAMyE
-         1VzMCmcw4xOWtWqKbq0gQGxgQGNosv2oQ/nrhLHVIli4avCfp1pRQ9bBW+weNOdbo+os
-         XcHA==
-X-Gm-Message-State: ABy/qLbD88yiD5hndnTjOE/vbk54npshWSWe3b4S9RV5J2FPd6s/Ez2J
-        QWcZtEszThznPy1yIxEuqnERUx3J8CX5PJ+Z1Os=
-X-Google-Smtp-Source: APBJJlHw17jWBKyGshulmqUFWz3O/wSJq4JqlgIjr4sv01k/uqZbqCVP1A83rghCERQwjMCoh+07XFDSqFtnOBa8TmQ=
-X-Received: by 2002:a67:f8c4:0:b0:443:8a7b:f769 with SMTP id
- c4-20020a67f8c4000000b004438a7bf769mr5871340vsp.30.1688994463241; Mon, 10 Jul
- 2023 06:07:43 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:ab0:64cb:0:b0:781:caa:4818 with HTTP; Mon, 10 Jul 2023
- 06:07:42 -0700 (PDT)
-Reply-To: mr.richard101kone@gmail.com
-From:   Richard Wilson <williamphilip0056@gmail.com>
-Date:   Mon, 10 Jul 2023 06:07:42 -0700
-Message-ID: <CADkLOGZ83AJgH+9PG-OcOTAKsh8Aue_RR5X6cM_ZyU_VS18siA@mail.gmail.com>
-Subject: Hello
-To:     undisclosed-recipients:;
+        with ESMTP id S229907AbjGJNm4 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 10 Jul 2023 09:42:56 -0400
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F163CBA;
+        Mon, 10 Jul 2023 06:42:54 -0700 (PDT)
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.95)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1qIrA9-000zai-Vg; Mon, 10 Jul 2023 15:42:50 +0200
+Received: from p57bd95f7.dip0.t-ipconnect.de ([87.189.149.247] helo=[192.168.178.81])
+          by inpost2.zedat.fu-berlin.de (Exim 4.95)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1qIrA9-001iVF-NK; Mon, 10 Jul 2023 15:42:49 +0200
+Message-ID: <0a47ed93fe90a77180533f8c2e42e402827e8f1c.camel@physik.fu-berlin.de>
+Subject: Re: [PATCH 08/17] arch/sh: Do not assign FBINFO_FLAG_DEFAULT to
+ fb_videomode.flag
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To:     Thomas Zimmermann <tzimmermann@suse.de>, deller@gmx.de,
+        javierm@redhat.com
+Cc:     linux-sh@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        linux-input@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org,
+        linux-geode@lists.infradead.org, linux-nvidia@lists.surfsouth.com,
+        linux-hyperv@vger.kernel.org, linux-omap@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>
+Date:   Mon, 10 Jul 2023 15:42:48 +0200
+In-Reply-To: <20230710130113.14563-9-tzimmermann@suse.de>
+References: <20230710130113.14563-1-tzimmermann@suse.de>
+         <20230710130113.14563-9-tzimmermann@suse.de>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
+Content-Transfer-Encoding: 8BIT
+User-Agent: Evolution 3.48.4 
+MIME-Version: 1.0
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 87.189.149.247
+X-ZEDAT-Hint: PO
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
--- 
+Hi Thomas!
 
-Dear
-I am contacting you to assist retrieve his huge deposit Mr. Alexander
-left in the bank before its get confiscated by the bank. Get back to
-me for more detail's
-Barr's Richard Wilson
+On Mon, 2023-07-10 at 14:50 +0200, Thomas Zimmermann wrote:
+> FBINFO_FLAG_DEFAULT is a flag for a framebuffer in struct fb_info.
+> Flags for videomodes are prefixed with FB_MODE_. FBINFO_FLAG_DEFAULT
+> is 0 and the static declaration already clears the memory area of
+> sh7763fb_videomode. So remove the assignment.
+> 
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Cc: Rich Felker <dalias@libc.org>
+> Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+> ---
+>  arch/sh/boards/mach-sh7763rdp/setup.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/arch/sh/boards/mach-sh7763rdp/setup.c b/arch/sh/boards/mach-sh7763rdp/setup.c
+> index 97e715e4e9b3..345f2b76c85a 100644
+> --- a/arch/sh/boards/mach-sh7763rdp/setup.c
+> +++ b/arch/sh/boards/mach-sh7763rdp/setup.c
+> @@ -119,7 +119,6 @@ static struct fb_videomode sh7763fb_videomode = {
+>  	.vsync_len = 1,
+>  	.sync = 0,
+>  	.vmode = FB_VMODE_NONINTERLACED,
+> -	.flag = FBINFO_FLAG_DEFAULT,
+>  };
+>  
+>  static struct sh7760fb_platdata sh7763fb_def_pdata = {
+
+I would argue that the current code is more readable that your proposed change.
+
+I agree that it's a no-op, but code is not just about functionality but also
+readability, isn't it?
+
+Also, I prefer "sh:" as the architecture prefix, not "arch/sh:".
+
+Thanks,
+Adrian
+
+-- 
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
