@@ -2,132 +2,74 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2611C74D6FB
-	for <lists+linux-sh@lfdr.de>; Mon, 10 Jul 2023 15:09:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1DC174D708
+	for <lists+linux-sh@lfdr.de>; Mon, 10 Jul 2023 15:09:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231304AbjGJNJD (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 10 Jul 2023 09:09:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49788 "EHLO
+        id S231435AbjGJNJE (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 10 Jul 2023 09:09:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233105AbjGJNIC (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 10 Jul 2023 09:08:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE09110C7
-        for <linux-sh@vger.kernel.org>; Mon, 10 Jul 2023 06:06:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1688994333;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=cSSXjKtHNo2g+s4fKQO8ycwZ9VSR9y5qDmg/kPz0J+8=;
-        b=NDekGdoVFuvPxqBPm/p8URYHUEwrlee7pnACszE4CztEXS8QClMi+uhA/7W5iKi6rNAU7A
-        ImwAW4o9H6riexZj7hlloOSE6AgNJcBLna4YcmqgtWhnM3Q8sxoa2otZsO/plrPDDIJjjv
-        S03AAqBX54a0A6gBqFiIzhASVHqu3NQ=
-Received: from mail-yb1-f199.google.com (mail-yb1-f199.google.com
- [209.85.219.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-489-6VD0TKAEPLGbCXeOBTr8tA-1; Mon, 10 Jul 2023 09:05:32 -0400
-X-MC-Unique: 6VD0TKAEPLGbCXeOBTr8tA-1
-Received: by mail-yb1-f199.google.com with SMTP id 3f1490d57ef6-bacfa4ef059so5434323276.2
-        for <linux-sh@vger.kernel.org>; Mon, 10 Jul 2023 06:05:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688994331; x=1691586331;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        with ESMTP id S233298AbjGJNIJ (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 10 Jul 2023 09:08:09 -0400
+Received: from mail-ua1-x92f.google.com (mail-ua1-x92f.google.com [IPv6:2607:f8b0:4864:20::92f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76A422114
+        for <linux-sh@vger.kernel.org>; Mon, 10 Jul 2023 06:07:48 -0700 (PDT)
+Received: by mail-ua1-x92f.google.com with SMTP id a1e0cc1a2514c-78701841ccbso1447501241.2
+        for <linux-sh@vger.kernel.org>; Mon, 10 Jul 2023 06:07:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1688994463; x=1691586463;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cSSXjKtHNo2g+s4fKQO8ycwZ9VSR9y5qDmg/kPz0J+8=;
-        b=a2o5WR3OybfQ4dOSvA3Zn5CpFFiXqcX+PRAqnIu6YTAtz0+uHmsjZSgiRa3UOa9r5Q
-         vyOFlzEvL1QO1AgFdm2gsMLl8B3wxxcO3x9Jh52jy+Y9P9Vdgzguc3b61gAdG5LIfwhC
-         fJaUo8FM+FQQZxadV5K8N7l7RYeMT6JxvaQitBzOdBpHM/QFD7DlxbRcePPR10OaTwRE
-         9z+X60VqvRXkJhGhxCs7bMZFmc6JiIyVlzcs2bzO8af+ioEmo81gLNq0ijQjxJOqbJUl
-         YT3DCHOj1QjY8mdjeOZup9jt69BzpnL7LEEroqz4ArTgCbEKVFtTjL4b9JGaUMM58lfs
-         TY3w==
-X-Gm-Message-State: ABy/qLa8GZGzwC3wHZZJVebh9iGJVDbfCnzh0h0S2CYZ/1FGcAsUw9Zr
-        uNY8Lyu8oBBjvRfuZ48FL6nzPvmZi6iCRaGzDuDpfEZOdZXQcRSJuqc9DNKt7OFQ81+RO0OlEDN
-        hzHzfEU30ldHXcC8knScMIQpd8m1ph0zSWwc=
-X-Received: by 2002:a25:1f02:0:b0:c67:8903:532b with SMTP id f2-20020a251f02000000b00c678903532bmr9557474ybf.44.1688994331565;
-        Mon, 10 Jul 2023 06:05:31 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFYCDVRqXESu2lKlw5OOq57+bm9EWCrFUc3sqkdq7rbGFO3X2AFRnXejnh8LqRK8eFbanSG74Fa5+uKsOptTgw=
-X-Received: by 2002:a25:1f02:0:b0:c67:8903:532b with SMTP id
- f2-20020a251f02000000b00c678903532bmr9557452ybf.44.1688994331376; Mon, 10 Jul
- 2023 06:05:31 -0700 (PDT)
+        bh=qByi5P9M7+yOnaVyMG6pvW4P+aOlzbN0OZfndybu/l0=;
+        b=qoZL7tybLWbwI3R3w1uNcYrS/hV2TxCv2oMAXBUltuFL40M5tOrn134PgYnPADsO5w
+         s52SZDTPCGGAlGJwa6kaivyVUZmUnLJ0TqYSZfvwYr4O4s7wjd0HZrPnQaza+6Sf2Rfh
+         005j9jVq9/8OF1ByBfRiUtjsGUMLd0HuOeqo4M6ONYZ8dOwoO/KscW+JzwSsV7RGlAlt
+         inLEqCtKtQwOslPb8nkyDhwqDbQJujPrSuPzDrWgI/KYYAcGCf5lwLzGyYmZ/xSoGXmq
+         WQYZjXJFQ6hDrKh+AYW6G8mqhsklHTZFdBZpfgcaDCbrYpqhDzayilqN2fw/VriopHhP
+         co+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688994463; x=1691586463;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qByi5P9M7+yOnaVyMG6pvW4P+aOlzbN0OZfndybu/l0=;
+        b=afqfieIAduINz9OFuMTILESgSd2RZMeytQ5/0thoCqJk8/YAvBm6WBBVbLvvbw6UB7
+         yVdAvbJO0IkJhOF5puye6dy6RyFcDCLIzefmob0pxr06bFurRhUOy/MoVW0VcNp/eKBi
+         ASyoZJqgr1XidAk5pKfy9bisAhj8rZkKopNTJ4XS83iabYPuG7gMtSQcuG5NQU8/bVqO
+         frTFjFkVSAZoss40u5JtAqRt5mpykyswuM+EtLATZ2Q2e0l11ppSMO/2KQheXlHhAMyE
+         1VzMCmcw4xOWtWqKbq0gQGxgQGNosv2oQ/nrhLHVIli4avCfp1pRQ9bBW+weNOdbo+os
+         XcHA==
+X-Gm-Message-State: ABy/qLbD88yiD5hndnTjOE/vbk54npshWSWe3b4S9RV5J2FPd6s/Ez2J
+        QWcZtEszThznPy1yIxEuqnERUx3J8CX5PJ+Z1Os=
+X-Google-Smtp-Source: APBJJlHw17jWBKyGshulmqUFWz3O/wSJq4JqlgIjr4sv01k/uqZbqCVP1A83rghCERQwjMCoh+07XFDSqFtnOBa8TmQ=
+X-Received: by 2002:a67:f8c4:0:b0:443:8a7b:f769 with SMTP id
+ c4-20020a67f8c4000000b004438a7bf769mr5871340vsp.30.1688994463241; Mon, 10 Jul
+ 2023 06:07:43 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230710130113.14563-1-tzimmermann@suse.de> <20230710130113.14563-11-tzimmermann@suse.de>
-In-Reply-To: <20230710130113.14563-11-tzimmermann@suse.de>
-From:   Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Date:   Mon, 10 Jul 2023 15:05:19 +0200
-Message-ID: <CAO-hwJLvBpNu1z4qM9+331-oUroh4g5HORL=EZS0nb+HHe+fdw@mail.gmail.com>
-Subject: Re: [PATCH 10/17] hid/picolcd: Remove flag FBINFO_FLAG_DEFAULT from
- fbdev driver
-To:     Thomas Zimmermann <tzimmermann@suse.de>
-Cc:     deller@gmx.de, javierm@redhat.com, linux-sh@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        amd-gfx@lists.freedesktop.org, linux-input@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-staging@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org,
-        linux-geode@lists.infradead.org, linux-nvidia@lists.surfsouth.com,
-        linux-hyperv@vger.kernel.org, linux-omap@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-        =?UTF-8?Q?Bruno_Pr=C3=A9mont?= <bonbons@linux-vserver.org>,
-        Jiri Kosina <jikos@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
+Received: by 2002:ab0:64cb:0:b0:781:caa:4818 with HTTP; Mon, 10 Jul 2023
+ 06:07:42 -0700 (PDT)
+Reply-To: mr.richard101kone@gmail.com
+From:   Richard Wilson <williamphilip0056@gmail.com>
+Date:   Mon, 10 Jul 2023 06:07:42 -0700
+Message-ID: <CADkLOGZ83AJgH+9PG-OcOTAKsh8Aue_RR5X6cM_ZyU_VS18siA@mail.gmail.com>
+Subject: Hello
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+X-Spam-Status: No, score=4.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Mon, Jul 10, 2023 at 3:01=E2=80=AFPM Thomas Zimmermann <tzimmermann@suse=
-.de> wrote:
->
-> The flag FBINFO_FLAG_DEFAULT is 0 and has no effect, as struct
-> fbinfo.flags has been allocated to zero by framebuffer_alloc(). So do
-> not set it.
->
-> Flags should signal differences from the default values. After cleaning
-> up all occurences of FBINFO_FLAG_DEFAULT, the token can be removed.
->
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: "Bruno Pr=C3=A9mont" <bonbons@linux-vserver.org>
-> Cc: Jiri Kosina <jikos@kernel.org>
-> Cc: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+-- 
 
-Acked-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-
-Feel free to take this through the DRI tree (or any other that handles
-FB) with the rest of the series if you want.
-
-Cheers,
-Benjamin
-
-> ---
->  drivers/hid/hid-picolcd_fb.c | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/drivers/hid/hid-picolcd_fb.c b/drivers/hid/hid-picolcd_fb.c
-> index dabcd054dad9..d726aaafb146 100644
-> --- a/drivers/hid/hid-picolcd_fb.c
-> +++ b/drivers/hid/hid-picolcd_fb.c
-> @@ -527,7 +527,6 @@ int picolcd_init_framebuffer(struct picolcd_data *dat=
-a)
->         info->var =3D picolcdfb_var;
->         info->fix =3D picolcdfb_fix;
->         info->fix.smem_len   =3D PICOLCDFB_SIZE*8;
-> -       info->flags =3D FBINFO_FLAG_DEFAULT;
->
->         fbdata =3D info->par;
->         spin_lock_init(&fbdata->lock);
-> --
-> 2.41.0
->
-
+Dear
+I am contacting you to assist retrieve his huge deposit Mr. Alexander
+left in the bank before its get confiscated by the bank. Get back to
+me for more detail's
+Barr's Richard Wilson
