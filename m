@@ -2,79 +2,71 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88C26751FA1
-	for <lists+linux-sh@lfdr.de>; Thu, 13 Jul 2023 13:14:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB4AC752228
+	for <lists+linux-sh@lfdr.de>; Thu, 13 Jul 2023 15:03:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234398AbjGMLOG (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 13 Jul 2023 07:14:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55630 "EHLO
+        id S234626AbjGMNDt (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 13 Jul 2023 09:03:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229913AbjGMLOF (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 13 Jul 2023 07:14:05 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52134211C;
-        Thu, 13 Jul 2023 04:14:03 -0700 (PDT)
-Received: from dggpemm500006.china.huawei.com (unknown [172.30.72.56])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4R1sNg70PRztR5C;
-        Thu, 13 Jul 2023 19:10:59 +0800 (CST)
-Received: from [10.174.178.55] (10.174.178.55) by
- dggpemm500006.china.huawei.com (7.185.36.236) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Thu, 13 Jul 2023 19:13:58 +0800
-Subject: Re: [PATCH v6 02/14] x86/kexec: refactor for kernel/Kconfig.kexec
-To:     Eric DeVolder <eric.devolder@oracle.com>, <linux@armlinux.org.uk>,
-        <catalin.marinas@arm.com>, <will@kernel.org>,
-        <chenhuacai@kernel.org>, <geert@linux-m68k.org>,
-        <tsbogend@alpha.franken.de>,
-        <James.Bottomley@HansenPartnership.com>, <deller@gmx.de>,
-        <ysato@users.sourceforge.jp>, <dalias@libc.org>,
-        <glaubitz@physik.fu-berlin.de>, <tglx@linutronix.de>,
-        <mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
-        <x86@kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-ia64@vger.kernel.org>, <loongarch@lists.linux.dev>,
-        <linux-m68k@lists.linux-m68k.org>, <linux-mips@vger.kernel.org>,
-        <linux-parisc@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
-        <linux-riscv@lists.infradead.org>, <linux-s390@vger.kernel.org>,
-        <linux-sh@vger.kernel.org>
-CC:     <kernel@xen0n.name>, <mpe@ellerman.id.au>, <npiggin@gmail.com>,
-        <christophe.leroy@csgroup.eu>, <paul.walmsley@sifive.com>,
-        <palmer@dabbelt.com>, <aou@eecs.berkeley.edu>, <hca@linux.ibm.com>,
-        <gor@linux.ibm.com>, <agordeev@linux.ibm.com>,
-        <borntraeger@linux.ibm.com>, <svens@linux.ibm.com>,
-        <hpa@zytor.com>, <keescook@chromium.org>, <paulmck@kernel.org>,
-        <peterz@infradead.org>, <frederic@kernel.org>,
-        <akpm@linux-foundation.org>, <ardb@kernel.org>,
-        <samitolvanen@google.com>, <juerg.haefliger@canonical.com>,
-        <arnd@arndb.de>, <rmk+kernel@armlinux.org.uk>,
-        <linus.walleij@linaro.org>, <sebastian.reichel@collabora.com>,
-        <rppt@kernel.org>, <kirill.shutemov@linux.intel.com>,
-        <anshuman.khandual@arm.com>, <ziy@nvidia.com>,
-        <masahiroy@kernel.org>, <ndesaulniers@google.com>,
-        <mhiramat@kernel.org>, <ojeda@kernel.org>, <xin3.li@intel.com>,
-        <tj@kernel.org>, <gregkh@linuxfoundation.org>, <tsi@tuyoix.net>,
-        <bhe@redhat.com>, <hbathini@linux.ibm.com>,
-        <sourabhjain@linux.ibm.com>, <boris.ostrovsky@oracle.com>,
-        <konrad.wilk@oracle.com>
-References: <20230712161545.87870-1-eric.devolder@oracle.com>
- <20230712161545.87870-3-eric.devolder@oracle.com>
-From:   "Leizhen (ThunderTown)" <thunder.leizhen@huawei.com>
-Message-ID: <d8ddd4bd-fbc9-dbe9-f5c3-daf8d89aa46d@huawei.com>
-Date:   Thu, 13 Jul 2023 19:13:57 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        with ESMTP id S234069AbjGMNDo (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 13 Jul 2023 09:03:44 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E6C9173B;
+        Thu, 13 Jul 2023 06:03:42 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 9550221D5A;
+        Thu, 13 Jul 2023 13:03:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1689253421; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=N67kus8L150iwAk6cmNTqy6XkNIgTnRqEe54TsDygpI=;
+        b=Xm0uu0VoNAnznojOCJHWRxuZ8jWAnPVvGr3I7nfDF5JPgc6a4f8t2d6acP9+A1DvfK+wVy
+        sqdChB7z1EWOXbY08AYKZ4qsKzII8hKTgwxEM+EEJZlz40bkKdCB3zn2umJVcvMSOmGT2z
+        948k89xorlN/VV9ANwqxCfHcfvnGfpE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1689253421;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=N67kus8L150iwAk6cmNTqy6XkNIgTnRqEe54TsDygpI=;
+        b=Uv+mmec0lIu+mxMNTxiVXmiIuROgLZECy4OsFJzomoWjltP2RfvpBN02QKZ9/KsNtNf4tF
+        822gSS0XJsgHlDAQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 403F613489;
+        Thu, 13 Jul 2023 13:03:41 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id fbbQDi32r2TVPgAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Thu, 13 Jul 2023 13:03:41 +0000
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+To:     deller@gmx.de, javierm@redhat.com
+Cc:     linux-sh@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        linux-input@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org,
+        linux-geode@lists.infradead.org, linux-nvidia@lists.surfsouth.com,
+        linux-hyperv@vger.kernel.org, linux-omap@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH v2 00/18] fbdev: Remove FBINFO_DEFAULT and FBINFO_FLAG_DEFAULT flags
+Date:   Thu, 13 Jul 2023 14:58:20 +0200
+Message-ID: <20230713130338.31086-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-In-Reply-To: <20230712161545.87870-3-eric.devolder@oracle.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.178.55]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemm500006.china.huawei.com (7.185.36.236)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -82,153 +74,172 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
+Remove the unused flags FBINFO_DEFAULT and FBINFO_FLAG_DEFAULT from
+fbdev and drivers, as briefly discussed at [1]. Both flags were maybe
+useful when fbdev had special handling for driver modules. With
+commit 376b3ff54c9a ("fbdev: Nuke FBINFO_MODULE"), they are both 0
+and have no further effect.
 
+Patches 1 to 7 remove FBINFO_DEFAULT from drivers. Patches 2 to 5
+split this by the way the fb_info struct is being allocated. All flags
+are cleared to zero during the allocation.
 
-On 2023/7/13 0:15, Eric DeVolder wrote:
-> The kexec and crash kernel options are provided in the common
-> kernel/Kconfig.kexec. Utilize the common options and provide
-> the ARCH_SUPPORTS_ and ARCH_SELECTS_ entries to recreate the
-> equivalent set of KEXEC and CRASH options.
-> 
-> Signed-off-by: Eric DeVolder <eric.devolder@oracle.com>
-> ---
->  arch/x86/Kconfig | 92 ++++++++++--------------------------------------
->  1 file changed, 19 insertions(+), 73 deletions(-)
-> 
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index 7422db409770..9767a343f7c2 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -2040,88 +2040,34 @@ config EFI_RUNTIME_MAP
->  
->  source "kernel/Kconfig.hz"
->  
-> -config KEXEC
-> -	bool "kexec system call"
-> -	select KEXEC_CORE
-> -	help
-> -	  kexec is a system call that implements the ability to shutdown your
-> -	  current kernel, and to start another kernel.  It is like a reboot
-> -	  but it is independent of the system firmware.   And like a reboot
-> -	  you can start any kernel with it, not just Linux.
-> -
-> -	  The name comes from the similarity to the exec system call.
-> -
-> -	  It is an ongoing process to be certain the hardware in a machine
-> -	  is properly shutdown, so do not be surprised if this code does not
-> -	  initially work for you.  As of this writing the exact hardware
-> -	  interface is strongly in flux, so no good recommendation can be
-> -	  made.
-> -
-> -config KEXEC_FILE
-> -	bool "kexec file based system call"
-> -	select KEXEC_CORE
-> -	select HAVE_IMA_KEXEC if IMA
-> -	depends on X86_64
-> -	depends on CRYPTO=y
-> -	depends on CRYPTO_SHA256=y
-> -	help
-> -	  This is new version of kexec system call. This system call is
-> -	  file based and takes file descriptors as system call argument
-> -	  for kernel and initramfs as opposed to list of segments as
-> -	  accepted by previous system call.
-> +config ARCH_SUPPORTS_KEXEC
-> +	def_bool y
+Patches 8 to 16 do the same for FBINFO_FLAG_DEFAULT. Patch 8 fixes
+an actual bug in how arch/sh uses the tokne for struct fb_videomode,
+which is unrelated.
 
-In v5, Joel Fernandes seems to suggest you change it to the following form:
-In arch/Kconfig:
-+config ARCH_SUPPORTS_KEXEC
-+	bool
+Patch 17 removes both flag constants from <linux/fb.h> and patch 18
+documents the zero'ed memory returned by framebuffer_alloc().
 
-In arch/x86/Kconfig:
-config X86
-	... ...
-+	select ARCH_SUPPORTS_KEXEC
+v2:
+	* sh: use FB_MODE_IS_UNKNOWN (Adrian)
+	* fix commit messages (Miguel)
+	* document framebuffer_alloc()'s zero'ed memory (Miguel)
 
-In arch/arm64/Kconfig:
-config ARM64
-	... ...
-+	select ARCH_SUPPORTS_KEXEC if PM_SLEEP_SMP
+[1] https://lore.kernel.org/dri-devel/877crer8fm.fsf@minerva.mail-host-address-is-not-set/
 
-etc..
+Thomas Zimmermann (18):
+  drm: Remove flag FBINFO_DEFAULT from fbdev emulation
+  fbdev: Remove flag FBINFO_DEFAULT from fbdev drivers
+  fbdev: Remove flag FBINFO_DEFAULT from fbdev drivers
+  fbdev: Remove flag FBINFO_DEFAULT from fbdev drivers
+  fbdev: Remove flag FBINFO_DEFAULT from fbdev drivers
+  fbdev/fsl-diu-fb: Remove flag FBINFO_DEFAULT
+  vfio-mdev: Remove flag FBINFO_DEFAULT from fbdev sample driver
+  sh: Assign FB_MODE_IS_UNKNOWN to struct fb_videomode.flag
+  auxdisplay: Remove flag FBINFO_FLAG_DEFAULT from fbdev drivers
+  hid/picolcd: Remove flag FBINFO_FLAG_DEFAULT from fbdev driver
+  media: Remove flag FBINFO_FLAG_DEFAULT from fbdev drivers
+  staging: Remove flag FBINFO_FLAG_DEFAULT from fbdev drivers
+  fbdev: Remove flag FBINFO_FLAG_DEFAULT from fbdev drivers
+  fbdev: Remove flag FBINFO_FLAG_DEFAULT from fbdev drivers
+  fbdev/atafb: Remove flag FBINFO_FLAG_DEFAULT
+  fbdev/pxafb: Remove flag FBINFO_FLAG_DEFAULT
+  fbdev: Remove FBINFO_DEFAULT and FBINFO_FLAG_DEFAULT
+  fbdev: Document that framebuffer_alloc() returns zero'ed data
 
-You can refer to ARCH_HAS_DEBUG_VIRTUAL.
-
->  
-> -config ARCH_HAS_KEXEC_PURGATORY
-> -	def_bool KEXEC_FILE
-> +config ARCH_SUPPORTS_KEXEC_FILE
-> +	def_bool X86_64 && CRYPTO && CRYPTO_SHA256
->  
-> -config KEXEC_SIG
-> -	bool "Verify kernel signature during kexec_file_load() syscall"
-> +config ARCH_SELECTS_KEXEC_FILE
-> +	def_bool y
->  	depends on KEXEC_FILE
-> -	help
-> +	select HAVE_IMA_KEXEC if IMA
->  
-> -	  This option makes the kexec_file_load() syscall check for a valid
-> -	  signature of the kernel image.  The image can still be loaded without
-> -	  a valid signature unless you also enable KEXEC_SIG_FORCE, though if
-> -	  there's a signature that we can check, then it must be valid.
-> +config ARCH_HAS_KEXEC_PURGATORY
-> +	def_bool KEXEC_FILE
->  
-> -	  In addition to this option, you need to enable signature
-> -	  verification for the corresponding kernel image type being
-> -	  loaded in order for this to work.
-> +config ARCH_SUPPORTS_KEXEC_SIG
-> +	def_bool y
->  
-> -config KEXEC_SIG_FORCE
-> -	bool "Require a valid signature in kexec_file_load() syscall"
-> -	depends on KEXEC_SIG
-> -	help
-> -	  This option makes kernel signature verification mandatory for
-> -	  the kexec_file_load() syscall.
-> +config ARCH_SUPPORTS_KEXEC_SIG_FORCE
-> +	def_bool y
->  
-> -config KEXEC_BZIMAGE_VERIFY_SIG
-> -	bool "Enable bzImage signature verification support"
-> -	depends on KEXEC_SIG
-> -	depends on SIGNED_PE_FILE_VERIFICATION
-> -	select SYSTEM_TRUSTED_KEYRING
-> -	help
-> -	  Enable bzImage signature verification support.
-> +config ARCH_SUPPORTS_KEXEC_BZIMAGE_VERIFY_SIG
-> +	def_bool y
->  
-> -config CRASH_DUMP
-> -	bool "kernel crash dumps"
-> -	depends on X86_64 || (X86_32 && HIGHMEM)
-> -	help
-> -	  Generate crash dump after being started by kexec.
-> -	  This should be normally only set in special crash dump kernels
-> -	  which are loaded in the main kernel with kexec-tools into
-> -	  a specially reserved region and then later executed after
-> -	  a crash by kdump/kexec. The crash dump kernel must be compiled
-> -	  to a memory address not used by the main kernel or BIOS using
-> -	  PHYSICAL_START, or it must be built as a relocatable image
-> -	  (CONFIG_RELOCATABLE=y).
-> -	  For more details see Documentation/admin-guide/kdump/kdump.rst
-> +config ARCH_SUPPORTS_KEXEC_JUMP
-> +	def_bool y
->  
-> -config KEXEC_JUMP
-> -	bool "kexec jump"
-> -	depends on KEXEC && HIBERNATION
-> -	help
-> -	  Jump between original kernel and kexeced kernel and invoke
-> -	  code in physical address mode via KEXEC
-> +config ARCH_SUPPORTS_CRASH_DUMP
-> +	def_bool X86_64 || (X86_32 && HIGHMEM)
->  
->  config PHYSICAL_START
->  	hex "Physical address where the kernel is loaded" if (EXPERT || CRASH_DUMP)
-> 
+ arch/sh/boards/mach-sh7763rdp/setup.c          | 2 +-
+ drivers/auxdisplay/cfag12864bfb.c              | 1 -
+ drivers/auxdisplay/ht16k33.c                   | 1 -
+ drivers/gpu/drm/drm_fbdev_dma.c                | 1 -
+ drivers/gpu/drm/drm_fbdev_generic.c            | 1 -
+ drivers/gpu/drm/gma500/fbdev.c                 | 2 +-
+ drivers/gpu/drm/radeon/radeon_fbdev.c          | 2 +-
+ drivers/hid/hid-picolcd_fb.c                   | 1 -
+ drivers/media/pci/ivtv/ivtvfb.c                | 1 -
+ drivers/media/test-drivers/vivid/vivid-osd.c   | 1 -
+ drivers/staging/fbtft/fbtft-core.c             | 2 +-
+ drivers/staging/sm750fb/sm750.c                | 1 -
+ drivers/video/fbdev/68328fb.c                  | 2 +-
+ drivers/video/fbdev/acornfb.c                  | 2 +-
+ drivers/video/fbdev/amba-clcd.c                | 1 -
+ drivers/video/fbdev/amifb.c                    | 5 ++---
+ drivers/video/fbdev/arcfb.c                    | 1 -
+ drivers/video/fbdev/asiliantfb.c               | 1 -
+ drivers/video/fbdev/atafb.c                    | 1 -
+ drivers/video/fbdev/atmel_lcdfb.c              | 2 +-
+ drivers/video/fbdev/aty/aty128fb.c             | 1 -
+ drivers/video/fbdev/aty/atyfb_base.c           | 3 +--
+ drivers/video/fbdev/aty/radeon_base.c          | 3 +--
+ drivers/video/fbdev/broadsheetfb.c             | 2 +-
+ drivers/video/fbdev/bw2.c                      | 1 -
+ drivers/video/fbdev/carminefb.c                | 1 -
+ drivers/video/fbdev/cg14.c                     | 2 +-
+ drivers/video/fbdev/cg3.c                      | 1 -
+ drivers/video/fbdev/cg6.c                      | 2 +-
+ drivers/video/fbdev/chipsfb.c                  | 1 -
+ drivers/video/fbdev/cirrusfb.c                 | 3 +--
+ drivers/video/fbdev/clps711x-fb.c              | 1 -
+ drivers/video/fbdev/cobalt_lcdfb.c             | 1 -
+ drivers/video/fbdev/controlfb.c                | 2 +-
+ drivers/video/fbdev/core/fb_info.c             | 3 ++-
+ drivers/video/fbdev/cyber2000fb.c              | 2 +-
+ drivers/video/fbdev/da8xx-fb.c                 | 1 -
+ drivers/video/fbdev/efifb.c                    | 1 -
+ drivers/video/fbdev/ep93xx-fb.c                | 1 -
+ drivers/video/fbdev/ffb.c                      | 3 +--
+ drivers/video/fbdev/fm2fb.c                    | 1 -
+ drivers/video/fbdev/fsl-diu-fb.c               | 2 +-
+ drivers/video/fbdev/g364fb.c                   | 2 +-
+ drivers/video/fbdev/gbefb.c                    | 1 -
+ drivers/video/fbdev/geode/gx1fb_core.c         | 1 -
+ drivers/video/fbdev/geode/gxfb_core.c          | 1 -
+ drivers/video/fbdev/geode/lxfb_core.c          | 1 -
+ drivers/video/fbdev/goldfishfb.c               | 1 -
+ drivers/video/fbdev/grvga.c                    | 2 +-
+ drivers/video/fbdev/gxt4500.c                  | 3 +--
+ drivers/video/fbdev/hecubafb.c                 | 2 +-
+ drivers/video/fbdev/hgafb.c                    | 2 +-
+ drivers/video/fbdev/hitfb.c                    | 2 +-
+ drivers/video/fbdev/hpfb.c                     | 1 -
+ drivers/video/fbdev/hyperv_fb.c                | 2 --
+ drivers/video/fbdev/i740fb.c                   | 2 +-
+ drivers/video/fbdev/i810/i810_main.c           | 4 ++--
+ drivers/video/fbdev/imsttfb.c                  | 3 +--
+ drivers/video/fbdev/imxfb.c                    | 3 +--
+ drivers/video/fbdev/intelfb/intelfbdrv.c       | 5 ++---
+ drivers/video/fbdev/kyro/fbdev.c               | 1 -
+ drivers/video/fbdev/leo.c                      | 1 -
+ drivers/video/fbdev/macfb.c                    | 1 -
+ drivers/video/fbdev/matrox/matroxfb_crtc2.c    | 5 ++---
+ drivers/video/fbdev/maxinefb.c                 | 1 -
+ drivers/video/fbdev/mb862xx/mb862xxfbdrv.c     | 2 +-
+ drivers/video/fbdev/metronomefb.c              | 2 +-
+ drivers/video/fbdev/mmp/fb/mmpfb.c             | 2 +-
+ drivers/video/fbdev/mx3fb.c                    | 1 -
+ drivers/video/fbdev/neofb.c                    | 2 +-
+ drivers/video/fbdev/nvidia/nvidia.c            | 4 ++--
+ drivers/video/fbdev/offb.c                     | 2 +-
+ drivers/video/fbdev/omap/omapfb_main.c         | 1 -
+ drivers/video/fbdev/omap2/omapfb/omapfb-main.c | 1 -
+ drivers/video/fbdev/p9100.c                    | 1 -
+ drivers/video/fbdev/platinumfb.c               | 1 -
+ drivers/video/fbdev/pm2fb.c                    | 3 +--
+ drivers/video/fbdev/pm3fb.c                    | 3 +--
+ drivers/video/fbdev/pmag-aa-fb.c               | 1 -
+ drivers/video/fbdev/pmag-ba-fb.c               | 1 -
+ drivers/video/fbdev/pmagb-b-fb.c               | 1 -
+ drivers/video/fbdev/ps3fb.c                    | 2 +-
+ drivers/video/fbdev/pvr2fb.c                   | 2 +-
+ drivers/video/fbdev/pxa168fb.c                 | 2 +-
+ drivers/video/fbdev/pxafb.c                    | 2 --
+ drivers/video/fbdev/q40fb.c                    | 1 -
+ drivers/video/fbdev/riva/fbdev.c               | 3 +--
+ drivers/video/fbdev/s1d13xxxfb.c               | 4 ++--
+ drivers/video/fbdev/s3c-fb.c                   | 1 -
+ drivers/video/fbdev/sa1100fb.c                 | 1 -
+ drivers/video/fbdev/savage/savagefb_driver.c   | 3 +--
+ drivers/video/fbdev/sh_mobile_lcdcfb.c         | 2 --
+ drivers/video/fbdev/simplefb.c                 | 1 -
+ drivers/video/fbdev/sis/sis_main.c             | 5 +----
+ drivers/video/fbdev/skeletonfb.c               | 2 +-
+ drivers/video/fbdev/sm501fb.c                  | 2 +-
+ drivers/video/fbdev/sm712fb.c                  | 1 -
+ drivers/video/fbdev/smscufx.c                  | 2 +-
+ drivers/video/fbdev/sstfb.c                    | 1 -
+ drivers/video/fbdev/sunxvr1000.c               | 1 -
+ drivers/video/fbdev/sunxvr2500.c               | 1 -
+ drivers/video/fbdev/sunxvr500.c                | 1 -
+ drivers/video/fbdev/tcx.c                      | 1 -
+ drivers/video/fbdev/tdfxfb.c                   | 2 +-
+ drivers/video/fbdev/tgafb.c                    | 2 +-
+ drivers/video/fbdev/tridentfb.c                | 2 +-
+ drivers/video/fbdev/udlfb.c                    | 2 +-
+ drivers/video/fbdev/uvesafb.c                  | 3 +--
+ drivers/video/fbdev/valkyriefb.c               | 1 -
+ drivers/video/fbdev/vermilion/vermilion.c      | 2 +-
+ drivers/video/fbdev/vesafb.c                   | 2 +-
+ drivers/video/fbdev/vfb.c                      | 1 -
+ drivers/video/fbdev/vga16fb.c                  | 2 +-
+ drivers/video/fbdev/via/viafbdev.c             | 2 +-
+ drivers/video/fbdev/vt8500lcdfb.c              | 3 +--
+ drivers/video/fbdev/wm8505fb.c                 | 3 +--
+ drivers/video/fbdev/xen-fbfront.c              | 2 +-
+ drivers/video/fbdev/xilinxfb.c                 | 1 -
+ include/linux/fb.h                             | 3 ---
+ samples/vfio-mdev/mdpy-fb.c                    | 1 -
+ 120 files changed, 68 insertions(+), 151 deletions(-)
 
 -- 
-Regards,
-  Zhen Lei
+2.41.0
+
