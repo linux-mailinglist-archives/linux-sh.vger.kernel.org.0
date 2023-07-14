@@ -2,79 +2,248 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8E38752C4B
-	for <lists+linux-sh@lfdr.de>; Thu, 13 Jul 2023 23:41:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E03D07533B3
+	for <lists+linux-sh@lfdr.de>; Fri, 14 Jul 2023 09:52:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234040AbjGMVld (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 13 Jul 2023 17:41:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44838 "EHLO
+        id S235586AbjGNHwK (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Fri, 14 Jul 2023 03:52:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234328AbjGMVlb (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 13 Jul 2023 17:41:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE1C62691;
-        Thu, 13 Jul 2023 14:41:30 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        with ESMTP id S233638AbjGNHwB (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Fri, 14 Jul 2023 03:52:01 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B412530DE;
+        Fri, 14 Jul 2023 00:51:58 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 712C761B7C;
-        Thu, 13 Jul 2023 21:41:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D577BC433CA;
-        Thu, 13 Jul 2023 21:41:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689284489;
-        bh=jpkwRfIuO/p7CmmiIptnPZpuPwnt1xMdErD42scVioE=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=PnHV7FfGf0Q7aK6dC/VdAQbmGh446IrCj0LlIA6f5iqR0ArZiDKxMpW4W07F1TSL1
-         /5uqwLqWzCr7i+F7S6OlQEDNCZq2SrQliofa9Yh5AbYQyPhEME/l+5hQtqY7EXvMMH
-         shGEPki2RW04M4S4e22AyzWpSo105IPIVQ7DL2IzJNEtHOjkivDtFWUQ2jVLLG7fF+
-         BX1O2s6TzUsB++dWQAPpNdgO5uw6erQbCe7Rxbe4YCcHTIGBT5L4AB0jAPskhVk3o5
-         lNGE98F9rKlieHtYh+lWOZd1vyZFI3Jlos3k/2+83eIq0KK/7/8CjmpllQkyBzRZ0/
-         ela6nozmqMB3w==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id C309CE29F46;
-        Thu, 13 Jul 2023 21:41:29 +0000 (UTC)
-Subject: Re: [GIT PULL] sh fixes for v6.5
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <90e6042f3a82d5e9b4cf475603dcb73ca5e821d8.camel@physik.fu-berlin.de>
-References: <90e6042f3a82d5e9b4cf475603dcb73ca5e821d8.camel@physik.fu-berlin.de>
-X-PR-Tracked-List-Id: <linux-sh.vger.kernel.org>
-X-PR-Tracked-Message-Id: <90e6042f3a82d5e9b4cf475603dcb73ca5e821d8.camel@physik.fu-berlin.de>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/glaubitz/sh-linux.git tags/sh-for-v6.5-tag2
-X-PR-Tracked-Commit-Id: 7c28a35e19fafa1d3b367bcd3ec4021427a9397b
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 9350cd0190c0d60915ec704112c864d858a0d31c
-Message-Id: <168928448979.12038.351367698931546359.pr-tracker-bot@kernel.org>
-Date:   Thu, 13 Jul 2023 21:41:29 +0000
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Artur Rojek <contact@artur-rojek.eu>,
-        Rich Felker <dalias@libc.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        linux-sh@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 0EE061F8D5;
+        Fri, 14 Jul 2023 07:51:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1689321117; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=HUxd2I1CvpKA4+clhziKfHP/fuVnOLROIjy/7JR+efc=;
+        b=d1pCTqnt4+bbACtUdUQXwvyCo6rRm/tyq1s7729TZGQtBcgqvLcXaKfxPhrtubpnXV0Jab
+        D2nOC2ARWyuiH++ZvdtA8cr/6Nc926wvES2TtK4nJW+jD2d9Jg0d+CGJZTkMDUTa6Qnv1P
+        5/FFDhaO5ltU0xElyCs8B/uG+y3suOo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1689321117;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=HUxd2I1CvpKA4+clhziKfHP/fuVnOLROIjy/7JR+efc=;
+        b=UuffdXMhSPcyhA5XIonKDe7ip0VnmwttBNaPU0lptWk6vSmgwoAgRKHCqEtfQG0L/KuVnL
+        yg2bRadbQrN4lxCQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A9B0F13A15;
+        Fri, 14 Jul 2023 07:51:56 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id X4d2KJz+sGQCQwAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Fri, 14 Jul 2023 07:51:56 +0000
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+To:     deller@gmx.de, javierm@redhat.com
+Cc:     linux-sh@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        linux-input@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org,
+        linux-geode@lists.infradead.org, linux-nvidia@lists.surfsouth.com,
+        linux-hyperv@vger.kernel.org, linux-omap@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH v3 00/18] fbdev: Remove FBINFO_DEFAULT and FBINFO_FLAG_DEFAULT flags
+Date:   Fri, 14 Jul 2023 09:49:26 +0200
+Message-ID: <20230714075155.5686-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.41.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-The pull request you sent on Thu, 13 Jul 2023 09:25:39 +0200:
+Remove the unused flags FBINFO_DEFAULT and FBINFO_FLAG_DEFAULT from
+fbdev and drivers, as briefly discussed at [1]. Both flags were maybe
+useful when fbdev had special handling for driver modules. With
+commit 376b3ff54c9a ("fbdev: Nuke FBINFO_MODULE"), they are both 0
+and have no further effect.
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/glaubitz/sh-linux.git tags/sh-for-v6.5-tag2
+Patches 1 to 7 remove FBINFO_DEFAULT from drivers. Patches 2 to 5
+split this by the way the fb_info struct is being allocated. All flags
+are cleared to zero during the allocation.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/9350cd0190c0d60915ec704112c864d858a0d31c
+Patches 8 to 16 do the same for FBINFO_FLAG_DEFAULT. Patch 8 fixes
+an actual bug in how arch/sh uses the token for struct fb_videomode,
+which is unrelated.
 
-Thank you!
+Patch 17 removes both flag constants from <linux/fb.h> and patch 18
+documents the zero'ed memory returned by framebuffer_alloc().
+
+v3:
+	* sh: include board name in commit message (Adrian)
+	* docs: reword text (Miguel)
+v2:
+	* sh: use FB_MODE_IS_UNKNOWN (Adrian)
+	* fix commit messages (Miguel)
+	* document framebuffer_alloc()'s zero'ed memory (Miguel)
+
+[1] https://lore.kernel.org/dri-devel/877crer8fm.fsf@minerva.mail-host-address-is-not-set/
+
+Thomas Zimmermann (18):
+  drm: Remove flag FBINFO_DEFAULT from fbdev emulation
+  fbdev: Remove flag FBINFO_DEFAULT from fbdev drivers
+  fbdev: Remove flag FBINFO_DEFAULT from fbdev drivers
+  fbdev: Remove flag FBINFO_DEFAULT from fbdev drivers
+  fbdev: Remove flag FBINFO_DEFAULT from fbdev drivers
+  fbdev/fsl-diu-fb: Remove flag FBINFO_DEFAULT
+  vfio-mdev: Remove flag FBINFO_DEFAULT from fbdev sample driver
+  sh: mach-sh7763rdp: Assign FB_MODE_IS_UNKNOWN to struct
+    fb_videomode.flag
+  auxdisplay: Remove flag FBINFO_FLAG_DEFAULT from fbdev drivers
+  hid/picolcd: Remove flag FBINFO_FLAG_DEFAULT from fbdev driver
+  media: Remove flag FBINFO_FLAG_DEFAULT from fbdev drivers
+  staging: Remove flag FBINFO_FLAG_DEFAULT from fbdev drivers
+  fbdev: Remove flag FBINFO_FLAG_DEFAULT from fbdev drivers
+  fbdev: Remove flag FBINFO_FLAG_DEFAULT from fbdev drivers
+  fbdev/atafb: Remove flag FBINFO_FLAG_DEFAULT
+  fbdev/pxafb: Remove flag FBINFO_FLAG_DEFAULT
+  fbdev: Remove FBINFO_DEFAULT and FBINFO_FLAG_DEFAULT
+  fbdev: Document that framebuffer_alloc() returns zero'ed data
+
+ arch/sh/boards/mach-sh7763rdp/setup.c          | 2 +-
+ drivers/auxdisplay/cfag12864bfb.c              | 1 -
+ drivers/auxdisplay/ht16k33.c                   | 1 -
+ drivers/gpu/drm/drm_fbdev_dma.c                | 1 -
+ drivers/gpu/drm/drm_fbdev_generic.c            | 1 -
+ drivers/gpu/drm/gma500/fbdev.c                 | 2 +-
+ drivers/gpu/drm/radeon/radeon_fbdev.c          | 2 +-
+ drivers/hid/hid-picolcd_fb.c                   | 1 -
+ drivers/media/pci/ivtv/ivtvfb.c                | 1 -
+ drivers/media/test-drivers/vivid/vivid-osd.c   | 1 -
+ drivers/staging/fbtft/fbtft-core.c             | 2 +-
+ drivers/staging/sm750fb/sm750.c                | 1 -
+ drivers/video/fbdev/68328fb.c                  | 2 +-
+ drivers/video/fbdev/acornfb.c                  | 2 +-
+ drivers/video/fbdev/amba-clcd.c                | 1 -
+ drivers/video/fbdev/amifb.c                    | 5 ++---
+ drivers/video/fbdev/arcfb.c                    | 1 -
+ drivers/video/fbdev/asiliantfb.c               | 1 -
+ drivers/video/fbdev/atafb.c                    | 1 -
+ drivers/video/fbdev/atmel_lcdfb.c              | 2 +-
+ drivers/video/fbdev/aty/aty128fb.c             | 1 -
+ drivers/video/fbdev/aty/atyfb_base.c           | 3 +--
+ drivers/video/fbdev/aty/radeon_base.c          | 3 +--
+ drivers/video/fbdev/broadsheetfb.c             | 2 +-
+ drivers/video/fbdev/bw2.c                      | 1 -
+ drivers/video/fbdev/carminefb.c                | 1 -
+ drivers/video/fbdev/cg14.c                     | 2 +-
+ drivers/video/fbdev/cg3.c                      | 1 -
+ drivers/video/fbdev/cg6.c                      | 2 +-
+ drivers/video/fbdev/chipsfb.c                  | 1 -
+ drivers/video/fbdev/cirrusfb.c                 | 3 +--
+ drivers/video/fbdev/clps711x-fb.c              | 1 -
+ drivers/video/fbdev/cobalt_lcdfb.c             | 1 -
+ drivers/video/fbdev/controlfb.c                | 2 +-
+ drivers/video/fbdev/core/fb_info.c             | 3 ++-
+ drivers/video/fbdev/cyber2000fb.c              | 2 +-
+ drivers/video/fbdev/da8xx-fb.c                 | 1 -
+ drivers/video/fbdev/efifb.c                    | 1 -
+ drivers/video/fbdev/ep93xx-fb.c                | 1 -
+ drivers/video/fbdev/ffb.c                      | 3 +--
+ drivers/video/fbdev/fm2fb.c                    | 1 -
+ drivers/video/fbdev/fsl-diu-fb.c               | 2 +-
+ drivers/video/fbdev/g364fb.c                   | 2 +-
+ drivers/video/fbdev/gbefb.c                    | 1 -
+ drivers/video/fbdev/geode/gx1fb_core.c         | 1 -
+ drivers/video/fbdev/geode/gxfb_core.c          | 1 -
+ drivers/video/fbdev/geode/lxfb_core.c          | 1 -
+ drivers/video/fbdev/goldfishfb.c               | 1 -
+ drivers/video/fbdev/grvga.c                    | 2 +-
+ drivers/video/fbdev/gxt4500.c                  | 3 +--
+ drivers/video/fbdev/hecubafb.c                 | 2 +-
+ drivers/video/fbdev/hgafb.c                    | 2 +-
+ drivers/video/fbdev/hitfb.c                    | 2 +-
+ drivers/video/fbdev/hpfb.c                     | 1 -
+ drivers/video/fbdev/hyperv_fb.c                | 2 --
+ drivers/video/fbdev/i740fb.c                   | 2 +-
+ drivers/video/fbdev/i810/i810_main.c           | 4 ++--
+ drivers/video/fbdev/imsttfb.c                  | 3 +--
+ drivers/video/fbdev/imxfb.c                    | 3 +--
+ drivers/video/fbdev/intelfb/intelfbdrv.c       | 5 ++---
+ drivers/video/fbdev/kyro/fbdev.c               | 1 -
+ drivers/video/fbdev/leo.c                      | 1 -
+ drivers/video/fbdev/macfb.c                    | 1 -
+ drivers/video/fbdev/matrox/matroxfb_crtc2.c    | 5 ++---
+ drivers/video/fbdev/maxinefb.c                 | 1 -
+ drivers/video/fbdev/mb862xx/mb862xxfbdrv.c     | 2 +-
+ drivers/video/fbdev/metronomefb.c              | 2 +-
+ drivers/video/fbdev/mmp/fb/mmpfb.c             | 2 +-
+ drivers/video/fbdev/mx3fb.c                    | 1 -
+ drivers/video/fbdev/neofb.c                    | 2 +-
+ drivers/video/fbdev/nvidia/nvidia.c            | 4 ++--
+ drivers/video/fbdev/offb.c                     | 2 +-
+ drivers/video/fbdev/omap/omapfb_main.c         | 1 -
+ drivers/video/fbdev/omap2/omapfb/omapfb-main.c | 1 -
+ drivers/video/fbdev/p9100.c                    | 1 -
+ drivers/video/fbdev/platinumfb.c               | 1 -
+ drivers/video/fbdev/pm2fb.c                    | 3 +--
+ drivers/video/fbdev/pm3fb.c                    | 3 +--
+ drivers/video/fbdev/pmag-aa-fb.c               | 1 -
+ drivers/video/fbdev/pmag-ba-fb.c               | 1 -
+ drivers/video/fbdev/pmagb-b-fb.c               | 1 -
+ drivers/video/fbdev/ps3fb.c                    | 2 +-
+ drivers/video/fbdev/pvr2fb.c                   | 2 +-
+ drivers/video/fbdev/pxa168fb.c                 | 2 +-
+ drivers/video/fbdev/pxafb.c                    | 2 --
+ drivers/video/fbdev/q40fb.c                    | 1 -
+ drivers/video/fbdev/riva/fbdev.c               | 3 +--
+ drivers/video/fbdev/s1d13xxxfb.c               | 4 ++--
+ drivers/video/fbdev/s3c-fb.c                   | 1 -
+ drivers/video/fbdev/sa1100fb.c                 | 1 -
+ drivers/video/fbdev/savage/savagefb_driver.c   | 3 +--
+ drivers/video/fbdev/sh_mobile_lcdcfb.c         | 2 --
+ drivers/video/fbdev/simplefb.c                 | 1 -
+ drivers/video/fbdev/sis/sis_main.c             | 5 +----
+ drivers/video/fbdev/skeletonfb.c               | 2 +-
+ drivers/video/fbdev/sm501fb.c                  | 2 +-
+ drivers/video/fbdev/sm712fb.c                  | 1 -
+ drivers/video/fbdev/smscufx.c                  | 2 +-
+ drivers/video/fbdev/sstfb.c                    | 1 -
+ drivers/video/fbdev/sunxvr1000.c               | 1 -
+ drivers/video/fbdev/sunxvr2500.c               | 1 -
+ drivers/video/fbdev/sunxvr500.c                | 1 -
+ drivers/video/fbdev/tcx.c                      | 1 -
+ drivers/video/fbdev/tdfxfb.c                   | 2 +-
+ drivers/video/fbdev/tgafb.c                    | 2 +-
+ drivers/video/fbdev/tridentfb.c                | 2 +-
+ drivers/video/fbdev/udlfb.c                    | 2 +-
+ drivers/video/fbdev/uvesafb.c                  | 3 +--
+ drivers/video/fbdev/valkyriefb.c               | 1 -
+ drivers/video/fbdev/vermilion/vermilion.c      | 2 +-
+ drivers/video/fbdev/vesafb.c                   | 2 +-
+ drivers/video/fbdev/vfb.c                      | 1 -
+ drivers/video/fbdev/vga16fb.c                  | 2 +-
+ drivers/video/fbdev/via/viafbdev.c             | 2 +-
+ drivers/video/fbdev/vt8500lcdfb.c              | 3 +--
+ drivers/video/fbdev/wm8505fb.c                 | 3 +--
+ drivers/video/fbdev/xen-fbfront.c              | 2 +-
+ drivers/video/fbdev/xilinxfb.c                 | 1 -
+ include/linux/fb.h                             | 3 ---
+ samples/vfio-mdev/mdpy-fb.c                    | 1 -
+ 120 files changed, 68 insertions(+), 151 deletions(-)
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.41.0
+
