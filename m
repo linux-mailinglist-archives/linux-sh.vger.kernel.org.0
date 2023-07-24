@@ -2,175 +2,98 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8630D75F5AC
-	for <lists+linux-sh@lfdr.de>; Mon, 24 Jul 2023 14:08:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C017E75F696
+	for <lists+linux-sh@lfdr.de>; Mon, 24 Jul 2023 14:43:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229505AbjGXMIm (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 24 Jul 2023 08:08:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41632 "EHLO
+        id S230369AbjGXMnI (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 24 Jul 2023 08:43:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229495AbjGXMIl (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 24 Jul 2023 08:08:41 -0400
-Received: from frasgout13.his.huawei.com (unknown [14.137.139.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07AEA12D;
-        Mon, 24 Jul 2023 05:08:39 -0700 (PDT)
-Received: from mail02.huawei.com (unknown [172.18.147.228])
-        by frasgout13.his.huawei.com (SkyGuard) with ESMTP id 4R8dv32rHlz9yMLM;
-        Mon, 24 Jul 2023 19:57:19 +0800 (CST)
-Received: from A2101119013HW2.china.huawei.com (unknown [10.81.222.124])
-        by APP2 (Coremail) with SMTP id GxC2BwCHPEOgab5kvDzyBA--.27732S2;
-        Mon, 24 Jul 2023 13:08:10 +0100 (CET)
-From:   Petr Tesarik <petrtesarik@huaweicloud.com>
-To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Jacopo Mondi <jacopo+renesas@jmondi.org>,
-        Hans Verkuil <hans.verkuil@cisco.com>,
-        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        linux-sh@vger.kernel.org (open list:SUPERH),
-        linux-kernel@vger.kernel.org (open list)
-Cc:     Roberto Sassu <roberto.sassu@huaweicloud.com>, petr@tesarici.cz
-Subject: [PATCH v1] sh: boards: fix CEU buffer size passed to dma_declare_coherent_memory()
-Date:   Mon, 24 Jul 2023 14:07:42 +0200
-Message-Id: <20230724120742.2187-1-petrtesarik@huaweicloud.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S230165AbjGXMnH (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 24 Jul 2023 08:43:07 -0400
+Received: from baptiste.telenet-ops.be (baptiste.telenet-ops.be [IPv6:2a02:1800:120:4::f00:13])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E19C1B8
+        for <linux-sh@vger.kernel.org>; Mon, 24 Jul 2023 05:43:04 -0700 (PDT)
+Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed40:e908:444e:5a23:b79e])
+        by baptiste.telenet-ops.be with bizsmtp
+        id R0j22A00H26vpYY010j2rR; Mon, 24 Jul 2023 14:43:02 +0200
+Received: from geert (helo=localhost)
+        by ramsan.of.borg with local-esmtp (Exim 4.95)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1qNuty-002O66-6f;
+        Mon, 24 Jul 2023 14:43:02 +0200
+Date:   Mon, 24 Jul 2023 14:43:02 +0200 (CEST)
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     linux-kernel@vger.kernel.org
+cc:     Kees Cook <keescook@chromium.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-hardening@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org
+Subject: Re: Build regressions/improvements in v6.5-rc3
+In-Reply-To: <20230724122626.1701631-1-geert@linux-m68k.org>
+Message-ID: <88f83d73-781d-bdc-126-aa629cb368c@linux-m68k.org>
+References: <CAHk-=wi4Yau-3Bsv2rXYmtXMTLaj3=Wyf4cdM6d89czFvkVsRQ@mail.gmail.com> <20230724122626.1701631-1-geert@linux-m68k.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: GxC2BwCHPEOgab5kvDzyBA--.27732S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxuF4rAFW8KFWUCFW7XryDAwb_yoWrKF1rpa
-        4UuF4DKry09FsYy3s7uwsrZ343C3Zaya43Jrs8Gry8uFyfA34UWFyfJr18Ar1UXrWjqa48
-        Xas8Crn5Zw4rtaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUBv14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-        rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-        1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-        6F4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4UJV
-        WxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-        2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
-        W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
-        Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc7CjxVAKzI0EY4vE52x082I5MxAIw28Icx
-        kI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2Iq
-        xVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42
-        IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY
-        6xAIw20EY4v20xvaj40_Wr1j6rW3Jr1lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z2
-        80aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x0JU2oGQUUUUU=
-X-CM-SenderInfo: hshw23xhvd2x3n6k3tpzhluzxrxghudrp/
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,KHOP_HELO_FCRDNS,
-        MAY_BE_FORGED,RDNS_DYNAMIC,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-From: Petr Tesarik <petr.tesarik.ext@huawei.com>
+On Mon, 24 Jul 2023, Geert Uytterhoeven wrote:
+> JFYI, when comparing v6.5-rc3[1] to v6.5-rc2[3], the summaries are:
+>  - build errors: +5/-0
 
-In all these cases, the last argument to dma_declare_coherent_memory() is
-the buffer end address, but the expected value should be the size of the
-reserved region.
+   + /kisskb/src/include/linux/fortify-string.h: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]:  => 583:25, 493:25
 
-Fixes: 39fb993038e1 ("media: arch: sh: ap325rxa: Use new renesas-ceu camera driver")
-Fixes: c2f9b05fd5c1 ("media: arch: sh: ecovec: Use new renesas-ceu camera driver")
-Fixes: f3590dc32974 ("media: arch: sh: kfr2r09: Use new renesas-ceu camera driver")
-Fixes: 186c446f4b84 ("media: arch: sh: migor: Use new renesas-ceu camera driver")
-Fixes: 1a3c230b4151 ("media: arch: sh: ms7724se: Use new renesas-ceu camera driver")
-Signed-off-by: Petr Tesarik <petr.tesarik.ext@huawei.com>
----
- arch/sh/boards/mach-ap325rxa/setup.c | 2 +-
- arch/sh/boards/mach-ecovec24/setup.c | 6 ++----
- arch/sh/boards/mach-kfr2r09/setup.c  | 2 +-
- arch/sh/boards/mach-migor/setup.c    | 2 +-
- arch/sh/boards/mach-se/7724/setup.c  | 6 ++----
- 5 files changed, 7 insertions(+), 11 deletions(-)
+mips-gcc13/mips-allmodconfig
 
-diff --git a/arch/sh/boards/mach-ap325rxa/setup.c b/arch/sh/boards/mach-ap325rxa/setup.c
-index 151792162152..645cccf3da88 100644
---- a/arch/sh/boards/mach-ap325rxa/setup.c
-+++ b/arch/sh/boards/mach-ap325rxa/setup.c
-@@ -531,7 +531,7 @@ static int __init ap325rxa_devices_setup(void)
- 	device_initialize(&ap325rxa_ceu_device.dev);
- 	dma_declare_coherent_memory(&ap325rxa_ceu_device.dev,
- 			ceu_dma_membase, ceu_dma_membase,
--			ceu_dma_membase + CEU_BUFFER_MEMORY_SIZE - 1);
-+			CEU_BUFFER_MEMORY_SIZE);
- 
- 	platform_device_add(&ap325rxa_ceu_device);
- 
-diff --git a/arch/sh/boards/mach-ecovec24/setup.c b/arch/sh/boards/mach-ecovec24/setup.c
-index 674da7ebd8b7..7ec03d4a4edf 100644
---- a/arch/sh/boards/mach-ecovec24/setup.c
-+++ b/arch/sh/boards/mach-ecovec24/setup.c
-@@ -1454,15 +1454,13 @@ static int __init arch_setup(void)
- 	device_initialize(&ecovec_ceu_devices[0]->dev);
- 	dma_declare_coherent_memory(&ecovec_ceu_devices[0]->dev,
- 				    ceu0_dma_membase, ceu0_dma_membase,
--				    ceu0_dma_membase +
--				    CEU_BUFFER_MEMORY_SIZE - 1);
-+				    CEU_BUFFER_MEMORY_SIZE);
- 	platform_device_add(ecovec_ceu_devices[0]);
- 
- 	device_initialize(&ecovec_ceu_devices[1]->dev);
- 	dma_declare_coherent_memory(&ecovec_ceu_devices[1]->dev,
- 				    ceu1_dma_membase, ceu1_dma_membase,
--				    ceu1_dma_membase +
--				    CEU_BUFFER_MEMORY_SIZE - 1);
-+				    CEU_BUFFER_MEMORY_SIZE);
- 	platform_device_add(ecovec_ceu_devices[1]);
- 
- 	gpiod_add_lookup_table(&cn12_power_gpiod_table);
-diff --git a/arch/sh/boards/mach-kfr2r09/setup.c b/arch/sh/boards/mach-kfr2r09/setup.c
-index 20f4db778ed6..c6d556dfbbbe 100644
---- a/arch/sh/boards/mach-kfr2r09/setup.c
-+++ b/arch/sh/boards/mach-kfr2r09/setup.c
-@@ -603,7 +603,7 @@ static int __init kfr2r09_devices_setup(void)
- 	device_initialize(&kfr2r09_ceu_device.dev);
- 	dma_declare_coherent_memory(&kfr2r09_ceu_device.dev,
- 			ceu_dma_membase, ceu_dma_membase,
--			ceu_dma_membase + CEU_BUFFER_MEMORY_SIZE - 1);
-+			CEU_BUFFER_MEMORY_SIZE);
- 
- 	platform_device_add(&kfr2r09_ceu_device);
- 
-diff --git a/arch/sh/boards/mach-migor/setup.c b/arch/sh/boards/mach-migor/setup.c
-index f60061283c48..773ee767d0c4 100644
---- a/arch/sh/boards/mach-migor/setup.c
-+++ b/arch/sh/boards/mach-migor/setup.c
-@@ -604,7 +604,7 @@ static int __init migor_devices_setup(void)
- 	device_initialize(&migor_ceu_device.dev);
- 	dma_declare_coherent_memory(&migor_ceu_device.dev,
- 			ceu_dma_membase, ceu_dma_membase,
--			ceu_dma_membase + CEU_BUFFER_MEMORY_SIZE - 1);
-+			CEU_BUFFER_MEMORY_SIZE);
- 
- 	platform_device_add(&migor_ceu_device);
- 
-diff --git a/arch/sh/boards/mach-se/7724/setup.c b/arch/sh/boards/mach-se/7724/setup.c
-index b60a2626e18b..6495f9354065 100644
---- a/arch/sh/boards/mach-se/7724/setup.c
-+++ b/arch/sh/boards/mach-se/7724/setup.c
-@@ -940,15 +940,13 @@ static int __init devices_setup(void)
- 	device_initialize(&ms7724se_ceu_devices[0]->dev);
- 	dma_declare_coherent_memory(&ms7724se_ceu_devices[0]->dev,
- 				    ceu0_dma_membase, ceu0_dma_membase,
--				    ceu0_dma_membase +
--				    CEU_BUFFER_MEMORY_SIZE - 1);
-+				    CEU_BUFFER_MEMORY_SIZE);
- 	platform_device_add(ms7724se_ceu_devices[0]);
- 
- 	device_initialize(&ms7724se_ceu_devices[1]->dev);
- 	dma_declare_coherent_memory(&ms7724se_ceu_devices[1]->dev,
- 				    ceu1_dma_membase, ceu1_dma_membase,
--				    ceu1_dma_membase +
--				    CEU_BUFFER_MEMORY_SIZE - 1);
-+				    CEU_BUFFER_MEMORY_SIZE);
- 	platform_device_add(ms7724se_ceu_devices[1]);
- 
- 	return platform_add_devices(ms7724se_devices,
--- 
-2.25.1
+Full context:
 
+     In function 'fortify_memset_chk',
+ 	inlined from 'memset_io' at /kisskb/src/arch/mips/include/asm/io.h:486:2,
+ 	inlined from 'build_auth_frame' at /kisskb/src/drivers/net/wireless/legacy/ray_cs.c:2697:2:
+     /kisskb/src/include/linux/fortify-string.h:493:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
+       493 |                         __write_overflow_field(p_size_field, size);
+ 	  |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     In function 'fortify_memcpy_chk',
+ 	inlined from 'memcpy_toio' at /kisskb/src/arch/mips/include/asm/io.h:494:2,
+ 	inlined from 'translate_frame' at /kisskb/src/drivers/net/wireless/legacy/ray_cs.c:955:3,
+ 	inlined from 'ray_hw_xmit.constprop' at /kisskb/src/drivers/net/wireless/legacy/ray_cs.c:912:12:
+     /kisskb/src/include/linux/fortify-string.h:583:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
+       583 |                         __write_overflow_field(p_size_field, size);
+ 	  |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Single-element flexible array abuse in drivers/net/wireless/legacy/rayctl.h:tx_msg.var
+
+   + error: modpost: ".L856" [drivers/mtd/nand/raw/nand.ko] undefined!:  => N/A
+
+parisc-gcc13/parisc-allmodconfig
+
+   + {standard input}: Error: Missing symbol name in directive:  => 1096
+   + {standard input}: Error: unrecognized symbol type "":  => 1096
+
+sh4-gcc12/sh-allmodconfig (ICE)
+
+   + {standard input}: Error: unknown opcode:  => 1091
+
+sh4-gcc13/sh-allmodconfig (ICE)
+
+> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/6eaae198076080886b9e7d57f4ae06fa782f90ef/ (all 235 configs)
+> [3] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/fdf0eaf11452d72945af31804e2a1048ee1b574c/ (161 out of 235 configs)
+
+Gr{oetje,eeting}s,
+
+ 						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+ 							    -- Linus Torvalds
