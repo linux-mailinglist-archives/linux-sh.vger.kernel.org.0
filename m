@@ -2,61 +2,103 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EEFE77B300
-	for <lists+linux-sh@lfdr.de>; Mon, 14 Aug 2023 09:52:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6F2577B472
+	for <lists+linux-sh@lfdr.de>; Mon, 14 Aug 2023 10:42:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234319AbjHNHv4 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 14 Aug 2023 03:51:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33926 "EHLO
+        id S234797AbjHNImY convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-sh@lfdr.de>); Mon, 14 Aug 2023 04:42:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234346AbjHNHvq (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 14 Aug 2023 03:51:46 -0400
-Received: from mail.commercesolutions.pl (unknown [162.19.155.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 780A59F
-        for <linux-sh@vger.kernel.org>; Mon, 14 Aug 2023 00:51:45 -0700 (PDT)
-Received: by mail.commercesolutions.pl (Postfix, from userid 1002)
-        id 30BC222C3A; Mon, 14 Aug 2023 07:51:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=commercesolutions.pl;
-        s=mail; t=1691999504;
-        bh=PcMncQpBfIZCnTOfZJY5G1G+gaLn4c9QPfFvoXrE4rA=;
-        h=Date:From:To:Subject:From;
-        b=ROlbcMtLA2O8WECB06Pyu6oZhkEi9Gl1aC5dFU+gONBihGgkSCHklLyTIt47jG3rf
-         bkFI3m6q5XEiOhmj9vpwGP11+EhjzIEajyPuGftrVwPpQmuppWgnsNbQNIo/Gmsbpq
-         kcPawhVT1rqhxKXzzXjRr5NHW3v7QwbFIB+pOHXiY78aJB2Hc/SP66M6hKRDWV3DVd
-         vlTudGZonDKzAY10WMOwLd9an/hmFaxixhdIUVKVy7tJGBP5z4TNvAj6gsUtNPmzHV
-         g2ztb1jtqpiO6BCGtG4X4BJPhgmivRFODm80rLRj0ZcnhBLTR8rfMSU4jrefc4AxL6
-         vIybEwrB+X3vQ==
-Received: by mail.commercesolutions.pl for <linux-sh@vger.kernel.org>; Mon, 14 Aug 2023 07:51:16 GMT
-Message-ID: <20230814064500-0.1.80.1fkzh.0.fe92mjcmij@commercesolutions.pl>
-Date:   Mon, 14 Aug 2023 07:51:16 GMT
-From:   "Kamil Tralewski" <kamil.tralewski@commercesolutions.pl>
-To:     <linux-sh@vger.kernel.org>
-Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania?=
-X-Mailer: mail.commercesolutions.pl
+        with ESMTP id S234860AbjHNImL (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 14 Aug 2023 04:42:11 -0400
+Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B83A10B;
+        Mon, 14 Aug 2023 01:42:11 -0700 (PDT)
+Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-d62bdd1a97dso4176400276.3;
+        Mon, 14 Aug 2023 01:42:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692002530; x=1692607330;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QZne+Le5QqxdXNtZ7brJGNgIF3GQo0uhPPT5CceibE0=;
+        b=VbdNN1LK56aJpOfZagHrZM2p8L+MfzU+S0MYhwmRHcZ1RtInzxV+GXP4tBYPpjvZYc
+         KezZu/16u+KIFVI6AfNDXVqhLhdIxbzlTvBk5tfjAr8Fzg1M9Mhdlb2/0ccjIrto6n7/
+         WOxZlK9yeE7zLftHKuOduLrG8aXlpxyxm1lmDM3RSHDwkdJY+OP9VG80KwbTpPN/9+Z5
+         jDRfhtRVq4xZxWsPAg+mQzgc7YptwcJMlyt7STmcAnvgfDVhVhNki1lYmc+NyKgfzOAb
+         jaAm93mA96QJZGmirTimd7fmXREVAClTHsrCIbdB95fJs3o0cJ7VcLoCECZAQBks5gOZ
+         tMNw==
+X-Gm-Message-State: AOJu0YzTvmHcE/w9JPNmTBV14zDvQC3PDf4w1x4seoVzA0xBv9N0qK1M
+        z+17jlDD2CGL1MNhnORbdafFhS4BP7Cbpw==
+X-Google-Smtp-Source: AGHT+IGHz08kCZ+x3KT3qgo8LrWOjc0+TXxiP/8W2wpiWgfw+/gmS42Zj5VsOklA3QDe0iff+yCruA==
+X-Received: by 2002:a81:a54e:0:b0:586:a684:e7ba with SMTP id v14-20020a81a54e000000b00586a684e7bamr9625810ywg.39.1692002529781;
+        Mon, 14 Aug 2023 01:42:09 -0700 (PDT)
+Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com. [209.85.219.178])
+        by smtp.gmail.com with ESMTPSA id w13-20020a81a20d000000b005840bd271c5sm2596830ywg.100.2023.08.14.01.42.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Aug 2023 01:42:08 -0700 (PDT)
+Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-d62bdd1a97dso4176371276.3;
+        Mon, 14 Aug 2023 01:42:08 -0700 (PDT)
+X-Received: by 2002:a25:dc04:0:b0:d13:5ab9:827e with SMTP id
+ y4-20020a25dc04000000b00d135ab9827emr9522737ybe.16.1692002528140; Mon, 14 Aug
+ 2023 01:42:08 -0700 (PDT)
 MIME-Version: 1.0
+References: <20230802033737.9738-1-duoming@zju.edu.cn>
+In-Reply-To: <20230802033737.9738-1-duoming@zju.edu.cn>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 14 Aug 2023 10:41:56 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdWq4d7FJp6X_3=BQU-1=xvK1_jFJuq_7mTOaBJNXr1gEQ@mail.gmail.com>
+Message-ID: <CAMuHMdWq4d7FJp6X_3=BQU-1=xvK1_jFJuq_7mTOaBJNXr1gEQ@mail.gmail.com>
+Subject: Re: [PATCH] sh: push-switch: reorder cleanup operations to avoid UAF bug
+To:     Duoming Zhou <duoming@zju.edu.cn>
+Cc:     ysato@users.sourceforge.jp, dalias@libc.org,
+        glaubitz@physik.fu-berlin.de, kvalo@kernel.org, pavel@ucw.cz,
+        pabeni@redhat.com, rostedt@goodmis.org, linux-sh@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Dzie=C5=84 dobry,
+On Wed, Aug 2, 2023 at 5:46 AM Duoming Zhou <duoming@zju.edu.cn> wrote:
+> The original code puts flush_work() before timer_shutdown_sync()
+> in switch_drv_remove(). Although we use flush_work() to stop
+> the worker, it could be re-scheduled in switch_timer. As a result,
+> the UAF bug will happen. The detail is shown below:
+>
+>       (cpu 0)                    |      (cpu 1)
+> switch_drv_remove()              |
+>  flush_work()                    |
+>   ...                            |  switch_timer //timer
+>                                  |   schedule_work(&psw->work)
+>  timer_shutdown_sync()           |
+>  ...                             |  switch_work_handler //worker
+>  kfree(psw) //free               |
+>                                  |   psw->state = 0 //use
+>
+> This patch puts timer_shutdown_sync() before flush_work() to
+> mitigate the bugs. As a result, the worker and timer could
+> be stopped safely before the deallocate operations.
+>
+> Fixes: 9f5e8eee5cfe ("sh: generic push-switch framework.")
+> Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
 
-zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
-=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
-o dalszych rozm=C3=B3w.=20
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
-=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
-=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
-strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
+Gr{oetje,eeting}s,
 
-Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
+                        Geert
 
-Pozdrawiam
-Kamil Tralewski
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
