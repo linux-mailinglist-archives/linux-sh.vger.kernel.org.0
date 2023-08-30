@@ -2,32 +2,32 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA91E78DC96
-	for <lists+linux-sh@lfdr.de>; Wed, 30 Aug 2023 20:49:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A305578DCA4
+	for <lists+linux-sh@lfdr.de>; Wed, 30 Aug 2023 20:50:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243125AbjH3SqE (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 30 Aug 2023 14:46:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53782 "EHLO
+        id S231879AbjH3SqP (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 30 Aug 2023 14:46:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242515AbjH3I6a (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 30 Aug 2023 04:58:30 -0400
-Received: from hsmtpd-def.xspmail.jp (hsmtpd-def.xspmail.jp [202.238.198.244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E00ACD2
+        with ESMTP id S242519AbjH3I6d (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 30 Aug 2023 04:58:33 -0400
+Received: from hsmtpd-def.xspmail.jp (hsmtpd-def.xspmail.jp [202.238.198.243])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62E46CD8
         for <linux-sh@vger.kernel.org>; Wed, 30 Aug 2023 01:58:27 -0700 (PDT)
 X-Country-Code: JP
 Received: from sakura.ysato.name (ik1-413-38519.vs.sakura.ne.jp [153.127.30.23])
-        by hsmtpd-out-0.asahinet.cluster.xspmail.jp (Halon) with ESMTPA
-        id 7de84e88-2400-47ca-9cea-8dedb6d6dc3e;
+        by hsmtpd-out-2.asahinet.cluster.xspmail.jp (Halon) with ESMTPA
+        id 59038cc0-3c69-4435-bb1b-2b246741eb19;
         Wed, 30 Aug 2023 17:42:21 +0900 (JST)
 Received: from SIOS1075.ysato.name (al128006.dynamic.ppp.asahi-net.or.jp [111.234.128.6])
-        by sakura.ysato.name (Postfix) with ESMTPSA id 1D6351C007F;
+        by sakura.ysato.name (Postfix) with ESMTPSA id 46D011C0210;
         Wed, 30 Aug 2023 17:42:21 +0900 (JST)
 From:   Yoshinori Sato <ysato@users.sourceforge.jp>
 To:     linux-sh@vger.kernel.org
 Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: [RFC PATCH 01/12] sh: Add OF target boards.
-Date:   Wed, 30 Aug 2023 17:42:02 +0900
-Message-Id: <95d8b86480c60012252b37b9b13e5f709a2ec177.1693384846.git.ysato@users.sourceforge.jp>
+Subject: [RFC PATCH 02/12] sh: Update OF handling.
+Date:   Wed, 30 Aug 2023 17:42:03 +0900
+Message-Id: <184764e337b9fea92bed4576d776118984e31f38.1693384846.git.ysato@users.sourceforge.jp>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1693384846.git.ysato@users.sourceforge.jp>
 References: <cover.1693384846.git.ysato@users.sourceforge.jp>
@@ -42,131 +42,212 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
+- avoid build warning.
+- reserve external dtb area.
+- use generic interfaces on internal peripheral driver.
+
 Signed-off-by: Yoshinori Sato <ysato@users.sourceforge.jp>
 ---
- arch/sh/Kconfig        | 12 +++++++++---
- arch/sh/boards/Kconfig | 28 ++++++++++++++++++++++++++++
- 2 files changed, 37 insertions(+), 3 deletions(-)
+ arch/sh/boards/of-generic.c       | 28 +++++++++++++++++++++++++---
+ arch/sh/boot/compressed/head_32.S |  5 +++--
+ arch/sh/kernel/head_32.S          |  2 +-
+ arch/sh/kernel/setup.c            | 26 +++++++++++++++++++++++++-
+ 4 files changed, 54 insertions(+), 7 deletions(-)
 
-diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
-index 2b3ce4fd3956..7a3e54bf0da9 100644
---- a/arch/sh/Kconfig
-+++ b/arch/sh/Kconfig
-@@ -64,10 +64,10 @@ config SUPERH
- 	select MODULES_USE_ELF_RELA
- 	select NEED_SG_DMA_LENGTH
- 	select NO_DMA if !MMU && !DMA_COHERENT
--	select NO_GENERIC_PCI_IOPORT_MAP if PCI
-+	select NO_GENERIC_PCI_IOPORT_MAP if !SH_DEVICE_TREE
- 	select OLD_SIGACTION
- 	select OLD_SIGSUSPEND
--	select PCI_DOMAINS if PCI
-+	select PCI_DOMAINS if PCI && !SH_DEVICE_TREE
- 	select PERF_EVENTS
- 	select PERF_USE_VMALLOC
- 	select RTC_LIB
-@@ -363,14 +363,17 @@ config CPU_SUBTYPE_SH7091
- config CPU_SUBTYPE_SH7750R
- 	bool "Support SH7750R processor"
- 	select CPU_SH4
-+	select COMMON_CLK_SH7750 if COMMMON_CLK
+diff --git a/arch/sh/boards/of-generic.c b/arch/sh/boards/of-generic.c
+index f7f3e618e85b..ff4643b3deee 100644
+--- a/arch/sh/boards/of-generic.c
++++ b/arch/sh/boards/of-generic.c
+@@ -8,6 +8,7 @@
+ #include <linux/of.h>
+ #include <linux/of_clk.h>
+ #include <linux/of_fdt.h>
++#include <linux/of_platform.h>
+ #include <linux/clocksource.h>
+ #include <linux/irqchip.h>
+ #include <asm/machvec.h>
+@@ -107,7 +108,7 @@ static int noopi(void)
+ 	return 0;
+ }
  
- config CPU_SUBTYPE_SH7750S
- 	bool "Support SH7750S processor"
- 	select CPU_SH4
-+	select COMMON_CLK_SH7750 if COMMMON_CLK
+-static void __init sh_of_mem_reserve(void)
++static void __init sh_of_mem_init(void)
+ {
+ 	early_init_fdt_reserve_self();
+ 	early_init_fdt_scan_reserved_mem();
+@@ -116,6 +117,8 @@ static void __init sh_of_mem_reserve(void)
+ static void __init sh_of_setup(char **cmdline_p)
+ {
+ 	struct device_node *root;
++	struct device_node *cpu;
++	int freq;
  
- config CPU_SUBTYPE_SH7751
- 	bool "Support SH7751 processor"
- 	select CPU_SH4
-+	select COMMON_CLK_SH7750 if COMMMON_CLK
- 	help
- 	  Select SH7751 if you have a 166 Mhz SH-4 HD6417751 CPU,
- 	  or if you have a HD6417751R CPU.
-@@ -378,6 +381,8 @@ config CPU_SUBTYPE_SH7751
- config CPU_SUBTYPE_SH7751R
- 	bool "Support SH7751R processor"
- 	select CPU_SH4
-+	select COMMON_CLK_SH7750 if COMMMON_CLK
-+	select PCI_SH7751 if SH_DEVICE_TREE
+ 	sh_mv.mv_name = "Unknown SH model";
+ 	root = of_find_node_by_path("/");
+@@ -125,6 +128,9 @@ static void __init sh_of_setup(char **cmdline_p)
+ 	}
  
- config CPU_SUBTYPE_SH7760
- 	bool "Support SH7760 processor"
-@@ -702,7 +707,7 @@ config BUILTIN_DTB_SOURCE
- config ZERO_PAGE_OFFSET
- 	hex
- 	default "0x00010000" if PAGE_SIZE_64KB || SH_RTS7751R2D || \
--				SH_7751_SOLUTION_ENGINE
-+				SH_7751_SOLUTION_ENGINE || SH_RTS7751R2D_OF
- 	default "0x00004000" if PAGE_SIZE_16KB || SH_SH03
- 	default "0x00002000" if PAGE_SIZE_8KB
- 	default "0x00001000"
-@@ -744,6 +749,7 @@ config ROMIMAGE_MMCIF
- choice
- 	prompt "Kernel command line"
- 	optional
-+	depends on !SH_DEVICE_TREE
- 	default CMDLINE_OVERWRITE
- 	help
- 	  Setting this option allows the kernel command line arguments
-diff --git a/arch/sh/boards/Kconfig b/arch/sh/boards/Kconfig
-index fafe15d3ba1d..ffdada2a128d 100644
---- a/arch/sh/boards/Kconfig
-+++ b/arch/sh/boards/Kconfig
-@@ -16,9 +16,14 @@ config SH_DEVICE_TREE
- 	bool
- 	select OF
- 	select OF_EARLY_FLATTREE
-+	select OF_ADDRESS
- 	select TIMER_OF
- 	select COMMON_CLK
- 	select GENERIC_CALIBRATE_DELAY
-+	select GENERIC_IOMAP
-+	select GENERIC_IRQ_CHIP
-+	select SYS_SUPPORTS_PCI
-+	select GENERIC_PCI_IOMAP if PCI
+ 	sh_of_smp_probe();
++	cpu = of_find_node_by_name(NULL, "cpu");
++	if (!of_property_read_u32(cpu, "clock-frequency", &freq))
++		preset_lpj = freq / 500;
+ }
  
- config SH_JCORE_SOC
- 	bool "J-Core SoC"
-@@ -161,6 +166,17 @@ config SH_RTS7751R2D
- 	  Select RTS7751R2D if configuring for a Renesas Technology
- 	  Sales SH-Graphics board.
+ static int sh_of_irq_demux(int irq)
+@@ -157,8 +163,7 @@ static struct sh_machine_vector __initmv sh_of_generic_mv = {
+ 	.mv_init_irq	= sh_of_init_irq,
+ 	.mv_clk_init	= sh_of_clk_init,
+ 	.mv_mode_pins	= noopi,
+-	.mv_mem_init	= noop,
+-	.mv_mem_reserve	= sh_of_mem_reserve,
++	.mv_mem_init	= sh_of_mem_init,
+ };
  
-+config SH_RTS7751R2D_OF
-+	bool "RTS7751R2D (DeviceTree)"
-+	depends on CPU_SUBTYPE_SH7751R
-+	select HAVE_PCI
-+	select IO_TRAPPED if MMU
-+	select SH_DEVICE_TREE
-+	select COMMON_CLK
-+	help
-+	  Select RTS7751R2D if configuring for a Renesas Technology
-+	  Sales SH-Graphics board. (Use DeviceTree)
+ struct sh_clk_ops;
+@@ -170,3 +175,20 @@ void __init __weak arch_init_clk_ops(struct sh_clk_ops **ops, int idx)
+ void __init __weak plat_irq_setup(void)
+ {
+ }
 +
- config SH_RSK
- 	bool "Renesas Starter Kit"
- 	depends on CPU_SUBTYPE_SH7201 || CPU_SUBTYPE_SH7203 || \
-@@ -300,8 +316,20 @@ config SH_LANDISK
- 	bool "LANDISK"
- 	depends on CPU_SUBTYPE_SH7751R
- 	select HAVE_PCI
-+	select SYS_SUPPORTS_PCI
-+	help
-+	  I-O DATA DEVICE, INC. "LANDISK Series" support.
++static int __init sh_of_device_init(void)
++{
++	pr_info("SH generic board support: populating platform devices\n");
++	if (of_have_populated_dt()) {
++		of_platform_populate(NULL, of_default_bus_match_table,
++				     NULL, NULL);
++	} else {
++		pr_crit("Device tree not populated\n");
++	}
++	return 0;
++}
++arch_initcall_sync(sh_of_device_init);
 +
-+config SH_LANDISK_OF
-+	bool "LANDISK (DeviceTree)"
-+	depends on CPU_SUBTYPE_SH7751R
-+	select HAVE_PCI
-+	select SYS_SUPPORTS_PCI
-+	select SH_DEVICE_TREE
-+	select COMMON_CLK
- 	help
- 	  I-O DATA DEVICE, INC. "LANDISK Series" support.
-+	  Use Device Tree.
++void intc_finalize(void)
++{
++}
+diff --git a/arch/sh/boot/compressed/head_32.S b/arch/sh/boot/compressed/head_32.S
+index 7bb168133dbb..c5227ef636c3 100644
+--- a/arch/sh/boot/compressed/head_32.S
++++ b/arch/sh/boot/compressed/head_32.S
+@@ -15,7 +15,8 @@ startup:
+ 	/* Load initial status register */
+ 	mov.l   init_sr, r1
+ 	ldc     r1, sr
+-
++	/* Save FDT address */
++	mov	r4, r13
+ 	/* Move myself to proper location if necessary */
+ 	mova	1f, r0
+ 	mov.l	1f, r2
+@@ -84,7 +85,7 @@ l1:
+ 	/* Jump to the start of the decompressed kernel */
+ 	mov.l	kernel_start_addr, r0
+ 	jmp	@r0
+-	nop
++	  mov	r13,r4
+ 	
+ 	.align	2
+ bss_start_addr:
+diff --git a/arch/sh/kernel/head_32.S b/arch/sh/kernel/head_32.S
+index b603b7968b38..28cd8806f67c 100644
+--- a/arch/sh/kernel/head_32.S
++++ b/arch/sh/kernel/head_32.S
+@@ -56,7 +56,7 @@ ENTRY(empty_zero_page)
+  */
+ ENTRY(_stext)
+ 	!			Initialize Status Register
+-	mov.l	1f, r0		! MD=1, RB=0, BL=0, IMASK=0xF
++	mov.l	1f, r0		! MD=1, RB=0, BL=1, IMASK=0xF
+ 	ldc	r0, sr
+ 	!			Initialize global interrupt mask
+ #ifdef CONFIG_CPU_HAS_SR_RB
+diff --git a/arch/sh/kernel/setup.c b/arch/sh/kernel/setup.c
+index b3da2757faaf..8389b673f2e8 100644
+--- a/arch/sh/kernel/setup.c
++++ b/arch/sh/kernel/setup.c
+@@ -31,6 +31,7 @@
+ #include <linux/memblock.h>
+ #include <linux/of.h>
+ #include <linux/of_fdt.h>
++#include <linux/libfdt.h>
+ #include <linux/uaccess.h>
+ #include <uapi/linux/mount.h>
+ #include <asm/io.h>
+@@ -79,7 +80,9 @@ extern int root_mountflags;
+ #define RAMDISK_PROMPT_FLAG		0x8000
+ #define RAMDISK_LOAD_FLAG		0x4000
  
- config SH_TITAN
- 	bool "TITAN"
++#ifndef CONFIG_OF
+ static char __initdata command_line[COMMAND_LINE_SIZE] = { 0, };
++#endif
+ 
+ static struct resource code_resource = {
+ 	.name = "Kernel code",
+@@ -104,6 +107,10 @@ unsigned long memory_limit = 0;
+ 
+ static struct resource mem_resources[MAX_NUMNODES];
+ 
++#if defined(CONFIG_OF)
++static void *dt_virt;
++#endif
++
+ int l1i_cache_shape, l1d_cache_shape, l2_cache_shape;
+ 
+ static int __init early_parse_mem(char *p)
+@@ -180,7 +187,12 @@ void __init check_for_initrd(void)
+ #ifndef CONFIG_GENERIC_CALIBRATE_DELAY
+ void calibrate_delay(void)
+ {
++#ifndef CONFIG_OF
+ 	struct clk *clk = clk_get(NULL, "cpu_clk");
++#else
++	struct device_node *cpu = of_find_node_by_name(NULL, "cpu");
++	struct clk *clk = of_clk_get_by_name(cpu, NULL);
++#endif
+ 
+ 	if (IS_ERR(clk))
+ 		panic("Need a sane CPU clock definition!");
+@@ -249,7 +261,6 @@ void __init __weak plat_early_device_setup(void)
+ void __ref sh_fdt_init(phys_addr_t dt_phys)
+ {
+ 	static int done = 0;
+-	void *dt_virt;
+ 
+ 	/* Avoid calling an __init function on secondary cpus. */
+ 	if (done) return;
+@@ -274,8 +285,16 @@ void __ref sh_fdt_init(phys_addr_t dt_phys)
+ 
+ void __init setup_arch(char **cmdline_p)
+ {
++#ifdef CONFIG_OF
++#ifndef CONFIG_USE_BUILTIN_DTB
++	memblock_reserve(__pa(dt_virt), fdt_totalsize(dt_virt));
++#endif
++	unflatten_device_tree();
++#endif
+ 	enable_mmu();
+ 
++
++#ifndef CONFIG_OF
+ 	ROOT_DEV = old_decode_dev(ORIG_ROOT_DEV);
+ 
+ 	printk(KERN_NOTICE "Boot params:\n"
+@@ -313,10 +332,15 @@ void __init setup_arch(char **cmdline_p)
+ 	strlcat(command_line, CONFIG_CMDLINE, sizeof(command_line));
+ #endif
+ #endif
++#endif
+ 
++#if !defined(CONFIG_OF) || defined(USE_BUILTIN_DTB)
+ 	/* Save unparsed command line copy for /proc/cmdline */
+ 	memcpy(boot_command_line, command_line, COMMAND_LINE_SIZE);
+ 	*cmdline_p = command_line;
++#else
++	*cmdline_p = boot_command_line;
++#endif
+ 
+ 	parse_early_param();
+ 
 -- 
 2.39.2
 
