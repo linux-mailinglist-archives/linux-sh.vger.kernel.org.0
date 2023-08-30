@@ -2,32 +2,32 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70C7F78DCAD
-	for <lists+linux-sh@lfdr.de>; Wed, 30 Aug 2023 20:50:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D629C78DC91
+	for <lists+linux-sh@lfdr.de>; Wed, 30 Aug 2023 20:49:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242516AbjH3SqT (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 30 Aug 2023 14:46:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43030 "EHLO
+        id S242521AbjH3SqD (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 30 Aug 2023 14:46:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242524AbjH3I6f (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 30 Aug 2023 04:58:35 -0400
-Received: from hsmtpd-def.xspmail.jp (hsmtpd-def.xspmail.jp [202.238.198.239])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A25ACDB
+        with ESMTP id S242517AbjH3I6d (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 30 Aug 2023 04:58:33 -0400
+Received: from hsmtpd-def.xspmail.jp (hsmtpd-def.xspmail.jp [202.238.198.242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59748CD7
         for <linux-sh@vger.kernel.org>; Wed, 30 Aug 2023 01:58:27 -0700 (PDT)
 X-Country-Code: JP
 Received: from sakura.ysato.name (ik1-413-38519.vs.sakura.ne.jp [153.127.30.23])
-        by hsmtpd-out-1.asahinet.cluster.xspmail.jp (Halon) with ESMTPA
-        id 907ebb17-661d-4ac2-aeed-4ec8cbaa4e2f;
+        by hsmtpd-out-0.asahinet.cluster.xspmail.jp (Halon) with ESMTPA
+        id a2e55750-1fbb-4a4e-b1c6-5fc82ea759ba;
         Wed, 30 Aug 2023 17:42:22 +0900 (JST)
 Received: from SIOS1075.ysato.name (al128006.dynamic.ppp.asahi-net.or.jp [111.234.128.6])
-        by sakura.ysato.name (Postfix) with ESMTPSA id 2240F1C007F;
+        by sakura.ysato.name (Postfix) with ESMTPSA id 4B03F1C0210;
         Wed, 30 Aug 2023 17:42:22 +0900 (JST)
 From:   Yoshinori Sato <ysato@users.sourceforge.jp>
 To:     linux-sh@vger.kernel.org
 Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: [RFC PATCH 07/12] clocksource: Update sh_tmu of handling.
-Date:   Wed, 30 Aug 2023 17:42:08 +0900
-Message-Id: <2d323328fba6ac55a1c3cdcefe909fad3ab0d9dc.1693384846.git.ysato@users.sourceforge.jp>
+Subject: [RFC PATCH 08/12] mfd/sm501: Add OF properties.
+Date:   Wed, 30 Aug 2023 17:42:09 +0900
+Message-Id: <f622670c0af1bf01bf7c2f16241db0c36233a7d9.1693384846.git.ysato@users.sourceforge.jp>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1693384846.git.ysato@users.sourceforge.jp>
 References: <cover.1693384846.git.ysato@users.sourceforge.jp>
@@ -42,83 +42,182 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
+Some parameters only platform_device.
+Added same parameters in OF property.
+
 Signed-off-by: Yoshinori Sato <ysato@users.sourceforge.jp>
 ---
- drivers/clocksource/sh_tmu.c | 33 +++++++++++++++++----------------
- 1 file changed, 17 insertions(+), 16 deletions(-)
+ .../devicetree/bindings/display/sm501fb.txt   |  11 ++
+ drivers/mfd/sm501.c                           | 113 +++++++++++++++++-
+ 2 files changed, 123 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clocksource/sh_tmu.c b/drivers/clocksource/sh_tmu.c
-index beffff81c00f..de65e1c96780 100644
---- a/drivers/clocksource/sh_tmu.c
-+++ b/drivers/clocksource/sh_tmu.c
-@@ -420,9 +420,6 @@ static void sh_tmu_register_clockevent(struct sh_tmu_channel *ch,
- 	ced->suspend = sh_tmu_clock_event_suspend;
- 	ced->resume = sh_tmu_clock_event_resume;
+diff --git a/Documentation/devicetree/bindings/display/sm501fb.txt b/Documentation/devicetree/bindings/display/sm501fb.txt
+index 1c79c267a57f..4c4920394431 100644
+--- a/Documentation/devicetree/bindings/display/sm501fb.txt
++++ b/Documentation/devicetree/bindings/display/sm501fb.txt
+@@ -20,6 +20,17 @@ Optional properties:
+   set different foreign endian.
+ - big-endian: available on little endian systems, to
+   set different foreign endian.
++- sm501,devices: select peripheral functions.
++  available usb-host, usb-gadget, ssp0, ssp,1 uart0, uart1, accel,
++            ac97, i2s, gpio and all.
++- sm501,mclk: SM501 mclk frequency.
++- sm501,m1xclk: SM501 m1xclk frequency.
++- sm501,misc-timing: SM501 Miscellaneous Timing reg value.
++- sm501,misc-control: SM501 Miscellaneous Control reg value.
++- sm501,gpio-low: SM501 GPIO31-0 Control reg value.
++- sm501,gpio-high: SM501 GPIO63-32 Control reg value.
++- sm501,num-i2c: I2C channel number.
++- sm501,gpio-i2c: I2C assigned GPIO.
  
--	dev_info(&ch->tmu->pdev->dev, "ch%u: used for clock events\n",
--		 ch->index);
--
- 	clockevents_config_and_register(ced, ch->tmu->rate, 0x300, 0xffffffff);
+ Example for MPC5200:
+ 	display@1,0 {
+diff --git a/drivers/mfd/sm501.c b/drivers/mfd/sm501.c
+index 28027982cf69..39871ca1b9f7 100644
+--- a/drivers/mfd/sm501.c
++++ b/drivers/mfd/sm501.c
+@@ -80,6 +80,9 @@ struct sm501_devdata {
+ 	unsigned int			 irq;
+ 	void __iomem			*regs;
+ 	unsigned int			 rev;
++#if defined(CONFIG_OF)
++	struct device_node		*np;
++#endif
+ };
  
- 	ret = request_irq(ch->irq, sh_tmu_interrupt,
-@@ -500,12 +497,12 @@ static int sh_tmu_parse_dt(struct sh_tmu_device *tmu)
- 	tmu->model = SH_TMU;
- 	tmu->num_channels = 3;
  
--	of_property_read_u32(np, "#renesas,channels", &tmu->num_channels);
--
--	if (tmu->num_channels != 2 && tmu->num_channels != 3) {
--		dev_err(&tmu->pdev->dev, "invalid number of channels %u\n",
--			tmu->num_channels);
--		return -EINVAL;
-+	if (of_property_read_u32(np, "#renesas,channels", &tmu->num_channels)) {
-+		if (tmu->num_channels != 2 && tmu->num_channels != 3) {
-+			dev_err(&tmu->pdev->dev,
-+				"invalid number of channels %u\n", tmu->num_channels);
-+			return -EINVAL;
-+		}
- 	}
- 
+@@ -1370,6 +1373,106 @@ static int sm501_init_dev(struct sm501_devdata *sm)
  	return 0;
-@@ -513,7 +510,6 @@ static int sh_tmu_parse_dt(struct sh_tmu_device *tmu)
+ }
  
- static int sh_tmu_setup(struct sh_tmu_device *tmu, struct platform_device *pdev)
++static unsigned int sm501_parse_devices_str(const char *str)
++{
++	char *sep;
++	unsigned int device = 0;
++	int i;
++	int len;
++	static const struct {
++		char *devname;
++		unsigned int devid;
++	} devlist[] = {
++		{ "usb-host", SM501_USE_USB_HOST },
++		{ "usb-gadget", SM501_USE_USB_SLAVE },
++		{ "ssp0", SM501_USE_SSP0 },
++		{ "ssp1", SM501_USE_SSP1 },
++		{ "uart0", SM501_USE_UART0 },
++		{ "uart1", SM501_USE_UART1 },
++		{ "accel", SM501_USE_FBACCEL },
++		{ "ac97", SM501_USE_AC97 },
++		{ "i2s", SM501_USE_I2S },
++		{ "gpio", SM501_USE_GPIO },
++		{ "all", SM501_USE_ALL },
++	};
++
++	do {
++		sep = strchr(str, ',');
++		len = sep ? sep - str : strlen(str);
++		for (i = 0; i < ARRAY_SIZE(devlist); i++) {
++			if (strncasecmp(str, devlist[i].devname, len) == 0) {
++				device |= devlist[i].devid;
++				break;
++			}
++		}
++		str = sep + 1;
++	} while (sep);
++	return device;
++}
++
++#if defined(CONFIG_OF)
++static void sm501_of_read_reg_init(struct sm501_devdata *sm,
++				   const char *propname, struct sm501_reg_init *val)
++{
++	u32 u32_val;
++
++	if (!of_property_read_u32_index(sm->np, propname, 0, &u32_val))
++		val->set = u32_val;
++	if (!of_property_read_u32_index(sm->np, propname, 1, &u32_val))
++		val->mask = u32_val;
++}
++
++static int sm501_parse_dt(struct sm501_devdata *sm)
++{
++	struct sm501_platdata *plat;
++	const char *devstr;
++	u32 u32_val;
++
++	if (sm->np == NULL)
++		return 0;
++	plat = kzalloc(sizeof(struct sm501_platdata), GFP_KERNEL);
++	if (plat == NULL)
++		return -ENOMEM;
++	plat->init = kzalloc(sizeof(struct sm501_initdata), GFP_KERNEL);
++	if (plat->init == NULL)
++		goto err;
++
++	if (!of_property_read_string(sm->np, "sm501,devices", &devstr))
++		plat->init->devices = sm501_parse_devices_str(devstr);
++	if (!of_property_read_u32_index(sm->np, "sm501,mclk", 0, &u32_val))
++		plat->init->mclk = u32_val;
++	if (!of_property_read_u32_index(sm->np, "sm501,m1xclk", 0, &u32_val))
++		plat->init->m1xclk = u32_val;
++	sm501_of_read_reg_init(sm, "sm501,misc-timing", &plat->init->misc_timing);
++	sm501_of_read_reg_init(sm, "sm501,misc-control", &plat->init->misc_control);
++	sm501_of_read_reg_init(sm, "sm501,gpio-low", &plat->init->gpio_low);
++	sm501_of_read_reg_init(sm, "sm501,gpio-high", &plat->init->gpio_high);
++
++#ifdef CONFIG_MFD_SM501_GPIO
++	if (plat->init->devices & SM501_USE_GPIO) {
++		if (!of_property_read_u32_index(sm->np, "sm501,num-i2c", 0, &u32_val))
++			plat->gpio_i2c_nr = u32_val;
++	}
++	if (plat->gpio_i2c_nr > 0) {
++		plat->gpio_i2c = kcalloc(plat->gpio_i2c_nr,
++					 sizeof(struct sm501_platdata_gpio_i2c),
++					 GFP_KERNEL);
++		if (plat->gpio_i2c == NULL)
++			goto err;
++		of_property_read_variable_u32(sm->np, "sm501,gpio-i2c",
++					      plat->gpio_i2c,
++					      plat->gpio_i2c_nr * 5);
++	}
++#endif
++	sm->platdata = plat;
++	return 0;
++err:
++	kfree(plat->init);
++	kfree(plat);
++	return -ENOMEM;
++}
++#endif
++
+ static int sm501_plat_probe(struct platform_device *dev)
  {
--	unsigned int i;
- 	int ret;
- 
- 	tmu->pdev = pdev;
-@@ -535,6 +531,11 @@ static int sh_tmu_setup(struct sh_tmu_device *tmu, struct platform_device *pdev)
- 		return -ENXIO;
+ 	struct sm501_devdata *sm;
+@@ -1384,7 +1487,6 @@ static int sm501_plat_probe(struct platform_device *dev)
+ 	sm->dev = &dev->dev;
+ 	sm->pdev_id = dev->id;
+ 	sm->platdata = dev_get_platdata(&dev->dev);
+-
+ 	ret = platform_get_irq(dev, 0);
+ 	if (ret < 0)
+ 		goto err_res;
+@@ -1406,6 +1508,15 @@ static int sm501_plat_probe(struct platform_device *dev)
+ 		goto err_res;
  	}
  
-+	if (tmu->num_channels < 2) {
-+		dev_err(&tmu->pdev->dev, "Invalid channels.\n");
-+		return -ENXIO;
++#if defined(CONFIG_OF)
++	if (dev->dev.of_node) {
++		sm->np = dev->dev.of_node;
++		ret = sm501_parse_dt(sm);
++		if (ret)
++			goto err_res;
 +	}
++#endif
 +
- 	/* Get hold of clock. */
- 	tmu->clk = clk_get(&tmu->pdev->dev, "fck");
- 	if (IS_ERR(tmu->clk)) {
-@@ -573,12 +574,12 @@ static int sh_tmu_setup(struct sh_tmu_device *tmu, struct platform_device *pdev)
- 	 * Use the first channel as a clock event device and the second channel
- 	 * as a clock source.
- 	 */
--	for (i = 0; i < tmu->num_channels; ++i) {
--		ret = sh_tmu_channel_setup(&tmu->channels[i], i,
--					   i == 0, i == 1, tmu);
--		if (ret < 0)
--			goto err_unmap;
--	}
-+	ret = sh_tmu_channel_setup(&tmu->channels[0], 0, false, true, tmu);
-+	if (ret < 0)
-+		goto err_unmap;
-+	ret = sh_tmu_channel_setup(&tmu->channels[1], 1, true, false, tmu);
-+	if (ret < 0)
-+		goto err_unmap;
+ 	platform_set_drvdata(dev, sm);
  
- 	platform_set_drvdata(pdev, tmu);
- 
+ 	sm->regs = ioremap(sm->io_res->start, resource_size(sm->io_res));
 -- 
 2.39.2
 
