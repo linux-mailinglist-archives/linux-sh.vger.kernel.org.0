@@ -2,32 +2,32 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A43778DC9D
-	for <lists+linux-sh@lfdr.de>; Wed, 30 Aug 2023 20:49:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2BCD78DCA6
+	for <lists+linux-sh@lfdr.de>; Wed, 30 Aug 2023 20:50:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242514AbjH3SqH (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 30 Aug 2023 14:46:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43020 "EHLO
+        id S242518AbjH3SqQ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 30 Aug 2023 14:46:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242522AbjH3I6f (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 30 Aug 2023 04:58:35 -0400
-Received: from hsmtpd-def.xspmail.jp (hsmtpd-def.xspmail.jp [202.238.198.242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 710DECDA
+        with ESMTP id S242520AbjH3I6d (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 30 Aug 2023 04:58:33 -0400
+Received: from hsmtpd-def.xspmail.jp (hsmtpd-def.xspmail.jp [202.238.198.237])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D68DCC9
         for <linux-sh@vger.kernel.org>; Wed, 30 Aug 2023 01:58:27 -0700 (PDT)
 X-Country-Code: JP
 Received: from sakura.ysato.name (ik1-413-38519.vs.sakura.ne.jp [153.127.30.23])
-        by hsmtpd-out-2.asahinet.cluster.xspmail.jp (Halon) with ESMTPA
-        id 584f3240-87c0-4884-84a1-60649811349e;
+        by hsmtpd-out-0.asahinet.cluster.xspmail.jp (Halon) with ESMTPA
+        id ef776d6f-9244-44fd-bebf-7c8413ea21f2;
         Wed, 30 Aug 2023 17:42:22 +0900 (JST)
 Received: from SIOS1075.ysato.name (al128006.dynamic.ppp.asahi-net.or.jp [111.234.128.6])
-        by sakura.ysato.name (Postfix) with ESMTPSA id 9A29D1C0399;
+        by sakura.ysato.name (Postfix) with ESMTPSA id C3A721C0431;
         Wed, 30 Aug 2023 17:42:21 +0900 (JST)
 From:   Yoshinori Sato <ysato@users.sourceforge.jp>
 To:     linux-sh@vger.kernel.org
 Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: [RFC PATCH 04/12] clk: SH7750 / 7751 clk driver.
-Date:   Wed, 30 Aug 2023 17:42:05 +0900
-Message-Id: <541eb279023563f17245deabc32b9f65dbf92b9a.1693384846.git.ysato@users.sourceforge.jp>
+Subject: [RFC PATCH 05/12] drivers/irqchip: Add SH7751 and boards specific irqchip.
+Date:   Wed, 30 Aug 2023 17:42:06 +0900
+Message-Id: <52f2118d33bea5e74d4ffda4b3d935772e743ec2.1693384846.git.ysato@users.sourceforge.jp>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1693384846.git.ysato@users.sourceforge.jp>
 References: <cover.1693384846.git.ysato@users.sourceforge.jp>
@@ -42,625 +42,588 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Use COMMON_CLK framework clock driver.
+- irq-renesas-sh7751: Renesas SH7751 internal INTC.
+- irq-renesas-r2d: Renesas RTS7751R2D external interrupt encoder.
+- irq-iodata-julian: IO DATA Device LANDISK external interrupt encoder.
 
 Signed-off-by: Yoshinori Sato <ysato@users.sourceforge.jp>
 ---
- drivers/clk/Kconfig         |   1 +
- drivers/clk/Makefile        |   1 +
- drivers/clk/sh/Kconfig      |   7 +
- drivers/clk/sh/Makefile     |   2 +
- drivers/clk/sh/clk-sh7750.c | 193 ++++++++++++++++++++
- drivers/clk/sh/clk-shdiv.c  | 341 ++++++++++++++++++++++++++++++++++++
- drivers/sh/Makefile         |   2 +
- 7 files changed, 547 insertions(+)
- create mode 100644 drivers/clk/sh/Kconfig
- create mode 100644 drivers/clk/sh/Makefile
- create mode 100644 drivers/clk/sh/clk-sh7750.c
- create mode 100644 drivers/clk/sh/clk-shdiv.c
+ drivers/irqchip/Kconfig              |   4 +
+ drivers/irqchip/Makefile             |   1 +
+ drivers/irqchip/irq-iodata-julian.c  | 163 +++++++++++++++++++++++
+ drivers/irqchip/irq-renesas-r2d.c    | 175 +++++++++++++++++++++++++
+ drivers/irqchip/irq-renesas-sh7751.c | 186 +++++++++++++++++++++++++++
+ 5 files changed, 529 insertions(+)
+ create mode 100644 drivers/irqchip/irq-iodata-julian.c
+ create mode 100644 drivers/irqchip/irq-renesas-r2d.c
+ create mode 100644 drivers/irqchip/irq-renesas-sh7751.c
 
-diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
-index 93f38a8178ba..6aa0b6ece32d 100644
---- a/drivers/clk/Kconfig
-+++ b/drivers/clk/Kconfig
-@@ -485,6 +485,7 @@ source "drivers/clk/ralink/Kconfig"
- source "drivers/clk/renesas/Kconfig"
- source "drivers/clk/rockchip/Kconfig"
- source "drivers/clk/samsung/Kconfig"
-+source "drivers/clk/sh/Kconfig"
- source "drivers/clk/sifive/Kconfig"
- source "drivers/clk/socfpga/Kconfig"
- source "drivers/clk/sprd/Kconfig"
-diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
-index 7cb000549b61..dd597305d494 100644
---- a/drivers/clk/Makefile
-+++ b/drivers/clk/Makefile
-@@ -136,3 +136,4 @@ endif
- obj-y					+= xilinx/
- obj-$(CONFIG_ARCH_ZYNQ)			+= zynq/
- obj-$(CONFIG_COMMON_CLK_ZYNQMP)         += zynqmp/
-+obj-$(CONFIG_SUPERH)			+= sh/
-diff --git a/drivers/clk/sh/Kconfig b/drivers/clk/sh/Kconfig
+diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
+index 09e422da482f..372b22d5183f 100644
+--- a/drivers/irqchip/Kconfig
++++ b/drivers/irqchip/Kconfig
+@@ -660,6 +660,10 @@ config APPLE_AIC
+ 	help
+ 	  Support for the Apple Interrupt Controller found on Apple Silicon SoCs,
+ 	  such as the M1.
++config RENESAS_SH_INTC
++	def_bool y if SH_DEVICE_TREE
++	select IRQ_DOMAIN
++	select IRQ_DOMAIN_HIERARCHY
+ 
+ config MCHP_EIC
+ 	bool "Microchip External Interrupt Controller"
+diff --git a/drivers/irqchip/Makefile b/drivers/irqchip/Makefile
+index ffd945fe71aa..a3859bdd0442 100644
+--- a/drivers/irqchip/Makefile
++++ b/drivers/irqchip/Makefile
+@@ -120,3 +120,4 @@ obj-$(CONFIG_IRQ_IDT3243X)		+= irq-idt3243x.o
+ obj-$(CONFIG_APPLE_AIC)			+= irq-apple-aic.o
+ obj-$(CONFIG_MCHP_EIC)			+= irq-mchp-eic.o
+ obj-$(CONFIG_SUNPLUS_SP7021_INTC)	+= irq-sp7021-intc.o
++obj-$(CONFIG_RENESAS_SH_INTC)		+= irq-renesas-sh7751.o irq-iodata-julian.o irq-renesas-r2d.o
+diff --git a/drivers/irqchip/irq-iodata-julian.c b/drivers/irqchip/irq-iodata-julian.c
 new file mode 100644
-index 000000000000..71b9bbb989cb
+index 000000000000..95e502904a68
 --- /dev/null
-+++ b/drivers/clk/sh/Kconfig
-@@ -0,0 +1,7 @@
-+config COMMON_CLK_SH7750
-+	bool "Clcok driver for SH7750/SH7751"
-+	depends on CPU_SUBTYPE_SH7750 || CPU_SUBTYPE_SH7750S || \
-+	           CPU_SUBTYPE_SH7750R || \
-+	           CPU_SUBTYPE_SH7751 || CPU_SUBTYPE_SH7751R
-+	help
-+	  This driver supports the Renesas SH7750 and SH7751 CPG.
-diff --git a/drivers/clk/sh/Makefile b/drivers/clk/sh/Makefile
-new file mode 100644
-index 000000000000..7122c37655aa
---- /dev/null
-+++ b/drivers/clk/sh/Makefile
-@@ -0,0 +1,2 @@
-+obj-$(CONFIG_COMMON_CLK_SH7750) += clk-sh7750.o
-+obj-$(CONFIG_COMMON_CLK_SH7750) += clk-shdiv.o
-diff --git a/drivers/clk/sh/clk-sh7750.c b/drivers/clk/sh/clk-sh7750.c
-new file mode 100644
-index 000000000000..f41712a9cf44
---- /dev/null
-+++ b/drivers/clk/sh/clk-sh7750.c
-@@ -0,0 +1,193 @@
-+// SPDX-License-Identifier: GPL-2.0+
++++ b/drivers/irqchip/irq-iodata-julian.c
+@@ -0,0 +1,163 @@
++// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * Renesas SH7750/51 clock driver
++ * IO-DATA DEVICE LANDISK / USL-5P (a.k.a Julian) interrupt encoder
 + *
-+ * Copyright 2023 Yoshinori Sato <ysato@users.sourceforge.jp>
++ * Copyright (C) 2023 Yoshinori Sato
 + */
 +
-+#include <linux/clk.h>
-+#include <linux/clkdev.h>
-+#include <linux/clk-provider.h>
-+#include <linux/err.h>
-+#include <linux/of.h>
++#include <linux/init.h>
++#include <linux/irq.h>
++#include <linux/irqchip.h>
++#include <linux/irqdomain.h>
 +#include <linux/of_address.h>
-+#include <linux/io.h>
-+
-+struct clk *sh_div_clk_register(struct device *dev, const char *name,
-+				const char *parent_name,
-+				void __iomem *reg, u8 shift, u8 width,
-+				const struct clk_div_table *table,
-+				spinlock_t *lock);
-+
-+static DEFINE_SPINLOCK(clklock);
-+
-+static struct clk_div_table pdiv_table[] = {
-+	{ .val = 0, .div = 2, },
-+	{ .val = 1, .div = 3, },
-+	{ .val = 2, .div = 4, },
-+	{ .val = 3, .div = 6, },
-+	{ .val = 4, .div = 8, },
-+	{ .val = 0, .div = 0, },
-+};
-+
-+static struct clk_div_table div_table[] = {
-+	{ .val = 0, .div = 1, },
-+	{ .val = 1, .div = 2, },
-+	{ .val = 2, .div = 3, },
-+	{ .val = 3, .div = 4, },
-+	{ .val = 4, .div = 6, },
-+	{ .val = 5, .div = 8, },
-+	{ .val = 0, .div = 0, },
-+};
-+
-+struct pll_clock {
-+	struct clk_hw hw;
-+	void __iomem *frqcr;
-+	void __iomem *wdt;
-+	int md;
-+	bool div1;
-+};
-+
-+#define to_pll_clock(_hw) container_of(_hw, struct pll_clock, hw)
-+
-+static unsigned long pll_recalc_rate(struct clk_hw *hw,
-+				      unsigned long parent_rate)
-+{
-+	struct pll_clock *pll_clock = to_pll_clock(hw);
-+	unsigned long rate = parent_rate;
-+	uint16_t frqcr;
-+	static const int pll1[] = { 12, 12, 6, 12, 6, 12, 1};
-+
-+	frqcr = ioread16(pll_clock->frqcr);
-+	if (frqcr & (1 << 10)) {
-+		rate *= pll1[pll_clock->md];
-+		if (pll_clock->md < 6 && pll_clock->div1)
-+			rate /= 2;
-+	}
-+	return rate;
-+}
-+
-+static const struct clk_ops pll_ops = {
-+	.recalc_rate = pll_recalc_rate,
-+};
-+
-+static void __init sh7750_pll_clk_setup(struct device_node *node)
-+{
-+	unsigned int num_parents;
-+	struct clk *clk;
-+	const char *clk_name = node->name;
-+	const char *parent_name;
-+	struct pll_clock *pll_clock;
-+	struct clk_init_data init;
-+
-+	num_parents = of_clk_get_parent_count(node);
-+	if (num_parents < 1) {
-+		pr_err("%s: no parent found", clk_name);
-+		return;
-+	}
-+
-+	pll_clock = kzalloc(sizeof(struct pll_clock), GFP_KERNEL);
-+	if (!pll_clock)
-+		return;
-+
-+	pll_clock->frqcr = of_iomap(node, 0);
-+	if (pll_clock->frqcr == NULL) {
-+		pr_err("%s: failed to map frequenct control register",
-+		       clk_name);
-+		goto free_clock;
-+	}
-+
-+	pll_clock->wdt = of_iomap(node, 1);
-+	if (pll_clock->wdt == NULL) {
-+		pr_err("%s: failed to map watchdog register", clk_name);
-+		goto unmap_frqcr;
-+	}
-+
-+	of_property_read_u32_index(node, "sh7750,md", 0, &pll_clock->md);
-+	if (pll_clock->md >= 7) {
-+		pr_err("%s: failed to clock mode setting (%d)\n",
-+		       clk_name, pll_clock->md);
-+		goto unmap_wdt;
-+	}
-+	pll_clock->div1 = !of_property_read_bool(node, "sh7750,rtype");
-+	parent_name = of_clk_get_parent_name(node, 0);
-+	init.name = clk_name;
-+	init.ops = &pll_ops;
-+	init.flags = 0;
-+	init.parent_names = &parent_name;
-+	init.num_parents = 1;
-+	pll_clock->hw.init = &init;
-+
-+	clk = clk_register(NULL, &pll_clock->hw);
-+	if (IS_ERR(clk)) {
-+		pr_err("%s: failed to register %s pll clock (%ld)\n",
-+		       __func__, clk_name, PTR_ERR(clk));
-+		goto unmap_wdt;
-+	}
-+
-+	of_clk_add_provider(node, of_clk_src_simple_get, clk);
-+	return;
-+
-+unmap_wdt:
-+	iounmap(pll_clock->wdt);
-+unmap_frqcr:
-+	iounmap(pll_clock->frqcr);
-+free_clock:
-+	kfree(pll_clock);
-+}
-+
-+static void __init sh7750_div_clk_setup(struct device_node *node)
-+{
-+	unsigned int num_parents;
-+	struct clk *clk;
-+	const char *clk_name = node->name;
-+	const char *parent_name;
-+	void __iomem *freqcr = NULL;
-+	int i;
-+	int num_clks;
-+	int offset;
-+
-+	num_parents = of_clk_get_parent_count(node);
-+	if (num_parents < 1) {
-+		pr_err("%s: no parent found", clk_name);
-+		return;
-+	}
-+
-+	num_clks = of_property_count_strings(node, "clock-output-names");
-+	if (num_clks < 0) {
-+		pr_err("%s: failed to count clocks", clk_name);
-+		return;
-+	}
-+
-+	freqcr = of_iomap(node, 0);
-+	if (freqcr == NULL) {
-+		pr_err("%s: failed to map divide register", clk_name);
-+		goto error;
-+	}
-+
-+	of_property_read_u32_index(node, "renesas,offset", 0, &offset);
-+
-+	parent_name = of_clk_get_parent_name(node, 0);
-+	for (i = 0; i < num_clks; i++) {
-+		of_property_read_string_index(node, "clock-output-names", i,
-+					      &clk_name);
-+		clk = sh_div_clk_register(NULL, clk_name, parent_name,
-+					  freqcr,
-+					  offset, 3,
-+					  (offset == 0)?pdiv_table:div_table,
-+					  &clklock);
-+		if (IS_ERR(clk))
-+			pr_err("%s: failed to register %s div clock (%ld)\n",
-+			       __func__, clk_name, PTR_ERR(clk));
-+		else
-+			of_clk_add_provider(node, of_clk_src_simple_get, clk);
-+	}
-+error:
-+	if (freqcr)
-+		iounmap(freqcr);
-+}
-+
-+CLK_OF_DECLARE(sh7750_div_clk, "renesas,sh7750-div-clock",
-+	       sh7750_div_clk_setup);
-+CLK_OF_DECLARE(sh7750_pll_clk, "renesas,sh7750-pll-clock",
-+	       sh7750_pll_clk_setup);
-diff --git a/drivers/clk/sh/clk-shdiv.c b/drivers/clk/sh/clk-shdiv.c
-new file mode 100644
-index 000000000000..2c016c413dd6
---- /dev/null
-+++ b/drivers/clk/sh/clk-shdiv.c
-@@ -0,0 +1,341 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Renesas SuperH divider clock driver
-+ *
-+ * Copyright 2023 Yoshinori Sato <ysato@users.sourceforge.jp>
-+ */
-+
-+#include <linux/clk-provider.h>
-+#include <linux/module.h>
-+#include <linux/slab.h>
-+#include <linux/io.h>
++#include <linux/of_irq.h>
 +#include <linux/err.h>
-+#include <linux/string.h>
++#include <linux/init.h>
++#include <linux/interrupt.h>
++#include <linux/io.h>
++#include <linux/module.h>
++#include <linux/platform_device.h>
++#include <linux/slab.h>
 +
-+#define div_mask(width)	((1 << (width)) - 1)
++#define NUM_IRQ 16
 +
-+static unsigned int _get_table_maxdiv(const struct clk_div_table *table,
-+				      u8 width)
++struct julian_intc_priv {
++	struct device *dev;
++	void __iomem *base;
++	struct irq_domain *irq_domain;
++};
++
++static struct julian_intc_priv *irq_data_to_priv(struct irq_data *data)
 +{
-+	unsigned int maxdiv = 0, mask = div_mask(width);
-+	const struct clk_div_table *clkt;
-+
-+	for (clkt = table; clkt->div; clkt++)
-+		if (clkt->div > maxdiv && clkt->val <= mask)
-+			maxdiv = clkt->div;
-+	return maxdiv;
++	return data->domain->host_data;
 +}
 +
-+static unsigned int _get_maxdiv(const struct clk_div_table *table, u8 width)
++static void julian_intc_mask_irq(struct irq_data *data)
 +{
-+	if (table)
-+		return _get_table_maxdiv(table, width);
-+	return div_mask(width) + 1;
++	struct julian_intc_priv *priv = irq_data_to_priv(data);
++	int irq = data->irq;
++	u8 mask;
++
++	mask = __raw_readb(priv->base + 5);
++	mask &= ~(1 << (irq - 5));
++	__raw_writeb(mask, priv->base + 5);
 +}
 +
-+static unsigned int _get_table_div(const struct clk_div_table *table,
-+				   unsigned int val)
++static void julian_intc_unmask_irq(struct irq_data *data)
 +{
-+	const struct clk_div_table *clkt;
++	struct julian_intc_priv *priv = irq_data_to_priv(data);
++	int irq = data->irq;
++	u8 mask;
 +
-+	for (clkt = table; clkt->div; clkt++)
-+		if (clkt->val == val)
-+			return clkt->div;
++	mask = __raw_readb(priv->base + 5);
++	mask |= (1 << (irq - 5));
++	__raw_writeb(mask, priv->base + 5);
++}
++
++static struct irq_chip julian_intc_chip = {
++	.name		= "JULIAN-INTC",
++	.irq_unmask	= julian_intc_unmask_irq,
++	.irq_mask	= julian_intc_mask_irq,
++};
++
++static __init int julian_intc_map(struct irq_domain *h, unsigned int virq,
++			       irq_hw_number_t hw_irq_num)
++{
++	irq_set_chip_and_handler(virq, &julian_intc_chip, handle_level_irq);
++	irq_get_irq_data(virq)->chip_data = h->host_data;
++	irq_modify_status(virq, IRQ_NOREQUEST, IRQ_NOPROBE);
 +	return 0;
 +}
 +
-+static unsigned int _get_div(const struct clk_div_table *table,
-+			     unsigned int val,  u8 width)
++static int julian_intc_translate(struct irq_domain *domain,
++			       struct irq_fwspec *fwspec, unsigned long *hwirq,
++			       unsigned int *type)
 +{
-+	if (table)
-+		return _get_table_div(table, val);
-+	return val + 1;
-+}
-+
-+static unsigned int _get_table_val(const struct clk_div_table *table,
-+				   unsigned int div)
-+{
-+	const struct clk_div_table *clkt;
-+
-+	for (clkt = table; clkt->div; clkt++)
-+		if (clkt->div == div)
-+			return clkt->val;
-+	return 0;
-+}
-+
-+static unsigned int _get_val(const struct clk_div_table *table,
-+			     unsigned int div, u8 width)
-+{
-+	if (table)
-+		return  _get_table_val(table, div);
-+	return div - 1;
-+}
-+
-+static unsigned long sh_divider_recalc_rate(struct clk_hw *hw,
-+					 unsigned long parent_rate,
-+					 unsigned int val,
-+					 const struct clk_div_table *table)
-+{
-+	struct clk_divider *divider = to_clk_divider(hw);
-+	unsigned int div;
-+
-+	div = _get_div(table, val, divider->width);
-+
-+	return DIV_ROUND_UP_ULL((u64)parent_rate, div);
-+}
-+
-+static unsigned long sh_clk_divider_recalc_rate(struct clk_hw *hw,
-+		unsigned long parent_rate)
-+{
-+	struct clk_divider *divider = to_clk_divider(hw);
-+	unsigned int val;
-+
-+	val = __raw_readw(divider->reg) >> divider->shift;
-+	val &= div_mask(divider->width);
-+
-+	return sh_divider_recalc_rate(hw, parent_rate, val, divider->table);
-+}
-+
-+static bool _is_valid_table_div(const struct clk_div_table *table,
-+				unsigned int div)
-+{
-+	const struct clk_div_table *clkt;
-+
-+	for (clkt = table; clkt->div; clkt++)
-+		if (clkt->div == div)
-+			return true;
-+	return false;
-+}
-+
-+static bool _is_valid_div(const struct clk_div_table *table, unsigned int div)
-+{
-+	if (table)
-+		return _is_valid_table_div(table, div);
-+	return true;
-+}
-+
-+static int _round_up_table(const struct clk_div_table *table, int div)
-+{
-+	const struct clk_div_table *clkt;
-+	int up = INT_MAX;
-+
-+	for (clkt = table; clkt->div; clkt++) {
-+		if (clkt->div == div)
-+			return clkt->div;
-+		else if (clkt->div < div)
-+			continue;
-+
-+		if ((clkt->div - div) < (up - div))
-+			up = clkt->div;
-+	}
-+
-+	return up;
-+}
-+
-+static int _div_round_up(const struct clk_div_table *table,
-+			 unsigned long parent_rate, unsigned long rate)
-+{
-+	int div = DIV_ROUND_UP_ULL((u64)parent_rate, rate);
-+
-+	if (table)
-+		div = _round_up_table(table, div);
-+
-+	return div;
-+}
-+
-+static int _div_round(const struct clk_div_table *table,
-+		      unsigned long parent_rate, unsigned long rate)
-+{
-+	return _div_round_up(table, parent_rate, rate);
-+}
-+
-+static bool _is_best_div(unsigned long rate, unsigned long now,
-+			 unsigned long best)
-+{
-+	return now <= rate && now > best;
-+}
-+
-+static int _next_div(const struct clk_div_table *table, int div)
-+{
-+	div++;
-+
-+	if (table)
-+		return _round_up_table(table, div);
-+
-+	return div;
-+}
-+
-+static int clk_divider_bestdiv(struct clk_hw *hw, unsigned long rate,
-+			       unsigned long *best_parent_rate,
-+			       const struct clk_div_table *table, u8 width)
-+{
-+	int i, bestdiv = 0;
-+	unsigned long parent_rate, best = 0, now, maxdiv;
-+	unsigned long parent_rate_saved = *best_parent_rate;
-+
-+	if (!rate)
-+		rate = 1;
-+
-+	maxdiv = _get_maxdiv(table, width);
-+
-+	if (!(clk_hw_get_flags(hw) & CLK_SET_RATE_PARENT)) {
-+		parent_rate = *best_parent_rate;
-+		bestdiv = _div_round(table, parent_rate, rate);
-+		bestdiv = bestdiv == 0 ? 1 : bestdiv;
-+		bestdiv = bestdiv > maxdiv ? maxdiv : bestdiv;
-+		return bestdiv;
-+	}
-+
-+	/*
-+	 * The maximum divider we can use without overflowing
-+	 * unsigned long in rate * i below
-+	 */
-+	maxdiv = min(ULONG_MAX / rate, maxdiv);
-+
-+	for (i = _next_div(table, 0); i <= maxdiv;
-+	     i = _next_div(table, i)) {
-+		if (rate * i == parent_rate_saved) {
-+			/*
-+			 * It's the most ideal case if the requested rate can be
-+			 * divided from parent clock without needing to change
-+			 * parent rate, so return the divider immediately.
-+			 */
-+			*best_parent_rate = parent_rate_saved;
-+			return i;
-+		}
-+		parent_rate = clk_hw_round_rate(clk_hw_get_parent(hw),
-+					       rate * i);
-+		now = DIV_ROUND_UP_ULL((u64)parent_rate, i);
-+		if (_is_best_div(rate, now, best)) {
-+			bestdiv = i;
-+			best = now;
-+			*best_parent_rate = parent_rate;
-+		}
-+	}
-+
-+	if (!bestdiv) {
-+		bestdiv = _get_maxdiv(table, width);
-+		*best_parent_rate = clk_hw_round_rate(clk_hw_get_parent(hw), 1);
-+	}
-+
-+	return bestdiv;
-+}
-+
-+static long sh_divider_round_rate(struct clk_hw *hw, unsigned long rate,
-+			unsigned long *prate, const struct clk_div_table *table,
-+			u8 width)
-+{
-+	int div;
-+
-+	div = clk_divider_bestdiv(hw, rate, prate, table, width);
-+
-+	return DIV_ROUND_UP_ULL((u64)*prate, div);
-+}
-+
-+static long sh_clk_divider_round_rate(struct clk_hw *hw, unsigned long rate,
-+				unsigned long *prate)
-+{
-+	struct clk_divider *divider = to_clk_divider(hw);
-+
-+	return sh_divider_round_rate(hw, rate, prate, divider->table,
-+				     divider->width);
-+}
-+
-+static int sh_divider_get_val(unsigned long rate, unsigned long parent_rate,
-+			   const struct clk_div_table *table, u8 width)
-+{
-+	unsigned int div, value;
-+
-+	div = DIV_ROUND_UP_ULL((u64)parent_rate, rate);
-+
-+	if (!_is_valid_div(table, div))
++	if (fwspec->param[0] >= NUM_IRQ)
 +		return -EINVAL;
 +
-+	value = _get_val(table, div, width);
-+
-+	return min_t(unsigned int, value, div_mask(width));
-+}
-+
-+static int sh_clk_divider_set_rate(struct clk_hw *hw, unsigned long rate,
-+				unsigned long parent_rate)
-+{
-+	struct clk_divider *divider = to_clk_divider(hw);
-+	unsigned int value;
-+	unsigned long flags = 0;
-+	u16 val;
-+
-+	value = sh_divider_get_val(rate, parent_rate, divider->table,
-+				   divider->width);
-+
-+	if (divider->lock)
-+		spin_lock_irqsave(divider->lock, flags);
-+	else
-+		__acquire(divider->lock);
-+
-+	val = __raw_readw(divider->reg);
-+	val &= ~(div_mask(divider->width) << divider->shift);
-+	val |= value << divider->shift;
-+	__raw_writew(val, divider->reg);
-+
-+	if (divider->lock)
-+		spin_unlock_irqrestore(divider->lock, flags);
-+	else
-+		__release(divider->lock);
-+
++	switch (fwspec->param_count) {
++	case 2:
++		*type = fwspec->param[1];
++		fallthrough;
++	case 1:
++		*hwirq = fwspec->param[0];
++		break;
++	default:
++		return -EINVAL;
++	}
 +	return 0;
 +}
 +
-+static const struct clk_ops sh_clk_divider_ops = {
-+	.recalc_rate = sh_clk_divider_recalc_rate,
-+	.round_rate = sh_clk_divider_round_rate,
-+	.set_rate = sh_clk_divider_set_rate,
++static const struct irq_domain_ops julian_intc_domain_ops = {
++	.map = julian_intc_map,
++	.translate = julian_intc_translate,
 +};
 +
-+static struct clk *_register_divider(struct device *dev, const char *name,
-+		const char *parent_name,
-+		void __iomem *reg, u8 shift, u8 width,
-+		const struct clk_div_table *table,
-+		spinlock_t *lock)
++static int julian_intc_probe(struct platform_device *pdev)
 +{
-+	struct clk_divider *div;
-+	struct clk *clk;
-+	struct clk_init_data init;
++	struct device *dev = &pdev->dev;
++	struct device_node *np = dev->of_node;
++	struct julian_intc_priv *priv;
++	struct irq_domain *d;
++	int ret = 0;
 +
-+	/* allocate the divider */
-+	div = kzalloc(sizeof(*div), GFP_KERNEL);
-+	if (!div)
-+		return ERR_PTR(-ENOMEM);
++	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
++	if (!priv)
++		return -ENOMEM;
 +
-+	init.name = name;
-+	init.ops = &sh_clk_divider_ops;
-+	init.flags = 0;
-+	init.parent_names = (parent_name ? &parent_name : NULL);
-+	init.num_parents = (parent_name ? 1 : 0);
++	priv->dev = dev;
 +
-+	/* struct clk_divider assignments */
-+	div->reg = reg;
-+	div->shift = shift;
-+	div->width = width;
-+	div->lock = lock;
-+	div->hw.init = &init;
-+	div->table = table;
++	priv->base = devm_platform_ioremap_resource(pdev, 0);
++	if (IS_ERR(priv->base))
++		return PTR_ERR(priv->base);
 +
-+	/* register the clock */
-+	clk = clk_register(dev, &div->hw);
-+
-+	if (IS_ERR(clk))
-+		kfree(div);
-+
-+	return clk;
++	d = irq_domain_add_tree(np, &julian_intc_domain_ops, priv);
++	if (d == NULL) {
++		dev_err(dev, "cannot initialize irq domain\n");
++		kfree(priv);
++		ret = -ENOMEM;
++	} else {
++		priv->irq_domain = d;
++		irq_domain_update_bus_token(d, DOMAIN_BUS_WIRED);
++	}
++	return ret;
 +}
 +
-+struct clk *sh_div_clk_register(struct device *dev, const char *name,
-+				const char *parent_name,
-+				void __iomem *reg, u8 shift, u8 width,
-+				const struct clk_div_table *table,
-+				spinlock_t *lock)
++static int julian_intc_remove(struct platform_device *pdev)
 +{
-+	return _register_divider(dev, name, parent_name, reg, shift,
-+				 width, table, lock);
++	struct julian_intc_priv *priv = platform_get_drvdata(pdev);
++
++	irq_domain_remove(priv->irq_domain);
++	return 0;
 +}
-+EXPORT_SYMBOL_GPL(sh_div_clk_register);
-diff --git a/drivers/sh/Makefile b/drivers/sh/Makefile
-index c53262835e85..ed0985caa414 100644
---- a/drivers/sh/Makefile
-+++ b/drivers/sh/Makefile
-@@ -2,7 +2,9 @@
- #
- # Makefile for the SuperH specific drivers.
- #
-+ifneq ($(CONFIG_RENESAS_SH_INTC),y)
- obj-$(CONFIG_SH_INTC)			+= intc/
-+endif
- ifneq ($(CONFIG_COMMON_CLK),y)
- obj-$(CONFIG_HAVE_CLK)			+= clk/
- endif
++
++static const struct of_device_id julian_intc_dt_ids[] = {
++	{ .compatible = "iodata,julian-intc" },
++	{},
++};
++MODULE_DEVICE_TABLE(of, julian_intc_dt_ids);
++
++static struct platform_driver julian_intc_device_driver = {
++	.probe		= julian_intc_probe,
++	.remove		= julian_intc_remove,
++	.driver		= {
++		.name	= "iodata_julian_intc",
++		.of_match_table	= julian_intc_dt_ids,
++	}
++};
++
++static int __init julian_intc_init(void)
++{
++	return platform_driver_register(&julian_intc_device_driver);
++}
++postcore_initcall(julian_intc_init);
++
++static void __exit julian_intc_exit(void)
++{
++	platform_driver_unregister(&julian_intc_device_driver);
++}
++module_exit(julian_intc_exit);
++
++MODULE_AUTHOR("Yoshinori Sato");
++MODULE_DESCRIPTION("IO-DATA JULIAN external interrupt encoder");
+diff --git a/drivers/irqchip/irq-renesas-r2d.c b/drivers/irqchip/irq-renesas-r2d.c
+new file mode 100644
+index 000000000000..595057c1f5aa
+--- /dev/null
++++ b/drivers/irqchip/irq-renesas-r2d.c
+@@ -0,0 +1,175 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Renesas RTS7751R2D interrupt encoder
++ *
++ * Copyright (C) 2023 Yoshinori Sato
++ */
++
++#include <linux/err.h>
++#include <linux/init.h>
++#include <linux/interrupt.h>
++#include <linux/io.h>
++#include <linux/irqdomain.h>
++#include <linux/irq.h>
++#include <linux/module.h>
++#include <linux/of_irq.h>
++#include <linux/platform_device.h>
++#include <linux/slab.h>
++
++#define NUM_IRQ 15
++
++struct r2d_intc_priv {
++	struct device *dev;
++	void __iomem *base;
++	struct irq_domain *irq_domain;
++};
++
++static const int imask[] = {
++	1 << 11,	/* PCI INTD */
++	1 << 9,		/* CF IDE */
++	1 << 8,		/* CF CD */
++	1 << 12,	/* PCI INTC */
++	1 << 10,	/* SM501 */
++	1 << 6,		/* AX88796 / KEY */
++	1 << 5,		/* RTC ALARM */
++	1 << 4,		/* RTC T */
++	1 << 7,		/* SDCARD */
++	1 << 14,	/* PCI INTA */
++	1 << 13,	/* PCI INTB */
++	1 << 0,		/* EXT */
++	1 << 15,	/* TP */
++};
++
++static struct r2d_intc_priv *irq_data_to_priv(struct irq_data *data)
++{
++	return data->domain->host_data;
++}
++
++static void r2d_intc_mask_irq(struct irq_data *data)
++{
++	struct r2d_intc_priv *priv = irq_data_to_priv(data);
++	u16 mask;
++
++	mask = __raw_readw(priv->base);
++	mask &= ~(imask[data->irq]);
++	__raw_writew(mask, priv->base);
++}
++
++static void r2d_intc_unmask_irq(struct irq_data *data)
++{
++	struct r2d_intc_priv *priv = irq_data_to_priv(data);
++	u16 mask;
++
++	mask = __raw_readw(priv->base);
++	mask |= imask[data->irq];
++	__raw_writew(mask, priv->base);
++}
++
++static struct irq_chip r2d_intc_chip = {
++	.name		= "R2D-INTC",
++	.irq_unmask	= r2d_intc_unmask_irq,
++	.irq_mask	= r2d_intc_mask_irq,
++};
++
++static __init int r2d_intc_map(struct irq_domain *h, unsigned int virq,
++			       irq_hw_number_t hw_irq_num)
++{
++	irq_set_chip_and_handler(virq, &r2d_intc_chip, handle_level_irq);
++	irq_get_irq_data(virq)->chip_data = h->host_data;
++	irq_modify_status(virq, IRQ_NOREQUEST, IRQ_NOPROBE);
++	return 0;
++}
++
++static int r2d_intc_translate(struct irq_domain *domain,
++			       struct irq_fwspec *fwspec, unsigned long *hwirq,
++			       unsigned int *type)
++{
++	if (fwspec->param[0] >= NUM_IRQ)
++		return -EINVAL;
++
++	switch (fwspec->param_count) {
++	case 2:
++		*type = fwspec->param[1];
++		fallthrough;
++	case 1:
++		*hwirq = fwspec->param[0];
++		break;
++	default:
++		return -EINVAL;
++	}
++	return 0;
++}
++
++static const struct irq_domain_ops r2d_intc_domain_ops = {
++//	.alloc = r2d_intc_alloc,
++	.map = r2d_intc_map,
++	.translate = r2d_intc_translate,
++};
++
++static int r2d_intc_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct device_node *np = dev->of_node;
++	struct r2d_intc_priv *priv;
++	struct irq_domain *d;
++	int ret = 0;
++
++	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
++	if (!priv)
++		return -ENOMEM;
++
++	priv->dev = dev;
++
++	priv->base = devm_platform_ioremap_resource(pdev, 0);
++	if (IS_ERR(priv->base))
++		return PTR_ERR(priv->base);
++
++	d = irq_domain_add_tree(np, &r2d_intc_domain_ops, priv);
++	if (d == NULL) {
++		dev_err(dev, "cannot initialize irq domain\n");
++		kfree(priv);
++		ret = -ENOMEM;
++	} else {
++		priv->irq_domain = d;
++		irq_domain_update_bus_token(d, DOMAIN_BUS_WIRED);
++	}
++	return ret;
++}
++
++static int r2d_intc_remove(struct platform_device *pdev)
++{
++	struct r2d_intc_priv *priv = platform_get_drvdata(pdev);
++
++	irq_domain_remove(priv->irq_domain);
++	return 0;
++}
++
++static const struct of_device_id r2d_intc_dt_ids[] = {
++	{ .compatible = "renesas,rts7751r2d-intc" },
++	{},
++};
++MODULE_DEVICE_TABLE(of, r2d_intc_dt_ids);
++
++static struct platform_driver r2d_intc_device_driver = {
++	.probe		= r2d_intc_probe,
++	.remove		= r2d_intc_remove,
++	.driver		= {
++		.name	= "renesas_r2d_intc",
++		.of_match_table	= r2d_intc_dt_ids,
++	}
++};
++
++static int __init r2d_intc_init(void)
++{
++	return platform_driver_register(&r2d_intc_device_driver);
++}
++postcore_initcall(r2d_intc_init);
++
++static void __exit r2d_intc_exit(void)
++{
++	platform_driver_unregister(&r2d_intc_device_driver);
++}
++module_exit(r2d_intc_exit);
++
++MODULE_AUTHOR("Yoshinori Sato");
++MODULE_DESCRIPTION("Renesas RTS7751R2D external interrupt encoder");
+diff --git a/drivers/irqchip/irq-renesas-sh7751.c b/drivers/irqchip/irq-renesas-sh7751.c
+new file mode 100644
+index 000000000000..1c4b2be44c27
+--- /dev/null
++++ b/drivers/irqchip/irq-renesas-sh7751.c
+@@ -0,0 +1,186 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Renesas SH7751 interrupt controller driver
++ *
++ * Copyright 2023 Yoshinori Sato <ysato@users.sourceforge.jp>
++ */
++
++#include <linux/irq.h>
++#include <linux/irqchip.h>
++#include <linux/of_address.h>
++#include <linux/of_irq.h>
++#include <linux/of.h>
++#include <linux/io.h>
++
++static struct sh7751_intc_regs {
++	void *icr;
++	void *ipr;
++	void *intpri00;
++	void *intreq00;
++	void *intmsk00;
++	void *intmskclr00;
++} sh7751_regs;
++
++#define ICR_IRLM (1 << 7)
++
++static const unsigned int ipr_table[] = {
++	0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, /* 0 - 7 */
++	0x41, 0xff, 0xff, 0x40, 0xff, 0xff, 0xff, 0xff, /* 8 - 15 */
++	0x03, 0x02, 0x01, 0x01, 0x00, 0x00, 0x00, 0x11, /* 16 - 23 */
++	0x11, 0x11, 0x11, 0x13, 0x12, 0x12, 0xff, 0xff, /* 24 - 31 */
++	0x30, 0x33, 0x32, 0x32, 0x32, 0x32, 0x32, 0x21, /* 32 - 39 */
++	0x21, 0x21, 0x21, 0x21, 0x32, 0x32, 0x32, 0x32, /* 40 - 47 */
++	0xff, 0xff, 0xff, 0x40, 0xff, 0xff, 0xff, 0xff, /* 48 - 55 */
++	0xff, 0xff, 0xff, 0x40, 0xff, 0xff, 0xff, 0xff, /* 56 - 63 */
++};
++
++static const unsigned int pri_table[] = {
++	0, 4, 4, 4, 4, 4, 4, 4,
++	8, 32, 32, 32, 12, 32, 32, 32,
++};
++
++/* Bitmap of IRQ masked */
++#define IMASK_PRIORITY	15
++
++static DECLARE_BITMAP(imask_mask, IMASK_PRIORITY);
++static int interrupt_priority;
++
++static inline void set_interrupt_registers(int ip)
++{
++	unsigned long __dummy;
++
++	asm volatile(
++#ifdef CONFIG_CPU_HAS_SR_RB
++		     "ldc	%2, r6_bank\n\t"
++#endif
++		     "stc	sr, %0\n\t"
++		     "and	#0xf0, %0\n\t"
++		     "shlr2	%0\n\t"
++		     "cmp/eq	#0x3c, %0\n\t"
++		     "bt/s	1f	! CLI-ed\n\t"
++		     " stc	sr, %0\n\t"
++		     "and	%1, %0\n\t"
++		     "or	%2, %0\n\t"
++		     "ldc	%0, sr\n"
++		     "1:"
++		     : "=&z" (__dummy)
++		     : "r" (~0xf0), "r" (ip << 4)
++		     : "t");
++}
++
++static void update_ipr(struct sh7751_intc_regs *reg, int irq, int on)
++{
++	unsigned int addr;
++	int pos;
++	uint16_t pri;
++
++	if (irq < 64) {
++		if (ipr_table[irq] != 0xff) {
++			addr = (ipr_table[irq] & 0xf0) >> 2;
++			pos = (ipr_table[irq] & 0x0f) * 4;
++			pri = ~(0x000f << pos);
++			pri &= __raw_readw(reg->ipr + addr);
++			if (on)
++				pri |= 1 << pos;
++			__raw_writew(pri, reg->ipr + addr);
++		}
++	} else {
++		if (pri_table[irq - 64] < 32) {
++			pos = pri_table[irq - 64];
++			pri = ~(0x000f << pos);
++			pri &= __raw_readw(reg->intpri00);
++			if (on)
++				pri |= 1 << pos;
++			__raw_writew(pri, reg->intpri00);
++		}
++	}
++}
++
++static void sh7751_disable_irq(struct irq_data *data)
++{
++	unsigned int irq = data->irq;
++	struct sh7751_intc_regs *reg = data->chip_data;
++	uint16_t icr = __raw_readw(reg->icr);
++
++	if (irq < 16 && (icr & ICR_IRLM) == 0) {
++		clear_bit(irq, imask_mask);
++		if (interrupt_priority < IMASK_PRIORITY - irq)
++			interrupt_priority = IMASK_PRIORITY - irq;
++		set_interrupt_registers(interrupt_priority);
++	} else
++		update_ipr(reg, irq, 0);
++}
++
++static void sh7751_enable_irq(struct irq_data *data)
++{
++	unsigned int irq = data->irq;
++	struct sh7751_intc_regs *reg = data->chip_data;
++	uint16_t icr = __raw_readw(reg->icr);
++
++	if (irq < 16 && (icr & ICR_IRLM) == 0) {
++		set_bit(irq, imask_mask);
++		interrupt_priority = IMASK_PRIORITY -
++		  find_first_bit(imask_mask, IMASK_PRIORITY);
++		set_interrupt_registers(interrupt_priority);
++	} else
++		update_ipr(reg, irq, 1);
++}
++
++struct irq_chip sh7751_irq_chip = {
++	.name		= "SH7751-INTC",
++	.irq_unmask	= sh7751_enable_irq,
++	.irq_mask	= sh7751_disable_irq,
++};
++
++static int irq_sh7751_map(struct irq_domain *h, unsigned int virq,
++				  irq_hw_number_t hw_irq_num)
++{
++	irq_set_chip_and_handler(virq, &sh7751_irq_chip, handle_level_irq);
++	irq_get_irq_data(virq)->chip_data = h->host_data;
++	irq_modify_status(virq, IRQ_NOREQUEST, IRQ_NOPROBE);
++	return 0;
++}
++static const struct irq_domain_ops irq_ops = {
++	.map = irq_sh7751_map,
++	.xlate  = irq_domain_xlate_onecell,
++};
++
++static int __init sh7751_intc_of_init(struct device_node *intc,
++				      struct device_node *parent)
++{
++	unsigned short icr;
++	struct irq_domain *domain;
++	void *intc_baseaddr;
++	void *intc_baseaddr2;
++
++	intc_baseaddr = of_iomap(intc, 0);
++	intc_baseaddr2 = of_iomap(intc, 1);
++	if (!intc_baseaddr) {
++		pr_err("Invalid INTC address\n");
++		return -EINVAL;
++	}
++
++	sh7751_regs.icr = intc_baseaddr;
++	sh7751_regs.ipr = intc_baseaddr + 4;
++	sh7751_regs.intpri00 = intc_baseaddr2;
++	sh7751_regs.intreq00 = intc_baseaddr2 + 0x20;
++	sh7751_regs.intmsk00 = intc_baseaddr2 + 0x40;
++	sh7751_regs.intmskclr00 = intc_baseaddr2 + 0x60;
++
++	if (of_property_read_bool(intc, "sh7751,irlm")) {
++		icr = __raw_readw(sh7751_regs.icr);
++		icr |= 0x80;	// IRLM = 1
++		__raw_writew(icr, sh7751_regs.icr);
++	}
++
++	domain = irq_domain_add_linear(intc, NR_IRQS, &irq_ops, &sh7751_regs);
++	if (!domain) {
++		pr_err("Unable to allocate domain handle\n");
++		return -ENOMEM;
++	}
++	irq_set_default_host(domain);
++	return 0;
++}
++
++IRQCHIP_DECLARE(sh_7751_intc,
++		"renesas,sh7751-intc", sh7751_intc_of_init);
 -- 
 2.39.2
 
