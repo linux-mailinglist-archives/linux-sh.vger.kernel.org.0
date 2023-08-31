@@ -2,386 +2,122 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFB8B78DC8B
-	for <lists+linux-sh@lfdr.de>; Wed, 30 Aug 2023 20:49:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 555A878E426
+	for <lists+linux-sh@lfdr.de>; Thu, 31 Aug 2023 03:12:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243110AbjH3Sp7 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 30 Aug 2023 14:45:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43040 "EHLO
+        id S240151AbjHaBMO (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 30 Aug 2023 21:12:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242525AbjH3I6g (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 30 Aug 2023 04:58:36 -0400
-Received: from hsmtpd-def.xspmail.jp (hsmtpd-def.xspmail.jp [202.238.198.245])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94800CDD
-        for <linux-sh@vger.kernel.org>; Wed, 30 Aug 2023 01:58:27 -0700 (PDT)
+        with ESMTP id S239131AbjHaBMM (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 30 Aug 2023 21:12:12 -0400
+Received: from hsmtpd-def.xspmail.jp (hsmtpd-def.xspmail.jp [202.238.198.242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 968AACC5
+        for <linux-sh@vger.kernel.org>; Wed, 30 Aug 2023 18:12:07 -0700 (PDT)
 X-Country-Code: JP
 Received: from sakura.ysato.name (ik1-413-38519.vs.sakura.ne.jp [153.127.30.23])
         by hsmtpd-out-0.asahinet.cluster.xspmail.jp (Halon) with ESMTPA
-        id 24296f37-d1ad-4947-b50d-07bd5f68932b;
-        Wed, 30 Aug 2023 17:42:23 +0900 (JST)
-Received: from SIOS1075.ysato.name (al128006.dynamic.ppp.asahi-net.or.jp [111.234.128.6])
-        by sakura.ysato.name (Postfix) with ESMTPSA id 0A8301C0210;
-        Wed, 30 Aug 2023 17:42:23 +0900 (JST)
+        id cff12cc4-8b5b-4a22-9145-12533528baf3;
+        Thu, 31 Aug 2023 10:12:06 +0900 (JST)
+Received: from SIOS1075.flets-east.jp (al128006.dynamic.ppp.asahi-net.or.jp [111.234.128.6])
+        by sakura.ysato.name (Postfix) with ESMTPSA id CEAFB1C0015;
+        Thu, 31 Aug 2023 10:12:04 +0900 (JST)
 From:   Yoshinori Sato <ysato@users.sourceforge.jp>
 To:     linux-sh@vger.kernel.org
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: [RFC PATCH 12/12] sh: OF defconfig.
-Date:   Wed, 30 Aug 2023 17:42:13 +0900
-Message-Id: <67d119de7223c02deaa2ab71e262ea2ac819b93d.1693384846.git.ysato@users.sourceforge.jp>
+Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        glaubitz@physik.fu-berlin.de
+Subject: [RESEND RFC PATCH 00/12] DeviceTree support for SH7751 based boards.
+Date:   Thu, 31 Aug 2023 10:11:47 +0900
+Message-Id: <cover.1693444193.git.ysato@users.sourceforge.jp>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <cover.1693384846.git.ysato@users.sourceforge.jp>
-References: <cover.1693384846.git.ysato@users.sourceforge.jp>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_SOFTFAIL,UPPERCASE_50_75
-        autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_SOFTFAIL autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Signed-off-by: Yoshinori Sato <ysato@users.sourceforge.jp>
----
- arch/sh/configs/landisk-of_defconfig        | 161 ++++++++++++++++++++
- arch/sh/configs/rts7751r2dplus-of_defconfig | 159 +++++++++++++++++++
- 2 files changed, 320 insertions(+)
+I sent it yesterday but it wasn't delivered so I'm resending it.
+
+This is an updated version of something I wrote about 7 years ago.
+Minimum support for R2D-plus and LANDISK.
+I think R2D-1 will work if you add AX88796 to dts.
+And board-specific functions and SCI's SPI functions are not supported.
+
+Yoshinori Sato (12):
+  sh: Add OF target boards.
+  sh: Update OF handling.
+  sh: SH4 OF support.
+  clk: SH7750 / 7751 clk driver.
+  drivers/irqchip: Add SH7751 and boards specific irqchip.
+  drivers/pci: Add SH7751 PCI Host bridge driver.
+  clocksource: Update sh_tmu of handling.
+  mfd/sm501: Add OF properties.
+  of: FDT vaddr support for SH.
+  serial/sh-sci: Fix earlyprintk / earlycon.
+  sh: target dts.
+  sh: OF defconfig.
+
+ .../devicetree/bindings/display/sm501fb.txt   |  11 +
+ arch/sh/Kconfig                               |  12 +-
+ arch/sh/boards/Kconfig                        |  28 ++
+ arch/sh/boards/of-generic.c                   |  28 +-
+ arch/sh/boot/compressed/head_32.S             |   5 +-
+ arch/sh/boot/dts/include/dt-bindings          |   1 +
+ arch/sh/boot/dts/landisk.dts                  | 142 +++++++
+ arch/sh/boot/dts/rts7751r2dplus.dts           | 168 ++++++++
+ arch/sh/boot/dts/usl-5p.dts                   | 146 +++++++
+ arch/sh/configs/landisk-of_defconfig          | 161 ++++++++
+ arch/sh/configs/rts7751r2dplus-of_defconfig   | 159 ++++++++
+ arch/sh/drivers/Makefile                      |   2 +
+ arch/sh/include/asm/io.h                      |  10 +
+ arch/sh/include/asm/pci.h                     |   4 +
+ arch/sh/kernel/cpu/Makefile                   |   8 +-
+ arch/sh/kernel/cpu/clock.c                    |   3 +-
+ arch/sh/kernel/cpu/sh4/Makefile               |   2 +
+ arch/sh/kernel/head_32.S                      |   2 +-
+ arch/sh/kernel/setup.c                        |  26 +-
+ drivers/clk/Kconfig                           |   1 +
+ drivers/clk/Makefile                          |   1 +
+ drivers/clk/sh/Kconfig                        |   7 +
+ drivers/clk/sh/Makefile                       |   2 +
+ drivers/clk/sh/clk-sh7750.c                   | 193 +++++++++
+ drivers/clk/sh/clk-shdiv.c                    | 341 ++++++++++++++++
+ drivers/clocksource/sh_tmu.c                  |  33 +-
+ drivers/irqchip/Kconfig                       |   4 +
+ drivers/irqchip/Makefile                      |   1 +
+ drivers/irqchip/irq-iodata-julian.c           | 163 ++++++++
+ drivers/irqchip/irq-renesas-r2d.c             | 175 ++++++++
+ drivers/irqchip/irq-renesas-sh7751.c          | 186 +++++++++
+ drivers/mfd/sm501.c                           | 113 +++++-
+ drivers/of/fdt.c                              |   3 +
+ drivers/pci/controller/Kconfig                |   9 +
+ drivers/pci/controller/Makefile               |   1 +
+ drivers/pci/controller/pci-sh7751.c           | 382 ++++++++++++++++++
+ drivers/pci/controller/pci-sh7751.h           | 267 ++++++++++++
+ drivers/sh/Makefile                           |   2 +
+ drivers/tty/serial/sh-sci.c                   |  10 +-
+ 39 files changed, 2779 insertions(+), 33 deletions(-)
+ create mode 120000 arch/sh/boot/dts/include/dt-bindings
+ create mode 100644 arch/sh/boot/dts/landisk.dts
+ create mode 100644 arch/sh/boot/dts/rts7751r2dplus.dts
+ create mode 100644 arch/sh/boot/dts/usl-5p.dts
  create mode 100644 arch/sh/configs/landisk-of_defconfig
  create mode 100644 arch/sh/configs/rts7751r2dplus-of_defconfig
+ create mode 100644 drivers/clk/sh/Kconfig
+ create mode 100644 drivers/clk/sh/Makefile
+ create mode 100644 drivers/clk/sh/clk-sh7750.c
+ create mode 100644 drivers/clk/sh/clk-shdiv.c
+ create mode 100644 drivers/irqchip/irq-iodata-julian.c
+ create mode 100644 drivers/irqchip/irq-renesas-r2d.c
+ create mode 100644 drivers/irqchip/irq-renesas-sh7751.c
+ create mode 100644 drivers/pci/controller/pci-sh7751.c
+ create mode 100644 drivers/pci/controller/pci-sh7751.h
 
-diff --git a/arch/sh/configs/landisk-of_defconfig b/arch/sh/configs/landisk-of_defconfig
-new file mode 100644
-index 000000000000..0bd96aef77d8
---- /dev/null
-+++ b/arch/sh/configs/landisk-of_defconfig
-@@ -0,0 +1,161 @@
-+CONFIG_SYSVIPC=y
-+CONFIG_LOG_BUF_SHIFT=14
-+CONFIG_NAMESPACES=y
-+CONFIG_EMBEDDED=y
-+CONFIG_PROFILING=y
-+CONFIG_CPU_SUBTYPE_SH7751R=y
-+CONFIG_MEMORY_START=0x0c000000
-+CONFIG_SH_LANDISK_OF=y
-+CONFIG_MODULES=y
-+CONFIG_SLAB=y
-+CONFIG_FLATMEM_MANUAL=y
-+CONFIG_NET=y
-+CONFIG_PACKET=y
-+CONFIG_UNIX=y
-+CONFIG_INET=y
-+# CONFIG_IPV6 is not set
-+CONFIG_PCI=y
-+CONFIG_HOTPLUG_PCI=y
-+CONFIG_UEVENT_HELPER=y
-+CONFIG_MTD=y
-+CONFIG_MTD_CMDLINE_PARTS=y
-+CONFIG_MTD_CFI=y
-+CONFIG_MTD_CFI_AMDSTD=y
-+CONFIG_MTD_PHYSMAP=y
-+CONFIG_BLK_DEV_RAM=y
-+CONFIG_BLK_DEV_SD=y
-+# CONFIG_BLK_DEV_BSG is not set
-+CONFIG_ATA=y
-+CONFIG_PATA_ATP867X=y
-+CONFIG_PATA_OF_PLATFORM=y
-+CONFIG_NETDEVICES=y
-+# CONFIG_NET_VENDOR_3COM is not set
-+# CONFIG_NET_VENDOR_ADAPTEC is not set
-+# CONFIG_NET_VENDOR_AGERE is not set
-+# CONFIG_NET_VENDOR_ALACRITECH is not set
-+# CONFIG_NET_VENDOR_ALTEON is not set
-+# CONFIG_NET_VENDOR_AMAZON is not set
-+# CONFIG_NET_VENDOR_AMD is not set
-+# CONFIG_NET_VENDOR_AQUANTIA is not set
-+# CONFIG_NET_VENDOR_ARC is not set
-+# CONFIG_NET_VENDOR_ASIX is not set
-+# CONFIG_NET_VENDOR_ATHEROS is not set
-+# CONFIG_NET_VENDOR_BROADCOM is not set
-+# CONFIG_NET_VENDOR_CADENCE is not set
-+# CONFIG_NET_VENDOR_CAVIUM is not set
-+# CONFIG_NET_VENDOR_CHELSIO is not set
-+# CONFIG_NET_VENDOR_CISCO is not set
-+# CONFIG_NET_VENDOR_CORTINA is not set
-+# CONFIG_NET_VENDOR_DAVICOM is not set
-+# CONFIG_NET_VENDOR_DEC is not set
-+# CONFIG_NET_VENDOR_DLINK is not set
-+# CONFIG_NET_VENDOR_EMULEX is not set
-+# CONFIG_NET_VENDOR_ENGLEDER is not set
-+# CONFIG_NET_VENDOR_EZCHIP is not set
-+# CONFIG_NET_VENDOR_FUNGIBLE is not set
-+# CONFIG_NET_VENDOR_GOOGLE is not set
-+# CONFIG_NET_VENDOR_HUAWEI is not set
-+# CONFIG_NET_VENDOR_INTEL is not set
-+# CONFIG_NET_VENDOR_ADI is not set
-+# CONFIG_NET_VENDOR_LITEX is not set
-+# CONFIG_NET_VENDOR_MARVELL is not set
-+# CONFIG_NET_VENDOR_MELLANOX is not set
-+# CONFIG_NET_VENDOR_MICREL is not set
-+# CONFIG_NET_VENDOR_MICROCHIP is not set
-+# CONFIG_NET_VENDOR_MICROSEMI is not set
-+# CONFIG_NET_VENDOR_MICROSOFT is not set
-+# CONFIG_NET_VENDOR_MYRI is not set
-+# CONFIG_NET_VENDOR_NI is not set
-+# CONFIG_NET_VENDOR_NATSEMI is not set
-+# CONFIG_NET_VENDOR_NETERION is not set
-+# CONFIG_NET_VENDOR_NETRONOME is not set
-+# CONFIG_NET_VENDOR_NVIDIA is not set
-+# CONFIG_NET_VENDOR_OKI is not set
-+# CONFIG_NET_VENDOR_PACKET_ENGINES is not set
-+# CONFIG_NET_VENDOR_PENSANDO is not set
-+# CONFIG_NET_VENDOR_QLOGIC is not set
-+# CONFIG_NET_VENDOR_BROCADE is not set
-+# CONFIG_NET_VENDOR_QUALCOMM is not set
-+# CONFIG_NET_VENDOR_RDC is not set
-+CONFIG_8139CP=y
-+# CONFIG_NET_VENDOR_RENESAS is not set
-+# CONFIG_NET_VENDOR_ROCKER is not set
-+# CONFIG_NET_VENDOR_SAMSUNG is not set
-+# CONFIG_NET_VENDOR_SEEQ is not set
-+# CONFIG_NET_VENDOR_SILAN is not set
-+# CONFIG_NET_VENDOR_SIS is not set
-+# CONFIG_NET_VENDOR_SOLARFLARE is not set
-+# CONFIG_NET_VENDOR_SMSC is not set
-+# CONFIG_NET_VENDOR_SOCIONEXT is not set
-+# CONFIG_NET_VENDOR_STMICRO is not set
-+# CONFIG_NET_VENDOR_SUN is not set
-+# CONFIG_NET_VENDOR_SYNOPSYS is not set
-+# CONFIG_NET_VENDOR_TEHUTI is not set
-+# CONFIG_NET_VENDOR_TI is not set
-+# CONFIG_NET_VENDOR_VERTEXCOM is not set
-+# CONFIG_NET_VENDOR_VIA is not set
-+# CONFIG_NET_VENDOR_WANGXUN is not set
-+# CONFIG_NET_VENDOR_WIZNET is not set
-+# CONFIG_NET_VENDOR_XILINX is not set
-+# CONFIG_INPUT_KEYBOARD is not set
-+# CONFIG_INPUT_MOUSE is not set
-+# CONFIG_SERIO is not set
-+CONFIG_SERIAL_8250=y
-+CONFIG_SERIAL_OF_PLATFORM=y
-+CONFIG_SERIAL_SH_SCI=y
-+# CONFIG_SERIAL_SH_SCI_CONSOLE is not set
-+CONFIG_SERIAL_SH_SCI_EARLYCON=y
-+CONFIG_HW_RANDOM=y
-+CONFIG_SPI=y
-+CONFIG_SPI_SH_SCI=y
-+CONFIG_MFD_SM501=y
-+CONFIG_FB=y
-+CONFIG_FB_SH_MOBILE_LCDC=m
-+CONFIG_FB_SM501=y
-+CONFIG_FRAMEBUFFER_CONSOLE=y
-+CONFIG_LOGO=y
-+# CONFIG_LOGO_LINUX_MONO is not set
-+# CONFIG_LOGO_LINUX_VGA16 is not set
-+# CONFIG_LOGO_LINUX_CLUT224 is not set
-+# CONFIG_LOGO_SUPERH_MONO is not set
-+# CONFIG_LOGO_SUPERH_VGA16 is not set
-+CONFIG_SOUND=y
-+CONFIG_SND=m
-+CONFIG_SND_YMFPCI=m
-+CONFIG_HID_A4TECH=y
-+CONFIG_HID_BELKIN=y
-+CONFIG_HID_CHERRY=y
-+CONFIG_HID_CHICONY=y
-+CONFIG_HID_CYPRESS=y
-+CONFIG_HID_EZKEY=y
-+CONFIG_HID_GYRATION=y
-+CONFIG_HID_ITE=y
-+CONFIG_HID_KENSINGTON=y
-+CONFIG_HID_REDRAGON=y
-+CONFIG_HID_MICROSOFT=y
-+CONFIG_HID_MONTEREY=y
-+CONFIG_HID_PANTHERLORD=y
-+CONFIG_HID_PETALYNX=y
-+CONFIG_HID_SAMSUNG=y
-+CONFIG_HID_SUNPLUS=y
-+CONFIG_USB=y
-+CONFIG_USB_ANNOUNCE_NEW_DEVICES=y
-+CONFIG_USB_EHCI_HCD=y
-+CONFIG_USB_OHCI_HCD=y
-+CONFIG_USB_STORAGE=y
-+CONFIG_RTC_CLASS=y
-+CONFIG_RTC_DRV_R9701=y
-+CONFIG_COMMON_CLK_SH7750=y
-+CONFIG_EXT2_FS=y
-+CONFIG_MSDOS_FS=y
-+CONFIG_VFAT_FS=y
-+CONFIG_PROC_KCORE=y
-+CONFIG_TMPFS=y
-+CONFIG_MINIX_FS=y
-+CONFIG_NLS_CODEPAGE_932=y
-+CONFIG_INIT_STACK_NONE=y
-+CONFIG_CRC_T10DIF=y
-+CONFIG_DEBUG_INFO_DWARF5=y
-+CONFIG_DEBUG_FS=y
-+CONFIG_DEBUG_MEMORY_INIT=y
-+# CONFIG_FTRACE is not set
-diff --git a/arch/sh/configs/rts7751r2dplus-of_defconfig b/arch/sh/configs/rts7751r2dplus-of_defconfig
-new file mode 100644
-index 000000000000..56b627142205
---- /dev/null
-+++ b/arch/sh/configs/rts7751r2dplus-of_defconfig
-@@ -0,0 +1,159 @@
-+CONFIG_SYSVIPC=y
-+CONFIG_LOG_BUF_SHIFT=14
-+CONFIG_NAMESPACES=y
-+CONFIG_EMBEDDED=y
-+CONFIG_PROFILING=y
-+CONFIG_CPU_SUBTYPE_SH7751R=y
-+CONFIG_MEMORY_START=0x0c000000
-+CONFIG_SH_RTS7751R2D_OF=y
-+CONFIG_MODULES=y
-+CONFIG_SLAB=y
-+CONFIG_FLATMEM_MANUAL=y
-+CONFIG_NET=y
-+CONFIG_PACKET=y
-+CONFIG_UNIX=y
-+CONFIG_INET=y
-+# CONFIG_IPV6 is not set
-+CONFIG_PCI=y
-+CONFIG_HOTPLUG_PCI=y
-+CONFIG_UEVENT_HELPER=y
-+CONFIG_MTD=y
-+CONFIG_MTD_CMDLINE_PARTS=y
-+CONFIG_MTD_CFI=y
-+CONFIG_MTD_CFI_AMDSTD=y
-+CONFIG_MTD_PHYSMAP=y
-+CONFIG_BLK_DEV_RAM=y
-+CONFIG_BLK_DEV_SD=y
-+# CONFIG_BLK_DEV_BSG is not set
-+CONFIG_ATA=y
-+CONFIG_PATA_OF_PLATFORM=y
-+CONFIG_NETDEVICES=y
-+# CONFIG_NET_VENDOR_3COM is not set
-+# CONFIG_NET_VENDOR_ADAPTEC is not set
-+# CONFIG_NET_VENDOR_AGERE is not set
-+# CONFIG_NET_VENDOR_ALACRITECH is not set
-+# CONFIG_NET_VENDOR_ALTEON is not set
-+# CONFIG_NET_VENDOR_AMAZON is not set
-+# CONFIG_NET_VENDOR_AMD is not set
-+# CONFIG_NET_VENDOR_AQUANTIA is not set
-+# CONFIG_NET_VENDOR_ARC is not set
-+# CONFIG_NET_VENDOR_ASIX is not set
-+# CONFIG_NET_VENDOR_ATHEROS is not set
-+# CONFIG_NET_VENDOR_BROADCOM is not set
-+# CONFIG_NET_VENDOR_CADENCE is not set
-+# CONFIG_NET_VENDOR_CAVIUM is not set
-+# CONFIG_NET_VENDOR_CHELSIO is not set
-+# CONFIG_NET_VENDOR_CISCO is not set
-+# CONFIG_NET_VENDOR_CORTINA is not set
-+# CONFIG_NET_VENDOR_DAVICOM is not set
-+# CONFIG_NET_VENDOR_DEC is not set
-+# CONFIG_NET_VENDOR_DLINK is not set
-+# CONFIG_NET_VENDOR_EMULEX is not set
-+# CONFIG_NET_VENDOR_ENGLEDER is not set
-+# CONFIG_NET_VENDOR_EZCHIP is not set
-+# CONFIG_NET_VENDOR_FUNGIBLE is not set
-+# CONFIG_NET_VENDOR_GOOGLE is not set
-+# CONFIG_NET_VENDOR_HUAWEI is not set
-+# CONFIG_NET_VENDOR_INTEL is not set
-+# CONFIG_NET_VENDOR_ADI is not set
-+# CONFIG_NET_VENDOR_LITEX is not set
-+# CONFIG_NET_VENDOR_MARVELL is not set
-+# CONFIG_NET_VENDOR_MELLANOX is not set
-+# CONFIG_NET_VENDOR_MICREL is not set
-+# CONFIG_NET_VENDOR_MICROCHIP is not set
-+# CONFIG_NET_VENDOR_MICROSEMI is not set
-+# CONFIG_NET_VENDOR_MICROSOFT is not set
-+# CONFIG_NET_VENDOR_MYRI is not set
-+# CONFIG_NET_VENDOR_NI is not set
-+# CONFIG_NET_VENDOR_NATSEMI is not set
-+# CONFIG_NET_VENDOR_NETERION is not set
-+# CONFIG_NET_VENDOR_NETRONOME is not set
-+# CONFIG_NET_VENDOR_NVIDIA is not set
-+# CONFIG_NET_VENDOR_OKI is not set
-+# CONFIG_NET_VENDOR_PACKET_ENGINES is not set
-+# CONFIG_NET_VENDOR_PENSANDO is not set
-+# CONFIG_NET_VENDOR_QLOGIC is not set
-+# CONFIG_NET_VENDOR_BROCADE is not set
-+# CONFIG_NET_VENDOR_QUALCOMM is not set
-+# CONFIG_NET_VENDOR_RDC is not set
-+CONFIG_8139CP=y
-+# CONFIG_NET_VENDOR_RENESAS is not set
-+# CONFIG_NET_VENDOR_ROCKER is not set
-+# CONFIG_NET_VENDOR_SAMSUNG is not set
-+# CONFIG_NET_VENDOR_SEEQ is not set
-+# CONFIG_NET_VENDOR_SILAN is not set
-+# CONFIG_NET_VENDOR_SIS is not set
-+# CONFIG_NET_VENDOR_SOLARFLARE is not set
-+# CONFIG_NET_VENDOR_SMSC is not set
-+# CONFIG_NET_VENDOR_SOCIONEXT is not set
-+# CONFIG_NET_VENDOR_STMICRO is not set
-+# CONFIG_NET_VENDOR_SUN is not set
-+# CONFIG_NET_VENDOR_SYNOPSYS is not set
-+# CONFIG_NET_VENDOR_TEHUTI is not set
-+# CONFIG_NET_VENDOR_TI is not set
-+# CONFIG_NET_VENDOR_VERTEXCOM is not set
-+# CONFIG_NET_VENDOR_VIA is not set
-+# CONFIG_NET_VENDOR_WANGXUN is not set
-+# CONFIG_NET_VENDOR_WIZNET is not set
-+# CONFIG_NET_VENDOR_XILINX is not set
-+# CONFIG_INPUT_KEYBOARD is not set
-+# CONFIG_INPUT_MOUSE is not set
-+# CONFIG_SERIO is not set
-+CONFIG_SERIAL_8250=y
-+CONFIG_SERIAL_OF_PLATFORM=y
-+CONFIG_SERIAL_SH_SCI=y
-+# CONFIG_SERIAL_SH_SCI_CONSOLE is not set
-+CONFIG_SERIAL_SH_SCI_EARLYCON=y
-+CONFIG_HW_RANDOM=y
-+CONFIG_SPI=y
-+CONFIG_SPI_SH_SCI=y
-+CONFIG_MFD_SM501=y
-+CONFIG_FB=y
-+CONFIG_FB_SH_MOBILE_LCDC=m
-+CONFIG_FB_SM501=y
-+CONFIG_FRAMEBUFFER_CONSOLE=y
-+CONFIG_LOGO=y
-+# CONFIG_LOGO_LINUX_MONO is not set
-+# CONFIG_LOGO_LINUX_VGA16 is not set
-+# CONFIG_LOGO_LINUX_CLUT224 is not set
-+# CONFIG_LOGO_SUPERH_MONO is not set
-+# CONFIG_LOGO_SUPERH_VGA16 is not set
-+CONFIG_SOUND=y
-+CONFIG_SND=m
-+CONFIG_SND_YMFPCI=m
-+CONFIG_HID_A4TECH=y
-+CONFIG_HID_BELKIN=y
-+CONFIG_HID_CHERRY=y
-+CONFIG_HID_CHICONY=y
-+CONFIG_HID_CYPRESS=y
-+CONFIG_HID_EZKEY=y
-+CONFIG_HID_GYRATION=y
-+CONFIG_HID_ITE=y
-+CONFIG_HID_KENSINGTON=y
-+CONFIG_HID_REDRAGON=y
-+CONFIG_HID_MICROSOFT=y
-+CONFIG_HID_MONTEREY=y
-+CONFIG_HID_PANTHERLORD=y
-+CONFIG_HID_PETALYNX=y
-+CONFIG_HID_SAMSUNG=y
-+CONFIG_HID_SUNPLUS=y
-+CONFIG_USB=y
-+CONFIG_USB_ANNOUNCE_NEW_DEVICES=y
-+CONFIG_USB_OHCI_HCD=y
-+CONFIG_USB_STORAGE=y
-+CONFIG_RTC_CLASS=y
-+CONFIG_RTC_DRV_R9701=y
-+CONFIG_COMMON_CLK_SH7750=y
-+CONFIG_EXT2_FS=y
-+CONFIG_MSDOS_FS=y
-+CONFIG_VFAT_FS=y
-+CONFIG_PROC_KCORE=y
-+CONFIG_TMPFS=y
-+CONFIG_MINIX_FS=y
-+CONFIG_NLS_CODEPAGE_932=y
-+CONFIG_INIT_STACK_NONE=y
-+CONFIG_CRC_T10DIF=y
-+CONFIG_DEBUG_INFO_DWARF5=y
-+CONFIG_DEBUG_FS=y
-+CONFIG_DEBUG_MEMORY_INIT=y
-+# CONFIG_FTRACE is not set
 -- 
 2.39.2
 
