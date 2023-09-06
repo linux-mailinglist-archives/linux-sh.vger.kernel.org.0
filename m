@@ -2,114 +2,138 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34D7A792A1A
-	for <lists+linux-sh@lfdr.de>; Tue,  5 Sep 2023 18:58:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87F3679363C
+	for <lists+linux-sh@lfdr.de>; Wed,  6 Sep 2023 09:27:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353835AbjIEQdz (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 5 Sep 2023 12:33:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55996 "EHLO
+        id S231147AbjIFH17 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-sh@lfdr.de>); Wed, 6 Sep 2023 03:27:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353849AbjIEIU6 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 5 Sep 2023 04:20:58 -0400
-Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com [IPv6:2a00:1450:4864:20::142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58EBACFD
-        for <linux-sh@vger.kernel.org>; Tue,  5 Sep 2023 01:20:53 -0700 (PDT)
-Received: by mail-lf1-x142.google.com with SMTP id 2adb3069b0e04-4ff09632194so3790821e87.2
-        for <linux-sh@vger.kernel.org>; Tue, 05 Sep 2023 01:20:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693902051; x=1694506851; darn=vger.kernel.org;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=CvUmRYKO5rN5JiKdYLn9/Xxm/soJiVGtQm650JnL3Yc=;
-        b=WyyvPMEfe4FOVqHOIWdr/B2P0p03RPzGq0eAy6olIuEmDr190DF60UMTUjSzD3ICzN
-         0WsAegs64/BiRqCpXkN1qURw3kJmTI2wMa8rTaukjr0/l9jhm+3ubCn9+y0oKw0Vf/Ks
-         YIRtHy/tktgd0JCbt9j66zUkqNxhaH1k0FzKmAu+yKNICqHvkjDH6q7yKGNLfZeY066C
-         rjUXbiHJ42XZriL2gTX15/F6y+Se4qD3ChTlmHmU/A+Bl1kzMG1cMn1BnC25iR+qjjlJ
-         Ikwy1nXebC5hCeU4AgcZQ4VZpVOWulwi6FywqPblj59NiPYUSn0tuU6Bbo6p4XZRvT/F
-         gtfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693902051; x=1694506851;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CvUmRYKO5rN5JiKdYLn9/Xxm/soJiVGtQm650JnL3Yc=;
-        b=anU09FKCl+nvStlHUu+LuMEgjPM4XkIOzJydcZgChI2CMRCh0ChJWCjuK/lBblzGA4
-         vg/bpQVYjrLuer+UY6QtCNlE/d57E9emVZHp7g2Eh8Xbym4YneLtiqcIZg3hT0NCjOHG
-         KmN7ROZBwZYe2MIkUNPNq+acepSsUNsO6UnmgN3mkfhjTQV6my7bBKi//2akLtwtcSgk
-         zOl/ro2Ej9Lh7JANq7fmzX7BlMJ/SakBLFgcu+4jWqwGxh40yIeroGqwarhAtsIlM4zO
-         5Jj8YTLdxelbXmzSPs92kUNk21MaXQ1ASbB1eRZENlxgkR46nLwxGRbwEg42Z3mBRjuv
-         Pn8w==
-X-Gm-Message-State: AOJu0Yy8TZ/Bwe07gMM6gsokwI9qBSOpCkhmFxlqxoVYwup4MB8rAxZE
-        ZHZY/QIuV05z+esXiJZtj5U9GMCnsRN/zzMshD4=
-X-Google-Smtp-Source: AGHT+IHc9ajH3Rii9UZwOOqLrsXanmcTWvKjiURPKmJK5D52sTkbD7l1BRzq/bCfrfUZjlWt/04s1jIBCk3z7CpHIFE=
-X-Received: by 2002:a19:6755:0:b0:501:bf37:1fc0 with SMTP id
- e21-20020a196755000000b00501bf371fc0mr624754lfj.33.1693902050884; Tue, 05 Sep
- 2023 01:20:50 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a54:3ac4:0:b0:22f:40f:e031 with HTTP; Tue, 5 Sep 2023
- 01:20:50 -0700 (PDT)
-Reply-To: wuwumoneytransfer5000@hotmail.com
-From:   "(IMF) SCAM VICTIMS" <mimichi4500@gmail.com>
-Date:   Tue, 5 Sep 2023 01:20:50 -0700
-Message-ID: <CAGhkD8USA9d9+1HDw3AKO0o45v_Z8cjdpcgnjTbVjdDUbiyg2w@mail.gmail.com>
-Subject: Betrugsopfer
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=4.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
+        with ESMTP id S230361AbjIFH17 (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 6 Sep 2023 03:27:59 -0400
+Received: from hsmtpd-def.xspmail.jp (hsmtpd-def.xspmail.jp [202.238.198.245])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CAD58E
+        for <linux-sh@vger.kernel.org>; Wed,  6 Sep 2023 00:27:54 -0700 (PDT)
+X-Country-Code: JP
+Received: from sakura.ysato.name (ik1-413-38519.vs.sakura.ne.jp [153.127.30.23])
+        by hsmtpd-out-2.asahinet.cluster.xspmail.jp (Halon) with ESMTPA
+        id d9f3b702-85a9-4f4d-af18-c3e0e0860a3a;
+        Wed, 06 Sep 2023 16:27:52 +0900 (JST)
+Received: from SIOS1075.ysato.ml (al128006.dynamic.ppp.asahi-net.or.jp [111.234.128.6])
+        by sakura.ysato.name (Postfix) with ESMTPSA id 0B1FD1C01AA;
+        Wed,  6 Sep 2023 16:27:51 +0900 (JST)
+Date:   Wed, 06 Sep 2023 16:27:50 +0900
+Message-ID: <87edjbvk09.wl-ysato@users.sourceforge.jp>
+From:   Yoshinori Sato <ysato@users.sourceforge.jp>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     linux-sh@vger.kernel.org, glaubitz@physik.fu-berlin.de
+Subject: Re: [RESEND RFC PATCH 10/12] serial/sh-sci: Fix earlyprintk / earlycon.
+In-Reply-To: <CAMuHMdX6eGEFH9wbqWOV07gi=vcgfsdnnrZm9UG8wCjYRwRYsQ@mail.gmail.com>
+References: <cover.1693444193.git.ysato@users.sourceforge.jp>
+        <8f12d3b4b5fdeae4e465fc8fbf843e2878f17b55.1693444193.git.ysato@users.sourceforge.jp>
+        <CAMuHMdX6eGEFH9wbqWOV07gi=vcgfsdnnrZm9UG8wCjYRwRYsQ@mail.gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/28.2 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_SOFTFAIL autolearn=no
         autolearn_force=no version=3.4.6
-X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Sehr geehrter E-Mail-Besitzer,
+On Fri, 01 Sep 2023 22:26:14 +0900,
+Geert Uytterhoeven wrote:
+> 
+> Hi Sato-san,
+> 
+> On Thu, Aug 31, 2023 at 11:23 AM Yoshinori Sato
+> <ysato@users.sourceforge.jp> wrote:
+> > - earlyprintk having fault.
+> > - fix shortname conflict.
+> > - fix SCI regshift in SH4.
+> >
+> > Signed-off-by: Yoshinori Sato <ysato@users.sourceforge.jp>
+> 
+> Thanks for your patch!
+> 
+> > --- a/drivers/tty/serial/sh-sci.c
+> > +++ b/drivers/tty/serial/sh-sci.c
+> > @@ -2721,7 +2721,7 @@ static int sci_remap_port(struct uart_port *port)
+> >         if (port->membase)
+> >                 return 0;
+> >
+> > -       if (port->dev->of_node || (port->flags & UPF_IOREMAP)) {
+> > +       if ((port->dev && port->dev->of_node) || (port->flags & UPF_IOREMAP)) {
+> 
+> Why is this needed? It works fine on arm32, arm64, and riscv.
 
+earlycon works fine, but the old earlyprintk was stuck.
+I don't think it's used much, but it's a problem if it doesn't work
+when checking old sh targets.
 
+> >                 port->membase = ioremap(port->mapbase, sport->reg_size);
+> >                 if (unlikely(!port->membase)) {
+> >                         dev_err(port->dev, "can't remap port#%d\n", port->line);
+> > @@ -3507,6 +3507,10 @@ static int __init early_console_setup(struct earlycon_device *device,
+> >         if (!device->port.membase)
+> >                 return -ENODEV;
+> >
+> > +       if (type == PORT_SCI &&
+> > +           (IS_ENABLED(CONFIG_CPU_SH3) || IS_ENABLED(CONFIG_CPU_SH4))) {
+> > +               device->port.regshift = 2;
+> > +       }
+> 
+> How do you run into this, given you don't have any SCI ports enabled
+> in your DTS, only SCIF?
+> 
+> Anyway, I think this should be fixed in sci_init_single(), by extending
+> the driver to support the more-or-less standard "reg-shift" DT property
+> (as I said before in
+> https://lore.kernel.org/all/CAMuHMdW2gxDzYbP_0Z90o8mHdUm_BV6e+gMHpELJx_g=ezAbdw@mail.gmail.com).
 
-Der Internationale W=C3=A4hrungsfonds (IWF) entsch=C3=A4digt alle Betrugsop=
-fer
-und Ihre E-Mail-Adresse wurde auf der Liste der Betrugsopfer gefunden.
+earlycon cannot reference DeviceTree.
+If you give the value of reg-shift dynamically, you need to use a kernel
+parameter.
+I don't think this is necessary either, but it's a problem if it doesn't work.
 
-Dieses Western Union-B=C3=BCro wurde vom IWF beauftragt Ihnen Ihre
-Verg=C3=BCtung per Western Union Money Transfer zu =C3=BCberweisen.
+> >         device->port.serial_in = sci_serial_in;
+> >         device->port.serial_out = sci_serial_out;
+> >         device->port.type = type;
+> > @@ -3556,8 +3560,8 @@ static int __init hscif_early_console_setup(struct earlycon_device *device,
+> >
+> >  OF_EARLYCON_DECLARE(sci, "renesas,sci", sci_early_console_setup);
+> >  OF_EARLYCON_DECLARE(scif, "renesas,scif", scif_early_console_setup);
+> > -OF_EARLYCON_DECLARE(scif, "renesas,scif-r7s9210", rzscifa_early_console_setup);
+> > -OF_EARLYCON_DECLARE(scif, "renesas,scif-r9a07g044", rzscifa_early_console_setup);
+> > +OF_EARLYCON_DECLARE(rzscif, "renesas,scif-r7s9210", rzscifa_early_console_setup);
+> > +OF_EARLYCON_DECLARE(rzscif, "renesas,scif-r9a07g044", rzscifa_early_console_setup);
+> 
+> Why?
 
-Wir haben uns jedoch entschieden Ihre eigene Zahlung =C3=BCber Geldtransfer
-der Westunion in H=C3=B6he von =E2=82=AC5,000, pro Tag vorzunehmen bis die
-Gesamtsumme von =E2=82=AC1,500.000.00, vollst=C3=A4ndig an Sie =C3=BCberwie=
-sen wurde.
+The earlycon parameter uses the first name.
+If sh4 and rz use the same name, one of them will not work properly.
 
-Wir k=C3=B6nnen die Zahlung m=C3=B6glicherweise nicht nur mit Ihrer
-E-Mail-Adresse senden daher ben=C3=B6tigen wir Ihre Informationen dar=C3=BC=
-ber
-wohin wir das Geld an Sie senden wie z. B.:
+> 
+> >  OF_EARLYCON_DECLARE(scifa, "renesas,scifa", scifa_early_console_setup);
+> >  OF_EARLYCON_DECLARE(scifb, "renesas,scifb", scifb_early_console_setup);
+> >  OF_EARLYCON_DECLARE(hscif, "renesas,hscif", hscif_early_console_setup);
+> 
+> Gr{oetje,eeting}s,
+> 
+>                         Geert
+> 
+> --
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+> 
+> In personal conversations with technical people, I call myself a hacker. But
+> when I'm talking to journalists I just say "programmer" or something like that.
+>                                 -- Linus Torvalds
 
-
-Name des Adressaten ________________
-
-Adresse________________
-
-Land__________________
-
-Telefonnummer________________
-
-Angeh=C3=A4ngte Kopie Ihres Ausweises______________
-
-Das Alter ________________________
-
-
-Wir beginnen mit der =C3=9Cbertragung sobald wir Ihre Informationen
-erhalten haben: Kontakt E-Mail: ( wuwumoneytransfer5000@hotmail.com)
-
-
-Getreu,
-
-
-Herr Anthony Duru,
-
-Direktor von Geldtransfer der Westunion
+-- 
+Yosinori Sato
