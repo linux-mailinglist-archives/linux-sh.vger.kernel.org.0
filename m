@@ -2,69 +2,62 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0939E79BB4B
-	for <lists+linux-sh@lfdr.de>; Tue, 12 Sep 2023 02:12:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2245479B67B
+	for <lists+linux-sh@lfdr.de>; Tue, 12 Sep 2023 02:05:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243854AbjIKVu1 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 11 Sep 2023 17:50:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35960 "EHLO
+        id S1353805AbjIKVuW convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-sh@lfdr.de>); Mon, 11 Sep 2023 17:50:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236325AbjIKKRC (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 11 Sep 2023 06:17:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B8357E5F
-        for <linux-sh@vger.kernel.org>; Mon, 11 Sep 2023 03:16:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1694427372;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=Idpm1MsTIMkQeLscANw6c5qO2H9vlf95D23Ujw5h12Y=;
-        b=IiCse5ysEAlNAbrhjicki59YugzcYmSZvoiD4IIp9vGSB6bynIWRvG+F00AGCUMtMHlQYI
-        UKimmdRin1VOfTDU/vg4DEAzDs34jug7859oQZfUoFLOfVQmg+bAhWVQsN4s3gjxWDCz7J
-        W4r9aF9XoHucPRLy8iTQXMuPYTVf8mk=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-140-ReNWdvrBOJOCrFLzcN4uOg-1; Mon, 11 Sep 2023 06:16:07 -0400
-X-MC-Unique: ReNWdvrBOJOCrFLzcN4uOg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 283503811F25;
-        Mon, 11 Sep 2023 10:16:07 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.35])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 315D110F1BE9;
-        Mon, 11 Sep 2023 10:16:05 +0000 (UTC)
-Date:   Mon, 11 Sep 2023 18:16:02 +0800
-From:   Baoquan He <bhe@redhat.com>
-To:     Geert Uytterhoeven <geert+renesas@glider.be>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
+        with ESMTP id S236364AbjIKKaF (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 11 Sep 2023 06:30:05 -0400
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49813CD2;
+        Mon, 11 Sep 2023 03:30:00 -0700 (PDT)
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.95)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1qfeAq-001EPJ-J2; Mon, 11 Sep 2023 12:29:44 +0200
+Received: from p5b13a40a.dip0.t-ipconnect.de ([91.19.164.10] helo=[192.168.178.81])
+          by inpost2.zedat.fu-berlin.de (Exim 4.95)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1qfeAq-002GZC-Bh; Mon, 11 Sep 2023 12:29:44 +0200
+Message-ID: <e292efd8ec38881530a83f2d1cd041501e63559f.camel@physik.fu-berlin.de>
 Subject: Re: [PATCH] sh: mm: Re-add lost __ref to ioremap_prot() to fix
  modpost warning
-Message-ID: <ZP7o4np4v0bth8dj@MiWiFi-R3L-srv>
-References: <20230911093850.1517389-1-geert+renesas@glider.be>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To:     Geert Uytterhoeven <geert+renesas@glider.be>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Baoquan He <bhe@redhat.com>
+Cc:     linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Mon, 11 Sep 2023 12:29:43 +0200
 In-Reply-To: <20230911093850.1517389-1-geert+renesas@glider.be>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+References: <20230911093850.1517389-1-geert+renesas@glider.be>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+User-Agent: Evolution 3.48.4 
+MIME-Version: 1.0
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 91.19.164.10
+X-ZEDAT-Hint: PO
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On 09/11/23 at 11:38am, Geert Uytterhoeven wrote:
+Hi Geert!
+
+On Mon, 2023-09-11 at 11:38 +0200, Geert Uytterhoeven wrote:
 > When __ioremap_caller() was replaced by ioremap_prot(), the __ref
 > annotation added in commit af1415314a4190b8 ("sh: Flag
 > __ioremap_caller() __init_refok.") was removed, causing a modpost
@@ -94,15 +87,18 @@ On 09/11/23 at 11:38am, Geert Uytterhoeven wrote:
 > -			   unsigned long prot)
 > +void __iomem __ref *ioremap_prot(phys_addr_t phys_addr, size_t size,
 > +				 unsigned long prot)
-
-Sorry for the mistake, and I possibly missed the warning when building. 
-
-Reviewed-by: Baoquan He <bhe@redhat.com>
-
 >  {
 >  	void __iomem *mapped;
 >  	pgprot_t pgprot = __pgprot(prot);
-> -- 
-> 2.34.1
-> 
 
+Thanks for catching this!
+
+Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+
+Adrian
+
+-- 
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
