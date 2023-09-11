@@ -2,85 +2,107 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37EF579AE22
-	for <lists+linux-sh@lfdr.de>; Tue, 12 Sep 2023 01:42:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FB2B79B4FB
+	for <lists+linux-sh@lfdr.de>; Tue, 12 Sep 2023 02:02:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353334AbjIKVtm (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 11 Sep 2023 17:49:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57414 "EHLO
+        id S1353633AbjIKVuD (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 11 Sep 2023 17:50:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235791AbjIKJjJ (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 11 Sep 2023 05:39:09 -0400
-Received: from xavier.telenet-ops.be (xavier.telenet-ops.be [IPv6:2a02:1800:120:4::f00:14])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA0E2102
-        for <linux-sh@vger.kernel.org>; Mon, 11 Sep 2023 02:39:03 -0700 (PDT)
-Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed40:a989:d413:f41f:af52])
-        by xavier.telenet-ops.be with bizsmtp
-        id kZez2A00b43UkUk01Zez9u; Mon, 11 Sep 2023 11:39:01 +0200
-Received: from rox.of.borg ([192.168.97.57])
-        by ramsan.of.borg with esmtp (Exim 4.95)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1qfdNT-002zNf-F0;
-        Mon, 11 Sep 2023 11:38:59 +0200
-Received: from geert by rox.of.borg with local (Exim 4.95)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1qfdNj-006NE7-O5;
-        Mon, 11 Sep 2023 11:38:59 +0200
-From:   Geert Uytterhoeven <geert+renesas@glider.be>
-To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Baoquan He <bhe@redhat.com>
-Cc:     linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH] sh: mm: Re-add lost __ref to ioremap_prot() to fix modpost warning
-Date:   Mon, 11 Sep 2023 11:38:50 +0200
-Message-Id: <20230911093850.1517389-1-geert+renesas@glider.be>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S237497AbjIKMyX (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 11 Sep 2023 08:54:23 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83FCECEB;
+        Mon, 11 Sep 2023 05:54:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1694436858; x=1725972858;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=/wVoKjEeeLBla+cD7axdVwdKaE7wsNtpVj0vYnNrywc=;
+  b=Z3fj7/2EfR1b3zuqQtYOaM4Yb6DW282iMlq+B69OcNKYepd0qNVuV31z
+   lJ73kZHdjxFHj+TdSw6+Tienu22amOVY35deP/3o4tQBqhmx1IZu061me
+   mowQRZu6GIIXfr4OL2ppgYe2Bp5OQT0efZv8a98PzYteMP0xNjXo0WfCR
+   Stql+xNZfXygVuAEZj5bYVo+uzIRNxe7pI2wEpIxKWO4BPQYZCu7dOLVI
+   k2/cXyVIluxOR581pjqjxBXyl3mcyjuF9AnB5Y3f2aL92VORQTRdUJYzD
+   x2zpBcpN37L8rNdxSf+y45Aeuxj2ZPu42IkvVRsNgXQPuKplyUgMG32fu
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10830"; a="357511140"
+X-IronPort-AV: E=Sophos;i="6.02,244,1688454000"; 
+   d="scan'208";a="357511140"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2023 05:54:08 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10830"; a="858304123"
+X-IronPort-AV: E=Sophos;i="6.02,244,1688454000"; 
+   d="scan'208";a="858304123"
+Received: from mzarkov-mobl3.ger.corp.intel.com (HELO ijarvine-mobl2.ger.corp.intel.com) ([10.252.36.200])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2023 05:54:02 -0700
+From:   =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     Rob Herring <robh@kernel.org>, Bjorn Helgaas <helgaas@kernel.org>,
+        linux-pci@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, 3chas3@gmail.com, brking@us.ibm.com,
+        dalias@libc.org, glaubitz@physik.fu-berlin.de,
+        ink@jurassic.park.msu.ru, jejb@linux.ibm.com, kw@linux.com,
+        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-atm-general@lists.sourceforge.net,
+        linux-scsi@vger.kernel.org, linux-sh@vger.kernel.org,
+        lpieralisi@kernel.org, martin.petersen@oracle.com,
+        mattst88@gmail.com, netdev@vger.kernel.org,
+        richard.henderson@linaro.org, toan@os.amperecomputing.com,
+        ysato@users.sourceforge.jp,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH v3 0/6] PCI/treewide: Cleanup/streamline PCI error code handling
+Date:   Mon, 11 Sep 2023 15:53:48 +0300
+Message-Id: <20230911125354.25501-1-ilpo.jarvinen@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_NONE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-When __ioremap_caller() was replaced by ioremap_prot(), the __ref
-annotation added in commit af1415314a4190b8 ("sh: Flag
-__ioremap_caller() __init_refok.") was removed, causing a modpost
-warning:
+As the first step towards converting PCI accessor function return codes
+into normal errnos this series cleans up related code paths which have
+complicated multi-line construct to handle the PCI error checking.
 
-    WARNING: modpost: vmlinux: section mismatch in reference: ioremap_prot+0x88 (section: .text) -> ioremap_fixed (section: .init.text)
+I'd prefer these (the remaining ones) to be routed through PCI tree due
+to PCI accessor function return code conversion being built on top of
+them.
 
-ioremap_prot() calls ioremap_fixed() (which is marked __init), but only
-before mem_init_done becomes true, so this is safe.  Hence fix this by
-re-adding the lost __ref.
+v3:
+- Return pci_generic_config_read32()'s error code directly
+- Removed already accepted patches
 
-Fixes: 0453c9a78015cb22 ("sh: mm: convert to GENERIC_IOREMAP")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
- arch/sh/mm/ioremap.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+v2:
+- Moved ret local var to the inner block (I2C: ali15x3)
+- Removed already accepted patches
 
-diff --git a/arch/sh/mm/ioremap.c b/arch/sh/mm/ioremap.c
-index c33b3daa4ad1a3e6..33d20f34560fd5cb 100644
---- a/arch/sh/mm/ioremap.c
-+++ b/arch/sh/mm/ioremap.c
-@@ -72,8 +72,8 @@ __ioremap_29bit(phys_addr_t offset, unsigned long size, pgprot_t prot)
- #define __ioremap_29bit(offset, size, prot)		NULL
- #endif /* CONFIG_29BIT */
- 
--void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
--			   unsigned long prot)
-+void __iomem __ref *ioremap_prot(phys_addr_t phys_addr, size_t size,
-+				 unsigned long prot)
- {
- 	void __iomem *mapped;
- 	pgprot_t pgprot = __pgprot(prot);
+
+Ilpo Järvinen (6):
+  alpha: Streamline convoluted PCI error handling
+  sh: pci: Do PCI error check on own line
+  atm: iphase: Do PCI error checks on own line
+  PCI: Do error check on own line to split long if conditions
+  PCI: xgene: Do PCI error check on own line & keep return value
+  scsi: ipr: Do PCI error checks on own line
+
+ arch/alpha/kernel/sys_miata.c      | 17 +++++++++--------
+ arch/sh/drivers/pci/common.c       |  7 ++++---
+ drivers/atm/iphase.c               | 20 +++++++++++---------
+ drivers/pci/controller/pci-xgene.c |  7 ++++---
+ drivers/pci/pci.c                  |  9 ++++++---
+ drivers/pci/probe.c                |  6 +++---
+ drivers/pci/quirks.c               |  6 +++---
+ drivers/scsi/ipr.c                 | 12 ++++++++----
+ 8 files changed, 48 insertions(+), 36 deletions(-)
+
 -- 
-2.34.1
+2.30.2
 
