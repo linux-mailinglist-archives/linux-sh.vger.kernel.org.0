@@ -2,61 +2,60 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0B9A79BD07
-	for <lists+linux-sh@lfdr.de>; Tue, 12 Sep 2023 02:15:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C04E079C01A
+	for <lists+linux-sh@lfdr.de>; Tue, 12 Sep 2023 02:19:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244144AbjIKVuU (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 11 Sep 2023 17:50:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40430 "EHLO
+        id S1353331AbjIKVth (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 11 Sep 2023 17:49:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237498AbjIKMyY (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 11 Sep 2023 08:54:24 -0400
+        with ESMTP id S237508AbjIKMyo (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 11 Sep 2023 08:54:44 -0400
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD86CE40;
-        Mon, 11 Sep 2023 05:54:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97597E40;
+        Mon, 11 Sep 2023 05:54:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694436859; x=1725972859;
+  t=1694436880; x=1725972880;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=EIzH6I89fHcXXY3uRmCZDeB2Y9jdsZHRRgZCynpqYTM=;
-  b=JuPSEvYIB+mM2lBRXxT7OwqrRO6ynrEoIGnior6iD3Zg9K0yqd3ivFuX
-   d5mWodOT3ThLbjXpxwfvMKUjwpOVHBcyKLOzbMdN//AO0Bg6HH50h6BXe
-   sNGZwt2hOW/zWca6n5BcKR57CRMM+GEp8O++Wdakx68G0qQLXYnG24l3Z
-   iexVdpZtzVkOMq+pUMcppi7f6qefJ/XBP6IHqAdlzPXNj4cKwGyGxhoGP
-   riCEEGvTjMmYNLaSIelvjYdVCUbkV+egVcHg5UiCiZkrBiT7+TYNTwSev
-   7vZA2RswbgW1pjtYpJ7IrHJldXlhqiBi2bM2xrinlvk10qktjikfrgF9X
+  bh=QCUHLcOIhxBRk27P/kLo+OYYTB7a6Wv3t3NHhSYLmJ0=;
+  b=gyuhulO1f4sSNWvKqFVmH51yb9CiwI0WX0vTlhOdWgZEkzRDh8i7oSUI
+   1HiI4MH5LzbH08Jlv96YouT0MWOVBEuA03qRfGoDE4Wfe03shkkf4vmmj
+   bjE1jNGb/c9u/ZxxxJvYxrzyjdbpr35vg2+vp97tehXw9JCNkd7LoAI2T
+   EZWKq1K2w365gAXnXvI0D5y8/hCRbY+7ub+CXWVpDJ02LEWoNz6VNxo1K
+   eZbrHc77ibTY91otw+Lcjg8Li0Xt7msRsQbLZCcsySLO0oz9d9KynZqSS
+   qWnov/S6qEfw5f5WQgfbOd9bJugrKROiUQrdrT32/2sJn7t0A1zLW7Sqv
    Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10830"; a="357511174"
+X-IronPort-AV: E=McAfee;i="6600,9927,10830"; a="357511257"
 X-IronPort-AV: E=Sophos;i="6.02,244,1688454000"; 
-   d="scan'208";a="357511174"
+   d="scan'208";a="357511257"
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2023 05:54:15 -0700
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2023 05:54:40 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10830"; a="858304167"
+X-IronPort-AV: E=McAfee;i="6600,9927,10830"; a="858304426"
 X-IronPort-AV: E=Sophos;i="6.02,244,1688454000"; 
-   d="scan'208";a="858304167"
+   d="scan'208";a="858304426"
 Received: from mzarkov-mobl3.ger.corp.intel.com (HELO ijarvine-mobl2.ger.corp.intel.com) ([10.252.36.200])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2023 05:54:10 -0700
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2023 05:54:34 -0700
 From:   =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
 To:     Rob Herring <robh@kernel.org>, Bjorn Helgaas <helgaas@kernel.org>,
-        linux-pci@vger.kernel.org,
-        Richard Henderson <richard.henderson@linaro.org>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>, linux-alpha@vger.kernel.org,
+        linux-pci@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
         linux-kernel@vger.kernel.org
 Cc:     3chas3@gmail.com, brking@us.ibm.com, dalias@libc.org,
-        glaubitz@physik.fu-berlin.de, jejb@linux.ibm.com, kw@linux.com,
+        glaubitz@physik.fu-berlin.de, ink@jurassic.park.msu.ru,
+        jejb@linux.ibm.com, kw@linux.com, linux-alpha@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         linux-atm-general@lists.sourceforge.net,
         linux-scsi@vger.kernel.org, linux-sh@vger.kernel.org,
         lpieralisi@kernel.org, martin.petersen@oracle.com,
-        netdev@vger.kernel.org, toan@os.amperecomputing.com,
+        mattst88@gmail.com, netdev@vger.kernel.org,
+        richard.henderson@linaro.org, toan@os.amperecomputing.com,
         ysato@users.sourceforge.jp,
         =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH v3 1/6] alpha: Streamline convoluted PCI error handling
-Date:   Mon, 11 Sep 2023 15:53:49 +0300
-Message-Id: <20230911125354.25501-2-ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH v3 4/6] PCI: Do error check on own line to split long if conditions
+Date:   Mon, 11 Sep 2023 15:53:52 +0300
+Message-Id: <20230911125354.25501-5-ilpo.jarvinen@linux.intel.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230911125354.25501-1-ilpo.jarvinen@linux.intel.com>
 References: <20230911125354.25501-1-ilpo.jarvinen@linux.intel.com>
@@ -72,48 +71,96 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-miata_map_irq() handles PCI device and read config related errors in a
-conditional block that is more complex than necessary.
+Placing PCI error code check inside if condition usually results in
+need to split lines. Combined with additional conditions the if
+condition becomes messy.
 
-Streamline the code flow and error handling.
+Convert to the usual error handling pattern with an additional variable
+to improve code readability. In addition, reverse the logic in
+pci_find_vsec_capability() to get rid of &&.
 
 No functional changes intended.
 
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 ---
- arch/alpha/kernel/sys_miata.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/pci/pci.c    | 9 ++++++---
+ drivers/pci/probe.c  | 6 +++---
+ drivers/pci/quirks.c | 6 +++---
+ 3 files changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/arch/alpha/kernel/sys_miata.c b/arch/alpha/kernel/sys_miata.c
-index e1bee8f84c58..33b2798de8fc 100644
---- a/arch/alpha/kernel/sys_miata.c
-+++ b/arch/alpha/kernel/sys_miata.c
-@@ -183,16 +183,17 @@ miata_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-            the 2nd 8259 controller. So we have to check for it first. */
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 59c01d68c6d5..5e51e8bd5c13 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -732,15 +732,18 @@ u16 pci_find_vsec_capability(struct pci_dev *dev, u16 vendor, int cap)
+ {
+ 	u16 vsec = 0;
+ 	u32 header;
++	int ret;
  
- 	if((slot == 7) && (PCI_FUNC(dev->devfn) == 3)) {
--		u8 irq=0;
- 		struct pci_dev *pdev = pci_get_slot(dev->bus, dev->devfn & ~7);
--		if(pdev == NULL || pci_read_config_byte(pdev, 0x40,&irq) != PCIBIOS_SUCCESSFUL) {
--			pci_dev_put(pdev);
-+		u8 irq = 0;
-+		int ret;
+ 	if (vendor != dev->vendor)
+ 		return 0;
+ 
+ 	while ((vsec = pci_find_next_ext_capability(dev, vsec,
+ 						     PCI_EXT_CAP_ID_VNDR))) {
+-		if (pci_read_config_dword(dev, vsec + PCI_VNDR_HEADER,
+-					  &header) == PCIBIOS_SUCCESSFUL &&
+-		    PCI_VNDR_HEADER_ID(header) == cap)
++		ret = pci_read_config_dword(dev, vsec + PCI_VNDR_HEADER, &header);
++		if (ret != PCIBIOS_SUCCESSFUL)
++			continue;
 +
-+		if (!pdev)
- 			return -1;
--		}
--		else	{
--			pci_dev_put(pdev);
--			return irq;
--		}
-+
-+		ret = pci_read_config_byte(pdev, 0x40, &irq);
-+		pci_dev_put(pdev);
-+
-+		return ret == PCIBIOS_SUCCESSFUL ? irq : -1;
++		if (PCI_VNDR_HEADER_ID(header) == cap)
+ 			return vsec;
  	}
  
- 	return COMMON_TABLE_LOOKUP;
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index ab2a4a3a4c06..0ad440190a32 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -1651,15 +1651,15 @@ static void pci_set_removable(struct pci_dev *dev)
+ static bool pci_ext_cfg_is_aliased(struct pci_dev *dev)
+ {
+ #ifdef CONFIG_PCI_QUIRKS
+-	int pos;
++	int pos, ret;
+ 	u32 header, tmp;
+ 
+ 	pci_read_config_dword(dev, PCI_VENDOR_ID, &header);
+ 
+ 	for (pos = PCI_CFG_SPACE_SIZE;
+ 	     pos < PCI_CFG_SPACE_EXP_SIZE; pos += PCI_CFG_SPACE_SIZE) {
+-		if (pci_read_config_dword(dev, pos, &tmp) != PCIBIOS_SUCCESSFUL
+-		    || header != tmp)
++		ret = pci_read_config_dword(dev, pos, &tmp);
++		if ((ret != PCIBIOS_SUCCESSFUL) || (header != tmp))
+ 			return false;
+ 	}
+ 
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 5de09d2eb014..0d2e6b0f56cc 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -5383,7 +5383,7 @@ int pci_dev_specific_disable_acs_redir(struct pci_dev *dev)
+  */
+ static void quirk_intel_qat_vf_cap(struct pci_dev *pdev)
+ {
+-	int pos, i = 0;
++	int pos, i = 0, ret;
+ 	u8 next_cap;
+ 	u16 reg16, *cap;
+ 	struct pci_cap_saved_state *state;
+@@ -5429,8 +5429,8 @@ static void quirk_intel_qat_vf_cap(struct pci_dev *pdev)
+ 		pdev->pcie_mpss = reg16 & PCI_EXP_DEVCAP_PAYLOAD;
+ 
+ 		pdev->cfg_size = PCI_CFG_SPACE_EXP_SIZE;
+-		if (pci_read_config_dword(pdev, PCI_CFG_SPACE_SIZE, &status) !=
+-		    PCIBIOS_SUCCESSFUL || (status == 0xffffffff))
++		ret = pci_read_config_dword(pdev, PCI_CFG_SPACE_SIZE, &status);
++		if ((ret != PCIBIOS_SUCCESSFUL) || (status == 0xffffffff))
+ 			pdev->cfg_size = PCI_CFG_SPACE_SIZE;
+ 
+ 		if (pci_find_saved_cap(pdev, PCI_CAP_ID_EXP))
 -- 
 2.30.2
 
