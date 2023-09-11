@@ -2,27 +2,27 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FC3479B58D
-	for <lists+linux-sh@lfdr.de>; Tue, 12 Sep 2023 02:03:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE0B979ADF7
+	for <lists+linux-sh@lfdr.de>; Tue, 12 Sep 2023 01:41:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353735AbjIKVts (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Mon, 11 Sep 2023 17:49:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53674 "EHLO
+        id S239997AbjIKVuV (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Mon, 11 Sep 2023 17:50:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239515AbjIKOWn (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 11 Sep 2023 10:22:43 -0400
+        with ESMTP id S240944AbjIKO5l (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 11 Sep 2023 10:57:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34BD2DE;
-        Mon, 11 Sep 2023 07:22:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50327C433C9;
-        Mon, 11 Sep 2023 14:22:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 164FE1B9;
+        Mon, 11 Sep 2023 07:57:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32EA6C433C7;
+        Mon, 11 Sep 2023 14:57:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442158;
-        bh=h4M8QIEpXdkPP9mYy1KUBxE7FeE3FC3QcS0bzXhARuM=;
+        s=korg; t=1694444256;
+        bh=Dznp5youNcMrftsTclfp7+aaStsGZ9l1YRlYN59lz+Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tQiywQXhQzpG67iQw5bdWPtmx33FUGr64MFLKJRLP4qG0JPIZwwaSdgNpdRuiEL/3
-         uXS9gUMOObSmyjLBBwj3zQE63acf+kvUBw2pNDuGxVJysgVQcF+yK1ViSFZX9SpLfc
-         CKvMpYRC69nPEqmtNIXqnshlX+G0BRWcBE4MUCMw=
+        b=shAb8gD5m7mhVtM7W3PtXSmimHZiLf2ub+VOcB3360Tw9UhxMFtX2r1yDT9+yY/i+
+         VECGlq+7ALhVWtH4Jicfjd60ROwbBsrZHD2eNr1YfgrUspW6jDW0fHCTId5dpnorwU
+         J4hPbl/RXxu4a6lkPLGZ7O5tKNp4Egb6Nf3VIW9Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -37,12 +37,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         dri-devel@lists.freedesktop.org,
         Javier Martinez Canillas <javierm@redhat.com>,
         Sam Ravnborg <sam@ravnborg.org>
-Subject: [PATCH 6.5 666/739] backlight/lv5207lp: Compare against struct fb_info.device
-Date:   Mon, 11 Sep 2023 15:47:45 +0200
-Message-ID: <20230911134709.709363057@linuxfoundation.org>
+Subject: [PATCH 6.4 665/737] backlight/lv5207lp: Compare against struct fb_info.device
+Date:   Mon, 11 Sep 2023 15:48:44 +0200
+Message-ID: <20230911134709.119700346@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,7 +58,7 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
