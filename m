@@ -2,33 +2,33 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0406B79E382
+	by mail.lfdr.de (Postfix) with ESMTP id C29AA79E385
 	for <lists+linux-sh@lfdr.de>; Wed, 13 Sep 2023 11:24:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239309AbjIMJYS (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        id S231828AbjIMJYS (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
         Wed, 13 Sep 2023 05:24:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44022 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239315AbjIMJYM (ORCPT
+        with ESMTP id S239323AbjIMJYM (ORCPT
         <rfc822;linux-sh@vger.kernel.org>); Wed, 13 Sep 2023 05:24:12 -0400
-Received: from hsmtpd-def.xspmail.jp (hsmtpd-def.xspmail.jp [202.238.198.244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2C7619A9
-        for <linux-sh@vger.kernel.org>; Wed, 13 Sep 2023 02:24:07 -0700 (PDT)
+Received: from hsmtpd-def.xspmail.jp (hsmtpd-def.xspmail.jp [202.238.198.239])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30ECAC3
+        for <linux-sh@vger.kernel.org>; Wed, 13 Sep 2023 02:24:08 -0700 (PDT)
 X-Country-Code: JP
 Received: from sakura.ysato.name (ik1-413-38519.vs.sakura.ne.jp [153.127.30.23])
         by hsmtpd-out-2.asahinet.cluster.xspmail.jp (Halon) with ESMTPA
-        id 5b92773b-5295-4242-bef2-c0ebdded0e5e;
-        Wed, 13 Sep 2023 18:24:07 +0900 (JST)
+        id 75956bd8-5561-411a-bd40-618717aada8b;
+        Wed, 13 Sep 2023 18:24:08 +0900 (JST)
 Received: from SIOS1075.ysato.name (al128006.dynamic.ppp.asahi-net.or.jp [111.234.128.6])
-        by sakura.ysato.name (Postfix) with ESMTPSA id 58B391C0198;
+        by sakura.ysato.name (Postfix) with ESMTPSA id 917AB1C00A0;
         Wed, 13 Sep 2023 18:24:07 +0900 (JST)
 From:   Yoshinori Sato <ysato@users.sourceforge.jp>
 To:     linux-sh@vger.kernel.org
 Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
         glaubitz@physik.fu-berlin.de
-Subject: [RFC PATCH v2 26/30] arch/sh: RTS7751R2D Plus DeviceTree.
-Date:   Wed, 13 Sep 2023 18:23:51 +0900
-Message-Id: <d63793503fbbc7d5ca7b40d6b31678d371b69c29.1694596125.git.ysato@users.sourceforge.jp>
+Subject: [RFC PATCH v2 27/30] arch/sh: LANDISK DeviceTree.
+Date:   Wed, 13 Sep 2023 18:23:52 +0900
+Message-Id: <7efc47ade9aef2e3d9b963fcd46f012028261f30.1694596125.git.ysato@users.sourceforge.jp>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1694596125.git.ysato@users.sourceforge.jp>
 References: <cover.1694596125.git.ysato@users.sourceforge.jp>
@@ -40,28 +40,29 @@ X-Mailing-List: linux-sh@vger.kernel.org
 
 Signed-off-by: Yoshinori Sato <ysato@users.sourceforge.jp>
 ---
- arch/sh/boot/dts/rts7751r2dplus.dts | 124 ++++++++++++++++++++++++++++
- 1 file changed, 124 insertions(+)
- create mode 100644 arch/sh/boot/dts/rts7751r2dplus.dts
+ arch/sh/boot/dts/landisk.dts | 103 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 103 insertions(+)
+ create mode 100644 arch/sh/boot/dts/landisk.dts
 
-diff --git a/arch/sh/boot/dts/rts7751r2dplus.dts b/arch/sh/boot/dts/rts7751r2dplus.dts
+diff --git a/arch/sh/boot/dts/landisk.dts b/arch/sh/boot/dts/landisk.dts
 new file mode 100644
-index 000000000000..a08061133841
+index 000000000000..1d76fbd6923b
 --- /dev/null
-+++ b/arch/sh/boot/dts/rts7751r2dplus.dts
-@@ -0,0 +1,124 @@
++++ b/arch/sh/boot/dts/landisk.dts
+@@ -0,0 +1,103 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * Device Tree Source for the Renesas RTS7751R2D Plus
++ * Device Tree Source for the IO DATA DEVICE LANDISK
 + */
++
 +
 +/dts-v1/;
 +
 +#include "sh7751.dtsi"
 +
 +/ {
-+	model = "Renesas RTS7715R2D Plus";
-+	compatible = "renesas,r2dplus";
++	model = "IO-DATA Device LANDISK";
++	compatible = "iodata,landisk", "renesas,sh7751r";
 +	#address-cells = <1>;
 +	#size-cells = <1>;
 +	interrupt-parent = <&shintc>;
@@ -71,6 +72,7 @@ index 000000000000..a08061133841
 +	};
 +
 +	chosen {
++		stdout-path = "serial0:9600n8";
 +	};
 +
 +	clocks {
@@ -92,85 +94,62 @@ index 000000000000..a08061133841
 +		      clock-frequency = <266666666>;
 +		};
 +	};
-+
 +	memory@c000000 {
 +		device_type = "memory";
 +		reg = <0x0c000000 0x4000000>;
 +	};
 +
-+	r2dintc: sh7751irl_encoder@a4000000 {
++	julianintc: sh7751irl_encoder@a4000000 {
 +		compatible = "renesas,sh7751-irl-ext";
-+		reg = <0xa4000000 0x02>;
++		reg = <0xb0000005 0x01>;
 +		interrupt-controller;
 +		#address-cells = <1>;
 +		#interrupt-cells = <2>;
-+		sh7751irl,width = <16>;
++		sh7751irl,width = <8>;
 +		sh7751irl,polarity = <0>;
-+		sh7751irl,irqbit =<11>,		/* PCI INTD */
-+				  <9>,		/* CF IDE */
-+				  <8>,		/* CF CD */
-+				  <12>,		/* PCI INTC */
-+				  <10>,		/* SM501 */
-+				  <6>,		/* KEY */
-+				  <5>,		/* RTC ALARM */
-+				  <4>,		/* RTC T */
-+				  <7>,		/* SDCARD */
-+				  <14>,		/* PCI INTA */
-+				  <13>,		/* PCI INTB */
-+				  <0>,		/* EXT */
-+				  <15>;		/* TP */
-+	};
-+
-+	display@1,0 {
-+		compatible = "smi,sm501";
-+		reg = <0x10000000 0x03e00000
-+		       0x13e00000 0x00200000>;
-+		interrupt-parent = <&r2dintc>;
-+		interrupts = <4 0>;
-+		mode = "640x480-16@60";
-+		little-endian;
-+		sm501,devices = "usb-host","uart0";
-+	};
-+
-+	compact-flash@b4001000 {
-+		compatible = "ata-generic";
-+		reg = <0xb4001000 0x0e>, <0xb400080c 2>;
-+		reg-shift = <1>;
-+		interrupt-parent = <&r2dintc>;
-+		interrupts = <1 0>;
-+	};
-+
-+	flash@0 {
-+		compatible = "cfi-flash";
-+		reg = <0x00000000 0x02000000>;
-+		device-width = <2>;
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		partition@0 {
-+			label = "U-Boot";
-+			reg = <0x00000000 0x00040000>;
-+		};
-+		partition@1 {
-+			label = "Environemt";
-+			reg = <0x00040000 0x00040000>;
-+		};
-+		partition@2 {
-+			label = "Kernel";
-+			reg = <0x00080000 0x001c0000>;
-+		};
-+		partition@3 {
-+			label = "Flash_FS";
-+			reg = <0x00240000 0x00dc0000>;
-+		};
++		sh7751irl,irqbit = <0xffffffff>,	/* Not use */
++				   <0xffffffff>,
++				   <0xffffffff>,
++				   <0xffffffff>,
++				   <0xffffffff>,
++				   <0>,		/* PCI INTA */
++				   <1>,		/* PCI INTB */
++				   <2>,		/* PCI INTC */
++				   <3>,		/* PCI INTD */
++				   <4>,		/* ATA */
++				   <5>,		/* CF */
++				   <6>,		/* Power Switch */
++				   <7>;		/* Button */
 +	};
 +
 +	pci@fe200000 {
-+		compatible = "renesas,r2d-pci", "renesas,sh7751-pci";
++		compatible = "iodata,julian-pci", "renesas,sh7751-pci";
 +		#interrupt-cells = <1>;
-+		interrupt-parent = <&r2dintc>;
-+		eth@2,0 {
++		interrupt-parent = <&julianintc>;
++		eth@0,0 {
++			reg = <0x0000 0 0 0 0>;
++			interrupts = <5 0>;
++			interrupt-names = "eth";
++		};
++		ata@1,0 {
++			reg = <0x0800 0 0 0 0>;
++			interrupts = <6 0>;
++			interrupt-names = "ata";
++		};
++		usb@2,0 {
 +			reg = <0x1000 0 0 0 0>;
-+			interrupts = <3 0>;
++			interrupts = <7 0>;
++			interrupt-names = "ochi";
++		};
++		usb@2,1 {
++			reg = <0x1100 0 0 0 0>;
++			interrupts = <8 0>;
++			interrupt-names = "ohci";
++		};
++		usb@2,2 {
++			reg = <0x1200 0 0 0 0>;
++			interrupts = <5 0>;
++			interrupt-names = "ehci";
 +		};
 +	};
 +};
