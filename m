@@ -2,164 +2,77 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC57079E388
-	for <lists+linux-sh@lfdr.de>; Wed, 13 Sep 2023 11:24:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D75079E51D
+	for <lists+linux-sh@lfdr.de>; Wed, 13 Sep 2023 12:42:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239329AbjIMJYT (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 13 Sep 2023 05:24:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44060 "EHLO
+        id S231643AbjIMKmT (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 13 Sep 2023 06:42:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239331AbjIMJYM (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 13 Sep 2023 05:24:12 -0400
-Received: from hsmtpd-def.xspmail.jp (hsmtpd-def.xspmail.jp [202.238.198.244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89DCA199B
-        for <linux-sh@vger.kernel.org>; Wed, 13 Sep 2023 02:24:08 -0700 (PDT)
-X-Country-Code: JP
-Received: from sakura.ysato.name (ik1-413-38519.vs.sakura.ne.jp [153.127.30.23])
-        by hsmtpd-out-2.asahinet.cluster.xspmail.jp (Halon) with ESMTPA
-        id 60b3a21c-fe1a-4d60-bb29-28cf33edfc39;
-        Wed, 13 Sep 2023 18:24:08 +0900 (JST)
-Received: from SIOS1075.ysato.name (al128006.dynamic.ppp.asahi-net.or.jp [111.234.128.6])
-        by sakura.ysato.name (Postfix) with ESMTPSA id 2DAEC1C01AA;
-        Wed, 13 Sep 2023 18:24:08 +0900 (JST)
-From:   Yoshinori Sato <ysato@users.sourceforge.jp>
-To:     linux-sh@vger.kernel.org
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        glaubitz@physik.fu-berlin.de
-Subject: [RFC PATCH v2 30/30] arch/sh: LANDISK OF defconfig
-Date:   Wed, 13 Sep 2023 18:23:55 +0900
-Message-Id: <9c4cfc4def229c3a0f6b5ea680acad78b5ff05c6.1694596125.git.ysato@users.sourceforge.jp>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <cover.1694596125.git.ysato@users.sourceforge.jp>
-References: <cover.1694596125.git.ysato@users.sourceforge.jp>
+        with ESMTP id S239711AbjIMKmR (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 13 Sep 2023 06:42:17 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96E3C19A8;
+        Wed, 13 Sep 2023 03:42:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89FB6C433C9;
+        Wed, 13 Sep 2023 10:42:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1694601733;
+        bh=M5gn560TFCcZ34DR2zUQPAjl6DQ+nk0P94HD77R6XT0=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=ZZLF78a1zYuju5Mi56qZCqivmUedzAIZnvGJPoXh2zDhah0xH3RIfds+14c/v0klG
+         CVpCD1LnccNES82wl9YGt6Xs29DLAgCYtYMvgXPN7ejqJHJmbMpD1AnM9Y7IWDwDII
+         fw8lahiZIVIe3ecBuyKhuL8/4XXqifgWhlVAxaUCcfh9HCe495Bmhnshi/1kemazMP
+         FU6QuYhoI2EyjSpOAd1VWeohzzmpZklEykRcaesPbARuUjOp5DC2z9fMnaxrN9LOcI
+         k9IVN9JSeTZm4eZsKKPqqwFcxMSvs1Ysq0HJ/LAy969QX8TLgoult/LXqRuBZiQvAi
+         EtXgTC0LfZuIQ==
+Message-ID: <815e99da-d66b-993f-3c86-7a88dc6f413c@kernel.org>
+Date:   Wed, 13 Sep 2023 12:42:07 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [RFC PATCH v2 09/30] Documentation/devicetree: Add
+ renesas,sh7751-pci binding document.
+Content-Language: en-US
+To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        linux-sh@vger.kernel.org
+Cc:     glaubitz@physik.fu-berlin.de, linux-pci@vger.kernel.org
+References: <cover.1694596125.git.ysato@users.sourceforge.jp>
+ <701db4418652fc2ed36570ac20d57117ec6941c5.1694596125.git.ysato@users.sourceforge.jp>
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+In-Reply-To: <701db4418652fc2ed36570ac20d57117ec6941c5.1694596125.git.ysato@users.sourceforge.jp>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Signed-off-by: Yoshinori Sato <ysato@users.sourceforge.jp>
----
- arch/sh/configs/landisk-of_defconfig | 110 +++++++++++++++++++++++++++
- 1 file changed, 110 insertions(+)
- create mode 100644 arch/sh/configs/landisk-of_defconfig
+On 13/09/2023 11:23, Yoshinori Sato wrote:
+> Signed-off-by: Yoshinori Sato <ysato@users.sourceforge.jp>
 
-diff --git a/arch/sh/configs/landisk-of_defconfig b/arch/sh/configs/landisk-of_defconfig
-new file mode 100644
-index 000000000000..f7c9b7d756e3
---- /dev/null
-+++ b/arch/sh/configs/landisk-of_defconfig
-@@ -0,0 +1,110 @@
-+CONFIG_SYSVIPC=y
-+CONFIG_LOG_BUF_SHIFT=14
-+CONFIG_NAMESPACES=y
-+CONFIG_EXPERT=y
-+CONFIG_CPU_SUBTYPE_SH7751R=y
-+CONFIG_MEMORY_START=0x0c000000
-+CONFIG_SH_OF_BOARD=y
-+CONFIG_HEARTBEAT=y
-+CONFIG_KEXEC=y
-+CONFIG_MODULES=y
-+CONFIG_MODULE_UNLOAD=y
-+CONFIG_MODULE_FORCE_UNLOAD=y
-+CONFIG_FLATMEM_MANUAL=y
-+CONFIG_NET=y
-+CONFIG_PACKET=y
-+CONFIG_UNIX=y
-+CONFIG_INET=y
-+CONFIG_IP_ADVANCED_ROUTER=y
-+CONFIG_IP_PNP=y
-+# CONFIG_IPV6 is not set
-+CONFIG_NETFILTER=y
-+CONFIG_ATALK=m
-+CONFIG_PCI=y
-+CONFIG_PCCARD=y
-+CONFIG_YENTA=y
-+CONFIG_UEVENT_HELPER=y
-+CONFIG_BLK_DEV_LOOP=y
-+CONFIG_BLK_DEV_RAM=y
-+CONFIG_BLK_DEV_SD=y
-+CONFIG_BLK_DEV_SR=y
-+# CONFIG_BLK_DEV_BSG is not set
-+CONFIG_ATA=y
-+CONFIG_PATA_ATP867X=y
-+CONFIG_PATA_OF_PLATFORM=y
-+CONFIG_ATA_GENERIC=y
-+CONFIG_MD=y
-+CONFIG_BLK_DEV_MD=m
-+CONFIG_MD_LINEAR=m
-+CONFIG_MD_RAID0=m
-+CONFIG_MD_RAID1=m
-+CONFIG_NETDEVICES=y
-+CONFIG_TUN=m
-+CONFIG_8139CP=y
-+CONFIG_USB_PEGASUS=m
-+CONFIG_USB_RTL8150=m
-+# CONFIG_INPUT_KEYBOARD is not set
-+# CONFIG_INPUT_MOUSE is not set
-+# CONFIG_SERIO is not set
-+CONFIG_SERIAL_SH_SCI=y
-+CONFIG_SERIAL_SH_SCI_EARLYCON=y
-+CONFIG_HW_RANDOM=y
-+CONFIG_SOUND=m
-+CONFIG_HID_A4TECH=m
-+CONFIG_HID_BELKIN=m
-+CONFIG_HID_CHERRY=m
-+CONFIG_HID_CHICONY=m
-+CONFIG_HID_CYPRESS=m
-+CONFIG_HID_EZKEY=m
-+CONFIG_HID_GYRATION=m
-+CONFIG_HID_ITE=y
-+CONFIG_HID_KENSINGTON=y
-+CONFIG_HID_REDRAGON=y
-+CONFIG_HID_MICROSOFT=m
-+CONFIG_HID_MONTEREY=m
-+CONFIG_HID_PANTHERLORD=m
-+CONFIG_HID_PETALYNX=m
-+CONFIG_HID_SAMSUNG=m
-+CONFIG_HID_SUNPLUS=m
-+CONFIG_USB_HID=m
-+CONFIG_USB=y
-+CONFIG_USB_MON=y
-+CONFIG_USB_EHCI_HCD=y
-+# CONFIG_USB_EHCI_TT_NEWSCHED is not set
-+CONFIG_USB_OHCI_HCD=y
-+CONFIG_USB_PRINTER=m
-+CONFIG_USB_STORAGE=m
-+CONFIG_USB_STORAGE_DATAFAB=m
-+CONFIG_USB_STORAGE_FREECOM=m
-+CONFIG_USB_STORAGE_ISD200=m
-+CONFIG_USB_STORAGE_SDDR09=m
-+CONFIG_USB_STORAGE_SDDR55=m
-+CONFIG_USB_STORAGE_JUMPSHOT=m
-+CONFIG_USB_SERIAL=m
-+CONFIG_USB_SERIAL_FTDI_SIO=m
-+CONFIG_USB_SERIAL_PL2303=m
-+CONFIG_USB_EMI62=m
-+CONFIG_USB_EMI26=m
-+CONFIG_USB_SISUSBVGA=m
-+CONFIG_RENESAS_SH7751_INTC=y
-+CONFIG_RENESAS_SH7751IRL_INTC=y
-+CONFIG_EXT2_FS=y
-+CONFIG_EXT3_FS=y
-+CONFIG_REISERFS_FS=y
-+CONFIG_ISO9660_FS=m
-+CONFIG_MSDOS_FS=y
-+CONFIG_VFAT_FS=y
-+CONFIG_NTFS_FS=m
-+CONFIG_NTFS_RW=y
-+CONFIG_TMPFS=y
-+CONFIG_ROMFS_FS=y
-+CONFIG_UFS_FS=m
-+CONFIG_NFS_FS=m
-+CONFIG_NFSD=m
-+CONFIG_NLS_CODEPAGE_437=y
-+CONFIG_NLS_CODEPAGE_932=y
-+CONFIG_INIT_STACK_NONE=y
-+CONFIG_CRC_T10DIF=y
-+CONFIG_DEBUG_MEMORY_INIT=y
-+# CONFIG_FTRACE is not set
-+CONFIG_SH_STANDARD_BIOS=y
--- 
-2.39.2
+You did not resolve several comments from previous version. I don't
+understand why, so I just assume this is not ready for review. Just
+quick look tells this wasn't tested and has multiple issues. Maybe that
+was the intention, but nothing is described in commit log confirming
+such intention.
+
+Therefore to be clear: that's a NAK.
+
+Also, standard template:
+
+Please use scripts/get_maintainers.pl to get a list of necessary people
+and lists to CC. It might happen, that command when run on an older
+kernel, gives you outdated entries. Therefore please be sure you base
+your patches on recent Linux kernel.
+
+You missed at least devicetree list (maybe more), so this won't be
+tested by automated tooling. Performing review on untested code might be
+a waste of time, thus I will skip this patch entirely till you follow
+the process allowing the patch to be tested.
+
+Please kindly resend and include all necessary To/Cc entries.
+
+
+Best regards,
+Krzysztof
 
