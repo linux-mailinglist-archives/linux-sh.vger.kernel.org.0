@@ -2,165 +2,244 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 849467A4D48
-	for <lists+linux-sh@lfdr.de>; Mon, 18 Sep 2023 17:48:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFB377A4E22
+	for <lists+linux-sh@lfdr.de>; Mon, 18 Sep 2023 18:07:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229867AbjIRPsG convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-sh@lfdr.de>); Mon, 18 Sep 2023 11:48:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39284 "EHLO
+        id S230077AbjIRQHf convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-sh@lfdr.de>); Mon, 18 Sep 2023 12:07:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229853AbjIRPsC (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 18 Sep 2023 11:48:02 -0400
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C05710DE;
-        Mon, 18 Sep 2023 08:45:06 -0700 (PDT)
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-59bfb0825efso40025527b3.3;
-        Mon, 18 Sep 2023 08:45:06 -0700 (PDT)
+        with ESMTP id S230078AbjIRQHZ (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 18 Sep 2023 12:07:25 -0400
+Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 461F96E9D;
+        Mon, 18 Sep 2023 09:05:37 -0700 (PDT)
+Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-d8181087dc9so4212513276.3;
+        Mon, 18 Sep 2023 09:05:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695051730; x=1695656530;
+        d=1e100.net; s=20230601; t=1695053137; x=1695657937;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=a+5V/p0RnqTnQDaOQcXpPM/b/+ioYkgQSZlIueT0vYQ=;
-        b=h3uFNFZSRZ79griQi4Oo3PD2ZW13S6Fc/srDus0Fp9O6ErfoCkepDQdcH4MNjedg0c
-         +Q2AQ0Pw2YMCplLCezpK0v/IiLEmbZEmEoxZ9EScko3uDfibj6A7krz3gKxpMQmqmauF
-         V6HoWScOXmrsEDdShSKvnioWy6hL84wN0t1ZGNyOSo9U/lcqz2mQIKwKvWpE/Rs+oV1e
-         J+Fsk1j/cdQE146jLcWBoV27NmoujN7uFsJiVS2ViGjbZ4uA9HC9nUeFmU3gq/rXTNss
-         AjlnHgJVn35JYj4t3KgWQKCmhipMJ3asvhK2bj4ScoX2NnmN7JZAilsMBH3K6Tk5LYlF
-         YMOQ==
-X-Gm-Message-State: AOJu0YyWHhzIeMcNtbTlmNj2ro5Wueoii0axN3Ph3HfdHm+pfski4QAL
-        HZjCPn8ovxyh2dTsW6bTutZk7oFrsnjBHg==
-X-Google-Smtp-Source: AGHT+IH4LxYttot7BaoGgMHEuQ/6w3CQ6r6Ze5e6ndPI5jLKaRvqLpS0OXqnV26zbkiksvcQRJR3Qg==
-X-Received: by 2002:a81:4f81:0:b0:589:e7ab:d4e5 with SMTP id d123-20020a814f81000000b00589e7abd4e5mr10230888ywb.0.1695051730677;
-        Mon, 18 Sep 2023 08:42:10 -0700 (PDT)
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com. [209.85.128.177])
-        by smtp.gmail.com with ESMTPSA id h125-20020a816c83000000b005772abf6234sm2648718ywc.11.2023.09.18.08.42.10
+        bh=N1/vmY6rZvIej4ygh7IWLFkgOKHXgwWsTVOn8tVpI9o=;
+        b=DupzuQotgRbE/jsJGHM/+Sm2IWXH6BENP3qLw+urrJWwZP1Ur17qjVVFJh3FAe1nYr
+         rCNuMxcqUZWbgG4zaCG+r1bhDzOmxoaNgo9lako7o2oXo0RbnNvFWWrYj+pcP5v64IG+
+         zEFqhjJVx2x5d8dK06kpxgiSg34y6WXtKOBNYR1knygVgYcNrMOHHmiLLyQpqJSt8Qew
+         ll2/IKHjPZILs3faWlccT21bt3wequU9Gr+nol50Acs3FMVt9OzE6fWmYUgZf22yea0T
+         44m2havz8MwHkn0XWt0zq7KG42hPCVE6Y1jO5i+K0CK/5KCz1j+fWG31P9xkOM8PtXbX
+         X3BA==
+X-Gm-Message-State: AOJu0YzasUQBJYMVlcDc7OPfzo0trsXHIgG6QXQYL/OtUFD4A0S6rkj+
+        iRqv0gY8x+7zWjaVJ912HCMp0shzCgumJQ==
+X-Google-Smtp-Source: AGHT+IHbeukF1H1g/gc72+wXvXK7Uqao3n5ggyxh/FDAYy/YJuhQfsu1nUiVYjvhcUGLBG1bCKxV/w==
+X-Received: by 2002:a25:b85:0:b0:d7b:97f3:4646 with SMTP id 127-20020a250b85000000b00d7b97f34646mr8460236ybl.60.1695053136709;
+        Mon, 18 Sep 2023 09:05:36 -0700 (PDT)
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com. [209.85.128.174])
+        by smtp.gmail.com with ESMTPSA id 72-20020a25054b000000b00d7802512079sm2361618ybf.38.2023.09.18.09.05.36
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Sep 2023 08:42:10 -0700 (PDT)
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-59e77e4f707so18770817b3.0;
-        Mon, 18 Sep 2023 08:42:10 -0700 (PDT)
-X-Received: by 2002:a0d:d491:0:b0:579:ec06:eb3d with SMTP id
- w139-20020a0dd491000000b00579ec06eb3dmr10848131ywd.21.1695051730200; Mon, 18
- Sep 2023 08:42:10 -0700 (PDT)
+        Mon, 18 Sep 2023 09:05:36 -0700 (PDT)
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-5925e580f12so49412407b3.3;
+        Mon, 18 Sep 2023 09:05:36 -0700 (PDT)
+X-Received: by 2002:a0d:cb16:0:b0:59b:52d6:9a34 with SMTP id
+ n22-20020a0dcb16000000b0059b52d69a34mr9887143ywd.11.1695053136322; Mon, 18
+ Sep 2023 09:05:36 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1694596125.git.ysato@users.sourceforge.jp> <701db4418652fc2ed36570ac20d57117ec6941c5.1694596125.git.ysato@users.sourceforge.jp>
-In-Reply-To: <701db4418652fc2ed36570ac20d57117ec6941c5.1694596125.git.ysato@users.sourceforge.jp>
+References: <cover.1694596125.git.ysato@users.sourceforge.jp> <a9a3e6f0dfdd1c5d6970d2decffef3c07d93476e.1694596125.git.ysato@users.sourceforge.jp>
+In-Reply-To: <a9a3e6f0dfdd1c5d6970d2decffef3c07d93476e.1694596125.git.ysato@users.sourceforge.jp>
 From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 18 Sep 2023 17:41:57 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdVoSYzvtTK7h+vEaGvkdL+3=zccHy9au6On9bOadT=JRg@mail.gmail.com>
-Message-ID: <CAMuHMdVoSYzvtTK7h+vEaGvkdL+3=zccHy9au6On9bOadT=JRg@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 09/30] Documentation/devicetree: Add
- renesas,sh7751-pci binding document.
+Date:   Mon, 18 Sep 2023 18:05:24 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdWwGdEJrfuVvwOCL34OmmbkkO=DQeSoqWDkSjxub=00sQ@mail.gmail.com>
+Message-ID: <CAMuHMdWwGdEJrfuVvwOCL34OmmbkkO=DQeSoqWDkSjxub=00sQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 10/30] drivers/clk: SH7750 / SH7751 CPG Driver
 To:     Yoshinori Sato <ysato@users.sourceforge.jp>
 Cc:     linux-sh@vger.kernel.org, glaubitz@physik.fu-berlin.de,
-        linux-pci@vger.kernel.org
+        linux-clk@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-        lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
 Hi Sato-san,
 
-On Wed, Sep 13, 2023 at 11:24 AM Yoshinori Sato
+On Wed, Sep 13, 2023 at 11:25 AM Yoshinori Sato
 <ysato@users.sourceforge.jp> wrote:
 > Signed-off-by: Yoshinori Sato <ysato@users.sourceforge.jp>
 
 Thanks for your patch!
 
+>  drivers/clk/renesas/clk-sh7750.c | 236 +++++++++++++++++++++++++++++++
+
+Patch prefix should be "clk: renesas: ".
+
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/pci/renesas,sh7751-pci.yaml
-> @@ -0,0 +1,57 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/pci/renesas,sh7751-pci.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +++ b/drivers/clk/renesas/clk-sh7750.c
+> @@ -0,0 +1,236 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Renesas SH7750/51 CPG driver
+> + *
+> + * Copyright 2023 Yoshinori Sato <ysato@users.sourceforge.jp>
+> + */
 > +
-> +title: Renesas SH7751 PCI Host controller
+> +#include <linux/clkdev.h>
+> +#include <linux/clk-provider.h>
+> +#include <linux/err.h>
+> +#include <linux/of.h>
+> +#include <linux/of_address.h>
+> +#include <linux/io.h>
+
+Please add a blank line.
+
+> +#include "clk-shdiv.h"
+
+This doesn't exist until "[RFC PATCH v2 11/30] drivers/clk: SuperH
+generai clock divider helper", so please move that patch up in the
+series.
+
+> +#include <dt-bindings/clock/sh7750.h>
+
+This doesn't exist until "[RFC PATCH v2 24/30] include/dt-bindings:
+Add SH7750 CPG header.", so please move that patch up in the series.
+
 > +
-> +maintainers:
-> +  - Yoshinori Sato <ysato@users.sourceforge.jp>
+> +static DEFINE_SPINLOCK(clklock);
+
+I think it would make sense to move this into struct cpg_priv.
+
+
+> +struct cpg_priv {
+> +       struct clk_hw hw;
+> +       void __iomem *frqcr;
+> +       void __iomem *wdt;
+> +       u32 mode;
+> +       bool have_div1;
+> +};
 > +
-> +properties:
-> +  compatible:
-> +      - items:
-
-make dt_binding_check
-DT_SCHEMA_FILES=Documentation/devicetree/bindings/pci/renesas,sh7751-pci.yaml:
-
-    Documentation/devicetree/bindings/pci/renesas,sh7751-pci.yaml:14:7:
-[warning] wrong indentation: expected 4 but found 6 (indentation)
-
-> +          - enum:
-> +              - renesas,r2d-pci                 # Renesas RTS7751R2D board
-
-    Documentation/devicetree/bindings/pci/renesas,sh7751-pci.yaml:16:32:
-[error] syntax error: found character '\t' that cannot start any token
-(syntax)
-
-> +              - iodata,julian-pci        # IO DATA DEVICE Julian board
-
-Please drop the two board-specific compatible values, they do not
-represent different implementations of the PCI core in the SH7751 SoC.
-
-> +          - const: renesas,sh7751-pci
+> +#define to_priv(_hw) container_of(_hw, struct cpg_priv, hw)
 > +
-> +  reg:
-> +    minItems: 3
-> +
-> +  interrupt-cells:
-> +    const: 1
-> +
-> +  address-cells:
-> +    const: 3
-> +
-> +  size-cells:
-> +    const: 2;
-> +
-> +  range:
-> +    description: |
-> +      The PCI bus memory area and I/O area.
-> +
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupt-cells
-> +  - address-cells
-> +  - size-cells
-> +  - range
-> +
-> +examples:
-> +  - |
-> +        pci@fe200000 {
+> +#define FRQCR_PLL1EN BIT(10)
+> +static const int pll1mult[] = { 12, 12, 6, 12, 6, 12, 1};
 
-Please align "pci" with the "|" above
+unsigned int
 
-> +                compatible = "renesas,sh7751-pci";
+> +
+> +static unsigned long pll_recalc_rate(struct clk_hw *hw,
+> +                                     unsigned long parent_rate)
+> +{
+> +       struct cpg_priv *cpg = to_priv(hw);
+> +       unsigned long rate = parent_rate;
+> +       uint16_t frqcr;
 
-Please indent by 4 spaces
+u16
 
-> +                #address-cells = <3>;
-> +                #size-cells = <2>;
-> +                ranges = <0x02000000 0 0xfd000000 0xfd000000 0 0x01000000>,
-> +                         <0x01000000 0 0xfe240000 0xfe240000 0 0x00040000>;
-> +                reg = <0xfe200000 0x0400>,
-> +                      <0x0c000000 0x04000000>,
-> +                      <0xff800000 0x0030>;
-> +                #interrupt-cells = <1>;
+Please don't mix uint<n>_t and u<n> in the same driver.
 
-    Documentation/devicetree/bindings/pci/renesas,sh7751-pci.example.dtb:
-pci@fe200000: 'device_type' is a required property
-        from schema $id: http://devicetree.org/schemas/pci/pci-bus.yaml#
+> +static int pll_determine_rate(struct clk_hw *hw, struct clk_rate_request *req)
+> +{
+> +       struct cpg_priv *cpg = to_priv(hw);
+> +
+> +       get_round_rate(cpg, &req->rate, NULL, req->rate, req->best_parent_rate);
+> +       return 0;
+> +}
+> +
+> +static int pll_set_rate(struct clk_hw *hw,
+> +                       unsigned long rate, unsigned long prate)
+> +{
+> +       struct cpg_priv *cpg = to_priv(hw);
+> +       bool oldpll, newpll;
+> +       uint16_t frqcr;
 
-> +        };
+u16
+
+
+> +static void __init register_div(struct device_node *node, struct cpg_priv *cpg)
+> +{
+> +       static const char * const divout[] = {
+> +               [SH7750_CPG_FCK] = "fck",
+> +               [SH7750_CPG_BCK] = "bck",
+> +               [SH7750_CPG_ICK] = "ick",
+> +       };
+> +       struct clk *clk;
+> +       int i;
+
+unsigned int
+
+> +
+> +       for (i = 0; i < ARRAY_SIZE(divout); i++) {
+> +               if (sh_div_clk_register(node, divout[i], PLLOUT,
+> +                                       cpg->frqcr, i * 3, 3,
+> +                                       (i == 0) ? pdiv_table : div_table,
+> +                                       &clklock) < 0)
+> +                       pr_err("%s: failed to register %s div clock (%ld)\n",
+> +                              __func__, divout[i], PTR_ERR(clk));
+> +       }
+> +}
+> +
+> +
+> +static void __init sh7750_cpg_setup(struct device_node *node)
+> +{
+> +       unsigned int num_parents;
+> +       struct cpg_priv *cpg;
+> +
+> +       num_parents = of_clk_get_parent_count(node);
+> +       if (num_parents < 1) {
+> +               pr_err("%s: no parent found", node->name);
+> +               return;
+> +       }
+> +
+> +       cpg = kzalloc(sizeof(struct cpg_priv), GFP_KERNEL);
+> +       if (!cpg) {
+> +               pr_err("%s: failed to alloc memory", node->name);
+> +               return;
+> +       }
+> +
+> +       of_property_read_u32_index(node, "renesas,mode", 0, &cpg->mode);
+> +       if (cpg->mode >= 7) {
+> +               pr_err("%s: Invalid clock mode setting (%u)\n",
+> +                      node->name, cpg->mode);
+> +               goto cpg_free;
+> +       }
+> +       cpg->have_div1 = (of_device_is_compatible(node, "renesas,sh7750r-pll-clk") == 0);
+
+What is this for? There are no users of "renesas,sh7750r-pll-clk".
+
+> +
+> +       cpg->frqcr = of_iomap(node, 0);
+> +       if (cpg->frqcr == NULL) {
+> +               pr_err("%s: failed to map divide register", node->name);
+> +               goto cpg_free;
+> +       }
+> +
+> +       cpg->wdt = of_iomap(node, 1);
+> +       if (cpg->wdt == NULL) {
+> +               pr_err("%s: failed to map watchdog register", node->name);
+> +               goto unmap_frqcr;
+> +       }
+> +
+> +       if (!register_pll(node, cpg))
+> +               goto unmap_wdt;
+> +
+> +       register_div(node, cpg);
+> +
+> +unmap_wdt:
+> +       iounmap(cpg->wdt);
+> +unmap_frqcr:
+> +       iounmap(cpg->frqcr);
+> +cpg_free:
+> +       kfree(cpg);
+> +}
+> +
+> +CLK_OF_DECLARE(sh7750_cpg, "renesas,sh7750-cpg",
+> +              sh7750_cpg_setup);
+
+Probably you want a second entry for "renesas,sh7751-cpg"?
+
+Is there a good reason to use CLK_OF_DECLARE()?
+Perhaps because you need it early for the timer?
+
+Most modern clock drivers use a platform_driver, registered from
+e.g. subsys_initcall().  When you need an early initialization phase,
+you can use CLK_OF_DECLARE_DRIVER() for the early part.
 
 Gr{oetje,eeting}s,
 
