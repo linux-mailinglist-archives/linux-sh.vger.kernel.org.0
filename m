@@ -2,74 +2,79 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB6977A4C17
-	for <lists+linux-sh@lfdr.de>; Mon, 18 Sep 2023 17:26:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74DA47A4C3C
+	for <lists+linux-sh@lfdr.de>; Mon, 18 Sep 2023 17:29:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230206AbjIRP0R convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-sh@lfdr.de>); Mon, 18 Sep 2023 11:26:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55544 "EHLO
+        id S229437AbjIRP30 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-sh@lfdr.de>); Mon, 18 Sep 2023 11:29:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233190AbjIRP0Q (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Mon, 18 Sep 2023 11:26:16 -0400
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCF9710CC
-        for <linux-sh@vger.kernel.org>; Mon, 18 Sep 2023 08:24:24 -0700 (PDT)
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-274b9b3e0e1so990032a91.1
-        for <linux-sh@vger.kernel.org>; Mon, 18 Sep 2023 08:24:24 -0700 (PDT)
+        with ESMTP id S229627AbjIRP3H (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Mon, 18 Sep 2023 11:29:07 -0400
+Received: from mail-oi1-x231.google.com (mail-oi1-x231.google.com [IPv6:2607:f8b0:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EDA41AC
+        for <linux-sh@vger.kernel.org>; Mon, 18 Sep 2023 08:27:26 -0700 (PDT)
+Received: by mail-oi1-x231.google.com with SMTP id 5614622812f47-3a9b41ffe11so3335365b6e.2
+        for <linux-sh@vger.kernel.org>; Mon, 18 Sep 2023 08:27:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695050536; x=1695655336;
+        d=1e100.net; s=20230601; t=1695050615; x=1695655415;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xIKetutJMTD4QkVTYRX+bu1GkPZ+G9/ZV1OTwDnSMF4=;
-        b=O3y40ZGjvOnTcRAo1Bzi1a6HAwgaJVRS+TXcvLfWUY/sIJvH1nI0CKYqlqty8epVc7
-         yupoERHYPin0LPw68QvMShk3X+Rtt7eL4sIpq0Ufe6MZwyLaWDjlrJYDNFAmOgMX9zRz
-         BNQSmoaVQxSCyF0vwBkQOavMGzvl207cD31ARm0X5AcD7TdD1sUei2xXVDLY2I3+rwuH
-         b9DDyX8tOtHaaCuyBbar/u3AOVTvzhRx3ci2lty99gXNpDl2n1aCEdPQQVU0uFdVRDRq
-         LDca2apHj2zrbEx06w5mO9dW8jSj0aSEYwjYoHt/1e6gVFcJd/mr8vNqeLmIbuNeTQCo
-         vBPA==
-X-Gm-Message-State: AOJu0YzXd2rPH32YHnBgC1hImI2VtmRDitwSb5vQKrNhMtlmt25w2HjR
-        MukJaz0i5hlZPCfllGFUuIYZcdK8gzWHfQ==
-X-Google-Smtp-Source: AGHT+IFjlOnvY+YQKn6XScCEJT8wSIcT06Pqe53Nbc0+P6rz3BY6oFhocr8BoJRMK/zoOb0gbtqNJg==
-X-Received: by 2002:a05:6358:9910:b0:142:efb8:5295 with SMTP id w16-20020a056358991000b00142efb85295mr11656495rwa.19.1695050175600;
-        Mon, 18 Sep 2023 08:16:15 -0700 (PDT)
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com. [209.85.128.182])
-        by smtp.gmail.com with ESMTPSA id j129-20020a819287000000b0059b3c406af3sm2631073ywg.82.2023.09.18.08.16.15
+        bh=Cv7yg3opL+OP0xDyaX5N/l9bhI3rJ5MLCw084hHCWfQ=;
+        b=voLuHGDAmfP1iSVkbJMmYwLmwxmes6X3SWRLc6Xvg+uFPGXbBHdGio+2aUhcYP9EVW
+         M4ySiXZexmR/RTBlBx5VPFR6ohWnalZjNqpva0/5huMmUzDxefxaBqpYoZfN22090i2O
+         jkZYQabTmdZkBrpiPd7yiAqQFTx2NrToYiUOv79TiZXqDEcMGYRcp/KvdYQU1QsKdtaH
+         svffaU+69erlby/QJ/O/L8a09ONRVPWqwheInjWJwGJzxrJpSMBmgzOSU0dDn4RGRIMl
+         ugpKmORzMa/eo6KKpIn1KcX7M/qVjT0TI+J0B6LIitWdUkDfvLRTzdhP4yvyMghydXUa
+         EFrA==
+X-Gm-Message-State: AOJu0YxrnochnZ7OkWF79ir+M8nZlkmZSc4V39zAbwh1sbIqjYLTMMLW
+        oenPZKQmfKsB6/OoeBR1WohDuveCtMIURw==
+X-Google-Smtp-Source: AGHT+IFkBiZs4Cvc7+YrIpXDy0CtCUQAmkhy7F6IE99cHLczwKVpA9x5tGyp2UlT1bism1XMlbuoNQ==
+X-Received: by 2002:a9d:4e90:0:b0:6be:e1cd:7326 with SMTP id v16-20020a9d4e90000000b006bee1cd7326mr11250052otk.4.1695050186105;
+        Mon, 18 Sep 2023 08:16:26 -0700 (PDT)
+Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com. [209.85.167.179])
+        by smtp.gmail.com with ESMTPSA id g13-20020a9d618d000000b006b75242d6c3sm4212009otk.38.2023.09.18.08.16.25
         for <linux-sh@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Sep 2023 08:16:15 -0700 (PDT)
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-59e77e4f707so18454227b3.0
-        for <linux-sh@vger.kernel.org>; Mon, 18 Sep 2023 08:16:15 -0700 (PDT)
-X-Received: by 2002:a0d:d585:0:b0:59b:51d9:1d6e with SMTP id
- x127-20020a0dd585000000b0059b51d91d6emr10842071ywd.6.1695050175142; Mon, 18
- Sep 2023 08:16:15 -0700 (PDT)
+        Mon, 18 Sep 2023 08:16:25 -0700 (PDT)
+Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3ab244ef065so3337291b6e.0
+        for <linux-sh@vger.kernel.org>; Mon, 18 Sep 2023 08:16:25 -0700 (PDT)
+X-Received: by 2002:a05:6358:e497:b0:142:d62b:304b with SMTP id
+ by23-20020a056358e49700b00142d62b304bmr12620673rwb.2.1695050185709; Mon, 18
+ Sep 2023 08:16:25 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1694596125.git.ysato@users.sourceforge.jp> <8004923e733fcc4adb930c7dfb6b0ca3fff42177.1694596125.git.ysato@users.sourceforge.jp>
-In-Reply-To: <8004923e733fcc4adb930c7dfb6b0ca3fff42177.1694596125.git.ysato@users.sourceforge.jp>
+References: <cover.1694596125.git.ysato@users.sourceforge.jp> <f8abf3a7f0f9ce83e67968318aa4b3d306a9fa1c.1694596125.git.ysato@users.sourceforge.jp>
+In-Reply-To: <f8abf3a7f0f9ce83e67968318aa4b3d306a9fa1c.1694596125.git.ysato@users.sourceforge.jp>
 From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 18 Sep 2023 17:16:03 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdXRsQYMnTJHPTJAYLRzKH=abz4AQ4KxNCutTDdCPdhHtg@mail.gmail.com>
-Message-ID: <CAMuHMdXRsQYMnTJHPTJAYLRzKH=abz4AQ4KxNCutTDdCPdhHtg@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 01/30] arch/sh: head_32.S passing FDT address to
- initialize function.
+Date:   Mon, 18 Sep 2023 17:16:13 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdUuxThiaiV2mEqgOkHCuE8tGaF6C5WXrcXkioHk5tyh_g@mail.gmail.com>
+Message-ID: <CAMuHMdUuxThiaiV2mEqgOkHCuE8tGaF6C5WXrcXkioHk5tyh_g@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 04/30] include: sh_intc.h Add stub function "intc_finalize".
 To:     Yoshinori Sato <ysato@users.sourceforge.jp>
 Cc:     linux-sh@vger.kernel.org, glaubitz@physik.fu-berlin.de
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Wed, Sep 13, 2023 at 11:24 AM Yoshinori Sato
+On Wed, Sep 13, 2023 at 11:35 AM Yoshinori Sato
 <ysato@users.sourceforge.jp> wrote:
-> R4 is caller saved in SH ABI.
-> Save it so it doesn't get corrupted until it's needed for initialization.
+> This function not use in OF.
+
+This function is not used with OF.
+
+> avoid unneeded call.
+
+Using a static inline function avoids an external call.
+
 >
 > Signed-off-by: Yoshinori Sato <ysato@users.sourceforge.jp>
 
