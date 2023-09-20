@@ -2,127 +2,115 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A5A6A7A7FE1
-	for <lists+linux-sh@lfdr.de>; Wed, 20 Sep 2023 14:30:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 334137A89D0
+	for <lists+linux-sh@lfdr.de>; Wed, 20 Sep 2023 18:57:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234540AbjITMa5 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-sh@lfdr.de>); Wed, 20 Sep 2023 08:30:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43298 "EHLO
+        id S234855AbjITQ5I (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Wed, 20 Sep 2023 12:57:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235282AbjITMaz (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 20 Sep 2023 08:30:55 -0400
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D409CA
-        for <linux-sh@vger.kernel.org>; Wed, 20 Sep 2023 05:30:45 -0700 (PDT)
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-59ea6064e2eso34004827b3.2
-        for <linux-sh@vger.kernel.org>; Wed, 20 Sep 2023 05:30:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695213044; x=1695817844;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OpTLSwPU8tJNr8pyka6hDeGcM6izaFtpSb6acg1fy74=;
-        b=ThBNEt6bIZwzmGfMDkIDI+SPMzDVTR44GDepGc7OliFkakgyXkOVvT+o49sxD2VZd3
-         z/p4XiGhOw+IinTz7uFJ7uwNaiOlO/sC949wm+ew8Pjo73Pgil/i3tLMdC6RQh2Piznv
-         +6UoWdJUStHb3QOWxMVG3fSZybwpDbMq62cDTxeMAIHQqLmOlhCKsskNtFd2yNV+pRPm
-         +OqcDaLERP5fVfI45cO95sTqyDArUVSs4Sqqu+YqksqSGSVV0RCi3Hjc2X0SBFioWuEs
-         VOXuHeFVY10A1QOWUuYOLNHmITTfAdIDE4pj43gHN4fYdIrrnYxeNwyD8yvE9TBwNuSN
-         fdBQ==
-X-Gm-Message-State: AOJu0YxEigGRL7LhvKCE2B1amsZvp3ALpVsaOe9zQV5rA/qpTsdGezzA
-        dXiiOtEBY0kuUzb3bLMMr6obNqA9AVJ3wg==
-X-Google-Smtp-Source: AGHT+IEaBC/GFpVRjJeW/3qvR1GJYI9kUNsZ5XVWtbByWLOQZYuuF31SfOL9p7Wi2ajZTM5vPQ4xRQ==
-X-Received: by 2002:a0d:dfd8:0:b0:59a:b7b2:5f02 with SMTP id i207-20020a0ddfd8000000b0059ab7b25f02mr2332805ywe.18.1695213044654;
-        Wed, 20 Sep 2023 05:30:44 -0700 (PDT)
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com. [209.85.128.172])
-        by smtp.gmail.com with ESMTPSA id v185-20020a0dd3c2000000b00592548b2c47sm3763353ywd.80.2023.09.20.05.30.44
-        for <linux-sh@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 Sep 2023 05:30:44 -0700 (PDT)
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-59bcd927b45so71650847b3.1
-        for <linux-sh@vger.kernel.org>; Wed, 20 Sep 2023 05:30:44 -0700 (PDT)
-X-Received: by 2002:a81:a041:0:b0:59a:fa28:2b98 with SMTP id
- x62-20020a81a041000000b0059afa282b98mr2370163ywg.17.1695213044081; Wed, 20
- Sep 2023 05:30:44 -0700 (PDT)
+        with ESMTP id S234457AbjITQ5H (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Wed, 20 Sep 2023 12:57:07 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E67F99;
+        Wed, 20 Sep 2023 09:57:01 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 54B642017D;
+        Wed, 20 Sep 2023 16:57:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+        t=1695229020; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=arrJUNtqjU/izONia38ns6kqz5a2Ljs8vzyYYK7Z784=;
+        b=B5zucAFR4XyR8/5tRFN24icRoW3Li46w9AYROy5fgeQHJjHHmWe1VBSTJAgJzltxBUTQfj
+        A2xO9YmlmCUAHIhnO6bcsmBlTch94Tqw9Zrs2J99gUVXgRrg7N5SnwIhK/ADmsG7DqDXb5
+        NyDsDzox8Vmqa0S6njAX9jt6GCL7qPo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+        s=susede2_ed25519; t=1695229020;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=arrJUNtqjU/izONia38ns6kqz5a2Ljs8vzyYYK7Z784=;
+        b=TEI3317KDo5yb9aq6yYTvDHKSUd5zcn5XGrWvmgB48JFj1/RVX24vTZ5l0fScD+mlAMJpN
+        CaN28xdVs9HUPMBA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 420581333E;
+        Wed, 20 Sep 2023 16:57:00 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id s1QXEFwkC2UDdgAAMHmgww
+        (envelope-from <jack@suse.cz>); Wed, 20 Sep 2023 16:57:00 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+        id AE8E8A077D; Wed, 20 Sep 2023 18:56:59 +0200 (CEST)
+Date:   Wed, 20 Sep 2023 18:56:59 +0200
+From:   Jan Kara <jack@suse.cz>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Peter Lafreniere <peter@n8pjl.ca>, segher@kernel.crashing.org,
+        anton.ivanov@cambridgegreys.com, ink@jurassic.park.msu.ru,
+        jack@suse.cz, johannes@sipsolutions.net,
+        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-m68k@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-um@lists.infradead.org, linux@armlinux.org.uk,
+        linuxppc-dev@lists.ozlabs.org, reiserfs-devel@vger.kernel.org,
+        richard.henderson@linaro.org, richard@nod.at,
+        tsbogend@alpha.franken.de
+Subject: Re: [PATCH 0/7] arch/*: config: Remove ReiserFS from defconfig
+Message-ID: <20230920165659.coe7d2lydiaatoby@quack3>
+References: <20230918175529.19011-1-peter@n8pjl.ca>
+ <20230918234108.GN19790@gate.crashing.org>
+ <20230919000026.7409-1-peter@n8pjl.ca>
+ <20230919151630.GO19790@gate.crashing.org>
+ <20230919155832.4179-1-peter@n8pjl.ca>
+ <CAMuHMdXQ=xpeY3tmLXe1kgJbRtmVAn62rEhvzO+VB7GCgy4F8w@mail.gmail.com>
 MIME-Version: 1.0
-References: <cover.1694596125.git.ysato@users.sourceforge.jp>
- <e4dc419e3cc4f44d323aa3686333dafe83b68bce.1694596125.git.ysato@users.sourceforge.jp>
- <cabf9417-e264-fb23-ddd4-24f51f7e72a2@kernel.org> <CAMuHMdWeh2DjSR9-WdDUKJhG_KwDhjUk_e-H3D_gSzVZ16ys9g@mail.gmail.com>
- <25da64c6-cdb2-7758-71d3-fa8ae65de504@kernel.org>
-In-Reply-To: <25da64c6-cdb2-7758-71d3-fa8ae65de504@kernel.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 20 Sep 2023 14:30:32 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdX12e43Yax3GPxhE65mtDiaPfhwDd55DMbahcr=TXObOQ@mail.gmail.com>
-Message-ID: <CAMuHMdX12e43Yax3GPxhE65mtDiaPfhwDd55DMbahcr=TXObOQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 25/30] include/dt-bindings: Add sh_intc IRQ - EVT
- conversion helper
-To:     Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        linux-sh@vger.kernel.org, glaubitz@physik.fu-berlin.de
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMuHMdXQ=xpeY3tmLXe1kgJbRtmVAn62rEhvzO+VB7GCgy4F8w@mail.gmail.com>
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_SOFTFAIL autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Krzysztof,
+On Tue 19-09-23 18:02:39, Geert Uytterhoeven wrote:
+> Hi Peter,
+> 
+> On Tue, Sep 19, 2023 at 5:58 PM Peter Lafreniere <peter@n8pjl.ca> wrote:
+> >  2) Stops building an obsolete and largely-unused filesystem unnecessarily.
+> >     Some hobbyist targets like m68k and alpha may prefer to keep all filesystems
+> >     available until total removal, but others like arm and UML have no need for
+> >     ReiserFS to be built unless specifically configured.
+> 
+> As UML is used a lot for testing, isn't it actually counter-productive
+> to remove ReiserFS from the UML defconfig?  The less testing it
+> receives, the higher the chance of introducing regressions.
 
-On Wed, Sep 20, 2023 at 1:51 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> On 19/09/2023 15:02, Geert Uytterhoeven wrote:
-> > On Wed, Sep 13, 2023 at 12:50 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> >> On 13/09/2023 11:23, Yoshinori Sato wrote:
-> >>> --- /dev/null
-> >>> +++ b/include/dt-bindings/interrupt-controller/sh_intc.h
-> >>> @@ -0,0 +1,7 @@
-> >>> +/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> >>> + *
-> >>> + * SH3/4 INTC EVT - IRQ conversion
-> >>> + */
-> >>> +
-> >>> +#define evt2irq(evt)         ((evt) >> 5)
-> >>> +#define irq2evt(irq)         ((irq) << 5)
-> >>
-> >> No, that's not a binding. Drop entire file.
-> >
-> > The issue is that the hardware documentation does not list interrupt
-> > numbers, but event codes.  The latter is a sparse address space.
-> > As the "interrupts" property needs interrupt numbers, we have two
-> > options:
-> >   1. Use hardcoded event codes and evt2irq() in DTS files.
-> >      This is the approach Sato-san took,
-> >   2. Use hardcoded interrupt numbers in DTS files.
-> >      This would avoids the need for the evt2irq() macro in the DT bindings,
-> >      but would make life slightly harder for the DTS writer and
-> >      for the casual reader, as the conversion needs to be done in
-> >      one's head.
-> >
-> > Note that the documentation for later SoCs that contain both a SuperH
-> > and an ARM CPU core, usually lists both the event code and the interrupt
-> > number, although the latter may be offset by 32 due to the SPI
-> > interrupt base.
-> >
-> > I agree we do not need irq2evt() in DTS, though.
->
-> Is the macro used by the drivers? I have a feeling that not, so it would
-> not be suitable for the bindings, but rather as a header included in the
-> DTS.
+The only testing I know about for reiserfs (besides build testing) is
+syzbot. And regarding the people / bots doing filesystem testing I know
+none of them uses UML. Rather it is x86 VMs these days where reiserfs is
+disabled in the defconfig for a *long* time (many years). Also when you do
+filesystem testing, you usually just test the few filesystems you care
+about and for which you have all the tools installed. So frankly I don't
+see a good reason to leave reiserfs enabled in defconfigs. But sure if
+m68k or other arch wants to keep reiserfs in it's defconfig for some
+consistency reasons, I'm fine with it. I just suspect that for most archs
+this is just a historical reason.
 
-You mean irq2evt()? No, the new DT-aware drivers avoid the conversion
-from IRQ numbers to events codes by storing evt2irq() values in the
-interrupt table (see drivers/irqchip/irq-renesas-sh7751.c:iprmaps[]).
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
+								Honza
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
