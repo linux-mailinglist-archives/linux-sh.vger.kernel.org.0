@@ -2,83 +2,48 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 334137A89D0
-	for <lists+linux-sh@lfdr.de>; Wed, 20 Sep 2023 18:57:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 845B77A9D4C
+	for <lists+linux-sh@lfdr.de>; Thu, 21 Sep 2023 21:30:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234855AbjITQ5I (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Wed, 20 Sep 2023 12:57:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57888 "EHLO
+        id S230522AbjIUTax (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 21 Sep 2023 15:30:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234457AbjITQ5H (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Wed, 20 Sep 2023 12:57:07 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E67F99;
-        Wed, 20 Sep 2023 09:57:01 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id 54B642017D;
-        Wed, 20 Sep 2023 16:57:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-        t=1695229020; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=arrJUNtqjU/izONia38ns6kqz5a2Ljs8vzyYYK7Z784=;
-        b=B5zucAFR4XyR8/5tRFN24icRoW3Li46w9AYROy5fgeQHJjHHmWe1VBSTJAgJzltxBUTQfj
-        A2xO9YmlmCUAHIhnO6bcsmBlTch94Tqw9Zrs2J99gUVXgRrg7N5SnwIhK/ADmsG7DqDXb5
-        NyDsDzox8Vmqa0S6njAX9jt6GCL7qPo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-        s=susede2_ed25519; t=1695229020;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=arrJUNtqjU/izONia38ns6kqz5a2Ljs8vzyYYK7Z784=;
-        b=TEI3317KDo5yb9aq6yYTvDHKSUd5zcn5XGrWvmgB48JFj1/RVX24vTZ5l0fScD+mlAMJpN
-        CaN28xdVs9HUPMBA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 420581333E;
-        Wed, 20 Sep 2023 16:57:00 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id s1QXEFwkC2UDdgAAMHmgww
-        (envelope-from <jack@suse.cz>); Wed, 20 Sep 2023 16:57:00 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-        id AE8E8A077D; Wed, 20 Sep 2023 18:56:59 +0200 (CEST)
-Date:   Wed, 20 Sep 2023 18:56:59 +0200
-From:   Jan Kara <jack@suse.cz>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Peter Lafreniere <peter@n8pjl.ca>, segher@kernel.crashing.org,
-        anton.ivanov@cambridgegreys.com, ink@jurassic.park.msu.ru,
-        jack@suse.cz, johannes@sipsolutions.net,
-        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-m68k@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-um@lists.infradead.org, linux@armlinux.org.uk,
-        linuxppc-dev@lists.ozlabs.org, reiserfs-devel@vger.kernel.org,
-        richard.henderson@linaro.org, richard@nod.at,
-        tsbogend@alpha.franken.de
-Subject: Re: [PATCH 0/7] arch/*: config: Remove ReiserFS from defconfig
-Message-ID: <20230920165659.coe7d2lydiaatoby@quack3>
-References: <20230918175529.19011-1-peter@n8pjl.ca>
- <20230918234108.GN19790@gate.crashing.org>
- <20230919000026.7409-1-peter@n8pjl.ca>
- <20230919151630.GO19790@gate.crashing.org>
- <20230919155832.4179-1-peter@n8pjl.ca>
- <CAMuHMdXQ=xpeY3tmLXe1kgJbRtmVAn62rEhvzO+VB7GCgy4F8w@mail.gmail.com>
+        with ESMTP id S230487AbjIUTaK (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 21 Sep 2023 15:30:10 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6CD4AC3CC;
+        Thu, 21 Sep 2023 11:01:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=gdqW2btEAGTjUcr6tPXF8qJKNeNz/rAyxIMM40y9I9w=; b=SWocHAyJZpAAngQ47nwB5OeiR3
+        YOZKLNFRzgqPHosliGblFbf62gIeaDU6/FjBeIqe4fSke+drAQNrno+yRUjWC/8YrkDRBb3xeUVNe
+        v1aa3Yx6Djf7J4Kcs+fGBg1EcU4zRp1wV91uFHEmQFq8z/7kH624JMHQZlzQSa7+ec1kksacwnOkN
+        cmjYrIMBWiI9qaFkO3kRcVzdbmFhGQHki/2SDPEdpVau5CEW5xVNFRBr6any6+WhfnmAlIJJ5rbhL
+        m9vVbDkwAcYJv4JkF0jSsAxvB4w/bYDTanh0v+NcFWi+jtEWbbbS3otMbbq0oDgbPgA1sAvhUi2mu
+        9YNiyNCw==;
+Received: from [2601:1c2:980:9ec0::9fed] (helo=bombadil.infradead.org)
+        by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+        id 1qjClk-005Eii-0U;
+        Thu, 21 Sep 2023 06:02:32 +0000
+From:   Randy Dunlap <rdunlap@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Daniel Vetter <daniel@ffwll.ch>, Helge Deller <deller@gmx.de>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        linux-sh@vger.kernel.org
+Subject: [PATCH] fbdev: sh7760fb: require FB=y to build cleanly
+Date:   Wed, 20 Sep 2023 23:02:28 -0700
+Message-ID: <20230921060228.29041-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMuHMdXQ=xpeY3tmLXe1kgJbRtmVAn62rEhvzO+VB7GCgy4F8w@mail.gmail.com>
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_SOFTFAIL autolearn=no autolearn_force=no
+        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -86,31 +51,46 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-On Tue 19-09-23 18:02:39, Geert Uytterhoeven wrote:
-> Hi Peter,
-> 
-> On Tue, Sep 19, 2023 at 5:58 PM Peter Lafreniere <peter@n8pjl.ca> wrote:
-> >  2) Stops building an obsolete and largely-unused filesystem unnecessarily.
-> >     Some hobbyist targets like m68k and alpha may prefer to keep all filesystems
-> >     available until total removal, but others like arm and UML have no need for
-> >     ReiserFS to be built unless specifically configured.
-> 
-> As UML is used a lot for testing, isn't it actually counter-productive
-> to remove ReiserFS from the UML defconfig?  The less testing it
-> receives, the higher the chance of introducing regressions.
+Fix build errors when CONFIG_FB=m and CONFIG_FB_SH7760=y:
 
-The only testing I know about for reiserfs (besides build testing) is
-syzbot. And regarding the people / bots doing filesystem testing I know
-none of them uses UML. Rather it is x86 VMs these days where reiserfs is
-disabled in the defconfig for a *long* time (many years). Also when you do
-filesystem testing, you usually just test the few filesystems you care
-about and for which you have all the tools installed. So frankly I don't
-see a good reason to leave reiserfs enabled in defconfigs. But sure if
-m68k or other arch wants to keep reiserfs in it's defconfig for some
-consistency reasons, I'm fine with it. I just suspect that for most archs
-this is just a historical reason.
+sh2-linux-ld: drivers/video/fbdev/sh7760fb.o: in function `sh7760fb_probe':
+sh7760fb.c:(.text+0x374): undefined reference to `framebuffer_alloc'
+sh2-linux-ld: sh7760fb.c:(.text+0x394): undefined reference to `fb_videomode_to_var'
+sh2-linux-ld: sh7760fb.c:(.text+0x3a0): undefined reference to `fb_alloc_cmap'
+sh2-linux-ld: sh7760fb.c:(.text+0x3a4): undefined reference to `register_framebuffer'
+sh2-linux-ld: sh7760fb.c:(.text+0x3ac): undefined reference to `fb_dealloc_cmap'
+sh2-linux-ld: sh7760fb.c:(.text+0x434): undefined reference to `framebuffer_release'
+sh2-linux-ld: drivers/video/fbdev/sh7760fb.o: in function `sh7760fb_remove':
+sh7760fb.c:(.text+0x800): undefined reference to `unregister_framebuffer'
+sh2-linux-ld: sh7760fb.c:(.text+0x804): undefined reference to `fb_dealloc_cmap'
+sh2-linux-ld: sh7760fb.c:(.text+0x814): undefined reference to `framebuffer_release'
+sh2-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0xc): undefined reference to `fb_io_read'
+sh2-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x10): undefined reference to `fb_io_write'
+sh2-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x2c): undefined reference to `cfb_fillrect'
+sh2-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x30): undefined reference to `cfb_copyarea'
+sh2-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x34): undefined reference to `cfb_imageblit'
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Fixes: 4a25e41831ee ("video: sh7760fb: SH7760/SH7763 LCDC framebuffer driver")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: linux-sh@vger.kernel.org
+---
+ drivers/video/fbdev/Kconfig |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff -- a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
+--- a/drivers/video/fbdev/Kconfig
++++ b/drivers/video/fbdev/Kconfig
+@@ -1762,7 +1762,7 @@ config FB_COBALT
+ 
+ config FB_SH7760
+ 	bool "SH7760/SH7763/SH7720/SH7721 LCDC support"
+-	depends on FB && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
++	depends on FB=y && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
+ 		|| CPU_SUBTYPE_SH7720 || CPU_SUBTYPE_SH7721)
+ 	select FB_IOMEM_HELPERS
+ 	help
