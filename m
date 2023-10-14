@@ -2,34 +2,33 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 483347C94FC
-	for <lists+linux-sh@lfdr.de>; Sat, 14 Oct 2023 16:54:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E3A27C94EE
+	for <lists+linux-sh@lfdr.de>; Sat, 14 Oct 2023 16:54:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233221AbjJNOyZ (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sat, 14 Oct 2023 10:54:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41984 "EHLO
+        id S233227AbjJNOyW (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sat, 14 Oct 2023 10:54:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233245AbjJNOyX (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sat, 14 Oct 2023 10:54:23 -0400
-Received: from hsmtpd-def.xspmail.jp (hsmtpd-def.xspmail.jp [202.238.198.244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F059D8
+        with ESMTP id S233208AbjJNOyV (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sat, 14 Oct 2023 10:54:21 -0400
+Received: from hsmtpd-def.xspmail.jp (hsmtpd-def.xspmail.jp [202.238.198.243])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 484B7CE
         for <linux-sh@vger.kernel.org>; Sat, 14 Oct 2023 07:54:18 -0700 (PDT)
 X-Country-Code: JP
 Received: from sakura.ysato.name (ik1-413-38519.vs.sakura.ne.jp [153.127.30.23])
-        by hsmtpd-out-2.asahinet.cluster.xspmail.jp (Halon) with ESMTPA
-        id 6b30dd80-3094-420f-87f0-0c41f8d70931;
+        by hsmtpd-out-0.asahinet.cluster.xspmail.jp (Halon) with ESMTPA
+        id ff95a582-0bdb-46f7-8c88-715439d5eac5;
         Sat, 14 Oct 2023 23:54:17 +0900 (JST)
 Received: from SIOS1075.ysato.name (ZM005235.ppp.dion.ne.jp [222.8.5.235])
-        by sakura.ysato.name (Postfix) with ESMTPSA id 0FF301C0559;
+        by sakura.ysato.name (Postfix) with ESMTPSA id 565DF1C055E;
         Sat, 14 Oct 2023 23:54:16 +0900 (JST)
 From:   Yoshinori Sato <ysato@users.sourceforge.jp>
 To:     linux-sh@vger.kernel.org
 Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        glaubitz@physik.fu-berlin.de,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [RFC PATCH v3 04/35] include/linux/sh_intc.h: Add stub function "intc_finalize".
-Date:   Sat, 14 Oct 2023 23:53:39 +0900
-Message-Id: <439be55f3920d05e85dbc3e5d503a0287f2b5b88.1697199949.git.ysato@users.sourceforge.jp>
+        glaubitz@physik.fu-berlin.de
+Subject: [RFC PATCH v3 05/35] arch/sh/kernel/setup.c: Update DT support.
+Date:   Sat, 14 Oct 2023 23:53:40 +0900
+Message-Id: <ce8f731c6c7fbec19d67b1fbf353d0f6856e064d.1697199949.git.ysato@users.sourceforge.jp>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697199949.git.ysato@users.sourceforge.jp>
 References: <cover.1697199949.git.ysato@users.sourceforge.jp>
@@ -44,34 +43,115 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-This function is not used with OF.
-Using a static inline function avoids an external call.
+Fix fdt initialize.
 
 Signed-off-by: Yoshinori Sato <ysato@users.sourceforge.jp>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- include/linux/sh_intc.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/sh/kernel/setup.c | 36 +++++++++++++++++++++++++-----------
+ 1 file changed, 25 insertions(+), 11 deletions(-)
 
-diff --git a/include/linux/sh_intc.h b/include/linux/sh_intc.h
-index 27ae79191bdc..994b5b05a0d7 100644
---- a/include/linux/sh_intc.h
-+++ b/include/linux/sh_intc.h
-@@ -139,8 +139,13 @@ struct intc_desc symbol __initdata = {					\
- int register_intc_controller(struct intc_desc *desc);
- int intc_set_priority(unsigned int irq, unsigned int prio);
- int intc_irq_lookup(const char *chipname, intc_enum enum_id);
-+#ifndef CONFIG_SH_DEVICE_TREE
- void intc_finalize(void);
--
-+#else
-+static inline void intc_finalize(void)
-+{
-+}
+diff --git a/arch/sh/kernel/setup.c b/arch/sh/kernel/setup.c
+index b3da2757faaf..8fdbb9836134 100644
+--- a/arch/sh/kernel/setup.c
++++ b/arch/sh/kernel/setup.c
+@@ -31,6 +31,7 @@
+ #include <linux/memblock.h>
+ #include <linux/of.h>
+ #include <linux/of_fdt.h>
++#include <linux/libfdt.h>
+ #include <linux/uaccess.h>
+ #include <uapi/linux/mount.h>
+ #include <asm/io.h>
+@@ -79,7 +80,13 @@ extern int root_mountflags;
+ #define RAMDISK_PROMPT_FLAG		0x8000
+ #define RAMDISK_LOAD_FLAG		0x4000
+ 
++#if defined(CONFIG_OF) || !defined(USE_BUILTIN_DTB)
++#define CHOSEN_BOOTARGS
 +#endif
- #ifdef CONFIG_INTC_USERIMASK
- int register_intc_userimask(unsigned long addr);
++
++#ifndef CHOSEN_BOOTARGS
+ static char __initdata command_line[COMMAND_LINE_SIZE] = { 0, };
++#endif
+ 
+ static struct resource code_resource = {
+ 	.name = "Kernel code",
+@@ -104,6 +111,8 @@ unsigned long memory_limit = 0;
+ 
+ static struct resource mem_resources[MAX_NUMNODES];
+ 
++static void *dt_virt;
++
+ int l1i_cache_shape, l1d_cache_shape, l2_cache_shape;
+ 
+ static int __init early_parse_mem(char *p)
+@@ -249,7 +258,6 @@ void __init __weak plat_early_device_setup(void)
+ void __ref sh_fdt_init(phys_addr_t dt_phys)
+ {
+ 	static int done = 0;
+-	void *dt_virt;
+ 
+ 	/* Avoid calling an __init function on secondary cpus. */
+ 	if (done) return;
+@@ -274,8 +282,17 @@ void __ref sh_fdt_init(phys_addr_t dt_phys)
+ 
+ void __init setup_arch(char **cmdline_p)
+ {
++#ifdef CONFIG_OF
++#ifdef CONFIG_USE_BUILTIN_DTB
++	unflatten_and_copy_device_tree();
++#else
++	memblock_reserve(__pa(dt_virt), fdt_totalsize(dt_virt));
++	unflatten_device_tree();
++#endif
++#endif
+ 	enable_mmu();
+ 
++#ifndef CONFIG_OF
+ 	ROOT_DEV = old_decode_dev(ORIG_ROOT_DEV);
+ 
+ 	printk(KERN_NOTICE "Boot params:\n"
+@@ -304,6 +321,9 @@ void __init setup_arch(char **cmdline_p)
+ 	bss_resource.start = virt_to_phys(__bss_start);
+ 	bss_resource.end = virt_to_phys(__bss_stop)-1;
+ 
++#endif
++
++#ifndef CHOSEN_BOOTARGS
+ #ifdef CONFIG_CMDLINE_OVERWRITE
+ 	strscpy(command_line, CONFIG_CMDLINE, sizeof(command_line));
  #else
+@@ -312,11 +332,13 @@ void __init setup_arch(char **cmdline_p)
+ 	strlcat(command_line, " ", sizeof(command_line));
+ 	strlcat(command_line, CONFIG_CMDLINE, sizeof(command_line));
+ #endif
+-#endif
+-
++#endif  /* CONFIG_CMDLINE_OVERWRITE */
+ 	/* Save unparsed command line copy for /proc/cmdline */
+ 	memcpy(boot_command_line, command_line, COMMAND_LINE_SIZE);
+ 	*cmdline_p = command_line;
++#else
++	*cmdline_p = boot_command_line;
++#endif
+ 
+ 	parse_early_param();
+ 
+@@ -327,14 +349,6 @@ void __init setup_arch(char **cmdline_p)
+ 	/* Let earlyprintk output early console messages */
+ 	sh_early_platform_driver_probe("earlyprintk", 1, 1);
+ 
+-#ifdef CONFIG_OF_EARLY_FLATTREE
+-#ifdef CONFIG_USE_BUILTIN_DTB
+-	unflatten_and_copy_device_tree();
+-#else
+-	unflatten_device_tree();
+-#endif
+-#endif
+-
+ 	paging_init();
+ 
+ 	/* Perform the machine specific initialisation */
 -- 
 2.39.2
 
