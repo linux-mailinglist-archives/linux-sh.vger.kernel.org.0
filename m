@@ -2,33 +2,33 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65A457C94F7
-	for <lists+linux-sh@lfdr.de>; Sat, 14 Oct 2023 16:54:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2EF27C94F3
+	for <lists+linux-sh@lfdr.de>; Sat, 14 Oct 2023 16:54:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232238AbjJNOyY (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sat, 14 Oct 2023 10:54:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41972 "EHLO
+        id S233237AbjJNOyX (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sat, 14 Oct 2023 10:54:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233235AbjJNOyX (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sat, 14 Oct 2023 10:54:23 -0400
-Received: from hsmtpd-def.xspmail.jp (hsmtpd-def.xspmail.jp [202.238.198.237])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25865CA
-        for <linux-sh@vger.kernel.org>; Sat, 14 Oct 2023 07:54:22 -0700 (PDT)
+        with ESMTP id S233233AbjJNOyW (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sat, 14 Oct 2023 10:54:22 -0400
+Received: from hsmtpd-def.xspmail.jp (hsmtpd-def.xspmail.jp [202.238.198.240])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64C7FE6
+        for <linux-sh@vger.kernel.org>; Sat, 14 Oct 2023 07:54:21 -0700 (PDT)
 X-Country-Code: JP
 Received: from sakura.ysato.name (ik1-413-38519.vs.sakura.ne.jp [153.127.30.23])
-        by hsmtpd-out-0.asahinet.cluster.xspmail.jp (Halon) with ESMTPA
-        id ed52e151-53c8-4e11-9240-901c1aa969ba;
-        Sat, 14 Oct 2023 23:54:20 +0900 (JST)
+        by hsmtpd-out-2.asahinet.cluster.xspmail.jp (Halon) with ESMTPA
+        id 263e3cb8-ffbe-47f0-9dfb-7927ec6d7e8f;
+        Sat, 14 Oct 2023 23:54:21 +0900 (JST)
 Received: from SIOS1075.ysato.name (ZM005235.ppp.dion.ne.jp [222.8.5.235])
-        by sakura.ysato.name (Postfix) with ESMTPSA id 69A101C050D;
+        by sakura.ysato.name (Postfix) with ESMTPSA id B3CB11C03BE;
         Sat, 14 Oct 2023 23:54:20 +0900 (JST)
 From:   Yoshinori Sato <ysato@users.sourceforge.jp>
 To:     linux-sh@vger.kernel.org
 Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
         glaubitz@physik.fu-berlin.de
-Subject: [RFC PATCH v3 18/35] drivers/tty/serial: sh-sci.c fix SH4 OF support.
-Date:   Sat, 14 Oct 2023 23:53:53 +0900
-Message-Id: <d9f9ca66b43371ce8cf80faffdfcdf593c9563ac.1697199949.git.ysato@users.sourceforge.jp>
+Subject: [RFC PATCH v3 19/35] Documentation/devicetree/bindings/serial: renesas,scif.yaml Add SH.
+Date:   Sat, 14 Oct 2023 23:53:54 +0900
+Message-Id: <4596e6d37f626672986ef67e9e7e328db9077b71.1697199949.git.ysato@users.sourceforge.jp>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697199949.git.ysato@users.sourceforge.jp>
 References: <cover.1697199949.git.ysato@users.sourceforge.jp>
@@ -43,38 +43,27 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-- fix earlycon name.
-- fix earlyprintk hung (NULL pointer reference).
-
 Signed-off-by: Yoshinori Sato <ysato@users.sourceforge.jp>
 ---
- drivers/tty/serial/sh-sci.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ Documentation/devicetree/bindings/serial/renesas,scif.yaml | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
-index a560b729fa3b..faaf2bb32586 100644
---- a/drivers/tty/serial/sh-sci.c
-+++ b/drivers/tty/serial/sh-sci.c
-@@ -2720,7 +2720,7 @@ static int sci_remap_port(struct uart_port *port)
- 	if (port->membase)
- 		return 0;
+diff --git a/Documentation/devicetree/bindings/serial/renesas,scif.yaml b/Documentation/devicetree/bindings/serial/renesas,scif.yaml
+index 99030fc18c45..0c938f1fb77b 100644
+--- a/Documentation/devicetree/bindings/serial/renesas,scif.yaml
++++ b/Documentation/devicetree/bindings/serial/renesas,scif.yaml
+@@ -81,6 +81,11 @@ properties:
+               - renesas,scif-r9a07g054      # RZ/V2L
+           - const: renesas,scif-r9a07g044   # RZ/G2{L,LC} fallback
  
--	if (port->dev->of_node || (port->flags & UPF_IOREMAP)) {
-+	if ((port->dev && port->dev->of_node) || (port->flags & UPF_IOREMAP)) {
- 		port->membase = ioremap(port->mapbase, sport->reg_size);
- 		if (unlikely(!port->membase)) {
- 			dev_err(port->dev, "can't remap port#%d\n", port->line);
-@@ -3555,8 +3555,8 @@ static int __init hscif_early_console_setup(struct earlycon_device *device,
++      - items:
++          - enum:
++              - renesas,scif-sh7751   # SH7751
++          - const: renesas,scif       # generic SCIF compatible UART
++
+   reg:
+     maxItems: 1
  
- OF_EARLYCON_DECLARE(sci, "renesas,sci", sci_early_console_setup);
- OF_EARLYCON_DECLARE(scif, "renesas,scif", scif_early_console_setup);
--OF_EARLYCON_DECLARE(scif, "renesas,scif-r7s9210", rzscifa_early_console_setup);
--OF_EARLYCON_DECLARE(scif, "renesas,scif-r9a07g044", rzscifa_early_console_setup);
-+OF_EARLYCON_DECLARE(rzscifa, "renesas,scif-r7s9210", rzscifa_early_console_setup);
-+OF_EARLYCON_DECLARE(rzscifa, "renesas,scif-r9a07g044", rzscifa_early_console_setup);
- OF_EARLYCON_DECLARE(scifa, "renesas,scifa", scifa_early_console_setup);
- OF_EARLYCON_DECLARE(scifb, "renesas,scifb", scifb_early_console_setup);
- OF_EARLYCON_DECLARE(hscif, "renesas,hscif", hscif_early_console_setup);
 -- 
 2.39.2
 
