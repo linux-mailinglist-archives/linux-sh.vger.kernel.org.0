@@ -2,34 +2,35 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF55C7C9506
-	for <lists+linux-sh@lfdr.de>; Sat, 14 Oct 2023 16:54:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92DF37C9501
+	for <lists+linux-sh@lfdr.de>; Sat, 14 Oct 2023 16:54:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233277AbjJNOya (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sat, 14 Oct 2023 10:54:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42010 "EHLO
+        id S233268AbjJNOy2 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sat, 14 Oct 2023 10:54:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233285AbjJNOyZ (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sat, 14 Oct 2023 10:54:25 -0400
-Received: from hsmtpd-def.xspmail.jp (hsmtpd-def.xspmail.jp [202.238.198.241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F838D9
+        with ESMTP id S233272AbjJNOyY (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sat, 14 Oct 2023 10:54:24 -0400
+Received: from hsmtpd-def.xspmail.jp (hsmtpd-def.xspmail.jp [202.238.198.237])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FB88DE
         for <linux-sh@vger.kernel.org>; Sat, 14 Oct 2023 07:54:22 -0700 (PDT)
 X-Country-Code: JP
 Received: from sakura.ysato.name (ik1-413-38519.vs.sakura.ne.jp [153.127.30.23])
         by hsmtpd-out-0.asahinet.cluster.xspmail.jp (Halon) with ESMTPA
-        id a29e0fc9-0510-47ce-b53c-575bf3616491;
+        id 83d8e8af-847f-4749-ae51-a1bc9974faf3;
         Sat, 14 Oct 2023 23:54:22 +0900 (JST)
 Received: from SIOS1075.ysato.name (ZM005235.ppp.dion.ne.jp [222.8.5.235])
-        by sakura.ysato.name (Postfix) with ESMTPSA id 2A58B1C053C;
+        by sakura.ysato.name (Postfix) with ESMTPSA id 70E131C050D;
         Sat, 14 Oct 2023 23:54:22 +0900 (JST)
 From:   Yoshinori Sato <ysato@users.sourceforge.jp>
 To:     linux-sh@vger.kernel.org
 Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
         glaubitz@physik.fu-berlin.de, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org
-Subject: [RFC PATCH v3 24/35]  include/dt-binding/interrupt-controller/sh_intc.h: renesas,sh7751-intc.h helper
-Date:   Sat, 14 Oct 2023 23:53:59 +0900
-Message-Id: <5fd6a128de04b88bb22520cffe955f83af6700b9.1697199949.git.ysato@users.sourceforge.jp>
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        devicetree@vger.kernel.org
+Subject: [RFC PATCH v3 25/35] Documentation/devicetree/bindings/sh/cpus.yaml: Add SH CPU.
+Date:   Sat, 14 Oct 2023 23:54:00 +0900
+Message-Id: <46ef748dd27127ef9b39fa6c97fe51e8d3422a4f.1697199949.git.ysato@users.sourceforge.jp>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697199949.git.ysato@users.sourceforge.jp>
 References: <cover.1697199949.git.ysato@users.sourceforge.jp>
@@ -44,38 +45,65 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-SH7751 Interrupt controller binding helper.
+Renesas SuperH binding definition.
 
 Signed-off-by: Yoshinori Sato <ysato@users.sourceforge.jp>
 ---
- .../dt-bindings/interrupt-controller/sh_intc.h | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
- create mode 100644 include/dt-bindings/interrupt-controller/sh_intc.h
+ .../devicetree/bindings/sh/cpus.yaml          | 45 +++++++++++++++++++
+ 1 file changed, 45 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/sh/cpus.yaml
 
-diff --git a/include/dt-bindings/interrupt-controller/sh_intc.h b/include/dt-bindings/interrupt-controller/sh_intc.h
+diff --git a/Documentation/devicetree/bindings/sh/cpus.yaml b/Documentation/devicetree/bindings/sh/cpus.yaml
 new file mode 100644
-index 000000000000..956259e985ea
+index 000000000000..273df4dfb74e
 --- /dev/null
-+++ b/include/dt-bindings/interrupt-controller/sh_intc.h
-@@ -0,0 +1,18 @@
-+/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+ *
-+ * SH3/4 INTC EVT - IRQ conversion
-+ */
++++ b/Documentation/devicetree/bindings/sh/cpus.yaml
+@@ -0,0 +1,45 @@
++# SPDX-License-Identifier: GPL-2.0
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/sh/cpus.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+#define evt2irq(evt)		((evt) >> 5)
-+#define irq2evt(irq)		((irq) << 5)
++title: Renesas SuperH CPUs
 +
-+#define IPRDEF(e, o, b)		< e o b >
-+#define IPRA			0
-+#define IPRB			4
-+#define IPRC			8
-+#define IPRD			12
-+#define INTPRI00		256
-+#define IPR_B12			12
-+#define IPR_B8			8
-+#define IPR_B4			4
-+#define IPR_B0			0
++maintainers:
++  - Yoshinori Sato <ysato@users.sourceforge.jp>
++
++description: |+
++  The device tree allows to describe the layout of CPUs in a system through
++  the "cpus" node, which in turn contains a number of subnodes (ie "cpu")
++  defining properties for every cpu.
++
++  Bindings for CPU nodes follow the Devicetree Specification, available from:
++
++  https://www.devicetree.org/specifications/
++
++properties:
++  compatible:
++    items:
++      - enum:
++          - renesas,sh4
++      - const: renesas,sh
++
++  clock-frequency:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: |
++      CPU core clock freqency.
++
++required:
++  - compatible
++
++additionalProperties: true
++
++examples:
++  - |
++        cpus {
++                cpu: cpu@0 {
++                      compatible = "renesas,sh4", "renesas,sh";
++                };
++        };
++...
 -- 
 2.39.2
 
