@@ -2,33 +2,33 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E3A27C94EE
-	for <lists+linux-sh@lfdr.de>; Sat, 14 Oct 2023 16:54:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9935B7C94FE
+	for <lists+linux-sh@lfdr.de>; Sat, 14 Oct 2023 16:54:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233227AbjJNOyW (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Sat, 14 Oct 2023 10:54:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41878 "EHLO
+        id S233304AbjJNOy0 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sat, 14 Oct 2023 10:54:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233208AbjJNOyV (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Sat, 14 Oct 2023 10:54:21 -0400
-Received: from hsmtpd-def.xspmail.jp (hsmtpd-def.xspmail.jp [202.238.198.243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 484B7CE
+        with ESMTP id S233238AbjJNOyX (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sat, 14 Oct 2023 10:54:23 -0400
+Received: from hsmtpd-def.xspmail.jp (hsmtpd-def.xspmail.jp [202.238.198.245])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82812D6
         for <linux-sh@vger.kernel.org>; Sat, 14 Oct 2023 07:54:18 -0700 (PDT)
 X-Country-Code: JP
 Received: from sakura.ysato.name (ik1-413-38519.vs.sakura.ne.jp [153.127.30.23])
         by hsmtpd-out-0.asahinet.cluster.xspmail.jp (Halon) with ESMTPA
-        id ff95a582-0bdb-46f7-8c88-715439d5eac5;
+        id 7ebd1aa7-d37e-4901-b609-82f3826150f8;
         Sat, 14 Oct 2023 23:54:17 +0900 (JST)
 Received: from SIOS1075.ysato.name (ZM005235.ppp.dion.ne.jp [222.8.5.235])
-        by sakura.ysato.name (Postfix) with ESMTPSA id 565DF1C055E;
+        by sakura.ysato.name (Postfix) with ESMTPSA id CEFF41C03DF;
         Sat, 14 Oct 2023 23:54:16 +0900 (JST)
 From:   Yoshinori Sato <ysato@users.sourceforge.jp>
 To:     linux-sh@vger.kernel.org
 Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
         glaubitz@physik.fu-berlin.de
-Subject: [RFC PATCH v3 05/35] arch/sh/kernel/setup.c: Update DT support.
-Date:   Sat, 14 Oct 2023 23:53:40 +0900
-Message-Id: <ce8f731c6c7fbec19d67b1fbf353d0f6856e064d.1697199949.git.ysato@users.sourceforge.jp>
+Subject: [RFC PATCH v3 06/35] arch/sh/boards/of-generic.c: some cleanup.
+Date:   Sat, 14 Oct 2023 23:53:41 +0900
+Message-Id: <7b864c7ded52ace326c42b132708a6dc8ad9a606.1697199949.git.ysato@users.sourceforge.jp>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697199949.git.ysato@users.sourceforge.jp>
 References: <cover.1697199949.git.ysato@users.sourceforge.jp>
@@ -43,115 +43,69 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Fix fdt initialize.
-
 Signed-off-by: Yoshinori Sato <ysato@users.sourceforge.jp>
 ---
- arch/sh/kernel/setup.c | 36 +++++++++++++++++++++++++-----------
- 1 file changed, 25 insertions(+), 11 deletions(-)
+ arch/sh/boards/of-generic.c | 28 ++++------------------------
+ 1 file changed, 4 insertions(+), 24 deletions(-)
 
-diff --git a/arch/sh/kernel/setup.c b/arch/sh/kernel/setup.c
-index b3da2757faaf..8fdbb9836134 100644
---- a/arch/sh/kernel/setup.c
-+++ b/arch/sh/kernel/setup.c
-@@ -31,6 +31,7 @@
- #include <linux/memblock.h>
+diff --git a/arch/sh/boards/of-generic.c b/arch/sh/boards/of-generic.c
+index f7f3e618e85b..f1ca5a914c11 100644
+--- a/arch/sh/boards/of-generic.c
++++ b/arch/sh/boards/of-generic.c
+@@ -8,6 +8,7 @@
  #include <linux/of.h>
+ #include <linux/of_clk.h>
  #include <linux/of_fdt.h>
-+#include <linux/libfdt.h>
- #include <linux/uaccess.h>
- #include <uapi/linux/mount.h>
- #include <asm/io.h>
-@@ -79,7 +80,13 @@ extern int root_mountflags;
- #define RAMDISK_PROMPT_FLAG		0x8000
- #define RAMDISK_LOAD_FLAG		0x4000
++#include <linux/of_platform.h>
+ #include <linux/clocksource.h>
+ #include <linux/irqchip.h>
+ #include <asm/machvec.h>
+@@ -98,16 +99,7 @@ static void sh_of_smp_probe(void)
  
-+#if defined(CONFIG_OF) || !defined(USE_BUILTIN_DTB)
-+#define CHOSEN_BOOTARGS
-+#endif
-+
-+#ifndef CHOSEN_BOOTARGS
- static char __initdata command_line[COMMAND_LINE_SIZE] = { 0, };
-+#endif
- 
- static struct resource code_resource = {
- 	.name = "Kernel code",
-@@ -104,6 +111,8 @@ unsigned long memory_limit = 0;
- 
- static struct resource mem_resources[MAX_NUMNODES];
- 
-+static void *dt_virt;
-+
- int l1i_cache_shape, l1d_cache_shape, l2_cache_shape;
- 
- static int __init early_parse_mem(char *p)
-@@ -249,7 +258,6 @@ void __init __weak plat_early_device_setup(void)
- void __ref sh_fdt_init(phys_addr_t dt_phys)
- {
- 	static int done = 0;
--	void *dt_virt;
- 
- 	/* Avoid calling an __init function on secondary cpus. */
- 	if (done) return;
-@@ -274,8 +282,17 @@ void __ref sh_fdt_init(phys_addr_t dt_phys)
- 
- void __init setup_arch(char **cmdline_p)
- {
-+#ifdef CONFIG_OF
-+#ifdef CONFIG_USE_BUILTIN_DTB
-+	unflatten_and_copy_device_tree();
-+#else
-+	memblock_reserve(__pa(dt_virt), fdt_totalsize(dt_virt));
-+	unflatten_device_tree();
-+#endif
-+#endif
- 	enable_mmu();
- 
-+#ifndef CONFIG_OF
- 	ROOT_DEV = old_decode_dev(ORIG_ROOT_DEV);
- 
- 	printk(KERN_NOTICE "Boot params:\n"
-@@ -304,6 +321,9 @@ void __init setup_arch(char **cmdline_p)
- 	bss_resource.start = virt_to_phys(__bss_start);
- 	bss_resource.end = virt_to_phys(__bss_stop)-1;
- 
-+#endif
-+
-+#ifndef CHOSEN_BOOTARGS
- #ifdef CONFIG_CMDLINE_OVERWRITE
- 	strscpy(command_line, CONFIG_CMDLINE, sizeof(command_line));
- #else
-@@ -312,11 +332,13 @@ void __init setup_arch(char **cmdline_p)
- 	strlcat(command_line, " ", sizeof(command_line));
- 	strlcat(command_line, CONFIG_CMDLINE, sizeof(command_line));
  #endif
--#endif
+ 
+-static void noop(void)
+-{
+-}
 -
-+#endif  /* CONFIG_CMDLINE_OVERWRITE */
- 	/* Save unparsed command line copy for /proc/cmdline */
- 	memcpy(boot_command_line, command_line, COMMAND_LINE_SIZE);
- 	*cmdline_p = command_line;
-+#else
-+	*cmdline_p = boot_command_line;
-+#endif
- 
- 	parse_early_param();
- 
-@@ -327,14 +349,6 @@ void __init setup_arch(char **cmdline_p)
- 	/* Let earlyprintk output early console messages */
- 	sh_early_platform_driver_probe("earlyprintk", 1, 1);
- 
--#ifdef CONFIG_OF_EARLY_FLATTREE
--#ifdef CONFIG_USE_BUILTIN_DTB
--	unflatten_and_copy_device_tree();
--#else
--	unflatten_device_tree();
--#endif
--#endif
+-static int noopi(void)
+-{
+-	return 0;
+-}
 -
- 	paging_init();
+-static void __init sh_of_mem_reserve(void)
++static void __init sh_of_mem_init(void)
+ {
+ 	early_init_fdt_reserve_self();
+ 	early_init_fdt_scan_reserved_mem();
+@@ -140,25 +132,13 @@ static void __init sh_of_init_irq(void)
+ 	irqchip_init();
+ }
  
- 	/* Perform the machine specific initialisation */
+-static int __init sh_of_clk_init(void)
+-{
+-#ifdef CONFIG_COMMON_CLK
+-	/* Disabled pending move to COMMON_CLK framework. */
+-	pr_info("SH generic board support: scanning for clk providers\n");
+-	of_clk_init(NULL);
+-#endif
+-	return 0;
+-}
+-
+ static struct sh_machine_vector __initmv sh_of_generic_mv = {
+ 	.mv_setup	= sh_of_setup,
+ 	.mv_name	= "devicetree", /* replaced by DT root's model */
+ 	.mv_irq_demux	= sh_of_irq_demux,
+ 	.mv_init_irq	= sh_of_init_irq,
+-	.mv_clk_init	= sh_of_clk_init,
+-	.mv_mode_pins	= noopi,
+-	.mv_mem_init	= noop,
+-	.mv_mem_reserve	= sh_of_mem_reserve,
++	.mv_mode_pins	= generic_mode_pins,
++	.mv_mem_init	= sh_of_mem_init,
+ };
+ 
+ struct sh_clk_ops;
 -- 
 2.39.2
 
