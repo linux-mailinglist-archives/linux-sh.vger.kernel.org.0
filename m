@@ -2,129 +2,84 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A00F7CF0FA
-	for <lists+linux-sh@lfdr.de>; Thu, 19 Oct 2023 09:19:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBBD97CF44A
+	for <lists+linux-sh@lfdr.de>; Thu, 19 Oct 2023 11:46:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232858AbjJSHTQ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-sh@lfdr.de>); Thu, 19 Oct 2023 03:19:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53192 "EHLO
+        id S1345089AbjJSJqz (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Thu, 19 Oct 2023 05:46:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232800AbjJSHTN (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 19 Oct 2023 03:19:13 -0400
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 551BD9F;
-        Thu, 19 Oct 2023 00:19:12 -0700 (PDT)
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-579de633419so94650487b3.3;
-        Thu, 19 Oct 2023 00:19:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697699951; x=1698304751;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Qe8JMzEOoVEtr+s55csrTBv3rV8C974uRP6q9AzcSlc=;
-        b=skPvRB7m3TPYol2Jp1traRsUBedEXYp1Kc2EYx0NRnBKE8pC9QBiH/r2GZtLpIw2vS
-         FRWE/8yyESbHgAaOYUK3K2mO3kN4vXu/+yf0y4wklindcrNiG3JEy+feXdfoc0PLohu3
-         ZCQ1+ZUheI2GYB5Vwoz3IXv1VOBgsJzEc+4cDvrRWRE+jZaEVpnbDqWJDZ0CGx8MCjjh
-         I2k9gayazj8XcCuscuFuxro/aSXvjljQRZcsJrAIIoFpVcRxSE8n5PpA3ZfNV21ttU8y
-         GhbcEKFdIJG+XBsn079NwdciwOr6w94s2kNjmH1Ofjwri2McveeuG7Q+6l9EOeoY8BoN
-         djxQ==
-X-Gm-Message-State: AOJu0YxucrV4KMxGNe2nbAngFTU55BckCj8tQVI+KOnchqQ90U9Hiifh
-        hGeceQomh8hcALXF2oIOhA2qWC8gzD6e1A==
-X-Google-Smtp-Source: AGHT+IGED7tXdL8IAc70SjR61szELnOTsuYyuVCXjj3vRfscxcVgB/wK3KM4tTCTaUxbCU34nMGl9g==
-X-Received: by 2002:a0d:e644:0:b0:569:479f:6d7f with SMTP id p65-20020a0de644000000b00569479f6d7fmr1577351ywe.43.1697699950944;
-        Thu, 19 Oct 2023 00:19:10 -0700 (PDT)
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com. [209.85.128.171])
-        by smtp.gmail.com with ESMTPSA id n69-20020a0dcb48000000b0059f8120ee4dsm2234203ywd.30.2023.10.19.00.19.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 Oct 2023 00:19:10 -0700 (PDT)
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-5a86b6391e9so54428857b3.0;
-        Thu, 19 Oct 2023 00:19:10 -0700 (PDT)
-X-Received: by 2002:a81:b40e:0:b0:59b:c6a4:15c7 with SMTP id
- h14-20020a81b40e000000b0059bc6a415c7mr1407978ywi.46.1697699950549; Thu, 19
- Oct 2023 00:19:10 -0700 (PDT)
+        with ESMTP id S1345116AbjJSJqy (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Thu, 19 Oct 2023 05:46:54 -0400
+Received: from michel.telenet-ops.be (michel.telenet-ops.be [IPv6:2a02:1800:110:4::f00:18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EADC192
+        for <linux-sh@vger.kernel.org>; Thu, 19 Oct 2023 02:46:50 -0700 (PDT)
+Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed40:2008:f423:365a:a88b])
+        by michel.telenet-ops.be with bizsmtp
+        id zlml2A00J1ooZrg06lmlMP; Thu, 19 Oct 2023 11:46:47 +0200
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan.of.borg with esmtp (Exim 4.95)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1qtPc0-006w31-Vm;
+        Thu, 19 Oct 2023 11:46:45 +0200
+Received: from geert by rox.of.borg with local (Exim 4.95)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1qtPc5-00D4Zs-7l;
+        Thu, 19 Oct 2023 11:46:45 +0200
+From:   Geert Uytterhoeven <geert+renesas@glider.be>
+To:     Jonathan Corbet <corbet@lwn.net>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Paul Gortmaker <paul.gortmaker@windriver.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Magnus Damm <magnus.damm@gmail.com>
+Cc:     linux-doc@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH 0/2] sh: Revive BIOS earlyprintk support
+Date:   Thu, 19 Oct 2023 11:46:42 +0200
+Message-Id: <cover.1697708489.git.geert+renesas@glider.be>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <cover.1697199949.git.ysato@users.sourceforge.jp> <a772e1b6de89af22057d3af31cc03dcad7964fc7.1697199949.git.ysato@users.sourceforge.jp>
-In-Reply-To: <a772e1b6de89af22057d3af31cc03dcad7964fc7.1697199949.git.ysato@users.sourceforge.jp>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Thu, 19 Oct 2023 09:18:57 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdVtNcUAh5ZeeXyfvS+F=zyJ_4KFoEYxuXONMJ_xH1zwDg@mail.gmail.com>
-Message-ID: <CAMuHMdVtNcUAh5ZeeXyfvS+F=zyJ_4KFoEYxuXONMJ_xH1zwDg@mail.gmail.com>
-Subject: Re: [RFC PATCH v3 12/35] drivers/clk/renesas: clk-sh7750.c
- SH7750/7751 CPG driver.
-To:     Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc:     linux-sh@vger.kernel.org, glaubitz@physik.fu-berlin.de,
-        mturquette@baylibre.com, sboyd@kernel.org,
-        linux-clk@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_NONE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Hi Sato-san,
+	Hi all,
 
-On Sat, Oct 14, 2023 at 4:54 PM Yoshinori Sato
-<ysato@users.sourceforge.jp> wrote:
-> This driver supported SH7750/7751 PLL/Divider clock and module stop.
->
-> Signed-off-by: Yoshinori Sato <ysato@users.sourceforge.jp>
+SuperH BIOS earlyprintk support was accidently disabled.
+This series revives it, and records its existence in the documentation.
 
-Thanks for your patch!
+This was tested on landisk using "earlyprintk=bios" and
+"earlyprintk=bios,keep".
 
-> --- /dev/null
-> +++ b/drivers/clk/renesas/clk-sh7750.c
+Thanks for your comments!
 
-> +static void sbcr_sw(struct clk_hw *hw, bool on)
-> +{
-> +       struct clk_gate *gate = to_clk_gate(hw);
-> +       u8 msk = BIT(gate->bit_idx);
-> +       u8 val;
-> +
-> +       val = readb(gate->reg);
-> +       if (on)
-> +               val &= ~msk;
-> +       else
-> +               val |= msk;
-> +       writeb(val, gate->reg);
-> +}
-> +
-> +static int sbcr_enable(struct clk_hw *hw)
-> +{
-> +       sbcr_sw(hw, true);
-> +       return 0;
-> +}
-> +
-> +static void sbcr_disable(struct clk_hw *hw)
-> +{
-> +       sbcr_sw(hw, false);
-> +}
-> +
-> +static int sbcr_is_enabled(struct clk_hw *hw)
-> +{
-> +       u8 val;
-> +       struct clk_gate *gate = to_clk_gate(hw);
-> +
-> +       val = readb(gate->reg);
-> +       val &= 1 << gate->bit_idx;
-> +       return val != 0;
+Geert Uytterhoeven (2):
+  sh: bios: Revive earlyprintk support
+  Documentation: kernel-parameters: Add earlyprintk=bios on SH
 
-This condition is inverted: 0 is enabled, 1 is stopped.
+ Documentation/admin-guide/kernel-parameters.txt |  3 +++
+ arch/sh/Kconfig.debug                           | 11 +++++++++++
+ 2 files changed, 14 insertions(+)
 
-> +}
+-- 
+2.34.1
 
 Gr{oetje,eeting}s,
 
-                        Geert
+						Geert
 
--- 
+--
 Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
 In personal conversations with technical people, I call myself a hacker. But
 when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+							    -- Linus Torvalds
