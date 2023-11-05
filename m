@@ -2,74 +2,81 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D7BD7DFE1B
-	for <lists+linux-sh@lfdr.de>; Fri,  3 Nov 2023 03:43:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D5E77E1740
+	for <lists+linux-sh@lfdr.de>; Sun,  5 Nov 2023 23:01:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233210AbjKCCUd (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Thu, 2 Nov 2023 22:20:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56032 "EHLO
+        id S229968AbjKEWBM (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sun, 5 Nov 2023 17:01:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232943AbjKCCUa (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Thu, 2 Nov 2023 22:20:30 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 728361A6;
-        Thu,  2 Nov 2023 19:20:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 0B5B1C433C9;
-        Fri,  3 Nov 2023 02:20:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698978027;
-        bh=2QYrDimbfgdF4tvctZJ6gNsT+lng5gPd+SVEQw29VBA=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=Dwk8TVoSyLjQK3wcvDoRO1HgowgZBwuqLDcTiT/q4ZH3GWOZjoGK64M3plRCgn1Cb
-         CfnY7RQO+yLx63aIkuxDF59S8eHjSC+6+J6jeEypXHrxXXiRltRtQal7rU65IIo08q
-         Og2p52ACXsDHXCWdsSy37MWYQn4j0PJixRaufMfTmHaNfYRCGOg/1nQ01qXx3zWATu
-         ieR+Lp88LTv4GtuKlzmcJV8x+kGlfzEiJc5tVRrV+3d5Bi917n4d5qUnLIsTsaI3Ck
-         Irfq3QO3S7g0baJnvlULxN9ArjidttGvgXGlc4QcjuWK3UUgn5f1aRl2EzNR8cVOEY
-         G0//F8irkxcRw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id E9344C43168;
-        Fri,  3 Nov 2023 02:20:26 +0000 (UTC)
-Subject: Re: [GIT PULL] sh updates for v6.7
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <72eadf93a7b7d70ad47b72b6a70bc5f2a62e6ae8.camel@physik.fu-berlin.de>
-References: <72eadf93a7b7d70ad47b72b6a70bc5f2a62e6ae8.camel@physik.fu-berlin.de>
-X-PR-Tracked-List-Id: <linux-sh.vger.kernel.org>
-X-PR-Tracked-Message-Id: <72eadf93a7b7d70ad47b72b6a70bc5f2a62e6ae8.camel@physik.fu-berlin.de>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/glaubitz/sh-linux.git tags/sh-for-v6.7-tag1
-X-PR-Tracked-Commit-Id: 63f1ee206170ad2363aa25fd99bd5ae529c690ae
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 5be9911406ada8fe6187db7ce402f7ff4c21ebdf
-Message-Id: <169897802695.29625.7093146712728880240.pr-tracker-bot@kernel.org>
-Date:   Fri, 03 Nov 2023 02:20:26 +0000
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Rich Felker <dalias@libc.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        linux-sh@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>
-X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229957AbjKEWBM (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sun, 5 Nov 2023 17:01:12 -0500
+X-Greylist: delayed 5221 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 05 Nov 2023 14:01:09 PST
+Received: from SMTP-HCRC-200.brggroup.vn (unknown [42.112.212.144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3159BF
+        for <linux-sh@vger.kernel.org>; Sun,  5 Nov 2023 14:01:09 -0800 (PST)
+Received: from SMTP-HCRC-200.brggroup.vn (localhost [127.0.0.1])
+        by SMTP-HCRC-200.brggroup.vn (SMTP-CTTV) with ESMTP id BB40C19B1A;
+        Mon,  6 Nov 2023 01:58:25 +0700 (+07)
+Received: from zimbra.hcrc.vn (unknown [192.168.200.66])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by SMTP-HCRC-200.brggroup.vn (SMTP-CTTV) with ESMTPS id B2F7919868;
+        Mon,  6 Nov 2023 01:58:25 +0700 (+07)
+Received: from localhost (localhost [127.0.0.1])
+        by zimbra.hcrc.vn (Postfix) with ESMTP id 4E4BA1B8250D;
+        Mon,  6 Nov 2023 01:58:27 +0700 (+07)
+Received: from zimbra.hcrc.vn ([127.0.0.1])
+        by localhost (zimbra.hcrc.vn [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id qIFhgTmp-7eQ; Mon,  6 Nov 2023 01:58:27 +0700 (+07)
+Received: from localhost (localhost [127.0.0.1])
+        by zimbra.hcrc.vn (Postfix) with ESMTP id 18EF81B8253C;
+        Mon,  6 Nov 2023 01:58:27 +0700 (+07)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra.hcrc.vn 18EF81B8253C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hcrc.vn;
+        s=64D43D38-C7D6-11ED-8EFE-0027945F1BFA; t=1699210707;
+        bh=WOZURJ77pkiMUL2pPLC14ifVPRvyTQIBEQmxuN1ezAA=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=DKD48+E3H88qWxYILNJggtPr+P99ZzbbrwR+/GWckgOdWnQzw7nHZ0pQcq/tWNTAd
+         CnmOtPtXmt4ifGhDLkq2Mtg0+3JjMB4l83dE3ujvmtYZBfU6AFi9V2RD+5LJLxA4T8
+         ph8wzZ1sKUiWR4z+E++bt0QNA8IJBdjUFANEGn+TbRtXKOIMoXW4BeCncK2DBj+xPs
+         Trt4Erl4mph5SMojlN8Ftp/LrpXd+QpyiBefcjbb1pCAiontwX9Gqpkyx7kcvUDBih
+         lCgVpkrnpfDJ+gwVo3jiOFtuCwTppmn/pEJaOe1nPevn3Q+Vg6PCyTgpjuX0Zs7IdC
+         G2jrTbgYSEteQ==
+X-Virus-Scanned: amavisd-new at hcrc.vn
+Received: from zimbra.hcrc.vn ([127.0.0.1])
+        by localhost (zimbra.hcrc.vn [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id B1a-R_4AzTlU; Mon,  6 Nov 2023 01:58:27 +0700 (+07)
+Received: from [192.168.1.152] (unknown [51.179.100.52])
+        by zimbra.hcrc.vn (Postfix) with ESMTPSA id B3CB81B8250D;
+        Mon,  6 Nov 2023 01:58:20 +0700 (+07)
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: =?utf-8?b?4oKsIDEwMC4wMDAuMDAwPw==?=
+To:     Recipients <ch.31hamnghi@hcrc.vn>
+From:   ch.31hamnghi@hcrc.vn
+Date:   Sun, 05 Nov 2023 19:58:10 +0100
+Reply-To: joliushk@gmail.com
+Message-Id: <20231105185820.B3CB81B8250D@zimbra.hcrc.vn>
+X-Spam-Status: No, score=2.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-The pull request you sent on Thu, 02 Nov 2023 17:11:54 +0100:
+Goededag,
+Ik ben mevrouw Joanna Liu en een medewerker van Citi Bank Hong Kong.
+Kan ik =E2=82=AC 100.000.000 aan u overmaken? Kan ik je vertrouwen
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/glaubitz/sh-linux.git tags/sh-for-v6.7-tag1
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/5be9911406ada8fe6187db7ce402f7ff4c21ebdf
+Ik wacht op jullie reacties
+Met vriendelijke groeten
+mevrouw Joanna Liu
 
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
