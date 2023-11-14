@@ -2,35 +2,32 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D32D7EAB2A
-	for <lists+linux-sh@lfdr.de>; Tue, 14 Nov 2023 09:00:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DDD957EAB2D
+	for <lists+linux-sh@lfdr.de>; Tue, 14 Nov 2023 09:00:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232286AbjKNIAs (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Tue, 14 Nov 2023 03:00:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47014 "EHLO
+        id S232292AbjKNIA4 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Tue, 14 Nov 2023 03:00:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232282AbjKNIAr (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Tue, 14 Nov 2023 03:00:47 -0500
+        with ESMTP id S232254AbjKNIAz (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Tue, 14 Nov 2023 03:00:55 -0500
 Received: from sakura.ysato.name (ik1-413-38519.vs.sakura.ne.jp [153.127.30.23])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0600B1AC
-        for <linux-sh@vger.kernel.org>; Tue, 14 Nov 2023 00:00:44 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E6BCC19E
+        for <linux-sh@vger.kernel.org>; Tue, 14 Nov 2023 00:00:51 -0800 (PST)
 Received: from SIOS1075.ysato.name (ZM005235.ppp.dion.ne.jp [222.8.5.235])
-        by sakura.ysato.name (Postfix) with ESMTPSA id 0005B1C046A;
-        Tue, 14 Nov 2023 17:00:43 +0900 (JST)
+        by sakura.ysato.name (Postfix) with ESMTPSA id 248191C0497;
+        Tue, 14 Nov 2023 17:00:51 +0900 (JST)
 From:   Yoshinori Sato <ysato@users.sourceforge.jp>
 To:     linux-sh@vger.kernel.org
 Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Subject: [PATCH v4 09/37] dt-bindings: timer: renesas,tmu: add renesas,tmu-sh7750
-Date:   Tue, 14 Nov 2023 17:00:00 +0900
-Message-Id: <31c717c18bd94839d46c4de726cc573ff563b3e1.1699856600.git.ysato@users.sourceforge.jp>
+        Rich Felker <dalias@libc.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Baoquan He <bhe@redhat.com>, Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH v4 10/37] sh: Common PCI framework support
+Date:   Tue, 14 Nov 2023 17:00:01 +0900
+Message-Id: <65b5ddcbecfa05088b3889d0815588012dc816da.1699856600.git.ysato@users.sourceforge.jp>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1699856600.git.ysato@users.sourceforge.jp>
 References: <cover.1699856600.git.ysato@users.sourceforge.jp>
@@ -45,49 +42,166 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Add SH7750 TMU entry.
+When CONFIG_OF=y, a common PCI framework is used.
+The new driver also needs to reference PCI headers, so move the
+necessary header files to a public location rather than a private one.
 
 Signed-off-by: Yoshinori Sato <ysato@users.sourceforge.jp>
 ---
- .../devicetree/bindings/timer/renesas,tmu.yaml        | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ arch/sh/include/asm/io.h                      | 40 +++++++++++++------
+ .../sh/{drivers/pci => include/asm}/pci-sh4.h |  7 ++--
+ .../{drivers/pci => include/asm}/pci-sh7751.h |  0
+ .../{drivers/pci => include/asm}/pci-sh7780.h |  0
+ arch/sh/include/asm/pci.h                     |  4 ++
+ 5 files changed, 36 insertions(+), 15 deletions(-)
+ rename arch/sh/{drivers/pci => include/asm}/pci-sh4.h (99%)
+ rename arch/sh/{drivers/pci => include/asm}/pci-sh7751.h (100%)
+ rename arch/sh/{drivers/pci => include/asm}/pci-sh7780.h (100%)
 
-diff --git a/Documentation/devicetree/bindings/timer/renesas,tmu.yaml b/Documentation/devicetree/bindings/timer/renesas,tmu.yaml
-index a67e427a9e7e..925c2a691b25 100644
---- a/Documentation/devicetree/bindings/timer/renesas,tmu.yaml
-+++ b/Documentation/devicetree/bindings/timer/renesas,tmu.yaml
-@@ -21,6 +21,7 @@ properties:
-   compatible:
-     items:
-       - enum:
-+          - renesas,tmu-sh7750   # SH7750
-           - renesas,tmu-r8a7740  # R-Mobile A1
-           - renesas,tmu-r8a774a1 # RZ/G2M
-           - renesas,tmu-r8a774b1 # RZ/G2N
-@@ -46,7 +47,14 @@ properties:
+diff --git a/arch/sh/include/asm/io.h b/arch/sh/include/asm/io.h
+index ac521f287fa5..ef9b774dd4c8 100644
+--- a/arch/sh/include/asm/io.h
++++ b/arch/sh/include/asm/io.h
+@@ -150,6 +150,7 @@ __BUILD_MEMORY_STRING(__raw_, q, u64)
+  */
+ #undef CONF_SLOWDOWN_IO
  
-   interrupts:
-     minItems: 2
--    maxItems: 3
-+    maxItems: 4
++#ifndef CONFIG_GENERIC_IOMAP
+ /*
+  * On SuperH I/O ports are memory mapped, so we access them using normal
+  * load/store instructions. sh_io_port_base is the virtual address to
+@@ -163,11 +164,7 @@ static inline void __set_io_port_base(unsigned long pbase)
+ 	barrier();
+ }
+ 
+-#ifdef CONFIG_GENERIC_IOMAP
+-#define __ioport_map ioport_map
+-#else
+ extern void __iomem *__ioport_map(unsigned long addr, unsigned int size);
+-#endif
+ 
+ #ifdef CONF_SLOWDOWN_IO
+ #define SLOW_DOWN_IO __raw_readw(sh_io_port_base)
+@@ -239,12 +236,6 @@ __BUILD_IOPORT_STRING(w, u16)
+ __BUILD_IOPORT_STRING(l, u32)
+ __BUILD_IOPORT_STRING(q, u64)
+ 
+-#else /* !CONFIG_HAS_IOPORT_MAP */
+-
+-#include <asm/io_noioport.h>
+-
+-#endif
+-
+ #define inb(addr)      inb(addr)
+ #define inw(addr)      inw(addr)
+ #define inl(addr)      inl(addr)
+@@ -265,6 +256,21 @@ __BUILD_IOPORT_STRING(q, u64)
+ #define outsb outsb
+ #define outsw outsw
+ #define outsl outsl
++#else /* !CONFIG_GENERIC_IOMAP */
++#define __ioport_map ioport_map
++#endif
 +
-+  interrupt-names:
-+    items:
-+      - const: tuni0
-+      - const: tuni1
-+      - const: tuni2
-+      - const: ticpi2
++#else /* !CONFIG_HAS_IOPORT_MAP */
++
++#define insb insb
++#define insw insw
++#define insl insl
++#define outsb outsb
++#define outsw outsw
++#define outsl outsl
++#include <asm/io_noioport.h>
++
++#endif
  
-   clocks:
-     maxItems: 1
-@@ -84,6 +92,7 @@ if:
-             - renesas,tmu-r8a7740
-             - renesas,tmu-r8a7778
-             - renesas,tmu-r8a7779
-+            - renesas,tmu-sh7750
- then:
-   required:
-     - resets
+ #define IO_SPACE_LIMIT 0xffffffff
+ 
+@@ -311,10 +317,20 @@ unsigned long long poke_real_address_q(unsigned long long addr,
+ #define xlate_dev_mem_ptr(p)	__va(p)
+ #define unxlate_dev_mem_ptr(p, v) do { } while (0)
+ 
+-#include <asm-generic/io.h>
+-
+ #define ARCH_HAS_VALID_PHYS_ADDR_RANGE
+ int valid_phys_addr_range(phys_addr_t addr, size_t size);
+ int valid_mmap_phys_addr_range(unsigned long pfn, size_t size);
+ 
++
++#ifdef __KERNEL__
++#define PCI_IOBASE	((void __iomem *)0xfe240000UL)
++
++#define HAVE_ARCH_PIO_SIZE
++#define PIO_OFFSET	0xfe240000UL
++#define PIO_MASK	0x3ffffUL
++#define PIO_RESERVED	0x40000UL
++#endif /* __KERNEL__ */
++
++#include <asm-generic/io.h>
++
+ #endif /* __ASM_SH_IO_H */
+diff --git a/arch/sh/drivers/pci/pci-sh4.h b/arch/sh/include/asm/pci-sh4.h
+similarity index 99%
+rename from arch/sh/drivers/pci/pci-sh4.h
+rename to arch/sh/include/asm/pci-sh4.h
+index 1543c50b6503..26a75841fbe2 100644
+--- a/arch/sh/drivers/pci/pci-sh4.h
++++ b/arch/sh/include/asm/pci-sh4.h
+@@ -5,9 +5,9 @@
+ #if defined(CONFIG_CPU_SUBTYPE_SH7780) || \
+     defined(CONFIG_CPU_SUBTYPE_SH7785) || \
+     defined(CONFIG_CPU_SUBTYPE_SH7763)
+-#include "pci-sh7780.h"
++#include <asm/pci-sh7780.h>
+ #else
+-#include "pci-sh7751.h"
++#include <asm/pci-sh7751.h>
+ #endif
+ 
+ #include <asm/io.h>
+@@ -153,6 +153,7 @@
+   #define SH4_PCIPDTR_PB0	  0x000000001	/* Port 0 Enable */
+ #define SH4_PCIPDR		0x220		/* Port IO Data Register */
+ 
++#ifndef CONFIG_PCI_HOST_COMMON
+ /* arch/sh/kernel/drivers/pci/ops-sh4.c */
+ extern struct pci_ops sh4_pci_ops;
+ int pci_fixup_pcic(struct pci_channel *chan);
+@@ -178,5 +179,5 @@ static inline unsigned long pci_read_reg(struct pci_channel *chan,
+ {
+ 	return __raw_readl(chan->reg_base + reg);
+ }
+-
++#endif
+ #endif /* __PCI_SH4_H */
+diff --git a/arch/sh/drivers/pci/pci-sh7751.h b/arch/sh/include/asm/pci-sh7751.h
+similarity index 100%
+rename from arch/sh/drivers/pci/pci-sh7751.h
+rename to arch/sh/include/asm/pci-sh7751.h
+diff --git a/arch/sh/drivers/pci/pci-sh7780.h b/arch/sh/include/asm/pci-sh7780.h
+similarity index 100%
+rename from arch/sh/drivers/pci/pci-sh7780.h
+rename to arch/sh/include/asm/pci-sh7780.h
+diff --git a/arch/sh/include/asm/pci.h b/arch/sh/include/asm/pci.h
+index 54c30126ea17..92b3bd604319 100644
+--- a/arch/sh/include/asm/pci.h
++++ b/arch/sh/include/asm/pci.h
+@@ -2,6 +2,7 @@
+ #ifndef __ASM_SH_PCI_H
+ #define __ASM_SH_PCI_H
+ 
++#ifndef CONFIG_SH_DEVICE_TREE
+ /* Can be used to override the logic in pci_scan_bus for skipping
+    already-configured bus numbers - to be used for buggy BIOSes
+    or architectures with incomplete PCI setup by the loader */
+@@ -88,4 +89,7 @@ static inline int pci_proc_domain(struct pci_bus *bus)
+ 	return hose->need_domain_info;
+ }
+ 
++#else /* CONFIG_SH_DEVICE_TREE */
++#include <asm-generic/pci.h>
++#endif
+ #endif /* __ASM_SH_PCI_H */
 -- 
 2.39.2
 
