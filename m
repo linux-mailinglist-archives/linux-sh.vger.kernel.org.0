@@ -2,41 +2,58 @@ Return-Path: <linux-sh-owner@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20EBB7EFD6A
-	for <lists+linux-sh@lfdr.de>; Sat, 18 Nov 2023 04:31:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 39E077EFED3
+	for <lists+linux-sh@lfdr.de>; Sat, 18 Nov 2023 11:09:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229994AbjKRDb7 (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
-        Fri, 17 Nov 2023 22:31:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46036 "EHLO
+        id S229716AbjKRKJC (ORCPT <rfc822;lists+linux-sh@lfdr.de>);
+        Sat, 18 Nov 2023 05:09:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229737AbjKRDb6 (ORCPT
-        <rfc822;linux-sh@vger.kernel.org>); Fri, 17 Nov 2023 22:31:58 -0500
-Received: from mail.durme.pl (mail.durme.pl [217.182.69.186])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF854CE
-        for <linux-sh@vger.kernel.org>; Fri, 17 Nov 2023 19:31:55 -0800 (PST)
-Received: by mail.durme.pl (Postfix, from userid 1002)
-        id 00A6280ECF; Fri, 17 Nov 2023 09:00:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=durme.pl; s=mail;
-        t=1700211871; bh=hFxZwVw4rIL+JwfEOGI47p+fdoVOAeqVswP6NWoHSHQ=;
-        h=Date:From:To:Subject:From;
-        b=Yp1Fj0Z7hZOPicWpoWsTpypcZ5ZNXAVwB4ieW20JkiPSGfm8RMo1X/1xWDudmpEqr
-         XBqeZ/T6lPRWsIf0heLYvRADFaEqK0r0cPXQbz6e83qqAikQDRbL3N+QiVYj8sqcqd
-         J4iGhHM4QF6UFxWF6ah4YqGwTmdi6sPJZBqIz6b5O6fO+389vEZzsYSGjPzzQfJ9fg
-         7A/yIt+k/MhaRhT1v0TYdRUMWGzlREVDms0m48ByzXlE6OTJP3azyC1//o83H7qlIN
-         LujxXCYtJrpFWgGOancPJqejLMKA0THVRpeODrjvqueSWutT2tTCCW2jWZv8ph8ZnJ
-         D+WVAftftt0Ag==
-Received: by mail.durme.pl for <linux-sh@vger.kernel.org>; Fri, 17 Nov 2023 09:00:30 GMT
-Message-ID: <20231117074501-0.1.5k.r8r2.0.dkv15crxdr@durme.pl>
-Date:   Fri, 17 Nov 2023 09:00:30 GMT
-From:   "Krystian Wieczorek" <krystian.wieczorek@durme.pl>
-To:     <linux-sh@vger.kernel.org>
-Subject: W sprawie samochodu
-X-Mailer: mail.durme.pl
+        with ESMTP id S229449AbjKRKJB (ORCPT
+        <rfc822;linux-sh@vger.kernel.org>); Sat, 18 Nov 2023 05:09:01 -0500
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B597D5B;
+        Sat, 18 Nov 2023 02:08:56 -0800 (PST)
+Received: from dggpemm100001.china.huawei.com (unknown [172.30.72.55])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4SXTrY6JprzMmjJ;
+        Sat, 18 Nov 2023 18:04:13 +0800 (CST)
+Received: from localhost.localdomain (10.175.112.125) by
+ dggpemm100001.china.huawei.com (7.185.36.93) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.31; Sat, 18 Nov 2023 18:08:52 +0800
+From:   Kefeng Wang <wangkefeng.wang@huawei.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+CC:     <linux-arch@vger.kernel.org>, <linux-alpha@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-hexagon@vger.kernel.org>, <linux-m68k@lists.linux-m68k.org>,
+        <linux-mips@vger.kernel.org>, <linux-parisc@vger.kernel.org>,
+        <linuxppc-dev@lists.ozlabs.org>, <linux-sh@vger.kernel.org>,
+        <sparclinux@vger.kernel.org>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Richard Henderson <richard.henderson@linaro.org>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Russell King <linux@armlinux.org.uk>,
+        Brian Cain <bcain@quicinc.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Stanislav Kinsburskii <stanislav.kinsburskii@gmail.com>
+Subject: [PATCH] asm/io: remove unnecessary xlate_dev_mem_ptr() and unxlate_dev_mem_ptr()
+Date:   Sat, 18 Nov 2023 18:08:27 +0800
+Message-ID: <20231118100827.1599422-1-wangkefeng.wang@huawei.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.112.125]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpemm100001.china.huawei.com (7.185.36.93)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -44,23 +61,188 @@ Precedence: bulk
 List-ID: <linux-sh.vger.kernel.org>
 X-Mailing-List: linux-sh@vger.kernel.org
 
-Dzie=C5=84 dobry,
+The asm-generic/io.h already has default definition, remove unnecessary
+arch's defination.
 
-chcieliby=C5=9Bmy zapewni=C4=87 Pa=C5=84stwu kompleksowe rozwi=C4=85zania=
-, je=C5=9Bli chodzi o system monitoringu GPS.
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Cc: Ivan Kokshaysky <ink@jurassic.park.msu.ru>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Brian Cain <bcain@quicinc.com>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Rich Felker <dalias@libc.org>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Stanislav Kinsburskii <stanislav.kinsburskii@gmail.com>
+Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+---
+ arch/alpha/include/asm/io.h    | 6 ------
+ arch/arm/include/asm/io.h      | 6 ------
+ arch/hexagon/include/asm/io.h  | 6 ------
+ arch/m68k/include/asm/io_mm.h  | 6 ------
+ arch/mips/include/asm/io.h     | 7 -------
+ arch/parisc/include/asm/io.h   | 6 ------
+ arch/powerpc/include/asm/io.h  | 6 ------
+ arch/sh/include/asm/io.h       | 7 -------
+ arch/sparc/include/asm/io_64.h | 6 ------
+ 9 files changed, 56 deletions(-)
 
-Precyzyjne monitorowanie pojazd=C3=B3w na mapach cyfrowych, =C5=9Bledzeni=
-e ich parametr=C3=B3w eksploatacyjnych w czasie rzeczywistym oraz kontrol=
-a paliwa to kluczowe funkcjonalno=C5=9Bci naszego systemu.=20
+diff --git a/arch/alpha/include/asm/io.h b/arch/alpha/include/asm/io.h
+index 7aeaf7c30a6f..5e5d21ebc584 100644
+--- a/arch/alpha/include/asm/io.h
++++ b/arch/alpha/include/asm/io.h
+@@ -651,12 +651,6 @@ extern void outsl (unsigned long port, const void *src, unsigned long count);
+ #endif
+ #define RTC_ALWAYS_BCD	0
+ 
+-/*
+- * Convert a physical pointer to a virtual kernel pointer for /dev/mem
+- * access
+- */
+-#define xlate_dev_mem_ptr(p)	__va(p)
+-
+ /*
+  * These get provided from <asm-generic/iomap.h> since alpha does not
+  * select GENERIC_IOMAP.
+diff --git a/arch/arm/include/asm/io.h b/arch/arm/include/asm/io.h
+index 56b08ed6cc3b..1815748f5d2a 100644
+--- a/arch/arm/include/asm/io.h
++++ b/arch/arm/include/asm/io.h
+@@ -407,12 +407,6 @@ struct pci_dev;
+ #define pci_iounmap pci_iounmap
+ extern void pci_iounmap(struct pci_dev *dev, void __iomem *addr);
+ 
+-/*
+- * Convert a physical pointer to a virtual kernel pointer for /dev/mem
+- * access
+- */
+-#define xlate_dev_mem_ptr(p)	__va(p)
+-
+ #include <asm-generic/io.h>
+ 
+ #ifdef CONFIG_MMU
+diff --git a/arch/hexagon/include/asm/io.h b/arch/hexagon/include/asm/io.h
+index e2b308e32a37..97d57751ce3b 100644
+--- a/arch/hexagon/include/asm/io.h
++++ b/arch/hexagon/include/asm/io.h
+@@ -58,12 +58,6 @@ static inline void *phys_to_virt(unsigned long address)
+ 	return __va(address);
+ }
+ 
+-/*
+- * convert a physical pointer to a virtual kernel pointer for
+- * /dev/mem access.
+- */
+-#define xlate_dev_mem_ptr(p)    __va(p)
+-
+ /*
+  * IO port access primitives.  Hexagon doesn't have special IO access
+  * instructions; all I/O is memory mapped.
+diff --git a/arch/m68k/include/asm/io_mm.h b/arch/m68k/include/asm/io_mm.h
+index 47525f2a57e1..090aec54b8fa 100644
+--- a/arch/m68k/include/asm/io_mm.h
++++ b/arch/m68k/include/asm/io_mm.h
+@@ -389,12 +389,6 @@ static inline void isa_delay(void)
+ 
+ #define __ARCH_HAS_NO_PAGE_ZERO_MAPPED		1
+ 
+-/*
+- * Convert a physical pointer to a virtual kernel pointer for /dev/mem
+- * access
+- */
+-#define xlate_dev_mem_ptr(p)	__va(p)
+-
+ #define readb_relaxed(addr)	readb(addr)
+ #define readw_relaxed(addr)	readw(addr)
+ #define readl_relaxed(addr)	readl(addr)
+diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
+index 062dd4e6b954..2158ff302430 100644
+--- a/arch/mips/include/asm/io.h
++++ b/arch/mips/include/asm/io.h
+@@ -548,13 +548,6 @@ extern void (*_dma_cache_inv)(unsigned long start, unsigned long size);
+ #define csr_out32(v, a) (*(volatile u32 *)((unsigned long)(a) + __CSR_32_ADJUST) = (v))
+ #define csr_in32(a)    (*(volatile u32 *)((unsigned long)(a) + __CSR_32_ADJUST))
+ 
+-/*
+- * Convert a physical pointer to a virtual kernel pointer for /dev/mem
+- * access
+- */
+-#define xlate_dev_mem_ptr(p)	__va(p)
+-#define unxlate_dev_mem_ptr(p, v) do { } while (0)
+-
+ void __ioread64_copy(void *to, const void __iomem *from, size_t count);
+ 
+ #endif /* _ASM_IO_H */
+diff --git a/arch/parisc/include/asm/io.h b/arch/parisc/include/asm/io.h
+index 366537042465..9c06cafb0e70 100644
+--- a/arch/parisc/include/asm/io.h
++++ b/arch/parisc/include/asm/io.h
+@@ -267,12 +267,6 @@ extern void iowrite64be(u64 val, void __iomem *addr);
+ #define iowrite16_rep iowrite16_rep
+ #define iowrite32_rep iowrite32_rep
+ 
+-/*
+- * Convert a physical pointer to a virtual kernel pointer for /dev/mem
+- * access
+- */
+-#define xlate_dev_mem_ptr(p)	__va(p)
+-
+ extern int devmem_is_allowed(unsigned long pfn);
+ 
+ #include <asm-generic/io.h>
+diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
+index 5220274a6277..79421c285066 100644
+--- a/arch/powerpc/include/asm/io.h
++++ b/arch/powerpc/include/asm/io.h
+@@ -709,12 +709,6 @@ static inline void name at					\
+ #define memcpy_fromio memcpy_fromio
+ #define memcpy_toio memcpy_toio
+ 
+-/*
+- * Convert a physical pointer to a virtual kernel pointer for /dev/mem
+- * access
+- */
+-#define xlate_dev_mem_ptr(p)	__va(p)
+-
+ /*
+  * We don't do relaxed operations yet, at least not with this semantic
+  */
+diff --git a/arch/sh/include/asm/io.h b/arch/sh/include/asm/io.h
+index ac521f287fa5..be7ac06423a9 100644
+--- a/arch/sh/include/asm/io.h
++++ b/arch/sh/include/asm/io.h
+@@ -304,13 +304,6 @@ unsigned long long poke_real_address_q(unsigned long long addr,
+ 
+ #define ioremap_uc	ioremap
+ 
+-/*
+- * Convert a physical pointer to a virtual kernel pointer for /dev/mem
+- * access
+- */
+-#define xlate_dev_mem_ptr(p)	__va(p)
+-#define unxlate_dev_mem_ptr(p, v) do { } while (0)
+-
+ #include <asm-generic/io.h>
+ 
+ #define ARCH_HAS_VALID_PHYS_ADDR_RANGE
+diff --git a/arch/sparc/include/asm/io_64.h b/arch/sparc/include/asm/io_64.h
+index 9303270b22f3..75ae9bf3bb7b 100644
+--- a/arch/sparc/include/asm/io_64.h
++++ b/arch/sparc/include/asm/io_64.h
+@@ -470,12 +470,6 @@ static inline int sbus_can_burst64(void)
+ struct device;
+ void sbus_set_sbus64(struct device *, int);
+ 
+-/*
+- * Convert a physical pointer to a virtual kernel pointer for /dev/mem
+- * access
+- */
+-#define xlate_dev_mem_ptr(p)	__va(p)
+-
+ #endif
+ 
+ #endif /* !(__SPARC64_IO_H) */
+-- 
+2.27.0
 
-Organizowanie pracy pracownik=C3=B3w jest dzi=C4=99ki temu prostsze i bar=
-dziej efektywne, a oszcz=C4=99dno=C5=9Bci i optymalizacja w zakresie pono=
-szonych koszt=C3=B3w, maj=C4=85 dla ka=C5=BCdego przedsi=C4=99biorcy ogro=
-mne znaczenie.
-
-Dopasujemy nasz=C4=85 ofert=C4=99 do Pa=C5=84stwa oczekiwa=C5=84 i potrze=
-b organizacji. Czy mogliby=C5=9Bmy porozmawia=C4=87 o naszej propozycji?
-
-
-Pozdrawiam
-Krystian Wieczorek
