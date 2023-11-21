@@ -1,178 +1,144 @@
-Return-Path: <linux-sh+bounces-9-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-12-lists+linux-sh=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 702497F30A7
-	for <lists+linux-sh@lfdr.de>; Tue, 21 Nov 2023 15:25:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64B2B7F3211
+	for <lists+linux-sh@lfdr.de>; Tue, 21 Nov 2023 16:15:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FD231C21A46
-	for <lists+linux-sh@lfdr.de>; Tue, 21 Nov 2023 14:25:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CC701F22493
+	for <lists+linux-sh@lfdr.de>; Tue, 21 Nov 2023 15:15:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D66954FB7;
-	Tue, 21 Nov 2023 14:25:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDAB055C2E;
+	Tue, 21 Nov 2023 15:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FhGgruZs"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="hgdqeObS";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="cLNVVaek"
 X-Original-To: linux-sh@vger.kernel.org
-Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 614BB1992
-	for <linux-sh@vger.kernel.org>; Tue, 21 Nov 2023 06:25:40 -0800 (PST)
-Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-5cbcfdeaff3so4769767b3.0
-        for <linux-sh@vger.kernel.org>; Tue, 21 Nov 2023 06:25:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1700576739; x=1701181539; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=dCTl+by/8OgzPkqiTTy1mu7iUQvkaM00OdF6QByqCRc=;
-        b=FhGgruZs5WQMJqYwgCqX69RUiOZAWt18vg+4MnG2tk2BVTFtcWomFpNh/5WgHKgUTG
-         9tHYJjR6VR0gs/6mMYNa2TprKEIAXxsPYTqihSgSsjak+MrJ5GI4qdt+lhop4bHQRABL
-         nvKi8WzVZWVJfKN8M+1BuFsPj2EtZDaFCoHSHGR2A+JFyp7srUxH9QgKie7t4mafS+EL
-         Xpy1mne8HKC9FZDN4/DXW+7W1k7Ga/Gy6YoBLl+h10hbgxaexjbS72I6BUV89wkQz2Pn
-         8kJaqcL09gLUUJvTZ8oO4q1+rsig9An2gWLnxWt+74QQFgC9qJChuxUOXyrUcJPjrvrk
-         aP8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700576739; x=1701181539;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=dCTl+by/8OgzPkqiTTy1mu7iUQvkaM00OdF6QByqCRc=;
-        b=n5H+Rh1u6/HpyxAY4uDfavALvdfn5fxxgGsr/KBsRPz/wEg/fycgTFhlygDFdbBBit
-         hdZUNqGlYxDzfPUpclM0IU85q+NIXsm1wj0vnBWYn6nhfuhTXbNzZrpMUO3cnE+/9t/J
-         TEBBm+roGCKWP9ZISltklQd6fwdsw6EzV2UTL2Jn0Y9epY3THeEZIcMUpkl4v3Lb20OD
-         lukHUS3ZhdzBuz7hseVRNtVnVH4DJRcklrNMOAe5QjrFAPFM2KBiYnu9qmxaLhFdOQI9
-         mrZedpH0E6i/Agh7BKTrzzeKqa7aAsafjy91602KwkHEPUWm+yb21qNKXKfv+KqZvEMP
-         9PhA==
-X-Gm-Message-State: AOJu0Yxzvm/n0nvBC/17LvkfWVvpfKbu9khIovNp3aOAPUS3gc7nJ4ei
-	mjHQKpvOCkluX3KI7ybEZwkvDkocfqOIozu3JxC9BOrsY43KyYjDHbk=
-X-Google-Smtp-Source: AGHT+IFzC/P9VBpC/SW7HcjRqPIjGI6/u3317qHHutxgt4On71zUFgu360yHalbn7IBXSLbaUggzuHxl91TG21rj54k=
-X-Received: by 2002:a81:6588:0:b0:59a:d42c:5d50 with SMTP id
- z130-20020a816588000000b0059ad42c5d50mr9563819ywb.52.1700576739223; Tue, 21
- Nov 2023 06:25:39 -0800 (PST)
+X-Greylist: delayed 608 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 21 Nov 2023 07:15:50 PST
+Received: from new2-smtp.messagingengine.com (new2-smtp.messagingengine.com [66.111.4.224])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DD30BB;
+	Tue, 21 Nov 2023 07:15:50 -0800 (PST)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailnew.nyi.internal (Postfix) with ESMTP id 2B7105815D2;
+	Tue, 21 Nov 2023 10:05:39 -0500 (EST)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Tue, 21 Nov 2023 10:05:39 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:sender
+	:subject:subject:to:to; s=fm3; t=1700579139; x=1700586339; bh=kU
+	zhY3aPA9uxQWEn4jiRHeQXcTUR9GIV1qaAWo562aw=; b=hgdqeObSLjCXCERey/
+	lhYeOe+4VGySwlXIiettstQFnTjTEjxu6tdt2flSUKkVEZ/8KvkKO/UGRnWa3PP9
+	6hcyusHXrWr9RwM6CbMTnoMWXbGBZPyanj//33swIsn4CvR7Ynv0VN26+SCBKymR
+	n2GgEKaZUo/JZT5OTIAIoZuWnZPoqE3VclbBkG+fLaojVD5U8AKQkIZoIj8i6spE
+	4UCFNSKM6xRWR7JqmjuwH+W5yyCi90AkORZ4gIa5kHP4qczmObtLaoZN/oMu7Dj4
+	ZwrGaLn6035M00bWIJwrQFHrUApywkRY2m15Ak0anscVepuEi/IBuM2/otX8JOW1
+	bZsA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:sender:subject
+	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+	:x-sasl-enc; s=fm1; t=1700579139; x=1700586339; bh=kUzhY3aPA9uxQ
+	WEn4jiRHeQXcTUR9GIV1qaAWo562aw=; b=cLNVVaekcEje0hKqj5BSAf0WltS6+
+	6At0E9xuZHlFuISR3cBCWfhb2BVFXksnV4sp4Jj5gOnv9Rjda9s2lGbdAA/1q8Z3
+	OLswZANcMl16M2EGu0JhLRG16ZIPCfPQBE0mBEKoYHF5bWXNwmadY/JXGQqzcMEZ
+	Hzpv6hz+vbUC6QF7KO9ZnXWArgr2mcroyD2vSz8wY/91uJOVPQ7vvsGvnnMCCwPU
+	UVd3eJPUnj0/UPQAVVZkp+KjyB5uEKYr38FjAHhMd3Tzs0x7/escjTuL4W5RRBqc
+	UtjzbjSxH5BTHJ1ee907FxmTQWARZ4BkBt8AbbOEty3U7TUzUI0w1lIng==
+X-ME-Sender: <xms:QcdcZaY19pQeUxvRaxOF_JYNyRwwxYro6C2QYa127G0LFDiYlK9pcg>
+    <xme:QcdcZdYXBlJId5GsbX5WdwfrxNBqVPIOGPvZ_EcafznBzIOyJ9qRvIsdVWJR6SXVl
+    Wm1jSkJEGyS6UzXXkY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudegledgieehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
+    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:QcdcZU_Cquqtktz26f1F6Pj-3yE5wzdiL7UfD3vCv9cObuzs-mrdrQ>
+    <xmx:QcdcZcoh_zzCzJz8ZWSX1eAekoj-QQmEFCy32ntsgIKWn50E4Jursw>
+    <xmx:QcdcZVqjeL8az68VSD4BZgSiiW2pP0-KF4N-_AbeI7f61Cc7EGt_LQ>
+    <xmx:Q8dcZWTJsZcFozmSH9puz359823LiOBk5E5Tlm15Z4k7b_z5Y-ULNg>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 5A704B60089; Tue, 21 Nov 2023 10:05:37 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-1178-geeaf0069a7-fm-20231114.001-geeaf0069
 Precedence: bulk
 X-Mailing-List: linux-sh@vger.kernel.org
 List-Id: <linux-sh.vger.kernel.org>
 List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Tue, 21 Nov 2023 19:55:27 +0530
-Message-ID: <CA+G9fYvcaozQvas-h55FPjXk+uomF2CyeYbWGCsXM8yGo4SZgA@mail.gmail.com>
-Subject: SuperH: fs/namespace.c: In function '__se_sys_listmount':
- syscalls.h:258:9: internal compiler error: in change_address_1, at emit-rtl.c:2275
-To: linux-fsdevel@vger.kernel.org, open list <linux-kernel@vger.kernel.org>, 
-	regressions@lists.linux.dev, lkft-triage@lists.linaro.org, 
-	Linux-sh list <linux-sh@vger.kernel.org>
-Cc: Miklos Szeredi <mszeredi@redhat.com>, Ian Kent <raven@themaw.net>, 
-	Christian Brauner <brauner@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
-	Arnd Bergmann <arnd@arndb.de>, Dan Carpenter <dan.carpenter@linaro.org>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, dalias@libc.org, 
-	Yoshinori Sato <ysato@users.sourceforge.jp>
-Content-Type: text/plain; charset="UTF-8"
+Message-Id: <b78e0487-d9e7-4584-8d6b-7de119ee7769@app.fastmail.com>
+In-Reply-To: 
+ <CA+G9fYvcaozQvas-h55FPjXk+uomF2CyeYbWGCsXM8yGo4SZgA@mail.gmail.com>
+References: 
+ <CA+G9fYvcaozQvas-h55FPjXk+uomF2CyeYbWGCsXM8yGo4SZgA@mail.gmail.com>
+Date: Tue, 21 Nov 2023 16:05:17 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Naresh Kamboju" <naresh.kamboju@linaro.org>,
+ linux-fsdevel@vger.kernel.org, "open list" <linux-kernel@vger.kernel.org>,
+ regressions@lists.linux.dev, lkft-triage@lists.linaro.org,
+ "Linux-sh list" <linux-sh@vger.kernel.org>
+Cc: "Miklos Szeredi" <mszeredi@redhat.com>, "Ian Kent" <raven@themaw.net>,
+ "Christian Brauner" <brauner@kernel.org>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "Dan Carpenter" <dan.carpenter@linaro.org>,
+ "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>,
+ "Rich Felker" <dalias@libc.org>,
+ "Yoshinori Sato" <ysato@users.sourceforge.jp>
+Subject: Re: SuperH: fs/namespace.c: In function '__se_sys_listmount':
+ syscalls.h:258:9: internal compiler error: in change_address_1, at
+ emit-rtl.c:2275
+Content-Type: text/plain
 
-The SuperH tinyconfig and allnoconfig builds started failing from 20231120 tag
-Please find the following builds warnings / errors.
+On Tue, Nov 21, 2023, at 15:25, Naresh Kamboju wrote:
+> The SuperH tinyconfig and allnoconfig builds started failing from 20231120 tag
+> Please find the following builds warnings / errors.
+>
+> /builds/linux/include/linux/syscalls.h:233:9: note: in expansion of
+> macro '__SYSCALL_DEFINEx'
+>   233 |         __SYSCALL_DEFINEx(x, sname, __VA_ARGS__)
+>       |         ^~~~~~~~~~~~~~~~~
+> /builds/linux/include/linux/syscalls.h:225:36: note: in expansion of
+> macro 'SYSCALL_DEFINEx'
+>   225 | #define SYSCALL_DEFINE4(name, ...) SYSCALL_DEFINEx(4, _##name,
+> __VA_ARGS__)
+>       |                                    ^~~~~~~~~~~~~~~
+> /builds/linux/fs/namespace.c:5019:1: note: in expansion of macro
+> 'SYSCALL_DEFINE4'
+>  5019 | SYSCALL_DEFINE4(listmount, const struct mnt_id_req __user *, req,
+>       | ^~~~~~~~~~~~~~~
+> 0x129d9d7 internal_error(char const*, ...)
+> ???:0
+> 0x5dbc4d fancy_abort(char const*, int, char const*)
+> ???:0
+> 0x7ddd3e adjust_address_1(rtx_def*, machine_mode, poly_int<1u, long>,
+> int, int, int, poly_int<1u, long>)
+> ???:0
+> 0x81dd91 output_operand(rtx_def*, int)
+> ???:0
+> 0x81e5a4 output_asm_insn(char const*, rtx_def**)
+> ???:0
+> 0x8226a8 final_scan_insn(rtx_insn*, _IO_FILE*, int, int, int*)
+> ???:0
+> Please submit a full bug report,
+> with preprocessed source if appropriate.
+> Please include the complete backtrace with any bug report.
+> See <file:///usr/share/doc/gcc-11/README.Bugs> for instructions.
 
-sh:
-  build:
-    * gcc-11-tinyconfig
+It's clearly a compiler bug, and I get the same thing with
+all sh4 compilers I have on my machine, I tried with gcc-7.5
+through gcc-13.
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+I also see that the defconfigs work fine, so it's probably
+just hitting some weird corner case. You could try opening
+a bug report against gcc, but I'm not sure it's worth it.
 
-Build errors:
-----------
-make --silent --keep-going --jobs=8
-O=/home/tuxbuild/.cache/tuxmake/builds/1/build ARCH=sh
-CROSS_COMPILE=sh4-linux-gnu- 'CC=sccache sh4-linux-gnu-gcc'
-'HOSTCC=sccache gcc'
-  Generating include/generated/machtypes.h
-<stdin>:1519:2: warning: #warning syscall clone3 not implemented [-Wcpp]
-during RTL pass: final
-In file included from /builds/linux/fs/namespace.c:11:
-/builds/linux/fs/namespace.c: In function '__se_sys_listmount':
-/builds/linux/include/linux/syscalls.h:258:9: internal compiler error:
-in change_address_1, at emit-rtl.c:2275
-  258 |         }
-         \
-      |         ^
-/builds/linux/include/linux/syscalls.h:233:9: note: in expansion of
-macro '__SYSCALL_DEFINEx'
-  233 |         __SYSCALL_DEFINEx(x, sname, __VA_ARGS__)
-      |         ^~~~~~~~~~~~~~~~~
-/builds/linux/include/linux/syscalls.h:225:36: note: in expansion of
-macro 'SYSCALL_DEFINEx'
-  225 | #define SYSCALL_DEFINE4(name, ...) SYSCALL_DEFINEx(4, _##name,
-__VA_ARGS__)
-      |                                    ^~~~~~~~~~~~~~~
-/builds/linux/fs/namespace.c:5019:1: note: in expansion of macro
-'SYSCALL_DEFINE4'
- 5019 | SYSCALL_DEFINE4(listmount, const struct mnt_id_req __user *, req,
-      | ^~~~~~~~~~~~~~~
-0x129d9d7 internal_error(char const*, ...)
-???:0
-0x5dbc4d fancy_abort(char const*, int, char const*)
-???:0
-0x7ddd3e adjust_address_1(rtx_def*, machine_mode, poly_int<1u, long>,
-int, int, int, poly_int<1u, long>)
-???:0
-0x81dd91 output_operand(rtx_def*, int)
-???:0
-0x81e5a4 output_asm_insn(char const*, rtx_def**)
-???:0
-0x8226a8 final_scan_insn(rtx_insn*, _IO_FILE*, int, int, int*)
-???:0
-Please submit a full bug report,
-with preprocessed source if appropriate.
-Please include the complete backtrace with any bug report.
-See <file:///usr/share/doc/gcc-11/README.Bugs> for instructions.
-{standard input}: Assembler messages:
-{standard input}:11800: Warning: end of file not at end of a line;
-newline inserted
-{standard input}:11856: Error: missing operand
-{standard input}:11856: Error: invalid operands for opcode
-{standard input}:11837: Error: displacement to undefined symbol .L2699
-overflows 8-bit field
-{standard input}:11690: Error: pcrel too far
-{standard input}:11705: Error: pcrel too far
-{standard input}:11707: Error: pcrel too far
-{standard input}:11712: Error: pcrel too far
-{standard input}:11719: Error: pcrel too far
-{standard input}:11732: Error: pcrel too far
-{standard input}:11737: Error: pcrel too far
-{standard input}:11760: Error: pcrel too far
-{standard input}:11772: Error: pcrel too far
-{standard input}:11777: Error: pcrel too far
-{standard input}:11778: Error: pcrel too far
-{standard input}:11788: Error: pcrel too far
-{standard input}:11791: Error: pcrel too far
-{standard input}:11807: Error: pcrel too far
-{standard input}:11809: Error: pcrel too far
-{standard input}:11844: Error: pcrel too far
-make[4]: *** [/builds/linux/scripts/Makefile.build:243: fs/namespace.o] Error 1
-
-
-kernel: 6.7.0-rc2
-git_repo: https://gitlab.com/Linaro/lkft/mirrors/next/linux-next
-git_ref: master
-git_sha: 07b677953b9dca02928be323e2db853511305fa9
-git_describe: next-20231121
-Test details: https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20231121
-
-Regressions (compared to build next-20231117)
-------------------------------------------------------------------------
-
-sh:
-  build:
-    * gcc-8-allnoconfig
-    * gcc-11-tinyconfig
-    * gcc-11-allnoconfig
-    * gcc-8-tinyconfig
-
-Links:
- - https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20231121/testrun/21199202/suite/build/test/gcc-11-tinyconfig/history/
- - https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20231121/testrun/21199202/suite/build/test/gcc-11-tinyconfig/log
-
-
---
-Linaro LKFT
-https://lkft.linaro.org
+      Arnd
 
