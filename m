@@ -1,75 +1,95 @@
-Return-Path: <linux-sh+bounces-8-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-10-lists+linux-sh=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BD597F2E99
-	for <lists+linux-sh@lfdr.de>; Tue, 21 Nov 2023 14:43:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7FA67F31A1
+	for <lists+linux-sh@lfdr.de>; Tue, 21 Nov 2023 15:52:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5084B21056
-	for <lists+linux-sh@lfdr.de>; Tue, 21 Nov 2023 13:43:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10CA11C21A4D
+	for <lists+linux-sh@lfdr.de>; Tue, 21 Nov 2023 14:52:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3239C51C3D;
-	Tue, 21 Nov 2023 13:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8693551C31;
+	Tue, 21 Nov 2023 14:52:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D0eUIQ7y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="poue5VPW"
 X-Original-To: linux-sh@vger.kernel.org
-Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43711D6A;
-	Tue, 21 Nov 2023 05:43:07 -0800 (PST)
-Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-5b383b4184fso61241677b3.1;
-        Tue, 21 Nov 2023 05:43:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700574186; x=1701178986; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=J2jFoW0wBrxwvC3UXYdoI7e4rK6JjoL9RV6ETRvSTJs=;
-        b=D0eUIQ7yctSuBZfEjSKxJnHVFfz7lYp1J9acKXYD0Ouwo3eAFp7aOvThGu6xz75Xk6
-         IRSwlmUIi0gK0iWVo5TqI5BiPpwXPaPDZQ6W6AUY4UWVP1pykWDxZKlpEcQbQjzjmau9
-         ZBSfXRnzoDdCsY7hlyR+i2R0Ew20Fjjo3uUKuBqk5d450aN3o+p9vYeV8vcqdZlH63WF
-         jv00KgQYryWegThy0XYS49Ol0njsfl9hNmkTdeuGULFpMOjMGM5QNO/Cn4bTnITytzih
-         DZcXrQ6SiDwIXb8YpLsurOLP6MhViD7D8VCSevHJ8ZsYAt0U03cEiGux8wj+AHr+zvim
-         nRIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700574186; x=1701178986;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=J2jFoW0wBrxwvC3UXYdoI7e4rK6JjoL9RV6ETRvSTJs=;
-        b=hV3HhXT9vLiTkmZ4liBU9DJGZVxxqh6p83SVs34ToCCfrMg1/LLXh4/lZ2/BLIBlpj
-         NrkJz+b+g/EdrfiLLFXpiVRtnizVKzsW4jQDK5Q9Q+VXJiDG5VZpZe8i0jvMquaUn09l
-         Gsozx5Nbt8tDFiYclTDKB5NHwgiXf9DAiToFXHsxRpEIUlA1dlTaY7ffOK9qfE0ND7j6
-         2UBH+eJHZMBmtEmFljI3PRFabkcNo6w4e7eHHemlmupRO9XK2v63PTOAgh4+Lx0O6ox7
-         tHqvNGeWQLgELcreWILjwK1B6iG/rGKt/gV8JZsxMJs83fX2AIzlrH6n+oFqyNNdV059
-         4Sfg==
-X-Gm-Message-State: AOJu0YzcqB7jNLW8UsveMzUekA0tExCkDtVlmlox2VFvxtJGdb9nktBy
-	902qYQnlz5hbJ+2IMyiemrs=
-X-Google-Smtp-Source: AGHT+IE7zExNj2xD3/09eeu2XxcaCzvGOCX3w8yszWNCW6JxpL819+KOWL2DAlSHRSD2xYNRXLB8Dg==
-X-Received: by 2002:a05:690c:80a:b0:5cb:95e8:16ba with SMTP id bx10-20020a05690c080a00b005cb95e816bamr1655104ywb.46.1700574186241;
-        Tue, 21 Nov 2023 05:43:06 -0800 (PST)
-Received: from localhost ([2601:344:8301:57f0:e005:b808:45e:1b60])
-        by smtp.gmail.com with ESMTPSA id x83-20020a814a56000000b005bf57ef572dsm2975977ywa.140.2023.11.21.05.43.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Nov 2023 05:43:05 -0800 (PST)
-Date: Tue, 21 Nov 2023 05:43:05 -0800
-From: Yury Norov <yury.norov@gmail.com>
-To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: linux-kernel@vger.kernel.org,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
-	Jan Kara <jack@suse.cz>,
-	Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
-	Matthew Wilcox <willy@infradead.org>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Maxim Kuvyrkov <maxim.kuvyrkov@linaro.org>,
-	Alexey Klimov <klimov.linux@gmail.com>
-Subject: Re: [PATCH 34/34] sh: rework ilsel_enable()
-Message-ID: <ZVyz6ctZVcDVM0N4@yury-ThinkPad>
-References: <20231118155105.25678-1-yury.norov@gmail.com>
- <20231118155105.25678-35-yury.norov@gmail.com>
- <6d29ae1cd7b20668b5307eb4292155bc59dad8ef.camel@physik.fu-berlin.de>
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D197136C;
+	Tue, 21 Nov 2023 14:52:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 580D7C433C7;
+	Tue, 21 Nov 2023 14:52:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1700578360;
+	bh=dGYz6IxNOUY4NpvhlMLeIB3Xxc/hARJYIHJyki7wDHE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=poue5VPWyYd+HrTAPC2kL1JwV02FvsHlUJ1z3W9FXk/U2czUqklkcawHdmmtSEsoY
+	 IlPddu/gpJsZ1UpOPQIgrM7BkkvyXf2F3hIfHrb2U18/fsMMvTR4wCzYJDyNBuBtzP
+	 SpQfWPT1cgV1qEShQyzt0KdJxLEsOUDx610rqzSQ=
+Date: Tue, 21 Nov 2023 15:12:23 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	linux-kbuild@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+	Matt Turner <mattst88@gmail.com>, Vineet Gupta <vgupta@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>, Guo Ren <guoren@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Greg Ungerer <gerg@linux-m68k.org>, Michal Simek <monstr@monstr.eu>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Geoff Levand <geoff@infradead.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andy Lutomirski <luto@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, x86@kernel.org,
+	Helge Deller <deller@gmx.de>,
+	Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+	Timur Tabi <timur@kernel.org>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	David Woodhouse <dwmw2@infradead.org>,
+	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+	Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
+	Kees Cook <keescook@chromium.org>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
+	linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-trace-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+	netdev@vger.kernel.org, linux-parisc@vger.kernel.org,
+	linux-usb@vger.kernel.org, linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-bcachefs@vger.kernel.org,
+	linux-mtd@lists.infradead.org
+Subject: Re: [PATCH 20/22] usb: fsl-mph-dr-of: mark fsl_usb2_mpc5121_init()
+ static
+Message-ID: <2023112114-cried-ramble-b3f9@gregkh>
+References: <20231108125843.3806765-1-arnd@kernel.org>
+ <20231108125843.3806765-21-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-sh@vger.kernel.org
 List-Id: <linux-sh.vger.kernel.org>
@@ -78,37 +98,17 @@ List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6d29ae1cd7b20668b5307eb4292155bc59dad8ef.camel@physik.fu-berlin.de>
+In-Reply-To: <20231108125843.3806765-21-arnd@kernel.org>
 
-On Sat, Nov 18, 2023 at 05:15:57PM +0100, John Paul Adrian Glaubitz wrote:
-> Hello Yury!
+On Wed, Nov 08, 2023 at 01:58:41PM +0100, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
 > 
-> On Sat, 2023-11-18 at 07:51 -0800, Yury Norov wrote:
-> > Fix opencoded find_and_set_bit(), which also suppresses potential
-> > KCSAN warning.
-> > 
-> > Signed-off-by: Yury Norov <yury.norov@gmail.com>
-> > ---
-> >  arch/sh/boards/mach-x3proto/ilsel.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/arch/sh/boards/mach-x3proto/ilsel.c b/arch/sh/boards/mach-x3proto/ilsel.c
-> > index f0d5eb41521a..7fadc479a80b 100644
-> > --- a/arch/sh/boards/mach-x3proto/ilsel.c
-> > +++ b/arch/sh/boards/mach-x3proto/ilsel.c
-> > @@ -99,8 +99,8 @@ int ilsel_enable(ilsel_source_t set)
-> >  	}
-> >  
-> >  	do {
-> > -		bit = find_first_zero_bit(&ilsel_level_map, ILSEL_LEVELS);
-> > -	} while (test_and_set_bit(bit, &ilsel_level_map));
-> > +		bit = find_and_set_bit(&ilsel_level_map, ILSEL_LEVELS);
-> > +	} while (bit >= ILSEL_LEVELS);
-> >  
-> >  	__ilsel_enable(set, bit);
-> >  
+> This function is only called locally and should always have been static:
 > 
-> The subject should mention the subsystem, i.e. "sh: mach-x3proto:".
+> drivers/usb/host/fsl-mph-dr-of.c:291:5: error: no previous prototype for 'fsl_usb2_mpc5121_init' [-Werror=missing-prototypes]
+> 
+> Fixes: 230f7ede6c2f ("USB: add USB EHCI support for MPC5121 SoC")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-OK, will do in v2
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
