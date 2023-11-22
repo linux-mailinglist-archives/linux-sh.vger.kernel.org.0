@@ -1,83 +1,212 @@
-Return-Path: <linux-sh+bounces-11-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-13-lists+linux-sh=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B73BD7F31FB
-	for <lists+linux-sh@lfdr.de>; Tue, 21 Nov 2023 16:09:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB9207F41BE
+	for <lists+linux-sh@lfdr.de>; Wed, 22 Nov 2023 10:34:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6DB21C20B7B
-	for <lists+linux-sh@lfdr.de>; Tue, 21 Nov 2023 15:09:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50C2D2817F2
+	for <lists+linux-sh@lfdr.de>; Wed, 22 Nov 2023 09:34:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DD4251C4C;
-	Tue, 21 Nov 2023 15:09:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 347075101D;
+	Wed, 22 Nov 2023 09:34:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BwWuuSDS"
 X-Original-To: linux-sh@vger.kernel.org
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0254D1;
-	Tue, 21 Nov 2023 07:09:12 -0800 (PST)
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.95)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1r5SNB-0029QD-5t; Tue, 21 Nov 2023 16:09:09 +0100
-Received: from p5dc55299.dip0.t-ipconnect.de ([93.197.82.153] helo=[192.168.178.81])
-          by inpost2.zedat.fu-berlin.de (Exim 4.95)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1r5SNA-002FCc-Tk; Tue, 21 Nov 2023 16:09:09 +0100
-Message-ID: <bca7f1cc90f20cfc8ad719a518cb1254582287f4.camel@physik.fu-berlin.de>
-Subject: Re: SuperH: fs/namespace.c: In function '__se_sys_listmount':
- syscalls.h:258:9: internal compiler error: in change_address_1, at
- emit-rtl.c:2275
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To: Arnd Bergmann <arnd@arndb.de>, Naresh Kamboju
- <naresh.kamboju@linaro.org>,  linux-fsdevel@vger.kernel.org, open list
- <linux-kernel@vger.kernel.org>,  regressions@lists.linux.dev,
- lkft-triage@lists.linaro.org, Linux-sh list <linux-sh@vger.kernel.org>
-Cc: Miklos Szeredi <mszeredi@redhat.com>, Ian Kent <raven@themaw.net>, 
- Christian Brauner <brauner@kernel.org>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Dan Carpenter <dan.carpenter@linaro.org>, Rich
- Felker <dalias@libc.org>, Yoshinori Sato <ysato@users.sourceforge.jp>
-Date: Tue, 21 Nov 2023 16:09:07 +0100
-In-Reply-To: <b78e0487-d9e7-4584-8d6b-7de119ee7769@app.fastmail.com>
-References: 
-	<CA+G9fYvcaozQvas-h55FPjXk+uomF2CyeYbWGCsXM8yGo4SZgA@mail.gmail.com>
-	 <b78e0487-d9e7-4584-8d6b-7de119ee7769@app.fastmail.com>
-Autocrypt: addr=glaubitz@physik.fu-berlin.de; prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.1 
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E17C191
+	for <linux-sh@vger.kernel.org>; Wed, 22 Nov 2023 01:34:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1700645683;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+OTgZltwB2ZS+YZyn6PYgFPXeR3pdRlWkz0aWS8O4HE=;
+	b=BwWuuSDSvBZX8Mo7G/uzuxwxVixnrmmdqUnkZx0OtwE1DVMH27AH4c6jJvXbP/BVBm2pnd
+	77sZlTm5mtm89rkaBPL3o9nnd+bXlfVH6dL/cYz2vincEezSthdFNVSkUO8hR+dnyun2so
+	bzfx4LydAh4Vj2wfqlYfnQ+tbldTuWc=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-591-_biuZLCONCOAsgDXiclx4A-1; Wed,
+ 22 Nov 2023 04:34:40 -0500
+X-MC-Unique: _biuZLCONCOAsgDXiclx4A-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8960E3C0FCA6;
+	Wed, 22 Nov 2023 09:34:39 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.97])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 2A80F1C060AE;
+	Wed, 22 Nov 2023 09:34:36 +0000 (UTC)
+Date: Wed, 22 Nov 2023 17:34:33 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Ignat Korchagin <ignat@cloudflare.com>
+Cc: eric_devolder@yahoo.com, linux@armlinux.org.uk, catalin.marinas@arm.com,
+	will@kernel.org, chenhuacai@kernel.org, geert@linux-m68k.org,
+	tsbogend@alpha.franken.de,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	deller@gmx.de, ysato@users.sourceforge.jp, dalias@libc.org,
+	glaubitz@physik.fu-berlin.de, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	dave.hansen@linux.intel.com, x86@kernel.org,
+	linux-kernel <linux-kernel@vger.kernel.org>,
+	linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	kernel@xen0n.name, mpe@ellerman.id.au, npiggin@gmail.com,
+	christophe.leroy@csgroup.eu, paul.walmsley@sifive.com,
+	palmer@dabbelt.com, aou@eecs.berkeley.edu, hca@linux.ibm.com,
+	gor@linux.ibm.com, agordeev@linux.ibm.com,
+	borntraeger@linux.ibm.com, svens@linux.ibm.com, hpa@zytor.com,
+	keescook@chromium.org, paulmck@kernel.org,
+	Peter Zijlstra <peterz@infradead.org>, frederic@kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ard Biesheuvel <ardb@kernel.org>, samitolvanen@google.com,
+	juerg.haefliger@canonical.com, arnd@arndb.de,
+	rmk+kernel@armlinux.org.uk, linus.walleij@linaro.org,
+	sebastian.reichel@collabora.com, rppt@kernel.org,
+	kirill.shutemov@linux.intel.com, anshuman.khandual@arm.com,
+	ziy@nvidia.com, masahiroy@kernel.org, ndesaulniers@google.com,
+	mhiramat@kernel.org, ojeda@kernel.org, thunder.leizhen@huawei.com,
+	xin3.li@intel.com, tj@kernel.org,
+	Greg KH <gregkh@linuxfoundation.org>, tsi@tuyoix.net,
+	hbathini@linux.ibm.com, sourabhjain@linux.ibm.com,
+	boris.ostrovsky@oracle.com, konrad.wilk@oracle.com,
+	kernel-team <kernel-team@cloudflare.com>
+Subject: Re: Potential config regression after 89cde455 ("kexec: consolidate
+ kexec and crash options into kernel/Kconfig.kexec")
+Message-ID: <ZV3LKVOokpx2WvKp@MiWiFi-R3L-srv>
+References: <CALrw=nHpRQQaQTP_jZfREgrQEMpS8jBF8JQCv4ygqXycE-StaA@mail.gmail.com>
+ <ZVwMzXxWkgonIAfc@MiWiFi-R3L-srv>
+ <CALrw=nG8xsYw7XKyL_VMHtKiaBcQCKvC8UVp-C9-BdeN4A1Daw@mail.gmail.com>
+ <CALrw=nH-vcROja2W23rUKEEZMZhxsQiNB4P_ZZQ-XhPHAJGxrg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-sh@vger.kernel.org
 List-Id: <linux-sh.vger.kernel.org>
 List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 93.197.82.153
-X-ZEDAT-Hint: PO
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CALrw=nH-vcROja2W23rUKEEZMZhxsQiNB4P_ZZQ-XhPHAJGxrg@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
 
-On Tue, 2023-11-21 at 16:05 +0100, Arnd Bergmann wrote:
-> I also see that the defconfigs work fine, so it's probably
-> just hitting some weird corner case. You could try opening
-> a bug report against gcc, but I'm not sure it's worth it.
+On 11/21/23 at 09:43am, Ignat Korchagin wrote:
+> On Tue, Nov 21, 2023 at 7:53 AM Ignat Korchagin <ignat@cloudflare.com> wrote:
+> >
+> > On Tue, Nov 21, 2023 at 1:50 AM Baoquan He <bhe@redhat.com> wrote:
+> > >
+> > > Eric DeVolder's Oracle mail address is not available anymore, add his
+> > > current mail address he told me.
+> >
+> > Thank you!
+> >
+> > > On 11/20/23 at 10:52pm, Ignat Korchagin wrote:
+> > > > Good day!
+> > > >
+> > > > We have recently started to evaluate Linux 6.6 and noticed that we
+> > > > cannot disable CONFIG_KEXEC anymore, but keep CONFIG_CRASH_DUMP
+> > > > enabled. It seems to be related to commit 89cde455 ("kexec:
+> > > > consolidate kexec and crash options into kernel/Kconfig.kexec"), where
+> > > > a CONFIG_KEXEC dependency was added to CONFIG_CRASH_DUMP.
+> > > >
+> > > > In our current kernel (Linux 6.1) we only enable CONFIG_KEXEC_FILE
+> > > > with enforced signature check to support the kernel crash dumping
+> > > > functionality and would like to keep CONFIG_KEXEC disabled for
+> > > > security reasons [1].
+> > > >
+> > > > I was reading the long commit message, but the reason for adding
+> > > > CONFIG_KEXEC as a dependency for CONFIG_CRASH_DUMP evaded me. And I
+> > > > believe from the implementation perspective CONFIG_KEXEC_FILE should
+> > > > suffice here (as we successfully used it for crashdumps on Linux 6.1).
+> > > >
+> > > > Is there a reason for adding this dependency or is it just an
+> > > > oversight? Would some solution of requiring either CONFIG_KEXEC or
+> > > > CONFIG_KEXEC_FILE work here?
+> > >
+> > > I searched the patch history, found Eric didn't add the dependency on
+> > > CONFIG_KEXEC at the beginning. Later a linux-next building failure with
+> > > randconfig was reported, in there CONFIG_CRASH_DUMP enabled, while
+> > > CONFIG_KEXEC is disabled. Finally Eric added the KEXEC dependency for
+> > > CRASH_DUMP. Please see below link for more details:
+> > >
+> > > https://lore.kernel.org/all/3e8eecd1-a277-2cfb-690e-5de2eb7b988e@oracle.com/T/#u
+> >
+> > Thank you for digging this up. However I'm still confused, because
+> > this is exactly how we configure Linux 6.1 (although we do have
+> > CONFIG_KEXEC_FILE enabled) and we don't have any problems. I believe
+> > we did not investigate this issue properly.
+> 
+> I did some preliminary investigation for this. If I patch out the
+> dependency on CONFIG_KEXEC the kernel builds just fine for x86
+> (without CONFIG_CRASH_HOTPLUG - which is probably another issue) - so
+> this was the previous behaviour. I can see that the reported error is
+> for arm architecture and was able to reproduce it with a simple cross
+> compiler in Debian. However, I think it is still somehow related to
+> this patchset as the previous kernels (up to 6.5) build fine with just
+> CONFIG_CRASH_DUMP and without CONFIG_KEXEC for arm as well. So even
+> for arm it was introduced in 6.6.
 
-Please do and CC me and Oleg Endo who is still taking care of the backend.
+Thanks for the information.
 
-Adrian
+I haven't run the reproducer of issue reported on Eric's old patchset,
+while checkout to kernel 6.1, only s390 selected KEXEC for CRASH_DUMP
+already. And with the ARM building breakage, the simplest idea is 
+to select KEXEC only for ARM or S390 CRASH_DUMP. I plan to try the
+reproducer later. If you have any idea or draft patch, please feel free
+to post.
 
---=20
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+diff --git a/kernel/Kconfig.kexec b/kernel/Kconfig.kexec
+index 7aff28ded2f4..382dcd8d7a9d 100644
+--- a/kernel/Kconfig.kexec
++++ b/kernel/Kconfig.kexec
+@@ -97,7 +97,7 @@ config CRASH_DUMP
+        depends on ARCH_SUPPORTS_KEXEC
+        select CRASH_CORE
+        select KEXEC_CORE
+-       select KEXEC
++       select KEXEC if (ARM || S390)
+
+
+arch/s390/Kconfig in kernel 6.1:
+config CRASH_DUMP
+        bool "kernel crash dumps"
+        select KEXEC
+        help
+          Generate crash dump after being started by kexec.
+          Crash dump kernels are loaded in the main kernel with kexec-tools
+          into a specially reserved region and then later executed after
+          a crash by kdump/kexec.
+          Refer to <file:Documentation/s390/zfcpdump.rst> for more details on this.
+          This option also enables s390 zfcpdump.
+          See also <file:Documentation/s390/zfcpdump.rst>
+
+> 
+> > > And besides, the newly added CONFIG_CRASH_HOTPLUG also needs
+> > > CONFIG_KEXEC if the elfcorehdr is allowed to be manipulated when
+> > > cpu/memory hotplug hapened.
+> >
+> > This still feels like a regression to me: any crash dump support
+> > should be independent of KEXEC syscalls being present. While probably
+> > the common case (including us) that the crashing kernel and recovery
+> > kernel are the same, they don't have to be. We need kexec syscall in
+> > the crashing kernel, but crashdump support in the recovery kernel (but
+> > the recovery kernel not having the kexec syscalls should be totally
+> > fine). If we do require some code definitions from kexec - at most we
+> > should put them under CONFIG_KEXEC_CORE.
+> >
+> > > Thanks
+> > > Baoquan
+> > >
+> 
+> Ignat
+> 
+
 
