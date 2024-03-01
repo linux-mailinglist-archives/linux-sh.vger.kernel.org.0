@@ -1,45 +1,45 @@
-Return-Path: <linux-sh+bounces-483-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-480-lists+linux-sh=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37A0786EAD2
-	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 22:02:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 435C086EACF
+	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 22:02:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68AEA1C2226D
-	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 21:02:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 730311C219AA
+	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 21:02:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA5DE56B78;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 480E056B73;
 	Fri,  1 Mar 2024 21:02:50 +0000 (UTC)
 X-Original-To: linux-sh@vger.kernel.org
 Received: from michel.telenet-ops.be (michel.telenet-ops.be [195.130.137.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1244456B6E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1392D56B6F
 	for <linux-sh@vger.kernel.org>; Fri,  1 Mar 2024 21:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.88
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709326970; cv=none; b=IMiWWlZC/K4f2MqaaAzM5489uskZ/JqjBzlzNYWXIyf+UsnCGGuDcZMcwGAyk7AIQYGug6xND1VSyK8ahU7TyjH7pkG/Q4WiIGRWAFzAHjFOOro3lyiCDz2NRt8tRA6TpCTLGl/IQjdw57P8h4MSQdK/y8HJpOvTAfWCCWZaPWc=
+	t=1709326970; cv=none; b=ejCyxeC0wZF7qFmEXhoCs81mcl9wBscBQQ0JaIQv+KLYWdyNMuDCHkc1wYbczD+dSpiIdsH4vSp0C78XcuMov/XUVAIWpb/VxC1dUipYaiwn293xWaLP5UeMrCNljn+CyfWmA1ImrR8MYov7LdOYjb7SXzFY5E/Hfa8iZhsJ+Vk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1709326970; c=relaxed/simple;
-	bh=4jwyfu63xDiy56cefdt9I7ChJJArBQFaMXCHxbmjD14=;
+	bh=iFhRPXkYrRTAyOSfLti9NFRV7ZKuRkjcotdtKCX33/Q=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AtXA3cjVJSypQgvpmut6tG1OIVNZiHf5RgX1Sr3k+fbq/ijnvTSTm/NlB4xRl4suw84un+uaEG+wMrcJwwCyNvKnSo3OwVRd3dgcKl2LOfuMbnt4YuKvfyWjFZiu+McaKNkwWxYRlnPSSI9fQ6hPXLvudZ0M6vwfR9Vd/cCfNuI=
+	 MIME-Version:Content-Type; b=V/z1kLpOfVav10Fd4iqRECrpeg0vjf2zjlErJU69JID7L7DNAJkZo3OVMt6hZLLRBEqPTrFwVHjO89qdPQAnPfSAuRwj7aNAr1BKJFakg+Dz+86Z54jBW4A6/VoBoSuI+wzQ5Nn7ip3YJuUxpEzz6lcLA2pgd6FW5mHEDMFoFAc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.88
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed40:db22:6af9:7d18:6ee8])
 	by michel.telenet-ops.be with bizsmtp
-	id tZ2e2B0091TWuYv06Z2eww; Fri, 01 Mar 2024 22:02:43 +0100
+	id tZ2e2B00A1TWuYv06Z2ewx; Fri, 01 Mar 2024 22:02:43 +0100
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1rgA1T-0024gW-AB;
+	id 1rgA1T-0024gY-Ap;
 	Fri, 01 Mar 2024 22:02:38 +0100
 Received: from geert by rox.of.borg with local (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1rgA1e-00D8rW-4M;
+	id 1rgA1e-00D8rb-52;
 	Fri, 01 Mar 2024 22:02:38 +0100
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: Yoshinori Sato <ysato@users.sourceforge.jp>,
@@ -57,9 +57,9 @@ Cc: Steven Rostedt <rostedt@goodmis.org>,
 	linux-sh@vger.kernel.org,
 	linux-trace-kernel@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 08/20] sh: boot: Add proper forward declarations
-Date: Fri,  1 Mar 2024 22:02:22 +0100
-Message-Id: <2614d991c816ece903ef47c715bcc53881d34f3f.1709326528.git.geert+renesas@glider.be>
+Subject: [PATCH 09/20] sh: ftrace: Fix missing prototypes
+Date: Fri,  1 Mar 2024 22:02:23 +0100
+Message-Id: <910c8846a025e1c3b744a83ddf8e2816a3c5569d.1709326528.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1709326528.git.geert+renesas@glider.be>
 References: <cover.1709326528.git.geert+renesas@glider.be>
@@ -72,90 +72,75 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-arch/sh/boot/compressed/cache.c:2:5: warning: no previous prototype for ‘cache_control’ [-Wmissing-prototypes]
-arch/sh/boot/compressed/misc.c:115:6: warning: no previous prototype for ‘ftrace_stub’ [-Wmissing-prototypes]
-arch/sh/boot/compressed/misc.c:118:6: warning: no previous prototype for ‘arch_ftrace_ops_list_func’ [-Wmissing-prototypes]
-arch/sh/boot/compressed/misc.c:128:6: warning: no previous prototype for ‘decompress_kernel’ [-Wmissing-prototypes]
+arch/sh/kernel/ftrace.c:130:6: warning: no previous prototype for ‘arch_ftrace_nmi_enter’ [-Wmissing-prototypes]
+arch/sh/kernel/ftrace.c:140:6: warning: no previous prototype for ‘arch_ftrace_nmi_exit’ [-Wmissing-prototypes]
+arch/sh/kernel/ftrace.c:316:6: warning: no previous prototype for ‘prepare_ftrace_return’ [-Wmissing-prototypes]
+
+Fix this by moving existing forward declarations to <asm/ftrace.h>, and
+adding the missing forward declaration for prepare_ftrace_return().
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- arch/sh/boot/compressed/cache.c |  3 +++
- arch/sh/boot/compressed/cache.h | 10 ++++++++++
- arch/sh/boot/compressed/misc.c  |  8 +++-----
- arch/sh/boot/compressed/misc.h  |  9 +++++++++
- 4 files changed, 25 insertions(+), 5 deletions(-)
- create mode 100644 arch/sh/boot/compressed/cache.h
- create mode 100644 arch/sh/boot/compressed/misc.h
+ arch/sh/include/asm/ftrace.h | 10 ++++++++++
+ arch/sh/kernel/traps.c       | 10 ++--------
+ 2 files changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/arch/sh/boot/compressed/cache.c b/arch/sh/boot/compressed/cache.c
-index 31e04ff4841ed084..95c1e73ccbb7e011 100644
---- a/arch/sh/boot/compressed/cache.c
-+++ b/arch/sh/boot/compressed/cache.c
-@@ -1,4 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
-+
-+#include "cache.h"
-+
- int cache_control(unsigned int command)
- {
- 	volatile unsigned int *p = (volatile unsigned int *) 0x80000000;
-diff --git a/arch/sh/boot/compressed/cache.h b/arch/sh/boot/compressed/cache.h
-new file mode 100644
-index 0000000000000000..b622b68c87f59b97
---- /dev/null
-+++ b/arch/sh/boot/compressed/cache.h
-@@ -0,0 +1,10 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef CACHE_H
-+#define CACHE_H
-+
-+#define CACHE_ENABLE	0
-+#define CACHE_DISABLE	1
-+
-+int cache_control(unsigned int command);
-+
-+#endif /* CACHE_H */
-diff --git a/arch/sh/boot/compressed/misc.c b/arch/sh/boot/compressed/misc.c
-index ca05c99a3d5b488d..5178150ca6650dcf 100644
---- a/arch/sh/boot/compressed/misc.c
-+++ b/arch/sh/boot/compressed/misc.c
-@@ -16,6 +16,9 @@
- #include <asm/addrspace.h>
- #include <asm/page.h>
+diff --git a/arch/sh/include/asm/ftrace.h b/arch/sh/include/asm/ftrace.h
+index b1c1dc0cc261d1db..1c10e106639098fc 100644
+--- a/arch/sh/include/asm/ftrace.h
++++ b/arch/sh/include/asm/ftrace.h
+@@ -33,6 +33,8 @@ static inline unsigned long ftrace_call_adjust(unsigned long addr)
+ 	return addr;
+ }
  
-+#include "cache.h"
-+#include "misc.h"
++void prepare_ftrace_return(unsigned long *parent, unsigned long self_addr);
 +
- /*
-  * gzip declarations
-  */
-@@ -26,11 +29,6 @@
- #undef memcpy
- #define memzero(s, n)     memset ((s), 0, (n))
+ #endif /* __ASSEMBLY__ */
+ #endif /* CONFIG_FUNCTION_TRACER */
  
--/* cache.c */
--#define CACHE_ENABLE      0
--#define CACHE_DISABLE     1
--int cache_control(unsigned int command);
+@@ -43,6 +45,14 @@ extern void *return_address(unsigned int);
+ 
+ #define ftrace_return_address(n) return_address(n)
+ 
++#ifdef CONFIG_DYNAMIC_FTRACE
++extern void arch_ftrace_nmi_enter(void);
++extern void arch_ftrace_nmi_exit(void);
++#else
++static inline void arch_ftrace_nmi_enter(void) { }
++static inline void arch_ftrace_nmi_exit(void) { }
++#endif
++
+ #endif /* __ASSEMBLY__ */
+ 
+ #endif /* __ASM_SH_FTRACE_H */
+diff --git a/arch/sh/kernel/traps.c b/arch/sh/kernel/traps.c
+index 01884054aeb2bd30..4339c4cafa79ce2a 100644
+--- a/arch/sh/kernel/traps.c
++++ b/arch/sh/kernel/traps.c
+@@ -15,6 +15,8 @@
+ 
+ #include <linux/extable.h>
+ #include <linux/module.h>	/* print_modules */
++
++#include <asm/ftrace.h>
+ #include <asm/unwinder.h>
+ #include <asm/traps.h>
+ 
+@@ -170,14 +172,6 @@ BUILD_TRAP_HANDLER(bug)
+ 	force_sig(SIGTRAP);
+ }
+ 
+-#ifdef CONFIG_DYNAMIC_FTRACE
+-extern void arch_ftrace_nmi_enter(void);
+-extern void arch_ftrace_nmi_exit(void);
+-#else
+-static inline void arch_ftrace_nmi_enter(void) { }
+-static inline void arch_ftrace_nmi_exit(void) { }
+-#endif
 -
- extern char input_data[];
- extern int input_len;
- static unsigned char *output;
-diff --git a/arch/sh/boot/compressed/misc.h b/arch/sh/boot/compressed/misc.h
-new file mode 100644
-index 0000000000000000..2b4534faa3052857
---- /dev/null
-+++ b/arch/sh/boot/compressed/misc.h
-@@ -0,0 +1,9 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef MISC_H
-+#define MISC_H
-+
-+void arch_ftrace_ops_list_func(void);
-+void decompress_kernel(void);
-+void ftrace_stub(void);
-+
-+#endif /* MISC_H */
+ BUILD_TRAP_HANDLER(nmi)
+ {
+ 	TRAP_HANDLER_DECL;
 -- 
 2.34.1
 
