@@ -1,58 +1,64 @@
-Return-Path: <linux-sh+bounces-473-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-487-lists+linux-sh=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66DB386EA82
-	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 21:43:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C36C186EAD6
+	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 22:02:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B6B21F23AAA
-	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 20:43:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BE302833B5
+	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 21:02:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97B863D982;
-	Fri,  1 Mar 2024 20:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6018F20DCD;
+	Fri,  1 Mar 2024 21:02:54 +0000 (UTC)
 X-Original-To: linux-sh@vger.kernel.org
-Received: from albert.telenet-ops.be (albert.telenet-ops.be [195.130.137.90])
+Received: from laurent.telenet-ops.be (laurent.telenet-ops.be [195.130.137.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AACBB3D547
-	for <linux-sh@vger.kernel.org>; Fri,  1 Mar 2024 20:43:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.90
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 894CF5677A
+	for <linux-sh@vger.kernel.org>; Fri,  1 Mar 2024 21:02:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709325812; cv=none; b=tPNkLEUxC3fRhkim0gmws9WxdLvS8nncHV/eATBH+jDClX0kOo8RPCfetMTE5iTHPq2b4849Q6eLrxr0mm++RcP0O4XalReXU+AbQ6dHH0Ky3cdC2gJJTjx8XcTmwtSTGNZwp92VJ+ciusYU/PQEdUyVPy1x+6DLB0ue+sPBxcM=
+	t=1709326974; cv=none; b=eSCOkXjYtjJ7EyRN/OsqvLu+M+1AqEodthKDfG8MHoAwbMCnYLFv5Sn9ar6fxpRShtxXNkG/CzYlROZcDIHcYOOgOt6xVMh7EX085okTYEzHLfKEWaW1aEjrsPRdBiayOPeGOwREI20wlo0nkkm3APU4I1x9JOTHQ//InAouvpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709325812; c=relaxed/simple;
-	bh=jBducU6AissFsRYWwrJSlsUVKj30198x189rdgDINZY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XWmo/JCkkRwLjpvKUYiMhWr1SlEjk8iVshtLwgwYEAa4pfFeWMtRhShy0JcrcPezYDlMs0LU0s002b8+Wb2inx10VkpmuptlMUGgTBiS3kG/Oo6Tpaj2I6RGJ1jxppkPhMFudWhyAuJVk7Pg7BTe6UG9o+l5oFroYbP0prP1cOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.90
+	s=arc-20240116; t=1709326974; c=relaxed/simple;
+	bh=JP8gu5UENU6mJQHg17EqcXuGMt1BqsvT7243NQmMnuk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=CtWvmjWTf4Itr2aRWC6QdGj9RHqQtIbcskCdjkohrzGNDcobc6aeqUEWtBodhSCsy7e7Skckwec8gWgUSczEi0pFg9SZYkQ+4nbhhKZWWLbwjqs6m2hggrGH+QnjFWA7GE55yhuZS6IT/Vp13SRPlkWb7TxCOfeYfXYd5TZYVFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed40:db22:6af9:7d18:6ee8])
-	by albert.telenet-ops.be with bizsmtp
-	id tYjM2B0021TWuYv06YjMa6; Fri, 01 Mar 2024 21:43:21 +0100
+	by laurent.telenet-ops.be with bizsmtp
+	id tZ2e2B0051TWuYv01Z2e2j; Fri, 01 Mar 2024 22:02:44 +0100
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1rg9io-0024bO-2H;
-	Fri, 01 Mar 2024 21:43:20 +0100
+	id 1rgA1T-0024g2-5S;
+	Fri, 01 Mar 2024 22:02:38 +0100
 Received: from geert by rox.of.borg with local (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1rg9iy-00D2xT-Q1;
-	Fri, 01 Mar 2024 21:43:20 +0100
+	id 1rgA1d-00D8qw-V1;
+	Fri, 01 Mar 2024 22:02:37 +0100
 From: Geert Uytterhoeven <geert+renesas@glider.be>
-To: Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
+To: Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Rich Felker <dalias@libc.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
 	Arnd Bergmann <arnd@arndb.de>
-Cc: linux-sh@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
+	"Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Nick Piggin <npiggin@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	linux-sh@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH/RFC] locking/spinlocks: Make __raw_* lock ops static
-Date: Fri,  1 Mar 2024 21:43:19 +0100
-Message-Id: <c395b02613572131568bc1fd1bc456d20d1a5426.1709325647.git.geert+renesas@glider.be>
+Subject: [PATCH 00/20] sh: Fix missing prototypes
+Date: Fri,  1 Mar 2024 22:02:14 +0100
+Message-Id: <cover.1709326528.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-sh@vger.kernel.org
@@ -60,73 +66,89 @@ List-Id: <linux-sh.vger.kernel.org>
 List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-sh/sdk7786_defconfig (CONFIG_GENERIC_LOCKBREAK=y and
-CONFIG_DEBUG_LOCK_ALLOC=n):
+	Hi all,
 
-kernel/locking/spinlock.c:68:17: warning: no previous prototype for '__raw_spin_lock' [-Wmissing-prototypes]
-kernel/locking/spinlock.c:80:26: warning: no previous prototype for '__raw_spin_lock_irqsave' [-Wmissing-prototypes]
-kernel/locking/spinlock.c:98:17: warning: no previous prototype for '__raw_spin_lock_irq' [-Wmissing-prototypes]
-kernel/locking/spinlock.c:103:17: warning: no previous prototype for '__raw_spin_lock_bh' [-Wmissing-prototypes]
-kernel/locking/spinlock.c:68:17: warning: no previous prototype for '__raw_read_lock' [-Wmissing-prototypes]
-kernel/locking/spinlock.c:80:26: warning: no previous prototype for '__raw_read_lock_irqsave' [-Wmissing-prototypes]
-kernel/locking/spinlock.c:98:17: warning: no previous prototype for '__raw_read_lock_irq' [-Wmissing-prototypes]
-kernel/locking/spinlock.c:103:17: warning: no previous prototype for '__raw_read_lock_bh' [-Wmissing-prototypes]
-kernel/locking/spinlock.c:68:17: warning: no previous prototype for '__raw_write_lock' [-Wmissing-prototypes]
-kernel/locking/spinlock.c:80:26: warning: no previous prototype for '__raw_write_lock_irqsave' [-Wmissing-prototypes]
-kernel/locking/spinlock.c:98:17: warning: no previous prototype for '__raw_write_lock_irq' [-Wmissing-prototypes]
-kernel/locking/spinlock.c:103:17: warning: no previous prototype for '__raw_write_lock_bh' [-Wmissing-prototypes]
+This patch series fixes several "no previous prototype for <foo>"
+warnings when building a kernel for SuperH.
 
-Fix this by making the __raw_* lock ops static.
+Known issues:
+  - The various warnings about cache functions are not yet fixed, but
+    I didn't want to hold off the rest of this series,
+  - sdk7786_defconfig needs "[PATCH/RFC] locking/spinlocks: Make __raw_*
+    lock ops static" [1],
+  - Probably there are more warnings to fix, I didn't build all
+    defconfigs.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
-Compile-tested only.
+This has been boot-tested on landisk and on qemu/rts7751r2d.
 
-Is SH really the only SMP platform where CONFIG_GENERIC_LOCKBREAK=y?
----
- kernel/locking/spinlock.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Thanks for your comments!
 
-diff --git a/kernel/locking/spinlock.c b/kernel/locking/spinlock.c
-index 8475a0794f8c5ad2..7009b568e6255d64 100644
---- a/kernel/locking/spinlock.c
-+++ b/kernel/locking/spinlock.c
-@@ -65,7 +65,7 @@ EXPORT_PER_CPU_SYMBOL(__mmiowb_state);
-  * towards that other CPU that it should break the lock ASAP.
-  */
- #define BUILD_LOCK_OPS(op, locktype)					\
--void __lockfunc __raw_##op##_lock(locktype##_t *lock)			\
-+static void __lockfunc __raw_##op##_lock(locktype##_t *lock)		\
- {									\
- 	for (;;) {							\
- 		preempt_disable();					\
-@@ -77,7 +77,7 @@ void __lockfunc __raw_##op##_lock(locktype##_t *lock)			\
- 	}								\
- }									\
- 									\
--unsigned long __lockfunc __raw_##op##_lock_irqsave(locktype##_t *lock)	\
-+static unsigned long __lockfunc __raw_##op##_lock_irqsave(locktype##_t *lock) \
- {									\
- 	unsigned long flags;						\
- 									\
-@@ -95,12 +95,12 @@ unsigned long __lockfunc __raw_##op##_lock_irqsave(locktype##_t *lock)	\
- 	return flags;							\
- }									\
- 									\
--void __lockfunc __raw_##op##_lock_irq(locktype##_t *lock)		\
-+static void __lockfunc __raw_##op##_lock_irq(locktype##_t *lock)	\
- {									\
- 	_raw_##op##_lock_irqsave(lock);					\
- }									\
- 									\
--void __lockfunc __raw_##op##_lock_bh(locktype##_t *lock)		\
-+static void __lockfunc __raw_##op##_lock_bh(locktype##_t *lock)		\
- {									\
- 	unsigned long flags;						\
- 									\
+[1] https://lore.kernel.org/linux-sh/c395b02613572131568bc1fd1bc456d20d1a5426.1709325647.git.geert+renesas@glider.be
+
+Geert Uytterhoeven (20):
+  sh: pgtable: Fix missing prototypes
+  sh: fpu: Add missing forward declarations
+  sh: syscall: Add missing forward declaration for sys_cacheflush()
+  sh: tlb: Add missing forward declaration for handle_tlbmiss()
+  sh: return_address: Add missing #include <asm/ftrace.h>
+  sh: traps: Add missing #include <asm/setup.h>
+  sh: hw_breakpoint: Add missing forward declaration for
+    arch_bp_generic_fields()
+  sh: boot: Add proper forward declarations
+  sh: ftrace: Fix missing prototypes
+  sh: nommu: Add missing #include <asm/cacheflush.h>
+  sh: math-emu: Add missing #include <asm/fpu.h>
+  sh: dma: Remove unused dmac_search_free_channel()
+  sh: sh2a: Add missing #include <asm/processor.h>
+  sh: sh7786: Remove unused sh7786_usb_use_exclock()
+  sh: smp: Fix missing prototypes
+  sh: kprobes: Merge arch_copy_kprobe() into arch_prepare_kprobe()
+  sh: kprobes: Make trampoline_probe_handler() static
+  sh: kprobes: Remove unneeded kprobe_opcode_t casts
+  sh: dwarf: Make dwarf_lookup_fde() static
+  [RFC] sh: dma: Remove unused functionality
+
+ arch/sh/boot/compressed/cache.c         |   3 +
+ arch/sh/boot/compressed/cache.h         |  10 ++
+ arch/sh/boot/compressed/misc.c          |   8 +-
+ arch/sh/boot/compressed/misc.h          |   9 ++
+ arch/sh/drivers/dma/dma-api.c           | 143 ------------------------
+ arch/sh/include/asm/dma.h               |   7 --
+ arch/sh/include/asm/fpu.h               |   3 +
+ arch/sh/include/asm/ftrace.h            |  10 ++
+ arch/sh/include/asm/hw_breakpoint.h     |   2 +
+ arch/sh/include/asm/syscalls.h          |   1 +
+ arch/sh/include/asm/tlb.h               |   4 +
+ arch/sh/kernel/cpu/sh2a/opcode_helper.c |   2 +
+ arch/sh/kernel/cpu/sh4a/setup-sh7786.c  |  14 ---
+ arch/sh/kernel/dwarf.c                  |   2 +-
+ arch/sh/kernel/kprobes.c                |  13 +--
+ arch/sh/kernel/return_address.c         |   2 +
+ arch/sh/kernel/smp.c                    |   4 +-
+ arch/sh/kernel/traps.c                  |  10 +-
+ arch/sh/kernel/traps_32.c               |   1 +
+ arch/sh/math-emu/math.c                 |   2 +
+ arch/sh/mm/nommu.c                      |   2 +
+ arch/sh/mm/pgtable.c                    |   4 +-
+ arch/sh/mm/tlbex_32.c                   |   1 +
+ 23 files changed, 68 insertions(+), 189 deletions(-)
+ create mode 100644 arch/sh/boot/compressed/cache.h
+ create mode 100644 arch/sh/boot/compressed/misc.h
+
 -- 
 2.34.1
 
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds
 
