@@ -1,45 +1,45 @@
-Return-Path: <linux-sh+bounces-477-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-476-lists+linux-sh=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30C2886EACD
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 169AD86EACC
 	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 22:02:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B97E31F229F8
-	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 21:02:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78F74284E10
+	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 21:02:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3417A20DCD;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 216C056740;
 	Fri,  1 Mar 2024 21:02:49 +0000 (UTC)
 X-Original-To: linux-sh@vger.kernel.org
 Received: from albert.telenet-ops.be (albert.telenet-ops.be [195.130.137.90])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC8CE5677C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C027A20DCD
 	for <linux-sh@vger.kernel.org>; Fri,  1 Mar 2024 21:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.90
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709326969; cv=none; b=axad/SyusussJxilncw+MustzLSQTviYwtZD5btpU9WSqIjhtAAzoMNFMNmki5E10Le0crBK+x9YupIsJv445G+jyw7LNIWnfO+x0yYX20iJnNMYaPNCo/n79jNd0wJttTsPos9tFPoZMnS59aiZRYeUKWd9PQa68IUTkIYzdis=
+	t=1709326969; cv=none; b=NFDoWZirSWeLg6udBTgxeNyJTVeaVKXfe5ZFak2bGJICk1b9Woadj/jhALoPdJ3ug1zPvj9a8aI25X2h6wT6oj7sPytQs0lUxWLhlaHmG5MdW18SIfbSKbecXFQ+DluVcojzKpDTKv9NyfDUfPJxZHl0INJmnJuA7wyKIiHUxX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1709326969; c=relaxed/simple;
-	bh=IyCbUH6KEXOFyUaxC6Z2AdGKN2FSDiARrECLCPpfkC4=;
+	bh=BPPrtYYkG1jISGkKN9c8XXBC80WiPKn1mQRJLvAiIsg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=URh3MyobgeJ9nty9kKK0oQNhEcj1A6kChRZ8od+aHStPNjIe0O6mOFQg3if0LElHHMi+s7OmOarzBh+zX+nGHVInpgrhkeCXsfzJcwgvv8HFBSnw0T4cjHOoytdClc1myHhp59VOt2yjgFms6uzYCtPyA/kORV3KgxbAYWZUNN8=
+	 MIME-Version:Content-Type; b=Shp7D8hcyLEbmYfJbgDFTaCtGaB68i7AiIJ+dVknSY/5ib7glLIDTuYgo0y8nDEyL9SRS9rGKgZcb6psPVGWOm00mJYRaOmCv2GuW/hKA4XNvM8pizF0w3koWSdYtSyJctmkRBEW+mdugjB6xG/mEPN2iRE2pQ2bdkabMl2qAs4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.90
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed40:db22:6af9:7d18:6ee8])
 	by albert.telenet-ops.be with bizsmtp
-	id tZ2e2B0061TWuYv06Z2eSj; Fri, 01 Mar 2024 22:02:43 +0100
+	id tZ2e2B0071TWuYv06Z2eSl; Fri, 01 Mar 2024 22:02:43 +0100
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1rgA1T-0024g4-5p;
+	id 1rgA1T-0024g6-6X;
 	Fri, 01 Mar 2024 22:02:38 +0100
 Received: from geert by rox.of.borg with local (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1rgA1e-00D8r3-0D;
+	id 1rgA1e-00D8r8-0s;
 	Fri, 01 Mar 2024 22:02:38 +0100
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: Yoshinori Sato <ysato@users.sourceforge.jp>,
@@ -57,9 +57,9 @@ Cc: Steven Rostedt <rostedt@goodmis.org>,
 	linux-sh@vger.kernel.org,
 	linux-trace-kernel@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 02/20] sh: fpu: Add missing forward declarations
-Date: Fri,  1 Mar 2024 22:02:16 +0100
-Message-Id: <1847145fc2181313b78bea8a81e6f0269d765968.1709326528.git.geert+renesas@glider.be>
+Subject: [PATCH 03/20] sh: syscall: Add missing forward declaration for sys_cacheflush()
+Date: Fri,  1 Mar 2024 22:02:17 +0100
+Message-Id: <b1c218986fb77d78303626b43c97925809045018.1709326528.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1709326528.git.geert+renesas@glider.be>
 References: <cover.1709326528.git.geert+renesas@glider.be>
@@ -72,28 +72,25 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-arch/sh/kernel/cpu/sh4/fpu.c:389:6: warning: no previous prototype for ‘float_raise’ [-Wmissing-prototypes]
-arch/sh/kernel/cpu/sh4/fpu.c:394:5: warning: no previous prototype for ‘float_rounding_mode’ [-Wmissing-prototypes]
+arch/sh/kernel/sys_sh.c:58:16: warning: no previous prototype for ‘sys_cacheflush’ [-Wmissing-prototypes]
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- arch/sh/include/asm/fpu.h | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/sh/include/asm/syscalls.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/sh/include/asm/fpu.h b/arch/sh/include/asm/fpu.h
-index 04584be8986c418a..0379f4cce5ed25fb 100644
---- a/arch/sh/include/asm/fpu.h
-+++ b/arch/sh/include/asm/fpu.h
-@@ -64,6 +64,9 @@ static inline void clear_fpu(struct task_struct *tsk, struct pt_regs *regs)
- 	preempt_enable();
- }
+diff --git a/arch/sh/include/asm/syscalls.h b/arch/sh/include/asm/syscalls.h
+index 387105316d2882fe..39240e06e8aa5f6b 100644
+--- a/arch/sh/include/asm/syscalls.h
++++ b/arch/sh/include/asm/syscalls.h
+@@ -8,6 +8,7 @@ asmlinkage int old_mmap(unsigned long addr, unsigned long len,
+ asmlinkage long sys_mmap2(unsigned long addr, unsigned long len,
+ 			  unsigned long prot, unsigned long flags,
+ 			  unsigned long fd, unsigned long pgoff);
++asmlinkage int sys_cacheflush(unsigned long addr, unsigned long len, int op);
  
-+void float_raise(unsigned int flags);
-+int float_rounding_mode(void);
-+
- #endif /* __ASSEMBLY__ */
+ #include <asm/syscalls_32.h>
  
- #endif /* __ASM_SH_FPU_H */
 -- 
 2.34.1
 
