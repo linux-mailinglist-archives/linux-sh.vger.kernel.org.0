@@ -1,45 +1,45 @@
-Return-Path: <linux-sh+bounces-492-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-481-lists+linux-sh=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD34986EADF
-	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 22:03:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AC7C86EAD9
+	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 22:02:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 689DDB2229C
-	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 21:02:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC0F5B221B3
+	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 21:02:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C768056B63;
-	Fri,  1 Mar 2024 21:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8247156B85;
+	Fri,  1 Mar 2024 21:02:50 +0000 (UTC)
 X-Original-To: linux-sh@vger.kernel.org
-Received: from baptiste.telenet-ops.be (baptiste.telenet-ops.be [195.130.132.51])
+Received: from michel.telenet-ops.be (michel.telenet-ops.be [195.130.137.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A599556B77
-	for <linux-sh@vger.kernel.org>; Fri,  1 Mar 2024 21:02:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 150CB56B70
+	for <linux-sh@vger.kernel.org>; Fri,  1 Mar 2024 21:02:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.88
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709326975; cv=none; b=a+qT9PmygEzLHqv/o7Fd+knbfLcEg77rmvVKkQZcmre6/fWrtrK7i4AHsVuG5RbHx+rU0+4VE3iumMiCPoLNopMOSgjjOqi+kmvO0gCo7lF4YStWjaJdgotj6nyWNRAF2580HAiKZu3BCzcySvZgZcc+GW4aXwJvNOYxViv8qh4=
+	t=1709326970; cv=none; b=IAGUM+2VBUOZcN3gcKTMjiqmjlO1bvy7V1R9NMu/JCuyX70GNpTr8r12rKW45JVxxJUvtI/2NoIFYs9Dsuwutj9TYoD+yrzJXqvySnlmNDtReTGBvWzEZM5lAVbsUV8n6V9EwopgoSGwInvDBHTNRVH+1Vl8cQYIsb6KUG+/ens=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709326975; c=relaxed/simple;
-	bh=XQY+hwm/pWBlN5cYBxNabpimlfOZYJcYfzShDnZXI5Q=;
+	s=arc-20240116; t=1709326970; c=relaxed/simple;
+	bh=TGrXuKYKqikce7TVqIhLwWpcj04ZDAEWrxdVVfhjCTk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WEWq257CpG5vcuSnXcSKudl/ppq5knWvQk0JGeuA1guORm5yvIZZOPeUCG2zD//XR+XMBy9OsJMsxYjl7LYYFlUAs9N3mW+5hBBdFqZq6DeNlFGSxqH7o90/wsPRt5uvnMXYWYUQ35GWRD0kbJo41AXUDCwpIkre/WKhnt4WFDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.51
+	 MIME-Version:Content-Type; b=TYNfDDGPxL6y+Hg2gouqls/0zgYnhNJ0PuIR4HfK/fAx4gL3YFlryfpJN8uCr1BPE5zKXQeD2jUCyupcahaV3teyh8F0H0E+drPdJnQIAr7Ph3wnb+0w9TVztqIx46yf87dMZBfy7FHsYXkg+133qfwm8RHws0kxTIwhSwTFdTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.88
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed40:db22:6af9:7d18:6ee8])
-	by baptiste.telenet-ops.be with bizsmtp
-	id tZ2e2B0041TWuYv01Z2eXk; Fri, 01 Mar 2024 22:02:45 +0100
+	by michel.telenet-ops.be with bizsmtp
+	id tZ2e2B0071TWuYv06Z2ewu; Fri, 01 Mar 2024 22:02:43 +0100
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1rgA1T-0024gJ-80;
+	id 1rgA1T-0024gO-8m;
 	Fri, 01 Mar 2024 22:02:38 +0100
 Received: from geert by rox.of.borg with local (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1rgA1e-00D8rG-2I;
+	id 1rgA1e-00D8rK-2y;
 	Fri, 01 Mar 2024 22:02:38 +0100
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: Yoshinori Sato <ysato@users.sourceforge.jp>,
@@ -57,9 +57,9 @@ Cc: Steven Rostedt <rostedt@goodmis.org>,
 	linux-sh@vger.kernel.org,
 	linux-trace-kernel@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 05/20] sh: return_address: Add missing #include <asm/ftrace.h>
-Date: Fri,  1 Mar 2024 22:02:19 +0100
-Message-Id: <45685f62c9132aca5dc3c028471218393b51f34c.1709326528.git.geert+renesas@glider.be>
+Subject: [PATCH 06/20] sh: traps: Add missing #include <asm/setup.h>
+Date: Fri,  1 Mar 2024 22:02:20 +0100
+Message-Id: <a7750e57cc077ca6e27d0b9bd6b123d42894bc17.1709326528.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1709326528.git.geert+renesas@glider.be>
 References: <cover.1709326528.git.geert+renesas@glider.be>
@@ -72,26 +72,24 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-arch/sh/kernel/return_address.c:49:7: warning: no previous prototype for ‘return_address’ [-Wmissing-prototypes]
+arch/sh/kernel/traps_32.c:735:6: warning: no previous prototype for ‘per_cpu_trap_init’ [-Wmissing-prototypes]
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- arch/sh/kernel/return_address.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/sh/kernel/traps_32.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/sh/kernel/return_address.c b/arch/sh/kernel/return_address.c
-index 8838094c9ff9444f..2ce22f11eab37839 100644
---- a/arch/sh/kernel/return_address.c
-+++ b/arch/sh/kernel/return_address.c
-@@ -7,7 +7,9 @@
-  */
- #include <linux/kernel.h>
- #include <linux/module.h>
-+
- #include <asm/dwarf.h>
-+#include <asm/ftrace.h>
- 
- #ifdef CONFIG_DWARF_UNWINDER
+diff --git a/arch/sh/kernel/traps_32.c b/arch/sh/kernel/traps_32.c
+index 6cdda3a621a1e577..8cd4b05df75c3e07 100644
+--- a/arch/sh/kernel/traps_32.c
++++ b/arch/sh/kernel/traps_32.c
+@@ -27,6 +27,7 @@
+ #include <asm/alignment.h>
+ #include <asm/fpu.h>
+ #include <asm/kprobes.h>
++#include <asm/setup.h>
+ #include <asm/traps.h>
+ #include <asm/bl_bit.h>
  
 -- 
 2.34.1
