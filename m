@@ -1,46 +1,46 @@
-Return-Path: <linux-sh+bounces-485-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-477-lists+linux-sh=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF4E986EAD4
-	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 22:02:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30C2886EACD
+	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 22:02:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A226A2832A0
-	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 21:02:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B97E31F229F8
+	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 21:02:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29AE856B6E;
-	Fri,  1 Mar 2024 21:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3417A20DCD;
+	Fri,  1 Mar 2024 21:02:49 +0000 (UTC)
 X-Original-To: linux-sh@vger.kernel.org
-Received: from andre.telenet-ops.be (andre.telenet-ops.be [195.130.132.53])
+Received: from albert.telenet-ops.be (albert.telenet-ops.be [195.130.137.90])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A7A56B86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC8CE5677C
 	for <linux-sh@vger.kernel.org>; Fri,  1 Mar 2024 21:02:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.90
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709326971; cv=none; b=sx8Z3QND2kIMxKrsikfSQNQKsxI7gb+W5sk9U55l7FPys/Vy+muVbV9eoyaLRan02enh2bzb0+cQJsZoEokm9qzD0LvrpucXvHEowP4rMjjtGc26taAVPXTz6bDtjIhq4EUxaz/IOyakLsx+gXrrAFGhFaYMWo3U5ps1N24yJ7A=
+	t=1709326969; cv=none; b=axad/SyusussJxilncw+MustzLSQTviYwtZD5btpU9WSqIjhtAAzoMNFMNmki5E10Le0crBK+x9YupIsJv445G+jyw7LNIWnfO+x0yYX20iJnNMYaPNCo/n79jNd0wJttTsPos9tFPoZMnS59aiZRYeUKWd9PQa68IUTkIYzdis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709326971; c=relaxed/simple;
-	bh=1Synhu8Wj+iI/4pFeBUM+/X8uo4aR7TufZvYlYZi3oc=;
+	s=arc-20240116; t=1709326969; c=relaxed/simple;
+	bh=IyCbUH6KEXOFyUaxC6Z2AdGKN2FSDiARrECLCPpfkC4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=T0I21su9QbNNv8XbfE6T4g0ax5PW0v2knYDMB7nw+7v44a8NU/SwU0gjplqqpbEjuREc85/pUjADSOGgxTAIqQVgId7pJQsYgSgCaK0WviKKjo5HYa3Sb9j/qyzKXWrE2PWJMuzFPkn/h7PRoYlGpQ6hV1D9uid+ogALdq6vefY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.53
+	 MIME-Version:Content-Type; b=URh3MyobgeJ9nty9kKK0oQNhEcj1A6kChRZ8od+aHStPNjIe0O6mOFQg3if0LElHHMi+s7OmOarzBh+zX+nGHVInpgrhkeCXsfzJcwgvv8HFBSnw0T4cjHOoytdClc1myHhp59VOt2yjgFms6uzYCtPyA/kORV3KgxbAYWZUNN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.90
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed40:db22:6af9:7d18:6ee8])
-	by andre.telenet-ops.be with bizsmtp
-	id tZ2e2B0031TWuYv01Z2emx; Fri, 01 Mar 2024 22:02:44 +0100
+	by albert.telenet-ops.be with bizsmtp
+	id tZ2e2B0061TWuYv06Z2eSj; Fri, 01 Mar 2024 22:02:43 +0100
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1rgA1T-0024g3-5U;
+	id 1rgA1T-0024g4-5p;
 	Fri, 01 Mar 2024 22:02:38 +0100
 Received: from geert by rox.of.borg with local (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1rgA1d-00D8qz-Vn;
-	Fri, 01 Mar 2024 22:02:37 +0100
+	id 1rgA1e-00D8r3-0D;
+	Fri, 01 Mar 2024 22:02:38 +0100
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: Yoshinori Sato <ysato@users.sourceforge.jp>,
 	Rich Felker <dalias@libc.org>,
@@ -57,9 +57,9 @@ Cc: Steven Rostedt <rostedt@goodmis.org>,
 	linux-sh@vger.kernel.org,
 	linux-trace-kernel@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 01/20] sh: pgtable: Fix missing prototypes
-Date: Fri,  1 Mar 2024 22:02:15 +0100
-Message-Id: <aa1328ea3327d6685aab76d5787cb77c996052c0.1709326528.git.geert+renesas@glider.be>
+Subject: [PATCH 02/20] sh: fpu: Add missing forward declarations
+Date: Fri,  1 Mar 2024 22:02:16 +0100
+Message-Id: <1847145fc2181313b78bea8a81e6f0269d765968.1709326528.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1709326528.git.geert+renesas@glider.be>
 References: <cover.1709326528.git.geert+renesas@glider.be>
@@ -69,43 +69,31 @@ List-Id: <linux-sh.vger.kernel.org>
 List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-arch/sh/mm/pgtable.c:12:6: warning: no previous prototype for 'pgd_ctor' [-Wmissing-prototypes]
-arch/sh/mm/pgtable.c:34:8: warning: no previous prototype for 'pgd_alloc' [-Wmissing-prototypes]
-arch/sh/mm/pgtable.c:39:6: warning: no previous prototype for 'pgd_free' [-Wmissing-prototypes]
-arch/sh/mm/pgtable.c:45:6: warning: no previous prototype for 'pud_populate' [-Wmissing-prototypes]
-arch/sh/mm/pgtable.c:50:8: warning: no previous prototype for 'pmd_alloc_one' [-Wmissing-prototypes]
-arch/sh/mm/pgtable.c:55:6: warning: no previous prototype for 'pmd_free' [-Wmissing-prototypes]
-
-Make pgd_ctor() static, as it is only used in this file.
-Include <asm/pgalloc.h> to fix the other warnings.
+arch/sh/kernel/cpu/sh4/fpu.c:389:6: warning: no previous prototype for ‘float_raise’ [-Wmissing-prototypes]
+arch/sh/kernel/cpu/sh4/fpu.c:394:5: warning: no previous prototype for ‘float_rounding_mode’ [-Wmissing-prototypes]
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- arch/sh/mm/pgtable.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/sh/include/asm/fpu.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/sh/mm/pgtable.c b/arch/sh/mm/pgtable.c
-index cf7ce4b5735954bf..3a4085ea0161fe56 100644
---- a/arch/sh/mm/pgtable.c
-+++ b/arch/sh/mm/pgtable.c
-@@ -2,12 +2,14 @@
- #include <linux/mm.h>
- #include <linux/slab.h>
+diff --git a/arch/sh/include/asm/fpu.h b/arch/sh/include/asm/fpu.h
+index 04584be8986c418a..0379f4cce5ed25fb 100644
+--- a/arch/sh/include/asm/fpu.h
++++ b/arch/sh/include/asm/fpu.h
+@@ -64,6 +64,9 @@ static inline void clear_fpu(struct task_struct *tsk, struct pt_regs *regs)
+ 	preempt_enable();
+ }
  
-+#include <asm/pgalloc.h>
++void float_raise(unsigned int flags);
++int float_rounding_mode(void);
 +
- static struct kmem_cache *pgd_cachep;
- #if PAGETABLE_LEVELS > 2
- static struct kmem_cache *pmd_cachep;
- #endif
+ #endif /* __ASSEMBLY__ */
  
--void pgd_ctor(void *x)
-+static void pgd_ctor(void *x)
- {
- 	pgd_t *pgd = x;
- 
+ #endif /* __ASM_SH_FPU_H */
 -- 
 2.34.1
 
