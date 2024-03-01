@@ -1,45 +1,45 @@
-Return-Path: <linux-sh+bounces-488-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-493-lists+linux-sh=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 306A486EAD7
-	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 22:02:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEA1186EADB
+	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 22:02:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00C641C21F7E
-	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 21:02:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 501AE282CD6
+	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 21:02:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B42BB56B79;
-	Fri,  1 Mar 2024 21:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB65E56B70;
+	Fri,  1 Mar 2024 21:02:55 +0000 (UTC)
 X-Original-To: linux-sh@vger.kernel.org
-Received: from xavier.telenet-ops.be (xavier.telenet-ops.be [195.130.132.52])
+Received: from baptiste.telenet-ops.be (baptiste.telenet-ops.be [195.130.132.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3E757300
-	for <linux-sh@vger.kernel.org>; Fri,  1 Mar 2024 21:02:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEED256B68
+	for <linux-sh@vger.kernel.org>; Fri,  1 Mar 2024 21:02:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709326974; cv=none; b=fsptVLoKlF2HiemhOHcE5FJ7nQoiEb5LUwqj1Ibz4tMGpJze5z5OYtWWso3aIcPj36qGsg6jWEeRtaSB1ywalQS6gXFvItlSs+Gr/pVotZAE42hRAtSdEdYcDpuqfIPndK3qEeDdQ2iwqcNrBYtoaLNh6OuT8XKs6tdylUuW6ak=
+	t=1709326975; cv=none; b=B1UPNBEqkYrjTQx6ss/NSu8hepkdASyJdfF1vj9Wmn8UdAPUsUYYSmWiP0csVfMVnwkEtI7eYiEplgJ0tlRIi0KIwfU9W9svJHKUWXJPiSLkMHgUloGuP35M9+CqBPzjEzb0Us37ME+2bwWXLc3yzdfPyn998QqXY8U5QI0TbRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709326974; c=relaxed/simple;
-	bh=vEl5nxIEuJjotrXH/NuuNutlo2SHKOIwPzsZzJtKDHg=;
+	s=arc-20240116; t=1709326975; c=relaxed/simple;
+	bh=9lW4m2hBqtoyBY9j/Of2rXuYGWJ22vtCm1tmtrE98Pk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=JUZEq5Ice2aFqX5eUhvADs3jeay5Ygd/P0o4L6jwlk0gYCF7C3rtXKitA/Zfi21PgJDvYy6JkLj/FmYLwpq+y7+qq9NutW3Gwf8If+ZvD9KLUIpBJOwZMcTUBpE347eyseFY+hRWGWVTqoxudn238JY2gUUugH/5hzIWV8zJblE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.52
+	 MIME-Version; b=DW3Odbf8nyXGyPjC4xGSNk6eEEbMn8e7cTx27CRdo36aCxdpqFP1DYs4a41ER+LEUybYrN0BmVTQ4lNl3OkH+yySAbb8WInF/pCn+K4Qx33jg5d6hSP9Ggd4y/rYRo4EiQtOn84ivunhR/e823ozvDBgTchYe5COEtp/1nW/ru4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed40:db22:6af9:7d18:6ee8])
-	by xavier.telenet-ops.be with bizsmtp
-	id tZ2e2B00B1TWuYv01Z2eDd; Fri, 01 Mar 2024 22:02:44 +0100
+	by baptiste.telenet-ops.be with bizsmtp
+	id tZ2e2B00B1TWuYv01Z2eXp; Fri, 01 Mar 2024 22:02:45 +0100
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1rgA1T-0024gy-Ep;
+	id 1rgA1T-0024h0-FT;
 	Fri, 01 Mar 2024 22:02:38 +0100
 Received: from geert by rox.of.borg with local (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1rgA1e-00D8s4-98;
+	id 1rgA1e-00D8s9-9o;
 	Fri, 01 Mar 2024 22:02:38 +0100
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: Yoshinori Sato <ysato@users.sourceforge.jp>,
@@ -57,9 +57,9 @@ Cc: Steven Rostedt <rostedt@goodmis.org>,
 	linux-sh@vger.kernel.org,
 	linux-trace-kernel@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 15/20] sh: smp: Fix missing prototypes
-Date: Fri,  1 Mar 2024 22:02:29 +0100
-Message-Id: <6b6b9a84b30ee56f57f409a7550c69d4aece5dc3.1709326528.git.geert+renesas@glider.be>
+Subject: [PATCH 16/20] sh: kprobes: Merge arch_copy_kprobe() into arch_prepare_kprobe()
+Date: Fri,  1 Mar 2024 22:02:30 +0100
+Message-Id: <717d47a19689cc944fae6e981a1ad7cae1642c89.1709326528.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1709326528.git.geert+renesas@glider.be>
 References: <cover.1709326528.git.geert+renesas@glider.be>
@@ -71,41 +71,45 @@ List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-arch/sh/kernel/smp.c:173:17: warning: no previous prototype for 'start_secondary' [-Wmissing-prototypes]
-arch/sh/kernel/smp.c:324:5: warning: no previous prototype for 'setup_profiling_timer' [-Wmissing-prototypes]
+arch/sh/kernel/kprobes.c:52:16: warning: no previous prototype for 'arch_copy_kprobe' [-Wmissing-prototypes]
 
-Make start_secondary() static, as it is only used in this file.
-Include <linux/profile.h> to fix the other warning.
+Although SH kprobes support was only merged in v2.6.28, it missed the
+earlier removal of the arch_copy_kprobe() callback in v2.6.15.
 
-There are no users outside this file, so make it static.
+Based on the powerpc part of commit 49a2a1b83ba6fa40 ("[PATCH] kprobes:
+changed from using spinlock to mutex").
 
+Fixes: d39f5450146ff39f ("sh: Add kprobes support.")
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- arch/sh/kernel/smp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Compile-tested only.
+---
+ arch/sh/kernel/kprobes.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/arch/sh/kernel/smp.c b/arch/sh/kernel/smp.c
-index 5cf35a774dc70082..b3ea50aabba3d7f2 100644
---- a/arch/sh/kernel/smp.c
-+++ b/arch/sh/kernel/smp.c
-@@ -21,6 +21,8 @@
- #include <linux/sched/hotplug.h>
- #include <linux/atomic.h>
- #include <linux/clockchips.h>
-+#include <linux/profile.h>
-+
- #include <asm/processor.h>
- #include <asm/mmu_context.h>
- #include <asm/smp.h>
-@@ -170,7 +172,7 @@ void native_play_dead(void)
- }
- #endif
+diff --git a/arch/sh/kernel/kprobes.c b/arch/sh/kernel/kprobes.c
+index aed1ea8e2c2f063b..74051b8ddf3e7bf9 100644
+--- a/arch/sh/kernel/kprobes.c
++++ b/arch/sh/kernel/kprobes.c
+@@ -44,17 +44,12 @@ int __kprobes arch_prepare_kprobe(struct kprobe *p)
+ 	if (OPCODE_RTE(opcode))
+ 		return -EFAULT;	/* Bad breakpoint */
  
--asmlinkage void start_secondary(void)
-+static asmlinkage void start_secondary(void)
++	memcpy(p->ainsn.insn, p->addr, MAX_INSN_SIZE * sizeof(kprobe_opcode_t));
+ 	p->opcode = opcode;
+ 
+ 	return 0;
+ }
+ 
+-void __kprobes arch_copy_kprobe(struct kprobe *p)
+-{
+-	memcpy(p->ainsn.insn, p->addr, MAX_INSN_SIZE * sizeof(kprobe_opcode_t));
+-	p->opcode = *p->addr;
+-}
+-
+ void __kprobes arch_arm_kprobe(struct kprobe *p)
  {
- 	unsigned int cpu = smp_processor_id();
- 	struct mm_struct *mm = &init_mm;
+ 	*p->addr = BREAKPOINT_INSTRUCTION;
 -- 
 2.34.1
 
