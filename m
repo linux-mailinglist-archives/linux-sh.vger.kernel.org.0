@@ -1,45 +1,45 @@
-Return-Path: <linux-sh+bounces-484-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-490-lists+linux-sh=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B295C86EAD3
-	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 22:02:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3805C86EADD
+	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 22:03:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BDA42821FF
-	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 21:02:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CCADFB22165
+	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 21:02:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0069456B8A;
-	Fri,  1 Mar 2024 21:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0EC456B73;
+	Fri,  1 Mar 2024 21:02:54 +0000 (UTC)
 X-Original-To: linux-sh@vger.kernel.org
-Received: from andre.telenet-ops.be (andre.telenet-ops.be [195.130.132.53])
+Received: from xavier.telenet-ops.be (xavier.telenet-ops.be [195.130.132.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9771356B7A
-	for <linux-sh@vger.kernel.org>; Fri,  1 Mar 2024 21:02:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B45657301
+	for <linux-sh@vger.kernel.org>; Fri,  1 Mar 2024 21:02:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709326970; cv=none; b=uqct/eTGX8fwvlxAc+NNJVP8uREEjnUiCqYFbB2NVblhvceM5UTapg+K22dO0E/CnvVu5BQfG5uz0vBL31od45TnXYq6ZnFqVCkGj1CBormsYpyVtom/GwROOecItnwjTEb1rqiCoJ2vErjLtAH5CLUDgyKTvlg/n6pCfX/kdoA=
+	t=1709326974; cv=none; b=CMWrVeQCRGsYR2Ht5cKmuiv93PvT1iUYsc0V4EjivOWKnruEn2MFe19Tj+OaBJxvmd+bCp5nJSvdSglvWRsVNQl+XcL1NrQxJ/T25bngbYepVWiyfpisRhc6P9Tg2zQmST32kGu6U6TzCkARmGiCKE2T34E3gfPuODtm6ccYLX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709326970; c=relaxed/simple;
-	bh=9LG2z7aDdp+/GoNUFPZ5luzTqo5E7LF1IVqFSiF/FFM=;
+	s=arc-20240116; t=1709326974; c=relaxed/simple;
+	bh=ETPaGFlRq2OiHNcTeFeosvOhUtWliYf8v6XiQQvicHo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bheNv94oZmoKlRoT9Oq6O6jH6PEiNbtkHQPR7kve8yiZ//w00HNS6HiHqnB+LkW36J6GRsr8neXubRkasnUqnxt5ExQUOO/BvHcqPnWlPoKG2GS85FEzGw9LXO96+8hgpn5ma+L8fW2KYxa/QBC6A9xzIIjEfgLI80NViKniJaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.53
+	 MIME-Version; b=sSdKsdxjI/6ZrTzklW2NREEdasZxCzZ5eBaNsNWsknC7QebRL30voYZNugrXGCUYWrLlBMp+P8b63Ck/uAkETOboCLlhW0GOIgpYuNbk8Dg0Vq3Nvpjw+vVHWmPppHNbvuxRwuXrDJQnNKX5x7CTdYPGmQBen1Df46jQGhvIG6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed40:db22:6af9:7d18:6ee8])
-	by andre.telenet-ops.be with bizsmtp
-	id tZ2e2B0051TWuYv01Z2emz; Fri, 01 Mar 2024 22:02:44 +0100
+	by xavier.telenet-ops.be with bizsmtp
+	id tZ2e2B0091TWuYv01Z2eDb; Fri, 01 Mar 2024 22:02:44 +0100
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1rgA1T-0024gi-CF;
+	id 1rgA1T-0024gm-Cs;
 	Fri, 01 Mar 2024 22:02:38 +0100
 Received: from geert by rox.of.borg with local (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1rgA1e-00D8rk-6Q;
+	id 1rgA1e-00D8rp-76;
 	Fri, 01 Mar 2024 22:02:38 +0100
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: Yoshinori Sato <ysato@users.sourceforge.jp>,
@@ -57,9 +57,9 @@ Cc: Steven Rostedt <rostedt@goodmis.org>,
 	linux-sh@vger.kernel.org,
 	linux-trace-kernel@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 11/20] sh: math-emu: Add missing #include <asm/fpu.h>
-Date: Fri,  1 Mar 2024 22:02:25 +0100
-Message-Id: <cfda1ba2eadb75e2793e67d43df42fe4c04e4fcf.1709326528.git.geert+renesas@glider.be>
+Subject: [PATCH 12/20] sh: dma: Remove unused dmac_search_free_channel()
+Date: Fri,  1 Mar 2024 22:02:26 +0100
+Message-Id: <82d5efdde44f9489c5a7d11d0a19750445116c95.1709326528.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1709326528.git.geert+renesas@glider.be>
 References: <cover.1709326528.git.geert+renesas@glider.be>
@@ -71,26 +71,56 @@ List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-arch/sh/math-emu/math.c:492:5: warning: no previous prototype for 'do_fpu_inst' [-Wmissing-prototypes]
+arch/sh/drivers/dma/dma-api.c:164:5: warning: no previous prototype for 'dmac_search_free_channel' [-Wmissing-prototypes]
+
+dmac_search_free_channel() never had a user in upstream, remove it.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- arch/sh/math-emu/math.c | 2 ++
- 1 file changed, 2 insertions(+)
+dma_extend(), get_dma_info_by_name(), register_chan_caps(), and
+request_dma_bycap() are also unused, but don't trigger warnings
+---
+ arch/sh/drivers/dma/dma-api.c | 27 ---------------------------
+ 1 file changed, 27 deletions(-)
 
-diff --git a/arch/sh/math-emu/math.c b/arch/sh/math-emu/math.c
-index cdaef6501d764a0c..b65703e065735663 100644
---- a/arch/sh/math-emu/math.c
-+++ b/arch/sh/math-emu/math.c
-@@ -15,6 +15,8 @@
- #include <linux/perf_event.h>
+diff --git a/arch/sh/drivers/dma/dma-api.c b/arch/sh/drivers/dma/dma-api.c
+index 89cd4a3b4ccafbe2..f49097fa634c36d4 100644
+--- a/arch/sh/drivers/dma/dma-api.c
++++ b/arch/sh/drivers/dma/dma-api.c
+@@ -161,33 +161,6 @@ int request_dma_bycap(const char **dmac, const char **caps, const char *dev_id)
+ }
+ EXPORT_SYMBOL(request_dma_bycap);
  
- #include <linux/uaccess.h>
-+
-+#include <asm/fpu.h>
- #include <asm/processor.h>
- #include <asm/io.h>
- 
+-int dmac_search_free_channel(const char *dev_id)
+-{
+-	struct dma_channel *channel = { 0 };
+-	struct dma_info *info = get_dma_info(0);
+-	int i;
+-
+-	for (i = 0; i < info->nr_channels; i++) {
+-		channel = &info->channels[i];
+-		if (unlikely(!channel))
+-			return -ENODEV;
+-
+-		if (atomic_read(&channel->busy) == 0)
+-			break;
+-	}
+-
+-	if (info->ops->request) {
+-		int result = info->ops->request(channel);
+-		if (result)
+-			return result;
+-
+-		atomic_set(&channel->busy, 1);
+-		return channel->chan;
+-	}
+-
+-	return -ENOSYS;
+-}
+-
+ int request_dma(unsigned int chan, const char *dev_id)
+ {
+ 	struct dma_channel *channel = { 0 };
 -- 
 2.34.1
 
