@@ -1,45 +1,45 @@
-Return-Path: <linux-sh+bounces-489-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-474-lists+linux-sh=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41A7886EAD8
-	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 22:02:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 916C386EACA
+	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 22:02:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70C261C21ADF
-	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 21:02:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFB901C21838
+	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 21:02:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F0456B98;
-	Fri,  1 Mar 2024 21:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75FD55677F;
+	Fri,  1 Mar 2024 21:02:48 +0000 (UTC)
 X-Original-To: linux-sh@vger.kernel.org
-Received: from xavier.telenet-ops.be (xavier.telenet-ops.be [195.130.132.52])
+Received: from albert.telenet-ops.be (albert.telenet-ops.be [195.130.137.90])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9328357303
-	for <linux-sh@vger.kernel.org>; Fri,  1 Mar 2024 21:02:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA27556B63
+	for <linux-sh@vger.kernel.org>; Fri,  1 Mar 2024 21:02:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.90
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709326974; cv=none; b=QWEbEc/7uMYLozHwQt+JvBlC/smzEpqf5bnblotEAbaUGgpo3K7vsDxUGN73/OZgVRycgtb5O2sQZoR9ASFwp5k3rHvl9Lja0qNcWKrRb6XMbo+XojJnpzAmLjbBVbc2IS+r1JD//7BMiP3svc3BB/54jEVim1TkBGSYa2JUUEY=
+	t=1709326968; cv=none; b=GT9/v4aE85jpbDl/O8HdBTh++lv47pQeczT971kl675lbU64nB6ZSiwAFDXNkTTivTOPxu8ZKwuK6A0xKafp8PXFe8QY/Ub3LKmE/Bi1SbeD8ohVtdaJKF95/kx7HpZiyFaIM17Orla/8rJ4GQRWmpGukkaRGM+9pylB1hIPoL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709326974; c=relaxed/simple;
-	bh=v+444xnXxm36FIpSo81QsrCLOG8RoDU8XmcZ0Zk0Ylg=;
+	s=arc-20240116; t=1709326968; c=relaxed/simple;
+	bh=/tBZ2iSdN8OLbtFWmDoI6rwg+iFBUAwva2wRvq50svo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=p5GzhzxeC8iHtUgN63eXnB8Yvr5uSqKP994T8DycJ/YmuFBnm3yPdj+yD1rboMO52QNq0P1Eo2FvKlnH+b15aoSYklVGWX6fyAIq3pz2zXIUiCmIaRb6dWPYZrhJvqs2syYcUXgv8QHOrDixZghF+GWBV6LImiSS+qCpPyto8d8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.52
+	 MIME-Version; b=Dbu+LP0qHJTNadJY82FBtTqFgioSesCJ2zJ1OQv8LzpHQozsdbl+RYIaFrOoazLYvxqukpeW4NsMERWmOaua4Pvm7NETa+hFFA2R5xJzLJAG5LA3v3De9ogcb0W+aYfoNT/8UOpOKBc7yV5f1GXgBdccbYTByPgcqnSNn8jDIZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.90
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed40:db22:6af9:7d18:6ee8])
-	by xavier.telenet-ops.be with bizsmtp
-	id tZ2e2B00A1TWuYv01Z2eDc; Fri, 01 Mar 2024 22:02:44 +0100
+	by albert.telenet-ops.be with bizsmtp
+	id tZ2e2B00D1TWuYv06Z2eSm; Fri, 01 Mar 2024 22:02:43 +0100
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1rgA1T-0024gq-DV;
+	id 1rgA1T-0024gt-EB;
 	Fri, 01 Mar 2024 22:02:38 +0100
 Received: from geert by rox.of.borg with local (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1rgA1e-00D8ru-7o;
+	id 1rgA1e-00D8s0-8T;
 	Fri, 01 Mar 2024 22:02:38 +0100
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: Yoshinori Sato <ysato@users.sourceforge.jp>,
@@ -57,9 +57,9 @@ Cc: Steven Rostedt <rostedt@goodmis.org>,
 	linux-sh@vger.kernel.org,
 	linux-trace-kernel@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 13/20] sh: sh2a: Add missing #include <asm/processor.h>
-Date: Fri,  1 Mar 2024 22:02:27 +0100
-Message-Id: <8314dd9a966394dd1fd82d88095c57d9778fcfc9.1709326528.git.geert+renesas@glider.be>
+Subject: [PATCH 14/20] sh: sh7786: Remove unused sh7786_usb_use_exclock()
+Date: Fri,  1 Mar 2024 22:02:28 +0100
+Message-Id: <a87c6c0edcf81937b8eb2c899d286d82d71ad513.1709326528.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1709326528.git.geert+renesas@glider.be>
 References: <cover.1709326528.git.geert+renesas@glider.be>
@@ -71,26 +71,40 @@ List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-arch/sh/kernel/cpu/sh2a/opcode_helper.c:34:14: warning: no previous prototype for 'instruction_size' [-Wmissing-prototypes]
+arch/sh/kernel/cpu/sh4a/setup-sh7786.c:411:13: warning: no previous prototype for 'sh7786_usb_use_exclock' [-Wmissing-prototypes]
+
+Upstream never had a user of sh7786_usb_use_exclock(), remove it.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- arch/sh/kernel/cpu/sh2a/opcode_helper.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/sh/kernel/cpu/sh4a/setup-sh7786.c | 14 --------------
+ 1 file changed, 14 deletions(-)
 
-diff --git a/arch/sh/kernel/cpu/sh2a/opcode_helper.c b/arch/sh/kernel/cpu/sh2a/opcode_helper.c
-index c509081d90b9affe..fcf53f5827eb286c 100644
---- a/arch/sh/kernel/cpu/sh2a/opcode_helper.c
-+++ b/arch/sh/kernel/cpu/sh2a/opcode_helper.c
-@@ -8,6 +8,8 @@
-  */
- #include <linux/kernel.h>
+diff --git a/arch/sh/kernel/cpu/sh4a/setup-sh7786.c b/arch/sh/kernel/cpu/sh4a/setup-sh7786.c
+index 74620f30b19badbd..c048842d8a589866 100644
+--- a/arch/sh/kernel/cpu/sh4a/setup-sh7786.c
++++ b/arch/sh/kernel/cpu/sh4a/setup-sh7786.c
+@@ -400,20 +400,6 @@ static struct platform_device *sh7786_devices[] __initdata = {
+ 	&usb_ohci_device,
+ };
  
-+#include <asm/processor.h>
-+
- /*
-  * Instructions on SH are generally fixed at 16-bits, however, SH-2A
-  * introduces some 32-bit instructions. Since there are no real
+-/*
+- * Please call this function if your platform board
+- * use external clock for USB
+- * */
+-#define USBCTL0		0xffe70858
+-#define CLOCK_MODE_MASK 0xffffff7f
+-#define EXT_CLOCK_MODE  0x00000080
+-
+-void __init sh7786_usb_use_exclock(void)
+-{
+-	u32 val = __raw_readl(USBCTL0) & CLOCK_MODE_MASK;
+-	__raw_writel(val | EXT_CLOCK_MODE, USBCTL0);
+-}
+-
+ #define USBINITREG1	0xffe70094
+ #define USBINITREG2	0xffe7009c
+ #define USBINITVAL1	0x00ff0040
 -- 
 2.34.1
 
