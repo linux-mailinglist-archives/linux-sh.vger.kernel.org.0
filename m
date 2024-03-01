@@ -1,45 +1,45 @@
-Return-Path: <linux-sh+bounces-476-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-486-lists+linux-sh=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 169AD86EACC
-	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 22:02:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40FB086EAD5
+	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 22:02:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78F74284E10
-	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 21:02:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBA8D1F2115F
+	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 21:02:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 216C056740;
-	Fri,  1 Mar 2024 21:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 942F55677F;
+	Fri,  1 Mar 2024 21:02:52 +0000 (UTC)
 X-Original-To: linux-sh@vger.kernel.org
-Received: from albert.telenet-ops.be (albert.telenet-ops.be [195.130.137.90])
+Received: from andre.telenet-ops.be (andre.telenet-ops.be [195.130.132.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C027A20DCD
-	for <linux-sh@vger.kernel.org>; Fri,  1 Mar 2024 21:02:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.90
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8F856B77
+	for <linux-sh@vger.kernel.org>; Fri,  1 Mar 2024 21:02:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709326969; cv=none; b=NFDoWZirSWeLg6udBTgxeNyJTVeaVKXfe5ZFak2bGJICk1b9Woadj/jhALoPdJ3ug1zPvj9a8aI25X2h6wT6oj7sPytQs0lUxWLhlaHmG5MdW18SIfbSKbecXFQ+DluVcojzKpDTKv9NyfDUfPJxZHl0INJmnJuA7wyKIiHUxX8=
+	t=1709326972; cv=none; b=loIzdTJl2otMkV2hZMwKFDnZHoyQ68lp8Tdd+sYWfm25HDpv4ngWTt+Jco0Mr56AfgcCBoz0OgdIGYvvHzrFdoJGl7kCTAj2kz7LP4UQ9hhuIHQwYI8hOthALJ40HAwGU/fsiwHSGQFfWsRtIlu7Q/JZRDpYbi1wXhJQpBiCc/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709326969; c=relaxed/simple;
-	bh=BPPrtYYkG1jISGkKN9c8XXBC80WiPKn1mQRJLvAiIsg=;
+	s=arc-20240116; t=1709326972; c=relaxed/simple;
+	bh=+1TX2uH6QO5tL1EOUSBU0x1mpJCfTuOWxVFI4K9w8AQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Shp7D8hcyLEbmYfJbgDFTaCtGaB68i7AiIJ+dVknSY/5ib7glLIDTuYgo0y8nDEyL9SRS9rGKgZcb6psPVGWOm00mJYRaOmCv2GuW/hKA4XNvM8pizF0w3koWSdYtSyJctmkRBEW+mdugjB6xG/mEPN2iRE2pQ2bdkabMl2qAs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.90
+	 MIME-Version:Content-Type; b=MHT53UMJtw1V/l6Bl/KCSNlx1nQwj+PU5i1qsuqS/Q3akMHtqImrfcdfu4Z+HPRDCPXHAZhZ2aOnDHJtKg/Cd82huq94zn7w7ni9SGRH6f08wGrdOUcReUrdyjtSwKzkG3jmygtxT98ZdMBs+RrduxWEWPq7koWwVasZ4EQixIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed40:db22:6af9:7d18:6ee8])
-	by albert.telenet-ops.be with bizsmtp
-	id tZ2e2B0071TWuYv06Z2eSl; Fri, 01 Mar 2024 22:02:43 +0100
+	by andre.telenet-ops.be with bizsmtp
+	id tZ2e2B0041TWuYv01Z2emy; Fri, 01 Mar 2024 22:02:44 +0100
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1rgA1T-0024g6-6X;
+	id 1rgA1T-0024gD-7H;
 	Fri, 01 Mar 2024 22:02:38 +0100
 Received: from geert by rox.of.borg with local (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1rgA1e-00D8r8-0s;
+	id 1rgA1e-00D8rC-1c;
 	Fri, 01 Mar 2024 22:02:38 +0100
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: Yoshinori Sato <ysato@users.sourceforge.jp>,
@@ -57,9 +57,9 @@ Cc: Steven Rostedt <rostedt@goodmis.org>,
 	linux-sh@vger.kernel.org,
 	linux-trace-kernel@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 03/20] sh: syscall: Add missing forward declaration for sys_cacheflush()
-Date: Fri,  1 Mar 2024 22:02:17 +0100
-Message-Id: <b1c218986fb77d78303626b43c97925809045018.1709326528.git.geert+renesas@glider.be>
+Subject: [PATCH 04/20] sh: tlb: Add missing forward declaration for handle_tlbmiss()
+Date: Fri,  1 Mar 2024 22:02:18 +0100
+Message-Id: <23ec2c88168bd5b7e294828221531eed2f3eede8.1709326528.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1709326528.git.geert+renesas@glider.be>
 References: <cover.1709326528.git.geert+renesas@glider.be>
@@ -72,25 +72,41 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-arch/sh/kernel/sys_sh.c:58:16: warning: no previous prototype for ‘sys_cacheflush’ [-Wmissing-prototypes]
+arch/sh/mm/tlbex_32.c:22:1: warning: no previous prototype for ‘handle_tlbmiss’ [-Wmissing-prototypes]
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- arch/sh/include/asm/syscalls.h | 1 +
- 1 file changed, 1 insertion(+)
+ arch/sh/include/asm/tlb.h | 4 ++++
+ arch/sh/mm/tlbex_32.c     | 1 +
+ 2 files changed, 5 insertions(+)
 
-diff --git a/arch/sh/include/asm/syscalls.h b/arch/sh/include/asm/syscalls.h
-index 387105316d2882fe..39240e06e8aa5f6b 100644
---- a/arch/sh/include/asm/syscalls.h
-+++ b/arch/sh/include/asm/syscalls.h
-@@ -8,6 +8,7 @@ asmlinkage int old_mmap(unsigned long addr, unsigned long len,
- asmlinkage long sys_mmap2(unsigned long addr, unsigned long len,
- 			  unsigned long prot, unsigned long flags,
- 			  unsigned long fd, unsigned long pgoff);
-+asmlinkage int sys_cacheflush(unsigned long addr, unsigned long len, int op);
+diff --git a/arch/sh/include/asm/tlb.h b/arch/sh/include/asm/tlb.h
+index aeb8915e92549609..ddf324bfb9a09721 100644
+--- a/arch/sh/include/asm/tlb.h
++++ b/arch/sh/include/asm/tlb.h
+@@ -24,6 +24,10 @@ static inline void tlb_unwire_entry(void)
+ 	BUG();
+ }
+ #endif /* CONFIG_CPU_SH4 */
++
++asmlinkage int handle_tlbmiss(struct pt_regs *regs, unsigned long error_code,
++			      unsigned long address);
++
+ #endif /* CONFIG_MMU */
+ #endif /* __ASSEMBLY__ */
+ #endif /* __ASM_SH_TLB_H */
+diff --git a/arch/sh/mm/tlbex_32.c b/arch/sh/mm/tlbex_32.c
+index 1c53868632ee4c69..7d58578c15f4ef55 100644
+--- a/arch/sh/mm/tlbex_32.c
++++ b/arch/sh/mm/tlbex_32.c
+@@ -14,6 +14,7 @@
+ #include <linux/kdebug.h>
+ #include <asm/mmu_context.h>
+ #include <asm/thread_info.h>
++#include <asm/tlb.h>
  
- #include <asm/syscalls_32.h>
- 
+ /*
+  * Called with interrupts disabled.
 -- 
 2.34.1
 
