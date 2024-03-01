@@ -1,45 +1,45 @@
-Return-Path: <linux-sh+bounces-491-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-479-lists+linux-sh=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 233B186EADA
-	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 22:02:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C003D86EACE
+	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 22:02:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB3FE1F228F5
-	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 21:02:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 758F8282CD6
+	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 21:02:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3255156B6F;
-	Fri,  1 Mar 2024 21:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85A7E56B61;
+	Fri,  1 Mar 2024 21:02:49 +0000 (UTC)
 X-Original-To: linux-sh@vger.kernel.org
-Received: from xavier.telenet-ops.be (xavier.telenet-ops.be [195.130.132.52])
+Received: from albert.telenet-ops.be (albert.telenet-ops.be [195.130.137.90])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B35B56B9E
-	for <linux-sh@vger.kernel.org>; Fri,  1 Mar 2024 21:02:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02EF56777
+	for <linux-sh@vger.kernel.org>; Fri,  1 Mar 2024 21:02:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.90
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709326975; cv=none; b=WEXDfai/3pvbdvhPdnnClCDg+qJv53A6MlyM1tIjuxO8kSKdvsIG9ad/B/PPN0lzp71Fy7BlUSeAzFSDa/Smlg0aNiDq2oLXUJK0udnkKib6G9VRsqhIEFuFRnyhrZ3EJQg8YO7qIsoncm6kQPyZUJyRjU0HpUF5ZC6r6suk1Uk=
+	t=1709326969; cv=none; b=jCGsnOgu2WJLJSND2A45qawZiuIpqCCpNXhHMMKtd96EKsf+/uxInWsNrmI2+m8imoIEyA3i/u49JLq5krViJkKO8nYaZXy1oPEv8E48KG6WFmfeLs1VOtMziF83FG1sDMwChV9cdIHToWktcMnOXH5Z9cof5P7U1D3RXpGHtgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709326975; c=relaxed/simple;
-	bh=NsThTAdLO7OgfNZz5CNxYC6AYTZXGKyH/bMvLFNMAiE=;
+	s=arc-20240116; t=1709326969; c=relaxed/simple;
+	bh=URqkyiSHZkMO/3vSWWbKavtNNGIsgwfUfwcUzGhcOHY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Do33lKJpiTQzrZ2kR3JmTkJFabJV/6Mnl9xZpBOUUhNx/KiKWkqywcKWSkUFk30Bsq+8rLoBm0vr8RVK4nTOmNkM65RFYUjMrepY1JUKWRAH44MN34kpvETCU6hZQQyY/wik+kg64OP40Cl32bBHwfneUm89NnGvrqBDmiYMKZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.52
+	 MIME-Version; b=PrsY+iMUSLAxme3AqtSThrYr/WJZ7HId9hoTBUzwkuQ2p5nmOn8ZXa7OzeH8GSyoR8Sw2/TmjzcaNHZs4SZ2j15vmC1lCKe4wK/FtoYpOpWiNn/jP02k8N7+c/4Xd1LFP9uxzw9fZEJi4BBEIJXX62xNyET2j37G16TJq//nDVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.90
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed40:db22:6af9:7d18:6ee8])
-	by xavier.telenet-ops.be with bizsmtp
-	id tZ2e2B00C1TWuYv01Z2eDe; Fri, 01 Mar 2024 22:02:44 +0100
+	by albert.telenet-ops.be with bizsmtp
+	id tZ2e2B00F1TWuYv06Z2eSn; Fri, 01 Mar 2024 22:02:43 +0100
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1rgA1T-0024h7-Gu;
+	id 1rgA1T-0024hB-HR;
 	Fri, 01 Mar 2024 22:02:38 +0100
 Received: from geert by rox.of.borg with local (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1rgA1e-00D8sK-B7;
+	id 1rgA1e-00D8sO-Bm;
 	Fri, 01 Mar 2024 22:02:38 +0100
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: Yoshinori Sato <ysato@users.sourceforge.jp>,
@@ -57,9 +57,9 @@ Cc: Steven Rostedt <rostedt@goodmis.org>,
 	linux-sh@vger.kernel.org,
 	linux-trace-kernel@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 18/20] sh: kprobes: Remove unneeded kprobe_opcode_t casts
-Date: Fri,  1 Mar 2024 22:02:32 +0100
-Message-Id: <fc22b990d869fc2005990159d8072ae2774b1396.1709326528.git.geert+renesas@glider.be>
+Subject: [PATCH 19/20] sh: dwarf: Make dwarf_lookup_fde() static
+Date: Fri,  1 Mar 2024 22:02:33 +0100
+Message-Id: <55e8261a354e8ec4d375754e404c6c1d303af715.1709326528.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1709326528.git.geert+renesas@glider.be>
 References: <cover.1709326528.git.geert+renesas@glider.be>
@@ -71,36 +71,28 @@ List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-There is no need to cast a kprobe_opcode_t pointer to a kprobe_opcode_t
-pointer.
+arch/sh/kernel/dwarf.c:347:19: warning: no previous prototype for 'dwarf_lookup_fde' [-Wmissing-prototypes]
+
+There are no users outside this file, so make it static.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- arch/sh/kernel/kprobes.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/sh/kernel/dwarf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/sh/kernel/kprobes.c b/arch/sh/kernel/kprobes.c
-index d8c2e399d6e50794..49c4ffd782d6d6c5 100644
---- a/arch/sh/kernel/kprobes.c
-+++ b/arch/sh/kernel/kprobes.c
-@@ -39,7 +39,7 @@ static DEFINE_PER_CPU(struct kprobe, saved_next_opcode2);
- 
- int __kprobes arch_prepare_kprobe(struct kprobe *p)
+diff --git a/arch/sh/kernel/dwarf.c b/arch/sh/kernel/dwarf.c
+index bf8682e718303051..45c8ae20d10957db 100644
+--- a/arch/sh/kernel/dwarf.c
++++ b/arch/sh/kernel/dwarf.c
+@@ -344,7 +344,7 @@ static struct dwarf_cie *dwarf_lookup_cie(unsigned long cie_ptr)
+  *	dwarf_lookup_fde - locate the FDE that covers pc
+  *	@pc: the program counter
+  */
+-struct dwarf_fde *dwarf_lookup_fde(unsigned long pc)
++static struct dwarf_fde *dwarf_lookup_fde(unsigned long pc)
  {
--	kprobe_opcode_t opcode = *(kprobe_opcode_t *) (p->addr);
-+	kprobe_opcode_t opcode = *p->addr;
- 
- 	if (OPCODE_RTE(opcode))
- 		return -EFAULT;	/* Bad breakpoint */
-@@ -248,7 +248,7 @@ static int __kprobes kprobe_handler(struct pt_regs *regs)
- 	p = get_kprobe(addr);
- 	if (!p) {
- 		/* Not one of ours: let kernel handle it */
--		if (*(kprobe_opcode_t *)addr != BREAKPOINT_INSTRUCTION) {
-+		if (*addr != BREAKPOINT_INSTRUCTION) {
- 			/*
- 			 * The breakpoint instruction was removed right
- 			 * after we hit it. Another cpu has removed
+ 	struct rb_node **rb_node = &fde_root.rb_node;
+ 	struct dwarf_fde *fde = NULL;
 -- 
 2.34.1
 
