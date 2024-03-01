@@ -1,44 +1,45 @@
-Return-Path: <linux-sh+bounces-487-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-485-lists+linux-sh=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C36C186EAD6
-	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 22:02:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF4E986EAD4
+	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 22:02:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BE302833B5
-	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 21:02:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A226A2832A0
+	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 21:02:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6018F20DCD;
-	Fri,  1 Mar 2024 21:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29AE856B6E;
+	Fri,  1 Mar 2024 21:02:51 +0000 (UTC)
 X-Original-To: linux-sh@vger.kernel.org
-Received: from laurent.telenet-ops.be (laurent.telenet-ops.be [195.130.137.89])
+Received: from andre.telenet-ops.be (andre.telenet-ops.be [195.130.132.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 894CF5677A
-	for <linux-sh@vger.kernel.org>; Fri,  1 Mar 2024 21:02:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A7A56B86
+	for <linux-sh@vger.kernel.org>; Fri,  1 Mar 2024 21:02:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709326974; cv=none; b=eSCOkXjYtjJ7EyRN/OsqvLu+M+1AqEodthKDfG8MHoAwbMCnYLFv5Sn9ar6fxpRShtxXNkG/CzYlROZcDIHcYOOgOt6xVMh7EX085okTYEzHLfKEWaW1aEjrsPRdBiayOPeGOwREI20wlo0nkkm3APU4I1x9JOTHQ//InAouvpA=
+	t=1709326971; cv=none; b=sx8Z3QND2kIMxKrsikfSQNQKsxI7gb+W5sk9U55l7FPys/Vy+muVbV9eoyaLRan02enh2bzb0+cQJsZoEokm9qzD0LvrpucXvHEowP4rMjjtGc26taAVPXTz6bDtjIhq4EUxaz/IOyakLsx+gXrrAFGhFaYMWo3U5ps1N24yJ7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709326974; c=relaxed/simple;
-	bh=JP8gu5UENU6mJQHg17EqcXuGMt1BqsvT7243NQmMnuk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=CtWvmjWTf4Itr2aRWC6QdGj9RHqQtIbcskCdjkohrzGNDcobc6aeqUEWtBodhSCsy7e7Skckwec8gWgUSczEi0pFg9SZYkQ+4nbhhKZWWLbwjqs6m2hggrGH+QnjFWA7GE55yhuZS6IT/Vp13SRPlkWb7TxCOfeYfXYd5TZYVFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.89
+	s=arc-20240116; t=1709326971; c=relaxed/simple;
+	bh=1Synhu8Wj+iI/4pFeBUM+/X8uo4aR7TufZvYlYZi3oc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=T0I21su9QbNNv8XbfE6T4g0ax5PW0v2knYDMB7nw+7v44a8NU/SwU0gjplqqpbEjuREc85/pUjADSOGgxTAIqQVgId7pJQsYgSgCaK0WviKKjo5HYa3Sb9j/qyzKXWrE2PWJMuzFPkn/h7PRoYlGpQ6hV1D9uid+ogALdq6vefY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed40:db22:6af9:7d18:6ee8])
-	by laurent.telenet-ops.be with bizsmtp
-	id tZ2e2B0051TWuYv01Z2e2j; Fri, 01 Mar 2024 22:02:44 +0100
+	by andre.telenet-ops.be with bizsmtp
+	id tZ2e2B0031TWuYv01Z2emx; Fri, 01 Mar 2024 22:02:44 +0100
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1rgA1T-0024g2-5S;
+	id 1rgA1T-0024g3-5U;
 	Fri, 01 Mar 2024 22:02:38 +0100
 Received: from geert by rox.of.borg with local (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1rgA1d-00D8qw-V1;
+	id 1rgA1d-00D8qz-Vn;
 	Fri, 01 Mar 2024 22:02:37 +0100
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: Yoshinori Sato <ysato@users.sourceforge.jp>,
@@ -56,99 +57,56 @@ Cc: Steven Rostedt <rostedt@goodmis.org>,
 	linux-sh@vger.kernel.org,
 	linux-trace-kernel@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 00/20] sh: Fix missing prototypes
-Date: Fri,  1 Mar 2024 22:02:14 +0100
-Message-Id: <cover.1709326528.git.geert+renesas@glider.be>
+Subject: [PATCH 01/20] sh: pgtable: Fix missing prototypes
+Date: Fri,  1 Mar 2024 22:02:15 +0100
+Message-Id: <aa1328ea3327d6685aab76d5787cb77c996052c0.1709326528.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <cover.1709326528.git.geert+renesas@glider.be>
+References: <cover.1709326528.git.geert+renesas@glider.be>
 Precedence: bulk
 X-Mailing-List: linux-sh@vger.kernel.org
 List-Id: <linux-sh.vger.kernel.org>
 List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-	Hi all,
+arch/sh/mm/pgtable.c:12:6: warning: no previous prototype for 'pgd_ctor' [-Wmissing-prototypes]
+arch/sh/mm/pgtable.c:34:8: warning: no previous prototype for 'pgd_alloc' [-Wmissing-prototypes]
+arch/sh/mm/pgtable.c:39:6: warning: no previous prototype for 'pgd_free' [-Wmissing-prototypes]
+arch/sh/mm/pgtable.c:45:6: warning: no previous prototype for 'pud_populate' [-Wmissing-prototypes]
+arch/sh/mm/pgtable.c:50:8: warning: no previous prototype for 'pmd_alloc_one' [-Wmissing-prototypes]
+arch/sh/mm/pgtable.c:55:6: warning: no previous prototype for 'pmd_free' [-Wmissing-prototypes]
 
-This patch series fixes several "no previous prototype for <foo>"
-warnings when building a kernel for SuperH.
+Make pgd_ctor() static, as it is only used in this file.
+Include <asm/pgalloc.h> to fix the other warnings.
 
-Known issues:
-  - The various warnings about cache functions are not yet fixed, but
-    I didn't want to hold off the rest of this series,
-  - sdk7786_defconfig needs "[PATCH/RFC] locking/spinlocks: Make __raw_*
-    lock ops static" [1],
-  - Probably there are more warnings to fix, I didn't build all
-    defconfigs.
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+ arch/sh/mm/pgtable.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-This has been boot-tested on landisk and on qemu/rts7751r2d.
-
-Thanks for your comments!
-
-[1] https://lore.kernel.org/linux-sh/c395b02613572131568bc1fd1bc456d20d1a5426.1709325647.git.geert+renesas@glider.be
-
-Geert Uytterhoeven (20):
-  sh: pgtable: Fix missing prototypes
-  sh: fpu: Add missing forward declarations
-  sh: syscall: Add missing forward declaration for sys_cacheflush()
-  sh: tlb: Add missing forward declaration for handle_tlbmiss()
-  sh: return_address: Add missing #include <asm/ftrace.h>
-  sh: traps: Add missing #include <asm/setup.h>
-  sh: hw_breakpoint: Add missing forward declaration for
-    arch_bp_generic_fields()
-  sh: boot: Add proper forward declarations
-  sh: ftrace: Fix missing prototypes
-  sh: nommu: Add missing #include <asm/cacheflush.h>
-  sh: math-emu: Add missing #include <asm/fpu.h>
-  sh: dma: Remove unused dmac_search_free_channel()
-  sh: sh2a: Add missing #include <asm/processor.h>
-  sh: sh7786: Remove unused sh7786_usb_use_exclock()
-  sh: smp: Fix missing prototypes
-  sh: kprobes: Merge arch_copy_kprobe() into arch_prepare_kprobe()
-  sh: kprobes: Make trampoline_probe_handler() static
-  sh: kprobes: Remove unneeded kprobe_opcode_t casts
-  sh: dwarf: Make dwarf_lookup_fde() static
-  [RFC] sh: dma: Remove unused functionality
-
- arch/sh/boot/compressed/cache.c         |   3 +
- arch/sh/boot/compressed/cache.h         |  10 ++
- arch/sh/boot/compressed/misc.c          |   8 +-
- arch/sh/boot/compressed/misc.h          |   9 ++
- arch/sh/drivers/dma/dma-api.c           | 143 ------------------------
- arch/sh/include/asm/dma.h               |   7 --
- arch/sh/include/asm/fpu.h               |   3 +
- arch/sh/include/asm/ftrace.h            |  10 ++
- arch/sh/include/asm/hw_breakpoint.h     |   2 +
- arch/sh/include/asm/syscalls.h          |   1 +
- arch/sh/include/asm/tlb.h               |   4 +
- arch/sh/kernel/cpu/sh2a/opcode_helper.c |   2 +
- arch/sh/kernel/cpu/sh4a/setup-sh7786.c  |  14 ---
- arch/sh/kernel/dwarf.c                  |   2 +-
- arch/sh/kernel/kprobes.c                |  13 +--
- arch/sh/kernel/return_address.c         |   2 +
- arch/sh/kernel/smp.c                    |   4 +-
- arch/sh/kernel/traps.c                  |  10 +-
- arch/sh/kernel/traps_32.c               |   1 +
- arch/sh/math-emu/math.c                 |   2 +
- arch/sh/mm/nommu.c                      |   2 +
- arch/sh/mm/pgtable.c                    |   4 +-
- arch/sh/mm/tlbex_32.c                   |   1 +
- 23 files changed, 68 insertions(+), 189 deletions(-)
- create mode 100644 arch/sh/boot/compressed/cache.h
- create mode 100644 arch/sh/boot/compressed/misc.h
-
+diff --git a/arch/sh/mm/pgtable.c b/arch/sh/mm/pgtable.c
+index cf7ce4b5735954bf..3a4085ea0161fe56 100644
+--- a/arch/sh/mm/pgtable.c
++++ b/arch/sh/mm/pgtable.c
+@@ -2,12 +2,14 @@
+ #include <linux/mm.h>
+ #include <linux/slab.h>
+ 
++#include <asm/pgalloc.h>
++
+ static struct kmem_cache *pgd_cachep;
+ #if PAGETABLE_LEVELS > 2
+ static struct kmem_cache *pmd_cachep;
+ #endif
+ 
+-void pgd_ctor(void *x)
++static void pgd_ctor(void *x)
+ {
+ 	pgd_t *pgd = x;
+ 
 -- 
 2.34.1
 
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
 
