@@ -1,45 +1,45 @@
-Return-Path: <linux-sh+bounces-478-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-491-lists+linux-sh=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02FA686EACB
-	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 22:02:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 233B186EADA
+	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 22:02:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 327DD1C21F64
-	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 21:02:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB3FE1F228F5
+	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 21:02:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F5556B68;
-	Fri,  1 Mar 2024 21:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3255156B6F;
+	Fri,  1 Mar 2024 21:02:55 +0000 (UTC)
 X-Original-To: linux-sh@vger.kernel.org
-Received: from andre.telenet-ops.be (andre.telenet-ops.be [195.130.132.53])
+Received: from xavier.telenet-ops.be (xavier.telenet-ops.be [195.130.132.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95F9056B79
-	for <linux-sh@vger.kernel.org>; Fri,  1 Mar 2024 21:02:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B35B56B9E
+	for <linux-sh@vger.kernel.org>; Fri,  1 Mar 2024 21:02:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709326969; cv=none; b=W2zT8+VeMCfNMFXfnLrxsnOM+ytrsGO0k20L2sCSCR0VbGDy+LFK0amDLb0il0n9WMwaLOhn4UF7Fl5Fzy4eqnOllnQ9Zv+v1D30u38PEC+d/btixO5ZbEykd887kX0+/2hJWH7U9GKvGSmTFKzhVyaxohLb1iBPbYStmSx2XZA=
+	t=1709326975; cv=none; b=WEXDfai/3pvbdvhPdnnClCDg+qJv53A6MlyM1tIjuxO8kSKdvsIG9ad/B/PPN0lzp71Fy7BlUSeAzFSDa/Smlg0aNiDq2oLXUJK0udnkKib6G9VRsqhIEFuFRnyhrZ3EJQg8YO7qIsoncm6kQPyZUJyRjU0HpUF5ZC6r6suk1Uk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709326969; c=relaxed/simple;
-	bh=EZEhIwE/QBgRULd7GoitNkRuUOEqvN0i53K34hNtFRY=;
+	s=arc-20240116; t=1709326975; c=relaxed/simple;
+	bh=NsThTAdLO7OgfNZz5CNxYC6AYTZXGKyH/bMvLFNMAiE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=cSfcfhC5/yKrZgKA4QjvbiZi0SItqUxuoeJfBnO5R+wtJyveitmOIU9a9uoA1Y7xseUfeyLlMpZHp3RnkuYsqfmquYScVDhksOQJ7t98Dm/74Q95lnBCZnih5kfB9/iWoMbobggYVdP5aXe915kfP8ApTXpIpIhNpMct51zF3gM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.53
+	 MIME-Version; b=Do33lKJpiTQzrZ2kR3JmTkJFabJV/6Mnl9xZpBOUUhNx/KiKWkqywcKWSkUFk30Bsq+8rLoBm0vr8RVK4nTOmNkM65RFYUjMrepY1JUKWRAH44MN34kpvETCU6hZQQyY/wik+kg64OP40Cl32bBHwfneUm89NnGvrqBDmiYMKZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed40:db22:6af9:7d18:6ee8])
-	by andre.telenet-ops.be with bizsmtp
-	id tZ2e2B0091TWuYv01Z2en1; Fri, 01 Mar 2024 22:02:44 +0100
+	by xavier.telenet-ops.be with bizsmtp
+	id tZ2e2B00C1TWuYv01Z2eDe; Fri, 01 Mar 2024 22:02:44 +0100
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1rgA1T-0024h3-G7;
+	id 1rgA1T-0024h7-Gu;
 	Fri, 01 Mar 2024 22:02:38 +0100
 Received: from geert by rox.of.borg with local (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1rgA1e-00D8sF-AS;
+	id 1rgA1e-00D8sK-B7;
 	Fri, 01 Mar 2024 22:02:38 +0100
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: Yoshinori Sato <ysato@users.sourceforge.jp>,
@@ -57,9 +57,9 @@ Cc: Steven Rostedt <rostedt@goodmis.org>,
 	linux-sh@vger.kernel.org,
 	linux-trace-kernel@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 17/20] sh: kprobes: Make trampoline_probe_handler() static
-Date: Fri,  1 Mar 2024 22:02:31 +0100
-Message-Id: <42f30b7f767ee1293f6e687a605f7d907ae2daa6.1709326528.git.geert+renesas@glider.be>
+Subject: [PATCH 18/20] sh: kprobes: Remove unneeded kprobe_opcode_t casts
+Date: Fri,  1 Mar 2024 22:02:32 +0100
+Message-Id: <fc22b990d869fc2005990159d8072ae2774b1396.1709326528.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1709326528.git.geert+renesas@glider.be>
 References: <cover.1709326528.git.geert+renesas@glider.be>
@@ -71,28 +71,36 @@ List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-arch/sh/kernel/kprobes.c:299:15: warning: no previous prototype for 'trampoline_probe_handler' [-Wmissing-prototypes]
-
-There are no users outside this file, so make it static.
+There is no need to cast a kprobe_opcode_t pointer to a kprobe_opcode_t
+pointer.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- arch/sh/kernel/kprobes.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/sh/kernel/kprobes.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/arch/sh/kernel/kprobes.c b/arch/sh/kernel/kprobes.c
-index 74051b8ddf3e7bf9..d8c2e399d6e50794 100644
+index d8c2e399d6e50794..49c4ffd782d6d6c5 100644
 --- a/arch/sh/kernel/kprobes.c
 +++ b/arch/sh/kernel/kprobes.c
-@@ -296,7 +296,7 @@ static void __used kretprobe_trampoline_holder(void)
- /*
-  * Called when we hit the probe point at __kretprobe_trampoline
-  */
--int __kprobes trampoline_probe_handler(struct kprobe *p, struct pt_regs *regs)
-+static int __kprobes trampoline_probe_handler(struct kprobe *p, struct pt_regs *regs)
- {
- 	regs->pc = __kretprobe_trampoline_handler(regs, NULL);
+@@ -39,7 +39,7 @@ static DEFINE_PER_CPU(struct kprobe, saved_next_opcode2);
  
+ int __kprobes arch_prepare_kprobe(struct kprobe *p)
+ {
+-	kprobe_opcode_t opcode = *(kprobe_opcode_t *) (p->addr);
++	kprobe_opcode_t opcode = *p->addr;
+ 
+ 	if (OPCODE_RTE(opcode))
+ 		return -EFAULT;	/* Bad breakpoint */
+@@ -248,7 +248,7 @@ static int __kprobes kprobe_handler(struct pt_regs *regs)
+ 	p = get_kprobe(addr);
+ 	if (!p) {
+ 		/* Not one of ours: let kernel handle it */
+-		if (*(kprobe_opcode_t *)addr != BREAKPOINT_INSTRUCTION) {
++		if (*addr != BREAKPOINT_INSTRUCTION) {
+ 			/*
+ 			 * The breakpoint instruction was removed right
+ 			 * after we hit it. Another cpu has removed
 -- 
 2.34.1
 
