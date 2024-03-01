@@ -1,45 +1,45 @@
-Return-Path: <linux-sh+bounces-479-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-494-lists+linux-sh=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C003D86EACE
-	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 22:02:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41B0D86EADC
+	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 22:02:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 758F8282CD6
-	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 21:02:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C36DA1F228F5
+	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 21:02:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85A7E56B61;
-	Fri,  1 Mar 2024 21:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2C0D56B77;
+	Fri,  1 Mar 2024 21:02:55 +0000 (UTC)
 X-Original-To: linux-sh@vger.kernel.org
-Received: from albert.telenet-ops.be (albert.telenet-ops.be [195.130.137.90])
+Received: from baptiste.telenet-ops.be (baptiste.telenet-ops.be [195.130.132.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02EF56777
-	for <linux-sh@vger.kernel.org>; Fri,  1 Mar 2024 21:02:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.90
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A2B56B8F
+	for <linux-sh@vger.kernel.org>; Fri,  1 Mar 2024 21:02:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709326969; cv=none; b=jCGsnOgu2WJLJSND2A45qawZiuIpqCCpNXhHMMKtd96EKsf+/uxInWsNrmI2+m8imoIEyA3i/u49JLq5krViJkKO8nYaZXy1oPEv8E48KG6WFmfeLs1VOtMziF83FG1sDMwChV9cdIHToWktcMnOXH5Z9cof5P7U1D3RXpGHtgg=
+	t=1709326975; cv=none; b=Pqkc9N/nF3v7J46Vpo7Pji+Ut+F0sAquMyTE0fanqLnscCye4W9ht5LV5OMAfPPyKGbLK+fsRBUru4mu544I6eOax6j2jeBp/CUuYMDqrTUINLb1lQVbu9KYlVBCW5myollWsULl6T91Mc36xeE/IHN3+akrbfw7KcZ1HYawvEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709326969; c=relaxed/simple;
-	bh=URqkyiSHZkMO/3vSWWbKavtNNGIsgwfUfwcUzGhcOHY=;
+	s=arc-20240116; t=1709326975; c=relaxed/simple;
+	bh=7LYvyH+kMuatRbK3+hd5eTn3ke7Rmr09AkuZvFjVoD0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PrsY+iMUSLAxme3AqtSThrYr/WJZ7HId9hoTBUzwkuQ2p5nmOn8ZXa7OzeH8GSyoR8Sw2/TmjzcaNHZs4SZ2j15vmC1lCKe4wK/FtoYpOpWiNn/jP02k8N7+c/4Xd1LFP9uxzw9fZEJi4BBEIJXX62xNyET2j37G16TJq//nDVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.90
+	 MIME-Version; b=M3u77MgL1xL1pODS92BFLSl3yQQnv3jiFwQ+2gGn+GQxsW8LRUBssfC5yq6ZpJ3Wy2NH1c9sLclkG192NIGCZSPVphh/iRVad2TfcFK+ddz/QF06VaHCW5LIL8XbYIC2qfdi0Ekr6zzOE2EJwUtlwOEUydxi6lQYmq5h6D3Sh8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed40:db22:6af9:7d18:6ee8])
-	by albert.telenet-ops.be with bizsmtp
-	id tZ2e2B00F1TWuYv06Z2eSn; Fri, 01 Mar 2024 22:02:43 +0100
+	by baptiste.telenet-ops.be with bizsmtp
+	id tZ2e2B00F1TWuYv01Z2eXq; Fri, 01 Mar 2024 22:02:45 +0100
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1rgA1T-0024hB-HR;
+	id 1rgA1T-0024hH-IE;
 	Fri, 01 Mar 2024 22:02:38 +0100
 Received: from geert by rox.of.borg with local (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1rgA1e-00D8sO-Bm;
+	id 1rgA1e-00D8sT-CV;
 	Fri, 01 Mar 2024 22:02:38 +0100
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: Yoshinori Sato <ysato@users.sourceforge.jp>,
@@ -57,9 +57,9 @@ Cc: Steven Rostedt <rostedt@goodmis.org>,
 	linux-sh@vger.kernel.org,
 	linux-trace-kernel@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 19/20] sh: dwarf: Make dwarf_lookup_fde() static
-Date: Fri,  1 Mar 2024 22:02:33 +0100
-Message-Id: <55e8261a354e8ec4d375754e404c6c1d303af715.1709326528.git.geert+renesas@glider.be>
+Subject: [PATCH 20/20] [RFC] sh: dma: Remove unused functionality
+Date: Fri,  1 Mar 2024 22:02:34 +0100
+Message-Id: <2beb81fdd7592a94329e3c9a6ba56959f6094019.1709326528.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1709326528.git.geert+renesas@glider.be>
 References: <cover.1709326528.git.geert+renesas@glider.be>
@@ -71,28 +71,195 @@ List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-arch/sh/kernel/dwarf.c:347:19: warning: no previous prototype for 'dwarf_lookup_fde' [-Wmissing-prototypes]
-
-There are no users outside this file, so make it static.
+dma_extend(), get_dma_info_by_name(), register_chan_caps(), and
+request_dma_bycap() are unused.  Remove them, and all related code.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- arch/sh/kernel/dwarf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/sh/drivers/dma/dma-api.c | 116 ----------------------------------
+ arch/sh/include/asm/dma.h     |   7 --
+ 2 files changed, 123 deletions(-)
 
-diff --git a/arch/sh/kernel/dwarf.c b/arch/sh/kernel/dwarf.c
-index bf8682e718303051..45c8ae20d10957db 100644
---- a/arch/sh/kernel/dwarf.c
-+++ b/arch/sh/kernel/dwarf.c
-@@ -344,7 +344,7 @@ static struct dwarf_cie *dwarf_lookup_cie(unsigned long cie_ptr)
-  *	dwarf_lookup_fde - locate the FDE that covers pc
-  *	@pc: the program counter
-  */
--struct dwarf_fde *dwarf_lookup_fde(unsigned long pc)
-+static struct dwarf_fde *dwarf_lookup_fde(unsigned long pc)
+diff --git a/arch/sh/drivers/dma/dma-api.c b/arch/sh/drivers/dma/dma-api.c
+index f49097fa634c36d4..87e5a892887360f5 100644
+--- a/arch/sh/drivers/dma/dma-api.c
++++ b/arch/sh/drivers/dma/dma-api.c
+@@ -41,21 +41,6 @@ struct dma_info *get_dma_info(unsigned int chan)
+ }
+ EXPORT_SYMBOL(get_dma_info);
+ 
+-struct dma_info *get_dma_info_by_name(const char *dmac_name)
+-{
+-	struct dma_info *info;
+-
+-	list_for_each_entry(info, &registered_dmac_list, list) {
+-		if (dmac_name && (strcmp(dmac_name, info->name) != 0))
+-			continue;
+-		else
+-			return info;
+-	}
+-
+-	return NULL;
+-}
+-EXPORT_SYMBOL(get_dma_info_by_name);
+-
+ static unsigned int get_nr_channels(void)
  {
- 	struct rb_node **rb_node = &fde_root.rb_node;
- 	struct dwarf_fde *fde = NULL;
+ 	struct dma_info *info;
+@@ -101,66 +86,6 @@ int get_dma_residue(unsigned int chan)
+ }
+ EXPORT_SYMBOL(get_dma_residue);
+ 
+-static int search_cap(const char **haystack, const char *needle)
+-{
+-	const char **p;
+-
+-	for (p = haystack; *p; p++)
+-		if (strcmp(*p, needle) == 0)
+-			return 1;
+-
+-	return 0;
+-}
+-
+-/**
+- * request_dma_bycap - Allocate a DMA channel based on its capabilities
+- * @dmac: List of DMA controllers to search
+- * @caps: List of capabilities
+- *
+- * Search all channels of all DMA controllers to find a channel which
+- * matches the requested capabilities. The result is the channel
+- * number if a match is found, or %-ENODEV if no match is found.
+- *
+- * Note that not all DMA controllers export capabilities, in which
+- * case they can never be allocated using this API, and so
+- * request_dma() must be used specifying the channel number.
+- */
+-int request_dma_bycap(const char **dmac, const char **caps, const char *dev_id)
+-{
+-	unsigned int found = 0;
+-	struct dma_info *info;
+-	const char **p;
+-	int i;
+-
+-	BUG_ON(!dmac || !caps);
+-
+-	list_for_each_entry(info, &registered_dmac_list, list)
+-		if (strcmp(*dmac, info->name) == 0) {
+-			found = 1;
+-			break;
+-		}
+-
+-	if (!found)
+-		return -ENODEV;
+-
+-	for (i = 0; i < info->nr_channels; i++) {
+-		struct dma_channel *channel = &info->channels[i];
+-
+-		if (unlikely(!channel->caps))
+-			continue;
+-
+-		for (p = caps; *p; p++) {
+-			if (!search_cap(channel->caps, *p))
+-				break;
+-			if (request_dma(channel->chan, dev_id) == 0)
+-				return channel->chan;
+-		}
+-	}
+-
+-	return -EINVAL;
+-}
+-EXPORT_SYMBOL(request_dma_bycap);
+-
+ int request_dma(unsigned int chan, const char *dev_id)
+ {
+ 	struct dma_channel *channel = { 0 };
+@@ -213,35 +138,6 @@ void dma_wait_for_completion(unsigned int chan)
+ }
+ EXPORT_SYMBOL(dma_wait_for_completion);
+ 
+-int register_chan_caps(const char *dmac, struct dma_chan_caps *caps)
+-{
+-	struct dma_info *info;
+-	unsigned int found = 0;
+-	int i;
+-
+-	list_for_each_entry(info, &registered_dmac_list, list)
+-		if (strcmp(dmac, info->name) == 0) {
+-			found = 1;
+-			break;
+-		}
+-
+-	if (unlikely(!found))
+-		return -ENODEV;
+-
+-	for (i = 0; i < info->nr_channels; i++, caps++) {
+-		struct dma_channel *channel;
+-
+-		if ((info->first_channel_nr + i) != caps->ch_num)
+-			return -EINVAL;
+-
+-		channel = &info->channels[i];
+-		channel->caps = caps->caplist;
+-	}
+-
+-	return 0;
+-}
+-EXPORT_SYMBOL(register_chan_caps);
+-
+ void dma_configure_channel(unsigned int chan, unsigned long flags)
+ {
+ 	struct dma_info *info = get_dma_info(chan);
+@@ -267,18 +163,6 @@ int dma_xfer(unsigned int chan, unsigned long from,
+ }
+ EXPORT_SYMBOL(dma_xfer);
+ 
+-int dma_extend(unsigned int chan, unsigned long op, void *param)
+-{
+-	struct dma_info *info = get_dma_info(chan);
+-	struct dma_channel *channel = get_dma_channel(chan);
+-
+-	if (info->ops->extend)
+-		return info->ops->extend(channel, op, param);
+-
+-	return -ENOSYS;
+-}
+-EXPORT_SYMBOL(dma_extend);
+-
+ static int dma_proc_show(struct seq_file *m, void *v)
+ {
+ 	struct dma_info *info = v;
+diff --git a/arch/sh/include/asm/dma.h b/arch/sh/include/asm/dma.h
+index c8bee3f985a29393..6b6d409956d17f09 100644
+--- a/arch/sh/include/asm/dma.h
++++ b/arch/sh/include/asm/dma.h
+@@ -56,7 +56,6 @@ struct dma_ops {
+ 	int (*get_residue)(struct dma_channel *chan);
+ 	int (*xfer)(struct dma_channel *chan);
+ 	int (*configure)(struct dma_channel *chan, unsigned long flags);
+-	int (*extend)(struct dma_channel *chan, unsigned long op, void *param);
+ };
+ 
+ struct dma_channel {
+@@ -118,8 +117,6 @@ extern int dma_xfer(unsigned int chan, unsigned long from,
+ #define dma_read_page(chan, from, to)	\
+ 	dma_read(chan, from, to, PAGE_SIZE)
+ 
+-extern int request_dma_bycap(const char **dmac, const char **caps,
+-			     const char *dev_id);
+ extern int get_dma_residue(unsigned int chan);
+ extern struct dma_info *get_dma_info(unsigned int chan);
+ extern struct dma_channel *get_dma_channel(unsigned int chan);
+@@ -128,10 +125,6 @@ extern void dma_configure_channel(unsigned int chan, unsigned long flags);
+ 
+ extern int register_dmac(struct dma_info *info);
+ extern void unregister_dmac(struct dma_info *info);
+-extern struct dma_info *get_dma_info_by_name(const char *dmac_name);
+-
+-extern int dma_extend(unsigned int chan, unsigned long op, void *param);
+-extern int register_chan_caps(const char *dmac, struct dma_chan_caps *capslist);
+ 
+ /* arch/sh/drivers/dma/dma-sysfs.c */
+ extern int dma_create_sysfs_files(struct dma_channel *, struct dma_info *);
 -- 
 2.34.1
 
