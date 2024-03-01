@@ -1,45 +1,45 @@
-Return-Path: <linux-sh+bounces-480-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-475-lists+linux-sh=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 435C086EACF
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB44586EAD0
 	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 22:02:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 730311C219AA
-	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 21:02:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4450FB21F47
+	for <lists+linux-sh@lfdr.de>; Fri,  1 Mar 2024 21:02:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 480E056B73;
-	Fri,  1 Mar 2024 21:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B31E56B63;
+	Fri,  1 Mar 2024 21:02:48 +0000 (UTC)
 X-Original-To: linux-sh@vger.kernel.org
 Received: from michel.telenet-ops.be (michel.telenet-ops.be [195.130.137.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1392D56B6F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CDBA56B66
 	for <linux-sh@vger.kernel.org>; Fri,  1 Mar 2024 21:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.88
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709326970; cv=none; b=ejCyxeC0wZF7qFmEXhoCs81mcl9wBscBQQ0JaIQv+KLYWdyNMuDCHkc1wYbczD+dSpiIdsH4vSp0C78XcuMov/XUVAIWpb/VxC1dUipYaiwn293xWaLP5UeMrCNljn+CyfWmA1ImrR8MYov7LdOYjb7SXzFY5E/Hfa8iZhsJ+Vk=
+	t=1709326968; cv=none; b=LT6UlzVOrxDSGQrl+IhwMDriSXTGNJkjZ/H1Lj0lv/SMRP45Lfeke6nj+7Fr1FWrEW0T3VPxLDrDXdkhYVgHR5EuZA33Fg9Sbebp2oHh/35a/iT8aZsf6+XtrlHucpMiMOxDscQPQ+N9Hgh2x+of0A4sSmLgBG7R+QMFT4DwHgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709326970; c=relaxed/simple;
-	bh=iFhRPXkYrRTAyOSfLti9NFRV7ZKuRkjcotdtKCX33/Q=;
+	s=arc-20240116; t=1709326968; c=relaxed/simple;
+	bh=rBxoEAWdBSYWw6guM59u0mev4vtFqxQLPZ9mMn81aww=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V/z1kLpOfVav10Fd4iqRECrpeg0vjf2zjlErJU69JID7L7DNAJkZo3OVMt6hZLLRBEqPTrFwVHjO89qdPQAnPfSAuRwj7aNAr1BKJFakg+Dz+86Z54jBW4A6/VoBoSuI+wzQ5Nn7ip3YJuUxpEzz6lcLA2pgd6FW5mHEDMFoFAc=
+	 MIME-Version; b=s8mAxFdpljbrBigs9EuHXftAcHYa45fuBw36HnaNeYYokXsV7f6TCu+fGYt5bhFZdVNkolmQT/0h9Fq2h79G+TkQ08ScN6w//UjfmLVuKjhvQzyKeVSJ+oCucA/+5f1YqK/1yI1UJ2x8xW7uGMpWrb6bjTRWBdCb41bimYcKP/0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.88
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed40:db22:6af9:7d18:6ee8])
 	by michel.telenet-ops.be with bizsmtp
-	id tZ2e2B00A1TWuYv06Z2ewx; Fri, 01 Mar 2024 22:02:43 +0100
+	id tZ2e2B00B1TWuYv06Z2ewy; Fri, 01 Mar 2024 22:02:43 +0100
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1rgA1T-0024gY-Ap;
+	id 1rgA1T-0024ge-Bc;
 	Fri, 01 Mar 2024 22:02:38 +0100
 Received: from geert by rox.of.borg with local (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1rgA1e-00D8rb-52;
+	id 1rgA1e-00D8rf-5i;
 	Fri, 01 Mar 2024 22:02:38 +0100
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: Yoshinori Sato <ysato@users.sourceforge.jp>,
@@ -57,9 +57,9 @@ Cc: Steven Rostedt <rostedt@goodmis.org>,
 	linux-sh@vger.kernel.org,
 	linux-trace-kernel@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 09/20] sh: ftrace: Fix missing prototypes
-Date: Fri,  1 Mar 2024 22:02:23 +0100
-Message-Id: <910c8846a025e1c3b744a83ddf8e2816a3c5569d.1709326528.git.geert+renesas@glider.be>
+Subject: [PATCH 10/20] sh: nommu: Add missing #include <asm/cacheflush.h>
+Date: Fri,  1 Mar 2024 22:02:24 +0100
+Message-Id: <d4b2a43fcedddee3d27cfd87ff2e0bf511588aa0.1709326528.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1709326528.git.geert+renesas@glider.be>
 References: <cover.1709326528.git.geert+renesas@glider.be>
@@ -69,78 +69,30 @@ List-Id: <linux-sh.vger.kernel.org>
 List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-arch/sh/kernel/ftrace.c:130:6: warning: no previous prototype for ‘arch_ftrace_nmi_enter’ [-Wmissing-prototypes]
-arch/sh/kernel/ftrace.c:140:6: warning: no previous prototype for ‘arch_ftrace_nmi_exit’ [-Wmissing-prototypes]
-arch/sh/kernel/ftrace.c:316:6: warning: no previous prototype for ‘prepare_ftrace_return’ [-Wmissing-prototypes]
-
-Fix this by moving existing forward declarations to <asm/ftrace.h>, and
-adding the missing forward declaration for prepare_ftrace_return().
+arch/sh/mm/nommu.c:76:13: warning: no previous prototype for 'kmap_coherent_init' [-Wmissing-prototypes]
+arch/sh/mm/nommu.c:80:7: warning: no previous prototype for 'kmap_coherent' [-Wmissing-prototypes]
+arch/sh/mm/nommu.c:86:6: warning: no previous prototype for 'kunmap_coherent' [-Wmissing-prototypes]
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- arch/sh/include/asm/ftrace.h | 10 ++++++++++
- arch/sh/kernel/traps.c       | 10 ++--------
- 2 files changed, 12 insertions(+), 8 deletions(-)
+ arch/sh/mm/nommu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/sh/include/asm/ftrace.h b/arch/sh/include/asm/ftrace.h
-index b1c1dc0cc261d1db..1c10e106639098fc 100644
---- a/arch/sh/include/asm/ftrace.h
-+++ b/arch/sh/include/asm/ftrace.h
-@@ -33,6 +33,8 @@ static inline unsigned long ftrace_call_adjust(unsigned long addr)
- 	return addr;
- }
- 
-+void prepare_ftrace_return(unsigned long *parent, unsigned long self_addr);
+diff --git a/arch/sh/mm/nommu.c b/arch/sh/mm/nommu.c
+index 78c4b6e6d33ba3af..fa3dc9428a737ffe 100644
+--- a/arch/sh/mm/nommu.c
++++ b/arch/sh/mm/nommu.c
+@@ -10,6 +10,8 @@
+ #include <linux/init.h>
+ #include <linux/string.h>
+ #include <linux/mm.h>
 +
- #endif /* __ASSEMBLY__ */
- #endif /* CONFIG_FUNCTION_TRACER */
- 
-@@ -43,6 +45,14 @@ extern void *return_address(unsigned int);
- 
- #define ftrace_return_address(n) return_address(n)
- 
-+#ifdef CONFIG_DYNAMIC_FTRACE
-+extern void arch_ftrace_nmi_enter(void);
-+extern void arch_ftrace_nmi_exit(void);
-+#else
-+static inline void arch_ftrace_nmi_enter(void) { }
-+static inline void arch_ftrace_nmi_exit(void) { }
-+#endif
-+
- #endif /* __ASSEMBLY__ */
- 
- #endif /* __ASM_SH_FTRACE_H */
-diff --git a/arch/sh/kernel/traps.c b/arch/sh/kernel/traps.c
-index 01884054aeb2bd30..4339c4cafa79ce2a 100644
---- a/arch/sh/kernel/traps.c
-+++ b/arch/sh/kernel/traps.c
-@@ -15,6 +15,8 @@
- 
- #include <linux/extable.h>
- #include <linux/module.h>	/* print_modules */
-+
-+#include <asm/ftrace.h>
- #include <asm/unwinder.h>
- #include <asm/traps.h>
- 
-@@ -170,14 +172,6 @@ BUILD_TRAP_HANDLER(bug)
- 	force_sig(SIGTRAP);
- }
- 
--#ifdef CONFIG_DYNAMIC_FTRACE
--extern void arch_ftrace_nmi_enter(void);
--extern void arch_ftrace_nmi_exit(void);
--#else
--static inline void arch_ftrace_nmi_enter(void) { }
--static inline void arch_ftrace_nmi_exit(void) { }
--#endif
--
- BUILD_TRAP_HANDLER(nmi)
- {
- 	TRAP_HANDLER_DECL;
++#include <asm/cacheflush.h>
+ #include <asm/tlbflush.h>
+ #include <asm/page.h>
+ #include <linux/uaccess.h>
 -- 
 2.34.1
 
