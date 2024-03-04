@@ -1,45 +1,45 @@
-Return-Path: <linux-sh+bounces-512-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-516-lists+linux-sh=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1499870A25
-	for <lists+linux-sh@lfdr.de>; Mon,  4 Mar 2024 20:11:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B72E8870A32
+	for <lists+linux-sh@lfdr.de>; Mon,  4 Mar 2024 20:12:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A569B23BCB
-	for <lists+linux-sh@lfdr.de>; Mon,  4 Mar 2024 19:11:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E914D1C2118C
+	for <lists+linux-sh@lfdr.de>; Mon,  4 Mar 2024 19:12:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A40F079922;
-	Mon,  4 Mar 2024 19:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7BE27BB05;
+	Mon,  4 Mar 2024 19:11:02 +0000 (UTC)
 X-Original-To: linux-sh@vger.kernel.org
-Received: from laurent.telenet-ops.be (laurent.telenet-ops.be [195.130.137.89])
+Received: from andre.telenet-ops.be (andre.telenet-ops.be [195.130.132.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A3AF78B7E
-	for <linux-sh@vger.kernel.org>; Mon,  4 Mar 2024 19:10:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF947AE70
+	for <linux-sh@vger.kernel.org>; Mon,  4 Mar 2024 19:10:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709579457; cv=none; b=kqZjBVmNStuMrBZFt0yoVFpxGFT2GQG/+0bCjhAI96jOyCfNg195wEb73K3/cOZLmDl7mXTdr3hrTk03C7UP+kRx5lsmjBtOu/YvTJAh9FtmK7nVgfVHZ28h2mu0mWcaTFgEfxzVhRHNFTlvfbE8YWUxvpg0WEYlLRmUZS7EvV0=
+	t=1709579462; cv=none; b=STI8e1YQWFMMUMzE9h5MfjaWWP0JWBcs88QAYCeNbOcFc+PLoAIo0IxoFFpZmcLo+FPiGE09L2CBerqomWic1mDbx6aSC3/P21ol5oAed7oWVsxLSEMR6Nu6jmDVhhLcXU58h7U5L99y6FPI9MsnCGRD+vdSOb+3rXx5xnOEXhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709579457; c=relaxed/simple;
-	bh=1NU2jdozNlhSkJZyevmnH2H6GJDZ1F/40k7wWV+RudM=;
+	s=arc-20240116; t=1709579462; c=relaxed/simple;
+	bh=E+qJDFY6zi9Nz5E3gi8d133G0ewbF7dK4ZuSWuhwbU4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rHrCmyvfdfnVbKvw+1FkI+Pyyb1hZYLIQbtPttbZfc8QlzcqW+DKuBz5L0OIRtHYV8SP95+c/e1K3W/9m4NeRrC2P4ktJpxHdMsAHCBwUBqM0JwzG2uCP9Oa+GEk+skEfwYrMTRON7ZvrBswWOllXpp1NVG35Ye/+ASoKCeXxQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.89
+	 MIME-Version:Content-Type; b=RA6tRZN6ZxpEAr6TH1laHvmWPbmjabe/wXo3h3bjHN/70NtXNFqxEN0G0w0EbZDRjoZzg1Rcz131BcNmJrQgDLeSadqNOYyJ3Cy7zc4lvBuHYWcq0zhKV6v/Rh8H9xYkvs88LydWzeIWNCj6P/wtvS0arVAHY16xCtc4sZDZ+HU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed40:2716:1247:52e8:4f90])
-	by laurent.telenet-ops.be with bizsmtp
-	id ujAr2B00K2qflky01jArdj; Mon, 04 Mar 2024 20:10:52 +0100
+	by andre.telenet-ops.be with bizsmtp
+	id ujAr2B00F2qflky01jArLi; Mon, 04 Mar 2024 20:10:52 +0100
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1rhDhv-002KKB-OM;
+	id 1rhDhv-002KKF-PG;
 	Mon, 04 Mar 2024 20:10:51 +0100
 Received: from geert by rox.of.borg with local (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1rhDi7-00BCct-DV;
+	id 1rhDi7-00BCcx-EG;
 	Mon, 04 Mar 2024 20:10:51 +0100
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: Yoshinori Sato <ysato@users.sourceforge.jp>,
@@ -49,9 +49,9 @@ To: Yoshinori Sato <ysato@users.sourceforge.jp>,
 Cc: linux-sh@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 5/7] sh: sh7757lcr: Make init_sh7757lcr_IRQ() static
-Date: Mon,  4 Mar 2024 20:10:47 +0100
-Message-Id: <fba00424b5b0bee0f9b9cbc63d649a86854d202f.1709579038.git.geert+renesas@glider.be>
+Subject: [PATCH 6/7] sh: sh7757: Add missing #include <asm/mmzone.h>
+Date: Mon,  4 Mar 2024 20:10:48 +0100
+Message-Id: <c9c26472151d16a2ca91f14bccd64af07a6abdd8.1709579038.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1709579038.git.geert+renesas@glider.be>
 References: <cover.1709579038.git.geert+renesas@glider.be>
@@ -61,30 +61,32 @@ List-Id: <linux-sh.vger.kernel.org>
 List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-arch/sh/boards/board-sh7757lcr.c:572:13: warning: no previous prototype for 'init_sh7757lcr_IRQ' [-Wmissing-prototypes]
-
-There are no users outside this file, so make it static.
+arch/sh/kernel/cpu/sh4a/setup-sh7757.c:1240:13: warning: no previous prototype for ‘plat_mem_setup’ [-Wmissing-prototypes]
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- arch/sh/boards/board-sh7757lcr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/sh/kernel/cpu/sh4a/setup-sh7757.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/sh/boards/board-sh7757lcr.c b/arch/sh/boards/board-sh7757lcr.c
-index 4014c042d2a5a5c2..bca54e489e11678e 100644
---- a/arch/sh/boards/board-sh7757lcr.c
-+++ b/arch/sh/boards/board-sh7757lcr.c
-@@ -569,7 +569,7 @@ static int __init sh7757lcr_devices_setup(void)
- arch_initcall(sh7757lcr_devices_setup);
+diff --git a/arch/sh/kernel/cpu/sh4a/setup-sh7757.c b/arch/sh/kernel/cpu/sh4a/setup-sh7757.c
+index 67e330b7ea4621e9..2ad19a0c5e04ef2a 100644
+--- a/arch/sh/kernel/cpu/sh4a/setup-sh7757.c
++++ b/arch/sh/kernel/cpu/sh4a/setup-sh7757.c
+@@ -17,8 +17,11 @@
+ #include <linux/sh_dma.h>
+ #include <linux/sh_intc.h>
+ #include <linux/usb/ohci_pdriver.h>
++
+ #include <cpu/dma-register.h>
+ #include <cpu/sh7757.h>
++
++#include <asm/mmzone.h>
+ #include <asm/platform_early.h>
  
- /* Initialize IRQ setting */
--void __init init_sh7757lcr_IRQ(void)
-+static void __init init_sh7757lcr_IRQ(void)
- {
- 	plat_irq_setup_pins(IRQ_MODE_IRQ7654);
- 	plat_irq_setup_pins(IRQ_MODE_IRQ3210);
+ static struct plat_sci_port scif2_platform_data = {
 -- 
 2.34.1
 
