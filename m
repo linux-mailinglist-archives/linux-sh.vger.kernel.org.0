@@ -1,46 +1,46 @@
-Return-Path: <linux-sh+bounces-1003-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-1002-lists+linux-sh=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 817FE8C41B4
-	for <lists+linux-sh@lfdr.de>; Mon, 13 May 2024 15:21:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 236AE8C41B3
+	for <lists+linux-sh@lfdr.de>; Mon, 13 May 2024 15:21:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B306E1C22AF8
-	for <lists+linux-sh@lfdr.de>; Mon, 13 May 2024 13:21:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B71331F227AA
+	for <lists+linux-sh@lfdr.de>; Mon, 13 May 2024 13:21:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C7A9152195;
-	Mon, 13 May 2024 13:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF77A15216F;
+	Mon, 13 May 2024 13:21:04 +0000 (UTC)
 X-Original-To: linux-sh@vger.kernel.org
 Received: from laurent.telenet-ops.be (laurent.telenet-ops.be [195.130.137.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84FE815217E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85027152182
 	for <linux-sh@vger.kernel.org>; Mon, 13 May 2024 13:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715606465; cv=none; b=TygYjl15oIIhSjZ2U6mV/O03bKmsBUQdgZk8x7gr+PaSpAHp9LZPJCWzWM+4mfBjbMzKybylfw6qlFaPdZtMN/IN22Y7x/IuL/zlcHY01KQWETl7LJqNHCBKU9CQeWW1Vdksa+k0HvpBEsl39VWcEr+iQaT+2bb10+KZSXu+c3o=
+	t=1715606464; cv=none; b=Ypp7Fg7/lIK7/j8fBBT4B1rBnHNzg9BBMGZfFscC6i/lNpb+8mkSPHJO35HvMXReiQxHVkaPbnlOyKyxzWyTkTnzP57uy9SKJROg4IYRwdm9Nqn9bU8ACVRmPb4SmqY9izi0AonIC34Nu9mbjQ9EiuHEgOxSzerA1h3T+QsypAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715606465; c=relaxed/simple;
-	bh=pc/VJ1lCqkuIAuXgBQOqD4NDNJ806OYBSWFMiP8vFMo=;
+	s=arc-20240116; t=1715606464; c=relaxed/simple;
+	bh=t+9d5z/RIWVL4mfXlBPmUVnjbCVQGratb2WunXgnKGA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oqHHdkPAekwJ7r6UApVKi8eEvDB+kgZg89mmxIhZaryRt0G7mEjCb1dVZn6LhQTQLoOUUypL52qpDxOu20oI0OAq0VAsQBiCZqaGNWxNp/TE05JUuM9qwFUVTG/3wdQGkzsqO/iacZdCLHcLeYHwiMMZE6o28IF5uEOcLq7yD+c=
+	 MIME-Version; b=pwMHpqHSh1F6tkAhuoDlDcGaAJh0uIsQZnp4w9/Bt2A6sKIFambc7BYI3ds4f1YIM3yZo0CL5YBR3yV8a0FRoCY5Ad6H1hOq9GG8P5PF5HjSu9xzrPK0QZA1nNApe3yDm17KOAuVvb2n+d67xrfENw5TAQgE1c9jP0CF2JLaryo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:c85e:4b6d:1f91:1410])
 	by laurent.telenet-ops.be with bizsmtp
-	id NdM02C0065V4kqY01dM0ZD; Mon, 13 May 2024 15:21:00 +0200
+	id NdM02C0075V4kqY01dM0ZE; Mon, 13 May 2024 15:21:00 +0200
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1s6Vb7-00399m-Ry;
+	id 1s6Vb7-00399r-Si;
 	Mon, 13 May 2024 15:21:00 +0200
 Received: from geert by rox.of.borg with local (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1s6Vbv-008tqU-Vr;
-	Mon, 13 May 2024 15:20:59 +0200
+	id 1s6Vbw-008tqZ-1D;
+	Mon, 13 May 2024 15:21:00 +0200
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: Yoshinori Sato <ysato@users.sourceforge.jp>,
 	Rich Felker <dalias@libc.org>,
@@ -49,9 +49,9 @@ To: Yoshinori Sato <ysato@users.sourceforge.jp>,
 Cc: linux-sh@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 2/3] sh: smp: Protect setup_profiling_timer() by CONFIG_PROFILING
-Date: Mon, 13 May 2024 15:20:54 +0200
-Message-Id: <effa5eecbd2389c6661974e91bb834db210989ea.1715606232.git.geert+renesas@glider.be>
+Subject: [PATCH 3/3] sh: setup: Add missing forward declaration for sh_fdt_init()
+Date: Mon, 13 May 2024 15:20:55 +0200
+Message-Id: <7e3ea09e706a075bceb6bfd172990676e79be1c2.1715606232.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1715606232.git.geert+renesas@glider.be>
 References: <cover.1715606232.git.geert+renesas@glider.be>
@@ -63,34 +63,24 @@ List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-arch/sh/kernel/smp.c:326:5: warning: no previous prototype for 'setup_profiling_timer' [-Wmissing-prototypes]
-
-The function is unconditionally defined in smp.c, but conditionally
-declared in <linux/profile.h>.
+arch/sh/kernel/setup.c:244:12: warning: no previous prototype for 'sh_fdt_init' [-Wmissing-prototypes]
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- arch/sh/kernel/smp.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/sh/include/asm/setup.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/sh/kernel/smp.c b/arch/sh/kernel/smp.c
-index b3ea50aabba3d7f2..108d808767fa9984 100644
---- a/arch/sh/kernel/smp.c
-+++ b/arch/sh/kernel/smp.c
-@@ -322,11 +322,13 @@ void smp_message_recv(unsigned int msg)
- 	}
- }
+diff --git a/arch/sh/include/asm/setup.h b/arch/sh/include/asm/setup.h
+index fc807011187fa1c0..84bb23a771f3538b 100644
+--- a/arch/sh/include/asm/setup.h
++++ b/arch/sh/include/asm/setup.h
+@@ -21,5 +21,6 @@
+ void sh_mv_setup(void);
+ void check_for_initrd(void);
+ void per_cpu_trap_init(void);
++void sh_fdt_init(phys_addr_t dt_phys);
  
-+#ifdef CONFIG_PROFILING
- /* Not really SMP stuff ... */
- int setup_profiling_timer(unsigned int multiplier)
- {
- 	return 0;
- }
-+#endif
- 
- #ifdef CONFIG_MMU
- 
+ #endif /* _SH_SETUP_H */
 -- 
 2.34.1
 
