@@ -1,87 +1,113 @@
-Return-Path: <linux-sh+bounces-1002-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-1006-lists+linux-sh=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 236AE8C41B3
-	for <lists+linux-sh@lfdr.de>; Mon, 13 May 2024 15:21:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 100F48C41F0
+	for <lists+linux-sh@lfdr.de>; Mon, 13 May 2024 15:30:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B71331F227AA
-	for <lists+linux-sh@lfdr.de>; Mon, 13 May 2024 13:21:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA3D61F2388B
+	for <lists+linux-sh@lfdr.de>; Mon, 13 May 2024 13:30:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF77A15216F;
-	Mon, 13 May 2024 13:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9177F152E16;
+	Mon, 13 May 2024 13:30:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b="VKreQDHa"
 X-Original-To: linux-sh@vger.kernel.org
-Received: from laurent.telenet-ops.be (laurent.telenet-ops.be [195.130.137.89])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85027152182
-	for <linux-sh@vger.kernel.org>; Mon, 13 May 2024 13:21:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57CB9152E10;
+	Mon, 13 May 2024 13:30:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.133.4.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715606464; cv=none; b=Ypp7Fg7/lIK7/j8fBBT4B1rBnHNzg9BBMGZfFscC6i/lNpb+8mkSPHJO35HvMXReiQxHVkaPbnlOyKyxzWyTkTnzP57uy9SKJROg4IYRwdm9Nqn9bU8ACVRmPb4SmqY9izi0AonIC34Nu9mbjQ9EiuHEgOxSzerA1h3T+QsypAs=
+	t=1715607011; cv=none; b=H6rpOCQbEvcr2IBgV+dvJ4Bk9bpZ7EdIuQhhZVdtJXDCk5bM+2rb9BpjBP0ivCMv60g4I4oocyElJczwp90900kFti6aU6mb2VHlYyKWELvotyeRdvScoHNukQTTYYVObd2BgZRfsYL+s4xZUSH7JUOAcIfC19wQLU/5K/J/qtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715606464; c=relaxed/simple;
-	bh=t+9d5z/RIWVL4mfXlBPmUVnjbCVQGratb2WunXgnKGA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pwMHpqHSh1F6tkAhuoDlDcGaAJh0uIsQZnp4w9/Bt2A6sKIFambc7BYI3ds4f1YIM3yZo0CL5YBR3yV8a0FRoCY5Ad6H1hOq9GG8P5PF5HjSu9xzrPK0QZA1nNApe3yDm17KOAuVvb2n+d67xrfENw5TAQgE1c9jP0CF2JLaryo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
-Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:c85e:4b6d:1f91:1410])
-	by laurent.telenet-ops.be with bizsmtp
-	id NdM02C0075V4kqY01dM0ZE; Mon, 13 May 2024 15:21:00 +0200
-Received: from rox.of.borg ([192.168.97.57])
-	by ramsan.of.borg with esmtp (Exim 4.95)
-	(envelope-from <geert@linux-m68k.org>)
-	id 1s6Vb7-00399r-Si;
-	Mon, 13 May 2024 15:21:00 +0200
-Received: from geert by rox.of.borg with local (Exim 4.95)
-	(envelope-from <geert@linux-m68k.org>)
-	id 1s6Vbw-008tqZ-1D;
-	Mon, 13 May 2024 15:21:00 +0200
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-To: Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Arnd Bergmann <arnd@arndb.de>
-Cc: linux-sh@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 3/3] sh: setup: Add missing forward declaration for sh_fdt_init()
-Date: Mon, 13 May 2024 15:20:55 +0200
-Message-Id: <7e3ea09e706a075bceb6bfd172990676e79be1c2.1715606232.git.geert+renesas@glider.be>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1715607011; c=relaxed/simple;
+	bh=Ms7j2DWi57/E9cZtgYiwFdsUOxRFwoaHAm9N1+/9Gr0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Q8I1oCDxBzEJjVaUBoE1fTgGhRSHre4awn7C1mzHUx968xoeUaHFnnI5laVvzR756fb9BNFaEYFgifhX7yJ2XLF2RHL6FwRsWSwp4xQ3zN7x1T5L+REIJc+Tr+2GTojP/RSxMp5FR8APxLHIBgfUd9jtJYUQZMFAoI6ojkJjDcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; spf=pass smtp.mailfrom=zedat.fu-berlin.de; dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b=VKreQDHa; arc=none smtp.client-ip=130.133.4.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zedat.fu-berlin.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=Pol14G9zW5ipfBE4PDNXixrZtvwDOYvAZwHs2dwHz+k=; t=1715607007; x=1716211807; 
+	b=VKreQDHaAB8Rxx+cWbdnIW13+wTm1aJkY2UDvy4x7gmw/IeRM4NWnDDHRMY547+vR7Zp28S2I49
+	IZCCrxFghJViCIUD8M4ThV9WBwWR5uqzpKPeq0YkmRblmkKMJukyNy6Hfr4HHl7AxOGJPgbN58iXS
+	G/G5v7XDLzYGMyLnfA/ypaUokGoyBlB21j1P1qKBkX3G/DUABbWSdNiohbaF9D+I08t98PJaXaMJl
+	+8TpkrUS9k+DZRn8JT4+CRuZEMcthz/4UlKLjfpJ+4an4BLmQFoWv54H20Yrp6KK9MB3E6mBBtHkg
+	+qByvuJgwrafNsSG2zSciU0IVZadi0kJN6LQ==;
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.97)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1s6Vkg-00000003Yyp-3y1c; Mon, 13 May 2024 15:30:02 +0200
+Received: from p5b13a15c.dip0.t-ipconnect.de ([91.19.161.92] helo=[192.168.178.20])
+          by inpost2.zedat.fu-berlin.de (Exim 4.97)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1s6Vkg-000000026ew-35Pc; Mon, 13 May 2024 15:30:02 +0200
+Message-ID: <abc8fb59ceb102895320850609c7d6e29aedcf1a.camel@physik.fu-berlin.de>
+Subject: Re: [PATCH 0/3] sh: Fix missing prototypes (part three)
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: Geert Uytterhoeven <geert+renesas@glider.be>, Yoshinori Sato
+	 <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, Arnd Bergmann
+	 <arnd@arndb.de>
+Cc: linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Mon, 13 May 2024 15:30:02 +0200
 In-Reply-To: <cover.1715606232.git.geert+renesas@glider.be>
 References: <cover.1715606232.git.geert+renesas@glider.be>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.1 
 Precedence: bulk
 X-Mailing-List: linux-sh@vger.kernel.org
 List-Id: <linux-sh.vger.kernel.org>
 List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-ZEDAT-Hint: PO
 
-arch/sh/kernel/setup.c:244:12: warning: no previous prototype for 'sh_fdt_init' [-Wmissing-prototypes]
+Hi Geert,
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
- arch/sh/include/asm/setup.h | 1 +
- 1 file changed, 1 insertion(+)
+On Mon, 2024-05-13 at 15:20 +0200, Geert Uytterhoeven wrote:
+> 	Hi all,
+>=20
+> This patch series fixes more "no previous prototype for <foo>" warnings
+> when building a kernel for SuperH, namely when building j2_defconfig.
+>=20
+> Thanks for your comments!
+>=20
+> Geert Uytterhoeven (3):
+>   sh: of-generic: Add missing #include <asm/clock.h>
+>   sh: smp: Protect setup_profiling_timer() by CONFIG_PROFILING
+>   sh: setup: Add missing forward declaration for sh_fdt_init()
+>=20
+>  arch/sh/boards/of-generic.c | 2 ++
+>  arch/sh/include/asm/setup.h | 1 +
+>  arch/sh/kernel/smp.c        | 2 ++
+>  3 files changed, 5 insertions(+)
 
-diff --git a/arch/sh/include/asm/setup.h b/arch/sh/include/asm/setup.h
-index fc807011187fa1c0..84bb23a771f3538b 100644
---- a/arch/sh/include/asm/setup.h
-+++ b/arch/sh/include/asm/setup.h
-@@ -21,5 +21,6 @@
- void sh_mv_setup(void);
- void check_for_initrd(void);
- void per_cpu_trap_init(void);
-+void sh_fdt_init(phys_addr_t dt_phys);
- 
- #endif /* _SH_SETUP_H */
--- 
-2.34.1
+Thanks a lot for fixing these. I have run into these as well and except
+for patch #2 where you found the proper fix, my proposed fixes looked
+exactly the same.
 
+Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+
+Adrian
+
+--=20
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
