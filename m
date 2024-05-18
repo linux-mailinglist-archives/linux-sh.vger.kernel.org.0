@@ -1,147 +1,147 @@
-Return-Path: <linux-sh+bounces-1013-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-1015-lists+linux-sh=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AC928C9018
-	for <lists+linux-sh@lfdr.de>; Sat, 18 May 2024 11:09:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B04868C90B3
+	for <lists+linux-sh@lfdr.de>; Sat, 18 May 2024 13:58:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B5251F21ECD
-	for <lists+linux-sh@lfdr.de>; Sat, 18 May 2024 09:09:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 653DD1F21B29
+	for <lists+linux-sh@lfdr.de>; Sat, 18 May 2024 11:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4FE814A90;
-	Sat, 18 May 2024 09:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4C422CCD0;
+	Sat, 18 May 2024 11:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b="JIXWx0jc"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="sAHxT7wP";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="HVRo63M4";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="sAHxT7wP";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="HVRo63M4"
 X-Original-To: linux-sh@vger.kernel.org
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58337C8D1;
-	Sat, 18 May 2024 09:08:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.133.4.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 922CC17BBF
+	for <linux-sh@vger.kernel.org>; Sat, 18 May 2024 11:58:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716023334; cv=none; b=Mf3ugzPE8j8UldbYwNSdm/4Eqq9n/tXVOt7ZkbgIbnpUwgZjWVsTP24mT/1UNuI1++6gc2w+dEoD7ykgS5tSaZ/rvYgTZpM+nS8eetV/PddhIGJ6f2KayAatSgFKF+6HJuRYVVENP1NM6qI1vw8nR6REot0fRe1KN0QC09Y3F2s=
+	t=1716033507; cv=none; b=nUUscsDIp421FqKIwopCSQaHVPOo6Zvp7FVi5Y0qqN51VyOAbsRnu0ns5Skv+dDs+xRmi42WvKWcZ0jNzYrfQpqm7OgCG52Rm3LHgQQY0q5fTCg8tWEtZYU9DHRhVbCWzqAW8QLWQ8tsoxCJajYjw6lHvLkbsAykMMn2qthDUVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716023334; c=relaxed/simple;
-	bh=bVysb/cwrM9Pn6QGUWbl+Ro5RzhkM5yqNN7jrETzyyA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hzi8UEq1HgrIRhFvMWjJJEhZGpAggC1EABncXm70uas0u6kgENz6mvwS+kksvCBfHtDGeWSWGdmPeF5mcYjZP8l8/ULYI241RUD79bMps69JGWhaOVvdNfUFBdCk0dXSN9C08cXePOpsmk1mW01+R36jXKt3gxQBxF7X3082B9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; spf=pass smtp.mailfrom=zedat.fu-berlin.de; dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b=JIXWx0jc; arc=none smtp.client-ip=130.133.4.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zedat.fu-berlin.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=1a0C79DkdyNfWuSIhpXXfpQISUKfKWxaR+an4LJg0Cw=; t=1716023330; x=1716628130; 
-	b=JIXWx0jctZvXnqcErr+3sSV5apKLlSgTQjonmBZVS45oZcpMNbwEebER5UZJBEzSMGhZDCP7PJN
-	h5jiab7J2xtO7IWJdAdJ1aBJr82y6tZpQ8r7xy+H5ViKn9mzObyFUNO/F9FgWOGFMOhRz2gR0vVr5
-	0/zNv4s2F8amm03ZFsrEnj/EfmsVG+ExiraqgiYRrKam9IKGg+UCC0i2EQDexL4Qz77kXbesE6eUx
-	itj9aMYp28rMvdB7y5sbfMwyGk4kMm6XSyjPdpG9H8EhFTS66NPvRGkOA2beiqLBDPiFkqLGgBQsI
-	L4gAr4tS2+2d1U/BI1N6cAKfkJZU1xRUxXMQ==;
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.97)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1s8G3N-00000002L83-1Dc1; Sat, 18 May 2024 11:08:33 +0200
-Received: from dynamic-077-188-054-221.77.188.pool.telefonica.de ([77.188.54.221] helo=[192.168.178.20])
-          by inpost2.zedat.fu-berlin.de (Exim 4.97)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1s8G3M-00000003h1e-3i5d; Sat, 18 May 2024 11:08:33 +0200
-Message-ID: <455e40c03314294f9c2e64480aa69f8261a3f2d5.camel@physik.fu-berlin.de>
-Subject: Re: [RESEND v7 00/37] Device Tree support for SH7751 based board
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To: Yoshinori Sato <ysato@users.sourceforge.jp>, linux-sh@vger.kernel.org
-Cc: Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
- Geert Uytterhoeven <geert+renesas@glider.be>, Michael Turquette
- <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, David Airlie
- <airlied@gmail.com>,  Daniel Vetter <daniel@ffwll.ch>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, Thomas Gleixner
- <tglx@linutronix.de>, Bjorn Helgaas <bhelgaas@google.com>, Lorenzo
- Pieralisi <lpieralisi@kernel.org>, Krzysztof =?UTF-8?Q?Wilczy=C5=84ski?=
- <kw@linux.com>,  Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri
- Slaby <jirislaby@kernel.org>, Magnus Damm <magnus.damm@gmail.com>,  Daniel
- Lezcano <daniel.lezcano@linaro.org>, Rich Felker <dalias@libc.org>, Lee
- Jones <lee@kernel.org>, Helge Deller <deller@gmx.de>, Heiko Stuebner
- <heiko.stuebner@cherry.de>, Shawn Guo <shawnguo@kernel.org>,  Sebastian
- Reichel <sre@kernel.org>, Chris Morgan <macromorgan@hotmail.com>, Linus
- Walleij <linus.walleij@linaro.org>, Arnd Bergmann <arnd@arndb.de>, David
- Rientjes <rientjes@google.com>, Hyeonggon Yoo <42.hyeyoo@gmail.com>,
- Vlastimil Babka <vbabka@suse.cz>, Baoquan He <bhe@redhat.com>, Andrew
- Morton <akpm@linux-foundation.org>, Guenter Roeck <linux@roeck-us.net>,
- Kefeng Wang <wangkefeng.wang@huawei.com>, Stephen Rothwell
- <sfr@canb.auug.org.au>,  Javier Martinez Canillas <javierm@redhat.com>, Guo
- Ren <guoren@kernel.org>, Azeem Shaikh <azeemshaikh38@gmail.com>, Max
- Filippov <jcmvbkbc@gmail.com>, Jonathan Corbet <corbet@lwn.net>, Jacky
- Huang <ychuang3@nuvoton.com>, Herve Codina <herve.codina@bootlin.com>,
- Manikanta Guntupalli <manikanta.guntupalli@amd.com>,  Anup Patel
- <apatel@ventanamicro.com>, Biju Das <biju.das.jz@bp.renesas.com>, Uwe
- =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>, Sam
- Ravnborg <sam@ravnborg.org>, Sergey Shtylyov <s.shtylyov@omp.ru>, Laurent
- Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
- linux-ide@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
- linux-clk@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- linux-pci@vger.kernel.org, linux-serial@vger.kernel.org, 
- linux-fbdev@vger.kernel.org
-Date: Sat, 18 May 2024 11:08:30 +0200
-In-Reply-To: <cover.1712205900.git.ysato@users.sourceforge.jp>
-References: <cover.1712205900.git.ysato@users.sourceforge.jp>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.1 
+	s=arc-20240116; t=1716033507; c=relaxed/simple;
+	bh=cerYVmnKIGxeg5dvDnXQzv5x5jgHyKoB5aL5VCmCHmo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pIMl79EVy+U9jDFLIkP5xzdIaF2PBSqZXgt4mRyWNgI1Wfjv1m1lkZUpxHyRsJXf/+g3ayRsSLppxj9Z1tCvxl43K5jD6u/CZY7SYByOybMwpNtPZ7v5UlTD9Jl2bBWPFz6c8KCpR8yIUjFswH/Zcz4MySbC5dfUvNh8K1ghY3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=sAHxT7wP; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=HVRo63M4; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=sAHxT7wP; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=HVRo63M4; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 0DC26222FA;
+	Sat, 18 May 2024 11:58:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1716033502; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=EDgV17C6VWbbvJ3pv+5iSzpER3ZJwW/CqiA1/dZhDOY=;
+	b=sAHxT7wPujmYecND++NPpjjMW4XtlAmXSgxfWmHb4kMCbLKS0uh5IAjaGk1osR+OrQhIQq
+	C+yYOFGd+kfvU31ICNnPIeZVzpQPVRMyxkDocSLPzCJ1tCploeShJ5spfeUIBa63cl/lCn
+	P2aoDWCjbp5DcOnCE0gZkWIsQqPmEXQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1716033502;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=EDgV17C6VWbbvJ3pv+5iSzpER3ZJwW/CqiA1/dZhDOY=;
+	b=HVRo63M4+jrxEk1hnkOGo08G3aI8ycUZNjqw788hDS9FPX+UpDN6X+5wisW4CnIZFMEsVA
+	qGhejAoFWBazNECw==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1716033502; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=EDgV17C6VWbbvJ3pv+5iSzpER3ZJwW/CqiA1/dZhDOY=;
+	b=sAHxT7wPujmYecND++NPpjjMW4XtlAmXSgxfWmHb4kMCbLKS0uh5IAjaGk1osR+OrQhIQq
+	C+yYOFGd+kfvU31ICNnPIeZVzpQPVRMyxkDocSLPzCJ1tCploeShJ5spfeUIBa63cl/lCn
+	P2aoDWCjbp5DcOnCE0gZkWIsQqPmEXQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1716033502;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=EDgV17C6VWbbvJ3pv+5iSzpER3ZJwW/CqiA1/dZhDOY=;
+	b=HVRo63M4+jrxEk1hnkOGo08G3aI8ycUZNjqw788hDS9FPX+UpDN6X+5wisW4CnIZFMEsVA
+	qGhejAoFWBazNECw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 93FF5134C3;
+	Sat, 18 May 2024 11:58:21 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id AUPfIN2XSGb8MwAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Sat, 18 May 2024 11:58:21 +0000
+From: Oscar Salvador <osalvador@suse.de>
+To: linux-sh@vger.kernel.org
+Cc: linux-mm@kvack.org,
+	David Hildenbrand <david@redhat.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Oscar Salvador <osalvador@suse.de>
+Subject: [PATCH 0/2] Drop support for memory-hotplug and memory-hotremove on superH
+Date: Sat, 18 May 2024 13:58:06 +0200
+Message-ID: <20240518115808.8888-1-osalvador@suse.de>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: linux-sh@vger.kernel.org
 List-Id: <linux-sh.vger.kernel.org>
 List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-ZEDAT-Hint: PO
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Score: -1.29
+X-Spam-Level: 
+X-Spamd-Result: default: False [-1.29 / 50.00];
+	BAYES_HAM(-2.99)[99.96%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-0.985];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_COUNT_TWO(0.00)[2];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	TAGGED_RCPT(0.00)[renesas];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_EQ_ENVFROM(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_ALL(0.00)[]
 
-Hi Yoshinori,
+memory-hotplug dropped support for 32bit platforms a while back,
+and given that superH can only operate on 32bit at this moment,
+this cannot possibily work.
 
-On Thu, 2024-04-04 at 14:14 +0900, Yoshinori Sato wrote:
-> Sorry. previus mail is thread broken.
->=20
-> This is an updated version of something I wrote about 7 years ago.
-> Minimum support for R2D-plus and LANDISK.
-> I think R2D-1 will work if you add AX88796 to dts.
-> And board-specific functions and SCI's SPI functions are not supported.
->=20
-> You can get it working with qemu found here.
-> https://gitlab.com/yoshinori.sato/qemu/-/tree/landisk
->=20
-> v7 changes.
-> - sh/kernel/setup.c: fix kernel parameter handling.
-> - clk-sh7750.c: cleanup.
-> - sh_tmu.c: cleanup.
-> - irq-renesas-sh7751.c: IPR definition move to code.
-> - irq-renesas-sh7751irl.c: update register definition.
-> - pci-sh7751.c: Register initialization fix.=20
-> - sm501 and sm501fb: Re-design Device Tree properties.
+Remove all code and Kconfigs related to memory-hotplug and memory-hotremove.
 
-Could you push your v7 version to your Gitlab [1] repository so I can fetch
-it from there?
+Oscar Salvador (2):
+  arch/sh: Remove code that handles memory-hotplug and memory-hotremove
+  arch/sh: Drop support for memory-hotplug and memory-hotremove
 
-Thanks,
-Adrian
+ arch/sh/Kconfig                     |  2 --
+ arch/sh/configs/apsh4ad0a_defconfig |  2 --
+ arch/sh/configs/sdk7786_defconfig   |  2 --
+ arch/sh/configs/shx3_defconfig      |  2 --
+ arch/sh/mm/Kconfig                  |  4 ----
+ arch/sh/mm/init.c                   | 28 ----------------------------
+ 6 files changed, 40 deletions(-)
 
-> [1] https://gitlab.com/yoshinori.sato/linux
+-- 
+2.45.1
 
---=20
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
