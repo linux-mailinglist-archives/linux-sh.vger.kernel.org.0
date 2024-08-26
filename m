@@ -1,128 +1,148 @@
-Return-Path: <linux-sh+bounces-1478-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-1487-lists+linux-sh=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD42495F092
-	for <lists+linux-sh@lfdr.de>; Mon, 26 Aug 2024 14:08:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4CA395F819
+	for <lists+linux-sh@lfdr.de>; Mon, 26 Aug 2024 19:28:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFE8E1C227A1
-	for <lists+linux-sh@lfdr.de>; Mon, 26 Aug 2024 12:08:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F5151F23325
+	for <lists+linux-sh@lfdr.de>; Mon, 26 Aug 2024 17:28:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C2718BC24;
-	Mon, 26 Aug 2024 12:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 160C8198E69;
+	Mon, 26 Aug 2024 17:28:38 +0000 (UTC)
 X-Original-To: linux-sh@vger.kernel.org
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37CD118A6DD;
-	Mon, 26 Aug 2024 12:05:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2BD164A;
+	Mon, 26 Aug 2024 17:28:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724673959; cv=none; b=clhGi3mwYq11Dg/JBSh82BG7sVewRWRNL2NVVGd0r4oaDKDSIICUqfBVCGe8q1FiNS1HvFuVUAMOsMPHPE99rncuxbMJAsXpGHbcgZPJsos1C7UvEY8zDs+Q+zOnkEbl+iwthui8awcj9MSTLzBzUABh/4jwVYVkfO5+/BrEwNM=
+	t=1724693317; cv=none; b=kW0KnR2yGbattM2zbt/D7lrKbmyHY8FKUvUxmEqicafr0YYvqDQCg9D414VzArW5UAoLgcB85yjsB2YIhMBQ9pj5kxMpYsPt5fEWuo2jLrW8xIt6EgAUCDbnx/nhLM6uMzclxBa08s1WtOo7xkusS2z0qgAtqBJpktgAoZiOaWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724673959; c=relaxed/simple;
-	bh=fcId/KzZShAyCSi5rsz8ZDzxf5TvkVVpkGEoV9FLoLI=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IhysoHWBL6B88bbU5RAdytdMqGUjPQO8SMtMAUKCN32KAKhvOQwhW29fKut511f9H/o43VqrOWcfRzrMlAJCM+yhU3xfZUir4lFEYcU1lQk5/cmuTG8zp5vQpTXd8aBxdey4gB3X3DDbbVBeQEs42GmQF92VVE/85KuY3zRB550=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4Wsq9y0730z13Kmh;
-	Mon, 26 Aug 2024 20:05:10 +0800 (CST)
-Received: from kwepemh100016.china.huawei.com (unknown [7.202.181.102])
-	by mail.maildlp.com (Postfix) with ESMTPS id 94F22180101;
-	Mon, 26 Aug 2024 20:05:55 +0800 (CST)
-Received: from huawei.com (10.175.113.32) by kwepemh100016.china.huawei.com
- (7.202.181.102) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 26 Aug
- 2024 20:05:53 +0800
-From: Kaixiong Yu <yukaixiong@huawei.com>
-To: <akpm@linux-foundation.org>, <mcgrof@kernel.org>
-CC: <ysato@users.sourceforge.jp>, <dalias@libc.org>,
-	<glaubitz@physik.fu-berlin.de>, <luto@kernel.org>, <tglx@linutronix.de>,
-	<bp@alien8.de>, <dave.hansen@linux.intel.com>, <hpa@zytor.com>,
-	<viro@zeniv.linux.org.uk>, <brauner@kernel.org>, <jack@suse.cz>,
-	<kees@kernel.org>, <j.granados@samsung.com>, <willy@infradead.org>,
-	<Liam.Howlett@oracle.com>, <vbabka@suse.cz>, <lorenzo.stoakes@oracle.com>,
-	<trondmy@kernel.org>, <anna@kernel.org>, <chuck.lever@oracle.com>,
-	<jlayton@kernel.org>, <neilb@suse.de>, <okorniev@redhat.com>,
-	<Dai.Ngo@oracle.com>, <tom@talpey.com>, <davem@davemloft.net>,
-	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<paul@paul-moore.com>, <jmorris@namei.org>, <linux-sh@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	<linux-mm@kvack.org>, <linux-nfs@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<linux-security-module@vger.kernel.org>, <wangkefeng.wang@huawei.com>
-Subject: [PATCH -next 15/15] sysctl: remove unneeded include
-Date: Mon, 26 Aug 2024 20:04:49 +0800
-Message-ID: <20240826120449.1666461-16-yukaixiong@huawei.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240826120449.1666461-1-yukaixiong@huawei.com>
-References: <20240826120449.1666461-1-yukaixiong@huawei.com>
+	s=arc-20240116; t=1724693317; c=relaxed/simple;
+	bh=Ah1MYcJfpVaPDZCj/MgYPfBVJo43ln+VDcKQfM/BWW0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=F0vJuB4enMf3kzX5w92GGjgpsS14IY3U78m1dP1LqdjuRTbkrmE7/1p6+62IWa4VSSS9IXuOm/ij9PxvLfDGCDYIOreZRpO9VqbJ8l7adlo09mkcJdQ+bEByMEFVsKuXzHUdV5LrCmwNVmGObV8zg6akptUVLJ+lZkfWB04lDGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0E6AC8B7B5;
+	Mon, 26 Aug 2024 17:28:29 +0000 (UTC)
+Date: Mon, 26 Aug 2024 13:29:09 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Andreas Larsson
+ <andreas@gaisler.com>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann
+ <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Brian Cain
+ <bcain@quicinc.com>, Catalin Marinas <catalin.marinas@arm.com>, Christoph
+ Hellwig <hch@infradead.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Dinh Nguyen <dinguyen@kernel.org>, Geert Uytterhoeven
+ <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>, Helge Deller
+ <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar
+ <mingo@redhat.com>, Johannes Berg <johannes@sipsolutions.net>, John Paul
+ Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Kent Overstreet
+ <kent.overstreet@linux.dev>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Luis Chamberlain <mcgrof@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Matt Turner <mattst88@gmail.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Michal Simek <monstr@monstr.eu>, Oleg Nesterov <oleg@redhat.com>, Palmer
+ Dabbelt <palmer@dabbelt.com>, Peter Zijlstra <peterz@infradead.org>,
+ Richard Weinberger <richard@nod.at>, Russell King <linux@armlinux.org.uk>,
+ Song Liu <song@kernel.org>, Stafford Horne <shorne@gmail.com>, Thomas
+ Bogendoerfer <tsbogend@alpha.franken.de>, Thomas Gleixner
+ <tglx@linutronix.de>, Uladzislau Rezki <urezki@gmail.com>, Vineet Gupta
+ <vgupta@kernel.org>, Will Deacon <will@kernel.org>, bpf@vger.kernel.org,
+ linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+ linux-mm@kvack.org, linux-modules@vger.kernel.org,
+ linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, linux-trace-kernel@vger.kernel.org,
+ linux-um@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ loongarch@lists.linux.dev, sparclinux@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH v2 5/8] ftrace: Add swap_func to ftrace_process_locs()
+Message-ID: <20240826132909.306b08fc@gandalf.local.home>
+In-Reply-To: <20240826065532.2618273-6-rppt@kernel.org>
+References: <20240826065532.2618273-1-rppt@kernel.org>
+	<20240826065532.2618273-6-rppt@kernel.org>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-sh@vger.kernel.org
 List-Id: <linux-sh.vger.kernel.org>
 List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- kwepemh100016.china.huawei.com (7.202.181.102)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Removing unneeded mm includes in kernel/sysctl.c.
+On Mon, 26 Aug 2024 09:55:29 +0300
+Mike Rapoport <rppt@kernel.org> wrote:
 
-Signed-off-by: Kaixiong Yu <yukaixiong@huawei.com>
----
- kernel/sysctl.c | 6 ------
- 1 file changed, 6 deletions(-)
+> From: Song Liu <song@kernel.org>
+> 
+> ftrace_process_locs sorts module mcount, which is inside RO memory. Add a
+> ftrace_swap_func so that archs can use RO-memory-poke function to do the
+> sorting.
 
-diff --git a/kernel/sysctl.c b/kernel/sysctl.c
-index f04da9f3abc6..6e3e0ce4da79 100644
---- a/kernel/sysctl.c
-+++ b/kernel/sysctl.c
-@@ -20,8 +20,6 @@
-  */
- 
- #include <linux/module.h>
--#include <linux/mm.h>
--#include <linux/slab.h>
- #include <linux/sysctl.h>
- #include <linux/bitmap.h>
- #include <linux/signal.h>
-@@ -30,7 +28,6 @@
- #include <linux/proc_fs.h>
- #include <linux/security.h>
- #include <linux/ctype.h>
--#include <linux/kmemleak.h>
- #include <linux/filter.h>
- #include <linux/fs.h>
- #include <linux/init.h>
-@@ -41,7 +38,6 @@
- #include <linux/highuid.h>
- #include <linux/writeback.h>
- #include <linux/ratelimit.h>
--#include <linux/hugetlb.h>
- #include <linux/initrd.h>
- #include <linux/key.h>
- #include <linux/times.h>
-@@ -52,13 +48,11 @@
- #include <linux/reboot.h>
- #include <linux/ftrace.h>
- #include <linux/perf_event.h>
--#include <linux/oom.h>
- #include <linux/kmod.h>
- #include <linux/capability.h>
- #include <linux/binfmts.h>
- #include <linux/sched/sysctl.h>
- #include <linux/mount.h>
--#include <linux/userfaultfd_k.h>
- #include <linux/pid.h>
- 
- #include "../lib/kstrtox.h"
--- 
-2.25.1
+Can you add the above as a comment above the ftrace_swap_func() function?
+
+Thanks,
+
+-- Steve
+
+> 
+> Signed-off-by: Song Liu <song@kernel.org>
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>  include/linux/ftrace.h |  2 ++
+>  kernel/trace/ftrace.c  | 13 ++++++++++++-
+>  2 files changed, 14 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/ftrace.h b/include/linux/ftrace.h
+> index fd5e84d0ec47..b794dcb7cae8 100644
+> --- a/include/linux/ftrace.h
+> +++ b/include/linux/ftrace.h
+> @@ -1188,4 +1188,6 @@ unsigned long arch_syscall_addr(int nr);
+>  
+>  #endif /* CONFIG_FTRACE_SYSCALLS */
+>  
+> +void ftrace_swap_func(void *a, void *b, int n);
+> +
+>  #endif /* _LINUX_FTRACE_H */
+> diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
+> index 4c28dd177ca6..9829979f3a46 100644
+> --- a/kernel/trace/ftrace.c
+> +++ b/kernel/trace/ftrace.c
+> @@ -6989,6 +6989,17 @@ static void test_is_sorted(unsigned long *start,
+> unsigned long count) }
+>  #endif
+>  
+> +void __weak ftrace_swap_func(void *a, void *b, int n)
+> +{
+> +	unsigned long t;
+> +
+> +	WARN_ON_ONCE(n != sizeof(t));
+> +
+> +	t = *((unsigned long *)a);
+> +	*(unsigned long *)a = *(unsigned long *)b;
+> +	*(unsigned long *)b = t;
+> +}
+> +
+>  static int ftrace_process_locs(struct module *mod,
+>  			       unsigned long *start,
+>  			       unsigned long *end)
+> @@ -7016,7 +7027,7 @@ static int ftrace_process_locs(struct module *mod,
+>  	 */
+>  	if (!IS_ENABLED(CONFIG_BUILDTIME_MCOUNT_SORT) || mod) {
+>  		sort(start, count, sizeof(*start),
+> -		     ftrace_cmp_ips, NULL);
+> +		     ftrace_cmp_ips, ftrace_swap_func);
+>  	} else {
+>  		test_is_sorted(start, count);
+>  	}
 
 
