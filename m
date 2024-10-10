@@ -1,162 +1,182 @@
-Return-Path: <linux-sh+bounces-1821-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-1806-lists+linux-sh=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72974998B66
-	for <lists+linux-sh@lfdr.de>; Thu, 10 Oct 2024 17:24:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38D08998911
+	for <lists+linux-sh@lfdr.de>; Thu, 10 Oct 2024 16:17:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC41E1F25964
-	for <lists+linux-sh@lfdr.de>; Thu, 10 Oct 2024 15:24:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 04C31B2CB22
+	for <lists+linux-sh@lfdr.de>; Thu, 10 Oct 2024 14:12:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D4EF1CC17B;
-	Thu, 10 Oct 2024 15:24:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ekagPdIZ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB3B1CC887;
+	Thu, 10 Oct 2024 14:11:42 +0000 (UTC)
 X-Original-To: linux-sh@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BAC71CC146;
-	Thu, 10 Oct 2024 15:24:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D89B1CBEBF;
+	Thu, 10 Oct 2024 14:11:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728573883; cv=none; b=eGuiKwfNt5EeK2L+p3GpJvpvhjOCDQd8f2FvlFZK+oNh6Yyln98htJS7xhllkqSK96MDO4RVrPLnCQ3OODE0JJVEzvBzmprYJu0twqWeUnMj8pCVx13Gvwzcwiq1XVzh8w8FnvRojIvtjGcgpXVyMlNOh65ay4RZEsRP0EJPI2I=
+	t=1728569502; cv=none; b=s8UpuN+TMMMud0URNHO1sUBdWa3osj1WBxjK85jBCet4XQkV4cixyfDYkXBbwF8IaRjauj/x2iI9o4kg7X+03VFj7YPSDLxEUdK32279cx13ai6gqRc4GsxOOR7FDpRmz+2SB2jzKDjyrSTtdEsoACXAVQLoaVAMhHqx/20XwTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728573883; c=relaxed/simple;
-	bh=gnTehr7qrLMKw/pUpKhTMaCY3tpDIt6F6aFobT96HoY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jH4/QwYdMYSRHgNrkotABtQpbYoq36PP1zZrVAMHMH/BrigC0mQ3WPBRfCDGKC5uYCSHibLw6MWil3ENOwGHkkXp3Ab0iCgO/KFE4EQtoEUIjSS8aVxYFfcXRyklCG/w8YapZ65fM/iUqWy6hXh+0kxtuuILYCj6NtnWD0M86os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ekagPdIZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D86C4CEC5;
-	Thu, 10 Oct 2024 15:24:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728573883;
-	bh=gnTehr7qrLMKw/pUpKhTMaCY3tpDIt6F6aFobT96HoY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ekagPdIZxqT4SWWRuS6VjAHAzc6oWKEW/4hsSTRm4pLygcR/K/5nYo1MRhIB1W8Bi
-	 WhUInbNKfRaSZHzNuMbNo/gh/Dm11IzVkhHlBcuZvhkOJMQBELbJP+QR/GYDeVHSby
-	 +1ODj4I12HqiH5y8g34fzvrSEzf2u/HDRwYAX/nNnTn9iTEhJxcxooLVqAwIKD6FZv
-	 b3fbK7YHQj8tX05PEVkLu2GJn3pxXz8GTYW1p2sF1xOis1mXNPjG1oTG9dYByuOZVe
-	 q0nYNSfpcIxt1MrmJaX80Vmf5bsmJaexf7/nT75nIm1VGT6H7a1RxSwQLd/ELhYVan
-	 63H6TXss7XvhQ==
-Date: Thu, 10 Oct 2024 18:20:53 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Andy Lutomirski <luto@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
-	Brian Cain <bcain@quicinc.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Guo Ren <guoren@kernel.org>, Helge Deller <deller@gmx.de>,
-	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Michal Simek <monstr@monstr.eu>, Oleg Nesterov <oleg@redhat.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Richard Weinberger <richard@nod.at>,
-	Russell King <linux@armlinux.org.uk>, Song Liu <song@kernel.org>,
-	Stafford Horne <shorne@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Vineet Gupta <vgupta@kernel.org>, Will Deacon <will@kernel.org>,
-	bpf@vger.kernel.org, linux-alpha@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-	linux-mips@vger.kernel.org, linux-mm@kvack.org,
-	linux-modules@vger.kernel.org, linux-openrisc@vger.kernel.org,
-	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-	linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-	linux-trace-kernel@vger.kernel.org, linux-um@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
-	sparclinux@vger.kernel.org, x86@kernel.org
-Subject: Re: Bisected: [PATCH v5 8/8] x86/module: enable ROX caches for
- module text
-Message-ID: <Zwfw1bC-muLe6I9-@kernel.org>
-References: <20241009180816.83591-1-rppt@kernel.org>
- <20241009180816.83591-9-rppt@kernel.org>
- <20241010083033.GA1279924@google.com>
+	s=arc-20240116; t=1728569502; c=relaxed/simple;
+	bh=K2adqvDY5CZRV7PE0cqCef+Mvn75gmUOMma6le7iDCw=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XT+xPyvFx/pjOPMUFMdrpL1gBRayjhQEtJVcbz08RpZzpIruZ2sURgepz4rA8CXTmeECBnk8YpT0i+lSbDtEQZn9AtaUo2VWLUUP7gh2MFEqvs3w2F/xrkmwGiemqGVDLOpZriL4lVhrZ9bWQURFFWdS9by2UmqIaAzWZkHr4ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4XPWrM1ZmgzCsrx;
+	Thu, 10 Oct 2024 22:10:59 +0800 (CST)
+Received: from kwepemh100016.china.huawei.com (unknown [7.202.181.102])
+	by mail.maildlp.com (Postfix) with ESMTPS id 2FB1E180105;
+	Thu, 10 Oct 2024 22:11:37 +0800 (CST)
+Received: from huawei.com (10.175.113.32) by kwepemh100016.china.huawei.com
+ (7.202.181.102) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 10 Oct
+ 2024 22:11:33 +0800
+From: Kaixiong Yu <yukaixiong@huawei.com>
+To: <akpm@linux-foundation.org>, <mcgrof@kernel.org>
+CC: <ysato@users.sourceforge.jp>, <dalias@libc.org>,
+	<glaubitz@physik.fu-berlin.de>, <luto@kernel.org>, <tglx@linutronix.de>,
+	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
+	<hpa@zytor.com>, <viro@zeniv.linux.org.uk>, <brauner@kernel.org>,
+	<jack@suse.cz>, <kees@kernel.org>, <j.granados@samsung.com>,
+	<willy@infradead.org>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
+	<lorenzo.stoakes@oracle.com>, <trondmy@kernel.org>, <anna@kernel.org>,
+	<chuck.lever@oracle.com>, <jlayton@kernel.org>, <neilb@suse.de>,
+	<okorniev@redhat.com>, <Dai.Ngo@oracle.com>, <tom@talpey.com>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <paul@paul-moore.com>, <jmorris@namei.org>,
+	<linux-sh@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-nfs@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<linux-security-module@vger.kernel.org>, <dhowells@redhat.com>,
+	<haifeng.xu@shopee.com>, <baolin.wang@linux.alibaba.com>,
+	<shikemeng@huaweicloud.com>, <dchinner@redhat.com>, <bfoster@redhat.com>,
+	<souravpanda@google.com>, <hannes@cmpxchg.org>, <rientjes@google.com>,
+	<pasha.tatashin@soleen.com>, <david@redhat.com>, <ryan.roberts@arm.com>,
+	<ying.huang@intel.com>, <yang@os.amperecomputing.com>,
+	<zev@bewilderbeest.net>, <serge@hallyn.com>, <vegard.nossum@oracle.com>,
+	<wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>
+Subject: [PATCH v3 -next 02/15] mm: filemap: move sysctl to mm/filemap.c
+Date: Thu, 10 Oct 2024 23:22:02 +0800
+Message-ID: <20241010152215.3025842-3-yukaixiong@huawei.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241010152215.3025842-1-yukaixiong@huawei.com>
+References: <20241010152215.3025842-1-yukaixiong@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-sh@vger.kernel.org
 List-Id: <linux-sh.vger.kernel.org>
 List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241010083033.GA1279924@google.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ kwepemh100016.china.huawei.com (7.202.181.102)
 
-On Thu, Oct 10, 2024 at 05:30:33PM +0900, Sergey Senozhatsky wrote:
-> On (24/10/09 21:08), Mike Rapoport wrote:
-> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> > 
-> > Enable execmem's cache of PMD_SIZE'ed pages mapped as ROX for module
-> > text allocations.
-> > 
-> 
-> With this modprobe disappoints kmemleak
-> 
-> [   12.700128] kmemleak: Found object by alias at 0xffffffffa000a000
-> [   12.702179] CPU: 5 UID: 0 PID: 410 Comm: modprobe Tainted: G                 N 6.12.0-rc2+ #760
-> [   12.704656] Tainted: [N]=TEST
-> [   12.705526] Call Trace:
-> [   12.706250]  <TASK>
-> [   12.706888]  dump_stack_lvl+0x3e/0xdb
-> [   12.707961]  __find_and_get_object+0x100/0x110
-> [   12.709256]  kmemleak_no_scan+0x2e/0xb0
-> [   12.710354]  kmemleak_load_module+0xad/0xe0
-> [   12.711557]  load_module+0x2391/0x45a0
-> [   12.712507]  __se_sys_finit_module+0x4e0/0x7a0
-> [   12.713599]  do_syscall_64+0x54/0xf0
-> [   12.714477]  ? irqentry_exit_to_user_mode+0x33/0x100
-> [   12.715696]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-> [   12.716931] RIP: 0033:0x7fc7af51f059
-> [   12.717816] Code: 08 89 e8 5b 5d c3 66 2e 0f 1f 84 00 00 00 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 8f 1d 0d 00 f7 d8 64 89 01 48
-> [   12.722324] RSP: 002b:00007ffc1d0b0c18 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
-> [   12.724173] RAX: ffffffffffffffda RBX: 00005618a9439b20 RCX: 00007fc7af51f059
-> [   12.725884] RDX: 0000000000000000 RSI: 000056187aea098b RDI: 0000000000000003
-> [   12.727617] RBP: 0000000000000000 R08: 0000000000000060 R09: 00005618a943af60
-> [   12.729361] R10: 0000000000000038 R11: 0000000000000246 R12: 000056187aea098b
-> [   12.731101] R13: 0000000000040000 R14: 00005618a9439ac0 R15: 0000000000000000
-> [   12.732814]  </TASK>
+This moves the filemap related sysctl to mm/filemap.c, and
+removes the redundant external variable declaration.
 
-Below is a quick fix, I'll revisit module - kmemleak interaction in v6
+Signed-off-by: Kaixiong Yu <yukaixiong@huawei.com>
+Reviewed-by: Kees Cook <kees@kernel.org>
+---
+v3:
+ - change the title
+---
+ include/linux/mm.h |  2 --
+ kernel/sysctl.c    |  8 --------
+ mm/filemap.c       | 18 +++++++++++++++---
+ 3 files changed, 15 insertions(+), 13 deletions(-)
 
-
-diff --git a/kernel/module/debug_kmemleak.c b/kernel/module/debug_kmemleak.c
-index b4cc03842d70..df873dad049d 100644
---- a/kernel/module/debug_kmemleak.c
-+++ b/kernel/module/debug_kmemleak.c
-@@ -14,7 +14,8 @@ void kmemleak_load_module(const struct module *mod,
- {
- 	/* only scan writable, non-executable sections */
- 	for_each_mod_mem_type(type) {
--		if (type != MOD_DATA && type != MOD_INIT_DATA)
-+		if (type != MOD_DATA && type != MOD_INIT_DATA &&
-+		    !mod->mem[type].is_rox)
- 			kmemleak_no_scan(mod->mem[type].base);
- 	}
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index df0a5eac66b7..a3c3a7d64407 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -39,8 +39,6 @@ struct user_struct;
+ struct pt_regs;
+ struct folio_batch;
+ 
+-extern int sysctl_page_lock_unfairness;
+-
+ void mm_core_init(void);
+ void init_mm_internals(void);
+ 
+diff --git a/kernel/sysctl.c b/kernel/sysctl.c
+index 726b866af57b..2a875b739054 100644
+--- a/kernel/sysctl.c
++++ b/kernel/sysctl.c
+@@ -2089,14 +2089,6 @@ static struct ctl_table vm_table[] = {
+ 		.extra1		= SYSCTL_ONE,
+ 		.extra2		= SYSCTL_FOUR,
+ 	},
+-	{
+-		.procname	= "page_lock_unfairness",
+-		.data		= &sysctl_page_lock_unfairness,
+-		.maxlen		= sizeof(sysctl_page_lock_unfairness),
+-		.mode		= 0644,
+-		.proc_handler	= proc_dointvec_minmax,
+-		.extra1		= SYSCTL_ZERO,
+-	},
+ #ifdef CONFIG_MMU
+ 	{
+ 		.procname	= "max_map_count",
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 429895f1a564..0d4adf8068ca 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -47,6 +47,7 @@
+ #include <linux/splice.h>
+ #include <linux/rcupdate_wait.h>
+ #include <linux/sched/mm.h>
++#include <linux/sysctl.h>
+ #include <asm/pgalloc.h>
+ #include <asm/tlbflush.h>
+ #include "internal.h"
+@@ -1069,6 +1070,19 @@ static wait_queue_head_t *folio_waitqueue(struct folio *folio)
+ 	return &folio_wait_table[hash_ptr(folio, PAGE_WAIT_TABLE_BITS)];
  }
-
+ 
++/* How many times do we accept lock stealing from under a waiter? */
++static int sysctl_page_lock_unfairness = 5;
++static struct ctl_table filemap_sysctl_table[] = {
++	{
++		.procname	= "page_lock_unfairness",
++		.data		= &sysctl_page_lock_unfairness,
++		.maxlen		= sizeof(sysctl_page_lock_unfairness),
++		.mode		= 0644,
++		.proc_handler	= proc_dointvec_minmax,
++		.extra1		= SYSCTL_ZERO,
++	}
++};
++
+ void __init pagecache_init(void)
+ {
+ 	int i;
+@@ -1077,6 +1091,7 @@ void __init pagecache_init(void)
+ 		init_waitqueue_head(&folio_wait_table[i]);
+ 
+ 	page_writeback_init();
++	register_sysctl_init("vm", filemap_sysctl_table);
+ }
+ 
+ /*
+@@ -1224,9 +1239,6 @@ static inline bool folio_trylock_flag(struct folio *folio, int bit_nr,
+ 	return true;
+ }
+ 
+-/* How many times do we accept lock stealing from under a waiter? */
+-int sysctl_page_lock_unfairness = 5;
+-
+ static inline int folio_wait_bit_common(struct folio *folio, int bit_nr,
+ 		int state, enum behavior behavior)
+ {
 -- 
-Sincerely yours,
-Mike.
+2.34.1
+
 
