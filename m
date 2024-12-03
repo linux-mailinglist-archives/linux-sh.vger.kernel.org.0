@@ -1,79 +1,146 @@
-Return-Path: <linux-sh+bounces-1961-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-1964-lists+linux-sh=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3F4A9DF3CF
-	for <lists+linux-sh@lfdr.de>; Sun,  1 Dec 2024 00:16:23 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A75C59E2807
+	for <lists+linux-sh@lfdr.de>; Tue,  3 Dec 2024 17:49:45 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 733FFB21356
-	for <lists+linux-sh@lfdr.de>; Sat, 30 Nov 2024 23:16:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C18916589D
+	for <lists+linux-sh@lfdr.de>; Tue,  3 Dec 2024 16:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82A54149DF4;
-	Sat, 30 Nov 2024 23:16:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C8E41DFE2A;
+	Tue,  3 Dec 2024 16:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NdVpMzMY"
+	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="Ach9vGgf"
 X-Original-To: linux-sh@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1DF78289
-	for <linux-sh@vger.kernel.org>; Sat, 30 Nov 2024 23:16:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6104F1F8AC9
+	for <linux-sh@vger.kernel.org>; Tue,  3 Dec 2024 16:49:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733008578; cv=none; b=JhY/qqQrDot8oa2y1MsNnsDKDp1k+0d7fLwi8WO4WQaFRXFwy9BzFOz51xoslUX/u8hAYgTW+MDkFsMjWRFacrQW30JSttPcwyrbWD/5Bw+8PKHQ3zUr7b5TbMgzsm4of3IT0q46jZf0ez9dW/Jt7P7iXFWI8sjAFte1QVFOUeM=
+	t=1733244582; cv=none; b=F9lucOmRekleLAE+QwIaW+otWvSeVTxqnGCk35vlvEqNIoNcmTLCi8g4poI+vYp9pOTvzy1wvRBo6dfQEpUIao+OIlrw24KAwLH5R0ePrMK+dwbw+OYIw487tAc8EBqfvjOoJ8oGyvVNj4OXXV5bmHgN2d2xSZ3Fgi2ErgC38fo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733008578; c=relaxed/simple;
-	bh=3ipA5XyxDBWQUtQdPm3y2ziQhYy2Qg+fWcP0VjtyQPE=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=uwiZDaZq/po3bGgbOfDqUqrLn5JxOIqCkxS+BJksh2Pdi+OEKxEHv7hNnU81dip6yksM9/4X24LKVFrzRuJW2f3+j5QZH3DDFnE4Jb92KQIDWKoz6lNjTr2cLHapGaBJVyQzOL0dvnOM615TI5Eei/eTQZi301bnwJn4sks4kNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NdVpMzMY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C1B2C4CECC;
-	Sat, 30 Nov 2024 23:16:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733008578;
-	bh=3ipA5XyxDBWQUtQdPm3y2ziQhYy2Qg+fWcP0VjtyQPE=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=NdVpMzMYfyMDqFoM35cXz04RKoHXfZ8DDo6vNiweGV8s+EZQlM7t2HNJn+oq3UesM
-	 h7gv/XF47cY0VRhTcKG0hoAThNoVbf54ACmP/CBaYsglmRi0YuvpIENlzVbkLSviSp
-	 kAXzwUrU8KuWt4frb/5u/vFZmQdmjfkItV6L3K34J64UtwQv3I2OrrckQF5jbImZGN
-	 PwoSRyQ4ROJ8U/ipqUpfu3PKkxOHuSFdMbe5cejUy1FyWal1DNugjWCuGiXzPnbcDB
-	 zqPERQFExyNd4SmIGpKBM4Ob7blBK/+kF0iVFqOrXkegHrvFajv3UZSZQeWOMrz6pU
-	 4f1Om1RjXDcXg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33CCF380A944;
-	Sat, 30 Nov 2024 23:16:33 +0000 (UTC)
-Subject: Re: [GIT PULL] sh updates for v6.13
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <d1daf444a9699b2677f9ae9f8d7e675aaeb3d340.camel@physik.fu-berlin.de>
-References: <d1daf444a9699b2677f9ae9f8d7e675aaeb3d340.camel@physik.fu-berlin.de>
-X-PR-Tracked-List-Id: <linux-sh.vger.kernel.org>
-X-PR-Tracked-Message-Id: <d1daf444a9699b2677f9ae9f8d7e675aaeb3d340.camel@physik.fu-berlin.de>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/glaubitz/sh-linux.git tags/sh-for-v6.13-tag1
-X-PR-Tracked-Commit-Id: 63e72e551942642c48456a4134975136cdcb9b3c
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 0ff86d8da707c5620cd8f363e88bf49a24730b52
-Message-Id: <173300859183.2503582.10215260982711276318.pr-tracker-bot@kernel.org>
-Date: Sat, 30 Nov 2024 23:16:31 +0000
-To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-sh <linux-sh@vger.kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, Huacai Chen <chenhuacai@kernel.org>, Dan Carpenter <dan.carpenter@linaro.org>
+	s=arc-20240116; t=1733244582; c=relaxed/simple;
+	bh=rP8WCl9KXwWdYzRKyzkCki01UNdVN/Fpb3/lyUZgLZI=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=GOog5e82++9B3t4uHy9kYC5Vu5aw+m46OHVvO2K2MduGz3c62Eu4XbwY60KmZesZsWWyD5Dkow5D4RFDZOMf/gj0fjCcMvbzFiDz/TRwksUqfSwdFF8kZwcG5e4u/O2Vl8UIzCR6uQPniq8I7fi+Zro2t0L0djoXc3XoN5NVxEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=Ach9vGgf; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-434a90fed23so48706485e9.1
+        for <linux-sh@vger.kernel.org>; Tue, 03 Dec 2024 08:49:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tuxon.dev; s=google; t=1733244578; x=1733849378; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Q4VmWrSSj/7zXUbh+NYZqbK4S1QOexkNE0xeEkErR8w=;
+        b=Ach9vGgf/u6uxfR6dU2XDHlUC8GI+QM96hayjxlKOTD7SJvuzQgGp6zfP0Cf1gO1Dt
+         gny5FfOITvm9sd1j1RN60Vn/mmvQcgboLXJXp/C8hGYrn63mT1eDsdwVLAVLpsCF9i2Q
+         56hcK00o6/AX4JdwnrzZ3p9Pzw5lIl18ByuOyyA+h+yO7Cbm3OX325V3ZN1euVa429xu
+         vZmCrx7oClF9yZ/Hd1878GBCOFvRZ/8Wuz4Di+/iwObHAXwj11mZ8sUvRofr86kdO+kV
+         uKIhVMCCsY+OF4/TeETKT1ZY0OZx7KfqadALAPwkagEtSUPBnSZs5nOPK4f+1RoBZadB
+         uQxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733244578; x=1733849378;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q4VmWrSSj/7zXUbh+NYZqbK4S1QOexkNE0xeEkErR8w=;
+        b=IuTv8sxCrFzlY3sl1kKPIm9h3ecog6wkcmyZ38i9y6Yyv6bEdCdjlqjwUSi68qcWRK
+         iL2VUx8rjDMPFptGi6eBRj85fvrWGyRC/0uOb9WdKBhorszs6eOISUF5TAP+9I/kQ7dW
+         TtYSHwBH1CQAJL23p03lmSxJwxp+lBzY0WiTQcjMlOFkTtB+N9FturiKIh6ZvXyBFdus
+         PX5kGndVi+y2BpES5wSL0j0927rPL2dX6Yt+WHhE+yNg8/i9l0DvUqyd5I7g+ssc5Por
+         ix3se+hqWmmiY1FAD4qd8rr7sh0hJ1ws8VLei7eNN1lXoDOTn3NNwn2lKvnI+3vpUdBq
+         5bZA==
+X-Forwarded-Encrypted: i=1; AJvYcCU1MIB3NCuSFln8sfQoSCFhnfN+LNaPm/od41hpVdsR9coT1NyBTBqfdQp2bjuPb59cdbexlf4lZA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVTPVGrJKLJVaQYoKxGdJzHDHQn5M+sSuBEj/9FCTJLRzBTcm2
+	Hfjx+GGHTUwPeeMy8E4o/cUqHm5uQqtDh8f/qzkrOWyA/Xn3i11vjJrJhFO3EGk=
+X-Gm-Gg: ASbGncs+sqMO+juOGfxULzePV+FaYkCY96JodvCZrcAUDmuOSpDTU/EDkx9zhdCMzxU
+	2oEa/gaQIamaVBjBNeivZ49kaHVWBm3GCOhoZxBIkYy+c3TgF71reR9DTC2QqQ4DcNi6lqc+PTF
+	yPXXH+iAZjnvDcqaZPh5okqOQU5uaVs1AUE7j7Zm+2VNP6icIa+92r4Zl8c/yUMZuYw9w9btnjJ
+	LY7BHigOT9/VZOoAozFPjGyoCk11rXXSJZs8rBqTXlsdWY0kCY707pzyv4=
+X-Google-Smtp-Source: AGHT+IF8xk5YUKpQ2WS30TSsE/BDo+SYDlLam0pZbOL1ZMMuaAzGwoSuG1kxkRYwJbZKPJNXTkGqJg==
+X-Received: by 2002:a05:600c:3108:b0:434:a27c:b864 with SMTP id 5b1f17b1804b1-434d0a1cf53mr25519705e9.33.1733244578277;
+        Tue, 03 Dec 2024 08:49:38 -0800 (PST)
+Received: from [192.168.50.4] ([82.78.167.161])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434b0f70d91sm192897255e9.39.2024.12.03.08.49.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Dec 2024 08:49:37 -0800 (PST)
+Message-ID: <1eebe854-9e33-43d8-b3be-abaa5b71cd18@tuxon.dev>
+Date: Tue, 3 Dec 2024 18:49:36 +0200
 Precedence: bulk
 X-Mailing-List: linux-sh@vger.kernel.org
 List-Id: <linux-sh.vger.kernel.org>
 List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] serial: sh-sci: Use plain struct copy in
+ early_console_setup()
+Content-Language: en-US
+From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+To: Geert Uytterhoeven <geert+renesas@glider.be>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>,
+ Wolfram Sang <wsa+renesas@sang-engineering.com>,
+ Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+ Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Cc: linux-serial@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+ linux-sh@vger.kernel.org
+References: <e097e5c11afe5bd4c01135779c9a40e707ef6374.1733243287.git.geert+renesas@glider.be>
+ <b71bb27e-003f-4b5d-8654-c7639b105e29@tuxon.dev>
+In-Reply-To: <b71bb27e-003f-4b5d-8654-c7639b105e29@tuxon.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The pull request you sent on Sat, 30 Nov 2024 21:16:44 +0100:
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/glaubitz/sh-linux.git tags/sh-for-v6.13-tag1
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/0ff86d8da707c5620cd8f363e88bf49a24730b52
+On 03.12.2024 18:45, Claudiu Beznea wrote:
+> Hi, Geert,
+> 
+> On 03.12.2024 18:30, Geert Uytterhoeven wrote:
+>> Using memcpy() prevents the compiler from doing any checking on the
+>> types of the passed pointer parameters.  Copy the structure using struct
+>> assignment instead, to increase type-safety.
+>>
+>> No change in generated code on all relevant architectures
+>> (arm/arm64/riscv/sh).
+>>
+>> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> 
+> Not sure, do you think it should carry a fixes tag?
+> 
+>> ---
+>>  drivers/tty/serial/sh-sci.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
+>> index df523c7444230836..1ed13ce2c2952547 100644
+>> --- a/drivers/tty/serial/sh-sci.c
+>> +++ b/drivers/tty/serial/sh-sci.c
+>> @@ -3542,7 +3542,7 @@ static int __init early_console_setup(struct earlycon_device *device,
+>>  		return -ENODEV;
+>>  
+>>  	device->port.type = type;
+>> -	memcpy(&sci_ports[0].port, &device->port, sizeof(struct uart_port));
+>> +	sci_ports[0].port = device->port;
+> 
+> I'm currently preparing my fixes around this code. I think I should rebase
 
-Thank you!
+s/I think/I'm not sure if/g
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+> on top of your patch :)
+> 
+> 
+> Thank you,
+> Claudiu
+> 
+>>  	port_cfg.type = type;
+>>  	sci_ports[0].cfg = &port_cfg;
+>>  	sci_ports[0].params = sci_probe_regmap(&port_cfg);
 
