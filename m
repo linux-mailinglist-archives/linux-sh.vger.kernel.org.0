@@ -1,140 +1,84 @@
-Return-Path: <linux-sh+bounces-1963-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-1966-lists+linux-sh=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A6E39E2B58
-	for <lists+linux-sh@lfdr.de>; Tue,  3 Dec 2024 19:49:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8839E9E386A
+	for <lists+linux-sh@lfdr.de>; Wed,  4 Dec 2024 12:10:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8F9DB83A1E
-	for <lists+linux-sh@lfdr.de>; Tue,  3 Dec 2024 16:47:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DAE82820AE
+	for <lists+linux-sh@lfdr.de>; Wed,  4 Dec 2024 11:10:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF1051FC0E0;
-	Tue,  3 Dec 2024 16:45:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="jLsMPxXg"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F3FE1B3939;
+	Wed,  4 Dec 2024 11:07:23 +0000 (UTC)
 X-Original-To: linux-sh@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039F11FBCAF
-	for <linux-sh@vger.kernel.org>; Tue,  3 Dec 2024 16:45:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+Received: from cmccmta2.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E233B1B4137;
+	Wed,  4 Dec 2024 11:07:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.22.67.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733244350; cv=none; b=ejUjjn3QsjbrKcH0rnqZAxtp7nVXERklCf54HDrBqFlxjZte+3fFclFggFK2MxZyNGu14gM+Gb1ShW7J2rol9cDhfj4j16jwlxuWcSCv5ICGSHoVoSyqRBqHibGd+G+WkFyIS5B8zauj062lZzYuxlDHT3cWzlfLdc8FJhUysgs=
+	t=1733310443; cv=none; b=VLJRZvQ1f6+DL+7Fj2bl7T1PXksD4D3RTeHbSWCGg5Tm1hllXxMrVTX4eu2t71JcGZ4VtM2VL542jy1oSNHX92r6T1VWMaSt7ExNtIyMnYvOlC6HRuTM6RKZo+GtXJ99LZWF1Cn8hhqH2YSpDu67uJ5CPWYvm2X1DpWmnsGbHAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733244350; c=relaxed/simple;
-	bh=HFhimR3f3IJBGPJ8Z6XUIgJiKfqHLCliyUL95uhgTJo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TBN1lkpK0DKgY/Fae6OvMsvz5t1tenmtWhJuF5qBxzsZNd27+IRNnXYv0NB+Rtq4vR5zBYr5iUNCofQLoPmc6b+cvSwtwJT1wC7L8wPEpIsN7OEIrIWIIDPiRKV+V8dGHIGaRLvRJzLWw4sIW9dgE9Wf/G1Bz6qK7Yw0+zqbH9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=jLsMPxXg; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-385e0e224cbso2748327f8f.2
-        for <linux-sh@vger.kernel.org>; Tue, 03 Dec 2024 08:45:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1733244346; x=1733849146; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=L8CkHKyEiZMda1eN794jIca+GC74Y9jUyCzeSzIcNNw=;
-        b=jLsMPxXg6a/0SQak+pOsfSShyoIJxgBBf3kqL29Jksu1HRvlBL5BxZtfIv5cAfmoZ3
-         qVzLdL/QdQDkkDAaxbarhRDSfVIKJpiYXHZw2HvnwvRaUixqWISaZeX9gDQ9mjELfPDY
-         Dx7/LH6H4EAHiLttoh3SePv8sPzXM8JH06BKT+FVGldLGhokb8xzXXfKcsdRnRrU5GdP
-         XVj/QAEVy7UwnClJrpLsElPLEFjJAgBpld62FCSrQzLWTCW80mWcKGNHb+Ldi8aKvDD7
-         eLwHUNcJ95Hewvp85t9QpaYPTwd4rVqT+UkftWz5+JMTXuwcS9NDvcty2vDGay9jEh+i
-         h2Cw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733244346; x=1733849146;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=L8CkHKyEiZMda1eN794jIca+GC74Y9jUyCzeSzIcNNw=;
-        b=T/HNqRLB3960zyn8UQ89W+sEjAK3pC9lHsy0i/8RHHdoxrJzTRZh2V1CSM8Rzbhu+4
-         aBp22U5Czm73Vp/ydHV4JpqObyKQbBuIF0Ch5oxBPiGg7WBB3R/0QtK1WKqkdHlpjZoa
-         gHNaTkFgzwk69ia16KRmas/t0YkJWe+T5Rmfp1ml0ufei9aUD10tqVXRu9oV+8950kn3
-         zeQCNlIz5U6pDIwThDEFr1hcs4AR0GmMUYdVPsMLYxFnUlcKxGVaCXBBk2O6qzvpLl25
-         PfwdA25uKVij7Hchx2E8pTV0IeuoDz68J/qS06tYvEEQTJ2s4G7M55aii29Hbl4ggrZB
-         BGiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW1TaB7FG9bHOMEAPc64dr5cFhyK0PFs2kbtWYHr5N5lADh7i19XMHEMcPADTUIUzmmr0rSRBdDig==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYzN4mP18LWaShZHJV8YgEjc5Ao7ZLyJe+VLh49u2Sgw+/94aF
-	+oE6MZDIQHv7kBeVYA00QO+4h/KFVqWoHkDRvuQ7KZiOj59stD1Jgh++RPQShoQZusBBnRi4XO6
-	Z
-X-Gm-Gg: ASbGncsD9ENJMaoI9kwcY+rlnh96rbUDWxoTm/ublyEH3zfK7+I4kO9XKRJ1Q6nS6uL
-	9r9eeG8VOVLGlDX/CNQIptHBu17QaB3kD9CUUgxfm2gPsAXTgHJJe4CALF0KkKJn095rdvH9TbG
-	B3I6okFGOdpj2NLEwoDqcGOmX5/h2b8mpxPGXKM3nQWbz97LRWGPbQQEbRQgVF5tid+JFcRLt0m
-	75PUxVcORBU9RTTakzYHo87MlOjQyj9PSmBXIMaxmcdq2RA5NXfDcb2pUA=
-X-Google-Smtp-Source: AGHT+IFpdovFyMu7yZWafskTqVsOEzqiVm8QmP60EveHuCZ5asumljo9Ljy+25DKByrk/biF+Y7Nhg==
-X-Received: by 2002:a05:6000:698:b0:385:f092:e1a with SMTP id ffacd0b85a97d-385fd3ce99bmr3020873f8f.11.1733244346076;
-        Tue, 03 Dec 2024 08:45:46 -0800 (PST)
-Received: from [192.168.50.4] ([82.78.167.161])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385e3cbe250sm10449499f8f.94.2024.12.03.08.45.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Dec 2024 08:45:45 -0800 (PST)
-Message-ID: <b71bb27e-003f-4b5d-8654-c7639b105e29@tuxon.dev>
-Date: Tue, 3 Dec 2024 18:45:44 +0200
+	s=arc-20240116; t=1733310443; c=relaxed/simple;
+	bh=V7S8v7FRRaZPxqOkrfpHiv5Q1mhTOu53PrGd5PxYvBY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=M4zsge3hbfE93gkaH5WuXup58tWAiO1UzLq/CH/34yB+U4ezImmYjAQLx673MW0DUtTIRNK8sGAZvF9Mfq5UqtzfzbdYf8YlMjcPafsuQ0fI+CYT+rbVzd17fCy4Et7eJdWv+JhZL/Ji2Xv2nAiDq9nIdCARsdm96ILXoQ7Lcz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cmss.chinamobile.com; spf=pass smtp.mailfrom=cmss.chinamobile.com; arc=none smtp.client-ip=111.22.67.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app05-12005 (RichMail) with SMTP id 2ee5675037da885-cc89c;
+	Wed, 04 Dec 2024 19:07:08 +0800 (CST)
+X-RM-TRANSID:2ee5675037da885-cc89c
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from 192.168.28.197 (unknown[10.55.1.72])
+	by rmsmtp-syy-appsvr03-12003 (RichMail) with SMTP id 2ee3675037da8d7-69a28;
+	Wed, 04 Dec 2024 19:07:08 +0800 (CST)
+X-RM-TRANSID:2ee3675037da8d7-69a28
+From: liujing <liujing@cmss.chinamobile.com>
+To: ysato@users.sourceforge.jp,
+	dalias@libc.org,
+	glaubitz@physik.fu-berlin.de
+Cc: linux-sh@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	liujing <liujing@cmss.chinamobile.com>
+Subject: [PATCH] sh: pci: Fix the wrong format specifier
+Date: Wed,  4 Dec 2024 19:07:06 +0800
+Message-Id: <20241204110706.6776-1-liujing@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.27.0
 Precedence: bulk
 X-Mailing-List: linux-sh@vger.kernel.org
 List-Id: <linux-sh.vger.kernel.org>
 List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] serial: sh-sci: Use plain struct copy in
- early_console_setup()
-Content-Language: en-US
-To: Geert Uytterhoeven <geert+renesas@glider.be>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>,
- Wolfram Sang <wsa+renesas@sang-engineering.com>,
- Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
- Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Cc: linux-serial@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- linux-sh@vger.kernel.org
-References: <e097e5c11afe5bd4c01135779c9a40e707ef6374.1733243287.git.geert+renesas@glider.be>
-From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-In-Reply-To: <e097e5c11afe5bd4c01135779c9a40e707ef6374.1733243287.git.geert+renesas@glider.be>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi, Geert,
+Make a minor change to eliminate a static checker warning. The type
+of port->index is unsigned int, so the correct format specifier should be
+%u instead of %d.
 
-On 03.12.2024 18:30, Geert Uytterhoeven wrote:
-> Using memcpy() prevents the compiler from doing any checking on the
-> types of the passed pointer parameters.  Copy the structure using struct
-> assignment instead, to increase type-safety.
-> 
-> No change in generated code on all relevant architectures
-> (arm/arm64/riscv/sh).
-> 
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: liujing <liujing@cmss.chinamobile.com>
 
-Not sure, do you think it should carry a fixes tag?
-
-> ---
->  drivers/tty/serial/sh-sci.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
-> index df523c7444230836..1ed13ce2c2952547 100644
-> --- a/drivers/tty/serial/sh-sci.c
-> +++ b/drivers/tty/serial/sh-sci.c
-> @@ -3542,7 +3542,7 @@ static int __init early_console_setup(struct earlycon_device *device,
->  		return -ENODEV;
->  
->  	device->port.type = type;
-> -	memcpy(&sci_ports[0].port, &device->port, sizeof(struct uart_port));
-> +	sci_ports[0].port = device->port;
-
-I'm currently preparing my fixes around this code. I think I should rebase
-on top of your patch :)
+diff --git a/arch/sh/drivers/pci/pcie-sh7786.c b/arch/sh/drivers/pci/pcie-sh7786.c
+index a78b9a935585..9ccc602d7f86 100644
+--- a/arch/sh/drivers/pci/pcie-sh7786.c
++++ b/arch/sh/drivers/pci/pcie-sh7786.c
+@@ -219,7 +219,7 @@ static int __init pcie_clk_init(struct sh7786_pcie_port *port)
+ 	 * on. clock lookups don't help us much at this point, since no
+ 	 * dev_id is available this early. Lame.
+ 	 */
+-	snprintf(fclk_name, sizeof(fclk_name), "pcie%d_fck", port->index);
++	snprintf(fclk_name, sizeof(fclk_name), "pcie%u_fck", port->index);
+ 
+ 	port->fclk = clk_get(NULL, fclk_name);
+ 	if (IS_ERR(port->fclk)) {
+-- 
+2.27.0
 
 
-Thank you,
-Claudiu
 
->  	port_cfg.type = type;
->  	sci_ports[0].cfg = &port_cfg;
->  	sci_ports[0].params = sci_probe_regmap(&port_cfg);
 
