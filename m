@@ -1,137 +1,138 @@
-Return-Path: <linux-sh+bounces-2102-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-2104-lists+linux-sh=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC6549FB008
-	for <lists+linux-sh@lfdr.de>; Mon, 23 Dec 2024 15:35:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DF939FD5C1
+	for <lists+linux-sh@lfdr.de>; Fri, 27 Dec 2024 16:59:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AEFA7A13F3
-	for <lists+linux-sh@lfdr.de>; Mon, 23 Dec 2024 14:35:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36F6C18864CA
+	for <lists+linux-sh@lfdr.de>; Fri, 27 Dec 2024 15:59:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E13B1E3DFE;
-	Mon, 23 Dec 2024 14:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A40CC1F2C31;
+	Fri, 27 Dec 2024 15:59:13 +0000 (UTC)
 X-Original-To: linux-sh@vger.kernel.org
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com [209.85.222.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88BC51E3DE7;
-	Mon, 23 Dec 2024 14:21:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0A1F1FB3;
+	Fri, 27 Dec 2024 15:59:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734963680; cv=none; b=teLPAcG5/qDCtru4GnQx2MQWwOz2ivOdcyXCdkynIXkr1UhjqZm5MN/zl70P9YRnjwXIddDOglGozXxDtTDEVh2u2XoHBdQpr/Cxc01AJaLpY2yQK6EZjIfUJMMHf90D0oWwfUGTsb5UKkhgOqf3N6j9B4gVxK1ecCaREBQ8loQ=
+	t=1735315153; cv=none; b=CGE/FJfV5UheYJcaYPQ5nZSt4N8xD47cONCZbtkki5CPCYBv+W1DKEMLt9NzTw5fBGUeKpkP6i889p7VXAwuxJVYqRtDwpcVuGT9ETRpf3L0tumKPkGSnmUfmXJIYwtd+zKN+AqHIxfjtmUDCH8nKbO8KvgwjeUv9rTbQGeHh68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734963680; c=relaxed/simple;
-	bh=QlnJEpBp4fXU3fC+e0GKeOTxfhyigAYnpz0GbfIk3zI=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=exVZo0PJjCHrCffO3aCXqKM18YcfCEbEN1g6KEXSGlc7YDAhN1iQNuCuKYvxJmerzDYB0L++z1Ml99F8ReL+177nNY8F1fvVr7sgjVY5viIuxmET+4tADdHlIb6Ee9EPnm38/w8gbIK2Zt8mj+CXCS0Z9wJo1icCttS+x+FFc94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4YH0ZR5blCz20mgG;
-	Mon, 23 Dec 2024 22:21:35 +0800 (CST)
-Received: from kwepemh100016.china.huawei.com (unknown [7.202.181.102])
-	by mail.maildlp.com (Postfix) with ESMTPS id 486461A016C;
-	Mon, 23 Dec 2024 22:21:16 +0800 (CST)
-Received: from huawei.com (10.175.113.32) by kwepemh100016.china.huawei.com
- (7.202.181.102) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 23 Dec
- 2024 22:21:12 +0800
-From: Kaixiong Yu <yukaixiong@huawei.com>
-To: <akpm@linux-foundation.org>, <mcgrof@kernel.org>
-CC: <ysato@users.sourceforge.jp>, <dalias@libc.org>,
-	<glaubitz@physik.fu-berlin.de>, <luto@kernel.org>, <tglx@linutronix.de>,
-	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
-	<hpa@zytor.com>, <viro@zeniv.linux.org.uk>, <brauner@kernel.org>,
-	<jack@suse.cz>, <kees@kernel.org>, <j.granados@samsung.com>,
-	<willy@infradead.org>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
-	<lorenzo.stoakes@oracle.com>, <trondmy@kernel.org>, <anna@kernel.org>,
-	<chuck.lever@oracle.com>, <jlayton@kernel.org>, <neilb@suse.de>,
-	<okorniev@redhat.com>, <Dai.Ngo@oracle.com>, <tom@talpey.com>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <paul@paul-moore.com>, <jmorris@namei.org>,
-	<linux-sh@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-nfs@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<linux-security-module@vger.kernel.org>, <dhowells@redhat.com>,
-	<haifeng.xu@shopee.com>, <baolin.wang@linux.alibaba.com>,
-	<shikemeng@huaweicloud.com>, <dchinner@redhat.com>, <bfoster@redhat.com>,
-	<souravpanda@google.com>, <hannes@cmpxchg.org>, <rientjes@google.com>,
-	<pasha.tatashin@soleen.com>, <david@redhat.com>, <ryan.roberts@arm.com>,
-	<ying.huang@intel.com>, <yang@os.amperecomputing.com>,
-	<zev@bewilderbeest.net>, <serge@hallyn.com>, <vegard.nossum@oracle.com>,
-	<wangkefeng.wang@huawei.com>
-Subject: [PATCH v4 -next 15/15] sysctl: remove unneeded include
-Date: Mon, 23 Dec 2024 22:15:50 +0800
-Message-ID: <20241223141550.638616-32-yukaixiong@huawei.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241223141550.638616-1-yukaixiong@huawei.com>
-References: <20241223141550.638616-1-yukaixiong@huawei.com>
+	s=arc-20240116; t=1735315153; c=relaxed/simple;
+	bh=8CRzzvrqRDrf+AFSJqOO/buxuiH6/+dCxnKWLm1TXvc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XfVfR14qfLEk7HDGJ8YQppbs0w2jtpCZI0qI7cHY4W5axzazPFkvwvXmsiq/Dn8FcgmnPhTzM/pxDlPVxuxbWT7MMLmAcgbXO424Ax2AOWRYVfdPnx1V8G+gQJMy7MzBmNOBHnMxCburmbNBBCV3zLa4FnA4/QY9NaVVsQkPjEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-85ba92b3acfso3105947241.1;
+        Fri, 27 Dec 2024 07:59:11 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1735315150; x=1735919950;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nlObdDLNvDqmciLfK/sczAtcUt2zlZOZP8yBX48mfx8=;
+        b=TpHfJMBFr82OR3DyyzhGT4Ibt/Ogefx+RXm0IRU2T5N8LE1aBdwynV9Ukvl1wmbBp8
+         /V3rbV68bwiJogEoSYlA337l0fwA0qADzchhtN3aBVYRxxIzrjnjD0cZcByO46mc3vYN
+         Ctafj3hLndQXgOUEN5vOpgfCH+A3JDOqYLkhcxOaocLA7li6EeaUWdR8GbgZzrGb1nqP
+         ENiXfnd1PbdkgosN3nmAROjG4I/JuhKNj7/TJOKOGfszTGo9Y/IOmgLh3+DrSYxZCUeQ
+         kVOlw6BJqoft6jWeE/tJ9WT6mvU47WVyJaGuBIKsyHXIg3+B8EdC4sBjP8FakyJW2J3U
+         5NVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUGn0Qn3z3M13vYX0IUI4Y1hHDBhwmKexjg2IqkjQwe4EjSYytjSbSnD8XjogHLJzV9DmmNegh09ggF@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzb6sh4LgzQ0amgrgCFHJrHsxb54VxqBt+RthA62KV5C25fimPu
+	tDa8xUlwKfB4akAHWw/V6MEmM9LloQN+JiDJmhvq/Dttimf1RgD6kyabPIB+
+X-Gm-Gg: ASbGnctc5aQxtZ6TZBmdwzMVjBrqTJPIas8kLS8iviuVvBlYnhqHRewBe0NdlM793Gm
+	InIFbPkFVevAeyhYEYlsb3NJPLi7BQWVNX2i1bzVkosGLjBBr8NxRp9LJyxlg8RjYIfa6Nu3DuT
+	c2LGcEAHJV6YbyjRIpCyx8WTChgS8cR4x+AMrGCONtxWWR29a8U/FfKdwxeamd3+vV+s3lLkoak
+	XIp+9X+MJDledWLAssh1QfPf6W1VlLfqHWMx2bQqHIsHJFF3HmsRuOUZG0WHHW0rIz26MjM2cB4
+	irHmsWG6omfeZcqxsiA=
+X-Google-Smtp-Source: AGHT+IF1bBPYOEpti9GtYhAw5r3Aif7laM/cuw0i9r2nZGK0aSDpw9js8o/aNSKt+RJLboWMlpZZqg==
+X-Received: by 2002:a05:6102:c46:b0:4b2:5c1a:bb57 with SMTP id ada2fe7eead31-4b2cc447400mr24727166137.20.1735315150466;
+        Fri, 27 Dec 2024 07:59:10 -0800 (PST)
+Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com. [209.85.217.41])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-8610ad5a149sm3072127241.35.2024.12.27.07.59.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 27 Dec 2024 07:59:10 -0800 (PST)
+Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-4affbc4dc74so3850167137.0;
+        Fri, 27 Dec 2024 07:59:10 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVQt5G2CLw8yYozW4vJIMNlcoTjTkyiakGUyRXt/6BWP/Q3D28BARz2B3wNRQUhg7RfaV0Z4Ln/gY7J@vger.kernel.org
+X-Received: by 2002:a05:6102:3a0b:b0:4b1:1eb5:8ee5 with SMTP id
+ ada2fe7eead31-4b2cc47782amr21558940137.25.1735315150014; Fri, 27 Dec 2024
+ 07:59:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-sh@vger.kernel.org
 List-Id: <linux-sh.vger.kernel.org>
 List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- kwepemh100016.china.huawei.com (7.202.181.102)
+References: <20241222222259.GF1977892@ZenIV>
+In-Reply-To: <20241222222259.GF1977892@ZenIV>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Fri, 27 Dec 2024 16:58:58 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdVpTtcT9LVGNvFLm4cvrNF=fe1dVsi2zo73Yee3oYrJYQ@mail.gmail.com>
+Message-ID: <CAMuHMdVpTtcT9LVGNvFLm4cvrNF=fe1dVsi2zo73Yee3oYrJYQ@mail.gmail.com>
+Subject: Re: [PATCH] sh: exports for delay.h
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: linux-sh@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, 
+	linux-arch@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Removing unneeded mm includes in kernel/sysctl.c.
+Hi Al,
 
-Signed-off-by: Kaixiong Yu <yukaixiong@huawei.com>
-Reviewed-by: Kees Cook <kees@kernel.org>
----
- kernel/sysctl.c | 6 ------
- 1 file changed, 6 deletions(-)
+On Sun, Dec 22, 2024 at 11:23=E2=80=AFPM Al Viro <viro@zeniv.linux.org.uk> =
+wrote:
+>         __delay() is either exported or exists as a static inline
+> on all architectures - except sh.
+>
+>         Add the missing export of __delay(), move the exports of
+> the rest of that bunch from sh_ksyms32.c to the place where all
+> of them are defined (i.e. arch/sh/lib/delay.c).
+>
+> Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 
-diff --git a/kernel/sysctl.c b/kernel/sysctl.c
-index cebd0ef5d19d..aece984bee19 100644
---- a/kernel/sysctl.c
-+++ b/kernel/sysctl.c
-@@ -20,8 +20,6 @@
-  */
- 
- #include <linux/module.h>
--#include <linux/mm.h>
--#include <linux/slab.h>
- #include <linux/sysctl.h>
- #include <linux/bitmap.h>
- #include <linux/signal.h>
-@@ -30,7 +28,6 @@
- #include <linux/proc_fs.h>
- #include <linux/security.h>
- #include <linux/ctype.h>
--#include <linux/kmemleak.h>
- #include <linux/filter.h>
- #include <linux/fs.h>
- #include <linux/init.h>
-@@ -41,7 +38,6 @@
- #include <linux/highuid.h>
- #include <linux/writeback.h>
- #include <linux/ratelimit.h>
--#include <linux/hugetlb.h>
- #include <linux/initrd.h>
- #include <linux/key.h>
- #include <linux/times.h>
-@@ -52,13 +48,11 @@
- #include <linux/reboot.h>
- #include <linux/ftrace.h>
- #include <linux/perf_event.h>
--#include <linux/oom.h>
- #include <linux/kmod.h>
- #include <linux/capability.h>
- #include <linux/binfmts.h>
- #include <linux/sched/sysctl.h>
- #include <linux/mount.h>
--#include <linux/userfaultfd_k.h>
- #include <linux/pid.h>
- 
- #include "../lib/kstrtox.h"
--- 
-2.34.1
+Thanks for your patch!
 
+> --- a/arch/sh/lib/delay.c
+> +++ b/arch/sh/lib/delay.c
+> @@ -7,6 +7,7 @@
+>
+>  #include <linux/sched.h>
+>  #include <linux/delay.h>
+> +#include <linux/export.h>
+>
+>  void __delay(unsigned long loops)
+>  {
+> @@ -29,6 +30,7 @@ void __delay(unsigned long loops)
+>                 : "0" (loops)
+>                 : "t");
+>  }
+> +EXPORT_SYMBOL(__delay);
+
+Please do not export __delay, as it is an internal implementation detail.
+Drivers should not call __delay() directly, as it has non-standardized
+semantics, or may not even exist.
+
+Unfortunately this comes up once in a while, cfr. commit
+7619f957dc8cb8b2 ("Revert "sh: add missing EXPORT_SYMBOL() for
+__delay"").
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
 
