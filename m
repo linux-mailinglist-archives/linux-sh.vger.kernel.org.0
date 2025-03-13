@@ -1,84 +1,84 @@
-Return-Path: <linux-sh+bounces-2538-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-2530-lists+linux-sh=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F40BA5F356
-	for <lists+linux-sh@lfdr.de>; Thu, 13 Mar 2025 12:52:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A596A5F31E
+	for <lists+linux-sh@lfdr.de>; Thu, 13 Mar 2025 12:50:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F301E17EA51
-	for <lists+linux-sh@lfdr.de>; Thu, 13 Mar 2025 11:52:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A004F162BFE
+	for <lists+linux-sh@lfdr.de>; Thu, 13 Mar 2025 11:49:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E58A2686A7;
-	Thu, 13 Mar 2025 11:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4615926A085;
+	Thu, 13 Mar 2025 11:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ipYIuvNy"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XO5VPXe0"
 X-Original-To: linux-sh@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 465472686B4
-	for <linux-sh@vger.kernel.org>; Thu, 13 Mar 2025 11:45:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61EBD269CFD
+	for <linux-sh@vger.kernel.org>; Thu, 13 Mar 2025 11:44:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741866315; cv=none; b=icTME1pEnoI9GqWCHIBTbqDB+JDcK++ya+jaxYV+T/L16FXdugM/t/o6GShmn3P+gO9LALStqB7E/6iyNhQMzuKVOpEFLxveLy3djKnK7XzVL+NNfkupcFpVbUGn36XfbcVvfYiMJPluFNSEMlp4SCeyY2AvZtD3gl9jFNVT3Z8=
+	t=1741866290; cv=none; b=dx5lmv/DuzZwPaEuarP+7myf4GR2RsVmKzg1kC/+QuvEuJlnOZv0uwzniuSsEXV9FGGs0GcWSQly8SZEILBy+LtBbn1WzPvSRmHQ2rkSrSYNS97cbuXtHXrJqbZSIgNXt1J7DAsp5avoE31N4lFj0yfhuubUZt5YPOzcFiWdBII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741866315; c=relaxed/simple;
-	bh=wb4K6eThBhnG7QUcN+gX/b7GoXZu0I9IHZjPqusvMic=;
+	s=arc-20240116; t=1741866290; c=relaxed/simple;
+	bh=liO3eLVl1wJXmy8vDx1YCNgXVebD8YdGrdwAIJcfcmo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-type; b=TT/TnJut7DnP1NaLcc5JzytHOcg6u+h0+6D3BhQRx8xsdEy2lIjKjkxTIkHo2HDjC0UD9EN/Vpjw9t+pyWKOIiw5tKAH/6j1NXcL14a2jnFDPTGDcTAYusPK6n6mEw0uDRnlVxabyzXDLIG5/ewe/OEtAOOAvsh2iJlP8bR8t1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ipYIuvNy; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-type; b=o6M8PemYjIbKCSrvXQvRUyt/SlCBMh7PscIGM0+uykDunoCWVz8y84TvP7nqxN3MML8VPyFFgiNMeLR0sHLaImWMiPrvJr44iqOHxvluUXb7+Of71PnhDsDMf+H1lMCC49Rrfj4SElSoL3JIAjiCEF9LW1UiV/6XvHVMVvcqmC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XO5VPXe0; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741866313;
+	s=mimecast20190719; t=1741866287;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8P6wNaO+XIHVOsaMiUxPKzcQyyRjSmyu7hy/Ke33WeI=;
-	b=ipYIuvNyhFtr6MwEtvxNToqFUN/fjhR9UrDS6sERrpNsbnQ+TpwHX2+AeekXH7DzGOMwxM
-	JSlmWV8ZmwWjIgIF0AbqHiOrmvzQ+uVwqWSvLxGQGEHUqwkVvUY7z4VfjHRB0IYCTLUhVG
-	REGVjoQ5o1G7KZy9z3b1tV2xNnPDQbg=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=GROr3WSjkuWJZb5whyX7QQnwj0kVrCWo4LNK5GIabXk=;
+	b=XO5VPXe0NBfQWbh3tLFkVefDubfuOo+XDt6lhuKHMBWQu2K8lHIMAznoR/y1ULKDqiryXE
+	XPGGtMAlF6/zT+621RSPCD67Cj+8Bn/v18inl13XoISRtWj3FCSAq3qqp4BKjpDh3dafQs
+	fjaejtCcrclcDhm6piul8HgTbkUU4wk=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-529-UVBJ4r77P--7fgNw8dK3ow-1; Thu, 13 Mar 2025 07:44:43 -0400
-X-MC-Unique: UVBJ4r77P--7fgNw8dK3ow-1
-X-Mimecast-MFC-AGG-ID: UVBJ4r77P--7fgNw8dK3ow_1741866283
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-43d01024089so5946245e9.1
-        for <linux-sh@vger.kernel.org>; Thu, 13 Mar 2025 04:44:43 -0700 (PDT)
+ us-mta-462-ADueI25kMFC0RUAzL6-aKg-1; Thu, 13 Mar 2025 07:44:46 -0400
+X-MC-Unique: ADueI25kMFC0RUAzL6-aKg-1
+X-Mimecast-MFC-AGG-ID: ADueI25kMFC0RUAzL6-aKg_1741866285
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-43ceed237efso5985975e9.0
+        for <linux-sh@vger.kernel.org>; Thu, 13 Mar 2025 04:44:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741866282; x=1742471082;
+        d=1e100.net; s=20230601; t=1741866285; x=1742471085;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=8P6wNaO+XIHVOsaMiUxPKzcQyyRjSmyu7hy/Ke33WeI=;
-        b=wv+qV7Z/qQ5mleeWFO16MBUiJL0FELeiBAYaVFGiQX8s8OiwtGBbXiyJCz9LaSncUX
-         ocdoJ+bAoijvN7DdppL6bYfgh6sDunO70oa0SLeyUrP4105CSCsaJYQxPRymArtLCdRB
-         7zPGRo5uiaGW9+/AQsW2ElTh61lEFLBhAWaA3kG3yH1AlD2lrEjojZ0MeUSmd6RKakaX
-         ctlXUvZdXr7oFg9G+7WeX/x988ueKgFxYmrKBlJvjrwIdJHSB/vqcCReUD2wxOteI6BV
-         VBZN9qdtOg8TJv+iuaWDEB/jEqd4p+0zKxa8P1LVfzXEjkSCuoHFx5TMF14+8H9bns8m
-         j2Ow==
-X-Forwarded-Encrypted: i=1; AJvYcCU8o1KLD0DGBf21h/lAa/Qxc7g8gyGyZ/5zJCv9NKDsetXxttfmbzXh5OjssgqygXsepJHpQHuIzQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzwSVvJGvJl8TDwV2xMHgFKxCAFtUtCNLDbc0jJkffzSJahlw0h
-	+E1edT1DgtrIe7LowEB1S3uwhNEyQyEP19iPU9O+d/NJA7IAy6K7bcaO1VPnoPyLgEZug3xQNM5
-	ovd90wQrsRRp9a7z6PtKPsvDOz3ERhSdUdRCDKjl84Wc6gUnCeaY6TQxQ
-X-Gm-Gg: ASbGncs/ed2cC7sGEmxPHzGxP8bqS+A2KlY1wvERlxHyQB4Opwk9L0vMsuJwu3uIYSk
-	dL7yFztOVA/kT59KgHpYxj1z5DxCM8DLzbzSAMa9CEPdf8yoREYk6YBAI4w+/BEBlICVNQtCQpd
-	Lv6mMDN6Rp3sP4cdUe5ZTM1hg2x7Ytyr+3nGaD7x5zxPuMaF1GDZ0gc5ZZK16MeZ+ech+F8ClyT
-	sy2p4SnBO0NIIMexLd+kAVo+3SZM092t8T1ibvpjonlUeuxJ54aUPLONn8J2MIcHVaXIzCMKQyZ
-	rOpsPYItlMenhtoFrfMI
-X-Received: by 2002:a05:600c:46d3:b0:439:9424:1b70 with SMTP id 5b1f17b1804b1-43c602223f0mr255847095e9.30.1741866282645;
-        Thu, 13 Mar 2025 04:44:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEXX+a12CkpViQK6U7ArlV7I00zmbs9phG5wa1a6gevfoSJzXsUnRwbzS8Xh3mqpEsYOihpsg==
-X-Received: by 2002:a05:600c:46d3:b0:439:9424:1b70 with SMTP id 5b1f17b1804b1-43c602223f0mr255846615e9.30.1741866282213;
-        Thu, 13 Mar 2025 04:44:42 -0700 (PDT)
+        bh=GROr3WSjkuWJZb5whyX7QQnwj0kVrCWo4LNK5GIabXk=;
+        b=P/hQL0CgHF1mmK1HvlZ2oRKLK0mWN4L2YjFJTqWCcZkNHj9xlSSDtLYivl7U6DF0zE
+         gbrFmTGBYzTlPrbC4NDDueBTUAbkaAru66Gdfou5tSZnBptKrlafc7EuEowkR7gos4Wj
+         syGurIPMzIWernGhwy2a6qBPAi9SkjUn5ifclUwuhjQHVhtYAVt2jYor+lFCzT5GHngD
+         cPVcdv+TrVen04EstDRGI2i/ZXQ0AUPJWnf6n23YGEWKzzeRdxJMOhQO2QJgfTSqWs/J
+         emu30weOB6NvqH3eA+KZ4gSubO7nRUw3JthbrlF6Yq6m3mngo+VnlmIEwnpCi56NUgBu
+         pqow==
+X-Forwarded-Encrypted: i=1; AJvYcCX60XSD0Xu6rwE1fQuOFRDRlebA+OpVZlgx3U0PxyMxcsOd11HfhEi4hHOzXqDcNJcEX6cfTI/MGw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzk0UmaX+70811+VsLR9QmSfgc7UE/JhO6ykPOzivlakZsLemHn
+	4Zne+HtldyBJc2tQjmTitnBs3yaYdZTf5DKgYITl2xz3kflubkleu6nrhet1rCD308zMccwsOSc
+	X3GzUY2yu2IN5916a8RbnHW+p052P/yKnuAST6tXPjnxFarPrcWes/cA8
+X-Gm-Gg: ASbGncsz7FAtsULXCPwxwxoK2DsGonjyKwgICdpL37hICQE2ddHk89nj07pgdn7ZRtk
+	yQyeXPPNJRx7mKB4cjVCH0ga3z6xs/J/FwTFLPdzRNE/NXZaAxxb31pjd/HleI649Mt9x9ZH4ih
+	nReCK9EdEU1JkUO06ji5FJA23477nph/R1aVD1Lv1ShAJgBk1++UP4S0dlwOMomuI4k0bbsVM0l
+	yet0H+hePWZeFrurbRtdT2m2BWjT3YUKaJwUthySvnxY6m3iKkCKzxLhapvoK7p/kF/Qlf3xLvH
+	Jh+a6ekkFf3qSdWH7YF0
+X-Received: by 2002:a05:600c:5493:b0:43c:fb8e:aec0 with SMTP id 5b1f17b1804b1-43d01bd21e2mr95038905e9.1.1741866284854;
+        Thu, 13 Mar 2025 04:44:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEmAbVJJ3Axf7J+/aQFhSVgbztnHuV0D3aaCUWl74kfxPn81ZspK5wVSFqWrESjIWmYzw2aJw==
+X-Received: by 2002:a05:600c:5493:b0:43c:fb8e:aec0 with SMTP id 5b1f17b1804b1-43d01bd21e2mr95038375e9.1.1741866284399;
+        Thu, 13 Mar 2025 04:44:44 -0700 (PDT)
 Received: from lab.hqhome163.com ([81.57.75.210])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-43d188b754asm17844115e9.14.2025.03.13.04.44.40
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-43d188b754asm17844115e9.14.2025.03.13.04.44.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Mar 2025 04:44:41 -0700 (PDT)
+        Thu, 13 Mar 2025 04:44:43 -0700 (PDT)
 From: Alessandro Carminati <acarmina@redhat.com>
 To: linux-kselftest@vger.kernel.org
 Cc: David Airlie <airlied@gmail.com>,
@@ -114,14 +114,12 @@ Cc: David Airlie <airlied@gmail.com>,
 	loongarch@lists.linux.dev,
 	x86@kernel.org,
 	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Alessandro Carminati <acarmina@redhat.com>
-Subject: [PATCH v4 06/14] x86: Add support for suppressing warning backtraces
-Date: Thu, 13 Mar 2025 11:43:21 +0000
-Message-Id: <20250313114329.284104-7-acarmina@redhat.com>
+Subject: [PATCH v4 07/14] arm64: Add support for suppressing warning backtraces
+Date: Thu, 13 Mar 2025 11:43:22 +0000
+Message-Id: <20250313114329.284104-8-acarmina@redhat.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250313114329.284104-1-acarmina@redhat.com>
 References: <20250313114329.284104-1-acarmina@redhat.com>
@@ -132,7 +130,7 @@ List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: LCsA_CEVqLbJ67IqrcuEjT7try8B1p6pYo763yLWZ9A_1741866283
+X-Mimecast-MFC-PROC-ID: 6ok2BG209l4CvKMSYHu-gFRsZ9eL3tcGYPD0tMAYaLE_1741866285
 X-Mimecast-Originator: redhat.com
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
@@ -151,63 +149,95 @@ is not a define but a virtual variable).
 
 Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 Acked-by: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Alessandro Carminati <acarmina@redhat.com>
 ---
- arch/x86/include/asm/bug.h | 21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+ arch/arm64/include/asm/asm-bug.h | 27 ++++++++++++++++++---------
+ arch/arm64/include/asm/bug.h     |  8 +++++++-
+ 2 files changed, 25 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86/include/asm/bug.h b/arch/x86/include/asm/bug.h
-index e85ac0c7c039..f6e13fc675ab 100644
---- a/arch/x86/include/asm/bug.h
-+++ b/arch/x86/include/asm/bug.h
-@@ -35,18 +35,28 @@
+diff --git a/arch/arm64/include/asm/asm-bug.h b/arch/arm64/include/asm/asm-bug.h
+index 6e73809f6492..bf0a5ba81611 100644
+--- a/arch/arm64/include/asm/asm-bug.h
++++ b/arch/arm64/include/asm/asm-bug.h
+@@ -8,37 +8,46 @@
+ #include <asm/brk-imm.h>
  
  #ifdef CONFIG_DEBUG_BUGVERBOSE
- 
+-#define _BUGVERBOSE_LOCATION(file, line) __BUGVERBOSE_LOCATION(file, line)
+-#define __BUGVERBOSE_LOCATION(file, line)			\
++
 +#ifdef CONFIG_KUNIT_SUPPRESS_BACKTRACE
 +# define HAVE_BUG_FUNCTION
-+# define __BUG_FUNC_PTR	__BUG_REL(%c1)
++# define __BUG_FUNC_PTR(func)	.long func - .;
++#else
++# define __BUG_FUNC_PTR(func)
++#endif
++
++#define _BUGVERBOSE_LOCATION(file, func, line) __BUGVERBOSE_LOCATION(file, func, line)
++#define __BUGVERBOSE_LOCATION(file, func, line)		\
+ 		.pushsection .rodata.str,"aMS",@progbits,1;	\
+ 	14472:	.string file;					\
+ 		.popsection;					\
+ 								\
+ 		.long 14472b - .;				\
++		__BUG_FUNC_PTR(func)				\
+ 		.short line;
+ #else
+-#define _BUGVERBOSE_LOCATION(file, line)
++#define _BUGVERBOSE_LOCATION(file, func, line)
+ #endif
+ 
+ #ifdef CONFIG_GENERIC_BUG
+ 
+-#define __BUG_ENTRY(flags) 				\
++#define __BUG_ENTRY(flags, func)			\
+ 		.pushsection __bug_table,"aw";		\
+ 		.align 2;				\
+ 	14470:	.long 14471f - .;			\
+-_BUGVERBOSE_LOCATION(__FILE__, __LINE__)		\
++_BUGVERBOSE_LOCATION(__FILE__, func, __LINE__)		\
+ 		.short flags; 				\
+ 		.align 2;				\
+ 		.popsection;				\
+ 	14471:
+ #else
+-#define __BUG_ENTRY(flags)
++#define __BUG_ENTRY(flags, func)
+ #endif
+ 
+-#define ASM_BUG_FLAGS(flags)				\
+-	__BUG_ENTRY(flags)				\
++#define ASM_BUG_FLAGS(flags, func)			\
++	__BUG_ENTRY(flags, func)			\
+ 	brk	BUG_BRK_IMM
+ 
+-#define ASM_BUG()	ASM_BUG_FLAGS(0)
++#define ASM_BUG()	ASM_BUG_FLAGS(0, .)
+ 
+ #endif /* __ASM_ASM_BUG_H */
+diff --git a/arch/arm64/include/asm/bug.h b/arch/arm64/include/asm/bug.h
+index 28be048db3f6..044c5e24a17d 100644
+--- a/arch/arm64/include/asm/bug.h
++++ b/arch/arm64/include/asm/bug.h
+@@ -11,8 +11,14 @@
+ 
+ #include <asm/asm-bug.h>
+ 
++#ifdef HAVE_BUG_FUNCTION
 +# define __BUG_FUNC	__func__
 +#else
-+# define __BUG_FUNC_PTR
 +# define __BUG_FUNC	NULL
-+#endif /* CONFIG_KUNIT_SUPPRESS_BACKTRACE */
++#endif
 +
- #define _BUG_FLAGS(ins, flags, extra)					\
- do {									\
- 	asm_inline volatile("1:\t" ins "\n"				\
- 		     ".pushsection __bug_table,\"aw\"\n"		\
- 		     "2:\t" __BUG_REL(1b) "\t# bug_entry::bug_addr\n"	\
- 		     "\t"  __BUG_REL(%c0) "\t# bug_entry::file\n"	\
--		     "\t.word %c1"        "\t# bug_entry::line\n"	\
--		     "\t.word %c2"        "\t# bug_entry::flags\n"	\
--		     "\t.org 2b+%c3\n"					\
-+		     "\t"  __BUG_FUNC_PTR "\t# bug_entry::function\n"	\
-+		     "\t.word %c2"        "\t# bug_entry::line\n"	\
-+		     "\t.word %c3"        "\t# bug_entry::flags\n"	\
-+		     "\t.org 2b+%c4\n"					\
- 		     ".popsection\n"					\
- 		     extra						\
--		     : : "i" (__FILE__), "i" (__LINE__),		\
-+		     : : "i" (__FILE__), "i" (__BUG_FUNC), "i" (__LINE__),\
- 			 "i" (flags),					\
- 			 "i" (sizeof(struct bug_entry)));		\
- } while (0)
-@@ -92,7 +102,8 @@ do {								\
- do {								\
- 	__auto_type __flags = BUGFLAG_WARNING|(flags);		\
- 	instrumentation_begin();				\
--	_BUG_FLAGS(ASM_UD2, __flags, ANNOTATE_REACHABLE(1b));	\
-+	if (!KUNIT_IS_SUPPRESSED_WARNING(__func__))			\
-+		_BUG_FLAGS(ASM_UD2, __flags, ANNOTATE_REACHABLE(1b));	\
- 	instrumentation_end();					\
- } while (0)
+ #define __BUG_FLAGS(flags)				\
+-	asm volatile (__stringify(ASM_BUG_FLAGS(flags)));
++	asm volatile (__stringify(ASM_BUG_FLAGS(flags, %c0)) : : "i" (__BUG_FUNC));
  
+ #define BUG() do {					\
+ 	__BUG_FLAGS(0);					\
 -- 
 2.34.1
 
