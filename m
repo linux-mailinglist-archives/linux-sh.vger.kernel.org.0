@@ -1,133 +1,138 @@
-Return-Path: <linux-sh+bounces-2730-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-2732-lists+linux-sh=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B53B0AC16BC
-	for <lists+linux-sh@lfdr.de>; Fri, 23 May 2025 00:26:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDEC4ACA877
+	for <lists+linux-sh@lfdr.de>; Mon,  2 Jun 2025 06:11:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8E343A2C69
-	for <lists+linux-sh@lfdr.de>; Thu, 22 May 2025 22:26:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D32023B8C5E
+	for <lists+linux-sh@lfdr.de>; Mon,  2 Jun 2025 04:11:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF0A277021;
-	Thu, 22 May 2025 22:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65304148827;
+	Mon,  2 Jun 2025 04:11:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="ToVMF8Pc"
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="cDLc7AG1"
 X-Original-To: linux-sh@vger.kernel.org
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2608D272E5E
-	for <linux-sh@vger.kernel.org>; Thu, 22 May 2025 22:26:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99ABA182B7;
+	Mon,  2 Jun 2025 04:11:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747952772; cv=none; b=nhQ9mUJll83qfgmrazp2hcCh9wBnXSQRD3g1l6VYBqP3GlRlKcnjz/sZiJQSlmH7xzESVcrSPVv0MDswwXUilTb2A6NMNZAQdRmXBVLAt8fcb3tlnqZ8bs7OCiGHB9g926+/rR3AoiupIKk/AvvXIEuQNAp9/tOYU+tFilcuozY=
+	t=1748837490; cv=none; b=L37878dKjSGJWh6H7C3iiwwRaTn7cNAskkzzx0xVd5wP9g7N1gdxGryTUhSeC/VmEjqvS8Z7Jg47T8k9NMQrDArdt28wRSDapEJsr/MVSgXdsxL97gxjuja1UmieWoLtQSw4D8KXi6hR2h4MmBlCzPTYVABM4OaPlFlbQGD5RQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747952772; c=relaxed/simple;
-	bh=ERIIFgKxrnPwjSVA6jXYtUfeYroUqJBM9v+L48OiIjw=;
-	h=Date:Message-ID:MIME-Version:Content-Type:From:To:Cc:Subject:
-	 References:In-Reply-To; b=P0+HMMYHOxHi01d/oyjqOdVCwJpj2HHe1RH83pH3L+fDJmv9ttCcV6KnJLWCluJ/drYoL94QkCmvrPRuhp6r5BPs9qMvhTfsnY5Yh0I/CwehFKXDTS2bNzIFXrs4VKAyW2JYmRoMrs7YNM7fDMAlRe5zatstPTe6YPojko3LXhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=ToVMF8Pc; arc=none smtp.client-ip=209.85.222.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7c5b2472969so897804985a.1
-        for <linux-sh@vger.kernel.org>; Thu, 22 May 2025 15:26:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1747952768; x=1748557568; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
-         :mime-version:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yW4BwrWRPMGZw+m/ri6EFRKCjP4k+SeXSk6ZWrWvJiA=;
-        b=ToVMF8PcVy37DRcyydOqAzRtU8MIfxnsQYcyTujtaPP+6rNuh10GiSxHl8BpEOL7Vl
-         xP549yj/DsBJfMi3qCROE0CjVVteyRyHylhdLw04oGcxRiQntTqkGaj0qxDt91en7Yaf
-         k+SmxoaFBB+G/5sErCk+bkQleUrTH6XQJe2p+LIipbvb4fbPmu1wnSD2q+VMoi0xxJsW
-         gaMrvrcaiHSnHiky9rJUvXODz2114Xg3/bkQmKiZIEtphocJflv5aC1cQ1XzMR2q+5M1
-         e5C3pB8Uc+2bJywG7HLAABdlrHUZ45rP3ykqZkmL5ezlodK/YayNjCLBFI5pn3kcMbPH
-         Giow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747952768; x=1748557568;
-        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
-         :mime-version:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=yW4BwrWRPMGZw+m/ri6EFRKCjP4k+SeXSk6ZWrWvJiA=;
-        b=Wxa9BEroGSXgsjCNcYVrB2Jmu3ioVgycHV7WFhiJJ+S9M1hM/DyiO1cgA52gpw5Vwa
-         yk5JyDWrM1rne14/UcVAhhKTjW9DS/yL4Iqtyeem99ITcJkXevBFL6eh7qFRoG8yRvvA
-         e7r2r6AQtWhsi4jByzY/BXsi+cHOkE5cPhy/PHMUwIS69tRcpoG6WNXQML8EcVlCDmgA
-         MhupuqL81s14GRntvBkftnxIPO3QFdp0B0MYTFdzcvB8ydbyZWNB073oDwOI1quuUE7P
-         4doqa3uIT4flI9AP9Bl1cs3dW4fHAxwPK1kIPJo1B+sbZWHjlYcMNNxOQaLHTYvrAxGd
-         9amA==
-X-Forwarded-Encrypted: i=1; AJvYcCWDyTdHNZYM+0AbQhLajwylTZDqgBRazBc10DFOU99tUXy8q6obQ27kyVp/d+3fQX8o4rlfT3aZBg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzsYCfiZFdzZG4cgTcxQSzHSPmamk6DAPEPHCejCZJQt8yHb570
-	3mnvZEqp5JiE3tBsxjg3GYxbBvhkO0nQfvyIxMyx1gIGkFMu22AdMB9/731q7tW96A==
-X-Gm-Gg: ASbGncvC/8g/kBm9sg36h2ywnVL94EDyyfmUUZCaLc65ot1oOJmudD5qG1tD17Xn0nj
-	vX3TdpMFxn5Q/actSd2Gg1bSLQOfqVKUXi6QALZBLYsaTdyie4rQlzWCGtUEdZJyVajODRMxIVm
-	bDo3h82UbwzB/g8tNDtOJV80qyjuYKJzQv7iNC7yWSyztNnADqiZAJ/W/lSqxQGJhgvTzDNUatJ
-	Y4ydd8ay9pBrwlobefpFt76G/uGPTqXoSbZPSFWw5SBgNH2v0g/6juLZYYrqyPQJzqxULFeLBwU
-	YLeZkmou3C/SVbvPTmcMX4rTON9vG7FtmKmyHurPlXvOsB/iF80r8BiNFW7d1CooU0oTo5UwiDl
-	wYod/YvFas7DLQL82ho8B
-X-Google-Smtp-Source: AGHT+IHmIlyqjG6e3vdHM+wi0UqPbDaDdVTY/IdBlClNAbyXhci/B2Ul0PB2ozu0sL7+1EWeTaPM2w==
-X-Received: by 2002:a05:620a:408e:b0:7ce:d352:668f with SMTP id af79cd13be357-7ced352670emr1334278485a.47.1747952768087;
-        Thu, 22 May 2025 15:26:08 -0700 (PDT)
-Received: from localhost (pool-71-126-255-178.bstnma.fios.verizon.net. [71.126.255.178])
-        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-7cd468b69dfsm1089029585a.79.2025.05.22.15.26.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 May 2025 15:26:07 -0700 (PDT)
-Date: Thu, 22 May 2025 18:26:07 -0400
-Message-ID: <8bf36078ef8f3e884a1d3d8415834680@paul-moore.com>
+	s=arc-20240116; t=1748837490; c=relaxed/simple;
+	bh=VNUqtAL1SHKb0pozQoeZywC6qZxi9oGNe5rRKbOsy4Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=biseBkn2Y23CItRRBVvCR4j8+4WkWsZP3wcAcZ9CKxU1Jm0DyzouZiMdZoEb1AEwAOybmqXY4GdbCBndC9f2dDedKD1tuNYeQpfbSaUxfgnhHHqtyrjHUuA9trfjY0Pwa6BD4jC6CZr4AJHmY2XDsriuUY2PzQ8aG5jYMHkp9H8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=cDLc7AG1; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=iuH08HhCzFKCMOC8/O0swKDH+rpWOadfk7Rm4fI946Q=; b=cDLc7AG1xVeGrDIh1peeN0IWEk
+	zSPl9poJhEGT0YoB/3XnvH6rSM6bY3xjL0IUqjUntiObN7RMhtlCPHuD3A62GgdK0UEACC5R8vd1k
+	nGJkZRQS6J7IpGD5Cac8ckt2eGuQw0ldn0T1SIMMph5HBpFztRTyZBhVmy8+xkbQoA7OwVtDKj3OZ
+	76BRcTLzVJZLqbCzOHiBTXoFLI5gsn+T2zZ4MU1RCovTNxA1K7wQ4w3A4hqY1qW3qspeqQLRXJ12A
+	qO/+nks1w4qOwDF7mdiodEdOvdFTMW5W0MgrK6eRVtCQ084Z11K100prR+Fy/v0Uyq+f2T84t8Tki
+	2y66Yf/A==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uLwW6-0000000BUl8-1UDJ;
+	Mon, 02 Jun 2025 04:11:18 +0000
+Date: Mon, 2 Jun 2025 05:11:18 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linmag7@gmail.com, Al Viro <viro@ftp.linux.org.uk>, arnd@arndb.de,
+	chris@zankel.net, dinguyen@kernel.org, glaubitz@physik.fu-berlin.de,
+	ink@unseen.parts, jcmvbkbc@gmail.com, kees@kernel.org,
+	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+	mattst88@gmail.com, monstr@monstr.eu, richard.henderson@linaro.org,
+	sparclinux@vger.kernel.org, x86@kernel.org,
+	Sam James <sam@gentoo.org>
+Subject: Re: [PATCH v2 1/1] mm: pgtable: fix pte_swp_exclusive
+Message-ID: <20250602041118.GA2675383@ZenIV>
+References: <87cyfejafj.fsf@gentoo.org>
+ <87v7rik020.fsf@gentoo.org>
 Precedence: bulk
 X-Mailing-List: linux-sh@vger.kernel.org
 List-Id: <linux-sh.vger.kernel.org>
 List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 
-Content-Type: text/plain; charset=UTF-8 
-Content-Transfer-Encoding: 8bit 
-X-Mailer: pstg-pwork:20250522_1740/pstg-lib:20250522_1730/pstg-pwork:20250522_1740
-From: Paul Moore <paul@paul-moore.com>
-To: Andrey Albershteyn <aalbersh@redhat.com>, Richard Henderson <richard.henderson@linaro.org>, 
-	Matt Turner <mattst88@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Geert Uytterhoeven <geert@linux-m68k.org>, Michal Simek <monstr@monstr.eu>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, Helge Deller <deller@gmx.de>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Naveen N Rao <naveen@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
-	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
-	"David S. Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, 
-	Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	=?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, 
-	=?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>, 
-	Arnd Bergmann <arnd@arndb.de>, =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>, 
-	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
-	Stephen Smalley <stephen.smalley.work@gmail.com>, Ondrej Mosnacek <omosnace@redhat.com>, 
-	Tyler Hicks <code@tyhicks.com>, Miklos Szeredi <miklos@szeredi.hu>, 
-	Amir Goldstein <amir73il@gmail.com>
-Cc: linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, selinux@vger.kernel.org, ecryptfs@vger.kernel.org, linux-unionfs@vger.kernel.org, linux-xfs@vger.kernel.org, Andrey Albershteyn <aalbersh@kernel.org>
-Subject: Re: [PATCH v5 3/7] selinux: implement inode_file_[g|s]etattr hooks
-References: <20250513-xattrat-syscall-v5-3-22bb9c6c767f@kernel.org>
-In-Reply-To: <20250513-xattrat-syscall-v5-3-22bb9c6c767f@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87v7rik020.fsf@gentoo.org>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-On May 13, 2025 Andrey Albershteyn <aalbersh@redhat.com> wrote:
+On Sat, Apr 05, 2025 at 06:09:11PM +0100, Sam James wrote:
+> Sam James <sam@gentoo.org> writes:
 > 
-> These hooks are called on inode extended attribute retrieval/change.
+> > Lovely cleanup and a great suggestion from Al.
+> >
+> > Reviewed-by: Sam James <sam@gentoo.org>
+> >
+> > I'd suggest adding a:
+> > Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
 > 
-> Cc: selinux@vger.kernel.org
-> Cc: Paul Moore <paul@paul-moore.com>
-> 
-> Signed-off-by: Andrey Albershteyn <aalbersh@kernel.org>
-> ---
->  security/selinux/hooks.c | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
+> Al, were you planning on taking this through your tree?
 
-Acked-by: Paul Moore <paul@paul-moore.com>
+FWIW, I expected it to get sent to Linus as "please, run this
+sed script before -rc1" kind of thing, script being something
+like
 
---
-paul-moore.com
+sed -i -e 's/int pte_swp_exclusive/bool pte_swp_exclusive/' \
+	`git grep -l 'int pte_swp_exclusive'`
+
+with suggested commit message...  It's absolutely regular and
+that kind of tree-wide change is easier handled that way.
+
+	Oh, well...  To restore the context: Magnus had spotted a fun
+bug on Alpha back in February - pte_swp_exclusive() there returned
+pte_val(pte) & _PAGE_SWP_EXCLUSIVE as int.  The problem is that
+_PAGE_SWP_EXCLUSIVE is 1UL<<39 there, with obvious results...
+
+	I looked at the originally posted patch and suggested to
+make pte_swp_exclusive() return bool instead of int.  All users
+are in explicitly boolean contexts:
+
+include/linux/swapops.h:        if (pte_swp_exclusive(pte))
+mm/debug_vm_pgtable.c:  WARN_ON(pte_swp_exclusive(pte));
+mm/debug_vm_pgtable.c:  WARN_ON(!pte_swp_exclusive(pte));
+mm/debug_vm_pgtable.c:  WARN_ON(pte_swp_exclusive(pte));
+mm/internal.h:  if (pte_swp_exclusive(pte))
+mm/memory.c:            if (pte_swp_exclusive(orig_pte)) {
+mm/memory.c:            exclusive = pte_swp_exclusive(vmf->orig_pte);
+mm/swapfile.c:          if (pte_swp_exclusive(old_pte))
+mm/userfaultfd.c:               if (!pte_swp_exclusive(orig_src_pte)) {
+
+	Magnus posted patch of that form (see
+https://lore.kernel.org/all/20250218175735.19882-2-linmag7@gmail.com/),
+got no serious objections and then it went nowhere.
+
+	Bug is real and fairly obvious, fix is entirely mechanical and
+affects one line in each asm/pgtable.h out there.  Linus, could you
+run that sed script just before -rc1?  Commit message from the patch refered
+above looks sane:
+
+mm: pgtable: fix pte_swp_exclusive
+
+Make pte_swp_exclusive return bool instead of int. This will better reflect
+how pte_swp_exclusive is actually used in the code. This fixes swap/swapoff
+problems on Alpha due pte_swp_exclusive not returning correct values when
+_PAGE_SWP_EXCLUSIVE bit resides in upper 32-bits of PTE (like on alpha).
+
+Signed-off-by: Magnus Lindholm <linmag7@gmail.com>
+
 
