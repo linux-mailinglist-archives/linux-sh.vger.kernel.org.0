@@ -1,98 +1,117 @@
-Return-Path: <linux-sh+bounces-2756-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-2759-lists+linux-sh=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AAE5AE1559
-	for <lists+linux-sh@lfdr.de>; Fri, 20 Jun 2025 10:01:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0FC3AE4F7B
+	for <lists+linux-sh@lfdr.de>; Mon, 23 Jun 2025 23:16:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 181803ABE50
-	for <lists+linux-sh@lfdr.de>; Fri, 20 Jun 2025 08:00:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 929541B61007
+	for <lists+linux-sh@lfdr.de>; Mon, 23 Jun 2025 21:16:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28B4B204096;
-	Fri, 20 Jun 2025 08:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F42C2222C2;
+	Mon, 23 Jun 2025 21:16:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="jX3d7/df"
 X-Original-To: linux-sh@vger.kernel.org
-Received: from 1wt.eu (ded1.1wt.eu [163.172.96.212])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B211730E824;
-	Fri, 20 Jun 2025 08:01:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=163.172.96.212
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74DFD7482;
+	Mon, 23 Jun 2025 21:16:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750406464; cv=none; b=lfiKXBcUTcN2fd88L5PqQJUqCbeebKP2oj2hQU3GhPFXTFM/fB5HWZrnzVx0o2I/jdZZzVM9MYprwDZezwbM8yT2pDNVf4lU3TnaBd5XNTEOd8l1sdoJqnpHRlJf5fuq9c+j+yRKUPb1I0Kg/UaOYj4659MYJHgLB7au5NgzsNM=
+	t=1750713373; cv=none; b=FDzt0rkeVAByOotls3nXRe3V4rQrzw+MuEJjb+a8X+4MO5bpFCVHhpOqzG4P2yjniu6GkytR/y83fF4vCzRspPMB3ecEc0G1tFNvY6mxDexgnlwysnHGZYqV8HZM2sGsaElqw9CEU0kbRxeMiBRkKwWj3FyVs1953Rc9IxA1X0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750406464; c=relaxed/simple;
-	bh=AGwI9uUo58D8rhz4PFt/7iXNiYZDkRmoqVfEo+Wsk3I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GdQVSGzFVWXZi+ARs55sdquwSJJDwNQxx39xOe+w2yLs5Gvv6uYfcTMOSc4AVtV9yiMrHUc6FUE4Mkn7MU3ccEqimrf574zNo5CBw95Za7rsjbJMOvYsH1jWsTySaMsUiv7/xmy0K280MKzLv1J7NB1snHggL1tlrWToe4vFLD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=1wt.eu; spf=pass smtp.mailfrom=1wt.eu; arc=none smtp.client-ip=163.172.96.212
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=1wt.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1wt.eu
-Received: (from willy@localhost)
-	by pcw.home.local (8.15.2/8.15.2/Submit) id 55K7pQKq022946;
-	Fri, 20 Jun 2025 09:51:26 +0200
-Date: Fri, 20 Jun 2025 09:51:26 +0200
-From: Willy Tarreau <w@1wt.eu>
-To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
-Cc: Yoshinori Sato <ysato@users.osdn.me>, Rich Felker <dalias@libc.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Shuah Khan <shuah@kernel.org>, linux-sh@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] selftests/nolibc: use file driver for QEMU serial
-Message-ID: <20250620075126.GB22550@1wt.eu>
-References: <20250609-nolibc-sh-v1-0-9dcdb1b66bb5@weissschuh.net>
- <20250609-nolibc-sh-v1-2-9dcdb1b66bb5@weissschuh.net>
+	s=arc-20240116; t=1750713373; c=relaxed/simple;
+	bh=mReunKrDQiUV3XucmZjbudcrS3Iw4bTLeGQ493YHQFM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=YGwLqwObACFKJWwufAFDmR3Zm4C2KCb/tv5knGmbd+9oGd4CdV1CxaGvudTm2M/ga7+uE9FixOtX2HGBm70f5cOU3hRRBJX9jHWVZqvhC/JyfM5VPypd2q4Sj4TdzFYYXXRsCKbeRjnvPIirBHHrRn7jIcFrH8Hh1YiTsn5oQWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=jX3d7/df; arc=none smtp.client-ip=159.69.126.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
+	s=mail; t=1750713368;
+	bh=mReunKrDQiUV3XucmZjbudcrS3Iw4bTLeGQ493YHQFM=;
+	h=From:Subject:Date:To:Cc:From;
+	b=jX3d7/df8FemTAtygubH6RArueyel+Q7287+MgF+jUcmAQbQH9xUumJ1YE7gY+v4y
+	 oGMTlCF2Dcwejz9Ie1CkbK5NZ7m0fvCTNGavV8kS85i1QIcGeAPKyD9InXjs2w2qfn
+	 zcwIMo1lIxAegE1IkEsPGAb1uPBJkZb7w/muLOrU=
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Subject: [PATCH v2 0/3] tools/nolibc: add support for SuperH
+Date: Mon, 23 Jun 2025 23:15:51 +0200
+Message-Id: <20250623-nolibc-sh-v2-0-0f5b4b303025@weissschuh.net>
 Precedence: bulk
 X-Mailing-List: linux-sh@vger.kernel.org
 List-Id: <linux-sh.vger.kernel.org>
 List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250609-nolibc-sh-v1-2-9dcdb1b66bb5@weissschuh.net>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-B4-Tracking: v=1; b=H4sIAAfEWWgC/03MQQ6CMBCF4auQWVvTViHginsYFk472ElMazqIG
+ sLdrbhx+b+8fAsIZSaBU7VAppmFUyxhdxW4cIlXUuxLg9W21rVtVUw3RqckqBaPdEBsaXQI5X/
+ PNPJrs85D6cAypfze6Nl815/S6O5PmY3SqvPOo8GmQaz7J7GIuPAI+0gTDOu6fgBYPH0UpwAAA
+ A==
+X-Change-ID: 20250528-nolibc-sh-8b4e3bb8efcb
+To: Yoshinori Sato <ysato@users.sourceforge.jp>, 
+ Rich Felker <dalias@libc.org>, 
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+ Willy Tarreau <w@1wt.eu>, Shuah Khan <shuah@kernel.org>
+Cc: linux-sh@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1750713367; l=1510;
+ i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
+ bh=mReunKrDQiUV3XucmZjbudcrS3Iw4bTLeGQ493YHQFM=;
+ b=sF7fULqfhzxtVrensZNZAGrvYD1xeyEhBy6vlt0lzWqZMq+u7ZSwXnhvuKZiqHIECux9QqKsQ
+ rg47X/XNYx9C/yT4LH/N7WpsAVMH5sqFK583WXH8HOGfXUf/EG0djCh
+X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
+ pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 
-Hi Thomas,
+Add support for SuperH/"sh" to nolibc.
+Only sh4 is tested for now.
 
-On Mon, Jun 09, 2025 at 11:28:58AM +0200, Thomas Weiﬂschuh wrote:
-> For the test implementation of the SuperH architecture a second serial
-> serial port needs to be used. Unfortunately the currently used 'stdio'
-> driver does not support multiple serial ports at the same time.
-> 
-> Switch to the 'file' driver which does support multiple ports and is
-> sufficient for the nolibc-test usecase.
-> 
-> Signed-off-by: Thomas Weiﬂschuh <linux@weissschuh.net>
-> ---
->  tools/testing/selftests/nolibc/Makefile | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/nolibc/Makefile b/tools/testing/selftests/nolibc/Makefile
-> index 22da78a4bfea0274f66abec319d34b3d2a2824ac..238acaa7bb06dcdbcadd9d3190c2de726e1a40b1 100644
-> --- a/tools/testing/selftests/nolibc/Makefile
-> +++ b/tools/testing/selftests/nolibc/Makefile
-> @@ -315,12 +315,12 @@ kernel-standalone: initramfs | defconfig
->  
->  # run the tests after building the kernel
->  run: kernel initramfs.cpio
-> -	$(Q)qemu-system-$(QEMU_ARCH) -display none -no-reboot -kernel "$(IMAGE)" -initrd initramfs.cpio -serial stdio $(QEMU_ARGS) > "$(CURDIR)/run.out"
-> +	$(Q)qemu-system-$(QEMU_ARCH) -display none -no-reboot -kernel "$(IMAGE)" -initrd initramfs.cpio -serial file:/dev/stdout $(QEMU_ARGS) > "$(CURDIR)/run.out"
->  	$(Q)$(REPORT) $(CURDIR)/run.out
->  
->  # re-run the tests from an existing kernel
->  rerun:
-> -	$(Q)qemu-system-$(QEMU_ARCH) -display none -no-reboot -kernel "$(IMAGE)" -initrd initramfs.cpio -serial stdio $(QEMU_ARGS) > "$(CURDIR)/run.out"
-> +	$(Q)qemu-system-$(QEMU_ARCH) -display none -no-reboot -kernel "$(IMAGE)" -initrd initramfs.cpio -serial file:/dev/stdout $(QEMU_ARGS) > "$(CURDIR)/run.out"
+This is only tested on QEMU so far.
+Additional testing would be very welcome.
+Test instructions:
+$ cd tools/testings/selftests/nolibc/
+$ make -f Makefile.nolibc ARCH=sh CROSS_COMPILE=sh4-linux- nolibc-test
+$ file nolibc-test
+nolibc-test: ELF 32-bit LSB executable, Renesas SH, version 1 (SYSV), statically linked, not stripped
+$ ./nolibc-test
+Running test 'startup'
+0 argc = 1                                                        [OK]
+...
+Total number of errors: 0
+Exiting with status 0
 
-I'm cautious every time we touch the -serial output after having faced
-issues earlier when trying to use pipes. Here I think it's OK, however,
-I'm wondering if "file:$(CURDIR)/run.out" wouldn't be clearer, and also
-encourage future changes to stick to a file and avoid piping the output
-to a filter command. No strong opinion though.
+Signed-off-by: Thomas Wei√üschuh <linux@weissschuh.net>
+---
+Changes in v2:
+- Rebase onto latest nolibc-next
+- Pick up Ack from Willy
+- Provide some test instructions
+- Link to v1: https://lore.kernel.org/r/20250609-nolibc-sh-v1-0-9dcdb1b66bb5@weissschuh.net
 
-In any case: Acked-by: Willy Tarreau <w@1wt.eu>
+---
+Thomas Wei√üschuh (3):
+      selftests/nolibc: fix EXTRACONFIG variables ordering
+      selftests/nolibc: use file driver for QEMU serial
+      tools/nolibc: add support for SuperH
 
-Thanks,
-Willy
+ tools/include/nolibc/arch-sh.h                 | 162 +++++++++++++++++++++++++
+ tools/include/nolibc/arch.h                    |   2 +
+ tools/testing/selftests/nolibc/Makefile.nolibc |  15 ++-
+ tools/testing/selftests/nolibc/run-tests.sh    |   3 +-
+ 4 files changed, 177 insertions(+), 5 deletions(-)
+---
+base-commit: eb135311083100b6590a7545618cd9760d896a86
+change-id: 20250528-nolibc-sh-8b4e3bb8efcb
+
+Best regards,
+-- 
+Thomas Wei√üschuh <linux@weissschuh.net>
+
 
