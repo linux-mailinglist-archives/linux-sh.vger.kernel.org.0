@@ -1,128 +1,150 @@
-Return-Path: <linux-sh+bounces-3095-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-3098-lists+linux-sh=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F208C59B96
-	for <lists+linux-sh@lfdr.de>; Thu, 13 Nov 2025 20:22:54 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8675C61F60
+	for <lists+linux-sh@lfdr.de>; Mon, 17 Nov 2025 01:44:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84F813A7799
-	for <lists+linux-sh@lfdr.de>; Thu, 13 Nov 2025 19:18:24 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 427EA352B27
+	for <lists+linux-sh@lfdr.de>; Mon, 17 Nov 2025 00:44:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 761D831A550;
-	Thu, 13 Nov 2025 19:18:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W0X7qiri"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C7D5156677;
+	Mon, 17 Nov 2025 00:44:46 +0000 (UTC)
 X-Original-To: linux-sh@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5099231A051
-	for <linux-sh@vger.kernel.org>; Thu, 13 Nov 2025 19:18:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA92E28E5;
+	Mon, 17 Nov 2025 00:44:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763061502; cv=none; b=lj1scXqikril4yqUDYweGbb+unttAdOK8GCfyXrlw949xBTXZg00yGD70YUmAjR7kNOg7FnVn8HuEbjuD5rN+yv2u+ajW/fSAj20PPTIWOXVbEVVCGWP4d0Jg5ugXz9LGwZHxqDUa2KTO82FS3+Y+JD9G7BdXVWZT9qI54DcBm8=
+	t=1763340286; cv=none; b=AFGB5ylcYeJ6+NwMpY4fu7XSN/P8fGyaF2rmqDYeAVdIEl4+x8688PAT9fuObw0MqwVJT2RBiZzaJZHw+kIYId77rIpemtFh/OQmvJJMyK1QGUEMswLCtD5xcNwnhXcQ01TweOJWuvAD5U+4e71z9RPcRjgunOfy2dzT62lo1bE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763061502; c=relaxed/simple;
-	bh=6UprQ8VPFTOJEJnrAk3c1+70Nbd/u85upyCo1jyU1qk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=e/vDxUZd7kXG6zusXj0W5PWu+nT49YaErj73TAFvhrhZWqj4N/mvQoMOCDWxRQPn2HIXBgs1uHQ9kclOOMr7JYtfIwUl41Jikypcv0TQk9MrXVP5QQHZk4SaoaNsRZIss7hSiA+e0lWDtf2j3JKopII6HEpLlwV+KDLw+VQhoPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W0X7qiri; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00024C4CEFB
-	for <linux-sh@vger.kernel.org>; Thu, 13 Nov 2025 19:18:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763061502;
-	bh=6UprQ8VPFTOJEJnrAk3c1+70Nbd/u85upyCo1jyU1qk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=W0X7qiriJx8qwv9BbYquHPo7dcdlB2adgQNwN+FfcpIdmW/AITZJ5Zpqm03CC/Dxr
-	 6GnRSXQmfJ+W2vthEpzKITubGF74mnCc6WUcvin3uowyc8BT86f+//ZfLYv29g+BBF
-	 lF+wiMxVq3NM9L1tiAzuG5XwvTH/cQqPOIPuH8Swojls+LSeWQiKJpBdWwsNkrHfoc
-	 ViJlr54gGxXeICJKCHSvemTDsL0eAAUa1Kuky49BxecjyBAtJpJBy74zC1sU1paLFh
-	 iEnE0JiwwGU2Q+ypXPimklXXrXm0/+3QIl6jESwwRiu7KL4wKdlkBy+NprPJA+WbMw
-	 +qgnAYGxQ0H4g==
-Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-656cb7b20ccso514226eaf.1
-        for <linux-sh@vger.kernel.org>; Thu, 13 Nov 2025 11:18:21 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUAUA3YWpkXm2/zFdCinI+MV/VoGojEPUJoVj3Du5wKkuNqsm+I7SOh27qjksA1kDB6pbDjVPKLGA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+Mz5qLW2Xac0zg5uowYPMV2j/zCtHi2Czh79Lbx0B+6x1XSsT
-	+CdXQ08xT+ExN/hNMBgyvvZdjnV0KpslmWGlar8coV84B7L9fjOJTeimGdQojpawQPvBKf9Ucm5
-	b+jOJMl4H1IKKAMlFyIlT89HfwK3KWGk=
-X-Google-Smtp-Source: AGHT+IEEkDRYf3o6eWh7An4Eb7oaPpWELLivUE1adLZQeit4rdCPvsjZcC3pPuLNVua35azYMW1z4kNGcBFvSY5y77M=
-X-Received: by 2002:a05:6871:e324:b0:3d4:b889:7d65 with SMTP id
- 586e51a60fabf-3e8674043b0mr485629fac.19.1763061501288; Thu, 13 Nov 2025
- 11:18:21 -0800 (PST)
+	s=arc-20240116; t=1763340286; c=relaxed/simple;
+	bh=6eNRoSNpp5jhrvsXL8YroEIrhcobH2ELzWRx5T9FO1w=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=UQkjsb25HMRpDtfyKtBRp8kMRL8dPf1qzJ9SmEJ0Hn0SF7ZEQ/CWNC6oI42zZg7EOkvx0x1gNmKTEtbAUfU9huN3CMz27Adki1obddsjtamdWg98sD/NySuY4Z2+CDUYQ31nPgb0sziIk8Pxvoj/qSlnJiRhIleJXmtDecxz5vQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=artur-rojek.eu; spf=pass smtp.mailfrom=artur-rojek.eu; arc=none smtp.client-ip=217.70.178.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=artur-rojek.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=artur-rojek.eu
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::221])
+	by mslow3.mail.gandi.net (Postfix) with ESMTP id 22BAF58C80B;
+	Sun, 16 Nov 2025 12:34:55 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 3E85343EDD;
+	Sun, 16 Nov 2025 12:34:47 +0000 (UTC)
 Precedence: bulk
 X-Mailing-List: linux-sh@vger.kernel.org
 List-Id: <linux-sh.vger.kernel.org>
 List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251029163336.2785270-1-thierry.reding@gmail.com>
- <20251029163336.2785270-2-thierry.reding@gmail.com> <CAJZ5v0igMJ12KoYCmrWauvOfdxaNP5-XVKoSxUroaKFN7S-rTQ@mail.gmail.com>
- <3dzha4qyqdrbutxby3n5nkvihnxrhniqr6w726eumhzgln2w5l@fbu72mzmjz4m> <2tx3o5es77oa37zqvikcoo6n2ryxvepa54ezsaawcjdbf3g3wp@o2dbcbskjksk>
-In-Reply-To: <2tx3o5es77oa37zqvikcoo6n2ryxvepa54ezsaawcjdbf3g3wp@o2dbcbskjksk>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 13 Nov 2025 20:18:10 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0gupHEg8ip+2R1wYAQ=BQn4Mk5EMMu==StRxwvXA0WwsA@mail.gmail.com>
-X-Gm-Features: AWmQ_bka8IUODzeQR5ggeX8uZbZXXCIST1G0sD3k8DJ8TOKe2Mgor6ApCD0oVpM
-Message-ID: <CAJZ5v0gupHEg8ip+2R1wYAQ=BQn4Mk5EMMu==StRxwvXA0WwsA@mail.gmail.com>
-Subject: Re: [PATCH v3 1/7] syscore: Pass context data to callbacks
-To: Thierry Reding <thierry.reding@gmail.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, x86@kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	linux-mips@vger.kernel.org, loongarch@lists.linux.dev, 
-	linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Date: Sun, 16 Nov 2025 13:34:46 +0100
+From: Artur Rojek <contact@artur-rojek.eu>
+To: Florian Fuchs <fuchsfl@gmail.com>
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Yoshinori Sato
+ <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
+ linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org, Paul Cercueil
+ <paul@crapouillou.net>
+Subject: Re: [PATCH] sh: maple: fix empty port handling
+In-Reply-To: <aRUOTfCJtqnNBjU3@lithos>
+References: <20251112190444.3631533-1-fuchsfl@gmail.com>
+ <4f70a38490b12d13858f45f3e7a531bf5dc2162d.camel@physik.fu-berlin.de>
+ <999e3970e1580def5ddbf1921a9ef4a4@artur-rojek.eu> <aRUOTfCJtqnNBjU3@lithos>
+Message-ID: <d25d9c581f5b4f22c9b94761972aa0fe@artur-rojek.eu>
+X-Sender: contact@artur-rojek.eu
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvudehheelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeggfffhvfevufgjfhfkgigtgfesthejjhdttddtvdenucfhrhhomheptehrthhurhcutfhojhgvkhcuoegtohhnthgrtghtsegrrhhtuhhrqdhrohhjvghkrdgvuheqnecuggftrfgrthhtvghrnhepheejgfefiedtjeeiieevleeugfeghfelheekteehvdegieeihfetvdegieeihfeinecuffhomhgrihhnpehgihhthhhusgdrtghomhenucfkphepuddtrddvtddtrddvtddurdduleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedutddrvddttddrvddtuddrudelpdhhvghlohepfigvsghmrghilhdrghgrnhguihdrnhgvthdpmhgrihhlfhhrohhmpegtohhnthgrtghtsegrrhhtuhhrqdhrohhjvghkrdgvuhdpnhgspghrtghpthhtohepjedprhgtphhtthhopehfuhgthhhsfhhlsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghhlrghusghithiisehphhihshhikhdrfhhuqdgsvghrlhhinhdruggvpdhrtghpthhtohephihsrghtohesuhhsvghrshdrshhouhhrtggvfhhorhhgvgdrjhhppdhrtghpthhtohepuggrlhhirghssehlihgstgdrohhrghdprhgtphhtthhopehlihhnuhigq
+ dhshhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehprghulhestghrrghpohhuihhllhhouhdrnhgvth
+X-GND-Sasl: contact@artur-rojek.eu
 
-On Thu, Nov 13, 2025 at 7:32=E2=80=AFPM Thierry Reding <thierry.reding@gmai=
-l.com> wrote:
->
-> On Wed, Nov 05, 2025 at 05:52:01PM +0100, Thierry Reding wrote:
-> > On Mon, Nov 03, 2025 at 05:18:08PM +0100, Rafael J. Wysocki wrote:
-> > > On Wed, Oct 29, 2025 at 5:33=E2=80=AFPM Thierry Reding <thierry.redin=
-g@gmail.com> wrote:
-> > > >
-> > > > From: Thierry Reding <treding@nvidia.com>
-> > > >
-> > > > Several drivers can benefit from registering per-instance data alon=
-g
-> > > > with the syscore operations. To achieve this, move the modifiable f=
-ields
-> > > > out of the syscore_ops structure and into a separate struct syscore=
- that
-> > > > can be registered with the framework. Add a void * driver data fiel=
-d for
-> > > > drivers to store contextual data that will be passed to the syscore=
- ops.
-> > > >
-> > > > Signed-off-by: Thierry Reding <treding@nvidia.com>
-> > >
-> > > This change is fine with me, so I can apply it unless somebody has an=
-y
-> > > specific heartburn related to it (Greg?), but in case you want to
-> > > route it differently
-> > >
-> > > Acked-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
-> >
-> > I have a few follow-up patches for the Tegra PMC driver that depend on
-> > this. 6.19 is what I was targetting, so if we could put this into a
-> > stable branch that'd be the best solution. I can set that up via the
-> > Tegra tree if you and Greg are okay with it.
-> >
-> > If that's all too complicated, I can probably wait until the next cycle
-> > to merge the PMC changes.
->
-> I've added this single patch to a branch based off of v6.18-rc1 that I
-> plan to feed into linux-next so it can get some broader exposure.
->
-> I can keep that branch stable so it can go through multiple trees if
-> needed. If anyone's interested, the branch is here:
->
->         https://git.kernel.org/pub/scm/linux/kernel/git/tegra/linux.git/l=
-og/?h=3Dfor-6.19/syscore
+On 2025-11-12 23:46, Florian Fuchs wrote:
+> Hi Artur,
+> thank you so much for fixing the DC boot on linux again!
+> Adrian, thank you for looking at it!
+> 
+> On 12 Nov 22:46, Artur Rojek wrote:
+>> thanks for the patch! Can this be tested with just regular 
+>> controllers?
+> 
+> Yes, indeed you can test it with the controller, when you compile with
+> joystick support, like:
+> 
+> 	CONFIG_MAPLE=y
+> 	CONFIG_INPUT=y
+> 	CONFIG_INPUT_JOYDEV=y
+> 	CONFIG_INPUT_EVDEV=y
+> 	CONFIG_INPUT_JOYSTICK=y
+> 	CONFIG_JOYSTICK_MAPLE=y
+> 
+> You should not put a VMU in though, as thats currently broken (I have a
+> patch ready).
+> 
+> Then you can directly read from the evdev and listen for the button
+> presses:
+> 	bash-5.3# cat /dev/input/event2 | xxd
+> 
+> You need to press a button for 20-30 times, as it seems to buffer the
+> events and outputs it in batches.
+> 
+> Then, you should see the following outputs for the buttons:
+> 
+> Button A:
+> 	00000000: 7800 0000 94c3 0d00 0100 3001 0000 0000  x.........0.....
+> Button B:
+> 	000001e0: 7800 0000 94c3 0d00 0100 3101 0100 0000  x.........1....
+> Button X:
+> 	000003b0: 7800 0000 94c3 0d00 0100 3301 0100 0000  x.........3.....
+> Button Y:
+> 	00000900: 7800 0000 94c3 0d00 0100 3401 0100 0000  x.........4.....
+> 
+> The Joystick should be detected like this:
+> 	/ # dmesg|grep maple
+> 	maple: bus core now registered
+> 	maple (null): detected Dreamcast Controller: function 0x1: at (2, 0)
+> 	maple (null): no driver found
+> 	input: Dreamcast Controller as /devices/maple/2:00.1/input/input2
+> 
+> Another indicator is the dmesg log for empty ports:
+> 	maple (null): no devices to port 3
+> 
+> These messages were previously not there, as the empty ports were never
+> detected.
 
-You beat me to this, sorry about the delay.
+Hey Florian,
+
+Before applying this patch, no input on a maple port is being registered
+until all 4 maple ports are populated (in my case by four controllers).
+Once all 4 are plugged in, I can register input on either of them by
+cat-ing their respective char devs.
+
+After applying the patch, I confirm that input can be read immediately
+for the present devices, even if the other ports are unpopulated.
+
+However, this patch also breaks hotplug on maple ports - I can no longer
+plug in additional controllers at runtime and have them show up.
+
+I think we need to hold off on this patch until the hotplug issue is
+addressed.
+
+> 
+> btw, I have also a cdi file, that boots for me, although I heard there
+> were issues on the NTSC-U devices, if helpful:
+> https://github.com/foxdrodd/dreamcast-linux/releases/download/6.17.7/linux6177-joystick.cdi
+
+Thanks for the cdi. I have no means to burn CDs anymore, so instead
+I quickly built a small buildroot based rootfs, and booted it as
+initramfs over serial line :-)
+
+Cheers,
+Artur
+
+> 
+> Thank you for your efforts,
+> Florian
 
