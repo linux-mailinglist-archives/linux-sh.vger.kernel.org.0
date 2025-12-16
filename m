@@ -1,162 +1,185 @@
-Return-Path: <linux-sh+bounces-3130-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-3132-lists+linux-sh=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3827BCB4210
-	for <lists+linux-sh@lfdr.de>; Wed, 10 Dec 2025 23:10:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC366CC1236
+	for <lists+linux-sh@lfdr.de>; Tue, 16 Dec 2025 07:39:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E0FEF303DD08
-	for <lists+linux-sh@lfdr.de>; Wed, 10 Dec 2025 22:10:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1554730215D6
+	for <lists+linux-sh@lfdr.de>; Tue, 16 Dec 2025 06:39:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6F732A3C9;
-	Wed, 10 Dec 2025 22:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 178F93358A0;
+	Tue, 16 Dec 2025 06:39:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="wpBLfDbU"
 X-Original-To: linux-sh@vger.kernel.org
-Received: from leonov.paulk.fr (leonov.paulk.fr [185.233.101.22])
+Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE5326FDBD;
-	Wed, 10 Dec 2025 22:10:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.233.101.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B0732A3F0;
+	Tue, 16 Dec 2025 06:38:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765404627; cv=none; b=FFRi5WUvb3WwRR66Cl+UsJ3LXe54+GYEueV6tt2epOVsevNGHapZcyRvP5azSXGeJbPmd+88ZCyV+Chex0/SjoM98fadrXp5Sgv5+kQWyYGsHiJ56r91KCswMTHgZsSGASlaCJweac989wJPRw1D8sJrJJVt7PMuRIFFFMLTe+A=
+	t=1765867147; cv=none; b=c4+rnCtK+ZAXq4j//TnKmczjIU2FMkSQLd7RGOAvuFZoIYKcEXnvlZeWl8vrwNmQK+b89JTCpODC9QyxxLZsq801F5O+U7IHe5na/GsyA27DlC93HVB8Y1tYju1OXHE2IhSZHGG11ZyQuA2bDZDjAOrGB/f2ADctsEc/l1r8fzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765404627; c=relaxed/simple;
-	bh=9Mbw+2a+O0bpocbYBboqIR0wKgD/bxSaeJe1Sq+BSnE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q/5gSkUC3JSQmdmMXRSk87tcZeqZZuLuCQB4lRMIOKvzY4t0DgWtb8iRQCveYND/+p45I88n1P0Qx8jhTs3p9aziJvYgl426rnTb1Po9uDMbjNBlAAPqHlug7ZhUYT8t4hT7HU8HUhytWmPVdS8SBTONGxILEaQ/Yteuu2ftcMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io; spf=pass smtp.mailfrom=sys-base.io; arc=none smtp.client-ip=185.233.101.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sys-base.io
-Received: from laika.paulk.fr (12.234.24.109.rev.sfr.net [109.24.234.12])
-	by leonov.paulk.fr (Postfix) with ESMTPS id 85D0E1F8005F;
-	Wed, 10 Dec 2025 22:09:49 +0000 (UTC)
-Received: by laika.paulk.fr (Postfix, from userid 65534)
-	id 0A9C4B127E9; Wed, 10 Dec 2025 22:09:38 +0000 (UTC)
-X-Spam-Level: 
-Received: from collins (unknown [192.168.1.1])
-	by laika.paulk.fr (Postfix) with ESMTPSA id EBB48B127E9;
-	Wed, 10 Dec 2025 22:09:35 +0000 (UTC)
-Date: Wed, 10 Dec 2025 23:09:33 +0100
-From: Paul Kocialkowski <paulk@sys-base.io>
-To: Janne Grunau <j@jannau.net>
-Cc: Randy Dunlap <rdunlap@infradead.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>, andrew.jones@linux.dev,
-	linux-omap@vger.kernel.org, openbmc@lists.ozlabs.org,
-	linux-sound@vger.kernel.org,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	linux-mips@vger.kernel.org, asahi@lists.linux.dev,
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	chrome-platform@lists.linux.dev,
-	Paul Cercueil <paul@crapouillou.net>,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Linux ARM <linux-arm-kernel@lists.infradead.org>,
-	linux-gpio@vger.kernel.org, Srinivas Kandagatla <srini@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Vaibhav Hiremath <hvaibhav.linux@gmail.com>,
-	linux-sh@vger.kernel.org, x86@kernel.org,
-	Max Filippov <jcmvbkbc@gmail.com>
-Subject: Re: Kconfig dangling references (BZ 216748)
-Message-ID: <aTnvnaRuJ5lF4dVv@collins>
-References: <22b92ddf-6321-41b5-8073-f9c7064d3432@infradead.org>
- <aTcVXrUXVsyjaT22@shepard>
- <20251208200555.GA333481@robin.jannau.net>
+	s=arc-20240116; t=1765867147; c=relaxed/simple;
+	bh=fPHD9wAISu5t6qKPTwCQaRmuWT8pn+zT9hLSLbiHlQI=;
+	h=To:Cc:Message-ID:In-Reply-To:References:From:Subject:Date; b=K4Ijp1+M7oWNRsDEqOakcyE+v3Ze0MAFArsb3jP1sgy8+Gzsy69rOsFL4aIYVK6yMQqO/fqcGQ+klTzWEAH7rSkfzvJktyljaD8hxBLuISH2IZESr0mReJlRE7WEF5HOaEo9MO9j2JKDIsUJXdzgnvTxgwcXMk+T+1MBv8x4b/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=wpBLfDbU; arc=none smtp.client-ip=202.12.124.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 5D4897A0170;
+	Tue, 16 Dec 2025 01:38:47 -0500 (EST)
+Received: from phl-frontend-02 ([10.202.2.161])
+  by phl-compute-06.internal (MEProxy); Tue, 16 Dec 2025 01:38:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+	:feedback-id:from:from:in-reply-to:in-reply-to:message-id
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1765867127; x=
+	1765953527; bh=T1SyiRwGt1GmfJ2gdn1v9a00qpjb2VwL5bJ4qN3bC5s=; b=w
+	pBLfDbUGT5d3beptG9LnvPiHXYaa/WPLMabnM437MJkbdx894E7MX6vDQP+XMJ2m
+	gxwZAGFgNrOGZGDZLHARDr7B/mV+s25G3ZOZ3+3Fh8a5m/OzsR4GcAw6p29HwahP
+	ntIttt36mkI61t+5tnyhRhcgMeNoZ0kTmqp8SCjWy9xnTZqu2/W7S9qFnq5xwGze
+	GnHquMfEJac5LslRCHHkDBMqTyuW4C0IfiqlofDZc6hxDsCpTx2MAm8gfj5Uq/Xn
+	/mYwrhf+5L7izWvTVyFZzxxWxaodJX7d/pOQzwcwoe6h0sZCgHWnL0eKHw1A2BoW
+	0q6SlbA/y1jeh57j64I9g==
+X-ME-Sender: <xms:d_5AaXhG9qsnhS6IzK-qR14vd4vEc7u1Xm0dwOmC936XwZgUeONmog>
+    <xme:d_5AaY7EHIRDSygdyXvQ8xYy_f-aNWnRhQHQ3S5qb7-wz74nWe02EC1na-ZKR1rJ_
+    fAKQsY36ZT211rcAmkgAwREFqFCygSGIH6SLDtyeWUXAYZELFcI5-4>
+X-ME-Received: <xmr:d_5AaUpV68e9IRnVSP-DsQ4b0PN99A3Y0lPs1WcewatPuOktdXx5EpxoSjjLFSKTFEWYp36qC39GYzErshMMpvMlWzeopMbCgOI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefkeellecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefvvefkjghfhffuffestddtredttddttdenucfhrhhomhephfhinhhnucfvhhgrihhn
+    uceofhhthhgrihhnsehlihhnuhigqdhmieekkhdrohhrgheqnecuggftrfgrthhtvghrnh
+    epheekudffheejvdeiveekleelgeffieduvdegleeuhfeuudegkeekheffkefggfehnecu
+    ffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurf
+    grrhgrmhepmhgrihhlfhhrohhmpehfthhhrghinheslhhinhhugidqmheikehkrdhorhhg
+    pdhnsggprhgtphhtthhopedvvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepph
+    gvthgvrhiisehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepfihilhhlsehkvghr
+    nhgvlhdrohhrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhioh
+    hnrdhorhhgpdhrtghpthhtoheprghrnhgusegrrhhnuggsrdguvgdprhgtphhtthhopegs
+    ohhquhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrh
+    ihghhuohdrnhgvthdprhgtphhtthhopehmrghrkhdrrhhuthhlrghnugesrghrmhdrtgho
+    mhdprhgtphhtthhopehlihhnuhigqdgrrhgthhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+    dprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhr
+    gh
+X-ME-Proxy: <xmx:d_5AaWWcrmawSHSTzqVc702kMBMGVf8V7b1enP2lePh71AzOEQkbcg>
+    <xmx:d_5AaT6uP_gBLTp7daE1JIIBDrM4iNBo8JYpejdEpxuNkB-yYcvWTw>
+    <xmx:d_5Aac0r-xyHfBdoyud0STNnfbFBUV4raaW7IxUF01wfNMKxsSm2Aw>
+    <xmx:d_5AaS8UBXBlNQaDcCoSLy7SPKAFx93v5KrK9-A2q71BMBp2yQr_1A>
+    <xmx:d_5AaeZN9fJPxhk_8N1VPYHU1gV5l6PwhIVSq3bOuWu4ZsC75_zjKZFc>
+Feedback-ID: i58a146ae:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 16 Dec 2025 01:38:44 -0500 (EST)
+To: Peter Zijlstra <peterz@infradead.org>,
+    Will Deacon <will@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+    Arnd Bergmann <arnd@arndb.de>,
+    Boqun Feng <boqun.feng@gmail.com>,
+    Gary Guo <gary@garyguo.net>,
+    Mark Rutland <mark.rutland@arm.com>,
+    linux-arch@vger.kernel.org,
+    linux-kernel@vger.kernel.org,
+    linux-m68k@lists.linux-m68k.org,
+    Guo Ren <guoren@kernel.org>,
+    linux-csky@vger.kernel.org,
+    Geert Uytterhoeven <geert@linux-m68k.org>,
+    Dinh Nguyen <dinguyen@kernel.org>,
+    Jonas Bonn <jonas@southpole.se>,
+    Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+    Stafford Horne <shorne@gmail.com>,
+    linux-openrisc@vger.kernel.org,
+    Yoshinori Sato <ysato@users.sourceforge.jp>,
+    Rich Felker <dalias@libc.org>,
+    John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+    linux-sh@vger.kernel.org
+Message-ID: <d6cd17b387fa4b4cf9f419ec586ac4756bc7aaeb.1765866665.git.fthain@linux-m68k.org>
+In-Reply-To: <cover.1765866665.git.fthain@linux-m68k.org>
+References: <cover.1765866665.git.fthain@linux-m68k.org>
+From: Finn Thain <fthain@linux-m68k.org>
+Subject: [PATCH v5 2/4] atomic: Specify alignment for atomic_t and atomic64_t
+Date: Tue, 16 Dec 2025 17:31:05 +1100
 Precedence: bulk
 X-Mailing-List: linux-sh@vger.kernel.org
 List-Id: <linux-sh.vger.kernel.org>
 List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="MEb6eXQ93P1+3Wd8"
-Content-Disposition: inline
-In-Reply-To: <20251208200555.GA333481@robin.jannau.net>
 
+Some recent commits incorrectly assumed 4-byte alignment of locks.
+That assumption fails on Linux/m68k (and, interestingly, would have
+failed on Linux/cris also). The jump label implementation makes a
+similar alignment assumption.
 
---MEb6eXQ93P1+3Wd8
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The expectation that atomic_t and atomic64_t variables will be naturally
+aligned seems reasonable, as indeed they are on 64-bit architectures.
+But atomic64_t isn't naturally aligned on csky, m68k, microblaze, nios2,
+openrisc and sh. Neither atomic_t nor atomic64_t are naturally aligned
+on m68k.
 
-Hi Janne,
+This patch brings a little uniformity by specifying natural alignment
+for atomic types. One benefit is that atomic64_t variables do not get
+split across a page boundary. The cost is that some structs grow which
+leads to cache misses and wasted memory.
 
-Le Mon 08 Dec 25, 21:05, Janne Grunau a =C3=A9crit :
-> On Mon, Dec 08, 2025 at 07:13:50PM +0100, Paul Kocialkowski wrote:
-> > Hi Randy,
-> >=20
-> > On Sun 07 Dec 25, 18:04, Randy Dunlap wrote:
-> > > from  https://bugzilla.kernel.org/show_bug.cgi?id=3D216748
-> > >=20
-> > > The bugzilla entry includes a Perl script and a shell script.
-> > > This is the edited result of running them (I removed some entries tha=
-t were noise).
-> >=20
-> > [...]
-> >=20
-> > > DRM_KMS_DMA_HELPER ---
-> > > drivers/gpu/drm/adp/Kconfig:9:	select DRM_KMS_DMA_HELPER
-> > > drivers/gpu/drm/logicvc/Kconfig:7:	select DRM_KMS_DMA_HELPER
-> >=20
-> > For these two, the symbol was removed in commit
-> > 09717af7d13d63df141ae6e71686289989d17efd
->=20
-> That commit removed DRM_KMS_CMA_HELPER. Later commit 6bcfe8eaeef0
-> ("drm/fb: rename FB CMA helpers to FB DMA helpers") renamed
-> DRM_KMS_CMA_HELPER erroneously to DRM_KMS_DMA_HELPER.
->=20
-> > but these two drivers either were
-> > missed by the batch rename or were introduced a bit later.
->=20
-> In the case of drivers/gpu/drm/adp/Kconfig it was missed much later
-> during review (but iirc went through the same rename out of tree).
->=20
-> > Since the symbol selected DRM_GEM_CMA_HELPER (which is still needed by =
-the
-> > drivers), it should be replaced with DRM_GEM_CMA_HELPER.
->=20
-> That symbol doesn't exist anymore either. It's now DRM_GEM_DMA_HELPER
-> which is already present in both files.
+Cc: Guo Ren <guoren@kernel.org>
+Cc: linux-csky@vger.kernel.org
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: linux-m68k@lists.linux-m68k.org
+Cc: Dinh Nguyen <dinguyen@kernel.org>
+Cc: Jonas Bonn <jonas@southpole.se>
+Cc: Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
+Cc: Stafford Horne <shorne@gmail.com>
+Cc: linux-openrisc@vger.kernel.org
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Rich Felker <dalias@libc.org>
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: linux-sh@vger.kernel.org
+Link: https://lore.kernel.org/lkml/CAFr9PX=MYUDGJS2kAvPMkkfvH+0-SwQB_kxE4ea0J_wZ_pk=7w@mail.gmail.com
+Link: https://lore.kernel.org/lkml/CAMuHMdW7Ab13DdGs2acMQcix5ObJK0O2dG_Fxzr8_g58Rc1_0g@mail.gmail.com/
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+---
+Changed since v2:
+ - Specify natural alignment for atomic64_t.
+Changed since v1:
+ - atomic64_t now gets an __aligned attribute too.
+ - The 'Fixes' tag has been dropped because Lance sent a different fix
+   for commit e711faaafbe5 ("hung_task: replace blocker_mutex with encoded
+   blocker") that's suitable for -stable.
+---
+ include/asm-generic/atomic64.h | 2 +-
+ include/linux/types.h          | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Thanks for the details! It seems that I was looking at an older tree.
+diff --git a/include/asm-generic/atomic64.h b/include/asm-generic/atomic64.h
+index 100d24b02e52..f22ccfc0df98 100644
+--- a/include/asm-generic/atomic64.h
++++ b/include/asm-generic/atomic64.h
+@@ -10,7 +10,7 @@
+ #include <linux/types.h>
+ 
+ typedef struct {
+-	s64 counter;
++	s64 __aligned(sizeof(s64)) counter;
+ } atomic64_t;
+ 
+ #define ATOMIC64_INIT(i)	{ (i) }
+diff --git a/include/linux/types.h b/include/linux/types.h
+index 6dfdb8e8e4c3..a225a518c2c3 100644
+--- a/include/linux/types.h
++++ b/include/linux/types.h
+@@ -179,7 +179,7 @@ typedef phys_addr_t resource_size_t;
+ typedef unsigned long irq_hw_number_t;
+ 
+ typedef struct {
+-	int counter;
++	int __aligned(sizeof(int)) counter;
+ } atomic_t;
+ 
+ #define ATOMIC_INIT(i) { (i) }
+-- 
+2.49.1
 
-> So the "select DRM_KMS_DMA_HELPER" lines can be removed from both files.
-
-Good, then I'll craft a patch removing these two lines.
-
-All the best,
-
-Paul
-
---=20
-Paul Kocialkowski,
-
-Independent contractor - sys-base - https://www.sys-base.io/
-Free software developer - https://www.paulk.fr/
-
-Expert in multimedia, graphics and embedded hardware support with Linux.
-
---MEb6eXQ93P1+3Wd8
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEAbcMXZQMtj1fphLChP3B6o/ulQwFAmk5750ACgkQhP3B6o/u
-lQxOag/+J9Lwmq+hqcg9BxoDCZl6KmFGAh/RmelPeBUew6LlQphMcDpjQ0yJavK3
-bxojss4r12rV5307+f47JlSMFJa/100MablzoWV0koupx/JCRszhYf2w1lxYHKJh
-7jwy8GLd9NnaZGaiscrckVEcfaVRufzSM2I6ErSZIMSYEZ1LUTCakTPAwrgtarZb
-b9FzHmCrau56mdC2M6StWaolU90t4em1/We8XVRtLY87MEY/VQK6qLylL2fbpuIX
-5+DjnOBDMrvyB7UJFVbzcQA4ev1ckCBvnB2JdzGOfquj6XTO23m5/L5qfxTVk6qa
-yp9ShU6lQZ9RjinifpGWf8JTYl46U7hch9PrUCE/n0FgVl2frQHb/N08ynKUniCB
-1U76zgnG48Wkj08Sz6anRvER3dqEhzJgxJxpkW1UqoXFOSBQeeJZzZONuuUxYw3M
-8JKSldwJVj/oLlvCOI6QO0Q9T+U4YS1gpNBfHbysPaJgZyqld5tXaElOo9k8P8pX
-kAMhcvAn6FaXqkX5qJOAN+91M+CkQwQlWf16G7HKV0LcOvzCtGHYWVrxb7xWw9Em
-JBZRsrdq4CaQc34D8GkBR14H6WGWkGR4OQSTqxshPv7x/S4u9vV8FQWIhLW2LToY
-kw9ephtALgBj6D79R84K2DGlmZwPH2sunV3y9huDh3SNlR5dZg8=
-=EEMR
------END PGP SIGNATURE-----
-
---MEb6eXQ93P1+3Wd8--
 
