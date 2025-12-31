@@ -1,107 +1,191 @@
-Return-Path: <linux-sh+bounces-3184-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-3186-lists+linux-sh=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-sh@lfdr.de
 Delivered-To: lists+linux-sh@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BBCCCEB65A
-	for <lists+linux-sh@lfdr.de>; Wed, 31 Dec 2025 07:47:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B38ECEB8AD
+	for <lists+linux-sh@lfdr.de>; Wed, 31 Dec 2025 09:33:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 65BFD300769F
-	for <lists+linux-sh@lfdr.de>; Wed, 31 Dec 2025 06:46:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AFCE23029B86
+	for <lists+linux-sh@lfdr.de>; Wed, 31 Dec 2025 08:32:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EC7C2C11D7;
-	Wed, 31 Dec 2025 06:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF004312814;
+	Wed, 31 Dec 2025 08:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ntXMmUJA"
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="wypE0iwm"
 X-Original-To: linux-sh@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC44B2777E0;
-	Wed, 31 Dec 2025 06:46:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD74267B89;
+	Wed, 31 Dec 2025 08:32:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767163605; cv=none; b=iBGGbpOeARjE+WtIM5xSTNtjzBRlt5BpTjveEYAunMzpH3u7AK3vweEA5eGsJu1bloMn6cKuVTshj+mYdlxpW4im9dkgJJvurdqaaSWdYFUNb28fztg83e5wCWtDTz+LvICQCJWKBISauklGymX9brDpUAKgUkYi3HY4clySmmA=
+	t=1767169945; cv=none; b=fK3kZcynBPiLJ6OOv7XgqntPgHhGg5lj5H+Xr6GXGGh7qaI/00whu1iXVJczefx9wrVdapsvqcAexidw0iJyn43ylUANKK1H9wETNCxaGC0ci8cJTW5FhL39wM1F7pxC/xKFalvRd3Cf4ZGVko7fHDYmUMiAYtNv+yPgzC9GF6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767163605; c=relaxed/simple;
-	bh=QpQpiIjMgAqmAOmtydj8BNOPhOz9nWYymZ8gOyeJv+s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UIEjNQUoPKBA9+aFkAmpopWg1aBFIxFY/TJmmor7Nm0j3j474Z0iilg7gVq8bZo7yLZp0zuFn2WunZ0zDbVWne8W+s+1sbrNsRwt4EHOuxTR2eAyG7GeJBWAakZY5mvlqEJarXoq4CLVxS49KVtokKUzOE6ZGGLEr1fSEFI7WZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ntXMmUJA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3916C113D0;
-	Wed, 31 Dec 2025 06:46:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767163605;
-	bh=QpQpiIjMgAqmAOmtydj8BNOPhOz9nWYymZ8gOyeJv+s=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ntXMmUJAxO5H8srGF4tNdHgo0lFMwkrc1fuFBV00J5Tb+WM/T7R4u9JOqctNUZQJ9
-	 XYxl5+6LClFAMnewT84dKC1wdD+L79lms4e7jJI4B4VRIxvVk2wh2RzN/kfoBQ9zvQ
-	 vrajgYUrYswv2oj5VfBfcCLGHqZVOUHJM9Bs/2yQIXICCypPBdj14NXNB4lM76yYbj
-	 3WP6S9UtMNNFKDrShzihHTivi5+OaTM8HRj6TmoWmoIqcaiL8YXJS2olROD3vsiwPM
-	 wq+5LcGZxXeY3d9OSMaJQUJCY2ZOsqjtPZsDyuyJA7RN+y8l5QIgTHuscvyfK+PDFN
-	 /r6pVdO9HecjA==
-Message-ID: <0949ad6f-d703-47c9-8681-c64f17da07ac@kernel.org>
-Date: Wed, 31 Dec 2025 07:46:40 +0100
+	s=arc-20240116; t=1767169945; c=relaxed/simple;
+	bh=j7setGtZxKj0GpDffae+KtqWqssWmlZc0B7lMZPOSAI=;
+	h=To:Cc:Message-ID:In-Reply-To:References:From:Subject:Date; b=paLTuKBdfrObaIOhrorL7M5xlRYIqYOHHXD7q/FF0rPxfsQ80qZ62BuWNFifTH21FfY8acy6qHSbH+1HUWLtaqQnHngv6p7VeueZEEeq4247u1R5YxApGKuNANrvSNHXzVO6QgsFa1BB2v9T16RaYM77i1VWtFfKu1CJ9+2IupM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=wypE0iwm; arc=none smtp.client-ip=202.12.124.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 0F2E67A008A;
+	Wed, 31 Dec 2025 03:32:23 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Wed, 31 Dec 2025 03:32:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+	:feedback-id:from:from:in-reply-to:in-reply-to:message-id
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1767169942; x=
+	1767256342; bh=vBuKVea7vxP3Xqw+0VhXZu0Nuyaahlp6eJXWokICzlg=; b=w
+	ypE0iwmRaLxYjHF9ptlWaLGVQ7qc/E6hZPji49twgiSo2Pb4hbVovN2SvLx4MwBH
+	BRSvNx9oQYjaYsf8R/nolfANNWqq6WVUR5dDewntajqPn6xdrX1+V/64l4m424or
+	L7zRWiMd3jUQWjqBjaCi8e5jAjJdvy2L34iKiAc4Jna99Y7ZSJ6m9gQyPiTPe33a
+	btGHqbPNyT2alIICDF22hLN8qKSFKRdA0Tmj6TZv19Ymwkwq3xe/K+7XeVTqNLcp
+	8AfneayDDsoZZTfraNTyrqShmuIix2kiYAbpMh3FtGkBxLFcSrNLilcKkDSKDXEZ
+	nXOCdQp/E5bqEerHa0sJg==
+X-ME-Sender: <xms:lt9UaSK6upfCCqQ3Pqu_dLGScHGQuppu_FvP409tBSib7WB8NZC8Iw>
+    <xme:lt9UaU7dP8lGaYrRSKA1KZj95DloGDJy3CO67jRSqXN6hAmF3shfzfZEmtzKIPrrh
+    ezdkk6Xou1a-YoKivmc--KtL7uPKu9W3Lj9mJ9GpDwcwgHS7MfJM1lC>
+X-ME-Received: <xmr:lt9UaRkekMVDpB3hlVM0A9BsDtPNt1g67zOZRtsDxOzTuoXmZzud85KDUkmt_rw_pCG0Mt4tBiiNagGWZtKTdYKR6nQbFKs6Ip4>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdekvdegfecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefvvefkjghfhffuffestddtredttddttdenucfhrhhomhephfhinhhnucfvhhgrihhn
+    uceofhhthhgrihhnsehlihhnuhigqdhmieekkhdrohhrgheqnecuggftrfgrthhtvghrnh
+    epheekudffheejvdeiveekleelgeffieduvdegleeuhfeuudegkeekheffkefggfehnecu
+    ffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurf
+    grrhgrmhepmhgrihhlfhhrohhmpehfthhhrghinheslhhinhhugidqmheikehkrdhorhhg
+    pdhnsggprhgtphhtthhopedvvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprg
+    hkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehpvght
+    vghriiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopeifihhllheskhgvrhhnvg
+    hlrdhorhhgpdhrtghpthhtoheprghrnhgusegrrhhnuggsrdguvgdprhgtphhtthhopegs
+    ohhquhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrh
+    ihghhuohdrnhgvthdprhgtphhtthhopehmrghrkhdrrhhuthhlrghnugesrghrmhdrtgho
+    mhdprhgtphhtthhopehlihhnuhigqdgrrhgthhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+    dprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhr
+    gh
+X-ME-Proxy: <xmx:lt9UaeKfu6I7QtKkYyIQw7KSlgn0msDnq8BCUGabFsTQPvEyfQX1mA>
+    <xmx:lt9UaaFmCgoqXt27cMI9sBDOyRr3kSZ4zL15K8l77mlZc8fSXLIlnw>
+    <xmx:lt9UaXOYyyEpFsnrorqF5YqmfhhBJI41TcNrUkxm4XbvBDDAanKagQ>
+    <xmx:lt9Uac9LhwTUVjiFZqm2tSeYrnwrsa3UKEk3DQ4fupqmtlF6afpwWg>
+    <xmx:lt9UaYpPGrCBWtUZktSZOgeIPs0D2bXpSlvp9HqD5bM6HPyOPlyCyZTA>
+Feedback-ID: i58a146ae:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 31 Dec 2025 03:32:21 -0500 (EST)
+To: Andrew Morton <akpm@linux-foundation.org>,
+    Peter Zijlstra <peterz@infradead.org>,
+    Will Deacon <will@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+    Boqun Feng <boqun.feng@gmail.com>,
+    Gary Guo <gary@garyguo.net>,
+    Mark Rutland <mark.rutland@arm.com>,
+    linux-arch@vger.kernel.org,
+    linux-kernel@vger.kernel.org,
+    linux-m68k@lists.linux-m68k.org,
+    Guo Ren <guoren@kernel.org>,
+    linux-csky@vger.kernel.org,
+    Geert Uytterhoeven <geert@linux-m68k.org>,
+    Dinh Nguyen <dinguyen@kernel.org>,
+    Jonas Bonn <jonas@southpole.se>,
+    Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+    Stafford Horne <shorne@gmail.com>,
+    linux-openrisc@vger.kernel.org,
+    Yoshinori Sato <ysato@users.sourceforge.jp>,
+    Rich Felker <dalias@libc.org>,
+    John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+    linux-sh@vger.kernel.org
+Message-ID: <88df424bfb93bdabe73bf91f5985c5b89f04d123.1767169542.git.fthain@linux-m68k.org>
+In-Reply-To: <cover.1767169542.git.fthain@linux-m68k.org>
+References: <cover.1767169542.git.fthain@linux-m68k.org>
+From: Finn Thain <fthain@linux-m68k.org>
+Subject: [PATCH v6 2/4] atomic: Specify alignment for atomic_t and atomic64_t
+Date: Wed, 31 Dec 2025 19:25:42 +1100
 Precedence: bulk
 X-Mailing-List: linux-sh@vger.kernel.org
 List-Id: <linux-sh.vger.kernel.org>
 List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/6] video/logo: allow custom boot logo and simplify logic
-To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- Helge Deller <deller@gmx.de>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Yoshinori Sato <ysato@users.sourceforge.jp>,
- Rich Felker <dalias@libc.org>
-Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, linux-sh@vger.kernel.org
-References: <20251230-custom-logo-v1-0-4736374569ee@kernel.org>
- <12a2ee5ca1a085fe0bd0c1b2d6e08589445cbf66.camel@physik.fu-berlin.de>
-From: Vincent Mailhol <mailhol@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=mailhol@kernel.org; keydata=
- xjMEZluomRYJKwYBBAHaRw8BAQdAf+/PnQvy9LCWNSJLbhc+AOUsR2cNVonvxhDk/KcW7FvN
- JFZpbmNlbnQgTWFpbGhvbCA8bWFpbGhvbEBrZXJuZWwub3JnPsKZBBMWCgBBFiEE7Y9wBXTm
- fyDldOjiq1/riG27mcIFAmdfB/kCGwMFCQp/CJcFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcC
- F4AACgkQq1/riG27mcKBHgEAygbvORJOfMHGlq5lQhZkDnaUXbpZhxirxkAHwTypHr4A/joI
- 2wLjgTCm5I2Z3zB8hqJu+OeFPXZFWGTuk0e2wT4JzjgEZx4y8xIKKwYBBAGXVQEFAQEHQJrb
- YZzu0JG5w8gxE6EtQe6LmxKMqP6EyR33sA+BR9pLAwEIB8J+BBgWCgAmFiEE7Y9wBXTmfyDl
- dOjiq1/riG27mcIFAmceMvMCGwwFCQPCZwAACgkQq1/riG27mcJU7QEA+LmpFhfQ1aij/L8V
- zsZwr/S44HCzcz5+jkxnVVQ5LZ4BANOCpYEY+CYrld5XZvM8h2EntNnzxHHuhjfDOQ3MAkEK
-In-Reply-To: <12a2ee5ca1a085fe0bd0c1b2d6e08589445cbf66.camel@physik.fu-berlin.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 31/12/2025 at 00:19, John Paul Adrian Glaubitz wrote:
-> Hi Vincent,
-> 
-> On Tue, 2025-12-30 at 23:19 +0100, Vincent Mailhol wrote:
->> This series allows the user to replace the default kernel boot logo by
->> a custom one directly in the kernel configuration. This makes it
->> easier to customise the boot logo without the need to modify the
->> sources and allows such customisation to remain persistent after
->> applying the configuration to another version of the kernel.
-> 
-> Wouldn't it make more sense to make the boot logo to be configurable
-> at runtime so that users don't have to rebuild their kernel at all
-> to change their boot logo?
+Some recent commits incorrectly assumed 4-byte alignment of locks.
+That assumption fails on Linux/m68k (and, interestingly, would have
+failed on Linux/cris also). The jump label implementation makes a
+similar alignment assumption.
 
-I thought about that. The problem is that the logo is loaded really
-early in the boot process. To be able to modify the logo without
-rebuilding the full kernel, the logo would basically need to become a
-kernel module that would be stored in either an initrd or on the filesystem.
+The expectation that atomic_t and atomic64_t variables will be naturally
+aligned seems reasonable, as indeed they are on 64-bit architectures.
+But atomic64_t isn't naturally aligned on csky, m68k, microblaze, nios2,
+openrisc and sh. Neither atomic_t nor atomic64_t are naturally aligned
+on m68k.
 
-The above is not impossible, but would require delaying the logo.
+This patch brings a little uniformity by specifying natural alignment
+for atomic types. One benefit is that atomic64_t variables do not get
+split across a page boundary. The cost is that some structs grow which
+leads to cache misses and wasted memory.
 
-If we go in that direction, I think that my series as it is right now
-would be a prerequisite anyway. Personally, I am happy with the logo
-just being configurable when compiling the kernel, so I do not intend to
-put more effort into this afterward. However, that would have prepared
-the ground if anyone wants to implement in the future what you just
-suggested.
+Cc: Guo Ren <guoren@kernel.org>
+Cc: linux-csky@vger.kernel.org
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: linux-m68k@lists.linux-m68k.org
+Cc: Dinh Nguyen <dinguyen@kernel.org>
+Cc: Jonas Bonn <jonas@southpole.se>
+Cc: Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
+Cc: Stafford Horne <shorne@gmail.com>
+Cc: linux-openrisc@vger.kernel.org
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Rich Felker <dalias@libc.org>
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: linux-sh@vger.kernel.org
+Link: https://lore.kernel.org/lkml/CAFr9PX=MYUDGJS2kAvPMkkfvH+0-SwQB_kxE4ea0J_wZ_pk=7w@mail.gmail.com
+Link: https://lore.kernel.org/lkml/CAMuHMdW7Ab13DdGs2acMQcix5ObJK0O2dG_Fxzr8_g58Rc1_0g@mail.gmail.com/
+Acked-by: Guo Ren <guoren@kernel.org>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+---
+Changed since v5:
+ - Added tags from Guo Ren and Arnd Bergmann.
 
+Changed since v2:
+ - Specify natural alignment for atomic64_t.
 
-Yours sincerely,
-Vincent Mailhol
+Changed since v1:
+ - atomic64_t now gets an __aligned attribute too.
+ - The 'Fixes' tag has been dropped because Lance sent a different fix
+   for commit e711faaafbe5 ("hung_task: replace blocker_mutex with encoded
+   blocker") that's suitable for -stable.
+---
+ include/asm-generic/atomic64.h | 2 +-
+ include/linux/types.h          | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/include/asm-generic/atomic64.h b/include/asm-generic/atomic64.h
+index 100d24b02e52..f22ccfc0df98 100644
+--- a/include/asm-generic/atomic64.h
++++ b/include/asm-generic/atomic64.h
+@@ -10,7 +10,7 @@
+ #include <linux/types.h>
+ 
+ typedef struct {
+-	s64 counter;
++	s64 __aligned(sizeof(s64)) counter;
+ } atomic64_t;
+ 
+ #define ATOMIC64_INIT(i)	{ (i) }
+diff --git a/include/linux/types.h b/include/linux/types.h
+index d4437e9c452c..1760e1feeab9 100644
+--- a/include/linux/types.h
++++ b/include/linux/types.h
+@@ -180,7 +180,7 @@ typedef phys_addr_t resource_size_t;
+ typedef unsigned long irq_hw_number_t;
+ 
+ typedef struct {
+-	int counter;
++	int __aligned(sizeof(int)) counter;
+ } atomic_t;
+ 
+ #define ATOMIC_INIT(i) { (i) }
+-- 
+2.49.1
 
 
