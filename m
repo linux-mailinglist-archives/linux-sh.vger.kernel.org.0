@@ -1,164 +1,161 @@
-Return-Path: <linux-sh+bounces-3373-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-3374-lists+linux-sh=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SHLlACGJnGlWJQQAu9opvQ
-	(envelope-from <linux-sh+bounces-3373-lists+linux-sh=lfdr.de@vger.kernel.org>)
-	for <lists+linux-sh@lfdr.de>; Mon, 23 Feb 2026 18:06:41 +0100
+	id 4CneK+3EnGnJKAQAu9opvQ
+	(envelope-from <linux-sh+bounces-3374-lists+linux-sh=lfdr.de@vger.kernel.org>)
+	for <lists+linux-sh@lfdr.de>; Mon, 23 Feb 2026 22:21:49 +0100
 X-Original-To: lists+linux-sh@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2126317A542
-	for <lists+linux-sh@lfdr.de>; Mon, 23 Feb 2026 18:06:40 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53A9A17D879
+	for <lists+linux-sh@lfdr.de>; Mon, 23 Feb 2026 22:21:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AFF703060BF6
-	for <lists+linux-sh@lfdr.de>; Mon, 23 Feb 2026 17:03:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id ED3C3301BAA5
+	for <lists+linux-sh@lfdr.de>; Mon, 23 Feb 2026 21:21:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB9782E7635;
-	Mon, 23 Feb 2026 17:03:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E5437881C;
+	Mon, 23 Feb 2026 21:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=landley.net header.i=@landley.net header.b="qhT/utBh"
+	dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b="Fv+n31cj"
 X-Original-To: linux-sh@vger.kernel.org
-Received: from shrimp.cherry.relay.mailchannels.net (shrimp.cherry.relay.mailchannels.net [23.83.223.164])
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6FE328B69
-	for <linux-sh@vger.kernel.org>; Mon, 23 Feb 2026 17:02:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.223.164
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771866182; cv=pass; b=MZEcXi6KHgka//lpKnWk9BIYURLTw1YPYejJrW9uUWOJbwb2Vb+FzLiGJ8uxIOLP2Dwx61x9YxrBZtqZ0TT+aaTFD6OdGcR9njK96Y1SX3PDGdhdoGhuPKHUZ73c0CXP8djahvOuu2nySn5Lhku0NOGnVmIZsjjSuObTWYQzpb0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771866182; c=relaxed/simple;
-	bh=QYPGsDjq1Xx63hWtwZPpzVOxR9dPyN0xoX9xNQgu5nc=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=UYBr16wNwWxt9QoI2OobRJYhCwxhdk5hxHP9F5LwLCmWbyg5QJ70fqTJ5ktOgq91N/WVNCJy9PZWfIb5+qiKzMoedoW/TqKRgiyJ2hy9hzyUm1cP+8hyPHoQoRICZqlHmtnJ78SqrIKMPWgL62/KxqcNvV/xrdXGp118hwE+tIM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=landley.net; spf=pass smtp.mailfrom=landley.net; dkim=pass (2048-bit key) header.d=landley.net header.i=@landley.net header.b=qhT/utBh; arc=pass smtp.client-ip=23.83.223.164
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=landley.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=landley.net
-X-Sender-Id: dreamhost|x-authsender|rob@landley.net
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id 8C1D8462984;
-	Mon, 23 Feb 2026 16:44:27 +0000 (UTC)
-Received: from pdx1-sub0-mail-a229.dreamhost.com (trex-green-3.trex.outbound.svc.cluster.local [100.104.88.134])
-	(Authenticated sender: dreamhost)
-	by relay.mailchannels.net (Postfix) with ESMTPA id 30C8B46286F;
-	Mon, 23 Feb 2026 16:44:25 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; d=mailchannels.net; s=arc-2022; cv=none;
-	t=1771865065;
-	b=dggCzMN00NEoECpE1O8zJwihrMVR44yp25DQLg5GSXXkMZfYnOKhObaDI2LplssK59M+sq
-	6lP96aRGUcEHclkoImMfcyNt2Hg6eYVeHyx/mmCTJ80GaTrrqDvPwVNhvzAgSxodB4xRay
-	CQhoR1w+LwMkNkcGW7v68tUmfHC3j+FdL/yQU5qAbbKNlIvQisSwR4I4ftocDZvM0fAFng
-	gGinlFAfk11Q+t+yeKAogSqhbWbc9z8inQwxQts9AN9j+43AUsH/78N/za24E08l9YLb08
-	DCytAGPaonBc2+Ws4JpcD7xirBsUL9c1ci3mbyYELtlq7ik6rxjCAyYWCzN0EA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1771865065;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:dkim-signature;
-	bh=wZS3kj5cFviV41JkTgX8z3Urf1M4R3r6c59aD2ixr84=;
-	b=10R2F926FXZE+Nsh0WRK+GjBK3hOuu0EqIogGmEBgtKf1NEw5qtH1J1Ylt/lq/VCJmaRNU
-	WKWikwR4PeWMN2+BHkbnTeHtu5Y3YFdaaRtD3DHB6qcPRaznHB0K7/1N9GhoSnto4Elf6+
-	eK09Kx57VxgYs4EHOxgbWA582tSh7K0SkwzpJ1HSVg0Z/cHOI1QkuQ/n7KoS2sTLQO5/0g
-	P+J8ve7o8FV0+zua2fRxSGz6k7HnucFE095uTRTLGHXTTvboAA2lHsqj5Iac66wFTK35GJ
-	iLC4bCLX/ZaaQQCx0MWRhSvXFxLLTfLQCu22Mdgjn42cTS7bqAuZaQdijGDl9g==
-ARC-Authentication-Results: i=1;
-	rspamd-6fbd58c58b-q6pqj;
-	auth=pass smtp.auth=dreamhost smtp.mailfrom=rob@landley.net
-X-Sender-Id: dreamhost|x-authsender|rob@landley.net
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|rob@landley.net
-X-MailChannels-Auth-Id: dreamhost
-X-Snatch-Tangy: 7615fa9d207d075e_1771865067425_590813275
-X-MC-Loop-Signature: 1771865067425:4008666603
-X-MC-Ingress-Time: 1771865067424
-Received: from pdx1-sub0-mail-a229.dreamhost.com (pop.dreamhost.com
- [64.90.62.162])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.104.88.134 (trex/7.1.3);
-	Mon, 23 Feb 2026 16:44:27 +0000
-Received: from [IPV6:2607:fb90:9a0f:889c:175:8594:632c:fd9c] (unknown [172.56.10.34])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	(Authenticated sender: rob@landley.net)
-	by pdx1-sub0-mail-a229.dreamhost.com (Postfix) with ESMTPSA id 4fKRX85PY5zTc;
-	Mon, 23 Feb 2026 08:44:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=landley.net;
-	s=dreamhost; t=1771865065;
-	bh=wZS3kj5cFviV41JkTgX8z3Urf1M4R3r6c59aD2ixr84=;
-	h=Date:To:From:Subject:Content-Type:Content-Transfer-Encoding;
-	b=qhT/utBhw8qa+WaZPmQMvd4kp/+sz4aZfNm4oR/S7GLu8OpzES4K7IAa2Xkute0T7
-	 d0ACM2ssvxoru6OEwEslv+R2Rc/LMDywuUrfcMU7obDpa15T/sSe79cQMFM8gYFt7T
-	 3RBSxMWLiardtKwJuDR5VDnySFMt7HlhC/8NPleXlM8SvY21N+Gt8enl38qGHY2HzT
-	 RzIVyvGk6vrZycjnqysQZdkPuZ+Skjg+7ePnHAkCTcnW/TtMlm0CWnrioCsx++lRUs
-	 8Zfhf0NfcZBStfZ7fMXhZvblx5EjH18DGpskxrKGW7rbbUxKtRU/Et1WlBCZA9jgfh
-	 NkzfbxZej0rUA==
-Message-ID: <240590ce-7d95-491f-93b0-98abd7c6e17d@landley.net>
-Date: Mon, 23 Feb 2026 10:44:19 -0600
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A2131690A
+	for <linux-sh@vger.kernel.org>; Mon, 23 Feb 2026 21:21:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.133.4.66
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771881699; cv=none; b=lNEPtzTFlVH6ezpXQ0WSKgO3GtzUFtNr6bumP0gYrqfRd5rSBqJJV+n0diPhmLeAtNE+91wl+cfKAjYo0UA9lKvh/tulrLqbi5sK+j30ZKjtFHWxzq/uWCQFxveKQPQxSGDoRU1cNfK95etRyl2mjnYTTfe9Bz2dvVS1sNyOmWk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771881699; c=relaxed/simple;
+	bh=H0h11Wv3umDYnT1SzTMPh2kJTqb+zlyxU6wQlXzfl+o=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=babzhwwwUn4i16MoA1lSyjwZFVO6bFfrpold8gXdPQY5np9EGfc/vYz2SFLYWAiHqOIn7xJ2kZm8/fWM+P4EDxIeuxwPDRzryT6tPgaJnPnFmt1tj/JKVOQwFbWJrTL7mRk3GfarltU5L3PNoS41t7fvIvbds84UuYWxSqdfd8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; spf=pass smtp.mailfrom=zedat.fu-berlin.de; dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b=Fv+n31cj; arc=none smtp.client-ip=130.133.4.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zedat.fu-berlin.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:From:
+	Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=Qy++e7wivX3g7DsbNvYrcKMqMn2aWM9ohJ91TSnlF/U=; t=1771881695;
+	x=1772486495; b=Fv+n31cjNvd7Q/su7XBnnZlMOKroI/IJw1b2Z2r+maLaEUSlryDWjTYTmHXy1
+	lWzsjkbYdwZ5YmsgBZ6iOMrPieKBLRM+GsF9l5+FKtcOiQ4xUoEosP2DvY02JpVfD1F5Y37UlvHIV
+	5o9vT+ThUGczN8TwKeMe2rtWuc98GfOiwpJvNc5yYZgWAEg+Dqj7uM1+TWHES87PTJ8ikWxZuHn8N
+	GcJoIB5LPziuDjLHaakgikbafaV990OsCcMWh4ty2nn/QMEcip+pT6y2frfIEoTVJseDt1ClWUr5J
+	dL3VmKivqIJQVOvxbYM2QbFnj+YzQBDe81zSYKTKR2wWU+eJkg==;
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.99)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1vudMt-00000002Suj-1EAm; Mon, 23 Feb 2026 22:21:27 +0100
+Received: from p5dc55f29.dip0.t-ipconnect.de ([93.197.95.41] helo=[192.168.178.61])
+          by inpost2.zedat.fu-berlin.de (Exim 4.99)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1vudMt-00000000Me8-0Mxj; Mon, 23 Feb 2026 22:21:27 +0100
+Message-ID: <de0cb5ac66b80f2f48eb8c6ebe0349c8c08a763c.camel@physik.fu-berlin.de>
+Subject: Re: Did you see my qemu r2d memory patch?
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: Rob Landley <rob@landley.net>
+Cc: Linux-sh list <linux-sh@vger.kernel.org>
+Date: Mon, 23 Feb 2026 22:21:26 +0100
+In-Reply-To: <240590ce-7d95-491f-93b0-98abd7c6e17d@landley.net>
+References: <240590ce-7d95-491f-93b0-98abd7c6e17d@landley.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 
 Precedence: bulk
 X-Mailing-List: linux-sh@vger.kernel.org
 List-Id: <linux-sh.vger.kernel.org>
 List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- Linux-sh list <linux-sh@vger.kernel.org>
-From: Rob Landley <rob@landley.net>
-Subject: Did you see my qemu r2d memory patch?
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-ZEDAT-Hint: PO
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	SUBJECT_ENDS_QUESTION(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[landley.net:s=dreamhost];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[fu-berlin.de,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[fu-berlin.de:s=fub01];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-3373-lists,linux-sh=lfdr.de];
-	TO_DN_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gnu.org:url];
-	DKIM_TRACE(0.00)[landley.net:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-3374-lists,linux-sh=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[landley.net];
+	DKIM_TRACE(0.00)[fu-berlin.de:+];
+	TO_DN_ALL(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCPT_COUNT_TWO(0.00)[2];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[rob@landley.net,linux-sh@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[glaubitz@physik.fu-berlin.de,linux-sh@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[linux-sh];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 2126317A542
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gnu.org:url]
+X-Rspamd-Queue-Id: 53A9A17D879
 X-Rspamd-Action: no action
 
-It was in 
-https://lists.gnu.org/archive/html/qemu-devel/2026-01/msg06318.html and 
-probably needs to be reposted as a separate thing, but with it I booted 
-an sh4 kernel with over 200 megs of memory, enough to act as a 
-reasonable native build node (especially using the distcc trick). No 
-kernel patch required, just a .config change setting two symbols it's 
-already got to different values.
+Hi Rob,
 
-I need to port the r2d target over to device tree (well, extend the 
-turtle device tree stuff to support r2d and its devices) and teach qemu 
-to supply a device tree overlay with the current memory map so you don't 
-have to match kernel with qemu -m layout (the only way to get the extra 
-memory in one contiguous block is to move the START of the memory range, 
-which means moving the initrd and command line string locations which 
-are relative to start of memory, so the kernel needs to know where to 
-expect start of memory and thus needs to be recompiled for the different 
-memory amount rather than just autodetecting. Device tree blob location 
-is loaded into a register before kernel init...)
+On Mon, 2026-02-23 at 10:44 -0600, Rob Landley wrote:
+> It was in=20
+> https://lists.gnu.org/archive/html/qemu-devel/2026-01/msg06318.html and=
+=20
+> probably needs to be reposted as a separate thing, but with it I booted=
+=20
+> an sh4 kernel with over 200 megs of memory, enough to act as a=20
+> reasonable native build node (especially using the distcc trick). No=20
+> kernel patch required, just a .config change setting two symbols it's=20
+> already got to different values.
 
-Anyway, thought I'd ask what you thought,
+No, I haven't seen that. I got too many things to do at the moment, also
+at my regular job such that I don't have too much time for SH at the moment=
+.
 
-Rob
+I will catch up with it the next weeks though.
+
+> I need to port the r2d target over to device tree (well, extend the=20
+> turtle device tree stuff to support r2d and its devices) and teach qemu=
+=20
+> to supply a device tree overlay with the current memory map so you don't=
+=20
+> have to match kernel with qemu -m layout (the only way to get the extra=
+=20
+> memory in one contiguous block is to move the START of the memory range,=
+=20
+> which means moving the initrd and command line string locations which=20
+> are relative to start of memory, so the kernel needs to know where to=20
+> expect start of memory and thus needs to be recompiled for the different=
+=20
+> memory amount rather than just autodetecting. Device tree blob location=
+=20
+> is loaded into a register before kernel init...)
+>=20
+> Anyway, thought I'd ask what you thought,
+
+I think we should pick up Yoshinori's series for device tree support [1]
+and get it into a mergable state.
+
+Adrian
+
+> [1] https://patchwork.kernel.org/project/linux-sh/patch/cover.1716965617.=
+git.ysato@users.sourceforge.jp/
+
+--=20
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
