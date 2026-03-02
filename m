@@ -1,202 +1,182 @@
-Return-Path: <linux-sh+bounces-3402-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-3405-lists+linux-sh=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eMJxA+NupWlXAgYAu9opvQ
-	(envelope-from <linux-sh+bounces-3402-lists+linux-sh=lfdr.de@vger.kernel.org>)
-	for <lists+linux-sh@lfdr.de>; Mon, 02 Mar 2026 12:05:07 +0100
+	id 0KIjI8eCpWltCwYAu9opvQ
+	(envelope-from <linux-sh+bounces-3405-lists+linux-sh=lfdr.de@vger.kernel.org>)
+	for <lists+linux-sh@lfdr.de>; Mon, 02 Mar 2026 13:29:59 +0100
 X-Original-To: lists+linux-sh@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A73431D72A5
-	for <lists+linux-sh@lfdr.de>; Mon, 02 Mar 2026 12:05:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35C341D875F
+	for <lists+linux-sh@lfdr.de>; Mon, 02 Mar 2026 13:29:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D1560300D0C0
-	for <lists+linux-sh@lfdr.de>; Mon,  2 Mar 2026 11:05:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C6D4930D06A4
+	for <lists+linux-sh@lfdr.de>; Mon,  2 Mar 2026 12:25:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96EB835F616;
-	Mon,  2 Mar 2026 11:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 072C636D4E3;
+	Mon,  2 Mar 2026 12:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nFI7GPod"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="XTq/Qbds";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="f3MlQqxs"
 X-Original-To: linux-sh@vger.kernel.org
-Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5733335F5F5
-	for <linux-sh@vger.kernel.org>; Mon,  2 Mar 2026 11:05:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772449504; cv=pass; b=dz84xev2SfJECkYmJizpsKTAbzBObC61u4bfqQNx98BVPke9r2JAPKwJNp3Qg7Oi9MvcC0eBMDwBT3nfH+U8VSe9We406zwGx8tenJTlRMvCxTa26F+BsR0178CPtkRp6ceSr1sqFInXs7KQLe9oBFx0a4CnmF5zWRuNW3wYPp4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772449504; c=relaxed/simple;
-	bh=MNN0MxQutkVAICnu21/rtSu7MZP/rEU4Ta6qHPWAsoQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Zhk3FrB2JSky8A6g/EW6gIe3X7WQOK+2zJLf0wFxCgZs8Z5ZTfUdiCKrRVoBUIQ8lEBiVnsB8p5fRwNXwHGEBEDo7OZfeDp2eAm9q5HvAMSBMl9VMN/OIh9FDP65M9NubaSkoVWMm4lFvzrVuIWQ6qLuNgcEb4JK32Um5AWA+gE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nFI7GPod; arc=pass smtp.client-ip=209.85.210.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-7d4c12ff3d5so4782176a34.2
-        for <linux-sh@vger.kernel.org>; Mon, 02 Mar 2026 03:05:03 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772449502; cv=none;
-        d=google.com; s=arc-20240605;
-        b=fMs+ij8YoF66GqCgVFAI2vCdPvbMTiqw1Saj4To+1+f1bCq6iVW+mM3SLcTm+lEZ97
-         jBNrk+bz34QPCglZCV9d3aEDM8A8fsGOofb2AXz4TEAvXWiT3e4cH/SmMugOzhOMyYvT
-         h2bEVf0pClpp2uJX+h3f1RCG+mERBT4z6S6pSWvZTBmXnhppLS3naLoxgXAeIhcPrfhL
-         sPyx/6BaJq5ndobEcVqoE7iyh4w4lF8+H2Dz8WP4tm9iGQ1D345LAMNMPmFjfEKB945W
-         lsVLNYcOZ5Dst4UP+4haeLCu0jEA/CS+/j4g64zrKwmvn53vqBYQM5JDXS1BI3yO/hz5
-         79mQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=UpW1qD1SJXhXQMOWzRKDDnDlmrJmewCs6uD1CPB0kj8=;
-        fh=CkYkHbYH09mZcG5n7Ve9g61xfJCNQZZ7O69cgJBpHG0=;
-        b=D8LvI+r+M7d6q5DoOSzMH+ebieCS0+0IAMD6IZlzZmh8G40SQRUiB2A5sXuv+0CUB3
-         EinYl+CTkYPwQHoOksIBuwQu4aUCvChqrJzA/PBmj2xTycTMEMbxeO8CqYVAHToQXTDu
-         IykMYZrcwTCkr4qBOgdxq7tW5B1GOQ+xXIIqs/okVHwkOczz6WNdEO+76LEb953zhu0I
-         a+FW/YyIu0yIOiXH97Jr7S3Ldf1FYdumvoV1UBkAqhEqO+rEnuiXJ1kjqOOsfqVVXdqq
-         rI24mZtxUeL7wfTIXb7D3B/Zlkfm1pcpgDNcGx27gtqz8hd83eJcEW5C+LiAkVR6oPcT
-         QC+w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772449502; x=1773054302; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UpW1qD1SJXhXQMOWzRKDDnDlmrJmewCs6uD1CPB0kj8=;
-        b=nFI7GPodwr4K7PC1HWfUVpPzdSjla2PQOIxDuEcBwSuSUvTWuwE5h20gW/c+gCy4t2
-         u7QR/gPdyhMLyDTWmpznLdei1863tjE2BSGZTCnbBiufkUiS8X2sFkbHvf3zZU+SGT85
-         Zdsw87IoZOF0vQlTKF+4+Nc/XEH5dCA0fEA1vh1IIJpbkto5aoGMyyrDS+SrhIZjaZVs
-         vRYmlqAhwrxFdRyUdJ/JrIG2/Gpu+z6egxQjMYD3S0qZzGC7YK/grNnR5wEECaM1p0lb
-         LeT+svI9a4QLe600affzmHLczk+PGzyC1rZ0JbA9hsMhED94j2TQnwiOMoUmvSFiGP08
-         Ydbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772449502; x=1773054302;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=UpW1qD1SJXhXQMOWzRKDDnDlmrJmewCs6uD1CPB0kj8=;
-        b=D2LTLbbUpD8k9/YW9NBLXQux8+0wOB+9pLTfev6l5gu8uYuK6rJknENM1V37vWDtvT
-         ipoFDgnbMH+p0WuWmrRSF0qDhj+EvhcR/wnbp86YaFxQQXkO8bRmFsjz4MCk75+/9bXE
-         K1tNqYOZOQRqPkMugwPVVhewD7M0MQmt57y9zAHLFr+nsnAO8pdCZmmgaroNe3TvIy77
-         dmH37hHhphMuph1QReaOCp6WJz1WfJzW5A4r6ZoyP/iY0NYIKiU0XShXAFAOkOKHeVeI
-         vJ3iF2A8StjVJ5O/2WR07+FbRCxeRvcDy4msbJz/i8STNSf4+yiLUXt2dnndD8H8PNnV
-         Xpdg==
-X-Forwarded-Encrypted: i=1; AJvYcCXN2laGPyGPj3PUV2BrXIzNei77j0YVsqEBOsoDRw8MYsSFzeuCux3Zm2Cl08Yo7liRQ0ogYakNwA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmdhpYi5eo0c+oUz4mU8NKjCvz1a3gwSMe+VPPfsNLcWxTvIDl
-	ZXAi4ifOkWYjJG0SU9wEhf6wgOkv0bMWaFw0Ch8vP8DONfyd3VS4yEOg6eV4DyWjhkJS1eepNQi
-	lcTefVL/ItlRoUQcrAyOJ3AVwCT3d0AI=
-X-Gm-Gg: ATEYQzyT9TsqPkT8p2vDvcGQl+Wb/MkHRhogrsb/y3Oqe20ZDjti6/ePEK9+ZtcloPG
-	aGfgbtZzlnLh4BK1uZrqFbDspdEJE3x1yU+cIAusI3A4JAB5FCT/f8xrDIoCxX+ACwLm72pI7P0
-	cIA3ipDNxGHtVN/v1XMUNGjgnqLshoPBW83Kge0CI/Hv3F63fzCeYvRrVZxHrFc0k+x5wt7p0lV
-	lHBqnlyIISWmmn04MC9W9HOyQprPP61gIXIT5QsQmPQqIQwxTPfUaHBEnNMA4nmAbEwJug7TaCW
-	UhSqBVoHB9otFbpQEne6awQIVicG/C1gd20gGsaYPliWtOEP2WmU6USh8+HvSavXUnUI+kHi+1g
-	=
-X-Received: by 2002:a05:6870:ad08:b0:3e9:1643:5977 with SMTP id
- 586e51a60fabf-41626e0fc5fmr6099442fac.18.1772449502199; Mon, 02 Mar 2026
- 03:05:02 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2BD36C5AF;
+	Mon,  2 Mar 2026 12:25:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772454348; cv=none; b=rNziUHNU2F1QIcZ0L5nK0Lfhz+OHIhIIupjiu0+XYr9zYlZRNagDiGtVBJRU/9Otg9O92KLzqp3KTbbzs5z9kAiUeCQG1qqsE66iKBkkyGhlwoy4H/pp1OtXkJvFJPtfCGor/KE9L8MsjXMgYBUVwTQybpTw7vuieMwzbVIVNtk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772454348; c=relaxed/simple;
+	bh=JDTHLUTBRhLdtWzI+cYwcXmhsRHrVsJSh1vwEnoNL54=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=p0BguTxadWStzSHRJiW1z1PlslEB1GwYpoy5I292zgVad4yQTmLWR0avTWeQqAMSfcJJZ+arEEhlpGRW2DnVEiRcpH6nFhfYoytXZFuNOy5rr9+bg7IPVO49o7EzSCYYKhz5JUViwaA9C29oQmCBGCRBpXVf8no7sVIOoOJPW3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=XTq/Qbds; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=f3MlQqxs; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1772454344;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Q8M0BzYT+8nDvDRpeOPQrwaX+SE1r8gh99dGV2h1fFk=;
+	b=XTq/Qbdsmdrjjgi15d+mbxPv7MA1pmSdTxIgk0x+7gQ1SBn3Qk50BPvaiHTGQy/qTkOET0
+	CGc+OMjOeQ/n2dA3JdyCWwjrdxy0uscngADbfRLK8WmqnacdFL6h4HVWXe+3LbMBHdWR9X
+	qZ74nUVL9W2j3VLfwuTKczYIjFgmRo5MMH5f83HQtqnIdi+gp6yskGE9pemAt/5epkD38A
+	sdonFKgtjJGoOsIGmpIH2kKpN+TtX6hvt/oaC/e+zE3Kp4IcFO+phZTmHZCNcZy7Qe9ryj
+	DSBSapJLSRTcmYCf4GVgZP161CF/lM2AnixGVHOK2waHFibtLc9ifGRmcjG1Rw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1772454344;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Q8M0BzYT+8nDvDRpeOPQrwaX+SE1r8gh99dGV2h1fFk=;
+	b=f3MlQqxsNMwSdSaceDHlFwzKoTlTmrVShpKlZNDhQVk9O7AG1ihqK0Tpn92+Xr2oztP91Z
+	NrP6Rmm8D/oDiRBw==
+Subject: [PATCH 00/15] exec: Remove AT_VECTOR_SIZE_ARCH from UAPI
+Date: Mon, 02 Mar 2026 13:25:24 +0100
+Message-Id: <20260302-at-vector-size-arch-v1-0-a11f03ba2ca8@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-sh@vger.kernel.org
 List-Id: <linux-sh.vger.kernel.org>
 List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260302002729.19438-1-dakr@kernel.org> <20260302002729.19438-2-dakr@kernel.org>
- <CALbr=LYqfhMi4eGp18r20XFzOWqRYCB8tO0mc_TAydb5cgbX-A@mail.gmail.com> <DGS7NBNUSBI6.16D6UP28IAXYS@kernel.org>
-In-Reply-To: <DGS7NBNUSBI6.16D6UP28IAXYS@kernel.org>
-From: Gui-Dong Han <hanguidong02@gmail.com>
-Date: Mon, 2 Mar 2026 19:04:51 +0800
-X-Gm-Features: AaiRm52arKfwi8YCxjpEdTXQmweggZZESyxe8RNIzUhwuktCE_TgfQAoQ172OQc
-Message-ID: <CALbr=LZ6Qu+oi0XiTZO4u+H2Jsv51jWazmK7xPt5EgK9DOy-hg@mail.gmail.com>
-Subject: Re: [PATCH 1/3] driver core: generalize driver_override in struct device
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ysato@users.sourceforge.jp, 
-	dalias@libc.org, glaubitz@physik.fu-berlin.de, abelvesa@kernel.org, 
-	srini@kernel.org, s.nawrocki@samsung.com, nuno.sa@analog.com, 
-	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, linux-hwmon@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org, 
-	linux-sh@vger.kernel.org, Wang Jiayue <akaieurus@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQ5AMBBG4avIrE1SXTS4ilhU/WU2yFRESO+us
+ fwW772UoIJEffWS4pIk+1bQ1BWF1W8LWOZissY605iO/ckXwrkrJ3nAXsPKDiZadDG2k6NSHoo
+ o938dxpw/BDR+BWUAAAA=
+X-Change-ID: 20260109-at-vector-size-arch-6e0f2e9ff8b6
+To: Kees Cook <kees@kernel.org>, Arnd Bergmann <arnd@arndb.de>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-riscv@lists.infradead.org, loongarch@lists.linux.dev, 
+ linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ linux-mips@vger.kernel.org, sparclinux@vger.kernel.org, 
+ linux-sh@vger.kernel.org, linux-alpha@vger.kernel.org, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772454343; l=2953;
+ i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
+ bh=JDTHLUTBRhLdtWzI+cYwcXmhsRHrVsJSh1vwEnoNL54=;
+ b=J6CYW4wsSS52A+nGxs9gwUdPdfHUZDIYWEVVGw/G+GXj/VTqu7W4L6C1R+uvBZbzZsf4FisCc
+ r+YyP25hcjyC3G9P+jLo1JOj2qTAaURruN7qUwKyoqSA+FQdhvM39MD
+X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
+ pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-3402-lists,linux-sh=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,kernel.org,users.sourceforge.jp,libc.org,physik.fu-berlin.de,samsung.com,analog.com,lists.linux.dev,vger.kernel.org,gmail.com];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[18];
+	TAGGED_FROM(0.00)[bounces-3405-lists,linux-sh=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hanguidong02@gmail.com,linux-sh@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TAGGED_RCPT(0.00)[linux-sh];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A73431D72A5
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[thomas.weissschuh@linutronix.de,linux-sh@vger.kernel.org];
+	DKIM_TRACE(0.00)[linutronix.de:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[linux-sh];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:mid,linutronix.de:dkim,linutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 35C341D875F
 X-Rspamd-Action: no action
 
-On Mon, Mar 2, 2026 at 6:05=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
-rote:
->
-> On Mon Mar 2, 2026 at 9:36 AM CET, Gui-Dong Han wrote:
-> > Applying the following diff fixes the KASAN issue. It was just a minor =
-bug.
-> >
-> > diff --git a/drivers/base/core.c b/drivers/base/core.c
-> > index a8cb90577d10..09b98f02f559 100644
-> > --- a/drivers/base/core.c
-> > +++ b/drivers/base/core.c
-> > @@ -2556,6 +2556,7 @@ static void device_release(struct kobject *kobj)
-> >         devres_release_all(dev);
-> >
-> >         kfree(dev->dma_range_map);
-> > +       kfree(dev->driver_override.name);
-> >
-> >         if (dev->release)
-> >                 dev->release(dev);
-> > @@ -2566,7 +2567,6 @@ static void device_release(struct kobject *kobj)
-> >         else
-> >                 WARN(1, KERN_ERR "Device '%s' does not have a
-> > release() function, it is broken and must be fixed. See
-> > Documentation/core-api/kobject.rst.\n",
-> >                         dev_name(dev));
-> > -       kfree(dev->driver_override.name);
-> >         kfree(p);
-> >  }
->
-> Yes, we must not access dev after the release callbacks has been called; =
-no idea
-> how this kfree() ended up below. Thanks for catching!
->
-> > With this applied, along with the PCI driver diff from the WIP patch,
-> > the issue is resolved. I tested this on PCI and both PoCs no longer
-> > trigger KASAN. I also ran with other debug options enabled (lockdep,
-> > sleep inside atomic, etc.) and hit no warnings.
-> >
-> > I was working on a similar patch recently, but your version is better.
-> > Not returning the string directly provides better encapsulation and
-> > makes the API much harder to misuse.
->
-> Ah, right, I remember you mentioned that! If you want I can add your
-> Co-developed-by: to this patch to account for your work.
+There is nothing userspace can do with this value. In the kernel is
+always combined with AT_VECTOR_SIZE_BASE, which is not exposed to
+userspace and also changes from time to time.
 
-That would be great, yes please. Thank you!
+Move the symbol to kernel-internal headers.
 
-And thanks for all your hard work on this patch series, it's a really
-solid improvement.
+Meant to be applied through the asm-generic tree.
+The default recipient list was huge. I trimmed it to only the
+architecture lists.
+
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+---
+Thomas Weißschuh (15):
+      MAINTAINERS: exec: Add more auxvec.h variants
+      auxvec.h: Move AT_VECTOR_SIZE definitions to linux/auxvec.h
+      asm-generic: add an in-kernel auxvec.h header
+      ARM: drop custom asm/auxvec.h
+      x86: Remove AT_VECTOR_SIZE_ARCH from UAPI
+      arm64: Remove AT_VECTOR_SIZE_ARCH from UAPI
+      RISC-V: Remove AT_VECTOR_SIZE_ARCH from UAPI
+      LoongArch: Remove AT_VECTOR_SIZE_ARCH from UAPI
+      s390: Remove AT_VECTOR_SIZE_ARCH from UAPI
+      powerpc: Remove AT_VECTOR_SIZE_ARCH from UAPI
+      MIPS: Remove AT_VECTOR_SIZE_ARCH from UAPI
+      sparc: Remove AT_VECTOR_SIZE_ARCH from UAPI
+      sh: Remove AT_VECTOR_SIZE_ARCH from UAPI
+      alpha: remove AT_VECTOR_SIZE_ARCH from UAPI
+      auxvec.h: Drop fallback AT_VECTOR_SIZE_ARCH
+
+ MAINTAINERS                              |  5 +++++
+ arch/alpha/include/asm/auxvec.h          |  7 +++++++
+ arch/alpha/include/uapi/asm/auxvec.h     |  8 +++-----
+ arch/arm/include/asm/auxvec.h            |  1 -
+ arch/arm64/include/asm/auxvec.h          |  7 +++++++
+ arch/arm64/include/uapi/asm/auxvec.h     |  6 ++----
+ arch/loongarch/include/asm/auxvec.h      | 14 ++++++++++++++
+ arch/loongarch/include/uapi/asm/auxvec.h |  8 +++-----
+ arch/mips/include/asm/auxvec.h           | 17 +++++++++++++++++
+ arch/mips/include/uapi/asm/auxvec.h      |  8 +++-----
+ arch/powerpc/include/asm/auxvec.h        |  7 +++++++
+ arch/powerpc/include/uapi/asm/auxvec.h   |  6 ++----
+ arch/riscv/include/asm/auxvec.h          | 13 +++++++++++++
+ arch/riscv/include/uapi/asm/auxvec.h     |  2 --
+ arch/s390/include/asm/auxvec.h           |  7 +++++++
+ arch/s390/include/uapi/asm/auxvec.h      |  6 ++----
+ arch/sh/include/asm/auxvec.h             |  7 +++++++
+ arch/sh/include/uapi/asm/auxvec.h        |  8 +++-----
+ arch/sparc/include/asm/auxvec.h          |  6 ++++++
+ arch/sparc/include/uapi/asm/auxvec.h     |  8 +++-----
+ arch/x86/include/asm/auxvec.h            | 12 ++++++++++++
+ arch/x86/include/uapi/asm/auxvec.h       | 13 +++----------
+ include/asm-generic/Kbuild               |  1 +
+ include/asm-generic/auxvec.h             |  7 +++++++
+ include/linux/auxvec.h                   |  5 +++++
+ include/linux/mm_types.h                 |  6 ------
+ 26 files changed, 139 insertions(+), 56 deletions(-)
+---
+base-commit: f6b3b0a4c85882ad75bce3b093173203e3f39f28
+change-id: 20260109-at-vector-size-arch-6e0f2e9ff8b6
+
+Best regards,
+-- 
+Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+
 
