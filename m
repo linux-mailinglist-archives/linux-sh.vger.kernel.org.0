@@ -1,167 +1,204 @@
-Return-Path: <linux-sh+bounces-3585-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-3586-lists+linux-sh=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EDD/M8VIwWlbSAQAu9opvQ
-	(envelope-from <linux-sh+bounces-3585-lists+linux-sh=lfdr.de@vger.kernel.org>)
-	for <lists+linux-sh@lfdr.de>; Mon, 23 Mar 2026 15:05:57 +0100
+	id aDlXEZrEwmmIlgQAu9opvQ
+	(envelope-from <linux-sh+bounces-3586-lists+linux-sh=lfdr.de@vger.kernel.org>)
+	for <lists+linux-sh@lfdr.de>; Tue, 24 Mar 2026 18:06:34 +0100
 X-Original-To: lists+linux-sh@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92AF12F3CE6
-	for <lists+linux-sh@lfdr.de>; Mon, 23 Mar 2026 15:05:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF68C319AD6
+	for <lists+linux-sh@lfdr.de>; Tue, 24 Mar 2026 18:06:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E1A6030525D7
-	for <lists+linux-sh@lfdr.de>; Mon, 23 Mar 2026 13:55:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 43343300E3F2
+	for <lists+linux-sh@lfdr.de>; Tue, 24 Mar 2026 16:58:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F2DD3AD527;
-	Mon, 23 Mar 2026 13:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA01E3C8715;
+	Tue, 24 Mar 2026 16:58:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SFjIkSLb"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R8JWN8wR"
 X-Original-To: linux-sh@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5143ACA68
-	for <linux-sh@vger.kernel.org>; Mon, 23 Mar 2026 13:55:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F56C37BE6B;
+	Tue, 24 Mar 2026 16:58:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274155; cv=none; b=c1o1JOrfQPIo8/rPe8Dbe/ZtLjUBOjhz4J+jmogh7ZEwIqebxRzRkbl80hcMPB3/O6UDr+h3LQjw2S5Xm3LfqqTVEAnEXWQbC4iV0S7k2SQS1S9wg3X+K3VyuvDJYHxDvBPdvAXqC6K+AZGL/UADoCrRWiLINoOsvyjKTQlDmVI=
+	t=1774371509; cv=none; b=Fdr/D0xLF3Ja6EjiiZ7NTK97HpVX04tDKHpmgIKzxfiWqRHAFCtv1GXfuQqnjT/H9mtPmO+HPCIY/xqn4dMlaU2uR7GwIQqh+jhI4vyNGPWjMjL+eK8p+a/0ufguEVY9QpSBM0l02fYuzyBbAzPEapfKv0V/nhKJy+2PYY3Az1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274155; c=relaxed/simple;
-	bh=ptUbi7coE8TiCTgvjCOJdhXmMm9zZV1RIxnNmpsvNUY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jLuySRahDniJUe+ZXZjgjfyC479FGiQCUlk2dS9rBC0HdRvxgZOAqJJ254yS4pvgQU4MZaa0MvVhaZyvDTQX31WKh5glFEEV3gMPoLY5TM3Zoc9f8yobNxOKFWGwYJTGvqmhDfOW2HSUTwwCN5xPAUEvMJBbkiwrFpoFnUkKIAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SFjIkSLb; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2ad21f437eeso37606645ad.0
-        for <linux-sh@vger.kernel.org>; Mon, 23 Mar 2026 06:55:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774274153; x=1774878953; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gX403DU43tnkaleCen3mlLyVekGcaUJRBonPOPbGQtY=;
-        b=SFjIkSLb6hCeV6O6C0rMZn9Ic10VRNRaECLQK/c2sn6NWaZgQUEKdAr406SoSmeybA
-         4ZrkRBXuiQ68yXXDuqeCt6gYZ3oDHRaZuTr8nWD7xfJxBhEs5cgfXXwvGWnbdUJpBZFi
-         Uv3x7AxkMJPm1VB+SlWCjugJVtQNqXphz9NU34oCJ/jFtP4LD1f9a0jt3rfQQ0ryXLhR
-         vKAHVsMEMtn6CVqM42/umHMRZQYtU+nKOjoWchw/3RFy5zIQJTkWPsRc0Ya0LKOxueGX
-         JzBcQS9q5j5oNnEZbErXiOZulbOrdZ114gyYzpIe0TdEVxtKFOSaJBIYEE1GlnwMzPym
-         jAFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774274153; x=1774878953;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gX403DU43tnkaleCen3mlLyVekGcaUJRBonPOPbGQtY=;
-        b=k92Tnx4zCOlwZ7aF9swE3cBYyyHE4We5kHgB4f8eKfGqvVEn/gjqS2TkKNRuBWYwbA
-         64Ec8PzKb525x/qDHE3C5xyuqfGp+OQHNONKhvdPbl11ZZ0HF6HDI3Kw78S3hRLYrd1l
-         Kuh6ymKomgaVgm/DA4UEOwUY7CCtrp74uFa7/TwcnKFihpVhf6NsqfGyCPkwB/EWBeRI
-         lzFKjW+GmbxcTWauePazzPzUeSdsn2y3frGG0IcaoE0qeOoIol8GdD3MJFXwPj56lq29
-         6UAzktKm39SyGRiR+C2Ukw9AAbsLEK0TnN1VFftsCRs4z+Eo6UBhdzFkocYO9A16aA3Z
-         4P3A==
-X-Forwarded-Encrypted: i=1; AJvYcCXsw8igIBdSkJCzP6fZ8DtbHkKhqcgTmY2fjc93XyfXoV+wanHF2qLbsemaZ4h1jfo7MTOm0BcYxg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YydUyCnSPDrXS51HSt1r3Iih9++922pKXUnQENfoa6X7MWIu6B4
-	ZFAvvyZSHnYZuzRdoAe3Mu5FubfaGKB9tDNE/1hQx8MUzBPmAwKvGPXl
-X-Gm-Gg: ATEYQzztTR662haVI06IUhCm6JZ6GbRup1R6xct7RfkmxIKDHcPTaTbI8yrXUHqivEl
-	kx5kRMwnV35YEWso1cEeL2MOpYSn5G7jl/1H3zZ0rHVN9vaTwoUqQVxubSJxnizp/1nNRa2Y81c
-	TvSI/LCK3m2A5oKq2oFefaSH323xH0FFbjSf6VyJRwCw3h7M6Q+ZAyhgv/3L5ZLWqZK9phI5hA1
-	8ZCPPF9V24iK4aA4tkXnUpa4kmjENFmc86X1dlzi6caycNpiPFa7G2KjM9qyMk2csRXX49Wvf23
-	z0l2DBP+rDS9Zl6m1TEJOPOk6xpg0/33z7U6eyVcfet9iu9Ty+nqtIXBxZ7S9yNmhsLa3c5XDtW
-	mpO5e/ITXs72uaMV11wnss0RUBW92Ka5aPCQ33DwNLZpczcFP8pWXm80tXVPAx960/obqds2TZL
-	fg5o0DY63npeMIsTPS50Ze
-X-Received: by 2002:a17:902:db12:b0:2ae:7f85:33d1 with SMTP id d9443c01a7336-2b082636715mr116185785ad.0.1774274153320;
-        Mon, 23 Mar 2026 06:55:53 -0700 (PDT)
-Received: from lgs.. ([223.80.110.53])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b083527f90sm108967095ad.19.2026.03.23.06.55.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 06:55:53 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	Adrian McMenamin <adrian@newgolddream.dyndns.info>,
-	Paul Mundt <lethal@linux-sh.org>,
+	s=arc-20240116; t=1774371509; c=relaxed/simple;
+	bh=AVKqbcBAH58YtvbtTvUhV6tMedua8892v/x7yCDldr8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=U0vw+pusbKAm23CIdPa0XRLwuYI67n6kbZgzsVmiXhEqcGuWkoavWEklCL3p71LYeZ03fd/ZkoW+r8OSPTPS/RwjZnPwGDaMQ5I46Oo33LsmZtgn/zZLnmYmDxX6HL2naijhTNXH+dA6E2dhh+6/crCbikcbk6kPfJ3A6EhzJDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R8JWN8wR; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774371507; x=1805907507;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=AVKqbcBAH58YtvbtTvUhV6tMedua8892v/x7yCDldr8=;
+  b=R8JWN8wR3mMZgajMDJfTk7tF2WeGZPt8s1lVqLa4U34eHcwFVrzd8yWD
+   QP4zMpT+Le9rT6/MxT8XVQUGK34+w4hWoXnechYNxg8bS4bUzvAsYrWmy
+   KSs2OjfSWlxarirO1fc3C/bHvZx6a3cy0YUJpP2VqR/vplMLTcsUAUtpY
+   hvCeUGyzd3DilI58UcA7ad9s4QmK4HumRSSoh3NiHKewHTASjNgDYv4SZ
+   t8AhPEMy+SOnYZxUTATVy+W4yD8/Y3XjGoT4dBC06Kg1NnuC01A91LC4m
+   d4EPiD0Srp8qjgpGdZk+ZauiVmICQXoIoTqyeBlMaeskmVzNSSZ3PUaMM
+   Q==;
+X-CSE-ConnectionGUID: FmR9B8xUQV2VisUKgez5WA==
+X-CSE-MsgGUID: tl/rrci+RRSHChXkrnOI1g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11739"; a="86471499"
+X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
+   d="scan'208";a="86471499"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 09:58:25 -0700
+X-CSE-ConnectionGUID: aesm43ZmRSeKftw4Z5hIbQ==
+X-CSE-MsgGUID: C08Qc1D5Q9Gv1bbEQjAQVQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
+   d="scan'208";a="224421853"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.217])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 09:58:15 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To: linux-pci@vger.kernel.org,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	linux-alpha@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org,
 	linux-sh@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH] maple: Fix refcount leak in maple_attach_driver() error path
-Date: Mon, 23 Mar 2026 21:55:40 +0800
-Message-ID: <20260323135540.922928-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	Russell King <linux@armlinux.org.uk>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Helge Deller <deller@gmx.de>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Chris Zankel <chris@zankel.net>,
+	Max Filippov <jcmvbkbc@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Rich Felker <dalias@libc.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 00/10] PCI: Improve head free space usage
+Date: Tue, 24 Mar 2026 18:56:23 +0200
+Message-Id: <20260324165633.4583-1-ilpo.jarvinen@linux.intel.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-sh@vger.kernel.org
 List-Id: <linux-sh.vger.kernel.org>
 List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_FROM(0.00)[bounces-3585-lists,linux-sh=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[users.sourceforge.jp,libc.org,physik.fu-berlin.de,gmail.com,newgolddream.dyndns.info,linux-sh.org,vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-3586-lists,linux-sh=lfdr.de];
+	FREEMAIL_TO(0.00)[vger.kernel.org,google.com,roeck-us.net,lists.infradead.org,lists.linux-m68k.org,lists.ozlabs.org,armlinux.org.uk,linux-m68k.org,alpha.franken.de,HansenPartnership.com,gmx.de,ellerman.id.au,kernel.org,redhat.com,alien8.de,linux.intel.com,zytor.com,zankel.net,gmail.com,linux.ibm.com,users.sourceforge.jp,libc.org,physik.fu-berlin.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[30];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,linux-sh@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[ilpo.jarvinen@linux.intel.com,linux-sh@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-sh];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 92AF12F3CE6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.intel.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:dkim]
+X-Rspamd-Queue-Id: AF68C319AD6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-As device_register() calls device_initialize() before device_add(), the
-failure path in maple_attach_driver() is reached after the embedded
-struct device has already been initialized and its lifetime is expected
-to be managed through the device core reference counting. However, that
-path frees mdev and its associated resources directly via
-maple_free_dev(), rather than releasing them through put_device() and
-the normal release path. This may leave the reference count of the
-embedded struct device unbalanced, resulting in a refcount leak and
-potentially leading to a use-after-free.
+Hi all,
 
-A possible fix would be to use put_device() in the error path and let
-maple_release_device() handle the final cleanup.
+This series attempts to take advantage of free head space (the free
+space before the aligned start address) in order to generally produce a
+tighter packing of the resources/bridge windows.
 
-Fixes: b3c69e248176 ("maple: more robust device detection.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
- drivers/sh/maple/maple.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The recent changes to the resource fitting algorithm caused resource
+allocation failures in some cases where a bridge window that is sized
+to be gapless could no longer be assigned. The previous algorithm left
+a huge gaps which allowed it to place the remainder (non-aligning part
+of the size) before the start address of used for the gapless fit,
+whereas the new gapless approach always had to place the remainder
+after the aligning part of the resources. There is not always space
+for the remainder triggering those failures (e.g., when the aligning
+part must be placed at the top of the window).
 
-diff --git a/drivers/sh/maple/maple.c b/drivers/sh/maple/maple.c
-index 6dc0549f7900..20b7c2cd852b 100644
---- a/drivers/sh/maple/maple.c
-+++ b/drivers/sh/maple/maple.c
-@@ -393,7 +393,7 @@ static void maple_attach_driver(struct maple_device *mdev)
- 		dev_warn(&mdev->dev, "could not register device at"
- 			" (%d, %d), with error 0x%X\n", mdev->unit,
- 			mdev->port, error);
--		maple_free_dev(mdev);
-+		put_device(&mdev->dev);
- 		mdev = NULL;
- 		return;
- 	}
+This series attempts to allow placing the remainder once again before
+the aligning part, but now without leaving huge gaps to retain the
+benefits of the gapless bridge windows. The approach is somewhat hacky
+but should work thanks to PCI resources fundamentally consisting only
+power-of-two atoms.
+
+There maybe cases where architecture would not want to do such
+relocation. This series adds the relocation to arch
+pcibios_align_resource() functions to allow all of them taking
+advantage of the better resource packing but if somebody objects doing
+this relocation for a particular arch, I can remove it, please just let
+me know (this relocation doesn't seem critical unless there are
+regressions).
+
+Ilpo Järvinen (10):
+  resource: Add __resource_contains_unbound() for internal contains
+    checks
+  resource: Pass full extent of empty space to resource_alignf CB
+  resource: Rename 'tmp' variable to 'full_avail'
+  ARM/PCI: Remove unnecessary second application of align
+  am68k/PCI: Remove unnecessary second application of align
+  MIPS: PCI: Remove unnecessary second application of align
+  parisc/PCI: Cleanup align handling
+  PCI: Rename window_alignment() to pci_min_window_alignment()
+  PCI: Align head space better
+  PCI: Fix alignment calculation for resource size larger than align
+
+ arch/alpha/kernel/pci.c          |  1 +
+ arch/arm/kernel/bios32.c         |  9 ++++---
+ arch/m68k/kernel/pcibios.c       |  8 +++++--
+ arch/mips/pci/pci-generic.c      |  8 ++++---
+ arch/mips/pci/pci-legacy.c       |  3 +++
+ arch/parisc/kernel/pci.c         | 17 ++++++++------
+ arch/powerpc/kernel/pci-common.c |  6 ++++-
+ arch/s390/pci/pci.c              |  1 +
+ arch/sh/drivers/pci/pci.c        |  6 ++++-
+ arch/x86/pci/i386.c              |  5 +++-
+ arch/xtensa/kernel/pci.c         |  3 +++
+ drivers/pci/pci.h                |  3 +++
+ drivers/pci/setup-bus.c          | 15 ++++++++----
+ drivers/pci/setup-res.c          | 40 +++++++++++++++++++++++++++++++-
+ drivers/pcmcia/rsrc_nonstatic.c  |  3 ++-
+ include/linux/ioport.h           | 22 +++++++++++++++---
+ include/linux/pci.h              | 12 +++++++---
+ kernel/resource.c                | 33 +++++++++++++-------------
+ 18 files changed, 149 insertions(+), 46 deletions(-)
+
+
+base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
 -- 
-2.43.0
+2.39.5
 
 
