@@ -1,142 +1,218 @@
-Return-Path: <linux-sh+bounces-3610-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-3611-lists+linux-sh=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gMuQLRv0xWnbEgUAu9opvQ
-	(envelope-from <linux-sh+bounces-3610-lists+linux-sh=lfdr.de@vger.kernel.org>)
-	for <lists+linux-sh@lfdr.de>; Fri, 27 Mar 2026 04:06:03 +0100
+	id +F+2N1tcxmm+JAUAu9opvQ
+	(envelope-from <linux-sh+bounces-3611-lists+linux-sh=lfdr.de@vger.kernel.org>)
+	for <lists+linux-sh@lfdr.de>; Fri, 27 Mar 2026 11:30:51 +0100
 X-Original-To: lists+linux-sh@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 238FA33EA82
-	for <lists+linux-sh@lfdr.de>; Fri, 27 Mar 2026 04:06:02 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83C753428F3
+	for <lists+linux-sh@lfdr.de>; Fri, 27 Mar 2026 11:30:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3424A3029241
-	for <lists+linux-sh@lfdr.de>; Fri, 27 Mar 2026 02:56:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1BBBF30461A7
+	for <lists+linux-sh@lfdr.de>; Fri, 27 Mar 2026 10:29:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93AED33EB1B;
-	Fri, 27 Mar 2026 02:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3800F3B47DA;
+	Fri, 27 Mar 2026 10:29:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SX0nzWlZ"
 X-Original-To: linux-sh@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A7333DEFE;
-	Fri, 27 Mar 2026 02:56:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A443AA1B2;
+	Fri, 27 Mar 2026 10:29:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774580166; cv=none; b=PYppQGzQakaZvb5XWfx246yOneNOlAL8md37/l9d94+CyEK9+5RjMJgLO2TG/kMscSEuwHwpTrNXJDG4BbxN7ozcPVDHphHm24/SUQch9gisKh+j1DyKDV2Sq/t6faGQEsnbPlaX+xQhNP0aa171i0MMjMV26WScxxI0aSdMfZ8=
+	t=1774607354; cv=none; b=keG8S0eKOtsDy0M2UMRN9cCH5OcCbjOkusojCHtgdeKcW9FhoH+u0IPEBCsJqhHaAv7amQ9xRm2zpXgk/+9+fSyfA4TzzY/NuPwhj+n/DSykYbUyTunllF5QF5vzAQYZQjuRoVllfnAwPsr+yX6KVyp6JdEV1ZixPBetu9pYYeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774580166; c=relaxed/simple;
-	bh=OXABB1eFjeN1oGH/SXFHZZT4FCIkSR1xm49zyhunO7w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=mL6oPjZ6AV+g3fkAf9SZCzXneiKUUjWFVQz58U87NpDv7XBvPVHCKNOHPf/08i0XS8inf7tWC62+cJqUlB1RdL47O/nyrRqYb9pjCpWJ6kPVMguhXeqYD5nmaDsRpqDGV8+ooT/tcUHcSQbhPwczO7hsMW1ClEOCeLMuInIHzYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62989C116C6;
-	Fri, 27 Mar 2026 02:55:59 +0000 (UTC)
-Message-ID: <b89ac970-7990-4a12-9769-82efc945c950@linux-m68k.org>
-Date: Fri, 27 Mar 2026 12:55:55 +1000
+	s=arc-20240116; t=1774607354; c=relaxed/simple;
+	bh=AQrZsYS87uRLSAUzR2yt6e8HOvPMEsktxMC+0rqw0oY=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=nVuYhg6gY5IMwE6tnlqy3yOoA4E2e+6tsyvnzitFBWc03tx1m2so0L45gAxs8Zxl1htN/84Xhr/YxkkpcsfiaD8d361Cf0Y3qlcWJ8tyr7BV1N+GDH5FpD7d1TrGotUtEoLjDsijTUnJx6ZXbBSUx3FxUSGSvKEnY6dvn/TuKW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SX0nzWlZ; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774607353; x=1806143353;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=AQrZsYS87uRLSAUzR2yt6e8HOvPMEsktxMC+0rqw0oY=;
+  b=SX0nzWlZIY0Lg4fyXJy1hem2uUevSvI1nbx91bp0jZYYqRr93GaLksaE
+   L6XLJWuLACGbs/Obo0LLfiusLKSxmX5HOfj2BR/OfzI5RUmPnAEbJxWGx
+   H8arvWKQ7iOn+koxe3/GEJt4fFT8S6HWH9xg10wBXdgqPJanVKkEt1Qyx
+   /7B2xb2jl7faADXEGMBpdI28tH79/++kh/ol8X0TPBLWYG1sA2mCqBcZa
+   QJQsSA1iMaFdyaMsTkz2wpp39pZGfRPODNn6QqAM5cXjkgXj8CJ1e7gn9
+   0Li0W7WV2EDfk6lWNjEzVO4kFjsRIUYdrV6xXvg6gkCesf5RAzv+5UkW8
+   Q==;
+X-CSE-ConnectionGUID: +KbLwjXESSqMmEPH1Yg2iA==
+X-CSE-MsgGUID: k3BStIGXSgiyo9+iueWvgA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="93259306"
+X-IronPort-AV: E=Sophos;i="6.23,144,1770624000"; 
+   d="scan'208";a="93259306"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 03:29:11 -0700
+X-CSE-ConnectionGUID: tBARr7F7SaCXrVZYlacT+g==
+X-CSE-MsgGUID: 6iZuzsYWQBOngO/GpRvA3A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,144,1770624000"; 
+   d="scan'208";a="263218208"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.186])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 03:29:01 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Fri, 27 Mar 2026 12:28:56 +0200 (EET)
+To: Bjorn Helgaas <helgaas@kernel.org>
+cc: linux-pci@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, 
+    Guenter Roeck <linux@roeck-us.net>, linux-alpha@vger.kernel.org, 
+    linux-arm-kernel@lists.infradead.org, linux-m68k@lists.linux-m68k.org, 
+    linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
+    linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
+    linux-sh@vger.kernel.org, Russell King <linux@armlinux.org.uk>, 
+    Geert Uytterhoeven <geert@linux-m68k.org>, 
+    Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+    "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+    Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>, 
+    Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+    Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+    "H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>, 
+    Max Filippov <jcmvbkbc@gmail.com>, 
+    Madhavan Srinivasan <maddy@linux.ibm.com>, 
+    Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
+    John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+    LKML <linux-kernel@vger.kernel.org>, Xifer <xiferdev@gmail.com>
+Subject: Re: [PATCH 00/10] PCI: Improve head free space usage
+In-Reply-To: <20260326192520.GA1337681@bhelgaas>
+Message-ID: <7207cde7-d47e-f79c-afe9-9b1daa79140c@linux.intel.com>
+References: <20260326192520.GA1337681@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-sh@vger.kernel.org
 List-Id: <linux-sh.vger.kernel.org>
 List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/10] am68k/PCI: Remove unnecessary second application of
- align
-To: =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- linux-pci@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
- Guenter Roeck <linux@roeck-us.net>, linux-alpha@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-m68k@lists.linux-m68k.org,
- linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
- linux-sh@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
- Max Filippov <jcmvbkbc@gmail.com>, Madhavan Srinivasan
- <maddy@linux.ibm.com>, Yoshinori Sato <ysato@users.sourceforge.jp>,
- Rich Felker <dalias@libc.org>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- linux-kernel@vger.kernel.org
-References: <20260324165633.4583-1-ilpo.jarvinen@linux.intel.com>
- <20260324165633.4583-6-ilpo.jarvinen@linux.intel.com>
-Content-Language: en-US
-From: Greg Ungerer <gerg@linux-m68k.org>
-In-Reply-To: <20260324165633.4583-6-ilpo.jarvinen@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.46 / 15.00];
+Content-Type: multipart/mixed; boundary="8323328-307680389-1774607336=:1037"
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	CTYPE_MIXED_BOGUS(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	MIME_GOOD(-0.10)[multipart/mixed,text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[linux-m68k.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-3610-lists,linux-sh=lfdr.de];
-	FREEMAIL_TO(0.00)[linux.intel.com,vger.kernel.org,google.com,roeck-us.net,lists.infradead.org,lists.linux-m68k.org,lists.ozlabs.org,armlinux.org.uk,linux-m68k.org,alpha.franken.de,HansenPartnership.com,gmx.de,ellerman.id.au,kernel.org,redhat.com,alien8.de,zytor.com,zankel.net,gmail.com,linux.ibm.com,users.sourceforge.jp,libc.org,physik.fu-berlin.de];
-	RCPT_COUNT_TWELVE(0.00)[30];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,google.com,roeck-us.net,lists.infradead.org,lists.linux-m68k.org,lists.ozlabs.org,armlinux.org.uk,linux-m68k.org,alpha.franken.de,hansenpartnership.com,gmx.de,ellerman.id.au,kernel.org,redhat.com,alien8.de,linux.intel.com,zytor.com,zankel.net,gmail.com,linux.ibm.com,users.sourceforge.jp,libc.org,physik.fu-berlin.de];
+	TAGGED_FROM(0.00)[bounces-3611-lists,linux-sh=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[31];
+	MIME_TRACE(0.00)[0:+,1:+];
+	DKIM_TRACE(0.00)[intel.com:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gerg@linux-m68k.org,linux-sh@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	R_DKIM_NA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ilpo.jarvinen@linux.intel.com,linux-sh@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-sh];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-m68k.org:email,linux-m68k.org:mid,intel.com:email]
-X-Rspamd-Queue-Id: 238FA33EA82
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux.intel.com:mid,intel.com:dkim]
+X-Rspamd-Queue-Id: 83C753428F3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
+--8323328-307680389-1774607336=:1037
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-On 25/3/26 02:56, Ilpo Järvinen wrote:
-> Aligning res->start by align inside pcibios_align_resource() is
-> unnecessary because caller of pcibios_align_resource() is
-> __find_resource_space() that aligns res->start with align before
-> calling pcibios_align_resource().
-> 
-> Aligning by align in case of IORESOURCE_IO && start & 0x300 cannot ever
-> result in changing start either because 0x300 bits would have not
-> survived the earlier alignment if align was large enough to have an
-> impact.
-> 
-> Thus, remove the duplicated aligning from pcibios_align_resource().
-> 
-> Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+On Thu, 26 Mar 2026, Bjorn Helgaas wrote:
 
-LGTM.
+> [+cc Xifer; thanks very much for reporting and testing!]
+>=20
+> On Tue, Mar 24, 2026 at 06:56:23PM +0200, Ilpo J=C3=A4rvinen wrote:
+> > Hi all,
+> >=20
+> > This series attempts to take advantage of free head space (the free
+> > space before the aligned start address) in order to generally produce a
+> > tighter packing of the resources/bridge windows.
+> >=20
+> > The recent changes to the resource fitting algorithm caused resource
+> > allocation failures in some cases where a bridge window that is sized
+> > to be gapless could no longer be assigned. The previous algorithm left
+> > a huge gaps which allowed it to place the remainder (non-aligning part
+> > of the size) before the start address of used for the gapless fit,
+> > whereas the new gapless approach always had to place the remainder
+> > after the aligning part of the resources. There is not always space
+> > for the remainder triggering those failures (e.g., when the aligning
+> > part must be placed at the top of the window).
+> >=20
+> > This series attempts to allow placing the remainder once again before
+> > the aligning part, but now without leaving huge gaps to retain the
+> > benefits of the gapless bridge windows. The approach is somewhat hacky
+> > but should work thanks to PCI resources fundamentally consisting only
+> > power-of-two atoms.
+> >=20
+> > There maybe cases where architecture would not want to do such
+> > relocation. This series adds the relocation to arch
+> > pcibios_align_resource() functions to allow all of them taking
+> > advantage of the better resource packing but if somebody objects doing
+> > this relocation for a particular arch, I can remove it, please just let
+> > me know (this relocation doesn't seem critical unless there are
+> > regressions).
+> >=20
+> > Ilpo J=C3=A4rvinen (10):
+> >   resource: Add __resource_contains_unbound() for internal contains
+> >     checks
+> >   resource: Pass full extent of empty space to resource_alignf CB
+> >   resource: Rename 'tmp' variable to 'full_avail'
+> >   ARM/PCI: Remove unnecessary second application of align
+> >   am68k/PCI: Remove unnecessary second application of align
+> >   MIPS: PCI: Remove unnecessary second application of align
+> >   parisc/PCI: Cleanup align handling
+> >   PCI: Rename window_alignment() to pci_min_window_alignment()
+> >   PCI: Align head space better
+> >   PCI: Fix alignment calculation for resource size larger than align
+> >=20
+> >  arch/alpha/kernel/pci.c          |  1 +
+> >  arch/arm/kernel/bios32.c         |  9 ++++---
+> >  arch/m68k/kernel/pcibios.c       |  8 +++++--
+> >  arch/mips/pci/pci-generic.c      |  8 ++++---
+> >  arch/mips/pci/pci-legacy.c       |  3 +++
+> >  arch/parisc/kernel/pci.c         | 17 ++++++++------
+> >  arch/powerpc/kernel/pci-common.c |  6 ++++-
+> >  arch/s390/pci/pci.c              |  1 +
+> >  arch/sh/drivers/pci/pci.c        |  6 ++++-
+> >  arch/x86/pci/i386.c              |  5 +++-
+> >  arch/xtensa/kernel/pci.c         |  3 +++
+> >  drivers/pci/pci.h                |  3 +++
+> >  drivers/pci/setup-bus.c          | 15 ++++++++----
+> >  drivers/pci/setup-res.c          | 40 +++++++++++++++++++++++++++++++-
+> >  drivers/pcmcia/rsrc_nonstatic.c  |  3 ++-
+> >  include/linux/ioport.h           | 22 +++++++++++++++---
+> >  include/linux/pci.h              | 12 +++++++---
+> >  kernel/resource.c                | 33 +++++++++++++-------------
+> >  18 files changed, 149 insertions(+), 46 deletions(-)
+>=20
+> I added Xifer's tested-by, fixed the "am68k" and missing "if"
+> typos, and applied these to pci/resource for v7.1.
+>=20
+> Ilpo, if you post a v2 with more changes, I'll update to it.  I
+> applied the series now to get a head start on 0-day building and into
+> next.
 
-Acked-by: Greg Ungerer <gerg@linux-m68k.org>
+Thanks.
 
+I don't have anything in addition to those.
 
-> ---
->   arch/m68k/kernel/pcibios.c | 2 --
->   1 file changed, 2 deletions(-)
-> 
-> diff --git a/arch/m68k/kernel/pcibios.c b/arch/m68k/kernel/pcibios.c
-> index 1415f6e4e5ce..7e286ee1976b 100644
-> --- a/arch/m68k/kernel/pcibios.c
-> +++ b/arch/m68k/kernel/pcibios.c
-> @@ -36,8 +36,6 @@ resource_size_t pcibios_align_resource(void *data, const struct resource *res,
->   	if ((res->flags & IORESOURCE_IO) && (start & 0x300))
->   		start = (start + 0x3ff) & ~0x3ff;
->   
-> -	start = (start + align - 1) & ~(align - 1);
-> -
->   	return start;
->   }
->   
+--=20
+ i.
 
+--8323328-307680389-1774607336=:1037--
 
