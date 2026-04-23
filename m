@@ -1,64 +1,67 @@
-Return-Path: <linux-sh+bounces-3708-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-3710-lists+linux-sh=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ELKdHXwM6mn4sgIAu9opvQ
-	(envelope-from <linux-sh+bounces-3708-lists+linux-sh=lfdr.de@vger.kernel.org>)
-	for <lists+linux-sh@lfdr.de>; Thu, 23 Apr 2026 14:11:40 +0200
+	id 8GLuE44y6mkCwwIAu9opvQ
+	(envelope-from <linux-sh+bounces-3710-lists+linux-sh=lfdr.de@vger.kernel.org>)
+	for <lists+linux-sh@lfdr.de>; Thu, 23 Apr 2026 16:54:06 +0200
 X-Original-To: lists+linux-sh@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F9CE451CCA
-	for <lists+linux-sh@lfdr.de>; Thu, 23 Apr 2026 14:11:38 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCFB7453EBD
+	for <lists+linux-sh@lfdr.de>; Thu, 23 Apr 2026 16:54:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EBA5330C0116
-	for <lists+linux-sh@lfdr.de>; Thu, 23 Apr 2026 12:05:13 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E4D933018184
+	for <lists+linux-sh@lfdr.de>; Thu, 23 Apr 2026 14:53:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EFC63EB81D;
-	Thu, 23 Apr 2026 12:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3024B30CD9E;
+	Thu, 23 Apr 2026 14:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="bJL2cdmc"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="qM+MtpM6"
 X-Original-To: linux-sh@vger.kernel.org
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9FDA3E929E
-	for <linux-sh@vger.kernel.org>; Thu, 23 Apr 2026 12:05:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD30F34DCEB
+	for <linux-sh@vger.kernel.org>; Thu, 23 Apr 2026 14:53:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776945913; cv=none; b=ANe7p1n4u9NgyK3TZ5HULurJO8c9BJ3Qzp84XM94f1mACDfHjM8h0crrMksWRxgp5iZMS5SCBhW5QaMnRSVlSJEqEk3bzJHefyVBoMUp4h+0HBcxQmBN67L4NSSYMD0lEHiOJZ5tMoeAGqzZad0jKg0QEX8QS3ontgfn6mZioHs=
+	t=1776956036; cv=none; b=ASw/7nC9PsuytVdw/dru6cjYAfppftzll4JfdytL8FGPH5gUCM8N2FPydF8o7YlIbiKPCLyFbWsiwWUDYJa9skIYVzzj5J7VWeOVMq8DlAf3/Z+RqavKECHtlmUlQHOwwDE61nSdfnkSqjhlu+HVmueHa0bj3GKO6ZKLvoGEzhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776945913; c=relaxed/simple;
-	bh=wuL9cGucZxMkHpVY+zF4yLAmTMoJOb6bCA8faIzUBL8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nvN+Ub2pEsyMdGd3/+gcUctS6YVJOklPf9DPVy5BoiHW0Ccdt5+Acdui/Ukv+YTMIGFKQ2pzE3Ya4H5tyKfuUNexGKvMJID6LKcWK+IQOpOzKv7vAg5uFGRRHo4jAJBgTiGqdm5h/ta9dcV+esBoBtLg2eP2cFs5qBGO85E+5xA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=bJL2cdmc; arc=none smtp.client-ip=91.218.175.181
+	s=arc-20240116; t=1776956036; c=relaxed/simple;
+	bh=VqJMBtZ2w8kioKDXx2y0e8D8bODyt37lcec6JyOFNvM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P3TUbrFsULz+kv1f+gvafg5ZwQKGworNb/zB0A/E9mUmDLOa3+RDvfLs8gQ39EIHUv94ydYLh8TLEJnnABz/e7jgaS3ND/+kEwRNE/uAQJAGXHRFEcBNf6EfFMybXcuSvdDBeM3G8CYc875h920K/HFAXs6ErE2dDMjyZ36T3fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=qM+MtpM6; arc=none smtp.client-ip=91.218.175.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776945909;
+	t=1776956022;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=b2/kD7CX88KbW9/qxpDOdDaEVHtB14vcEeoRQqxsTL8=;
-	b=bJL2cdmcwGhZp1SFkU3Gw72NjtvRifyWFrmSQdl4+BfN//KpEk7yEpxwyh86Oqgt8OAEw+
-	GXiufS3y476EuO9lmmWb4DoF1alwO812gjwbNGc8S/EOZnkZntQq+IqkHUkVZ8SRRaYnfx
-	CCc7qsY9nU5EQG7wfoyOZBL5vUKhnuU=
+	bh=rSjB2O/vFrGcnPKwIm650pmyGxb7QMYuEfUemAPvJpE=;
+	b=qM+MtpM6rUspYApZwCCCxlM0gMbagSZ9vWeQflXhlgvvdG3JTuNb1kEPjQq38pprqCaz1+
+	0QLWz1lYrS1/Uo2gHmcvPWNfBIZ19JOBkrkU+04RVv07ktWLrRaeRq0Ob8ftQ2jPsKLTLu
+	EV75EaHofpePXGi1hfei2Ffi5bp3PVg=
 From: Thorsten Blum <thorsten.blum@linux.dev>
 To: Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>
 Cc: Thorsten Blum <thorsten.blum@linux.dev>,
 	linux-sh@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH] sh: use sizeof() in memchunk_cmdline_override
-Date: Thu, 23 Apr 2026 14:04:42 +0200
-Message-ID: <20260423120441.212278-3-thorsten.blum@linux.dev>
+Subject: [PATCH 1/2] sh: cache: remove unused but set variables in sh4_flush_cache_range
+Date: Thu, 23 Apr 2026 16:53:01 +0200
+Message-ID: <20260423145301.245374-4-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: linux-sh@vger.kernel.org
 List-Id: <linux-sh.vger.kernel.org>
 List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=744; i=thorsten.blum@linux.dev; h=from:subject; bh=wuL9cGucZxMkHpVY+zF4yLAmTMoJOb6bCA8faIzUBL8=; b=owGbwMvMwCUWt7pQ4caZUj3G02pJDJmvuG5OnR9j1Oh+LleT1SchbwKHpGfBh0nsm3M4TCdaV xwsabrXUcrCIMbFICumyPJg1o8ZvqU1lZtMInbCzGFlAhnCwMUpABN5cZCRYfqb5VfYdEMDX9sa KDdsnVFxcr7pp+TUMNec22br9zQ/N2JkeCfRk3ygpFfsWNnFftOrSrx8JeXy0Z9+b/9s+Fz89Yo KTgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=730; i=thorsten.blum@linux.dev; h=from:subject; bh=VqJMBtZ2w8kioKDXx2y0e8D8bODyt37lcec6JyOFNvM=; b=owGbwMvMwCUWt7pQ4caZUj3G02pJDJmvjHyFXr2YIxXIniChWuFZcDXb8INC0pnjcn5Hn85Yz GKundjYUcrCIMbFICumyPJg1o8ZvqU1lZtMInbCzGFlAhnCwMUpABMR+MjwT2XzRkWWAoZ89z2a BuonpuhO0dTsNNnAs+70hbvXLkmuPcrw3zW1KdtxR/U159wN57Un3csW+1pw+8UKZsU/QlHPq6N jOQA=
 X-Developer-Key: i=thorsten.blum@linux.dev; a=openpgp; fpr=1D60735E8AEF3BE473B69D84733678FD8DFEEAD4
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
@@ -67,52 +70,54 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-3708-lists,linux-sh=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[3];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-3710-lists,linux-sh=lfdr.de];
 	DKIM_TRACE(0.00)[linux.dev:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[thorsten.blum@linux.dev,linux-sh@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MAILSPIKE_FAIL(0.00)[172.234.253.10:server fail];
-	TAGGED_RCPT(0.00)[linux-sh];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linux.dev:dkim,linux.dev:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7F9CE451CCA
+	TAGGED_RCPT(0.00)[linux-sh];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux.dev:email,linux.dev:dkim,linux.dev:mid]
+X-Rspamd-Queue-Id: BCFB7453EBD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Replace the hard-coded string length with 'sizeof("memchunk.") - 1' and
-remove the comment.
+Remove 'start' and 'end' to avoid two "variable set but not used"
+warnings triggered by -Wunused-but-set-variable.
 
 Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
 ---
- arch/sh/mm/consistent.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/sh/mm/cache-sh4.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/arch/sh/mm/consistent.c b/arch/sh/mm/consistent.c
-index 0de206c1acfe..8f3a5bcbccfe 100644
---- a/arch/sh/mm/consistent.c
-+++ b/arch/sh/mm/consistent.c
-@@ -23,7 +23,7 @@ static void __init memchunk_cmdline_override(char *name, unsigned long *sizep)
- 	int k = strlen(name);
+diff --git a/arch/sh/mm/cache-sh4.c b/arch/sh/mm/cache-sh4.c
+index 83fb34b39ca7..9776027382cc 100644
+--- a/arch/sh/mm/cache-sh4.c
++++ b/arch/sh/mm/cache-sh4.c
+@@ -284,11 +284,8 @@ static void sh4_flush_cache_range(void *args)
+ {
+ 	struct flusher_data *data = args;
+ 	struct vm_area_struct *vma;
+-	unsigned long start, end;
  
- 	while ((p = strstr(p, "memchunk."))) {
--		p += 9; /* strlen("memchunk.") */
-+		p += sizeof("memchunk.") - 1;
- 		if (!strncmp(name, p, k) && p[k] == '=') {
- 			p += k + 1;
- 			*sizep = memparse(p, NULL);
+ 	vma = data->vma;
+-	start = data->addr1;
+-	end = data->addr2;
+ 
+ 	if (cpu_context(smp_processor_id(), vma->vm_mm) == NO_CONTEXT)
+ 		return;
 
