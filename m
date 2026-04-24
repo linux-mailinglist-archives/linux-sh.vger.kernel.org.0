@@ -1,110 +1,144 @@
-Return-Path: <linux-sh+bounces-3730-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-3732-lists+linux-sh=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8CoPF17D62liRAAAu9opvQ
-	(envelope-from <linux-sh+bounces-3730-lists+linux-sh=lfdr.de@vger.kernel.org>)
-	for <lists+linux-sh@lfdr.de>; Fri, 24 Apr 2026 21:24:14 +0200
+	id ASOLBPLN62m0RgAAu9opvQ
+	(envelope-from <linux-sh+bounces-3732-lists+linux-sh=lfdr.de@vger.kernel.org>)
+	for <lists+linux-sh@lfdr.de>; Fri, 24 Apr 2026 22:09:22 +0200
 X-Original-To: lists+linux-sh@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6417462D83
-	for <lists+linux-sh@lfdr.de>; Fri, 24 Apr 2026 21:24:13 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74F224631E1
+	for <lists+linux-sh@lfdr.de>; Fri, 24 Apr 2026 22:09:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B2794300D6A0
-	for <lists+linux-sh@lfdr.de>; Fri, 24 Apr 2026 19:24:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 881C13015A4A
+	for <lists+linux-sh@lfdr.de>; Fri, 24 Apr 2026 20:00:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2967D361DD0;
-	Fri, 24 Apr 2026 19:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C3D3E6DFA;
+	Fri, 24 Apr 2026 20:00:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b="Wk1o669w"
 X-Original-To: linux-sh@vger.kernel.org
-Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F495368975;
-	Fri, 24 Apr 2026 19:24:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 245A93EF0AD;
+	Fri, 24 Apr 2026 20:00:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.133.4.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777058652; cv=none; b=GzANvNDuP7ezM5AWb87tVB0o8yO9hh5YhQmPpqpt/HyN3ZzYe3Q0h+SK8kznF7OA+2AGBI2NDS9cW7Q7NYWUGSjpOLwSJI8l/jkrSI5x3w7oYMcim0l5EskM7lpIj5hwrnA00l+slIvdnMxecP/CjXajUN7vNQy+NRhS9g7PgaM=
+	t=1777060804; cv=none; b=KxM14oRdxD9q0Qy3f8HCh2faiIuxurvy4WHAjCf7s3CLTbz1oh5abMGYakCxAOI5e3ygUFmDCnESvgOf1lxTzMqWpt8EkfgOFgFCgvtxJFsUAR3p7+Ggyj03/wVqdpoiyzAKrp2xrUucfbYBR4hhQzImhrBS/uwERS7Kr5TNNQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777058652; c=relaxed/simple;
-	bh=BSoxNxCdF4QrhDPoa3IcCjqFuLg+MhIAkka/6OpmYFc=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=htbZZSDIFsxZGT3boyJ0sACpP4pea7eKOjG43KWV1+B2DdqzsSgpcixiaIbI6j2ZueX5xT0mt+8oQ8W0sU1jkWWJPbgspY57new7vMhAY04H+gWfKrpIYyvRA8nSfsod1X/3chzj9so5PPVTJh9Cep3dh7V5WllnoYYq8AUrmcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=artur-rojek.eu; spf=pass smtp.mailfrom=artur-rojek.eu; arc=none smtp.client-ip=217.70.178.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=artur-rojek.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=artur-rojek.eu
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
-	by mslow3.mail.gandi.net (Postfix) with ESMTP id 7882E582773;
-	Fri, 24 Apr 2026 19:08:39 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 3C8383ED47;
-	Fri, 24 Apr 2026 19:08:31 +0000 (UTC)
+	s=arc-20240116; t=1777060804; c=relaxed/simple;
+	bh=1PxuzsAetI3VwQEle0IpYULxi9Q1zJtXjwxlPOZ1ebM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=GgEIl26C3AikjSo2mtV+j4pRWFx6oYLrY/vlENLQkC8fFAS6bXmSlT2mcOtCCAyR//mTjuaJ3MEnZZGPcUPuHXCLhZ1FNx0NJiJJrKNmL/BW6jLE49q0FIWpTUNzsMZdnuBd81rOEDTyut2khPVD1J7YuZYD3YsMukVJjwLzMZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; spf=pass smtp.mailfrom=zedat.fu-berlin.de; dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b=Wk1o669w; arc=none smtp.client-ip=130.133.4.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zedat.fu-berlin.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:From:
+	Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=QElOcqTGz1RW21C8WSZuxzMUPfytvHUMB+coL0YpqrA=; t=1777060801;
+	x=1777665601; b=Wk1o669wB19f9UBQ8vkNvrqjKe/wXSEuUgpigBZ65fl45Ym108NPbaCNdL5Lx
+	dnv+AuGMUah1q0TqvvdGLsiSXK2Z64kqEv1iGRdi25wUG1dD7mpR4tpL4v1z74rtqRj7xhcmqHlk4
+	n4phiC/YBVUYVMNXy4FLdWi7TRCC1O+vvW8PdxWXCJ0a5LzO2i7TEBkhVBP5h8m518KVCqCqtYGmY
+	Nokm96zQFGodDcKgpQPOgQ4fA8ypPDosv8nb/0V9UXy28FTJQQcpuYUEyMtXkELpbTRZ2Xt7+s8/w
+	MtJIeZZqLX84ARVX4KLub6Y+kBF+OynDdmYn9C6vUXWmB9bhBw==;
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.99)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1wGMgu-00000001rjn-30Jq; Fri, 24 Apr 2026 21:59:56 +0200
+Received: from dynamic-002-242-158-062.2.242.pool.telefonica.de ([2.242.158.62] helo=[192.168.178.50])
+          by inpost2.zedat.fu-berlin.de (Exim 4.99)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1wGMgu-00000000q14-268W; Fri, 24 Apr 2026 21:59:56 +0200
+Message-ID: <39b8846254ceebd7f4bee44c6348ef1f9802910d.camel@physik.fu-berlin.de>
+Subject: Re: [PATCH] maple: switch to dynamic root device
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: Artur Rojek <contact@artur-rojek.eu>, Johan Hovold <johan@kernel.org>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker
+ <dalias@libc.org>, 	linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Fri, 24 Apr 2026 21:59:55 +0200
+In-Reply-To: <c67bd8df5fbfc357dc20ad7973eb5adb@artur-rojek.eu>
+References: <20260424104142.2617115-1-johan@kernel.org>
+	 <c67bd8df5fbfc357dc20ad7973eb5adb@artur-rojek.eu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.1 
 Precedence: bulk
 X-Mailing-List: linux-sh@vger.kernel.org
 List-Id: <linux-sh.vger.kernel.org>
 List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 24 Apr 2026 21:08:31 +0200
-From: Artur Rojek <contact@artur-rojek.eu>
-To: Johan Hovold <johan@kernel.org>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker
- <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] maple: switch to dynamic root device
-In-Reply-To: <20260424104142.2617115-1-johan@kernel.org>
-References: <20260424104142.2617115-1-johan@kernel.org>
-Message-ID: <c67bd8df5fbfc357dc20ad7973eb5adb@artur-rojek.eu>
-X-Sender: contact@artur-rojek.eu
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: contact@artur-rojek.eu
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: dmFkZTEaSb7d3RczHOpdSdjof+d81wLqKZkLMAqtG+p/j3vzwgK1acGO+gXahbKLzk7liD41jifOnE+kgxqdNdd9/2tIiObRepL1aDF1nPmjueFPh63+34GgAwnH8sItrXsPDQ13d00sDgQ1upcFRLPIikbpIbdE/+SQbZEA23SO02moV+os8pU4L7vy8QTT/A5BBqj64C8nFsren5NJHealziKHQ5VOB9qkx6ku5sqvrCOwmSf3CmAlsZZONfBzaP/7raXnbIgKD8c63KvUfxtVkAutQUNc0hyCAotlDIHjMifeR9Kgh7b616ZvUrh21FdiDB49jJXnCJ+bZg+s3ymMxImrmX9ewF794BVsU4BQ9Pf65wNDKfI4c8//cjvjwEk4ZZsl8TZj9NFSsFoDof8pEj9Y1t35gPEcJNsBhXIeUjMIuyYnzjEUikgwDL7ypl2GO198Bo2o6LZOxjpbU6bvjex8KGAfxjw3fy+DwJvGc/KD4pE8qJYN9pKhdwShUQJ2iF5q1ibjNpvEoC6s4iKztpnP/0xfpJLvzZRnzF0iyC3XdJ4vMtrKaFNS1zqk6X/Atceg2WrQnSStgYI4NvwPd2yA+jxC2UY3DGtfEyNFBn6wM5djP6Vr00tRCW2cITiLOjInfQBDdDtmsa9uNf7WwzVg+f9qIftnAA51NOGEOypPFQ
-X-Rspamd-Queue-Id: B6417462D83
-X-Rspamd-Action: no action
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-ZEDAT-Hint: PO
+X-Rspamd-Queue-Id: 74F224631E1
+X-Rspamd-Action: add header
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.46 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+X-Spamd-Result: default: False [7.34 / 15.00];
+	URIBL_BLACK(7.50)[artur-rojek.eu:email];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-3730-lists,linux-sh=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-3732-lists,linux-sh=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[artur-rojek.eu: no valid DMARC record];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[fu-berlin.de,none];
+	R_DKIM_ALLOW(0.00)[fu-berlin.de:s=fub01];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	GREYLIST(0.00)[pass,body];
+	DKIM_TRACE(0.00)[fu-berlin.de:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[contact@artur-rojek.eu,linux-sh@vger.kernel.org];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_DKIM_NA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[glaubitz@physik.fu-berlin.de,linux-sh@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.991];
 	TAGGED_RCPT(0.00)[linux-sh];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	R_SPF_ALLOW(0.00)[+ip6:2600:3c04:e001:36c::/64];
 	RCPT_COUNT_FIVE(0.00)[6]
+X-Spam: Yes
 
-On 2026-04-24 12:41, Johan Hovold wrote:
-> Driver core expects devices to be dynamically allocated and will, for
-> example, complain loudly when no release function has been provided.
-> 
-> Use root_device_register() to allocate and register the root device
-> instead of open coding using a static device.
-> 
-> Note that this also fixes a reference leak in case device_register()
-> fails which may be flagged by static checkers.
-> 
-> Signed-off-by: Johan Hovold <johan@kernel.org>
+Hi Artur,
 
-Hi Johan,
+On Fri, 2026-04-24 at 21:08 +0200, Artur Rojek wrote:
+> On 2026-04-24 12:41, Johan Hovold wrote:
+> > Driver core expects devices to be dynamically allocated and will, for
+> > example, complain loudly when no release function has been provided.
+> >=20
+> > Use root_device_register() to allocate and register the root device
+> > instead of open coding using a static device.
+> >=20
+> > Note that this also fixes a reference leak in case device_register()
+> > fails which may be flagged by static checkers.
+> >=20
+> > Signed-off-by: Johan Hovold <johan@kernel.org>
+>=20
+> Hi Johan,
+>=20
+> thanks for the patch. Verified on real hardware. LGTM:
+>=20
+> Acked-by: Artur Rojek <contact@artur-rojek.eu>
 
-thanks for the patch. Verified on real hardware. LGTM:
+Maybe add a Tested-by as well.
 
-Acked-by: Artur Rojek <contact@artur-rojek.eu>
+Adrian
+
+--=20
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
