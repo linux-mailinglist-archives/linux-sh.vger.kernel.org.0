@@ -1,119 +1,108 @@
-Return-Path: <linux-sh+bounces-3720-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-3721-lists+linux-sh=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id DYIbCXGa6mmc1QIAu9opvQ
-	(envelope-from <linux-sh+bounces-3720-lists+linux-sh=lfdr.de@vger.kernel.org>)
-	for <lists+linux-sh@lfdr.de>; Fri, 24 Apr 2026 00:17:21 +0200
+	id OL6xAr8R62lsIAAAu9opvQ
+	(envelope-from <linux-sh+bounces-3721-lists+linux-sh=lfdr.de@vger.kernel.org>)
+	for <lists+linux-sh@lfdr.de>; Fri, 24 Apr 2026 08:46:23 +0200
 X-Original-To: lists+linux-sh@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54D8F4580F6
-	for <lists+linux-sh@lfdr.de>; Fri, 24 Apr 2026 00:17:20 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D12245A4D5
+	for <lists+linux-sh@lfdr.de>; Fri, 24 Apr 2026 08:46:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2488A301D314
-	for <lists+linux-sh@lfdr.de>; Thu, 23 Apr 2026 22:17:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E8BEF3004DB9
+	for <lists+linux-sh@lfdr.de>; Fri, 24 Apr 2026 06:46:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB78E2EC081;
-	Thu, 23 Apr 2026 22:17:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rQBTA7eL"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4313929ACCD;
+	Fri, 24 Apr 2026 06:46:07 +0000 (UTC)
 X-Original-To: linux-sh@vger.kernel.org
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+Received: from melduny.fyrkat.no (melduny.fyrkat.no [217.144.76.212])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E361923D281
-	for <linux-sh@vger.kernel.org>; Thu, 23 Apr 2026 22:17:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB10216F288;
+	Fri, 24 Apr 2026 06:46:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.144.76.212
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776982635; cv=none; b=ctfGSphLyux+B/a9JH7SU0gCxsZ+qFpoPybIU+8t9zXeKJ+nSFC0sDs3Lp0ftEz5O7XuHe6lXHp68YWghDMGVHl0CG4rd4kxTFqWfNDqtd7CohLBLKVCfWUEGYN9ZnWkn1wQn347EZ0dgOhfgLDoC9t3innDCgWkhlfL6/fFvTQ=
+	t=1777013167; cv=none; b=KLt2W7jfJp3ZBM5IuwbgltDpuZZilXqAtFR8Wb541w31X86XdYsdF1YHiSb+ZkNJkym9g86cbdN33fPLPKiTYwTJyKjgGXONVN67zHLGFpc6zbku1pHLussWP0I+97fNF5PizlwQCTHLmqxVpyznO3g/4dvSv2Pju3Z2XvCnyes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776982635; c=relaxed/simple;
-	bh=aGUP17n9uuI6ThJZOdlvgxqGQNTx15AIMIpOnwoSP2g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QO6ZsL+VRtZB9uDiHjrtyV2AkMFN0glS69ZManZL7Z/k3106GjDb6pjyrqkDnY+PwfjzS+t46fG2fuZzXOR7blAqYapuiDD06XO7JFArEY1I5HzncHznuRLZIKN5OS9Nsoii1Kpe915Q4HOqDhKHnH4XHEPddjvWv8tfws99Toc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=rQBTA7eL; arc=none smtp.client-ip=95.215.58.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776982632;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=VMh8FEMLKMAW17nyiVN2jX1QeY54x6FtwDW0ZG81DIs=;
-	b=rQBTA7eLs1QgPYVj7KIK+jAzGgezCIc8D0KHLHVpKClcTBA5VqZuDvSScf7BE4lqY0i+A4
-	Gajv+ggbLdZ+7fe4JhhIhD7S7jpMIuNim647ytvZvj3gLzEHI205m0ekn5EiZdMP6DpyDc
-	JhzjeHbuQwgo/j2nRhto+KK+ts7lkOY=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Florian Fuchs <fuchsfl@gmail.com>,
-	Artur Rojek <contact@artur-rojek.eu>
-Cc: linux-sh@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Thorsten Blum <thorsten.blum@linux.dev>
-Subject: [PATCH] MAINTAINERS: add GD-ROM driver to SUPERH
-Date: Fri, 24 Apr 2026 00:16:29 +0200
-Message-ID: <20260423221627.303146-3-thorsten.blum@linux.dev>
+	s=arc-20240116; t=1777013167; c=relaxed/simple;
+	bh=aAsQrsI8WmUNYzvfNEcf4Z3Ho2f+7TgGzDdBJJPdwAU=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=qS7J1K1CejCzxmWIIzBxFL9/vqG87XdUnKtaZtdbEXkFYDdo6A3SpPzY3e/hEtbYqQa5XByk+RWM/dXlbhrjtB0vIf/00UDmCpbUKrA1+HGiw3sN0vP7E3/L/AHhUVJt/nCbkzCE8Gno8Mf6ysd7mu3SHCjvrQTWQYNNE5UTtr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kolla.no; spf=pass smtp.mailfrom=kolla.no; arc=none smtp.client-ip=217.144.76.212
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kolla.no
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kolla.no
+Received: by melduny.fyrkat.no (Postfix) with ESMTPSA id 06A0A17119;
+	Fri, 24 Apr 2026 06:38:56 +0000 (UTC)
+Date: Fri, 24 Apr 2026 08:38:56 +0200 (CEST)
+From: =?UTF-8?Q?Kolbj=C3=B8rn_Barmen?= <linux-m68k@kolla.no>
+To: Theodore Tso <tytso@mit.edu>
+cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+    Jeff Layton <jlayton@kernel.org>, lsf-pc@lists.linux-foundation.org, 
+    linux-fsdevel@vger.kernel.org, Christian Brauner <brauner@kernel.org>, 
+    Christoph Hellwig <hch@lst.de>, Jan Kara <jack@suse.cz>, 
+    Al Viro <viro@zeniv.linux.org.uk>, linux-m68k <linux-m68k@vger.kernel.org>, 
+    linux-sh <linux-sh@vger.kernel.org>
+Subject: Re: [LSF/MM/BPF TOPIC] Should we make inode->i_ino a u64?
+In-Reply-To: <20260415144722.GB74178@macsyma-wired.lan>
+Message-ID: <f48c40f6-ae26-d16b-5332-554042cd85fa@kolla.no>
+References: <08f8444c7237566ffb4ba8c9eb0ab4b4a5f14440.camel@kernel.org> <1b340c4e635dcab3bed8c52d6381b4c341c0741a.camel@physik.fu-berlin.de> <20260415144722.GB74178@macsyma-wired.lan>
 Precedence: bulk
 X-Mailing-List: linux-sh@vger.kernel.org
 List-Id: <linux-sh.vger.kernel.org>
 List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=544; i=thorsten.blum@linux.dev; h=from:subject; bh=aGUP17n9uuI6ThJZOdlvgxqGQNTx15AIMIpOnwoSP2g=; b=owGbwMvMwCUWt7pQ4caZUj3G02pJDJmvZlkn9O9mrTn1+v6RTJZzi989XtkrH96hxtDN2v+od rnHB6O5HaUsDGJcDLJiiiwPZv2Y4VtaU7nJJGInzBxWJpAhDFycAjCRTyIM/6zaHX5duPV70vm3 X2//0Lsc47VVVTR87+rW5X8/LrgadaKKkaFPX2fygR1VHiW5TCv0WxtyBc7ZpsYuX79+4le29Mq j6swA
-X-Developer-Key: i=thorsten.blum@linux.dev; a=openpgp; fpr=1D60735E8AEF3BE473B69D84733678FD8DFEEAD4
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Queue-Id: 0D12245A4D5
+X-Rspamd-Action: no action
+X-Rspamd-Server: lfdr
+X-Spamd-Result: default: False [1.54 / 15.00];
+	DMARC_POLICY_REJECT(2.00)[kolla.no : SPF not aligned (relaxed), No valid DKIM,reject];
+	SUBJECT_ENDS_QUESTION(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-3720-lists,linux-sh=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	FREEMAIL_TO(0.00)[libc.org,physik.fu-berlin.de,gmail.com,artur-rojek.eu];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thorsten.blum@linux.dev,linux-sh@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-3721-lists,linux-sh=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[linux-m68k@kolla.no,linux-sh@vger.kernel.org];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	R_DKIM_NA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	TAGGED_RCPT(0.00)[linux-sh];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,linux.dev:dkim,linux.dev:mid]
-X-Rspamd-Queue-Id: 54D8F4580F6
-X-Rspamd-Action: no action
-X-Rspamd-Server: lfdr
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kolla.no:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-SuperH is the only platform where the GD-ROM driver can be used. Add an
-entry under SUPERH accordingly.
+On Wed, 15 Apr 2026, Theodore Tso wrote:
 
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+> Like Debian, the Linux kernel development community is very much a
+> do-ocracy --- only more so.  If the 32-bit community really cares about
+> Linux support, they need to be providing volunteer labor to kernel
+> development, instead of demanding that everyone else pay the overhead
+> tax of supporting 32-bit platforms which are rapidly disappearing.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index f031c86b37d2..584ac256d239 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -25801,6 +25801,7 @@ S:	Maintained
- Q:	http://patchwork.kernel.org/project/linux-sh/list/
- F:	Documentation/arch/sh/
- F:	arch/sh/
-+F:	drivers/cdrom/gdrom.c
- F:	drivers/sh/
- 
- SUSPEND TO RAM
+This tells me that it is time for "the 32-bit community" (wtf) to either
+look elsewhere, or start thinking of forking the Linux kernel perhaps
+sooner rather than later, so we don't bother "the 64-bit community" so
+much.
+
+> I will note that Debian itself has made the decision to stop supporting
+> the Debian Installer for i386 and the 32-bit armel platform in Debian Trixie.
+
+Which is why (for example) Raspberry Pi is maintaining their own Raspberry Pi OS,
+as they have 32-bit systems that aren't EOL for another 3-4 years.
+
+-- kolla
 
