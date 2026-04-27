@@ -1,81 +1,81 @@
-Return-Path: <linux-sh+bounces-3743-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-3742-lists+linux-sh=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aMnTItpO72kEAAEAu9opvQ
-	(envelope-from <linux-sh+bounces-3743-lists+linux-sh=lfdr.de@vger.kernel.org>)
-	for <lists+linux-sh@lfdr.de>; Mon, 27 Apr 2026 13:56:10 +0200
+	id aNJvKMNO72kEAAEAu9opvQ
+	(envelope-from <linux-sh+bounces-3742-lists+linux-sh=lfdr.de@vger.kernel.org>)
+	for <lists+linux-sh@lfdr.de>; Mon, 27 Apr 2026 13:55:47 +0200
 X-Original-To: lists+linux-sh@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EE7D472241
-	for <lists+linux-sh@lfdr.de>; Mon, 27 Apr 2026 13:56:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DA7247222C
+	for <lists+linux-sh@lfdr.de>; Mon, 27 Apr 2026 13:55:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6AB14304F20C
-	for <lists+linux-sh@lfdr.de>; Mon, 27 Apr 2026 11:51:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BEECD304A8B8
+	for <lists+linux-sh@lfdr.de>; Mon, 27 Apr 2026 11:51:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7019F3B8945;
-	Mon, 27 Apr 2026 11:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A81A39A7F4;
+	Mon, 27 Apr 2026 11:51:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Po1DVtkI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nZLmD5r5"
 X-Original-To: linux-sh@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C6E639A04D
-	for <linux-sh@vger.kernel.org>; Mon, 27 Apr 2026 11:51:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA76369970
+	for <linux-sh@vger.kernel.org>; Mon, 27 Apr 2026 11:51:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777290683; cv=none; b=ryo/OxLRQNEcsTEZnovcn/ej0TYgbaqqp0S08KOGpjFhWq8ymp6BB6hpNk0mvvGo8XvJj63/FZnBjvK8/3zQRTM+OSAw6cbXWoyx8JQn8wkRHoPUYfCZQfzxwAcgOcswJo6wcJ4rb0uRrqRgv+jouV4RSSIf2NG3y8D1ehMLrS0=
+	t=1777290682; cv=none; b=Pq44p8U4JDd1cmAxtRhanAa8hkNoR0ie1+WyWE4DoKtTVJ5ced7YJLWWwGV8psAw0r8oH4BMJEV76/I3x0LrWmSF7dOT5XkWPnL4buPNE1JtzIJ/D7WMGjlvs9yEses5jOCySeK8YTeOrntBHdT2AKe6lcLwWiB2VHS90j8CWGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777290683; c=relaxed/simple;
-	bh=gpzLr2lo8G2SJGjZeQZIhgXOcmwkp6/J0e/SaU4sf2c=;
+	s=arc-20240116; t=1777290682; c=relaxed/simple;
+	bh=D6vKvkYjCfzwT3A2q/5obMGZQaiVMfe+7VuVdQT19po=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FV8rAMHR8bFCYUWfu5rj58KtvJjudWFmjt+rmrdrSR4JAMFbC7pM9HqDunEpbq8BEScfXsyWgU5GtEhNDQJgi5afyHjIVg8R0jhQU4Ay3AToNk9NjuXlvb19c14DA9tMFEWAvXS35gGqyEfnRXVo+Ki2iTwegvs22k1MmWfEs/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Po1DVtkI; arc=none smtp.client-ip=209.85.221.49
+	 MIME-Version; b=AaXKKJgbKDg7rWeSOQJCCNp4EcvspYyAMYY2cQ/7mGfKMFqxunEA8kviZ3RSw1nOE2zORtC+oEc26GweVzctUrQlN+sruzy8jvdZWLQxeFlANtqL8RjLsE7KETyHaCcReeoByT5sDwDntz0tXfWIbXynv8w9yFpphpreKu7GDmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nZLmD5r5; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-43d64313c39so7954900f8f.3
-        for <linux-sh@vger.kernel.org>; Mon, 27 Apr 2026 04:51:19 -0700 (PDT)
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4891e86fabeso110426065e9.1
+        for <linux-sh@vger.kernel.org>; Mon, 27 Apr 2026 04:51:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777290678; x=1777895478; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1777290679; x=1777895479; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=B+Y2aORcPSf7njE0+UeLtYLV0kJ/K7uIhbGCNhCftsw=;
-        b=Po1DVtkIZRMyDL7LpYTDWveRO2t/Rkml35WQkG0BJfaLGEQqHuFskOhJmlAnADJV7B
-         ZZ9Cz0Et9LMfHDy7wWodQ3kgeBWPEdlE7a0HQUWSxU5TRZJTxLpzk4hsMBE0L69f2ocR
-         01yF7Yo5cCIg0wq5UvGb9JUbFj5RSFffS/1PoJrfKqoHvrnxmIpuaP8yZIZQDOjUKMAN
-         Bich3290BMRXEdOBpW9NoZrHtIKf8TLHukG98efur2R62OMQh2iXs5PucsiItiGgS0Cf
-         j9fjTB22nRrDpuAtpdkSvs6JXr1BA4HtzS9vRUCYD3yrz3PbVq5tMwPay2fz7douIbz7
-         M2JQ==
+        bh=sK29FoURh791KB3pSonK6KWtGokZs28tGn9ydulth7M=;
+        b=nZLmD5r5M5guFAWD2vxV5KACxiIno0Mum5fc6WpO5bEcF1e8tDNaWkmZ/hNLWN3BRQ
+         5KDadE+9rGvmHm31Tmpm5M4o7QfYTHUBiJ5AR8VdTrto9rfkLf0ET+I9auAr6H7oNdgT
+         On3vnZf3bNdl+ayzxuyvwjhTLnKEB5nArSTIv6k3Fq9juEcjj0C+teda9JMlO6ZCmyYZ
+         oyfLCxFYnsuJVCxa1Ik3wMbXR85hjQ7gsseV+Mdy87M9t0NwkGvYjXKVupzz37Ee5YLx
+         SpC9JrV5PCXXnrU8bGk+hqCOxh6KY5GpAxM51STdGeOHVd9RQELwNaGvslxpPxJL7lGf
+         UzKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777290678; x=1777895478;
+        d=1e100.net; s=20251104; t=1777290679; x=1777895479;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=B+Y2aORcPSf7njE0+UeLtYLV0kJ/K7uIhbGCNhCftsw=;
-        b=X8BHeCdpCyMDE4X9rAGelXuQy++ThvHgcxdnUQaB7PCsNYDzM9U79KddWrhwSQZ/KS
-         zvYVeVDIORo/OSN65LDRiyvXj6Xxjq3pZ6Z3SKsLsAjlZWiN1k8oHKYA3cdJ2rlFkXPs
-         JZWwtq1Y4THOqODw5WgCpNA3bn4B4GcTDByHdl1PWjkzqRhlB4s1LJXuNklpF2wNFpTx
-         wOhOaEdTZRHaGWKm1MME/zO38tAOVtUBNRT9YwSBthtUDsXV66muNeHnlfgGaH7fMh5F
-         v/F5K7dsG7nWDs0CrQLRtoBwcHKJt3pYm29bssNjMSNnOaaRI13BvwuTQzjJbICsIm6I
-         Pusg==
-X-Gm-Message-State: AOJu0YzgqeaGaK19TaBnczqcHlViwH96KHa8tmt2raYf9bq8uKuiew0r
-	S09eEAyxXsvfO6UCjYnw4XTr7y7o/YA39oagucids7fD9OwfgHRZksxKeuvlwJI=
-X-Gm-Gg: AeBDiesePEorAd/AXGrXFhNJLUZrj4EfQNbWDikeE3WSW5W40HrU8gbTo04Q00YHWt8
-	5jm6A8wNagSGlUbqS4tCgn+cLUpVwzezYkahh1GohSwfbvhv1LzY+gWLO5DHv2KefbwGCpSU54s
-	CWUyAsAUJBL+xsVIz1k2JWc9WcUujDQ42/B3L/quOez5wCOLKkHsFxlc50PT6voHznJ4uo4IDJg
-	aI4YKxs1FHxP8grk0IXA+fE6PG4WQzG7UTeJ0dKBVzM8V5v+zgsTvjtjpkSIlzzxxIuKF/9uGVu
-	EqtVM4jy6GVvDpYdWBh8Vo1rwgrkoKZhBy50AUZGLxYESOXqhDiBxMexE7L3imvui/e7cXjYmlE
-	8FtkwP1jQpaffJIopsC9BqnBjOUOnRKQpzx7gPcI7u7dz/CtYJIlXo06naZBB2vMnfiVSBWrBZI
-	M072helhcXvkuU4Qxv3cq5h+Vr505DexWr37FZzkwU9W5C4BsOqV+zIS6rzHx4vfJQ4X8fn3jbB
-	NICQ7SoH6TC8wCA6rCTSO174uJTsQ==
-X-Received: by 2002:a05:6000:2dc4:b0:441:37b5:fc04 with SMTP id ffacd0b85a97d-44137b5fc4amr15581103f8f.14.1777290677589;
-        Mon, 27 Apr 2026 04:51:17 -0700 (PDT)
+        bh=sK29FoURh791KB3pSonK6KWtGokZs28tGn9ydulth7M=;
+        b=Gj1NRfOjt8CqAJkaKbyLJg0deDZA9GHkSL8IsPsdzZ3I5Qrdg/+P3JJWtXgc6xjNFf
+         LYU3M4zwpr4JDBJCLXiByWxrtZehZ+bLBzPKle3O941rEHbLBQ9yq61RrZ3KSvNfmOa4
+         NXXqmOPUicH9EIUxpbErbm9d8hIV/pnmFAgx/QdxDZ+57OKseRi1ngETaZjYe3wjzXOC
+         jXg+DhX113Fceruc6l6qJat4Hyid/Sh7azQEwuvtEVB8zwZkqpXvuhB6P56rrWntV/fx
+         AZ2nJO8w2BKVeSlMo3hLAjgbDMU+DoJ97B+AEnDiFphRfQJNuzP8yZl+zTP7Fp+7G3ig
+         /gzA==
+X-Gm-Message-State: AOJu0Yz2EnP8zufy/EWzY6YrLOY4nUoCDkdWKBVqh92AU5MGc6Tt35ma
+	YWKm8ufDJM/AV3U01NXaQ3opgjm6U3fPjV4HDgrHPSJqlIOwDNRgkKc=
+X-Gm-Gg: AeBDievP/LD2aJqctg6DDKBF3YXYRrXE3qUZlJXYZ9d6NIdAE89Juj8MaXk2gjPNcmq
+	kst3ddeRvsgCTBqY9jpeBZDVCsliA5t+5bSCSiiaG3t1e/XSs0ZUymeUlvT3foTqnSMKp9iGt7x
+	Hsv3DpnI8ODYeTbq+Rn3MfuL6f4a8EDyu3/nVLXhqJjWpDzab6ZtyrxZYX7DejopEPcqrgQlfsa
+	xZavIW7tiqUEejcBdd24egN2MkTmcqX7Qh5abMmrj2Nasq3H+KzFiN570tnGbXcwgJDEh3EZzE0
+	bQD+dT9zYtG8iNswe5Vt4a4KeIaofzojoj+6k88dfjL8agiOlYqvIapx/Gnjp4Nb3pTsazaMOk5
+	s7jMff3iZ6wLmvzxrbYEWU8D6QlBrlwvb7IsE2ISZls+dqsUov84Yhgw44BDYPezhnY6Biw2oog
+	SGnEdCgBbvC4Z64SUUElOmVD6s4mEx5Nz3smX1SoXMXWt77Mnp2lyCJd21AvaJiIA8sKw8T+S2V
+	9nlGr3uU6kBfnHksjQ=
+X-Received: by 2002:a05:6000:2303:b0:43e:b020:f8a2 with SMTP id ffacd0b85a97d-43fe3dd5208mr63553484f8f.19.1777290678780;
+        Mon, 27 Apr 2026 04:51:18 -0700 (PDT)
 Received: from localhost ([2a02:810d:4a94:b300:3c87:b0bc:8c35:1ba0])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-4412150a071sm43651490f8f.21.2026.04.27.04.51.16
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-43fe4e59f97sm87393680f8f.37.2026.04.27.04.51.18
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Apr 2026 04:51:17 -0700 (PDT)
+        Mon, 27 Apr 2026 04:51:18 -0700 (PDT)
 From: Florian Fuchs <fuchsfl@gmail.com>
 To: Miquel Raynal <miquel.raynal@bootlin.com>,
 	Richard Weinberger <richard@nod.at>,
@@ -87,9 +87,9 @@ Cc: linux-sh@vger.kernel.org,
 	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
 	Florian Fuchs <fuchsfl@gmail.com>,
 	Artur Rojek <contact@artur-rojek.eu>
-Subject: [PATCH v2 2/3] mtd: maps: vmu-flash: fix fault in unaligned fixup
-Date: Mon, 27 Apr 2026 13:47:49 +0200
-Message-ID: <20260427114750.2480900-3-fuchsfl@gmail.com>
+Subject: [PATCH v2 3/3] mtd: maps: vmu-flash: Fix NULL pointer dereference in initialization
+Date: Mon, 27 Apr 2026 13:47:50 +0200
+Message-ID: <20260427114750.2480900-4-fuchsfl@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260427114750.2480900-1-fuchsfl@gmail.com>
 References: <20260427114750.2480900-1-fuchsfl@gmail.com>
@@ -100,7 +100,7 @@ List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0EE7D472241
+X-Rspamd-Queue-Id: 3DA7247222C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -117,7 +117,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FREEMAIL_CC(0.00)[vger.kernel.org,libc.org,physik.fu-berlin.de,gmail.com,artur-rojek.eu];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-3743-lists,linux-sh=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-3742-lists,linux-sh=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
@@ -133,51 +133,31 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-sh];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-Use kzalloc_obj() / kzalloc_objs() to allocate the memcard structs,
-instead of kmalloc_obj() / kmalloc_objs() to prevent access to
-uninitialized data.
-
-Fixes runtime error: Fault in unaligned fixup: 0000 [#1] at
-mtd_get_fact_prot_info.
+The mtd_info contains a struct device, which must be linked to its
+parent. Without this, the initialization of the MTD fails with a NULL
+pointer dereference.
 
 Signed-off-by: Florian Fuchs <fuchsfl@gmail.com>
 ---
-v1->v2: no functional change, just rebased.
+v1->v2: no functional change
 
-v1: https://lore.kernel.org/lkml/20251117224408.498449-3-fuchsfl@gmail.com/
+v1: https://lore.kernel.org/lkml/20251117224408.498449-4-fuchsfl@gmail.com/
 
- drivers/mtd/maps/vmu-flash.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/mtd/maps/vmu-flash.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/mtd/maps/vmu-flash.c b/drivers/mtd/maps/vmu-flash.c
-index 75e06d249ce9..b76d0609d1b7 100644
+index b76d0609d1b7..10244e6731d0 100644
 --- a/drivers/mtd/maps/vmu-flash.c
 +++ b/drivers/mtd/maps/vmu-flash.c
-@@ -609,7 +609,7 @@ static int vmu_connect(struct maple_device *mdev)
+@@ -547,6 +547,7 @@ static void vmu_queryblocks(struct mapleq *mq)
+ 	mpart->partition = card->partition;
+ 	mtd_cur->priv = mpart;
+ 	mtd_cur->owner = THIS_MODULE;
++	mtd_cur->dev.parent = &mdev->dev;
  
- 	basic_flash_data = be32_to_cpu(mdev->devinfo.function_data[c - 1]);
- 
--	card = kmalloc_obj(struct memcard);
-+	card = kzalloc_obj(struct memcard);
- 	if (!card) {
- 		error = -ENOMEM;
- 		goto fail_nomem;
-@@ -627,13 +627,13 @@ static int vmu_connect(struct maple_device *mdev)
- 	* Not sure there are actually any multi-partition devices in the
- 	* real world, but the hardware supports them, so, so will we
- 	*/
--	card->parts = kmalloc_objs(struct vmupart, card->partitions);
-+	card->parts = kzalloc_objs(struct vmupart, card->partitions);
- 	if (!card->parts) {
- 		error = -ENOMEM;
- 		goto fail_partitions;
- 	}
- 
--	card->mtd = kmalloc_objs(struct mtd_info, card->partitions);
-+	card->mtd = kzalloc_objs(struct mtd_info, card->partitions);
- 	if (!card->mtd) {
- 		error = -ENOMEM;
- 		goto fail_mtd_info;
+ 	pcache = kzalloc_obj(struct vmu_cache);
+ 	if (!pcache)
 -- 
 2.43.0
 
