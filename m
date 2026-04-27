@@ -1,81 +1,81 @@
-Return-Path: <linux-sh+bounces-3741-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-3743-lists+linux-sh=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yMGvDKJO72kEAAEAu9opvQ
-	(envelope-from <linux-sh+bounces-3741-lists+linux-sh=lfdr.de@vger.kernel.org>)
-	for <lists+linux-sh@lfdr.de>; Mon, 27 Apr 2026 13:55:14 +0200
+	id aMnTItpO72kEAAEAu9opvQ
+	(envelope-from <linux-sh+bounces-3743-lists+linux-sh=lfdr.de@vger.kernel.org>)
+	for <lists+linux-sh@lfdr.de>; Mon, 27 Apr 2026 13:56:10 +0200
 X-Original-To: lists+linux-sh@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A139847220E
-	for <lists+linux-sh@lfdr.de>; Mon, 27 Apr 2026 13:55:13 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EE7D472241
+	for <lists+linux-sh@lfdr.de>; Mon, 27 Apr 2026 13:56:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B564630438C9
-	for <lists+linux-sh@lfdr.de>; Mon, 27 Apr 2026 11:51:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6AB14304F20C
+	for <lists+linux-sh@lfdr.de>; Mon, 27 Apr 2026 11:51:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD713B27D3;
-	Mon, 27 Apr 2026 11:51:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7019F3B8945;
+	Mon, 27 Apr 2026 11:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YI+cI4ea"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Po1DVtkI"
 X-Original-To: linux-sh@vger.kernel.org
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D694317167
-	for <linux-sh@vger.kernel.org>; Mon, 27 Apr 2026 11:51:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C6E639A04D
+	for <linux-sh@vger.kernel.org>; Mon, 27 Apr 2026 11:51:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777290680; cv=none; b=YTv9alox3JgsnHFvskS3alZesuEJ+S8pyNp56eK1jJEdgmCErblvB2PIXOwZco4XoWVR1lmG2+E8TfQRH+P5eod4uyebDoRD0hv5+/Tienvr+bm9KJxeQ7i5CYr4fYlozyRzZSWVFe5FQBIroXTjbJGNHPiWAA6S6DudquIl4W8=
+	t=1777290683; cv=none; b=ryo/OxLRQNEcsTEZnovcn/ej0TYgbaqqp0S08KOGpjFhWq8ymp6BB6hpNk0mvvGo8XvJj63/FZnBjvK8/3zQRTM+OSAw6cbXWoyx8JQn8wkRHoPUYfCZQfzxwAcgOcswJo6wcJ4rb0uRrqRgv+jouV4RSSIf2NG3y8D1ehMLrS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777290680; c=relaxed/simple;
-	bh=ZvC94RUtXjhCoDy3NT/pPP0G0XgJ0oCcr5awCU+I+MU=;
+	s=arc-20240116; t=1777290683; c=relaxed/simple;
+	bh=gpzLr2lo8G2SJGjZeQZIhgXOcmwkp6/J0e/SaU4sf2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=slZBB+vFB36bUTLIgBCfdA/x5gfH7NpyNf9Tgk+RvJSaZ22rCiz9/PSdYeIqPJ1qK84bILnOATinEPFWQEn83BnQMFd1g1Jyw1IS7bmrjP5bGiIaG2A6s6YVIiEiG7dU1AeWEESVbaEZP/eUv/WRl2WygFF2WOx1zs7Pa2SxtJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YI+cI4ea; arc=none smtp.client-ip=209.85.221.48
+	 MIME-Version; b=FV8rAMHR8bFCYUWfu5rj58KtvJjudWFmjt+rmrdrSR4JAMFbC7pM9HqDunEpbq8BEScfXsyWgU5GtEhNDQJgi5afyHjIVg8R0jhQU4Ay3AToNk9NjuXlvb19c14DA9tMFEWAvXS35gGqyEfnRXVo+Ki2iTwegvs22k1MmWfEs/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Po1DVtkI; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-441209fb77eso4428995f8f.1
-        for <linux-sh@vger.kernel.org>; Mon, 27 Apr 2026 04:51:17 -0700 (PDT)
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-43d64313c39so7954900f8f.3
+        for <linux-sh@vger.kernel.org>; Mon, 27 Apr 2026 04:51:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777290676; x=1777895476; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1777290678; x=1777895478; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YfSdD+/3LCf1oPMPi4U/rRQ7I8X6OVvY9lwSQny+X6I=;
-        b=YI+cI4eayMXyNL0xE2SBr63jLIU/ntbAeDvtxnSNsP6vWnqlJwjvf8VXwvGTjFssq7
-         115L25wLMjMkz/kq+NWoe8EZy6fT1DOMQgJtR4C67YdForQHvlD5S0qUl6ba0C6DItFr
-         DtA50rJAAWBNtsDTegEGUb7PWhS9In1+fApOWocDZAwZfvQ9mb6zJF49JpAH/14r1fer
-         Xp0KuVBIH+HkZGpqZEM6rEp4mhQRAvxcAEfxWm2gv2kCDaGn+zuGhE6krG7cYx9J7XhM
-         D7Uz347f7rS8rti1iM/8Gvb4PsbMzgEIQLcXV6nWLjkLNW+M64qdBgEQeHGHGEYG1wbY
-         9NBQ==
+        bh=B+Y2aORcPSf7njE0+UeLtYLV0kJ/K7uIhbGCNhCftsw=;
+        b=Po1DVtkIZRMyDL7LpYTDWveRO2t/Rkml35WQkG0BJfaLGEQqHuFskOhJmlAnADJV7B
+         ZZ9Cz0Et9LMfHDy7wWodQ3kgeBWPEdlE7a0HQUWSxU5TRZJTxLpzk4hsMBE0L69f2ocR
+         01yF7Yo5cCIg0wq5UvGb9JUbFj5RSFffS/1PoJrfKqoHvrnxmIpuaP8yZIZQDOjUKMAN
+         Bich3290BMRXEdOBpW9NoZrHtIKf8TLHukG98efur2R62OMQh2iXs5PucsiItiGgS0Cf
+         j9fjTB22nRrDpuAtpdkSvs6JXr1BA4HtzS9vRUCYD3yrz3PbVq5tMwPay2fz7douIbz7
+         M2JQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777290676; x=1777895476;
+        d=1e100.net; s=20251104; t=1777290678; x=1777895478;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=YfSdD+/3LCf1oPMPi4U/rRQ7I8X6OVvY9lwSQny+X6I=;
-        b=mDxzPHMqP60xaZO9ET1BQtJBXmJ4Crj2kqGkTCVZTdMmt5d+GjYD07OxTWT4yUigUh
-         BlnUKfuy9i/47u8b2LP7w2OlzAC3fuBvh7ZR4IF2piUtbDKUjIWjJpjIT/nMyeSoBubW
-         hPDorLbaGEErBUriMT1SYg7Vg2W+xqbEAZLsAGPdw/t/sOdKZgn4lAynYS93yNOQyyzI
-         pUzmxkYz6rSg3CueOip7vbt/KZ9ZL2F+vuJYq0NOK3PO/L9s4vg+sHlWTEb/4K9Tgvl2
-         RDVqZuxJvIVs8XzN1Iujtyojr1pMMDQdv7UY8uQ0rGs9nHebOeJGKEUlxjDRoK6LAr2P
-         VLWQ==
-X-Gm-Message-State: AOJu0YwkxGdGn5nqN9w35n4INqdtjI63UACQ6/s6I5jXkJAhoFALuY0/
-	m8ca30w0OsCH6lT1sLliB6yKkerR5MdBJ+f1WMNTKzBYr49llDwvMGo=
-X-Gm-Gg: AeBDiev69Nu9gHyrUqLub5r6c0LHGn9LS+C44JgkUr7x7TLAZmAYHsxwBxFI+J/ydCe
-	DQLyFvKStEk3gR6+3iLOhAENvtdwZRSNKMOTMH3VQMvJYFmm8LS19Fd0KLl7thdjL+RY+Rg/KTH
-	EhxOBc8Ghv+5mR6RxOTkJnN4wKU1hUUAd8IdHjYA/mIaSfWzvvYrJfBoxeenE2aC0Kk+SFWafmJ
-	HrwKRSYwMmqjqi+K3UK4VNmn1BiJ/g/IpL/uFP1g2PZNO6f5PiputvGomL4dtSNiH90ieGjPjJf
-	l1cz/qGJv1/p7uhVyNA8AyRwM7z8F7qr/zCZRaFXMWTJhHshim1U89+u/jBIQtmzodvcongwDP7
-	/mN+cKg4Z1ddaZGCwNJrqTLnSR56sPfVRmhtkIyCLGwJCVPfptIe7Q6sThyuYbtBZxc+cgp8NuH
-	a4CVRZ6cZZYE1fOoxP82HHDtgxt0nIL/RPgGfpWoiKBm8+knFA+QGbYYY5GTDYJbfKhso5Jzrp0
-	1O3+EQBlA911FWzFls=
-X-Received: by 2002:a05:6000:41e4:b0:43d:7dc7:12b2 with SMTP id ffacd0b85a97d-43fe408b8abmr62962656f8f.21.1777290676373;
-        Mon, 27 Apr 2026 04:51:16 -0700 (PDT)
+        bh=B+Y2aORcPSf7njE0+UeLtYLV0kJ/K7uIhbGCNhCftsw=;
+        b=X8BHeCdpCyMDE4X9rAGelXuQy++ThvHgcxdnUQaB7PCsNYDzM9U79KddWrhwSQZ/KS
+         zvYVeVDIORo/OSN65LDRiyvXj6Xxjq3pZ6Z3SKsLsAjlZWiN1k8oHKYA3cdJ2rlFkXPs
+         JZWwtq1Y4THOqODw5WgCpNA3bn4B4GcTDByHdl1PWjkzqRhlB4s1LJXuNklpF2wNFpTx
+         wOhOaEdTZRHaGWKm1MME/zO38tAOVtUBNRT9YwSBthtUDsXV66muNeHnlfgGaH7fMh5F
+         v/F5K7dsG7nWDs0CrQLRtoBwcHKJt3pYm29bssNjMSNnOaaRI13BvwuTQzjJbICsIm6I
+         Pusg==
+X-Gm-Message-State: AOJu0YzgqeaGaK19TaBnczqcHlViwH96KHa8tmt2raYf9bq8uKuiew0r
+	S09eEAyxXsvfO6UCjYnw4XTr7y7o/YA39oagucids7fD9OwfgHRZksxKeuvlwJI=
+X-Gm-Gg: AeBDiesePEorAd/AXGrXFhNJLUZrj4EfQNbWDikeE3WSW5W40HrU8gbTo04Q00YHWt8
+	5jm6A8wNagSGlUbqS4tCgn+cLUpVwzezYkahh1GohSwfbvhv1LzY+gWLO5DHv2KefbwGCpSU54s
+	CWUyAsAUJBL+xsVIz1k2JWc9WcUujDQ42/B3L/quOez5wCOLKkHsFxlc50PT6voHznJ4uo4IDJg
+	aI4YKxs1FHxP8grk0IXA+fE6PG4WQzG7UTeJ0dKBVzM8V5v+zgsTvjtjpkSIlzzxxIuKF/9uGVu
+	EqtVM4jy6GVvDpYdWBh8Vo1rwgrkoKZhBy50AUZGLxYESOXqhDiBxMexE7L3imvui/e7cXjYmlE
+	8FtkwP1jQpaffJIopsC9BqnBjOUOnRKQpzx7gPcI7u7dz/CtYJIlXo06naZBB2vMnfiVSBWrBZI
+	M072helhcXvkuU4Qxv3cq5h+Vr505DexWr37FZzkwU9W5C4BsOqV+zIS6rzHx4vfJQ4X8fn3jbB
+	NICQ7SoH6TC8wCA6rCTSO174uJTsQ==
+X-Received: by 2002:a05:6000:2dc4:b0:441:37b5:fc04 with SMTP id ffacd0b85a97d-44137b5fc4amr15581103f8f.14.1777290677589;
+        Mon, 27 Apr 2026 04:51:17 -0700 (PDT)
 Received: from localhost ([2a02:810d:4a94:b300:3c87:b0bc:8c35:1ba0])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-444eebec868sm5255150f8f.31.2026.04.27.04.51.15
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-4412150a071sm43651490f8f.21.2026.04.27.04.51.16
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Apr 2026 04:51:15 -0700 (PDT)
+        Mon, 27 Apr 2026 04:51:17 -0700 (PDT)
 From: Florian Fuchs <fuchsfl@gmail.com>
 To: Miquel Raynal <miquel.raynal@bootlin.com>,
 	Richard Weinberger <richard@nod.at>,
@@ -87,9 +87,9 @@ Cc: linux-sh@vger.kernel.org,
 	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
 	Florian Fuchs <fuchsfl@gmail.com>,
 	Artur Rojek <contact@artur-rojek.eu>
-Subject: [PATCH v2 1/3] mtd: maps: vmu-flash: fix build error due to missing include of linux/device.h
-Date: Mon, 27 Apr 2026 13:47:48 +0200
-Message-ID: <20260427114750.2480900-2-fuchsfl@gmail.com>
+Subject: [PATCH v2 2/3] mtd: maps: vmu-flash: fix fault in unaligned fixup
+Date: Mon, 27 Apr 2026 13:47:49 +0200
+Message-ID: <20260427114750.2480900-3-fuchsfl@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260427114750.2480900-1-fuchsfl@gmail.com>
 References: <20260427114750.2480900-1-fuchsfl@gmail.com>
@@ -100,7 +100,7 @@ List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A139847220E
+X-Rspamd-Queue-Id: 0EE7D472241
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -108,7 +108,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -117,10 +117,10 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FREEMAIL_CC(0.00)[vger.kernel.org,libc.org,physik.fu-berlin.de,gmail.com,artur-rojek.eu];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-3741-lists,linux-sh=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-3743-lists,linux-sh=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[fuchsfl@gmail.com,linux-sh@vger.kernel.org];
@@ -133,43 +133,51 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-sh];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-Fix build error by adding the missing include of linux/device.h
-linux/maple.h embeds struct device via struct maple_device, which
-requires the definition. Otherwise results in build error:
+Use kzalloc_obj() / kzalloc_objs() to allocate the memcard structs,
+instead of kmalloc_obj() / kmalloc_objs() to prevent access to
+uninitialized data.
 
-./include/linux/maple.h:81:16: error: field 'dev' has incomplete type
-  struct device dev;
-                ^~~
-./include/linux/maple.h:86:23: error: field 'drv' has incomplete type
-  struct device_driver drv;
-                       ^~~
+Fixes runtime error: Fault in unaligned fixup: 0000 [#1] at
+mtd_get_fact_prot_info.
 
-Fixes: 313162d0b838 ("device.h: audit and cleanup users in main include dir")
 Signed-off-by: Florian Fuchs <fuchsfl@gmail.com>
 ---
-v1->v2: no functional change, just rebase patch
+v1->v2: no functional change, just rebased.
 
-v1: https://lore.kernel.org/lkml/20251117224408.498449-2-fuchsfl@gmail.com/
+v1: https://lore.kernel.org/lkml/20251117224408.498449-3-fuchsfl@gmail.com/
 
- include/linux/maple.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/mtd/maps/vmu-flash.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/maple.h b/include/linux/maple.h
-index 3be4e567473c..22f2930251ed 100644
---- a/include/linux/maple.h
-+++ b/include/linux/maple.h
-@@ -2,10 +2,9 @@
- #ifndef __LINUX_MAPLE_H
- #define __LINUX_MAPLE_H
+diff --git a/drivers/mtd/maps/vmu-flash.c b/drivers/mtd/maps/vmu-flash.c
+index 75e06d249ce9..b76d0609d1b7 100644
+--- a/drivers/mtd/maps/vmu-flash.c
++++ b/drivers/mtd/maps/vmu-flash.c
+@@ -609,7 +609,7 @@ static int vmu_connect(struct maple_device *mdev)
  
-+#include <linux/device.h>
- #include <mach/maple.h>
+ 	basic_flash_data = be32_to_cpu(mdev->devinfo.function_data[c - 1]);
  
--struct device;
--
- /* Maple Bus command and response codes */
- enum maple_code {
- 	MAPLE_RESPONSE_FILEERR =	-5,
+-	card = kmalloc_obj(struct memcard);
++	card = kzalloc_obj(struct memcard);
+ 	if (!card) {
+ 		error = -ENOMEM;
+ 		goto fail_nomem;
+@@ -627,13 +627,13 @@ static int vmu_connect(struct maple_device *mdev)
+ 	* Not sure there are actually any multi-partition devices in the
+ 	* real world, but the hardware supports them, so, so will we
+ 	*/
+-	card->parts = kmalloc_objs(struct vmupart, card->partitions);
++	card->parts = kzalloc_objs(struct vmupart, card->partitions);
+ 	if (!card->parts) {
+ 		error = -ENOMEM;
+ 		goto fail_partitions;
+ 	}
+ 
+-	card->mtd = kmalloc_objs(struct mtd_info, card->partitions);
++	card->mtd = kzalloc_objs(struct mtd_info, card->partitions);
+ 	if (!card->mtd) {
+ 		error = -ENOMEM;
+ 		goto fail_mtd_info;
 -- 
 2.43.0
 
