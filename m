@@ -1,53 +1,53 @@
-Return-Path: <linux-sh+bounces-3747-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-3748-lists+linux-sh=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gJaiKBZb72llAgEAu9opvQ
-	(envelope-from <linux-sh+bounces-3747-lists+linux-sh=lfdr.de@vger.kernel.org>)
-	for <lists+linux-sh@lfdr.de>; Mon, 27 Apr 2026 14:48:22 +0200
+	id wHIFCXpf72mHAwEAu9opvQ
+	(envelope-from <linux-sh+bounces-3748-lists+linux-sh=lfdr.de@vger.kernel.org>)
+	for <lists+linux-sh@lfdr.de>; Mon, 27 Apr 2026 15:07:06 +0200
 X-Original-To: lists+linux-sh@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AB69472BA2
-	for <lists+linux-sh@lfdr.de>; Mon, 27 Apr 2026 14:48:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 792EE473221
+	for <lists+linux-sh@lfdr.de>; Mon, 27 Apr 2026 15:07:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1A67C3008A6F
-	for <lists+linux-sh@lfdr.de>; Mon, 27 Apr 2026 12:44:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3442F3029277
+	for <lists+linux-sh@lfdr.de>; Mon, 27 Apr 2026 13:01:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B0743B95E3;
-	Mon, 27 Apr 2026 12:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 414673C0637;
+	Mon, 27 Apr 2026 13:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="FHOQ++Ro"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="KhresZp9"
 X-Original-To: linux-sh@vger.kernel.org
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7C13B7B99;
-	Mon, 27 Apr 2026 12:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4628A3B7B9D;
+	Mon, 27 Apr 2026 13:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777293848; cv=none; b=uJwy8SCL4PFsrXalZHYp85s0wvmcA/x7J/P/d97UGWy38YFsuiGyD36sEb7hM623S4C9q/qzuW9BCL8mCfCby7amgTeEziOP/m/1lulYTXkb3JAt+kzBYeZxITHz0sbFgawAg45ZolIepcfD7QiexvRjiibI4FIlx76trIKB6QI=
+	t=1777294850; cv=none; b=qfFdqLRtidNlY0ZGqHomq+929BCpH2DB+Mky9ale/o9y78ndMpflc4/zwMesRS+1fOMFgdtUmxIuAzL44gahqjLZ8lAPZPxSOdwrnCIZZO6c7g0ovNarO2ICCb1lCgwHl92D1Cku4MLtQhcipfKiUQNU7Q6olxAda5iqM/PWh0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777293848; c=relaxed/simple;
-	bh=JPEWG16UazYAazgItSDKJV9SoILqjtWjRLFcoiGscBE=;
+	s=arc-20240116; t=1777294850; c=relaxed/simple;
+	bh=gW+w1J0q/vOdp5xspzFhPdjxkIqYUplx9IFrkah7vv0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WDKlbmC5ZnvfrqqlHuqBScACAOWqKfq0Q8N10LzpoOBC9RSogfdZN+8mDIo/Z3O4FfzylBoCypcDMfPmNTS2BcdPdppaG7WgadoJ2KAv8kowNTd0NPEKkY5yAUB0/Dswhv6BhvgaiQGEpS26FG0JXHAQe99Qx6B1KdR9uzB3l+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=FHOQ++Ro; arc=none smtp.client-ip=90.155.50.34
+	 Content-Type:Content-Disposition:In-Reply-To; b=p2/40Zlm1QyHGhczuaMiTxLEUN8ymkA4nrm+sMT3U4Z7zwy8nbuGXbxbGmiSBJTmfCWVJWgadvXqhB0a4p1g+XFJqcOakZruHnR0LSLzW1J9gG1GR0Oc4TBEb+jxlMygp70s8vNRzyJpMdIOiAEkGKmq880+phZe/U7V99efGlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=KhresZp9; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=955jjZIxxknUeB2SbfK/z9zTb80A5dO8nDIswaatI7I=; b=FHOQ++Ro1OPIzCJ30X8QNrYF38
-	tMokfVlKhhdHPbCY//yhDqo2LA9mFuikUTYQiZIGrfdYmgCeNPzkiL3j5rLOxr7pUnUz4vO8kMgLo
-	rFlvAC52/rSCZ0WJi0lY6UKhCej8De7n6TA3Ubki7YFE+1jvm27DLy3Var7+eRjPePFHG+o5fUUNh
-	fQl0NgeqRWAzfBdlUD9QR60VnOz9F0BvfePjGkpv8UjKNfyGegHPlNNf134WsKnqPCDYNptDG8Jr3
-	6y4bmkqSJkrPvaI08VjtenYYHLeIUvAzOnO5qY6jMm8y3lfc8V30goLH85UgmbvC7vPRi4gOd5wFA
-	UZtRrLXA==;
+	bh=3pPbjszTa9FPZHzEBxBvM5QTIp8aOy3rtQ8mmz6pcLE=; b=KhresZp9qVD0MIn2zcL6d93p+u
+	YP6E0DDNIPcfHMGbSJQeuyCSK1cj50OfRjVJARZtOM8LmCEUABm8jKVR923RuCzGDTYSBnzn7JByk
+	2HUBHnab8NCjgQi+8wTrjmCKIWQGfOqoyzc8ND874Z8uwqSGXy/nKlM1Cdcg/IeQpVHmmpxvDZvr8
+	IjJeWL9Z5BEJiGYWJNHnAu31LR6HjEC6evr5wOtENKrU9sKOPiSws7F6cpkIks6ZMYeVp9DusSyeO
+	27l2WRHnwk/V110p/IysON5iyNnX6M8KN9wujEeKBVN7/tpdN7RhNiuXYhUEdUu7Bd6Wg9YUs8+WN
+	rwLE6f2Q==;
 Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wHLJV-000000024bu-1l1Y;
-	Mon, 27 Apr 2026 12:43:49 +0000
-Date: Mon, 27 Apr 2026 13:43:49 +0100
+	id 1wHLZi-0000000263n-3frl;
+	Mon, 27 Apr 2026 13:00:34 +0000
+Date: Mon, 27 Apr 2026 14:00:34 +0100
 From: Matthew Wilcox <willy@infradead.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: Yoshinori Sato <ysato@users.sourceforge.jp>,
@@ -71,11 +71,11 @@ Cc: Yoshinori Sato <ysato@users.sourceforge.jp>,
 	"Liam R. Howlett" <liam@infradead.org>, linux-sh@vger.kernel.org,
 	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH 1/3] sh: use folio_mapped() instead of page_mapped() in
- sh4_flush_cache_page()
-Message-ID: <ae9aBZOcg_Gc7PH2@casper.infradead.org>
+Subject: Re: [PATCH 2/3] bpf: arena: use page_ref_count() instead of
+ page_mapped() in arena_free_pages()
+Message-ID: <ae9d8rXC-V2OkTcf@casper.infradead.org>
 References: <20260427-page_mapped-v1-0-e89c3592c74c@kernel.org>
- <20260427-page_mapped-v1-1-e89c3592c74c@kernel.org>
+ <20260427-page_mapped-v1-2-e89c3592c74c@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-sh@vger.kernel.org
 List-Id: <linux-sh.vger.kernel.org>
@@ -84,19 +84,19 @@ List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260427-page_mapped-v1-1-e89c3592c74c@kernel.org>
-X-Rspamd-Queue-Id: 0AB69472BA2
+In-Reply-To: <20260427-page_mapped-v1-2-e89c3592c74c@kernel.org>
+X-Rspamd-Queue-Id: 792EE473221
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[infradead.org:s=casper.20170209];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-3747-lists,linux-sh=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-3748-lists,linux-sh=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -111,18 +111,37 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[willy@infradead.org,linux-sh@vger.kernel.org];
 	DKIM_TRACE(0.00)[infradead.org:+];
 	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-sh];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:dkim,infradead.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,casper.infradead.org:mid,infradead.org:dkim,infradead.org:email]
 
-On Mon, Apr 27, 2026 at 01:43:14PM +0200, David Hildenbrand (Arm) wrote:
-> We already have the folio in our hands, so let's just use
-> folio_mapped().
+On Mon, Apr 27, 2026 at 01:43:15PM +0200, David Hildenbrand (Arm) wrote:
+> Pages that BPF arena code maps are allocated through
+> bpf_map_alloc_pages(), which does not allocate folios but pages.
 > 
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> In the future, pages will not have a mapcount, only folios will.
+> Converting the code to use folios and rely on folio_mapped() sounds like
+> the wrong approach.
+> 
+> Should BPF arena code allocate folios and use folio_mapped() here? But
+> likely we would not want to use folios here longterm, as we don't really
+> need folio information.
+> 
+> Hard to tell. But in the meantime, we can simply use the page refcount
+> instead, as a heuristic whether the page might be mapped to user space
+> and we would want to try zapping it, so we can get rid of page_mapped().
+> 
+> Page allocation will give us a page with a refcount of 1. Any user space
+> mapping adds a page reference. While there can be references from other
+> subsystems (e.g., GUP), in the common case for this test here relying on
+> the page count is good enough.
 
-Thanks; that was an oversight on my part.
+Well, if we GUPped the page, it must have been mapped at some point ;-)
+
+Anyway, I approve of this patch; it lets us defer the hard decisions and
+work until we know what we really need.
 
 Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+
 
