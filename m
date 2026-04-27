@@ -1,164 +1,137 @@
-Return-Path: <linux-sh+bounces-3742-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-3744-lists+linux-sh=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aNJvKMNO72kEAAEAu9opvQ
-	(envelope-from <linux-sh+bounces-3742-lists+linux-sh=lfdr.de@vger.kernel.org>)
-	for <lists+linux-sh@lfdr.de>; Mon, 27 Apr 2026 13:55:47 +0200
+	id 6OoSAftT72maAQEAu9opvQ
+	(envelope-from <linux-sh+bounces-3744-lists+linux-sh=lfdr.de@vger.kernel.org>)
+	for <lists+linux-sh@lfdr.de>; Mon, 27 Apr 2026 14:18:03 +0200
 X-Original-To: lists+linux-sh@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DA7247222C
-	for <lists+linux-sh@lfdr.de>; Mon, 27 Apr 2026 13:55:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B310472577
+	for <lists+linux-sh@lfdr.de>; Mon, 27 Apr 2026 14:18:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BEECD304A8B8
-	for <lists+linux-sh@lfdr.de>; Mon, 27 Apr 2026 11:51:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 90ACB301E5BD
+	for <lists+linux-sh@lfdr.de>; Mon, 27 Apr 2026 12:18:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A81A39A7F4;
-	Mon, 27 Apr 2026 11:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31B97313E3F;
+	Mon, 27 Apr 2026 12:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nZLmD5r5"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="fiFx94gu"
 X-Original-To: linux-sh@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA76369970
-	for <linux-sh@vger.kernel.org>; Mon, 27 Apr 2026 11:51:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E35A30EF9B;
+	Mon, 27 Apr 2026 12:17:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777290682; cv=none; b=Pq44p8U4JDd1cmAxtRhanAa8hkNoR0ie1+WyWE4DoKtTVJ5ced7YJLWWwGV8psAw0r8oH4BMJEV76/I3x0LrWmSF7dOT5XkWPnL4buPNE1JtzIJ/D7WMGjlvs9yEses5jOCySeK8YTeOrntBHdT2AKe6lcLwWiB2VHS90j8CWGk=
+	t=1777292280; cv=none; b=COPr6W5mXoH+QZEZ8iaQ0CGGlInmP1PxTc5XmYB8EoOLyiRTA6TFOY1bA4ZC01Qic3ErHSwl/3eG3yfDVwLz38LhnKUyIxFxRMGfDjcBIEliyeuzsOncmAdPkHL0Hax7EQrA2TSIzFN4Djis4xe9hmuKT3/Jyj6k0qjQPms8/gk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777290682; c=relaxed/simple;
-	bh=D6vKvkYjCfzwT3A2q/5obMGZQaiVMfe+7VuVdQT19po=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AaXKKJgbKDg7rWeSOQJCCNp4EcvspYyAMYY2cQ/7mGfKMFqxunEA8kviZ3RSw1nOE2zORtC+oEc26GweVzctUrQlN+sruzy8jvdZWLQxeFlANtqL8RjLsE7KETyHaCcReeoByT5sDwDntz0tXfWIbXynv8w9yFpphpreKu7GDmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nZLmD5r5; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4891e86fabeso110426065e9.1
-        for <linux-sh@vger.kernel.org>; Mon, 27 Apr 2026 04:51:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777290679; x=1777895479; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sK29FoURh791KB3pSonK6KWtGokZs28tGn9ydulth7M=;
-        b=nZLmD5r5M5guFAWD2vxV5KACxiIno0Mum5fc6WpO5bEcF1e8tDNaWkmZ/hNLWN3BRQ
-         5KDadE+9rGvmHm31Tmpm5M4o7QfYTHUBiJ5AR8VdTrto9rfkLf0ET+I9auAr6H7oNdgT
-         On3vnZf3bNdl+ayzxuyvwjhTLnKEB5nArSTIv6k3Fq9juEcjj0C+teda9JMlO6ZCmyYZ
-         oyfLCxFYnsuJVCxa1Ik3wMbXR85hjQ7gsseV+Mdy87M9t0NwkGvYjXKVupzz37Ee5YLx
-         SpC9JrV5PCXXnrU8bGk+hqCOxh6KY5GpAxM51STdGeOHVd9RQELwNaGvslxpPxJL7lGf
-         UzKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777290679; x=1777895479;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=sK29FoURh791KB3pSonK6KWtGokZs28tGn9ydulth7M=;
-        b=Gj1NRfOjt8CqAJkaKbyLJg0deDZA9GHkSL8IsPsdzZ3I5Qrdg/+P3JJWtXgc6xjNFf
-         LYU3M4zwpr4JDBJCLXiByWxrtZehZ+bLBzPKle3O941rEHbLBQ9yq61RrZ3KSvNfmOa4
-         NXXqmOPUicH9EIUxpbErbm9d8hIV/pnmFAgx/QdxDZ+57OKseRi1ngETaZjYe3wjzXOC
-         jXg+DhX113Fceruc6l6qJat4Hyid/Sh7azQEwuvtEVB8zwZkqpXvuhB6P56rrWntV/fx
-         AZ2nJO8w2BKVeSlMo3hLAjgbDMU+DoJ97B+AEnDiFphRfQJNuzP8yZl+zTP7Fp+7G3ig
-         /gzA==
-X-Gm-Message-State: AOJu0Yz2EnP8zufy/EWzY6YrLOY4nUoCDkdWKBVqh92AU5MGc6Tt35ma
-	YWKm8ufDJM/AV3U01NXaQ3opgjm6U3fPjV4HDgrHPSJqlIOwDNRgkKc=
-X-Gm-Gg: AeBDievP/LD2aJqctg6DDKBF3YXYRrXE3qUZlJXYZ9d6NIdAE89Juj8MaXk2gjPNcmq
-	kst3ddeRvsgCTBqY9jpeBZDVCsliA5t+5bSCSiiaG3t1e/XSs0ZUymeUlvT3foTqnSMKp9iGt7x
-	Hsv3DpnI8ODYeTbq+Rn3MfuL6f4a8EDyu3/nVLXhqJjWpDzab6ZtyrxZYX7DejopEPcqrgQlfsa
-	xZavIW7tiqUEejcBdd24egN2MkTmcqX7Qh5abMmrj2Nasq3H+KzFiN570tnGbXcwgJDEh3EZzE0
-	bQD+dT9zYtG8iNswe5Vt4a4KeIaofzojoj+6k88dfjL8agiOlYqvIapx/Gnjp4Nb3pTsazaMOk5
-	s7jMff3iZ6wLmvzxrbYEWU8D6QlBrlwvb7IsE2ISZls+dqsUov84Yhgw44BDYPezhnY6Biw2oog
-	SGnEdCgBbvC4Z64SUUElOmVD6s4mEx5Nz3smX1SoXMXWt77Mnp2lyCJd21AvaJiIA8sKw8T+S2V
-	9nlGr3uU6kBfnHksjQ=
-X-Received: by 2002:a05:6000:2303:b0:43e:b020:f8a2 with SMTP id ffacd0b85a97d-43fe3dd5208mr63553484f8f.19.1777290678780;
-        Mon, 27 Apr 2026 04:51:18 -0700 (PDT)
-Received: from localhost ([2a02:810d:4a94:b300:3c87:b0bc:8c35:1ba0])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-43fe4e59f97sm87393680f8f.37.2026.04.27.04.51.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Apr 2026 04:51:18 -0700 (PDT)
-From: Florian Fuchs <fuchsfl@gmail.com>
-To: Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	linux-mtd@lists.infradead.org
-Cc: linux-sh@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Florian Fuchs <fuchsfl@gmail.com>,
-	Artur Rojek <contact@artur-rojek.eu>
-Subject: [PATCH v2 3/3] mtd: maps: vmu-flash: Fix NULL pointer dereference in initialization
-Date: Mon, 27 Apr 2026 13:47:50 +0200
-Message-ID: <20260427114750.2480900-4-fuchsfl@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260427114750.2480900-1-fuchsfl@gmail.com>
-References: <20260427114750.2480900-1-fuchsfl@gmail.com>
+	s=arc-20240116; t=1777292280; c=relaxed/simple;
+	bh=AQ4MxxuG0FLIcClDhsTCj2LB5MBEyzoHu1DSqDFxwmU=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=hkTu2Hw7hTSXtqfEvnLqR45Wgb0i0/XM4S2YGEnRTMrBguzm3F++RVPq0b+r0mXenY8JolCAlG9y6Lzj49a2KJNdvEUO5PZF9XrSOpUJmzZDV0IZHufFhc0K0vygNvgyPY0DZ/OMsht7Gdjc8u1xwVqsdqOLBK6RKqzDdpHtbG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=fiFx94gu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB317C2BCB5;
+	Mon, 27 Apr 2026 12:17:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1777292279;
+	bh=AQ4MxxuG0FLIcClDhsTCj2LB5MBEyzoHu1DSqDFxwmU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=fiFx94gucSnLNgfPsXQ6PkeKXBxrZAes8+MyPSVTnQtSHgxCxOgepMVd9ezClmOYh
+	 661TwppiHatNg981pbUYr7Wx+07vpWIoXk5tf9119+sUPpC1tjtDHhvVEBFjVAwyyM
+	 z4FQvDG6nYl4yDFqyAfwe4QfcfJHlUUawc1seo6w=
+Date: Mon, 27 Apr 2026 05:17:58 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker
+ <dalias@libc.org>, John Paul Adrian Glaubitz
+ <glaubitz@physik.fu-berlin.de>, Alexei Starovoitov <ast@kernel.org>, Daniel
+ Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman
+ <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu
+ <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa
+ <jolsa@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Rik van Riel
+ <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Jann Horn
+ <jannh@google.com>, Matthew Wilcox <willy@infradead.org>, "Liam R. Howlett"
+ <liam@infradead.org>, linux-sh@vger.kernel.org,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 2/3] bpf: arena: use page_ref_count() instead of
+ page_mapped() in arena_free_pages()
+Message-Id: <20260427051758.e1b714a4b567917971920eaa@linux-foundation.org>
+In-Reply-To: <20260427-page_mapped-v1-2-e89c3592c74c@kernel.org>
+References: <20260427-page_mapped-v1-0-e89c3592c74c@kernel.org>
+	<20260427-page_mapped-v1-2-e89c3592c74c@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-sh@vger.kernel.org
 List-Id: <linux-sh.vger.kernel.org>
 List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3DA7247222C
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 6B310472577
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,libc.org,physik.fu-berlin.de,gmail.com,artur-rojek.eu];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-3742-lists,linux-sh=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[fuchsfl@gmail.com,linux-sh@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-3744-lists,linux-sh=lfdr.de];
+	DMARC_NA(0.00)[linux-foundation.org];
+	RCPT_COUNT_TWELVE(0.00)[27];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[users.sourceforge.jp,libc.org,physik.fu-berlin.de,kernel.org,iogearbox.net,linux.dev,gmail.com,google.com,suse.com,surriel.com,infradead.org,vger.kernel.org,kvack.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,linux-sh@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-sh];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:dkim,linux-foundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-The mtd_info contains a struct device, which must be linked to its
-parent. Without this, the initialization of the MTD fails with a NULL
-pointer dereference.
+On Mon, 27 Apr 2026 13:43:15 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
 
-Signed-off-by: Florian Fuchs <fuchsfl@gmail.com>
----
-v1->v2: no functional change
+> Pages that BPF arena code maps are allocated through
+> bpf_map_alloc_pages(), which does not allocate folios but pages.
+> 
+> In the future, pages will not have a mapcount, only folios will.
+> Converting the code to use folios and rely on folio_mapped() sounds like
+> the wrong approach.
+> 
+> Should BPF arena code allocate folios and use folio_mapped() here? But
+> likely we would not want to use folios here longterm, as we don't really
+> need folio information.
+> 
+> Hard to tell. But in the meantime, we can simply use the page refcount
+> instead, as a heuristic whether the page might be mapped to user space
+> and we would want to try zapping it, so we can get rid of page_mapped().
+> 
+> Page allocation will give us a page with a refcount of 1. Any user space
+> mapping adds a page reference. While there can be references from other
+> subsystems (e.g., GUP), in the common case for this test here relying on
+> the page count is good enough.
+> 
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+>  kernel/bpf/arena.c | 2 +-
 
-v1: https://lore.kernel.org/lkml/20251117224408.498449-4-fuchsfl@gmail.com/
-
- drivers/mtd/maps/vmu-flash.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/mtd/maps/vmu-flash.c b/drivers/mtd/maps/vmu-flash.c
-index b76d0609d1b7..10244e6731d0 100644
---- a/drivers/mtd/maps/vmu-flash.c
-+++ b/drivers/mtd/maps/vmu-flash.c
-@@ -547,6 +547,7 @@ static void vmu_queryblocks(struct mapleq *mq)
- 	mpart->partition = card->partition;
- 	mtd_cur->priv = mpart;
- 	mtd_cur->owner = THIS_MODULE;
-+	mtd_cur->dev.parent = &mdev->dev;
- 
- 	pcache = kzalloc_obj(struct vmu_cache);
- 	if (!pcache)
--- 
-2.43.0
-
+BPF maintainers will probably want to carry this in the BPF tree. 
+That's fine - please go ahead and add it.  I'll carry a duplicate in
+mm.git so it compiles.
 
