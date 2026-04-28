@@ -1,51 +1,51 @@
-Return-Path: <linux-sh+bounces-3783-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-3784-lists+linux-sh=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4Ie9IF5I8GmIRAEAu9opvQ
-	(envelope-from <linux-sh+bounces-3783-lists+linux-sh=lfdr.de@vger.kernel.org>)
-	for <lists+linux-sh@lfdr.de>; Tue, 28 Apr 2026 07:40:46 +0200
+	id IIf3M2Ju8GmgTQEAu9opvQ
+	(envelope-from <linux-sh+bounces-3784-lists+linux-sh=lfdr.de@vger.kernel.org>)
+	for <lists+linux-sh@lfdr.de>; Tue, 28 Apr 2026 10:22:58 +0200
 X-Original-To: lists+linux-sh@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29C1747DB9C
-	for <lists+linux-sh@lfdr.de>; Tue, 28 Apr 2026 07:40:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F23847FEE2
+	for <lists+linux-sh@lfdr.de>; Tue, 28 Apr 2026 10:22:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E1896302C357
-	for <lists+linux-sh@lfdr.de>; Tue, 28 Apr 2026 05:37:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 484EC30BB6BE
+	for <lists+linux-sh@lfdr.de>; Tue, 28 Apr 2026 08:16:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75F28315D43;
-	Tue, 28 Apr 2026 05:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37C023C73E1;
+	Tue, 28 Apr 2026 08:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ljwpku2y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PKyVwkOQ"
 X-Original-To: linux-sh@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F1B633F589;
-	Tue, 28 Apr 2026 05:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139A43AA187;
+	Tue, 28 Apr 2026 08:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777354632; cv=none; b=kDgzKaoX7eCE+bwmzjdI78A5FV7aPHmY9sIdU0eUdTr00Q2rULBLSdKQNcexeTbKQ00yKFwdaQ+g6yEi1WvbLXaXY1KhZlNAOflhkU2+38CDb2ePcP1ZFOGxe8Sbp8tncRskIRYsjEcDBWWa/I9JP8Autwy2I6MES8GeecohOhQ=
+	t=1777364200; cv=none; b=eyTqDD2YyPM5fytscB8PSRlDJZJGdmhNxuD2h0s2/H/xdhscIIHJOnDyr29Ajyk1ZJTO3gwVHKR0VJK5Y30molfMiO66HPu2vkD0ebc+dSLlnf3ZMADsvLdQXRxE5gxcteuUfah/z/26eXKoNKlcIH0FGX48lugab/F1A8BxbuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777354632; c=relaxed/simple;
-	bh=35j+qmt6iWL15WfQJe5Xfl8qePbfDGAdSt+9hvpfQxM=;
+	s=arc-20240116; t=1777364200; c=relaxed/simple;
+	bh=8AlrguaazRg8WqpeXcLGIY23fI/h23c2cdRwp/9a1k8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SiSzv4rIxflCaN54ujTxgBIBje0RdZbnHPjE2grD0a9FcfvqCTx6dltBu6VzDyWNE7GzfOqnEBvmPm84n6GbfiBlU2iU0TSz3GCYlXHER4BMeQKqJqP5rDo8HBURI7sS75ZRI/iAcY6KrHwx+VtyrUkvSjME41w60Xsu1vu9HBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ljwpku2y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41145C2BCAF;
-	Tue, 28 Apr 2026 05:37:03 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=Zwn+VcjkSaLgw9OfAEootsw9iQfDN7+zVPKTvy8DUXsPxlx8BJofC9eu+AXmvNkzNHxfv8KYdl5jJzv6Q9w98efyh1ddCZpyWpyeJ0tLBLIyKXDVTSDGGzjkkGX5QC2nntiY7ij/vgHFx0Uu94lqdzRq8pMhk98xEuNf9rHgzGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PKyVwkOQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8CE9C2BCAF;
+	Tue, 28 Apr 2026 08:16:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777354631;
-	bh=35j+qmt6iWL15WfQJe5Xfl8qePbfDGAdSt+9hvpfQxM=;
+	s=k20201202; t=1777364199;
+	bh=8AlrguaazRg8WqpeXcLGIY23fI/h23c2cdRwp/9a1k8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Ljwpku2ytv1a51/lWJ0in9sBUOvx/MFmaVm2lPWSgv9iXQ5Y5hi97v5lXatAQMj+o
-	 M6v48RpZX+/yodaSIkctR7XFA621nSVRkUAHLndGlPCH/3+0raZFnmvzHx6QFrbUSW
-	 MY2nLUR0beFVJYiZhHeXViYGYrVhJqildv0ZoE5dhL7L/xaz7W4ZNKOYDsAGmVW63b
-	 OBYu3z+Z+i9ktOYlazQVUXbybAFNByZdkO1qb2CjKEvkk9cyFBQIJt9meREV7C2c4Q
-	 pi2MNJfmfmSD0V3v0rlTi2dKaJpC9vRYnsWEHGQFNmGUTXSaHRe4IbR4Mphemz8+Vq
-	 ZokFl+wxATNAA==
-Message-ID: <06d11ed8-8532-4748-8ce2-6715c4665dc5@kernel.org>
-Date: Tue, 28 Apr 2026 07:37:00 +0200
+	b=PKyVwkOQIDc94xOW0GulTQ5LSUfSMJABGPdm1wupXTlvPNzIMkBFW3Yj9KJOnWMjS
+	 ZzgXT+Yc6lIFlhkdOfz9iUSt4D1XicuxmJom1apMcAAjea/f9lNeCu4IuZ9K+69K9o
+	 axYllYt7Rr7KQyCI3u2TuGJkxfp2QMbZ8ZhbkWCZq2XjXyABa41xPRYFjxms12Asup
+	 4c0uKzfLOZJPhcO8AuYf4008tqs4ltgcrZhu+2j8UObP8EM/6i4y/io7Wg2K5gwxxE
+	 G70hucMUhNIWrkfwzYUBOLjfKuTdh5to/hZkIBj/aLkmfh3z5GrBk9oG843CnQq7gl
+	 +1hpoWv+5Og1w==
+Message-ID: <2b2eecf0-72f9-4959-9663-c80e3cd0c517@kernel.org>
+Date: Tue, 28 Apr 2026 10:16:29 +0200
 Precedence: bulk
 X-Mailing-List: linux-sh@vger.kernel.org
 List-Id: <linux-sh.vger.kernel.org>
@@ -53,8 +53,10 @@ List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] mm: remove page_mapped()
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Subject: Re: [PATCH 2/3] bpf: arena: use page_ref_count() instead of
+ page_mapped() in arena_free_pages()
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>
 Cc: Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker
  <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
  Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
@@ -62,17 +64,18 @@ Cc: Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker
  <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>,
  Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>,
  Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
- Jann Horn <jannh@google.com>, Matthew Wilcox <willy@infradead.org>,
- "Liam R. Howlett" <liam@infradead.org>, linux-sh@vger.kernel.org,
+ Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>,
+ Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>,
+ Matthew Wilcox <willy@infradead.org>, "Liam R. Howlett"
+ <liam@infradead.org>, linux-sh@vger.kernel.org,
  LKML <linux-kernel@vger.kernel.org>, bpf <bpf@vger.kernel.org>,
- linux-mm <linux-mm@kvack.org>, Ryan Roberts <Ryan.Roberts@arm.com>
+ linux-mm <linux-mm@kvack.org>
 References: <20260427-page_mapped-v1-0-e89c3592c74c@kernel.org>
- <97192ac3-643d-4393-87ef-53a9f3ddaf95@kernel.org>
- <CAADnVQ+t549-aWEXq=ZUN79H-M=std3-Q8w3fU+dyNhF7mNjyA@mail.gmail.com>
+ <20260427-page_mapped-v1-2-e89c3592c74c@kernel.org>
+ <20260427051758.e1b714a4b567917971920eaa@linux-foundation.org>
+ <CAADnVQJ9JXrtAnFgE8UFK=W1GDeT6T6Wi5zB7g0AfRjU8M4=bQ@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -119,10 +122,10 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAADnVQ+t549-aWEXq=ZUN79H-M=std3-Q8w3fU+dyNhF7mNjyA@mail.gmail.com>
+In-Reply-To: <CAADnVQJ9JXrtAnFgE8UFK=W1GDeT6T6Wi5zB7g0AfRjU8M4=bQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 29C1747DB9C
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 6F23847FEE2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -130,19 +133,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-3783-lists,linux-sh=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-3784-lists,linux-sh=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[29];
+	FREEMAIL_TO(0.00)[gmail.com,linux-foundation.org];
+	RCPT_COUNT_TWELVE(0.00)[28];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[users.sourceforge.jp,libc.org,physik.fu-berlin.de,kernel.org,iogearbox.net,linux.dev,gmail.com,linux-foundation.org,google.com,suse.com,surriel.com,infradead.org,vger.kernel.org,kvack.org,arm.com];
+	FREEMAIL_CC(0.00)[users.sourceforge.jp,libc.org,physik.fu-berlin.de,kernel.org,iogearbox.net,linux.dev,gmail.com,google.com,suse.com,surriel.com,infradead.org,vger.kernel.org,kvack.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -152,67 +155,33 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-sh];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-On 4/27/26 23:38, Alexei Starovoitov wrote:
-> On Mon, Apr 27, 2026 at 9:59 PM David Hildenbrand (Arm)
-> <david@kernel.org> wrote:
->>
->> On 4/27/26 13:43, David Hildenbrand (Arm) wrote:
->>> While preparing my slides for an LSF/MM talk, I realized that I did not
->>> yet remove page_mapped().
->>>
->>> So let's do that. In the BPF arena code it's unclear which memdesc we
->>> would want to allocate in the future: certainly something with a
->>> refcount, but likely none with a mapcount. So let's just rely on
->>> the page refcount instead to decide whether we want to try zapping the
->>> page from user page tables.
 >>>
 >>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 >>> ---
+>>>  kernel/bpf/arena.c | 2 +-
 >>
->> I scanned AI review and I think it founds something that is not related to this
->> patch.
->>
->> We use the page_mapped()->page_ref_count() check as an optimization to avoid
->> calling zap_vma_range(). We must be able to call it even without that optimization.
->>
->> Just like the bulk zap call earlier
->>
->>         if (page_cnt > 1)
->>                 /* bulk zap if multiple pages being freed */
->>                 zap_pages(arena, full_uaddr, page_cnt);
->>
->> It talks about concurrent "munmap(), unmap_region() executes unmap_vmas()"
->> racing with our zap_vma_range().
->>
->> Looking into the details, arena_map_mmap() calls remember_vma(). We reject
->> mremap and VMA split. arena_vm_close() removes the VMA from the list. The
->> arena->lock protects our VMA list.
->>
->> So in zap_pages, the VMA cannot go away. If we find a VMA, ->close could not
->> have been called yet.
->>
->> In vma.c, we call remove_vma() after vms_clear_pte(). So after unmapping the
->> pages and freeing the page tables.
->>
->> So munmap() can indeed race with zap_vma_range(), and the page_mapped() check
->> would not have changed anything about that really.
->>
->>
->> @BPF folks: does BPF take anywhere the mmap lock in read mode before calling
->> zap_vma_range()? It should do that.
+>> BPF maintainers will probably want to carry this in the BPF tree.
+>> That's fine - please go ahead and add it.  I'll carry a duplicate in
+>> mm.git so it compiles.
 > 
-> Yes, but do NOT.
+> We cannot carry the same patch in 2 trees.
+> Sooner or later it will create problems for linux-next
+> and issues during merge window if more changes
+> are done in the same area.
+> The only way to share a patch between trees is to
+> create a stable branch and pull it into 2 trees
+> then sha will be the same,
 
-In general, do NOT talk to me like that.
+As lack of stable trees was raised a couple of times in the past, once we're
+done with a transition to a fully git-based mm-next workflow [1], we should be
+able to provide stable trees.
 
+[1]
+https://lore.kernel.org/r/20260421094216.8dfe14a8c62f2420fa5aace1@linux-foundation.org
 
-As I discussed recently with Ryan, we should update the locking requirements for
-zap_vma_range().
-
-I assume friendly BPF folks will take care of fixing this.
 
 -- 
 Cheers,
