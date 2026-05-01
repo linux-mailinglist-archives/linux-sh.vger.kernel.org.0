@@ -1,141 +1,191 @@
-Return-Path: <linux-sh+bounces-3815-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-3817-lists+linux-sh=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +MnuCMLx9Gl+FwIAu9opvQ
-	(envelope-from <linux-sh+bounces-3815-lists+linux-sh=lfdr.de@vger.kernel.org>)
-	for <lists+linux-sh@lfdr.de>; Fri, 01 May 2026 20:32:34 +0200
+	id vMeMDNUa9WkVIgIAu9opvQ
+	(envelope-from <linux-sh+bounces-3817-lists+linux-sh=lfdr.de@vger.kernel.org>)
+	for <lists+linux-sh@lfdr.de>; Fri, 01 May 2026 23:27:49 +0200
 X-Original-To: lists+linux-sh@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 180CE4AED8B
-	for <lists+linux-sh@lfdr.de>; Fri, 01 May 2026 20:32:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 601C14AFCE1
+	for <lists+linux-sh@lfdr.de>; Fri, 01 May 2026 23:27:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7761E3006213
-	for <lists+linux-sh@lfdr.de>; Fri,  1 May 2026 18:32:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8612A3006780
+	for <lists+linux-sh@lfdr.de>; Fri,  1 May 2026 21:27:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AFAA1DF980;
-	Fri,  1 May 2026 18:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDBAF36CDF3;
+	Fri,  1 May 2026 21:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b="g4t39wc4"
+	dkim=pass (2048-bit key) header.d=landley.net header.i=@landley.net header.b="g/x8JTJ0"
 X-Original-To: linux-sh@vger.kernel.org
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+Received: from buffalo.tulip.relay.mailchannels.net (buffalo.tulip.relay.mailchannels.net [23.83.218.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 733F41A0712
-	for <linux-sh@vger.kernel.org>; Fri,  1 May 2026 18:32:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.133.4.66
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777660348; cv=none; b=hERg6Lze8PiiThf5gUW3READI4/TVGOGYfljcI0pLGHpAKlZULvCZaXc3v//53hY0vjKHdNyXZ8v0KJPEpsNnKBjxcDbWKaMajZjleRXTUuNUOjp4X8US2aw+d8x2tWX8KI8enPnGFhPGVUEyuV2wWCxHwhj6SKrmLJmg7M9g3I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777660348; c=relaxed/simple;
-	bh=kMXzkK7OLNdtzvsOHdkmPIA6lXUjB2AgpqUNSt9YNM4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=teIq2tnZHjuYMq/7MyjEDMBgi8kRAB3tFnlVaHa490yEgMfts+YpbJ3glKlRSOdQ6hc/p8QgSF93ttYl1D8wQYBF4UliEw9lPLCemuVi1PP42M3mjDdfRi3EAQxSoU/o2qrQEaxogNHnXH1urw6XwQEukCDycHtCx9LPfM42Miw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; spf=pass smtp.mailfrom=zedat.fu-berlin.de; dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b=g4t39wc4; arc=none smtp.client-ip=130.133.4.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zedat.fu-berlin.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:From:
-	Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=+HmaYznaHd2Bjj/BanBFkIfC027xxvAsHo3zLIbd8DI=; t=1777660346;
-	x=1778265146; b=g4t39wc42IJoCBoSp0U0Qn7RU9Y7FWD7AsyUrDyj/GmM6A7bytJpVU7qRexpF
-	zUt/En8pd2hqkkjRHX2tQ2zmWu4acQ2Qs8sSnsub7xQ099Qk9SUP2BPnXvegFQoBSR/dhFVRzG2J7
-	Q4Gr8ZheWOclcIaIqa2ZFrcbChghfg9IkvsE3GnSP+i7gw3/gtSaEwMVza9oMu9vxM0FbonSLWt6J
-	wiigFihWpOJj7xE+lpIzbXwfKqmmGPMWy7bSd6hJnetzx7yGgG06b5NxBnvSjtnvuejvOo1L0tWMz
-	tEJj7efY+epOkt7CqECMLGDUn4Rb2/7/y1NO3/KrbqwfHcsHog==;
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.99)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1wIsf1-00000001TOa-3DJj; Fri, 01 May 2026 20:32:23 +0200
-Received: from p5dc559e1.dip0.t-ipconnect.de ([93.197.89.225] helo=suse-laptop.fritz.box)
-          by inpost2.zedat.fu-berlin.de (Exim 4.99)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1wIsf1-00000002m6r-2K7t; Fri, 01 May 2026 20:32:23 +0200
-Message-ID: <84b1391eb542b5cd6bcbecdfbc63124187265402.camel@physik.fu-berlin.de>
-Subject: Re: Toybox make root no longer works as expected
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To: Rob Landley <rob@landley.net>, "D. Jeff Dionne" <djeffdionne@gmail.com>
-Cc: linux-sh <linux-sh@vger.kernel.org>, Geert Uytterhoeven
-	 <geert+renesas@glider.be>, "D. Jeff Dionne" <jeff@coresemi.io>
-Date: Fri, 01 May 2026 20:32:23 +0200
-In-Reply-To: <acc36891-6148-429c-aa99-3cf7c6681d6f@landley.net>
-References: 
-	<359d107fd9fe92a55e77be84c26d9ac86112fe13.camel@physik.fu-berlin.de>
-	 <71c6a925c748fb3c9c2af30362387f0e562c0f6f.camel@physik.fu-berlin.de>
-	 <55D40750-934F-4F70-A19C-11DC5F97A389@gmail.com>
-	 <15ca13ffdfa494b4d774f75d3daaee2ac7a8c93f.camel@physik.fu-berlin.de>
-	 <acc36891-6148-429c-aa99-3cf7c6681d6f@landley.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.1 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D6C34A3A5
+	for <linux-sh@vger.kernel.org>; Fri,  1 May 2026 21:27:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.218.24
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777670865; cv=pass; b=pDcLtjKINTh74x6oQYOE1olUzHpHFgr+HtOZEpx/p6S4niszixPT7wd9pB7MQt4Bfhpga8zGzd/objVLEVaCbvws85U/YIp4MBD3dMMI+/j/HtIQRa3cFIsqBC4SbRlLM7jsYeixGUHmMMx8Tvx+cHAE8oRgwY7mfTbgRiTrnPo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777670865; c=relaxed/simple;
+	bh=ecrqxISLUM4yZWY4MZFQ3UQ5Vpcz5ZJaSJkbvy7lLus=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hqIyoL08//Qhwhe3TARZut5DWvwdK79Ul/Ca+WKjnQPK6qSGeZSprVXMlLnzt5AwVaMbayu/97GgX7Rg8BaGlW+YdvUf5yxAMSHz/1UvNISlPyKhTQSy4Po/6SoFbXecy7CKPdd3axMp7mxElGgZerimUGgAiMyY219EztMRXfo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=landley.net; spf=pass smtp.mailfrom=landley.net; dkim=pass (2048-bit key) header.d=landley.net header.i=@landley.net header.b=g/x8JTJ0; arc=pass smtp.client-ip=23.83.218.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=landley.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=landley.net
+X-Sender-Id: dreamhost|x-authsender|rob@landley.net
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id D9F594618FD;
+	Fri, 01 May 2026 21:27:37 +0000 (UTC)
+Received: from pdx1-sub0-mail-a209.dreamhost.com (trex-green-8.trex.outbound.svc.cluster.local [100.97.143.63])
+	(Authenticated sender: dreamhost)
+	by relay.mailchannels.net (Postfix) with ESMTPA id 77B644603B1;
+	Fri, 01 May 2026 21:27:37 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; d=mailchannels.net; s=arc-2022; cv=none;
+	t=1777670857;
+	b=PSMrVMnEAwLyJTxsjTUCIaw8pfphQi1TZLd0u5+CA9+GRlnErieyDzBehRUYrOfg+GCRfj
+	/jAXxro5aOU3LbVRuaQ797YuXqZjEYQ+6J4aPITRZ9EaZfxVKHhYu5rNJRP7NgfA6FWW6N
+	pMADKdA5TJbJISMfg/Lc3Z4kLTmfDx/kgfW3J1L9MdADIyBzkUeBZHKWbOVTJ/98vo2cpu
+	vcKEEfGxmIJuqSWaxgJs3Lx/75XCWjYAccz+nR3tALsIQjAwF0qKmEUPPkjwhR6l974uHN
+	SuP501lXOesAoBD+E0n5pM4di0LfP55v5xHGVQ7AQfgusajb3vkTcavYatXK+Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1777670857;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8cP0jYQI4tvcl7K44IEZNBraHacViXCU8m8VREe8Nnw=;
+	b=4Ki5qDd1fJZUR+OE+Mplme0lP6wz4eMA4f6fX99Q+Hp8ipS1dOjk6W/2RnKbYttwByYHsf
+	Ffm2avyhqsupYnZFyawE2vab9Yxndi3mfpw1SRmngeRvUdsJU0b20yyQQL9k82RyO1K76b
+	lD8KpK4HLF6tUOvtcan3w4378llynsku2c9pZk/fUGkq47Lof6BGlwJ8zVNBDhAXXma7kV
+	oA7NIRG/OM7Ip3LShVRS5UjZdSSVPe+e9+HGcxWZGjE5vePgakFXcduboQyW44ezrAkXcN
+	ERY5Jp/sy08CmjQmFFXetrFOOGiwgEXVgJ7YDa2ZZH1mnoyQlKFA2m7KB7pW4g==
+ARC-Authentication-Results: i=1;
+	rspamd-859c89884f-l8b77;
+	auth=pass smtp.auth=dreamhost smtp.mailfrom=rob@landley.net
+X-Sender-Id: dreamhost|x-authsender|rob@landley.net
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|rob@landley.net
+X-MailChannels-Auth-Id: dreamhost
+X-Cooing-Irritate: 14c7e6b04272b07e_1777670857723_487145059
+X-MC-Loop-Signature: 1777670857723:903143840
+X-MC-Ingress-Time: 1777670857722
+Received: from pdx1-sub0-mail-a209.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.97.143.63 (trex/7.1.5);
+	Fri, 01 May 2026 21:27:37 +0000
+Received: from [192.168.14.157] (unknown [209.81.127.98])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: rob@landley.net)
+	by pdx1-sub0-mail-a209.dreamhost.com (Postfix) with ESMTPSA id 4g6kf10R6cz2n;
+	Fri,  1 May 2026 14:27:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=landley.net;
+	s=dreamhost; t=1777670857;
+	bh=8cP0jYQI4tvcl7K44IEZNBraHacViXCU8m8VREe8Nnw=;
+	h=Date:Subject:To:Cc:From:Content-Type:Content-Transfer-Encoding;
+	b=g/x8JTJ05fy8BKLJfmPz0cw/8CRRmWpmgB1tHSw355+SgKZtKIwHlFhjdfLbP6WVH
+	 ULwEtbOI9Uci1VkS5DyPdwP/LZQXpHci3Guji9jAz7CFwc0qeHbm2ldiKhxv/CKtcL
+	 +NlYh7xFSrIvpfVOrvjb2lhzjhcNxOZgDBCk110oGsn1jlNo3/EImh7E2zA9PTAeEX
+	 TA4ODCgVjxbTts5TSly8J4a48xSGo3TOL4Alkbs9GPsJDCTaP9T3QhRCoLepBKl/2L
+	 8JgzL45l2CQpc5JOSvf8NNgKXqGZdj0mCttPq3FftcKkuinGVRp4ELqIkXByDqpRqQ
+	 fczvejwHcjcfg==
+Message-ID: <003c0770-c6f7-4fcf-b11e-74f42bfc14b8@landley.net>
+Date: Fri, 1 May 2026 16:27:36 -0500
 Precedence: bulk
 X-Mailing-List: linux-sh@vger.kernel.org
 List-Id: <linux-sh.vger.kernel.org>
 List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-ZEDAT-Hint: PO
-X-Rspamd-Queue-Id: 180CE4AED8B
+User-Agent: Mozilla Thunderbird
+Subject: Re: Toybox make root no longer works as expected
+To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ "D. Jeff Dionne" <djeffdionne@gmail.com>
+Cc: linux-sh <linux-sh@vger.kernel.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ "D. Jeff Dionne" <jeff@coresemi.io>
+References: <359d107fd9fe92a55e77be84c26d9ac86112fe13.camel@physik.fu-berlin.de>
+ <71c6a925c748fb3c9c2af30362387f0e562c0f6f.camel@physik.fu-berlin.de>
+ <55D40750-934F-4F70-A19C-11DC5F97A389@gmail.com>
+ <15ca13ffdfa494b4d774f75d3daaee2ac7a8c93f.camel@physik.fu-berlin.de>
+ <acc36891-6148-429c-aa99-3cf7c6681d6f@landley.net>
+ <84b1391eb542b5cd6bcbecdfbc63124187265402.camel@physik.fu-berlin.de>
+Content-Language: en-US
+From: Rob Landley <rob@landley.net>
+In-Reply-To: <84b1391eb542b5cd6bcbecdfbc63124187265402.camel@physik.fu-berlin.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 601C14AFCE1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[fu-berlin.de,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[fu-berlin.de:s=fub01];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[landley.net:s=dreamhost];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-3815-lists,linux-sh=lfdr.de];
-	TO_DN_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[landley.net,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_ALL(0.00)[];
+	DMARC_NA(0.00)[landley.net];
+	FREEMAIL_TO(0.00)[physik.fu-berlin.de,gmail.com];
+	TAGGED_FROM(0.00)[bounces-3817-lists,linux-sh=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[fu-berlin.de:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[glaubitz@physik.fu-berlin.de,linux-sh@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-sh,renesas];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rob@landley.net,linux-sh@vger.kernel.org];
+	DKIM_TRACE(0.00)[landley.net:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[landley.net:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,physik.fu-berlin.de:mid]
+	TAGGED_RCPT(0.00)[linux-sh,renesas];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_SEVEN(0.00)[7]
 
-On Fri, 2026-05-01 at 13:20 -0500, Rob Landley wrote:
-> On 4/30/26 02:17, John Paul Adrian Glaubitz wrote:
-> > I can give it a try. Would be good if Rob could publish a recent versio=
-n of the toolchain.
->=20
-> It's just=20
-> https://codeberg.org/landley/toybox/src/branch/master/scripts/mcm-buildal=
-l.sh=20
-> invoking https://github.com/richfelker/musl-cross-make as described in=
-=20
-> https://landley.net/toybox/faq.html#cross2
+On 5/1/26 13:32, John Paul Adrian Glaubitz wrote:
+> On Fri, 2026-05-01 at 13:20 -0500, Rob Landley wrote:
+>> On 4/30/26 02:17, John Paul Adrian Glaubitz wrote:
+>>> I can give it a try. Would be good if Rob could publish a recent version of the toolchain.
+>>
+>> It's just
+>> https://codeberg.org/landley/toybox/src/branch/master/scripts/mcm-buildall.sh
+>> invoking https://github.com/richfelker/musl-cross-make as described in
+>> https://landley.net/toybox/faq.html#cross2
+> 
+> What about the patches for J2 support? And can it work with a GCC git tree like [1]?
 
-What about the patches for J2 support? And can it work with a GCC git tree =
-like [1]?
+They're in musl-cross-make.
 
-Adrian
+https://github.com/richfelker/musl-cross-make/tree/master/patches/binutils-2.44
 
-> [1] https://github.com/olegendo/gcc/tree/devel/sh-lra
+https://github.com/richfelker/musl-cross-make/tree/master/patches/gcc-9.4.0
 
---=20
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+Two in each, I think. (Base support and then a later fdpic bugfix.)
+
+Alas, due to the way Rich maintains musl-cross-make (which is INSANE) if 
+you want to know WHY any of the patches was added (relevant gcc bugzilla 
+entry and so on) you have to find the first release it was added to and 
+log THAT patch to find the commit message, because he never puts helpful 
+comments at the start of the actual files and the commit where the issue 
+was first dealt with is sometimes quite the hunt.
+
+Another reason I wanted to migrate off mcm...
+
+Lemme know if you need me to dig for the source of the fdpic bugfix 
+thingies, I knew once but don't have it lying around. (Jeff might?)
+
+Oh, right also invented his own patch applying infrastructure (cowpatch) 
+which is like fuzz support but worse: silently eats failures of patches 
+to apply. I don't understand why it exists...
+
+Rob
 
