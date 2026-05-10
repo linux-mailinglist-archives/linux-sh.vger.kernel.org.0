@@ -1,49 +1,49 @@
-Return-Path: <linux-sh+bounces-3845-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-3846-lists+linux-sh=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iBDBFP+OAGrfKAEAu9opvQ
-	(envelope-from <linux-sh+bounces-3845-lists+linux-sh=lfdr.de@vger.kernel.org>)
-	for <lists+linux-sh@lfdr.de>; Sun, 10 May 2026 15:58:23 +0200
+	id +FxEFhuPAGrfKAEAu9opvQ
+	(envelope-from <linux-sh+bounces-3846-lists+linux-sh=lfdr.de@vger.kernel.org>)
+	for <lists+linux-sh@lfdr.de>; Sun, 10 May 2026 15:58:51 +0200
 X-Original-To: lists+linux-sh@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B20CA5047DC
-	for <lists+linux-sh@lfdr.de>; Sun, 10 May 2026 15:58:22 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DAA15047EB
+	for <lists+linux-sh@lfdr.de>; Sun, 10 May 2026 15:58:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0758130094CE
-	for <lists+linux-sh@lfdr.de>; Sun, 10 May 2026 13:56:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6D91B300E6A3
+	for <lists+linux-sh@lfdr.de>; Sun, 10 May 2026 13:56:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63C213988F1;
-	Sun, 10 May 2026 13:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4493C3988E1;
+	Sun, 10 May 2026 13:56:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KD0dsLZQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qTx6zCQ5"
 X-Original-To: linux-sh@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409013988E1;
-	Sun, 10 May 2026 13:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A32396587;
+	Sun, 10 May 2026 13:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778421373; cv=none; b=V4jGp96DxiB7bCUJvFkDstEFXDxxbucAZKie+fxKsZ1JDqy/iOBPoMU4TnytqNm38K5Qbahk3JQkuhPSYQBafsag5F2YeDrGYhQXa7gH83DZFoMWhmavonXYLrJJf6ESvCq8Fq5y1htyk4d3wWWSJ3vZmWRcI98QTiep9YUfvqQ=
+	t=1778421376; cv=none; b=toEffk3iKGYLlQzXx9gzncMLU4Ipq040H4LVFcKvh8vCIcQzxOuqJaAT1rzb4fyLGBoTphrXF3epUczh2nTAUUGOlRyzuQp8ZzRGFq9bM6AFQyifGaKHfMJVTqkK3Dd/a+fH3hvKp10v9zCuuTMJyLjHo/Qj8ss5tKWzTM5qiLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778421373; c=relaxed/simple;
-	bh=tkwfagRVJukzEnsyKj09sXQJAa9mnqv0b5T/g9FZs3U=;
+	s=arc-20240116; t=1778421376; c=relaxed/simple;
+	bh=IdEPlXw4dkMVbwrrWqpYiCW1jHNUxW961O1EvYNalsE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Djce75XsmLUVvFHvH0ldFQrqzj8QhnUPs6/Wskz3zRrmDi7wQSuK17MC2ZVZKlxBq2Yfag/HojovTHexqBwdgQSEGVMODjtn8EM4qNDyMDvF7zn8v4J78fz+yxzW5bJyHiU+HSHo1nHMcRfHuIWkHleOodjcNdiVjPKxZiCYTe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KD0dsLZQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C20DC2BCC9;
-	Sun, 10 May 2026 13:56:10 +0000 (UTC)
+	 MIME-Version; b=SzIkhKzVmiwzUhUCNcvxCOwUzqUP62r4wDhyYEqfyXSCDVEXv87fF39cmUozAaIwl4Pa7eQmtoOcBxUeh3rulkch4fzOHx1avihQATPRmfU/JgKE1YUrmeqAPmthb88dvWQ0ibnI3CjIQVlhlmTOSpxTrrncHx3D8rUEi4jvSJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qTx6zCQ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 712DAC2BCC9;
+	Sun, 10 May 2026 13:56:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778421372;
-	bh=tkwfagRVJukzEnsyKj09sXQJAa9mnqv0b5T/g9FZs3U=;
+	s=k20201202; t=1778421375;
+	bh=IdEPlXw4dkMVbwrrWqpYiCW1jHNUxW961O1EvYNalsE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KD0dsLZQY4aolmkr1gau+yr6NpTDiaJQ4wLWAigE+m0YYMN8BL86IHL7HAz9P3MAq
-	 zTKtMaLddQ0wGCkvdp4K36xZLTLHNgd1OnYz5mEeakDh6geUhW/6h9JwnR01/2uWtk
-	 w9e869Jc7W+ew7iLIiXkHfqfJmwZczH7IQUnoINX0pzfosswBCWg6PtMhY4GKSkeRL
-	 QXbd67mSE5PIuP8u2Kcq+PryQmE+t72JP6eaL8PUO63xYQJKbXvNL60rNIuB4IFe7l
-	 66BMMFIQCLb/eydQhhPfZUNT3ylau2HS6ctxUMwYvRjOCzrd/lThU/8zLgOQEzXIkT
-	 hlrk2CL1XoWuA==
+	b=qTx6zCQ5dh4qEwZhqFS99kQ5etYMSIjj7tuTxSW9d8G0j3zKW3JMWXRROevWzF2+o
+	 WVEzflU7g2gZvElHmKuzMOT1DuJUWKMpAGPLOYagNzJf5+bM3r1BYbns7L08gj4z3m
+	 zbzuff/MucIrEeU2n0sqfJfsTPivTlYUOHxedwJRwUKXn8YLH/7gLLN/F8Vg3YSGBX
+	 9iVA1KwQhEtECeQVIjj3uzhSAOtpgEBmOENTVcEuiUGSXe/L55ozKCofEEfZgG4IOk
+	 wqJVrRPOmoITukBYPBVQhgz/jaKAye+sx1R/wL8qHMQ2cSeQRfa2XQfRxv6p6zFhSA
+	 bmRFv31RUcjIA==
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-sh@vger.kernel.org
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -54,9 +54,9 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Yoshinori Sato <ysato@users.sourceforge.jp>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v2 07/10] init/Kconfig: drop ARCH_WANT_NUMA_VARIABLE_LOCALITY
-Date: Sun, 10 May 2026 16:55:43 +0300
-Message-ID: <20260510135546.13554-8-rppt@kernel.org>
+Subject: [PATCH v2 08/10] sh: init: remove call the memblock_set_node()
+Date: Sun, 10 May 2026 16:55:44 +0300
+Message-ID: <20260510135546.13554-9-rppt@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260510135546.13554-1-rppt@kernel.org>
 References: <20260510135546.13554-1-rppt@kernel.org>
@@ -67,20 +67,20 @@ List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B20CA5047DC
+X-Rspamd-Queue-Id: 7DAA15047EB
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-3845-lists,linux-sh=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-3846-lists,linux-sh=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -94,46 +94,36 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-sh];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arndb.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,arndb.de:email]
 X-Rspamd-Action: no action
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-sh was the only architecture that selected ARCH_WANT_NUMA_VARIABLE_LOCALITY.
-
-With NUMA support on sh gone, there is no need in this configuration
-option.
+Without CONFIG_NUMA, the call to memblock_set_node() is not needed.
 
 Remove it.
 
 Reviewed-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- init/Kconfig | 7 -------
- 1 file changed, 7 deletions(-)
+ arch/sh/kernel/setup.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/init/Kconfig b/init/Kconfig
-index 2937c4d308ae..33337fde1197 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -1001,16 +1001,9 @@ config CC_STRINGOP_OVERFLOW
- config ARCH_SUPPORTS_INT128
- 	bool
- 
--# For architectures that (ab)use NUMA to represent different memory regions
--# all cpu-local but of different latencies, such as SuperH.
--#
--config ARCH_WANT_NUMA_VARIABLE_LOCALITY
--	bool
+diff --git a/arch/sh/kernel/setup.c b/arch/sh/kernel/setup.c
+index 2f2764061003..43d0f7b62b03 100644
+--- a/arch/sh/kernel/setup.c
++++ b/arch/sh/kernel/setup.c
+@@ -228,9 +228,6 @@ void __init __add_active_range(unsigned int nid, unsigned long start_pfn,
+ 	 */
+ 	pmb_bolt_mapping((unsigned long)__va(start), start, end - start,
+ 			 PAGE_KERNEL);
 -
- config NUMA_BALANCING
- 	bool "Memory placement aware NUMA scheduler"
- 	depends on ARCH_SUPPORTS_NUMA_BALANCING
--	depends on !ARCH_WANT_NUMA_VARIABLE_LOCALITY
- 	depends on SMP && NUMA_MIGRATION && !PREEMPT_RT
- 	help
- 	  This option adds support for automatic NUMA aware memory/task placement.
+-	memblock_set_node(PFN_PHYS(start_pfn), PFN_PHYS(end_pfn - start_pfn),
+-			  &memblock.memory, nid);
+ }
+ 
+ void __init __weak plat_early_device_setup(void)
 -- 
 2.53.0
 
