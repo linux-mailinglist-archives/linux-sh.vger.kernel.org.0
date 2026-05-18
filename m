@@ -1,60 +1,60 @@
-Return-Path: <linux-sh+bounces-3868-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-3869-lists+linux-sh=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QHRHGFJJC2o7FQUAu9opvQ
-	(envelope-from <linux-sh+bounces-3868-lists+linux-sh=lfdr.de@vger.kernel.org>)
-	for <lists+linux-sh@lfdr.de>; Mon, 18 May 2026 19:16:02 +0200
+	id wOREJUBIC2o7FQUAu9opvQ
+	(envelope-from <linux-sh+bounces-3869-lists+linux-sh=lfdr.de@vger.kernel.org>)
+	for <lists+linux-sh@lfdr.de>; Mon, 18 May 2026 19:11:28 +0200
 X-Original-To: lists+linux-sh@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D255B571838
-	for <lists+linux-sh@lfdr.de>; Mon, 18 May 2026 19:16:01 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EA34571761
+	for <lists+linux-sh@lfdr.de>; Mon, 18 May 2026 19:11:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8F36F3002A38
-	for <lists+linux-sh@lfdr.de>; Mon, 18 May 2026 17:11:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 78483300F78F
+	for <lists+linux-sh@lfdr.de>; Mon, 18 May 2026 17:11:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60F4534F474;
-	Mon, 18 May 2026 17:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D9BA382F05;
+	Mon, 18 May 2026 17:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="dlc9Lr4n"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="XXGoaK6D"
 X-Original-To: linux-sh@vger.kernel.org
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5666376490
-	for <linux-sh@vger.kernel.org>; Mon, 18 May 2026 17:11:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E71381AFC
+	for <linux-sh@vger.kernel.org>; Mon, 18 May 2026 17:11:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779124273; cv=none; b=X+VePCUxAQOFlSJi/B/aKen+Wkt8kdqj3CJ0Dnn5yJ/ej5Kq9DuXctq3c22s8vHXnV1Hu1rdyYqB3jZ7rI8TziikxwMCEsEyyDcNIVzGW91sLLiCPNDTMK3I73lsHB6fFWHysAMdIvVwtYvOR+W2d2Pxln71nZ3H+FGu5TYmKPg=
+	t=1779124274; cv=none; b=gtWW8kF961+YPLlmcX5yw1MxwMqf3IRGHUp2g094eCcadkfefSWfOHFOpndSZEngUDSYJRBADw7rFDZc5Vtn39m7l6onji4rzwoRLqS/RXUd1dI4zf48n796kjZhR5X3YD9I51UGTeX8XeU0ez9gz/yeW0na/8z8GBbE+Lhl1aM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779124273; c=relaxed/simple;
-	bh=gHcFIxHS+uzmMbMxDDVfnDjk70QhFruRR+TTL961w60=;
+	s=arc-20240116; t=1779124274; c=relaxed/simple;
+	bh=RHwR0XLMX0h6ZOG0tw5AW8ldgKfGKRUEc6Qy3cEpaTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dDUK/PziAKpV0lT4EiXne/nCPB23VpdXDlXmDyVUSkgjk3cLfJmedVGVxtr7YcoHVmFYJgYuROh5hY0XGeNgubG2hx63l0HcwRCghMSf6AU7DmcuTY39XLGdJORmPxao3FYLDzvj3T4CScLW1ht7q+S/E87mwiQJzPmVNBGTrzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=dlc9Lr4n; arc=none smtp.client-ip=95.215.58.180
+	 MIME-Version; b=paqT3cMg8dhAbdQZoYHwsdntr4FTo5aL6jsfQrCXppegheJw0/zVouGfC8Le0KczSLPIcHhJfQq0h3MriV85vk5GLqEPb6fBGLOCLb/6G+PCPZxaSAf4yybvW3LWw9rAVJhYbH6vVIJyP8OeDzwwEmTqEtRXxgEA9U/LiLfnjeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=XXGoaK6D; arc=none smtp.client-ip=95.215.58.189
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779124270;
+	t=1779124272;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5SkA2dJFz80GQZbru+VwXcVcV8tgtPLqZ7+EHwJPQA4=;
-	b=dlc9Lr4nh4puN4Vdbql1uSTXLhU+AleGPOj0CoZ2GGZN4ZEC26LuDIFL49ZC34U5+sQKav
-	ERq2A9O1EjesY9F2kEHTcMUzpJa6CTlwu13WDCwAMR6mRpeO7U5vSyV5hq0IX0Myp2mWzu
-	kWA+Y6QedWaUb1+3UUAJJiQu5GwjWd0=
+	bh=BiigflQZoBKUXM0Z8RF9f73Zc0sMQG4tbSQ7hohtZ2g=;
+	b=XXGoaK6DgWfFvDgvyWjBxUNmQBpMm5c18d0fqsDAyDvLyrQ2v1LBzsSFfqssJA3dZdJGZS
+	1RiU0RLMBnybeUo2SV8pnqeWtmFR2git+f2Xt7gKY/jfIW64R/ZFB8nQGgIDAUo43QrvSH
+	sBh5XSs2TSPydJyla0R+S9bYHxZ9Q1o=
 From: Thorsten Blum <thorsten.blum@linux.dev>
 To: Rich Felker <dalias@libc.org>,
 	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Geert Uytterhoeven <geert+renesas@glider.be>
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Thorsten Blum <thorsten.blum@linux.dev>
 Cc: linux-sh@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/3] sh: dma-sysfs: use strscpy in dma_store_dev_id
-Date: Mon, 18 May 2026 19:10:42 +0200
-Message-ID: <20260518171040.81917-6-thorsten.blum@linux.dev>
+Subject: [PATCH 3/3] sh: dma: drop redundant size argument from strscpy in request_dma
+Date: Mon, 18 May 2026 19:10:43 +0200
+Message-ID: <20260518171040.81917-7-thorsten.blum@linux.dev>
 In-Reply-To: <20260518171040.81917-5-thorsten.blum@linux.dev>
 References: <20260518171040.81917-5-thorsten.blum@linux.dev>
 Precedence: bulk
@@ -63,64 +63,62 @@ List-Id: <linux-sh.vger.kernel.org>
 List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=918; i=thorsten.blum@linux.dev; h=from:subject; bh=gHcFIxHS+uzmMbMxDDVfnDjk70QhFruRR+TTL961w60=; b=owGbwMvMwCUWt7pQ4caZUj3G02pJDFncHuKrrn898ajMSvQNkwqr0cqWVf/e6p34JvX3mcVk6 2MGy5t1O0pZGMS4GGTFFFkezPoxw7e0pnKTScROmDmsTCBDGLg4BWAi2yYzMnw5/LHi896nYifV FCVO+Wntezzz/BX7dT5XDPwNDunXZl9l+MloIazv8rs1lYM/3eegpN/WLVETfpo4WvNNcCve4Nu 5hhEA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=880; i=thorsten.blum@linux.dev; h=from:subject; bh=RHwR0XLMX0h6ZOG0tw5AW8ldgKfGKRUEc6Qy3cEpaTI=; b=owGbwMvMwCUWt7pQ4caZUj3G02pJDFncHpI6dXbS5q9V3ed7HhfbwT3x8DznH+r9h0+4vPc9e rN7ld+UjlIWBjEuBlkxRZYHs37M8C2tqdxkErETZg4rE8gQBi5OAZhIIwMjw369sjd7Lz5zvMWu daOsQzlRPDFkkncax+2KM/ckYnRSXzP8M2O77/RdJLAnvGDd7aQd95j+hCnO6d98zPZRyG7+K6W iHAA=
 X-Developer-Key: i=thorsten.blum@linux.dev; a=openpgp; fpr=1D60735E8AEF3BE473B69D84733678FD8DFEEAD4
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Spamd-Result: default: False [0.34 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-3868-lists,linux-sh=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-3869-lists,linux-sh=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[thorsten.blum@linux.dev,linux-sh@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linux.dev:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thorsten.blum@linux.dev,linux-sh@vger.kernel.org];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-sh,renesas];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,linux.dev:mid,linux.dev:dkim,glider.be:email]
-X-Rspamd-Queue-Id: D255B571838
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linux.dev:mid,linux.dev:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,glider.be:email]
+X-Rspamd-Queue-Id: 8EA34571761
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-strcpy() has been deprecated¹ because it performs no bounds checking on
-the destination buffer, which can lead to buffer overflows. Replace it
-with the safer strscpy().
-
-¹ https://www.kernel.org/doc/html/latest/process/deprecated.html#strcpy
+The strscpy() size argument is optional if the destination buffer has a
+fixed length. Use the two-argument version of strscpy() to copy 'dev_id'
+to simplify the code.
 
 Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
 ---
- arch/sh/drivers/dma/dma-sysfs.c | 2 +-
+ arch/sh/drivers/dma/dma-api.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/sh/drivers/dma/dma-sysfs.c b/arch/sh/drivers/dma/dma-sysfs.c
-index d4e16cfc7a12..d1d6b9bb0d7e 100644
---- a/arch/sh/drivers/dma/dma-sysfs.c
-+++ b/arch/sh/drivers/dma/dma-sysfs.c
-@@ -74,7 +74,7 @@ static ssize_t dma_store_dev_id(struct device *dev,
- 				const char *buf, size_t count)
- {
- 	struct dma_channel *channel = to_dma_channel(dev);
--	strcpy(channel->dev_id, buf);
-+	strscpy(channel->dev_id, buf);
- 	return count;
- }
+diff --git a/arch/sh/drivers/dma/dma-api.c b/arch/sh/drivers/dma/dma-api.c
+index 87e5a8928873..15e2c10c9805 100644
+--- a/arch/sh/drivers/dma/dma-api.c
++++ b/arch/sh/drivers/dma/dma-api.c
+@@ -96,7 +96,7 @@ int request_dma(unsigned int chan, const char *dev_id)
+ 	if (atomic_xchg(&channel->busy, 1))
+ 		return -EBUSY;
  
+-	strscpy(channel->dev_id, dev_id, sizeof(channel->dev_id));
++	strscpy(channel->dev_id, dev_id);
+ 
+ 	if (info->ops->request) {
+ 		result = info->ops->request(channel);
 
