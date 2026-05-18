@@ -1,169 +1,126 @@
-Return-Path: <linux-sh+bounces-3863-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-3865-lists+linux-sh=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AJn6G5X8CmqA+wQAu9opvQ
-	(envelope-from <linux-sh+bounces-3863-lists+linux-sh=lfdr.de@vger.kernel.org>)
-	for <lists+linux-sh@lfdr.de>; Mon, 18 May 2026 13:48:37 +0200
+	id UNUwNtAEC2rd/QQAu9opvQ
+	(envelope-from <linux-sh+bounces-3865-lists+linux-sh=lfdr.de@vger.kernel.org>)
+	for <lists+linux-sh@lfdr.de>; Mon, 18 May 2026 14:23:44 +0200
 X-Original-To: lists+linux-sh@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24A2156BEF8
-	for <lists+linux-sh@lfdr.de>; Mon, 18 May 2026 13:48:37 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4FF156C8F8
+	for <lists+linux-sh@lfdr.de>; Mon, 18 May 2026 14:23:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AA3753019003
-	for <lists+linux-sh@lfdr.de>; Mon, 18 May 2026 11:47:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6C2BC304CD53
+	for <lists+linux-sh@lfdr.de>; Mon, 18 May 2026 12:11:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7B803F7869;
-	Mon, 18 May 2026 11:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEF053FD953;
+	Mon, 18 May 2026 12:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h7ic0r9A"
+	dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b="MMe0mM3G"
 X-Original-To: linux-sh@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF453F86E1
-	for <linux-sh@vger.kernel.org>; Mon, 18 May 2026 11:47:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A9A3FD153;
+	Mon, 18 May 2026 12:11:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.133.4.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779104836; cv=none; b=ZGmFb+OY5Je7w+zZRYzoPa3uT4Ggwdb6+3t6Ksc6mL3U22FB+EGLNLQcZOpSARixTK8Rw/dNAnh4kwvKclOe4o2j+Aq1Pb0EbToGm+shrjpSwN2gfEPRktnizhnZ+QOzMuRKjvzOJTY728Bf/Q4PKi3nTNfn1nPgt0zZ7sPN+UA=
+	t=1779106266; cv=none; b=pPc2gSGpZwWuab0f/rNwVKQOHQ4ulRem3hB028f56w9WyxGCCvRIYK8nKZyUaJvAdTCOMuvmbUMZMN3gwfLzuIYlxzx5zYtktiRDVIe5FkU4GNnsZd/tBuBs8mgplAa3Yt1+29UrlqOUmky1ky9wkadjF5MvHzY/SPtWuR26vE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779104836; c=relaxed/simple;
-	bh=1GKxGECc+cPoJ1DVleU9/qymiUPEf3nJCKu1WV+4Q5o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bYWLjjalxxRZV5jtgFW/viITL2YxVSch7f44v0gl44+SV+bPGBL/Bl7hjPaCtn9CU6sor4ayguHpVm0tyq+BSSWet3pwDuo7YmS5NGMNPAz7EzfC5Dq/JWzYac9lmIomTB4Q09CTDFaUaVgkVLOdolthGDP94NfTWpOsi18jnMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h7ic0r9A; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-48ff4f8ef0dso24869095e9.3
-        for <linux-sh@vger.kernel.org>; Mon, 18 May 2026 04:47:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779104833; x=1779709633; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ezhWSslS+RucQI+0tAHxOGAEb51o6QdhaggvM2yWnxk=;
-        b=h7ic0r9ASC0r1avqvot7zv7rlYcs9qDWIm6KxIcdRGqncy3/dmuY/MPlT+zWJrHcMM
-         dPQI3pYQpmBVKtPHZMyGGnwp/O6XPbz0uQYWVgKA/MYK/eZAttWBoaGX3dnff67WdMlA
-         ZbcD1pfv8hnZjDm2sp8Ywi51sjznizFk9RqidOm/fcxYEoGjzbZHuWQ90DPkQ4m/Sprz
-         sgeHp8ys+dnB45+AHSLuGQaCBi4GSxHZ8rgHfNtLEiewzOrvP61pQ3bruo2QxxBbh+Bh
-         mNLpmJEGWVJM0B61NDh7cU8m3PePQi7IYUqdL4scQqIRYk720KwWV7HkI4HwjMkjoXve
-         o+jg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779104833; x=1779709633;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ezhWSslS+RucQI+0tAHxOGAEb51o6QdhaggvM2yWnxk=;
-        b=Ufy6+G9/jXUDMND5XaFUEfVoU4NfZJO/hFufeErwE0uwKLkCP4scseB/fm7vs2cOK3
-         7Rz7eg7bwghG9JMwGnAS2YbL/LYEHsaOfkMgEYCupkEMKlUk5HdwCzGO+fI/U5ghNRST
-         8Q2Jm/sxEvgtjPJ2r9qSIpO+6ghsn56k+srLSgFFungJSJYgxSY6gNAzR2xgODrCr5Vb
-         CsZ3rbqAhT4Oc4GPSK92z7aH5zOnaZKNpzTYOunSztD9f8wxhGG0aS9kjktxNBIqAYsa
-         8xwltF7wcPf7hPaqXugMVoiMftwfL1NY6UD3JpTl43AE1wO8KTfSjmCffKNG9+UmCYEL
-         HCkg==
-X-Gm-Message-State: AOJu0Ywpc6KkZRgwEQyJEvpwHqwsLHCZZOxM3Qze/3V8CLofqYjTRkhu
-	PZojrv00ldWI0atV5nOfHe93oFwAAP1pZYnJC3lvhUQG3Na6C7tj5ZSTJmYAYi4=
-X-Gm-Gg: Acq92OE6rdqMoCDJaWJ0mDhtDVTc9QG+enW6RuylxyEoUjKFlZeV1ezqfOPnqgkz3PR
-	tKlwzf5oEAMu+cuu0VjLq+pPhPiwtMxIYjyIb6PfxKcvdvqB5zg8i6FF42jNLoeDPM1/mIrH/3l
-	xbQmRUiNOOVfKcbvlgR/jrfsHeq9SmRrbbm6Zvm2YeEcmFT86S3ADm/RtJ0+QqXi8bhDQXQ7tEQ
-	+fk4aJOoZPG/rwkP+R5Bo5OhI+Geq9BP0cVhnN1hvj7sQ24PUbdfvh3yA/o7Ii3G2LVE58Vf0E0
-	QT0A8F7bXtI9AqTElxuye2bPqS9URXIiPuhbxzdfsVjAoG2RPsiD5N85d7w5SiH9yOSYn7gtg2f
-	0hJUwlU5lHCzEfIl6TVI1LkACej4D9bin8TozUqFMYXIKoPt8aHPmHa0ukq3vi0buk2oUIgU62Q
-	5XGshB3Yg4dzFASNf6lrEt1e5HOdiQCsRhAZGxQ/8G/GLkruOGs5MVMlLyxhPh0biD6dJZWhBVH
-	kXqmsOG
-X-Received: by 2002:a05:600c:4e87:b0:487:21c7:2885 with SMTP id 5b1f17b1804b1-48fe60e142emr233996405e9.5.1779104832846;
-        Mon, 18 May 2026 04:47:12 -0700 (PDT)
-Received: from localhost ([2a02:810d:4a94:b300:f15c:fd38:3fe1:9653])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-48fe53ab671sm250281165e9.1.2026.05.18.04.47.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 May 2026 04:47:12 -0700 (PDT)
-From: Florian Fuchs <fuchsfl@gmail.com>
-To: Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	linux-mtd@lists.infradead.org
-Cc: linux-sh@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Adrian McMenamin <adrian@newgolddream.dyndns.info>,
-	Florian Fuchs <fuchsfl@gmail.com>,
-	Artur Rojek <contact@artur-rojek.eu>
-Subject: [PATCH v3 3/3] mtd: maps: vmu-flash: fix NULL pointer dereference in initialization
-Date: Mon, 18 May 2026 13:45:21 +0200
-Message-ID: <20260518114521.81564-4-fuchsfl@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260518114521.81564-1-fuchsfl@gmail.com>
-References: <20260518114521.81564-1-fuchsfl@gmail.com>
+	s=arc-20240116; t=1779106266; c=relaxed/simple;
+	bh=MMW8Xcy0ozejOhRJ6CyedjM8bREYY/A/20+GskGmUKM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=OQjgsV6/IqtZaVGqBEaVQwFPHrV2K+/UBCu4iTkeb01L9wxmjBJPdqWdZMLC/VAWAkQWPOowDOlFaG7DuYDocVLICueBtW6/GIDv4uDmFPmMUgR7at6XGe4XPG72SJokTaTahS/cp4qCAS03YTgksbHmfQmDdbv+4rebxblzBfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; spf=pass smtp.mailfrom=zedat.fu-berlin.de; dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b=MMe0mM3G; arc=none smtp.client-ip=130.133.4.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zedat.fu-berlin.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:From:
+	Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=SXw+Y9FPLLLVyXTKHpJPROy78RD4gYIyHyZ6bURXx1I=; t=1779106263;
+	x=1779711063; b=MMe0mM3GI5xUqj7eemGUl0OB/V8jI95SwFSqHqcZJ6M8ePtfGTk5j7KuO25mD
+	P47V1472QZs4sxPED/gSwBiHPZtrFuC56eiPo3Xuhqjjcs7Us/RmQIfwfqrWHVaCnnKOPCBui5Dz+
+	4oXRVWxEjm2+dGHojbmnRaVuayvpDrOulVA2U1j3nHXynyLjE6SBYe+cyRiqmCKO9utdDiiqQyjuQ
+	EhwPu/B44q9S2vYOGtJeq2Bm6W4dBIi0xg9muSJwpyATwqfNxZXTjv2DLhceqeF7P/pt2aw5r9wwr
+	N8QsKsYBcYN2SSw5XTseCYRHlGYYriW53A5K22Phs4ECkPyDCA==;
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.99)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1wOwj6-00000002a3Q-3bjt; Mon, 18 May 2026 14:05:40 +0200
+Received: from p5b13a134.dip0.t-ipconnect.de ([91.19.161.52] helo=[192.168.178.61])
+          by inpost2.zedat.fu-berlin.de (Exim 4.99)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1wOwj6-00000003CzN-2BzF; Mon, 18 May 2026 14:05:40 +0200
+Message-ID: <adb1db8d1fbb9d219fa041776ae863aa2fc09270.camel@physik.fu-berlin.de>
+Subject: Re: [PATCH v2 00/10] sh: remove NUMA and SPARSEMEM support
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: Mike Rapoport <rppt@kernel.org>, linux-sh@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann
+ <arnd@arndb.de>,  Rich Felker <dalias@libc.org>, Yoshinori Sato
+ <ysato@users.sourceforge.jp>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Date: Mon, 18 May 2026 14:05:39 +0200
+In-Reply-To: <agr7XvoWn_-axX1-@kernel.org>
+References: <20260510135546.13554-1-rppt@kernel.org>
+	 <agr7XvoWn_-axX1-@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.1 
 Precedence: bulk
 X-Mailing-List: linux-sh@vger.kernel.org
 List-Id: <linux-sh.vger.kernel.org>
 List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 24A2156BEF8
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-ZEDAT-Hint: PO
+X-Rspamd-Queue-Id: E4FF156C8F8
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[fu-berlin.de,none];
+	R_DKIM_ALLOW(-0.20)[fu-berlin.de:s=fub01];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,libc.org,physik.fu-berlin.de,newgolddream.dyndns.info,gmail.com,artur-rojek.eu];
+	TAGGED_FROM(0.00)[bounces-3865-lists,linux-sh=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DKIM_TRACE(0.00)[fu-berlin.de:+];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-3863-lists,linux-sh=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[fuchsfl@gmail.com,linux-sh@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[glaubitz@physik.fu-berlin.de,linux-sh@vger.kernel.org];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-sh];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Action: no action
 
-The mtd_info contains a struct device, which must be linked to its
-parent. Without this, the initialization of the MTD fails with a NULL
-pointer dereference.
+Hi Mike,
 
-Fixes: 47a72688fae7 ("mtd: flash mapping support for Dreamcast VMU.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Florian Fuchs <fuchsfl@gmail.com>
----
-v2->v3: no functional change, added Fixes, Cc tag according to feedback
-v1->v2: no functional change
+On Mon, 2026-05-18 at 14:43 +0300, Mike Rapoport wrote:
+> Gentle ping?
 
-v2: https://lore.kernel.org/lkml/20260427114750.2480900-4-fuchsfl@gmail.com/
-v1: https://lore.kernel.org/lkml/20251117224408.498449-4-fuchsfl@gmail.com/
+It's on my TODO list for this week!
 
- drivers/mtd/maps/vmu-flash.c | 1 +
- 1 file changed, 1 insertion(+)
+Adrian
 
-diff --git a/drivers/mtd/maps/vmu-flash.c b/drivers/mtd/maps/vmu-flash.c
-index b76d0609d1b7..10244e6731d0 100644
---- a/drivers/mtd/maps/vmu-flash.c
-+++ b/drivers/mtd/maps/vmu-flash.c
-@@ -547,6 +547,7 @@ static void vmu_queryblocks(struct mapleq *mq)
- 	mpart->partition = card->partition;
- 	mtd_cur->priv = mpart;
- 	mtd_cur->owner = THIS_MODULE;
-+	mtd_cur->dev.parent = &mdev->dev;
- 
- 	pcache = kzalloc_obj(struct vmu_cache);
- 	if (!pcache)
--- 
-2.43.0
-
+--=20
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
