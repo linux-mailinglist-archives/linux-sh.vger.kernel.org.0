@@ -1,145 +1,175 @@
-Return-Path: <linux-sh+bounces-3864-lists+linux-sh=lfdr.de@vger.kernel.org>
+Return-Path: <linux-sh+bounces-3866-lists+linux-sh=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-sh@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4Jw5K8cDC2qj/QQAu9opvQ
-	(envelope-from <linux-sh+bounces-3864-lists+linux-sh=lfdr.de@vger.kernel.org>)
-	for <lists+linux-sh@lfdr.de>; Mon, 18 May 2026 14:19:19 +0200
+	id iHwfLHFFC2rgFAUAu9opvQ
+	(envelope-from <linux-sh+bounces-3866-lists+linux-sh=lfdr.de@vger.kernel.org>)
+	for <lists+linux-sh@lfdr.de>; Mon, 18 May 2026 18:59:29 +0200
 X-Original-To: lists+linux-sh@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10B6D56C7C0
-	for <lists+linux-sh@lfdr.de>; Mon, 18 May 2026 14:19:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1131657158A
+	for <lists+linux-sh@lfdr.de>; Mon, 18 May 2026 18:59:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BE3903010394
-	for <lists+linux-sh@lfdr.de>; Mon, 18 May 2026 12:06:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2DE5330325AA
+	for <lists+linux-sh@lfdr.de>; Mon, 18 May 2026 16:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B82E53FB7D1;
-	Mon, 18 May 2026 12:06:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FBEA23EAB0;
+	Mon, 18 May 2026 16:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="iczjFiyE"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Rmdk40dc"
 X-Original-To: linux-sh@vger.kernel.org
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2007D355F2D;
-	Mon, 18 May 2026 12:06:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B16E2989BC
+	for <linux-sh@vger.kernel.org>; Mon, 18 May 2026 16:53:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779105979; cv=none; b=HmEzSpE/bpRziigOwhLDoTT2jrXxsPpyxOSG7x2PmXqIKUa5i9Ok7GGOV/XZ8rlxTS/Yv63un5Bx+s1dNysxvLk+wELr5UlPd4RgUwzrxFRsxUv8fdFu0Oi7UERJesQ/peXaC64NZ74Pj8oGqYmIEXRXVKT3u7RuohnZLtCs1KI=
+	t=1779123233; cv=none; b=YCnMruwJcH0tNQiL2Ex26XkaujG/9+Dt5n9PqSCtLPoNbjALLLyk5/JmIP5Ske40yhonWSN0giPaG5+IhbnapgmXnh6WyabLHurHvdKLMihdETS2iQnx2CT8P0+o1zLip9m8mvuUuo4DecOv2OYQ6c/MyOr1O40HWIJCtcPojno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779105979; c=relaxed/simple;
-	bh=qGBbj7L2BkeT8w74J5jzL7q2DOUlya6jHM7hiGnOStw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=HCviKqXBGdWvY4DtHjJnly6tCVuGjcrXP+BzJVI1P8KIMVjkAkWCl36ENsjk64ZxliwUFN30VHu31G/G+a769U9Be/1rKtHlqQtewZRgHCCvRXc/uwV3sdMYLVZJDugm3A91yeN3mgSgMas9nWaEaXgzwUC+9MYouIt1P5vR9ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=iczjFiyE; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 09A8C4E42CDB;
-	Mon, 18 May 2026 12:06:14 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id A48C95FFA3;
-	Mon, 18 May 2026 12:06:13 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1F6E211AF84A3;
-	Mon, 18 May 2026 14:06:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1779105973; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=ti0kMieo1Q8WJfj742mYfiKH1EDQpG4zFPCckhsBW8U=;
-	b=iczjFiyENVzumC7GYJz0GANMpn8oqwIM5i47kKTaNE2KAADb0M4OV9NHxgKGRcUesiZeaR
-	tY2qV2QWorlamiM1iDRU06Te+s4RMPtLWnXk5vO1cFywyy/GTwxwc2bs6xt4yTdHfQsnkE
-	JTgL23eQHhnPJCfuMh/hLRVdVoydfRjGnsUJb2mL37pcUBPczSBux5Ou8zlugRumWZ5IRg
-	M0XqOkT1W0pd3IIZklkZ3xZZOzjtFIdVgBl9/MjXutuHPx/Bby7KI4e/tsHW7sSBpuV4H3
-	7jManfFXTvjWZt6XmvFmVtSF3edN58jl0clzOog4j0OyTXjfxVfuE0pwkfJKJQ==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Florian Fuchs <fuchsfl@gmail.com>
-Cc: Richard Weinberger <richard@nod.at>,  Vignesh Raghavendra
- <vigneshr@ti.com>,  linux-mtd@lists.infradead.org,
-  linux-sh@vger.kernel.org,  linux-kernel@vger.kernel.org,  Rich Felker
- <dalias@libc.org>,  John Paul Adrian Glaubitz
- <glaubitz@physik.fu-berlin.de>,  Adrian McMenamin
- <adrian@newgolddream.dyndns.info>,  Artur Rojek <contact@artur-rojek.eu>
-Subject: Re: [PATCH v3 0/3] mtd: maps: vmu-flash: Fix build and runtime errors
-In-Reply-To: <20260518114521.81564-1-fuchsfl@gmail.com> (Florian Fuchs's
-	message of "Mon, 18 May 2026 13:45:18 +0200")
-References: <20260518114521.81564-1-fuchsfl@gmail.com>
-User-Agent: mu4e 1.12.7; emacs 30.2
-Date: Mon, 18 May 2026 14:06:08 +0200
-Message-ID: <87fr3oudlb.fsf@bootlin.com>
+	s=arc-20240116; t=1779123233; c=relaxed/simple;
+	bh=WnJ4gWii6vGIYcblvWHBrztcZBFygJX95R92ZbX9gzU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qGhJmP1RyuQfwy6kRHXzy/XnSOlwdzCDpaRqyGUx83FPnzQdA/JID+JKQuEt6J/VR1HYplMP4Tj4PiZOwb8xAVfOhsR/pAIc0KCLN/V995Ma5kdxcm/1rPSIiStVIkV1g/Yi79RfxWqKKP1IH14rwxJlawttwjhq+wlnESlt4KU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Rmdk40dc; arc=none smtp.client-ip=95.215.58.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779123218;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=dTW70Khpmv4Wv56aPG+Rcr4F5EYvZo6qHkg+0Adldi0=;
+	b=Rmdk40dc5ZaNPRkaQongReyUZboX6Q7x5ZV+6QkCCv+2zKgBu7gaw3/yaK2b6pbtPXlhHX
+	SHQSr0g2fsR5QRlML3addZ9FiRVL5cfGtyslAvtdW6KepIbI7nx9yqnBibef/PiqOjHrQe
+	N1Zq8Firy88d8ikzCmFEhveJ4ui7ST0=
+From: Thorsten Blum <thorsten.blum@linux.dev>
+To: Rich Felker <dalias@libc.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Thorsten Blum <thorsten.blum@linux.dev>,
+	linux-sh@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH RESEND] sh: machvec: clean up and use strscpy in early_parse_mv
+Date: Mon, 18 May 2026 18:53:25 +0200
+Message-ID: <20260518165326.81412-2-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: linux-sh@vger.kernel.org
 List-Id: <linux-sh.vger.kernel.org>
 List-Subscribe: <mailto:linux-sh+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-sh+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
-X-Rspamd-Queue-Id: 10B6D56C7C0
-X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2508; i=thorsten.blum@linux.dev; h=from:subject; bh=WnJ4gWii6vGIYcblvWHBrztcZBFygJX95R92ZbX9gzU=; b=owGbwMvMwCUWt7pQ4caZUj3G02pJDFncLmxRT2V6xaeGmH9ZdovV+E7/sY2bQ4sYbz3Qnv1/q v1vaQWnjlIWBjEuBlkxRZYHs37M8C2tqdxkErETZg4rE8gQBi5OAZiIcwXDP81vH4xcHv47ocYf e+rWJTUG13kvdziYmP4wCWVsvWv2rZyRoV/y1sqp2y2n9Bz0+rzXrY5hG7e+H9+S93L5Ll4NEk/ j+QA=
+X-Developer-Key: i=thorsten.blum@linux.dev; a=openpgp; fpr=1D60735E8AEF3BE473B69D84733678FD8DFEEAD4
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
-	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[bootlin.com:+];
-	TAGGED_FROM(0.00)[bounces-3864-lists,linux-sh=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-3866-lists,linux-sh=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[thorsten.blum@linux.dev,linux-sh@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linux.dev:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[miquel.raynal@bootlin.com,linux-sh@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-sh];
-	TO_DN_SOME(0.00)[]
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linux.dev:mid,linux.dev:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 1131657158A
 X-Rspamd-Action: no action
+X-Rspamd-Server: lfdr
 
-Hi Florian,
+Use strscpy() to copy the NUL-terminated early parameter to the
+destination buffer instead of using memcpy() followed by a manual NUL
+termination. If the early parameter contains a space, use min() to copy
+only up to that delimiter, otherwise copy the entire string. Drop the
+now unused mv_len variable.
 
-On 18/05/2026 at 13:45:18 +02, Florian Fuchs <fuchsfl@gmail.com> wrote:
+Remove the redundant mv_name initialization because it is immediately
+populated by strscpy(). Drop mv_comma, which has been unused since
+commit 9655ad03af2d ("sh: Fixup machvec support."), and remove the dead
+from = mv_end assignment. And since panic() is a __noreturn function,
+remove the else branch as well.
 
-> Hi all,
->
-> This small series fixes build and runtime errors in the vmu-flash driver
-> (enabled by CONFIG_MTD_VMU) and the related maple.h. These changes were
-> verified on real Dreamcast hardware with a physical VMU. The VMU can now
-> be successfully probed, read and written with MTD tools like mtdinfo and
-> mtd_debug. Previously, the driver failed to build or crashed during
-> probing.
->
->         bash-5.3# mtdinfo /dev/mtd0
->         mtd0
->         Name:                           vmu2.1.0
->         Type:                           mlc-nand
->         Eraseblock size:                512 bytes
->         Amount of eraseblocks:          256 (131072 bytes, 128.0 KiB)
->         Minimum input/output unit size: 512 bytes
->         Sub-page size:                  512 bytes
->         Character device major/minor:   90:0
->         Bad blocks are allowed:         true
->         Device is writable:             true
->
-> Thanks,
-> Florian
-> ---
+Change machvec_selected from unsigned int to bool and move __initdata
+after the variable name to silence a checkpatch warning.
 
-I believe there is no issue in applying patches 2 and 3 on top of the
-mtd tree and let whoever is responsible take patch 1. If I get an ack I
-can also carry patch 1 through the mtd tree. Without more feedback I
-plan on applying patches 2 and 3 in the coming weeks.
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+---
+ arch/sh/kernel/machvec.c | 27 ++++++++++-----------------
+ 1 file changed, 10 insertions(+), 17 deletions(-)
 
-Thanks,
-Miqu=C3=A8l
+diff --git a/arch/sh/kernel/machvec.c b/arch/sh/kernel/machvec.c
+index 57efaf5b82ae..d737a5a560cd 100644
+--- a/arch/sh/kernel/machvec.c
++++ b/arch/sh/kernel/machvec.c
+@@ -8,6 +8,7 @@
+  *  Copyright (C) 2002 - 2007 Paul Mundt
+  */
+ #include <linux/init.h>
++#include <linux/minmax.h>
+ #include <linux/string.h>
+ #include <asm/machvec.h>
+ #include <asm/sections.h>
+@@ -35,29 +36,21 @@ static struct sh_machine_vector * __init get_mv_byname(const char *name)
+ 	return NULL;
+ }
+ 
+-static unsigned int __initdata machvec_selected;
++static bool machvec_selected __initdata;
+ 
+ static int __init early_parse_mv(char *from)
+ {
+-	char mv_name[MV_NAME_SIZE] = "";
++	char mv_name[MV_NAME_SIZE];
+ 	char *mv_end;
+-	char *mv_comma;
+-	int mv_len;
+ 	struct sh_machine_vector *mvp;
+ 
+ 	mv_end = strchr(from, ' ');
+-	if (mv_end == NULL)
+-		mv_end = from + strlen(from);
++	if (mv_end)
++		strscpy(mv_name, from, min(mv_end - from + 1, MV_NAME_SIZE));
++	else
++		strscpy(mv_name, from);
+ 
+-	mv_comma = strchr(from, ',');
+-	mv_len = mv_end - from;
+-	if (mv_len > (MV_NAME_SIZE-1))
+-		mv_len = MV_NAME_SIZE-1;
+-	memcpy(mv_name, from, mv_len);
+-	mv_name[mv_len] = '\0';
+-	from = mv_end;
+-
+-	machvec_selected = 1;
++	machvec_selected = true;
+ 
+ 	/* Boot with the generic vector */
+ 	if (strcmp(mv_name, "generic") == 0)
+@@ -71,8 +64,8 @@ static int __init early_parse_mv(char *from)
+ 		pr_cont("\n\n");
+ 		panic("Failed to select machvec '%s' -- halting.\n",
+ 		      mv_name);
+-	} else
+-		sh_mv = *mvp;
++	}
++	sh_mv = *mvp;
+ 
+ 	return 0;
+ }
 
